@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Linking with readline
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Linking%20with%20readline&In-Reply-To=%3C4BD5EC24.9030900%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001925.html">
+   <LINK REL="Next"  HREF="001947.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Linking with readline</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Linking%20with%20readline&In-Reply-To=%3C4BD5EC24.9030900%40free.fr%3E"
+       TITLE="[hatari-devel] Linking with readline">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Apr 26 21:40:20 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001925.html">[hatari-devel] Linking with readline
+</A></li>
+        <LI>Next message: <A HREF="001947.html">[hatari-devel] Linking with readline
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1926">[ date ]</a>
+              <a href="thread.html#1926">[ thread ]</a>
+              <a href="subject.html#1926">[ subject ]</a>
+              <a href="author.html#1926">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+It compiles well for me. No more problems here.
+
+Regards,
+
+Laurent
+
+
+Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Monday 26 April 2010, Thomas Huth wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> On Mon, 26 Apr 2010 21:37:35 +0300
+</I>&gt;&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Right.  The readline Hatari define doesn't get added if CMake cannot
+</I>&gt;&gt;&gt;<i> link readline....  Hm.  So -lncurses needs to be somehow specified
+</I>&gt;&gt;&gt;<i> before running cmake.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thomas, does CMake support LDFLAGS etc?
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> Try something like:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  cmake -DCMAKE_EXE_LINKER_FLAGS=-lncurses
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Thanks, it seems to do what's needed.
+</I>&gt;<i>
+</I>&gt;<i> Only thing is that it puts the flag as first thing after CFLAGS, before
+</I>&gt;<i> object files and libraries.  (at least earlier gcc linker was pretty stupid
+</I>&gt;<i> single pass one, so this may be a problem.)
+</I>&gt;<i>
+</I>&gt;<i> David, does use of that solve your problem?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001925.html">[hatari-devel] Linking with readline
+</A></li>
+	<LI>Next message: <A HREF="001947.html">[hatari-devel] Linking with readline
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1926">[ date ]</a>
+              <a href="thread.html#1926">[ thread ]</a>
+              <a href="subject.html#1926">[ subject ]</a>
+              <a href="author.html#1926">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

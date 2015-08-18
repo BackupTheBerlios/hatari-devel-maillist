@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Little trace question :
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Little%20trace%20question%20%3A&In-Reply-To=%3C4DA4C893.5070508%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003338.html">
+   <LINK REL="Next"  HREF="003342.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Little trace question :</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Little%20trace%20question%20%3A&In-Reply-To=%3C4DA4C893.5070508%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Little trace question :">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Apr 12 23:48:03 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003338.html">[hatari-devel] Little trace question :
+</A></li>
+        <LI>Next message: <A HREF="003342.html">[hatari-devel] DMA sound improvements
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3339">[ date ]</a>
+              <a href="thread.html#3339">[ thread ]</a>
+              <a href="subject.html#3339">[ subject ]</a>
+              <a href="author.html#3339">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 12/04/2011 23:14, Laurent Sallafranque a &#233;crit :
+&gt;<i> Here is what I get with video traces too :
+</I>&gt;<i> (just tell me if this HBL change is normal)
+</I>&gt;<i>
+</I>&gt;<i> Here is the trace for HBL 262 start :
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc=133064 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">476 at 261</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> cpu video_cyc=133076 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">488 at 261</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> cpu video_cyc=133080 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">492 at 261</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> cpu video_cyc=133092 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">504 at 261</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> HBL 261 video_cyc=133096 pending_cyc=0 jitter=4
+</I>&gt;<i> HBL 262 start=133096 207e8
+</I>&gt;<i> cpu video_cyc=133096 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">0 at 262</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> cpu video_cyc=133108 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">12 at 262</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> cpu video_cyc=133112 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">16 at 262</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> cpu video_cyc=133124 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">28 at 262</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i>
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i> Here is the trace for HBL 263 start :
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc=133460 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">364 at 262</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> cpu video_cyc=133464 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">368 at 262</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> cpu video_cyc=133476 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">380 at 262</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> cpu video_cyc=133480 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">384 at 262</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> cpu video_cyc=133492 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">396 at 262</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> EndLine TB 262 video_cyc=133496 line_cyc=400 pending_int_cnt=0
+</I>&gt;<i> cpu video_cyc=133496 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">400 at 262</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> cpu video_cyc=133508 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">412 at 262</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> cpu video_cyc=133512 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">416 at 262</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> cpu video_cyc=133524 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">428 at 262</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> cpu video_cyc=133528 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">432 at 262</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> cpu video_cyc=133540 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">444 at 262</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> cpu video_cyc=133544 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">448 at 262</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> cpu video_cyc=133556 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">460 at 262</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> cpu video_cyc=133560 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">464 at 262</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> cpu video_cyc=133572 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">476 at 262</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> cpu video_cyc=133576 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">480 at 262</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> cpu video_cyc=133588 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">492 at 262</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> cpu video_cyc=133592 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">496 at 262</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> HBL 262 video_cyc=133604 pending_cyc=0 jitter=4
+</I>&gt;<i> cpu video_cyc=133604 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133096 at 264</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> cpu video_cyc=133608 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133100 at 264</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> cpu video_cyc=133620 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133112 at 264</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> cpu video_cyc=133624 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133116 at 264</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i> cpu video_cyc=133636 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133128 at 264</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;<i> cpu video_cyc=133640 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133132 at 264</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>
+Well, I think the VBL is missing. This seems to run at 60 Hz, I'm not 
+sure the current falcon's video emulation supports that ? If you look in 
+the trace, where are the VBL ?
+
+I would say that at one point the VBL int (in cycInt) is not set, so the 
+program wait forever for $466 to change (this is TOS VBLs' counter)
+
+Best way to debug this is to find when the last VBL happened and what 
+happened after that.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003338.html">[hatari-devel] Little trace question :
+</A></li>
+	<LI>Next message: <A HREF="003342.html">[hatari-devel] DMA sound improvements
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3339">[ date ]</a>
+              <a href="thread.html#3339">[ thread ]</a>
+              <a href="subject.html#3339">[ subject ]</a>
+              <a href="author.html#3339">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

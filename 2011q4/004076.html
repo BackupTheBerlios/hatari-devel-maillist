@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow HD boot with the new floppy code
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20HD%20boot%20with%20the%20new%20floppy%20code&In-Reply-To=%3C4E901FC4.8030306%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004074.html">
+   <LINK REL="Next"  HREF="004082.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow HD boot with the new floppy code</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20HD%20boot%20with%20the%20new%20floppy%20code&In-Reply-To=%3C4E901FC4.8030306%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Slow HD boot with the new floppy code">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Oct  8 12:02:44 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004074.html">[hatari-devel] Slow HD boot with the new floppy code
+</A></li>
+        <LI>Next message: <A HREF="004082.html">[hatari-devel] Slow HD boot with the new floppy code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4076">[ date ]</a>
+              <a href="thread.html#4076">[ thread ]</a>
+              <a href="subject.html#4076">[ subject ]</a>
+              <a href="author.html#4076">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 08/10/2011 11:54, Miro Krop&#225;&#269;ek a &#233;crit :
+&gt;<i>
+</I>&gt;<i>     On a real STF (without HD), when you switched on the STF without a
+</I>&gt;<i>     disk in it, you had to wait more than 30 sec to finally get the TOS
+</I>&gt;<i>     screen, we now have the same behaviour (including this long wait)
+</I>&gt;<i>
+</I>&gt;<i> Yes, this is same for Falcon, too.
+</I>&gt;<i>
+</I>&gt;<i>     Maybe some TOS versions are more suited for HD mode and don't wait
+</I>&gt;<i>     that long for a disk to be inserted in drive A: ?
+</I>&gt;<i>
+</I>&gt;<i>     How does a real Falcon behave with no disk and a HD ?
+</I>&gt;<i>
+</I>&gt;<i> If you press a key (i.e. skip the memory test), HD starts to boot
+</I>&gt;<i> immediately. That was also the case for Hatari before new code.
+</I>
+Yes, but before new code, FDC timings were notably wrong in most case, a 
+side effect of this was that the time out to check a disk is inserted 
+was not correct and the floppy part was much faster.
+
+With correct FDC timings, it takes more time for floppy A: to time out. 
+I would need to check if there's an easy way to shorten this, but 
+changing FDC timings could have negative effects and prevent programs 
+that works now from not working anymore again.
+
+Maybe you can press &quot;alt + x&quot; to toggle fast forward mode during boot, 
+or start Hatari with an empty disk image inserted in drive A: (using 
+--disk-a option) ?
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004074.html">[hatari-devel] Slow HD boot with the new floppy code
+</A></li>
+	<LI>Next message: <A HREF="004082.html">[hatari-devel] Slow HD boot with the new floppy code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4076">[ date ]</a>
+              <a href="thread.html#4076">[ thread ]</a>
+              <a href="subject.html#4076">[ subject ]</a>
+              <a href="author.html#4076">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

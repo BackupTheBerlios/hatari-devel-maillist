@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari patches for bitplane conversion
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C200907202225.42940.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000491.html">
+   <LINK REL="Next"  HREF="000496.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari patches for bitplane conversion</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C200907202225.42940.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Hatari patches for bitplane conversion">oak at helsinkinet.fi
+       </A><BR>
+    <I>Mon Jul 20 21:25:42 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000491.html">[hatari-devel] Number/address handling change in DebugUI
+</A></li>
+        <LI>Next message: <A HREF="000496.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#495">[ date ]</a>
+              <a href="thread.html#495">[ thread ]</a>
+              <a href="subject.html#495">[ subject ]</a>
+              <a href="author.html#495">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+CC'ing hatari-devel as this is of generic interest and discussed
+earlier on the list.
+
+On Monday 20 July 2009, K&#229;re Andersen wrote:
+&gt;<i> On Sun, Jul 19, 2009 at 4:57 PM, Eero Tamminen&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">oak at helsinkinet.fi</A>&gt; wrote:
+</I>&gt;<i> &gt; On Saturday 18 July 2009, Thomas Huth wrote:
+</I>&gt;<i> &gt;&gt; since you've asked for them in another mail, here are the convertion
+</I>&gt;<i> &gt;&gt; function from Kaare.
+</I>&gt;<i> &gt;&gt; For me, they are slower than the old functions, so I didn't include
+</I>&gt;<i> &gt;&gt; them yet (and I am still waiting for some feedback from Kaare, so I
+</I>&gt;<i> &gt;&gt; also don't include them as an alternative yet).
+</I>&gt;<i>
+</I>&gt;<i> Just remember, they are not hand optimized - if you want speed out of
+</I>&gt;<i> them you will want to fine tune GCC optimization flags. There is no
+</I>&gt;<i> reason they should be slower in the actual conversion, because they
+</I>&gt;<i> fit CPU caches a lot better than the old code... With a bit of
+</I>&gt;<i> --funroll-loops and such, they should be killer... 8)
+</I>
+I haven't found these extra GCC options to help much, at least if you apply
+them to whole Hatari (for example although --funroll-loops helps sometimes,
+generally it just slows down things as it makes code larger so that it
+doesn't fit as well to cache).
+
+Changing Hatari build to apply such flags only to specific source files
+would need to be done in a way that allows specifying the flags separately
+in top Makefile.cnf (so that other compilers can override them).
+
+
+&gt;<i> &gt; Some comments on the code design.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Nowadays more and more of the computers will be battery powered so
+</I>&gt;<i> &gt; reducing the *average* CPU consumption is IMHO more important on the
+</I>&gt;<i> &gt; long run than the occasional peak loads.
+</I>&gt;<i>
+</I>&gt;<i> But when the peak loads are not occasional, but constant, this makes
+</I>&gt;<i> very little sense. Are you doing Hatari for the sake of enabling
+</I>&gt;<i> people to run GEM applications, or to run games and demos?
+</I>
+Both.  There are people using Hatari to run GEM programs. I do it
+occasionally too.
+
+(Other use-case for lower average CPU usage is that --fast-forward will
+then forward things faster.  I do a lot of testing for Hatari and being able
+to pass Atari boot &amp; starting things from GEM faster is nice.)
+
+
+&gt;<i> Because i  think Aranym has some head start on the former... ;)
+</I>
+...But point taken.  :-)
+
+
+&gt;<i> (Point being, 
+</I>&gt;<i> most demos and games, like i have already stressed, most of the time
+</I>&gt;<i> don't leave the frame buffer alone from frame to frame).
+</I>
+Note that many games and demos don't write to the whole (overscan) screen.
+Or they can update screen only every other frame.  Game menus can also
+be static or only partly animated.
+
+So the comparison might still be faster with many/most demos &amp; games.
+And it preloads the line contents to CPU cache for conversion. :)
+
+
+&gt;<i> One thought 
+</I>&gt;<i> that springs to mind, is to detect if we are in GEM or not, say by
+</I>&gt;<i> comparing screen address changes (GEM wont do that, most other stuff
+</I>&gt;<i> will), and switch comparison modes by that way - if the user enables
+</I>&gt;<i> it as an option naturally.
+</I>
+If going this route, I think it would be simplest just to use the comparison
+always for the monochrome and VDI resolutions.
+
+
+&gt;<i> &gt; The new code will always do conversion whereas current Hatari code
+</I>&gt;<i> &gt; converts only the changed parts of the screen. &#160;I.e. it optimizes for
+</I>&gt;<i> &gt; the worst case instead of the general case.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I think there could be a better compromise between these two
+</I>&gt;<i> &gt; extremes...
+</I>&gt;<i>
+</I>&gt;<i> Sure there can - it just needs to be coded :)
+</I>
+Basically you would just need to add in the beginning of the loop:
+-------
++       for (y = 0; y &lt; no_lines; y++)
++       {
+-------
+something like this:
+-------
+	if (memcmp(stplanes, stplanes_copy, no_words) == 0)
+	{
+		stplanes_copy += no_words;
+		stplanes += no_words;
+		continue;
+	}
+-------
+
+For easier measuring of the effect of this, it could be a macro that's
+easy to disable:
+#define CONTINUE_IF_NO_SCREEN_CHANGES(stplanes,stplanes_copy,no_words) \
+...
+
+
+&gt;<i> &gt; Instead of Hatari checking word-by-word whether the areas have been
+</I>&gt;<i> &gt; changed, it could be done line-by-line. &#160;This allows several
+</I>&gt;<i> &gt; significant optimizations:
+</I>&gt;<i> &gt; * Checking gets out of the conversion inner loop.
+</I>&gt;<i> &gt; * Checking can be done with the standard C-library memcmp() which
+</I>&gt;<i> &gt; &#160;hopefully has been hand/ASM-optimized for most platforms.
+</I>&gt;<i> &gt; * On platforms where SDL updates don't incur Vsync, the screen updates
+</I>&gt;<i> &gt; &#160;could be done so that screen-blitting is skipped for lines that
+</I>&gt;<i> &gt; haven't changed.
+</I>&gt;<i>
+</I>&gt;<i> Yeap, this is a good idea. As already suggested by me.... ;)
+</I>&gt;<i>
+</I>&gt;<i> &gt; The palette stuff is also line based, so I think this would fit into
+</I>&gt;<i> &gt; the conversion routines quite nicely.
+</I>&gt;<i>
+</I>&gt;<i> This is what I am doing for OpenGL rendering - which I will get back
+</I>&gt;<i> to hacking at any day now... Having scaling for free is super
+</I>&gt;<i> enjoyable - and as a bonus, the SDL mouse grab problems just go
+</I>&gt;<i> away... :)
+</I>
+How it helps with mouse grabs?
+
+
+&gt;<i> &gt; Other comments...
+</I>...
+&gt;<i> Sure, but converting once and then scaling should be a lot more
+</I>&gt;<i> efficient than converting several times for the same line. And for
+</I>&gt;<i> OpenGL, this will just go away. Oh, and memcpy() wont do for
+</I>&gt;<i> horizontal scaling anyway. What would work, would be a scaler in a
+</I>&gt;<i> separate routine from the converters, so as to avoid even more
+</I>&gt;<i> code duplication and allow more scaling than just double ST low...
+</I>&gt;<i> Hint: I use 1920x1200 on my main screen, and this is not uncommon any
+</I>&gt;<i> more... High res (HD) monitors are really cheap now.
+</I>
+For best effect one should run things fullscreen.  Then the scaling would be
+done by your LCD monitor i.e. already HW-accelerated. :-)
+
+If one uses non-fullscreen, then something like what you propose would be
+nice.  Some devices have really high DPI values (e.g. my Nokia N810 has DPI
+of 226 but doesn't provide other X server resolutions or display HW-scaling
+for SDL.  Which is pretty annoying as N810 is a bit underpowered for
+running Hatari even with heaviest Hatari options turned off).
+
+
+&gt;<i> &gt; * Why this change:
+</I>&gt;<i> &gt; ----------
+</I>&gt;<i> &gt; &#160; &#160; &#160; &#160;/* Bits per pixel */
+</I>&gt;<i> &gt; - &#160; &#160; &#160; if (STRes == ST_HIGH_RES || bUseVDIRes)
+</I>&gt;<i> &gt; + &#160; &#160; &#160; if (bUseVDIRes)
+</I>&gt;<i> &gt; ----------
+</I>&gt;<i>
+</I>&gt;<i> Because I have implemented my conversion routines for high res as
+</I>&gt;<i> well, so there is no reason for high res screen conversion to try and
+</I>&gt;<i> force an 8bpp frame buffer any more - this is generally a very bad
+</I>&gt;<i> idea anyway, since people don't run indexed modes on X (and definitely
+</I>&gt;<i> not GDI/Cocoa) anymore. I hope...
+</I>
+SDL converts it automatically from 8bpp to whatever is needed, but direct
+route is sure nicer.
+
+
+&gt;<i> I will write some test programs to run from the AUTO folder right now.
+</I>&gt;<i> Sitting in linux atm,
+</I>
+Linux is fine.  I think most people on Hatari mailing lists have Linux
+machines (I don't have others, even the N810 runs Linux), so I think having
+the routines faster there is more important than having them faster on OSX
+(or Windows).
+
+
+&gt;<i> so I wont be testing current Hg on OS X until 
+</I>&gt;<i> tomorrow or so. Has it settled down again now? (freeze bugs that is).
+</I>
+The easily triggerable asserts are fixed.  One rare one is still loose
+as we don't know yet why/how HBL gets wrong in that case.
+
+
+&gt;<i> Anyway, if the tests turn out ok, i will ship them tonight. If not,
+</I>&gt;<i> expect them soon :) Got a small demo (noise intro really) off my chest
+</I>&gt;<i> this weekend, so Hatari is getting more of my attention for a while
+</I>&gt;<i> now :)
+</I>
+Great, and thanks for the patches!
+
+I'll try to test your stuff tomorrow.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000491.html">[hatari-devel] Number/address handling change in DebugUI
+</A></li>
+	<LI>Next message: <A HREF="000496.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#495">[ date ]</a>
+              <a href="thread.html#495">[ thread ]</a>
+              <a href="subject.html#495">[ subject ]</a>
+              <a href="author.html#495">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

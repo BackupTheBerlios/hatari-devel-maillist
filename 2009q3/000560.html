@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Handling signed values in the Debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Handling%20signed%20values%20in%20the%20Debugger&In-Reply-To=%3Calpine.LMD.2.00.0908092120080.21816%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000559.html">
+   <LINK REL="Next"  HREF="000534.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Handling signed values in the Debugger</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Handling%20signed%20values%20in%20the%20Debugger&In-Reply-To=%3Calpine.LMD.2.00.0908092120080.21816%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Handling signed values in the Debugger">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Aug  9 21:23:23 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000559.html">[hatari-devel] Handling signed values in the Debugger
+</A></li>
+        <LI>Next message: <A HREF="000534.html">[hatari-devel] New Release?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#560">[ date ]</a>
+              <a href="thread.html#560">[ thread ]</a>
+              <a href="subject.html#560">[ subject ]</a>
+              <a href="author.html#560">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 9 Aug 2009, Eero Tamminen wrote:
+
+&gt;<i>
+</I>&gt;<i> Equality / inequality checks of course aren't a problem, I was referring to
+</I>&gt;<i> &quot;larger than&quot; and &quot;smaller than&quot; comparisons.
+</I>&gt;<i>
+</I>&gt;<i> While -2 is smaller than say $ff, $fffffffe certainly isn't:
+</I>&gt;<i> 	(a0) &lt; $ff
+</I>&gt;<i>
+</I>&gt;<i> If you're debugging program logic that uses signed comparisons / values and
+</I>&gt;<i> you want to know exactly when some condition happens, that could make
+</I>&gt;<i> breakpointing pretty awkward.
+</I>&gt;<i>
+</I>
+Yes, you're right ; only speaking for my case, but I think the 
+multiconditional breakpoints we have and the indirect addressing are quite 
+powerfull and I never felt the need for &lt; or &gt; operator.
+
+But perhaps once the release is made some people will have some other 
+needs that could help improving the breakpoint syntax.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000559.html">[hatari-devel] Handling signed values in the Debugger
+</A></li>
+	<LI>Next message: <A HREF="000534.html">[hatari-devel] New Release?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#560">[ date ]</a>
+              <a href="thread.html#560">[ thread ]</a>
+              <a href="subject.html#560">[ subject ]</a>
+              <a href="author.html#560">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

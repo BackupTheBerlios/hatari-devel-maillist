@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Regression in falcon psg sound ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Regression%20in%20falcon%20psg%20sound%20%3F&In-Reply-To=%3Calpine.LMD.2.00.1004262342240.7422%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001931.html">
+   <LINK REL="Next"  HREF="001934.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Regression in falcon psg sound ?</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Regression%20in%20falcon%20psg%20sound%20%3F&In-Reply-To=%3Calpine.LMD.2.00.1004262342240.7422%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Regression in falcon psg sound ?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Apr 27 00:01:00 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001931.html">[hatari-devel] Regression in falcon psg sound ?
+</A></li>
+        <LI>Next message: <A HREF="001934.html">[hatari-devel] Regression in falcon psg sound ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1933">[ date ]</a>
+              <a href="thread.html#1933">[ thread ]</a>
+              <a href="subject.html#1933">[ subject ]</a>
+              <a href="author.html#1933">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 26 Apr 2010, Laurent Sallafranque wrote:
+
+&gt;<i> Yes, some musics are better, many more works, but some are a bit worse than 
+</I>&gt;<i> in V1.
+</I>&gt;<i> I thing there are still some more things to fix in the crossbar code.
+</I>&gt;<i> (I'll have a falcon this summer, I'll be able to do some tests on the real 
+</I>&gt;<i> hardware, great no ?)
+</I>&gt;<i>
+</I>&gt;<i> I still don't know why (I suppose it's because I need precise frequencies and 
+</I>&gt;<i> the relative timers
+</I>&gt;<i> are based on cpu cycles (4 to 150+ cycles for a single instruction).
+</I>&gt;<i>
+</I>&gt;<i> Nicolas, would it be possible to &quot;simulate&quot; a precise frequency without 
+</I>&gt;<i> running &quot;by bus&quot; like in UAE ?
+</I>&gt;<i> I mean : no need to run 2 cycles by 2 cycles for each component, I just need 
+</I>&gt;<i> one 60 cycles or 80 cycles or xxx cycles for sound and DSP.
+</I>&gt;<i>
+</I>&gt;<i> Let's say I need a 60 cycles instructions, if the &quot;timer&quot; counter is 56, it 
+</I>&gt;<i> would call &quot;crossbar&quot; and DSP for &quot;56 cpu cycles&quot;.
+</I>&gt;<i> Then, if next instruction is 24 cycles, timer would be 22 (60 - 58) and we 
+</I>&gt;<i> would wait until timer reach 60 or becomes &quot;close to 60&quot;.
+</I>&gt;<i>
+</I>&gt;<i> I don't know if this worth a try or if we should have the &quot;bus cycles 
+</I>&gt;<i> precision&quot;.
+</I>&gt;<i>
+</I>&gt;<i> The problem is that with video, there's no problem, as video's overscan are 
+</I>&gt;<i> relative to CPU instructions.
+</I>&gt;<i> But here, I need a precise and constant 60 cycles (or any other constant 
+</I>&gt;<i> value) for sound frequency.
+</I>&gt;<i>
+</I>&gt;<i> Maybe my problem is not here at all anyway.
+</I>
+Hello,
+
+I don't think this is needed in our case, because the emulation will 
+buffer 1 VBL of sound at a time anyway.
+
+On a real hardware, you need a 2 cycles &quot;precision&quot; because each sample 
+must be sent to the DAC immediatly to get a continuous sound.
+
+But when emulating (whether it's ym or dma samples), you don't need to 
+output samples 1 or 2 bytes at a time in real time, you always buffer 
+everything for a whole VBL before sending this buffer to SDL's audio 
+stack. So, if you require a 60 cycles timer and this timer is delayed 
+sometimes, then it's up to your timer code to take this delay into account 
+to compensate it.
+
+The timers in cycint.c will never happen before cycles are elapsed, they 
+will trigger in 2 cases :
+  - no delay due to cpu instruction, you get an exact precision of 60 
+cycles.
+  - timer is delayed, let's say for 12 cycles. So your timer expired at 72 
+cycles instead of 60.
+
+For the 2nd case, if you look at video.c, some similar cases are handled 
+for VBL/HBL by using &quot;PendingCyclesOver&quot;. This value is always &gt;= 0.
+When it's 0, you're in the first (easy) case.
+Here we would get PendingCyclesOver=12, which means you should not output 
+a sample corresponding to &quot;now&quot; but to &quot;now - 12 cycles&quot; (depending on the 
+sound freq, this could mean 2 or 3 samples earlier for example).
+
+With PendingCyclesOver, I'm pretty sure it's possible to get a continuous 
+sound and to compensate for the fact that the timer is delayed with the 
+current hatari's architecture. The method is a little trickier than if you 
+had exact 60 cycles precision, but in the end this comes to incrementing a 
+float index and to round it to the lower or upper integer.
+
+Also, 60 cpu cycles is quite a lot for a falcon, as a 68020+ will mostly 
+have some ~12 cycles or so instructions, so delay will often be less than 
+that. Of course not taking this delay into account would be wrong, but 
+once you handle it you will see it doesn't affect sound that much (but not 
+emulating this &quot;that much delay&quot; can make the whole difference and cause a 
+bad sound).
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001931.html">[hatari-devel] Regression in falcon psg sound ?
+</A></li>
+	<LI>Next message: <A HREF="001934.html">[hatari-devel] Regression in falcon psg sound ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1933">[ date ]</a>
+              <a href="thread.html#1933">[ thread ]</a>
+              <a href="subject.html#1933">[ subject ]</a>
+              <a href="author.html#1933">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] 68030 Debug mode and new CPU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068030%20Debug%20mode%20and%20new%20CPU&In-Reply-To=%3C4D5AE115.4000001%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003067.html">
+   <LINK REL="Next"  HREF="003059.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] 68030 Debug mode and new CPU</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068030%20Debug%20mode%20and%20new%20CPU&In-Reply-To=%3C4D5AE115.4000001%40free.fr%3E"
+       TITLE="[hatari-devel] 68030 Debug mode and new CPU">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Feb 15 21:24:53 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003067.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+        <LI>Next message: <A HREF="003059.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3057">[ date ]</a>
+              <a href="thread.html#3057">[ thread ]</a>
+              <a href="subject.html#3057">[ subject ]</a>
+              <a href="author.html#3057">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+&gt;<i> Which of the debug functions?
+</I>&gt;<i>
+</I>&gt;<i> I took a quick look at the cpu/newcpu.c and the part that allows
+</I>&gt;<i> breakpoints, disassembly tracing etc important stuff is there in
+</I>&gt;<i> cpu/newcpu.c::do_specialties():
+</I>&gt;<i>      if (regs.spcflags&amp;  SPCFLAG_DEBUGGER)
+</I>&gt;<i>                  DebugCpu_Check();
+</I>&gt;<i>
+</I>&gt;<i> Doesn't that work?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>I Think it doesn't.
+If I enter &quot;r&quot;, it should show me the registers
+
+But it only shows me the latest instruction :
+*****
+&gt;<i>  r
+</I>00E09CDC 2070 9800                MOVEA.L (A0, A1.L*1, $00) == $00e4da50,A0
+*
+*Regards*
+**
+**Laurent
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110215/f0d16755/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110215/f0d16755/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003067.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+	<LI>Next message: <A HREF="003059.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3057">[ date ]</a>
+              <a href="thread.html#3057">[ thread ]</a>
+              <a href="subject.html#3057">[ subject ]</a>
+              <a href="author.html#3057">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

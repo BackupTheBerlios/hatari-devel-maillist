@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] FYI: new --desktop option
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C4D8BC0A4.70601%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003212.html">
+   <LINK REL="Next"  HREF="003221.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] FYI: new --desktop option</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C4D8BC0A4.70601%40corp.free.fr%3E"
+       TITLE="[hatari-devel] FYI: new --desktop option">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Mar 24 23:07:32 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003212.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+        <LI>Next message: <A HREF="003221.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3213">[ date ]</a>
+              <a href="thread.html#3213">[ thread ]</a>
+              <a href="subject.html#3213">[ subject ]</a>
+              <a href="author.html#3213">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 23/03/2011 23:07, Eero Tamminen a &#233;crit :
+
+&gt;<i> Anyway, if you want another layout, I'd like first an ASCII template for all
+</I>&gt;<i> the dialogs that need to be changed.  The SDL dialogs are *really* painful
+</I>&gt;<i> to modify with a one where you can calculate the offsets etc.
+</I>&gt;<i>
+</I>&gt;<i> Attached is the ASCII layout I did for current dialog + diff.
+</I>&gt;<i>
+</I>
+In fact, I wonder if we could have 2 sections : STF/STE and Falcon/TT
+
+In Falcon/TT, let's have &quot;keep resolution&quot; and &quot;max zoomed win&quot;
+
+In STF/STE, I think it would be better to have
+  - displayed pixels in left/right/top/bottom border
+  - double X or double Y for low res
+  - double Y for med res
+(this is similar to what Steem does and I find it easier to understand 
+that current &quot;max zoomed win&quot; that includes both the zoom factor and the 
+border size.
+
+
+eg:
+
+-----------------------------------------------
+STF/STE
+[] Double X on low res  [] Double Y on low res
+[] Double Y on med res
+displayed pixels in borders
+       xx left xx right
+       xx top  xx bottom
+-----------------------------------------------
+Falcon/TT
+[] Keep desktop resolution
+Max zoomed win    &lt;- xxx -&gt;
+                 x &lt;- xxx -&gt;
+-----------------------------------------------
+
+
+In STF/STE, I want to add support soon for non-multiple of 16 pixels in 
+borders ; this would allow to better mimic the behaviour seen in 
+overscan line during the hi/lo res switches (this will require some 
+changes in convert/*c functions)
+
+In order to get the same results as a real ST (if the user wants to), I 
+think we should have separate settings for left/right border and 
+top/bottom border (on a real ST, the displayed area is not necessarily 
+centered, so these values could be different).
+
+Code is not ready on my side yet, but I will add such support soon in 
+video.c / screen.c to really fine tune the first/last 16 pixels of each 
+overscan line, so If you're ready to refactor the panel, maybe it could 
+be good to include those concepts now.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003212.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+	<LI>Next message: <A HREF="003221.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3213">[ date ]</a>
+              <a href="thread.html#3213">[ thread ]</a>
+              <a href="subject.html#3213">[ subject ]</a>
+              <a href="author.html#3213">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

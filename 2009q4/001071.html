@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New support for STE's 224 bytes overscan
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20support%20for%20STE%27s%20224%20bytes%20overscan&In-Reply-To=%3CPine.LNX.4.64.0912071816500.15413%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001070.html">
+   <LINK REL="Next"  HREF="001072.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New support for STE's 224 bytes overscan</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20support%20for%20STE%27s%20224%20bytes%20overscan&In-Reply-To=%3CPine.LNX.4.64.0912071816500.15413%40gem.atari.org%3E"
+       TITLE="[hatari-devel] New support for STE's 224 bytes overscan">ae at dhs.nu
+       </A><BR>
+    <I>Mon Dec  7 18:48:34 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001070.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+        <LI>Next message: <A HREF="001072.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1071">[ date ]</a>
+              <a href="thread.html#1071">[ thread ]</a>
+              <a href="subject.html#1071">[ subject ]</a>
+              <a href="author.html#1071">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 7 Dec 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+
+&gt;<i> I just commited support for STE's specific left border's removal as used
+</I>&gt;<i> by DHS in their demos (More Or Less Zero Or Cernit Trandafir, also used in
+</I>&gt;<i> Save The Earth by Defence Force).
+</I>
+Hi!
+
+Thanks a lot for adding this. A friend compiled it for me (I never seem 
+to get it to compile) and it seems to behave exactly like before, eg a 
+screen with wrong linewidth (I tested MOLZ so far). Is there any 
+commandline switch I need to add for the new code to work ?
+
+
+&gt;<i> Result should be close to a real STE, except for the 16 first displayed
+</I>&gt;<i> pixels that show 2 bitplanes under Hatari (under STE, this seems to
+</I>&gt;<i> completly show the background color, I'm not sure if it's the case ?).
+</I>
+Hum, this seems to be perhaps a wrong approach, on the STe the screen is 
+shifted a bit to the right with this method, as far as I can tell we are 
+not losing any pixels. Eg, the pixels far to the right which are normally 
+garbage with a traditional 230 byte overscan are now displaying perfectly 
+looking graphics.
+
+To put it short, the pixels lost at the left are gained at the right. So 
+as I see it, Hatari should just show the usual 416px screen and adjust the 
+raster position by N cycles.
+
+Oh and by the way, the leftmost part of the screen (before the graphics 
+begin) shows the background colour on a real STe, not that it should 
+matter for Hatari as this part shouldn't be displayed in normal cases.
+
+
+
+And now to something completely different.. It's soon christmas, so here 
+goes some wishes that would ease coding fullscreens quite a bit :)
+
+* A mode where Hatari shows all 512x313 pixels, with the &quot;non visible&quot; 
+areas  toned out to say half brightness. This way one can easily follow 
+every clock cycle graphicly. A popular way to determine rastertime is to change 
+the background colour, today one can't see that if it's outside the 
+visible area, as an example.
+
+* Fullscreen mode not to crop any pixels - on OS X today Hatari in a 
+window crawls. Doing fastforward increases perhaps the speed by 20%, while 
+in fullscreen it screams. However in fullscreen it's missing a lot of 
+pixels.
+
+
+Ok I'll stop now, thanks again for working on this overscan mode :-)
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001070.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+	<LI>Next message: <A HREF="001072.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1071">[ date ]</a>
+              <a href="thread.html#1071">[ thread ]</a>
+              <a href="subject.html#1071">[ subject ]</a>
+              <a href="author.html#1071">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

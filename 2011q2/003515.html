@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Execution history debugger command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201106020040.52018.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003512.html">
+   <LINK REL="Next"  HREF="003518.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Execution history debugger command</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201106020040.52018.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Execution history debugger command">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Jun  1 23:40:51 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003512.html">[hatari-devel] Execution history debugger command
+</A></li>
+        <LI>Next message: <A HREF="003518.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3515">[ date ]</a>
+              <a href="thread.html#3515">[ thread ]</a>
+              <a href="subject.html#3515">[ subject ]</a>
+              <a href="author.html#3515">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 01 kes&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 31/05/2011 23:11, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt;&gt; PS : for those who haven't tried it, just download Steem debug from
+</I>&gt;<i> &gt;&gt; Steem website and simply run it with Wine if you use Linux or OSX.
+</I>
+Is there any documentation or manual for it?
+
+
+&gt;<i> &gt; I don't like binary blobs, could you mail a screenshot of it and tell
+</I>&gt;<i> &gt; what exactly in it is nice?
+</I>&gt;<i> 
+</I>&gt;<i> No, seriously, not again, you already asked me for this :)
+</I>&gt;<i>
+</I>&gt;<i> Honestly, there's no blobs in Steem,
+</I>
+I searched the whole Steem site, but didn't find sources for it.
+Where they are?
+
+
+&gt;<i> just a zip archive with some
+</I>&gt;<i> predefined directories ; unzip, run &quot;wine Steem.exe&quot;, can't be much
+</I>&gt;<i> easier.
+</I>
+As a principle, I don't run/use things at home or work for which I cannot
+get source code for (like Flashplayer), except in (open source) emulators.
+
+(Wine isn't an emulator.  It provides Win32 API and emulates some things,
+but the x86 code it runs directly.)
+
+
+&gt;<i> Doing screenshots won't help, there's too many functionalities to
+</I>&gt;<i> describe ; you need to use it to get an idea of what it does, I think
+</I>&gt;<i> the real strength is that everything can be done with the UI in a self
+</I>&gt;<i> explanatory way (I don't have anything against CLI, but Monst or Steem
+</I>&gt;<i> UI are really much easir to use ; combining Hatari's debuger with such
+</I>&gt;<i> UI would be a great match)
+</I>
+So Monst UI is fine as is?
+
+(that I'm somewhat familiar with and I still have the Monst manual.)
+
+
+&gt;<i> Regarding the UI toolkit, I don't think QT would be such a bad choice ;
+</I>&gt;<i> at least it's really supported on Windows/Linux/OS X
+</I>
+Supported significantly better than Gtk that's used by the current (remote)
+GUI?
+
+
+As the Qt OSX instructions mention Python:
+  <A HREF="http://doc.qt.nokia.com/4.7-snapshot/install-mac.html">http://doc.qt.nokia.com/4.7-snapshot/install-mac.html</A>
+
+Why getting that &amp; Qt installed would be noticeably easier than getting
+PyGtk installed?  There's already an experimental all-in-one installer for
+it:
+	<A HREF="http://sourceforge.net/projects/zero-install/files/PyGTK/2.22.0/">http://sourceforge.net/projects/zero-install/files/PyGTK/2.22.0/</A>
+
+For Windows there's already stable all-in-one PyGtk installer:
+	<A HREF="http://www.pygtk.org/downloads.html">http://www.pygtk.org/downloads.html</A>
+
+(If the used Windows compiler doesn't support standard sockets, then
+somebody needs to add support for some Windows specific socket functions to
+Hatari for remote API code, but that's not an UI issue.)
+
+
+&gt;<i> and features all the functionnalities of modern toolkit and can be themed
+</I>&gt;<i> to integrate with the user's computer.
+</I>
+Well, if the debugger &quot;UI&quot; is modeled after Monst, it's supposed to look
+like an ST program, not Windows/OSX.  :-)
+
+&quot;Themeing&quot; in an SDL program can be done by loading a background image.
+
+
+&gt;<i> Also, maybe the debuger's UI could be built in hatari (in a kind of
+</I>&gt;<i> &quot;gui-qt&quot; directory for example). It has the advantage of not requiring
+</I>&gt;<i> external sockets or things like that (as it's currently the case with
+</I>&gt;<i> python's one)
+</I>
+If it's built into Hatari, I think it should be done with SDL[1].  This
+limits the &quot;UI&quot; to the size of the Hatari screen (SDL provides just one
+&quot;framebuffer&quot; as far as I know) which would complicate things because
+Hatari window size changes often on Falcon emulation.
+
+[1] While embedding Hatari SDL stuff to OSX UI is already working I think
+    adding Qt to that mix would be a bad idea.
+
+As a separate program the UI could be any size and the size could be fixed
+at startup.  Instead of separate windows, it could have e.g. separate
+screens which are switched using e.g. function keys.
+
+
+Another problem of building it into Hatari is how you then use the debugger
+command line to do things that the UI doesn't support?  The command line
+has e.g, full debug symbol name TAB-completion.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003512.html">[hatari-devel] Execution history debugger command
+</A></li>
+	<LI>Next message: <A HREF="003518.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3515">[ date ]</a>
+              <a href="thread.html#3515">[ thread ]</a>
+              <a href="subject.html#3515">[ subject ]</a>
+              <a href="author.html#3515">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] LMC1992 and Microwire emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4BA61088.8050306%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001752.html">
+   <LINK REL="Next"  HREF="001751.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] LMC1992 and Microwire emulation</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4BA61088.8050306%40free.fr%3E"
+       TITLE="[hatari-devel] LMC1992 and Microwire emulation">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Mar 21 13:26:48 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001752.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+        <LI>Next message: <A HREF="001751.html">[hatari-devel] CMake floppy target
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1755">[ date ]</a>
+              <a href="thread.html#1755">[ thread ]</a>
+              <a href="subject.html#1755">[ subject ]</a>
+              <a href="author.html#1755">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'll have a look at the patches tonight.
+
+&gt;<i> The code after:
+</I>&gt;<i>     case 2:
+</I>&gt;<i>            /* DMA sound only */
+</I>&gt;<i> multiplies DMA sound by 256, whereas, in other cases by 128...
+</I>&gt;<i> This will make the DMA sound louder when it is not mixed.
+</I>
+
+I've done it on purpose :
+
+In case 1, I mix (dma + Yamaha sound) / 2 to have a value from 0 -&gt; 65536
+
+Regards
+
+Laurent
+
+
+Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Sunday 21 March 2010, David Savinkoff wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> I have a 3 part explanation in the hataribug.txt attachment.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> As for converting floats to ints; Maybe floats are ok. They
+</I>&gt;&gt;<i> can simplify code to the point of where it is more efficient
+</I>&gt;&gt;<i> on computers since the 486 era.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What platforms will have problems?
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> There are still CPUs without FPU being used in devices, but those kind of
+</I>&gt;<i> CPUs are anyway a bit too slow to run Hatari, so I think they can be
+</I>&gt;<i> ignored.
+</I>&gt;<i>
+</I>&gt;<i> I think desktop computers deal faster with doubles, whereas with latest ARM
+</I>&gt;<i> CPUs (currently used in latest phones and soon also in netbooks) doubles are
+</I>&gt;<i> much slower than floats (besides taking double the memory), despite them
+</I>&gt;<i> having an FPU.
+</I>&gt;<i>
+</I>&gt;<i> Whereas integer operations are always faster than *same* operations in
+</I>&gt;<i> floating point, if CPU includes FPU, floats are faster than emulating
+</I>&gt;<i> floating point calculations with e.g. fixed point integers arithmetics.  And
+</I>&gt;<i> if one needs to do conversions between floating point and integers, that's
+</I>&gt;<i> a heavy floating point operation too...
+</I>&gt;<i>
+</I>&gt;<i> So, it makes sense to use integers, if the work can be done &quot;naturally&quot; with
+</I>&gt;<i> them, using floats loses accuracy, or there would be a need for a lot of
+</I>&gt;<i> conversions between floating point and integers (calculated by amount
+</I>&gt;<i> of data on which it's done, not by lines of code :-)).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001752.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+	<LI>Next message: <A HREF="001751.html">[hatari-devel] CMake floppy target
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1755">[ date ]</a>
+              <a href="thread.html#1755">[ thread ]</a>
+              <a href="subject.html#1755">[ subject ]</a>
+              <a href="author.html#1755">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

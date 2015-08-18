@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Sign of Fread size parameter (was: Wotanoid	problem)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Sign%20of%20Fread%20size%20parameter%20%28was%3A%20Wotanoid%0A%09problem%29&In-Reply-To=%3C201001252302.23029.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001354.html">
+   <LINK REL="Next"  HREF="001356.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Sign of Fread size parameter (was: Wotanoid	problem)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Sign%20of%20Fread%20size%20parameter%20%28was%3A%20Wotanoid%0A%09problem%29&In-Reply-To=%3C201001252302.23029.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Sign of Fread size parameter (was: Wotanoid	problem)">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jan 25 22:02:22 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001354.html">[hatari-devel] Sign of Fread size parameter (was: Wotanoid problem)
+</A></li>
+        <LI>Next message: <A HREF="001356.html">[hatari-devel] Sign of Fread size parameter
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1355">[ date ]</a>
+              <a href="thread.html#1355">[ thread ]</a>
+              <a href="subject.html#1355">[ subject ]</a>
+              <a href="author.html#1355">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 25 January 2010, Thomas Huth wrote:
+&gt;<i> &gt; George just tested that the change was between STE (TOS 1.6 I assume)
+</I>&gt;<i> &gt; and Falcon (TOS 4.x I assume).  The change may still have happened in
+</I>&gt;<i> &gt; TOS 2 or TOS 3.  And besides, one can also use EmuTOS with Falcon and
+</I>&gt;<i> &gt; that uses signed value. :-)
+</I>&gt;<i>
+</I>&gt;<i> I just wrote a little test program (am I the only one here with a
+</I>&gt;<i> working cross-compiler?),
+</I>
+I guess so...[1]
+
+
+&gt;<i> that simply executes an Fopen + Fread with 
+</I>&gt;<i> size 0xffffffff, and it seems like the Fread size parameter is still
+</I>&gt;<i> signed in TOS 2.06 and TOS 3.06, but has become unsigned with TOS 4.00.
+</I>
+Great, thanks!
+
+
+&gt;<i> &gt; Thomas, I think it would be fairly safe to change the value to
+</I>&gt;<i> &gt; unsigned. There can't be many programs that rely on operating system
+</I>&gt;<i> &gt; calls like this to *fail* when given parameters that are invalid in
+</I>&gt;<i> &gt; older TOS versions.
+</I>&gt;<i>
+</I>&gt;<i> Well, but some old programs might rely on this behaviour - especially
+</I>&gt;<i> since the parameter is documented as signed in all major documentation.
+</I>&gt;<i>
+</I>&gt;<i> I suggest the following fix: Make the Size variable unsigned (e.g.
+</I>&gt;<i> Uint32), and add something like the following code right after the
+</I>&gt;<i> Gemdos_IsInvalidFileHandle() check in gemdos.c:
+</I>&gt;<i>
+</I>&gt;<i> 	/* Old TOS versions treat the Size parameter as signed */
+</I>&gt;<i> 	if (TosVersion &lt; 0x400 &amp;&amp; (Size &amp; 0x80000000))
+</I>&gt;<i> 	{
+</I>&gt;<i> 		/* return -1 as original GEMDOS */
+</I>&gt;<i> 		Regs[REG_D0] = -1;
+</I>&gt;<i> 		return true;
+</I>&gt;<i> 	}
+</I>&gt;<i>
+</I>&gt;<i> What do you think?
+</I>
+Sounds good to me!
+
+
+&gt;<i> &gt; I would still like it to be pinpointed more accurately in which exact
+</I>&gt;<i> &gt; TOS version this behaviour change happened so that we can document it
+</I>&gt;<i> &gt; (at least in the source code).
+</I>&gt;<i>
+</I>&gt;<i> I've also put Gerhard Stoll on CC:, he's the maintainer of the TOS
+</I>&gt;<i> hypertext, so it might be interesting for him, too.
+</I>
+
+	- Eero
+
+[1]  I don't really need or want a cross-compiler as stuff that I would need
+to build is pretty small.  What I've wanted to get working is fairly up to
+date native Atari toolchain, but the one I had earlier was under MiNT and
+I don't have yet recovered/set up a good new working MiNT setup (with all
+the Unix stuff) that works also in Hatari.  I have gotten distracted by
+other issues like Hatari GEMDOS &amp; IDE support, copying files between them,
+the Hatari debugger features etc. :-)
+
+Btw. Trying Vincent's native Gcc 4.x under plain EmuTOS without MiNT was
+a very good test-case for my GEMDOS emu long file name patch, MiNTlibs do
+all kinds of wierd path stuff...  Without MiNT &amp; proper Unixy environment
+that's not very useful though (EmuTOS want's executables to have ttp/tos/prg
+extension and gcc wants to use them without etc).
+
+My next plan is setting up EmuTOS + Gulam + command line tools from AHCC.
+I need AHCC also to test the Hatari debugger symbols support.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001354.html">[hatari-devel] Sign of Fread size parameter (was: Wotanoid problem)
+</A></li>
+	<LI>Next message: <A HREF="001356.html">[hatari-devel] Sign of Fread size parameter
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1355">[ date ]</a>
+              <a href="thread.html#1355">[ thread ]</a>
+              <a href="subject.html#1355">[ subject ]</a>
+              <a href="author.html#1355">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

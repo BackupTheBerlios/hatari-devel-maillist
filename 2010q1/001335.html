@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Wotanoid problem : final fix before commit ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wotanoid%20problem%20%3A%20final%20fix%20before%20commit%20%3F&In-Reply-To=%3C4B5C8E8A.1040809%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001332.html">
+   <LINK REL="Next"  HREF="001336.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Wotanoid problem : final fix before commit ?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wotanoid%20problem%20%3A%20final%20fix%20before%20commit%20%3F&In-Reply-To=%3C4B5C8E8A.1040809%40free.fr%3E"
+       TITLE="[hatari-devel] Wotanoid problem : final fix before commit ?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Jan 24 19:16:42 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001332.html">[hatari-devel] Wotanoid problem : final fix before commit ?
+</A></li>
+        <LI>Next message: <A HREF="001336.html">[hatari-devel] Wotanoid problem : final fix before commit ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1335">[ date ]</a>
+              <a href="thread.html#1335">[ thread ]</a>
+              <a href="subject.html#1335">[ subject ]</a>
+              <a href="author.html#1335">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> My  memory  is  a bit hazy, but I think this just tells gemdos to
+</I>&gt;<i> read $ffffffff  bytes  from the file. Of course gemdos will read as
+</I>&gt;<i> much as the  file  size  and then return an error in d0.l. It's the
+</I>
+
+Which error should be set to D0 in this case ?
+I can add it with the patch.
+
+&gt;<i> Laurent, why you apply the patch, add to code a comment about what George
+</I>&gt;<i> mentioned above.
+</I>
+Eero, what do you want me to add as a comment exactly ?
+
+
+&gt;<i> I guess Fwrite() size should then be Uint32 too, what do you think?
+</I>
+I thought about this too this afternoon.
+There are probably some other places where we may have this bug.
+But I'm not an expert of Gemdos like you and your help is needed here.
+
+I'll upload the patch tonigh, after you tell me what to add as comments
+and which value to add to D0.
+
+Regards
+
+Laurent
+
+
+
+Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Sunday 24 January 2010, George Nakos wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Sunday, January 24, 2010, 1:42:02 PM, you wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> On Sunday 24 January 2010, Laurent Sallafranque wrote:
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> I've looked at the compendium.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> I haven't found anything about this -1 length call.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> My  memory  is  a bit hazy, but I think this just tells gemdos to
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> read $ffffffff  bytes  from the file. Of course gemdos will read as
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> much as the  file  size  and then return an error in d0.l. It's the
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> lazy man's approach  to  doing  things  the  Right Way(tm) (i.e.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> getting the file length  -or knowing it beforehand- and calling
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> fread() with the proper amount of bytes)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;<i> George, have you actually used this on actual HW so that it has worked?
+</I>&gt;&gt;&gt;<i> With which TOS version(s) it works like that?
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> Yup,  on  a STE with TOS 1.62UK and STFM with TOS 1.02UK. Also, that's
+</I>&gt;&gt;<i> we use that in ULSv3 for a couple of years now and it works in all our
+</I>&gt;&gt;<i> test equipment (MSTEs, Falcons, a TT, etc)
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Thanks.  Then it seems that EmuTOS is (as usual) broken and documentation
+</I>&gt;<i> is wrong too &amp; Laurent's patch is fine.
+</I>&gt;<i>
+</I>&gt;<i> Laurent, why you apply the patch, add to code a comment about what George
+</I>&gt;<i> mentioned above.
+</I>&gt;<i>
+</I>&gt;<i> I guess Fwrite() size should then be Uint32 too, what do you think?
+</I>&gt;<i>
+</I>&gt;<i> (It goes to fwrite which uses size_t, so it's converted to unsigned
+</I>&gt;<i> anyway...)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001332.html">[hatari-devel] Wotanoid problem : final fix before commit ?
+</A></li>
+	<LI>Next message: <A HREF="001336.html">[hatari-devel] Wotanoid problem : final fix before commit ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1335">[ date ]</a>
+              <a href="thread.html#1335">[ thread ]</a>
+              <a href="subject.html#1335">[ subject ]</a>
+              <a href="author.html#1335">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

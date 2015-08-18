@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Conditional breakpoint code, please comment!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3Calpine.LMD.2.00.0906172329060.14918%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000392.html">
+   <LINK REL="Next"  HREF="000394.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Conditional breakpoint code, please comment!</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3Calpine.LMD.2.00.0906172329060.14918%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Conditional breakpoint code, please comment!">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Jun 17 23:32:59 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000392.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+        <LI>Next message: <A HREF="000394.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#393">[ date ]</a>
+              <a href="thread.html#393">[ thread ]</a>
+              <a href="subject.html#393">[ subject ]</a>
+              <a href="author.html#393">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 18 Jun 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Wednesday 17 June 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;&gt;&gt;<i> (for example, some demos could store packed data at
+</I>&gt;&gt;&gt;&gt;<i> odd address, and then you could do something like (a0) = 'ICE!' to add
+</I>&gt;&gt;&gt;&gt;<i> a breakpoint (hint : we could also have the possibility to use 4 ascii
+</I>&gt;&gt;&gt;&gt;<i> chars as a 32 bits value :-) ))
+</I>&gt;<i>
+</I>&gt;<i> I added support for %-prefix for boolean values and &quot;-prefix for strings.
+</I>&gt;<i> However, you cannot use in strings any of the characters that token
+</I>&gt;<i> currently uses for splitting the strings: ( ) &lt; &gt; = ! . &amp;
+</I>&gt;<i>
+</I>&gt;<i> (Commited also a rather large change by renaming the struct members a bit
+</I>&gt;<i> at the same time while adding the DSP address space parsing...  Actual
+</I>&gt;<i> DSP memory access is still missing.)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+hello,
+
+thanks for this, I know it would change the parser a little, but could it 
+be possible to use 'xxxx' instead of &quot;xxxx for a string ? It's closer to 
+the asm syntax and it looks strange to see a non closed &quot; when you're used 
+to the '' or &quot;&quot; notation in many languages :)
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000392.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+	<LI>Next message: <A HREF="000394.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#393">[ date ]</a>
+              <a href="thread.html#393">[ thread ]</a>
+              <a href="subject.html#393">[ subject ]</a>
+              <a href="author.html#393">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

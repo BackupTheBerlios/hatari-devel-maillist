@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Re : DSP host interface interrupted mode : help needed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Re%20%3A%20DSP%20host%20interface%20interrupted%20mode%20%3A%20help%0A%20needed&In-Reply-To=%3C20090919140737.0126e0fb%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000695.html">
+   <LINK REL="Next"  HREF="000709.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Re : DSP host interface interrupted mode : help needed</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Re%20%3A%20DSP%20host%20interface%20interrupted%20mode%20%3A%20help%0A%20needed&In-Reply-To=%3C20090919140737.0126e0fb%40phineus%3E"
+       TITLE="[hatari-devel] Re : DSP host interface interrupted mode : help needed">huth at users.berlios.de
+       </A><BR>
+    <I>Sat Sep 19 14:07:37 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000695.html">[hatari-devel] Re : DSP host interface interrupted mode : help needed
+</A></li>
+        <LI>Next message: <A HREF="000709.html">[hatari-devel] Re : DSP host interface interrupted mode : help needed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#708">[ date ]</a>
+              <a href="thread.html#708">[ thread ]</a>
+              <a href="subject.html#708">[ subject ]</a>
+              <a href="author.html#708">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 15 Sep 2009 22:29:59 +0200
+Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+
+&gt;<i> &gt;&gt; As I don't know well the MFP part, would you (Thomas), add the
+</I>&gt;<i> &gt;&gt; interrupt ?
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; (I can add the &quot;dsp_get_HREQ()&quot; function in dsp.c if you want it to
+</I>&gt;<i> &gt;&gt; be coded this way).
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Ok, please prepare the code, then tell me where I can add the code
+</I>&gt;<i> &gt; that should trigger the interrupt, then I'll have a try.
+</I>&gt;<i>
+</I>&gt;<i> I've added a new function to dsp.c
+</I>&gt;<i> 
+</I>&gt;<i> Dsp_get_HREQ()
+</I>&gt;<i> 
+</I>&gt;<i> It can take 2 values :
+</I>&gt;<i> 0 = no interrupt
+</I>&gt;<i> 0x8000 = interrupt
+</I>
+Actually, I didn't meant a function for querying the HREQ line, but a
+function that is called when the interrupt should be triggered.
+But never mind, I've figured it out on my own. Now the HREQ interrupt
+should be triggered right. However, Graoumpf tracker still is not
+working right yet, it crashes for me when I try to load a .MOD file.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000695.html">[hatari-devel] Re : DSP host interface interrupted mode : help needed
+</A></li>
+	<LI>Next message: <A HREF="000709.html">[hatari-devel] Re : DSP host interface interrupted mode : help needed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#708">[ date ]</a>
+              <a href="thread.html#708">[ thread ]</a>
+              <a href="subject.html#708">[ subject ]</a>
+              <a href="author.html#708">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

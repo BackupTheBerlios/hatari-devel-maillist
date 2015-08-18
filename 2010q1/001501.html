@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] cmake doesn't find readline
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cmake%20doesn%27t%20find%20readline&In-Reply-To=%3Calpine.LMD.2.00.1002211459360.12959%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001500.html">
+   <LINK REL="Next"  HREF="001502.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] cmake doesn't find readline</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cmake%20doesn%27t%20find%20readline&In-Reply-To=%3Calpine.LMD.2.00.1002211459360.12959%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] cmake doesn't find readline">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Feb 21 15:06:37 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001500.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+        <LI>Next message: <A HREF="001502.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1501">[ date ]</a>
+              <a href="thread.html#1501">[ thread ]</a>
+              <a href="subject.html#1501">[ subject ]</a>
+              <a href="author.html#1501">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 21 Feb 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I have the feeling that unless with X11 for example where -lX11 is added, 
+</I>&gt;<i> here we don't have -lreadline added to gcc, which would explain why ldd is 
+</I>&gt;<i> exiting with an error.
+</I>&gt;<i>
+</I>&gt;<i> In the end HAVE_READLINE is not defined in config.h
+</I>&gt;<i>
+</I>&gt;<i> Thomas, do you have an idea (or maybe others encountered this too) ?
+</I>&gt;<i>
+</I>
+Replying to myself, I used CMAKE_REQUIRED_LIBRARIES before the call to 
+check_function_exists :
+
+diff -r db449c77e9b2 CMakeLists.txt
+--- a/CMakeLists.txt    Sun Feb 21 12:03:53 2010 +0200
++++ b/CMakeLists.txt    Sun Feb 21 15:00:50 2010 +0100
+@@ -46,6 +46,7 @@
+
+  find_package(Readline)
+  if(READLINE_FOUND)
++       set(CMAKE_REQUIRED_LIBRARIES &quot;readline&quot;)
+         check_function_exists(rl_filename_completion_function HAVE_RL_COMPLETION_FUNCTION)
+         if(HAVE_RL_COMPLETION_FUNCTION)
+                 set(HAVE_LIBREADLINE 1)
+
+
+I don't know if this is the most efficient way to fix this, but it fixed 
+the problem and readline is working under the debugger.
+
+
+Another &quot;problem&quot; : after running cmake, &quot;hg diff&quot; is now reporting all 
+the Makefile files in the various subdirs as being modified (as they were 
+replaced by the cmake version). Which means a &quot;hg ci/push&quot; would overwrite 
+the original Makefile files on berlios, which may not be what we want.
+
+Is there a way to handle this ?
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001500.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+	<LI>Next message: <A HREF="001502.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1501">[ date ]</a>
+              <a href="thread.html#1501">[ thread ]</a>
+              <a href="subject.html#1501">[ subject ]</a>
+              <a href="author.html#1501">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

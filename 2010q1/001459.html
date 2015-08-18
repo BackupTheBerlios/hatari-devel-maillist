@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] register locking in debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20register%20locking%20in%20debugger&In-Reply-To=%3Calpine.LMD.2.00.1002112303340.17450%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001458.html">
+   <LINK REL="Next"  HREF="001460.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] register locking in debugger</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20register%20locking%20in%20debugger&In-Reply-To=%3Calpine.LMD.2.00.1002112303340.17450%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] register locking in debugger">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Feb 11 23:14:50 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001458.html">[hatari-devel] register locking in debugger
+</A></li>
+        <LI>Next message: <A HREF="001460.html">[hatari-devel] register locking in debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1459">[ date ]</a>
+              <a href="thread.html#1459">[ thread ]</a>
+              <a href="subject.html#1459">[ subject ]</a>
+              <a href="author.html#1459">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 11 Feb 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Thursday 24 December 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;<i> But in that case, I think that adebog or monst are way more powerful than
+</I>&gt;&gt;<i> Hatari debugger, with a built in window system, register locking, search
+</I>&gt;&gt;<i> in disasm mode, ...
+</I>&gt;<i>
+</I>&gt;<i> Nicolas, the infrastructure is now ready for doing register locking
+</I>&gt;<i> (I added &quot;lock&quot; as separate command which shares code with the &quot;info&quot;
+</I>&gt;<i> command and for conditional breakpoints there was already code for
+</I>&gt;<i> handling registers).
+</I>&gt;<i>
+</I>&gt;<i> I was thinking of this kind of an &quot;UI&quot; for the register locking:
+</I>&gt;<i> 	lock regaddr &lt;register name&gt;
+</I>&gt;<i>
+</I>&gt;<i> But what it should show when entering the debugger?  Disassembly from
+</I>&gt;<i> the address pointed by the &quot;locked&quot; register, memory dump, or both?
+</I>&gt;<i> For both data and address registers?
+</I>
+Regarding monst, it's possible to lock a register and choose hex dump or 
+disasm dump ; this is possible for any register, the fact that it's a data 
+or address reg shouldn't limit what kind of dump (as in highly optimized 
+code, where all registers are used, it's often possible to store address 
+in data reg for example).
+
+I don't know what should be shown ; problem is that if you lock several 
+registers it will become quite a mess on screen. My opinion is that some 
+extra windows could be used to display locked registers or locked i/o 
+spaces (like showing video regs, blitter regs, ...), with only a single 
+text terminal as output, I'm afraid more advanced debugging functions 
+(those that can display a lot of data) will prove to be hard to use in an 
+efficient way.
+Perhaps something that should be taken care of in the python ui for 
+instance.
+
+&gt;<i> And should this kind of setting be saved to memory state file or
+</I>&gt;<i> configuration file?
+</I>
+Maybe this should be saved to a specific hatari_debug.cfg file instead of 
+using the memory state ; I think it's better if the memory state file 
+changes only (or mostly) when the emulated machine changes, not when the 
+ui/debugging interface change.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001458.html">[hatari-devel] register locking in debugger
+</A></li>
+	<LI>Next message: <A HREF="001460.html">[hatari-devel] register locking in debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1459">[ date ]</a>
+              <a href="thread.html#1459">[ thread ]</a>
+              <a href="subject.html#1459">[ subject ]</a>
+              <a href="author.html#1459">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

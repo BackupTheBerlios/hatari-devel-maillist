@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Redirecting CON: to console
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Redirecting%20CON%3A%20to%20console&In-Reply-To=%3C201010072116.49333.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002468.html">
+   <LINK REL="Next"  HREF="002471.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Redirecting CON: to console</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Redirecting%20CON%3A%20to%20console&In-Reply-To=%3C201010072116.49333.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Redirecting CON: to console">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Oct  7 20:16:49 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002468.html">[hatari-devel] Redirecting CON: to console
+</A></li>
+        <LI>Next message: <A HREF="002471.html">[hatari-devel] Redirecting CON: to console
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2470">[ date ]</a>
+              <a href="thread.html#2470">[ thread ]</a>
+              <a href="subject.html#2470">[ subject ]</a>
+              <a href="author.html#2470">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 07 October 2010, Vincent Rivi&#232;re wrote:
+&gt;<i> Miro Kropacek wrote:
+</I>&gt;<i> &gt; I use mintlib's printf() of course and to my surprise, it doesn't use
+</I>&gt;<i> &gt; GEMDOS but Fwrite( 1, ... ) ! So I guess you're right, BIOS is used in
+</I>&gt;<i> &gt; this case.
+</I>&gt;<i>
+</I>&gt;<i> Sorry but Fwrite( 1, ... ) is GEMDOS.
+</I>&gt;<i> Hatari should intercept that, too.
+</I>&gt;<i>
+</I>&gt;<i> Ideally, it should do that only when 1 is redirected to the console,
+</I>
+Oh, there's Force() call to change handle 1 to go to file
+and Dup() to set some other handle than 1 act like stdout. :-/
+
+&gt;<i> which is the default.
+</I>
+Stdout (handle 1) default is handle -1 i.e. BIOSCON.
+
+
+&gt;<i> If I'm not wrong, that information is stored in 
+</I>&gt;<i> the private area of the process' basepage.
+</I>
+On quick look I didn't see anything like that...
+
+
+On Thursday 07 October 2010, Miro Kropacek wrote:
+&gt;<i> &gt; Sorry but Fwrite( 1, ... ) is GEMDOS.
+</I>&gt;<i>
+</I>&gt;<i> Sure it is. But Fwrite calls are &quot;forwarded&quot; to BIOS, i.e. there's no
+</I>&gt;<i> code like is file descriptor == stdout? Ok then, print it with GEMDOS
+</I>&gt;<i> function. It goes down to BIOS.
+</I>
+Miro, please verify with tracing that this really is true for programs
+you're interested about.
+
+Tracking all the file descriptors through Dup() &amp; Force() and then
+checking those numbers in FWrite() + having the stuff also in
+Cconout() &amp; Cconws() seems a bit too much.
+
+If I need just to output Bconout() input, that would be pretty trivial.
+
+(I might even set it to happen automatically with --bios-intercept,
+that way it wouldn't even need any extra option etc.)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002468.html">[hatari-devel] Redirecting CON: to console
+</A></li>
+	<LI>Next message: <A HREF="002471.html">[hatari-devel] Redirecting CON: to console
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2470">[ date ]</a>
+              <a href="thread.html#2470">[ thread ]</a>
+              <a href="subject.html#2470">[ subject ]</a>
+              <a href="author.html#2470">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

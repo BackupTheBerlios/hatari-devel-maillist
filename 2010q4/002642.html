@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C20101118084157.0b05d381%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002646.html">
+   <LINK REL="Next"  HREF="002644.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C20101118084157.0b05d381%40phineus%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">huth at users.berlios.de
+       </A><BR>
+    <I>Thu Nov 18 08:41:57 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002646.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002644.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2642">[ date ]</a>
+              <a href="thread.html#2642">[ thread ]</a>
+              <a href="subject.html#2642">[ subject ]</a>
+              <a href="author.html#2642">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 17 Nov 2010 17:22:05 +0100
+Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+
+&gt;<i> Last point, I'm not that sure that my yesterday's patch is good, as
+</I>&gt;<i> it always return 0.
+</I>&gt;<i> Maybe it's this patch that generates all the problems.
+</I>
+I think that patch was the wrong way for a solution.
+Have a look at get_wordi at the end of memory.h, it uses wordgeti()
+which is defined like this:
+
+#define wordgeti(addr) (call_mem_get_func(get_mem_bank(addr).wgeti, addr))
+
+As you can see, it accesses the wgeti field of the corresponding memory
+bank. But when you now look at the memory bank definition in memory.c,
+you'll see that the corresponding field is not set!
+
+So please to try to complete the memory bank definitions first, and I
+am pretty sure the &quot;--compatible true&quot; mode will also work, e.g.:
+
+static addrbank ROMmem_bank =
+{
+    ROMmem_lget, ROMmem_wget, ROMmem_bget,
+    ROMmem_lput, ROMmem_wput, ROMmem_bput,
+    ROMmem_xlate, ROMmem_check,
+    // The following fields were missing:
+    NULL, &quot;ROM&quot;,
+    ROMmem_lget, ROMmem_wget, 0
+};
+
+I haven't tried it yet, but I am pretty sure that this is the main
+problem here.
+
+ Regards,
+  Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002646.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002644.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2642">[ date ]</a>
+              <a href="thread.html#2642">[ thread ]</a>
+              <a href="subject.html#2642">[ subject ]</a>
+              <a href="author.html#2642">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

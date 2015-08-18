@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] MiNT and Hatari drives
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MiNT%20and%20Hatari%20drives&In-Reply-To=%3C20090318074042.3f03dc65%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000194.html">
+   <LINK REL="Next"  HREF="000201.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] MiNT and Hatari drives</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MiNT%20and%20Hatari%20drives&In-Reply-To=%3C20090318074042.3f03dc65%40phineus%3E"
+       TITLE="[hatari-devel] MiNT and Hatari drives">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Mar 18 07:40:42 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000194.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+        <LI>Next message: <A HREF="000201.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#200">[ date ]</a>
+              <a href="thread.html#200">[ thread ]</a>
+              <a href="subject.html#200">[ subject ]</a>
+              <a href="author.html#200">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 4 Mar 2009 23:57:45 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> This made the HD-image creation script also nicer (now commited to
+</I>&gt;<i> repository).
+</I>&gt;<i> 
+</I>&gt;<i> The problem is that although it seems to initially work for smaller
+</I>&gt;<i> images with EmuTOS:
+</I>&gt;<i> - If I remove something from the HD partition within the emulation,
+</I>&gt;<i>   EmuTOS starts showing bogus disk size (too large)[1]
+</I>
+How big was your partition? IIRC cleary, EmuTOS does not support
+partitions bigger than 256 MB.
+
+&gt;<i> - TOS/HDDriver demo recognizes it only in --ide mode, but for
+</I>&gt;<i>   some reason hddriver.prg triggers Hatari debugger twice
+</I>&gt;<i>   (even when -D isn't used)
+</I>
+Is there an additional error message, e.g. a bus error?
+There is also one call to DebugUI() in ide.c ... maybe that's the
+culprit. Could you add a printf there to see whether this triggers the
+debugger? I think it save to remove these to lines from ide.c now, I
+just needed them for debugging when I adapted the IDE code to Hatari.
+
+&gt;<i> - TOS/Cecile bombs with the resulting image
+</I>
+Which machine mode did you use? I think Cecile only works on Falcon or
+at least 68020 mode...
+
+&gt;<i> &gt; I've also applied this to zip2st.sh now and it works very well!
+</I>&gt;<i> 
+</I>&gt;<i> I did some additional changes to it (more user friendliness).
+</I>
+With the latest version, I now get the following error message at the
+end:
+
+/home/thomas/devel/hatari/master/tools/zip2st.sh: 1: exit_cleanup: not
+found
+
+I don't understand that, since exit_cleanup is defined as a function
+there...
+Maybe dash does not allow functions to be used as trap programs? It
+works when I change the /bin/sh line at the beginning to /bin/bash ...
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000194.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+	<LI>Next message: <A HREF="000201.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#200">[ date ]</a>
+              <a href="thread.html#200">[ thread ]</a>
+              <a href="subject.html#200">[ subject ]</a>
+              <a href="author.html#200">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

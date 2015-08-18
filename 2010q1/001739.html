@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Caps Lock bug in maxYMiser
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Caps%20Lock%20bug%20in%20maxYMiser&In-Reply-To=%3Calpine.DEB.1.10.1003201126170.2446%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001736.html">
+   <LINK REL="Next"  HREF="001740.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Caps Lock bug in maxYMiser</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Caps%20Lock%20bug%20in%20maxYMiser&In-Reply-To=%3Calpine.DEB.1.10.1003201126170.2446%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Caps Lock bug in maxYMiser">ae at dhs.nu
+       </A><BR>
+    <I>Sat Mar 20 11:42:26 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001736.html">[hatari-devel] question : floppy disk and acc
+</A></li>
+        <LI>Next message: <A HREF="001740.html">[hatari-devel] Caps Lock bug in maxYMiser
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1739">[ date ]</a>
+              <a href="thread.html#1739">[ thread ]</a>
+              <a href="subject.html#1739">[ subject ]</a>
+              <a href="author.html#1739">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi,
+
+I just want to report a bug that appears in maxYMiser 
+(<A HREF="http://www.preromanbritain.com/maxymiser/">http://www.preromanbritain.com/maxymiser/</A>) when editing music.
+
+Caps Lock key inserts a note off command when editing a track. In Hatari 
+the Caps Lock key gets stuck and fills the pattern with note off commands 
+until you press Caps Lock again. On a real STe, there is only one note off 
+command sent of course.
+
+Video to illustrate: <A HREF="http://ae.dhs.nu/tmp/noteoff.mp4">http://ae.dhs.nu/tmp/noteoff.mp4</A>
+
+First I just insert a couple of random notes, then I press Caps Lock once 
+to do a note off - but as you can see it repeats.
+
+This is with Hatari 1.3.1 or HG as of last night on OS X 10.6, but XiA 
+also reports it to be the same in Windows.
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001736.html">[hatari-devel] question : floppy disk and acc
+</A></li>
+	<LI>Next message: <A HREF="001740.html">[hatari-devel] Caps Lock bug in maxYMiser
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1739">[ date ]</a>
+              <a href="thread.html#1739">[ thread ]</a>
+              <a href="subject.html#1739">[ subject ]</a>
+              <a href="author.html#1739">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

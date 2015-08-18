@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP optimization?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20optimization%3F&In-Reply-To=%3C4D31CC57.10400%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002797.html">
+   <LINK REL="Next"  HREF="002802.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP optimization?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20optimization%3F&In-Reply-To=%3C4D31CC57.10400%40corp.free.fr%3E"
+       TITLE="[hatari-devel] DSP optimization?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Jan 15 17:33:27 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002797.html">[hatari-devel] DSP optimization?
+</A></li>
+        <LI>Next message: <A HREF="002802.html">[hatari-devel] DSP optimization?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2798">[ date ]</a>
+              <a href="thread.html#2798">[ thread ]</a>
+              <a href="subject.html#2798">[ subject ]</a>
+              <a href="author.html#2798">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 15/01/2011 16:07, Eero Tamminen a &#233;crit :
+&gt;<i> Because I have multiple cores which are frequency scaled, it's not so
+</I>&gt;<i> easy for me to see the difference.  I'm not sure whether even this
+</I>&gt;<i> (as root of course):
+</I>&gt;<i> ---
+</I>&gt;<i> for cpu in /sys/devices/system/cpu/*/cpufreq/scaling_governor; do
+</I>&gt;<i> 	echo &quot;performance&quot;&gt;  $cpu;
+</I>&gt;<i> done
+</I>&gt;<i> ---
+</I>&gt;<i> Would guarantee enough things?
+</I>
+It should set your cpu cores at max speed and not lowering it even when 
+you're idle, so this is best to do perf comparisons with Hatari.
+If your pc is idle and cat /proc/cpuinfo reports max freq on all cores, 
+then it means performance mode is really on and real time scaling is 
+equivalent to OFF.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002797.html">[hatari-devel] DSP optimization?
+</A></li>
+	<LI>Next message: <A HREF="002802.html">[hatari-devel] DSP optimization?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2798">[ date ]</a>
+              <a href="thread.html#2798">[ thread ]</a>
+              <a href="subject.html#2798">[ subject ]</a>
+              <a href="author.html#2798">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

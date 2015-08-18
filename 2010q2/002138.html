@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari asserts that should be fixed for the	release
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20asserts%20that%20should%20be%20fixed%20for%20the%0A%09release&In-Reply-To=%3Calpine.LMD.2.00.1005151236190.17372%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001939.html">
+   <LINK REL="Next"  HREF="002148.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari asserts that should be fixed for the	release</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20asserts%20that%20should%20be%20fixed%20for%20the%0A%09release&In-Reply-To=%3Calpine.LMD.2.00.1005151236190.17372%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Hatari asserts that should be fixed for the	release">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat May 15 12:44:40 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001939.html">[hatari-devel] Hatari asserts that should be fixed for the	release
+</A></li>
+        <LI>Next message: <A HREF="002148.html">[hatari-devel] Hatari asserts that should be fixed for the	release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2138">[ date ]</a>
+              <a href="thread.html#2138">[ thread ]</a>
+              <a href="subject.html#2138">[ subject ]</a>
+              <a href="author.html#2138">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 27 Apr 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;<i> For reference, here's the info I got on this in January:
+</I>&gt;<i> ---------
+</I>&gt;<i> hatari: cycInt.c:377: CycInt_AddRelativeInterruptWithOffset: Assertion
+</I>&gt;<i> `CycleTime &gt;= 0' failed.
+</I>&gt;<i>
+</I>&gt;<i> Program received signal SIGABRT, Aborted.
+</I>&gt;<i> [Switching to Thread 0xb79ad6b0 (LWP 3913)]
+</I>&gt;<i> 0xb7f7e424 in __kernel_vsyscall ()
+</I>&gt;<i> (gdb) bt
+</I>&gt;<i> #0  0xb7f7e424 in __kernel_vsyscall ()
+</I>&gt;<i> #1  0xb7c26640 in raise () from /lib/i686/cmov/libc.so.6
+</I>&gt;<i> #2  0xb7c28018 in abort () from /lib/i686/cmov/libc.so.6
+</I>&gt;<i> #3  0xb7c1f5be in __assert_fail () from /lib/i686/cmov/libc.so.6
+</I>&gt;<i> #4  0x08053fe6 in CycInt_AddRelativeInterruptWithOffset (CycleTime=-24,
+</I>&gt;<i>    CycleType=1, Handler=INTERRUPT_VIDEO_ENDLINE, CycleOffset=0)
+</I>&gt;<i>    at cycInt.c:377
+</I>&gt;<i> #5  0x08054017 in CycInt_AddRelativeInterrupt (CycleTime=-24, CycleType=1,
+</I>&gt;<i>    Handler=INTERRUPT_VIDEO_ENDLINE) at cycInt.c:337
+</I>&gt;<i> #6  0x0807e16c in Video_InterruptHandler_EndLine () at video.c:1609
+</I>&gt;<i> #7  0x08087179 in m68k_go (may_quit=1) at newcpu.c:1751
+</I>&gt;<i> #8  0x0806b444 in M68000_Start () at m68000.c:228
+</I>&gt;<i> ...
+</I>&gt;<i> (gdb) up
+</I>&gt;<i> #6  0x0807e16c in Video_InterruptHandler_EndLine () at video.c:1609
+</I>&gt;<i> 1609                    CycInt_AddRelativeInterrupt ( LineTimerBCycle -
+</I>&gt;<i> LineCycles + nCyclesPerLine,
+</I>&gt;<i> (gdb) print LineTimerBCycle
+</I>&gt;<i> $1 = 188
+</I>&gt;<i> (gdb) print LineCycles
+</I>&gt;<i> $2 = 436
+</I>&gt;<i> (gdb) print nCyclesPerLine
+</I>&gt;<i> $3 = 224
+</I>&gt;<i> (gdb) print LineTimerBCycle - LineCycles + nCyclesPerLine
+</I>&gt;<i> $4 = -24
+</I>&gt;<i>     ^^^
+</I>
+
+Hello,
+
+using the disk image ahccst.st.gz, I was able to reproduce the problem 
+(took some time, it was not 100% reproductible when I added some traces).
+This should be fixed now, but it could have happened with any program 
+under monochrome in fact (as you noted when copying files with GEM)
+
+It's a very rare case though, because you need to have a DIV instruction 
+just before the VBL that delays it by approx 124 cycles or more.
+Video_InterruptHandler_HBL and Video_InterruptHandler_EndLine were skipped 
+for line 0 in that case and nHBL was no more correct after, which altered 
+various cycles processing later.
+
+This fix is only for monochrome, we don't have this problem in lo/med res 
+because the line has more than twice cycles.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001939.html">[hatari-devel] Hatari asserts that should be fixed for the	release
+</A></li>
+	<LI>Next message: <A HREF="002148.html">[hatari-devel] Hatari asserts that should be fixed for the	release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2138">[ date ]</a>
+              <a href="thread.html#2138">[ thread ]</a>
+              <a href="subject.html#2138">[ subject ]</a>
+              <a href="author.html#2138">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

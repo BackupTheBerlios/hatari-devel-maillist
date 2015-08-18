@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Linking with readline (was: Problem in falcon mode ?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Linking%20with%20readline%20%28was%3A%20Problem%20in%20falcon%0A%20mode%20%3F%29&In-Reply-To=%3C20100425235147.3c547812%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001920.html">
+   <LINK REL="Next"  HREF="001922.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Linking with readline (was: Problem in falcon mode ?)</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Linking%20with%20readline%20%28was%3A%20Problem%20in%20falcon%0A%20mode%20%3F%29&In-Reply-To=%3C20100425235147.3c547812%40phineus%3E"
+       TITLE="[hatari-devel] Linking with readline (was: Problem in falcon mode ?)">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Apr 25 23:51:47 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001920.html">[hatari-devel] Linking with readline (was: Problem in falcon	mode ?)
+</A></li>
+        <LI>Next message: <A HREF="001922.html">[hatari-devel] Linking with readline (was: Problem in falcon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1921">[ date ]</a>
+              <a href="thread.html#1921">[ thread ]</a>
+              <a href="subject.html#1921">[ subject ]</a>
+              <a href="author.html#1921">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 26 Apr 2010 00:19:54 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On Sunday 25 April 2010, David Savinkoff wrote:
+</I>&gt;<i> &gt; Thanks for figuring it out !
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Adding this info about broken distros will
+</I>&gt;<i> &gt; save somebody grief later.
+</I>&gt;<i> 
+</I>&gt;<i> No problem (Samba's suffering from the same issue...).
+</I>&gt;<i> 
+</I>&gt;<i> Btw. Did you find out what caused your cfmakeraw() issue at build?
+</I>
+According to the man-page of cfmakeraw, one should define _BSD_SOURCE
+to use this function... maybe that was the problem.
+Now that we compile with _GNU_SOURCE again (due to using &quot;pkg-config
+--cflags-only-other sdl&quot;), the problem should be gone. (_GNU_SOURCE implies
+_BSD_SOURCE, too).
+
+David, could you please &quot;make distclean&quot;, then update to the latest hg
+tip and then try again whether it works now?
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001920.html">[hatari-devel] Linking with readline (was: Problem in falcon	mode ?)
+</A></li>
+	<LI>Next message: <A HREF="001922.html">[hatari-devel] Linking with readline (was: Problem in falcon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1921">[ date ]</a>
+              <a href="thread.html#1921">[ thread ]</a>
+              <a href="subject.html#1921">[ subject ]</a>
+              <a href="author.html#1921">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

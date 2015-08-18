@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Troubles compiling latest Hatari with new avi support (fwd)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%20support%20%28fwd%29&In-Reply-To=%3Calpine.LMD.2.00.0910102320090.5924%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000797.html">
+   <LINK REL="Next"  HREF="000825.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Troubles compiling latest Hatari with new avi support (fwd)</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%20support%20%28fwd%29&In-Reply-To=%3Calpine.LMD.2.00.0910102320090.5924%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Troubles compiling latest Hatari with new avi support (fwd)">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Oct 10 23:20:31 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000797.html">[hatari-devel] pkg-config portaudio complainments...
+</A></li>
+        <LI>Next message: <A HREF="000825.html">[hatari-devel] Troubles compiling latest Hatari with new avi	support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#824">[ date ]</a>
+              <a href="thread.html#824">[ thread ]</a>
+              <a href="subject.html#824">[ subject ]</a>
+              <a href="author.html#824">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+On Sat, 10 Oct 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On Saturday 10 October 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;<i> On Sat, 10 Oct 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;&gt;<i> I will have a look ; from the trace it seems avi recording is not
+</I>&gt;&gt;&gt;<i> completly stopped and we try to save a video frame in a closed file
+</I>&gt;&gt;&gt;<i> handle.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> This is fixed ; it mixed some old png animation recording with the new
+</I>&gt;&gt;<i> avi mode, so button state was not correct.
+</I>&gt;<i> 
+</I>&gt;<i> Could you fix the whole recording thing?  None of the recording
+</I>&gt;<i> stuff needs to be in the screenshot file anymore, right?
+</I>&gt;<i>
+</I>
+Well it depends ; do we want to keep the &quot;save animation as png files&quot; option ? 
+If that's the case, we could put 3 buttons in screen dialog :
+  - save screenshot
+  - record screenshots animation
+  - record avi
+
+If we completly drop the png animation support, then we can indeed remove some 
+parts from screenSnapShot.c related to incremeting the png file name and saving 
+a sequence of images.
+
+Does someone want to keep the record png animation option ? (note that's it's 
+possible to extract the individual png files from the avi file using 
+mplayer/mencoder, so the png animation really seems redundant)
+
+&gt;<i> 
+</I>&gt;<i> Attached is a patch that makes AVI recording slightly more robust + adds
+</I>&gt;<i> some missing static keywords (I don't understand why GCC didn't complain
+</I>&gt;<i> about them.)
+</I>
+Thanks, I will add these (except for the memset(AviParams,0) in 
+AviStopRecording_WithParams, as it will be done next time we start another avi 
+recording and would be redundant ; and setting AviRecording to false (as it's 
+already the case) will prevent from accessing AviParams once recording is 
+stopped, so IMO there's no need to reset a structure we don't access anymore).
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000797.html">[hatari-devel] pkg-config portaudio complainments...
+</A></li>
+	<LI>Next message: <A HREF="000825.html">[hatari-devel] Troubles compiling latest Hatari with new avi	support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#824">[ date ]</a>
+              <a href="thread.html#824">[ thread ]</a>
+              <a href="subject.html#824">[ subject ]</a>
+              <a href="author.html#824">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

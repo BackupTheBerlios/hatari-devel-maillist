@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] source level debugging with the Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20source%20level%20debugging%20with%20the%20Hatari%20debugger&In-Reply-To=%3C201001102127.25273.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001334.html">
+   <LINK REL="Next"  HREF="001205.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] source level debugging with the Hatari debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20source%20level%20debugging%20with%20the%20Hatari%20debugger&In-Reply-To=%3C201001102127.25273.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] source level debugging with the Hatari debugger">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jan 10 20:27:25 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001334.html">[hatari-devel] Hatari asserts on video interrupts when running under monochrome
+</A></li>
+        <LI>Next message: <A HREF="001205.html">[hatari-devel] Debugger Question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1203">[ date ]</a>
+              <a href="thread.html#1203">[ thread ]</a>
+              <a href="subject.html#1203">[ subject ]</a>
+              <a href="author.html#1203">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Attached is patch to existing Hatari code and new files that add symbol
+file loading, support for them for address (code) breakpoints,
+TAB-completion for the symbol names, listing of loaded symbols
+and a tester for the new code.
+
+If it seems OK, I'll push it to the repo.
+
+On Tuesday 29 December 2009, Eero Tamminen wrote:
+&gt;<i> On Tuesday 29 December 2009, Mickael Pointier wrote:
+</I>&gt;<i> &gt; &gt;&gt; and have symbols in the rom, in the program, etc... if you add the
+</I>&gt;<i> &gt; &gt;&gt; possibility to add symbols from the debugger and then save them, you
+</I>&gt;<i> &gt; &gt;&gt; can progressively start to comment the program you are debugging.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; What do you mean by &quot;save them&quot;?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Well, imagine you try to trace some very nasty piece of program
+</I>&gt;<i> &gt; (obfuscated driver, complicated protection; rom), some times you just
+</I>&gt;<i> &gt; want to be able to add a symbol on the fly while you are debugging,
+</I>&gt;<i> &gt; because you discovered the meaning of some code. Being able to save
+</I>&gt;<i> &gt; these symbols in a text file you can reload later would be kind of
+</I>&gt;<i> &gt; cool.
+</I>&gt;<i>
+</I>&gt;<i> I think it's better if you just add them to a file and then tell Hatari
+</I>&gt;<i> to (re)load that.  And if it's in a regular program you're running from a
+</I>&gt;<i> desktop, it may end up in another address, then you need on each load to
+</I>&gt;<i> give some offset for it.
+</I>&gt;<i>
+</I>&gt;<i> Btw.  I'm now thinking that the program offset could be actually
+</I>&gt;<i> something that's handled on the host side with some trivial helper
+</I>&gt;<i> scripts, Hatari debugger would be given just a list of absolute RAM
+</I>&gt;<i> addresses.  Debugger itself would support only one list of symbols at the
+</I>&gt;<i> time to simplify things (joining &amp; offsetting the addresses can be done
+</I>&gt;<i> trivially with AWK, outside of Hatari).
+</I>
+Awk doesn't seem to handle hex numbers (the addresses).  Python would be
+another possibility.  (I don't want multiple symbol file handling in Hatari,
+it would spread eventually into configuration settings etc).
+
+
+&gt;<i> &gt; &gt;&gt; A real native debugger can also support non intrusive breakpoints,
+</I>&gt;<i> &gt; &gt;&gt; breakpoints on data changes, conditional breakpoints that do not hog
+</I>&gt;<i> &gt; &gt;&gt; the machine, etc....
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Hatari debugger already supports these features.  I added them to
+</I>&gt;<i> &gt; &gt; v1.3 with help from the others. (ideas mostly from Nicolas, and
+</I>&gt;<i> &gt; &gt; generic debugging support from Thomas).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; So much then for the &quot;hatari debugger is far to be as advanced as
+</I>&gt;<i> &gt; monst2&quot;
+</I>&gt;<i>
+</I>&gt;<i> It's still lacking a lot of features that Monst2 has though.
+</I>&gt;<i>
+</I>&gt;<i> See my earlier &quot;atari debugger improvements&quot; mail.
+</I>
+Any comments on what features from that list would seem most important?
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: symbols.diff
+Type: text/x-diff
+Size: 6347 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100110/929afe7b/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100110/929afe7b/attachment.diff</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: symbols-new.tar.gz
+Type: application/x-tgz
+Size: 3237 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100110/929afe7b/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100110/929afe7b/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001334.html">[hatari-devel] Hatari asserts on video interrupts when running under monochrome
+</A></li>
+	<LI>Next message: <A HREF="001205.html">[hatari-devel] Debugger Question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1203">[ date ]</a>
+              <a href="thread.html#1203">[ thread ]</a>
+              <a href="subject.html#1203">[ subject ]</a>
+              <a href="author.html#1203">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

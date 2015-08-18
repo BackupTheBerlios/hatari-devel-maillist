@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Release list (was Demos tested today, some more demos tested)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Release%20list%20%28was%20Demos%20tested%20today%2C%0A%20some%20more%20demos%20tested%29&In-Reply-To=%3Calpine.LMD.2.00.1002281626080.27830%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001601.html">
+   <LINK REL="Next"  HREF="001590.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Release list (was Demos tested today, some more demos tested)</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Release%20list%20%28was%20Demos%20tested%20today%2C%0A%20some%20more%20demos%20tested%29&In-Reply-To=%3Calpine.LMD.2.00.1002281626080.27830%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Release list (was Demos tested today, some more demos tested)">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Feb 28 16:30:44 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001601.html">[hatari-devel] Release list (was Demos tested today, some more demos tested)
+</A></li>
+        <LI>Next message: <A HREF="001590.html">[hatari-devel] Protracker Ste
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1602">[ date ]</a>
+              <a href="thread.html#1602">[ thread ]</a>
+              <a href="subject.html#1602">[ subject ]</a>
+              <a href="author.html#1602">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 28 Feb 2010, Eero Tamminen wrote:
+
+&gt;&gt;&gt;<i> d
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 0000aa6e: 2f08 0241 0fff 207c 00fe MOVE.L A0,-(A7)
+</I>&gt;&gt;<i> 0000aa70: 0241 0fff 207c 00fe 78c0 AND.W #$0fff,D1
+</I>&gt;&gt;<i> 0000aa74: 207c 00fe 78c0 2070 1000 MOVEA.L #$00fe78c0,A0
+</I>&gt;&gt;<i> 0000aa7a: 2070 1000 4ed0 0241 0ffe MOVEA.L (A0, D1.W*1, $00) ==
+</I>&gt;&gt;<i> $00fe34ae,A0 0000aa7e: 4ed0 0241 0ffe 6712 e549 JMP.L (A0)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Beautified example
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> d
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 0000aa6e: 2f08 MOVE.L A0,-(A7)
+</I>&gt;&gt;<i> 0000aa70: 0241 0fff AND.W #$0fff,D1
+</I>&gt;&gt;<i> 0000aa74: 207c 00fe 78c0 MOVEA.L #$00fe78c0,A0
+</I>&gt;&gt;<i> 0000aa7a: 2070 1000 MOVEA.L (A0, D1.W*1, $00) == $00fe34ae,A0
+</I>&gt;&gt;<i> 0000aa7e: 4ed0 0241 0ffe JMP.L (A0)
+</I>&gt;<i>
+</I>&gt;<i> If the number of items shown on the row and the column  where
+</I>&gt;<i> the instruction starts from varies from line to line, that's not
+</I>&gt;<i> very readable.
+</I>
+One solution could be to use tab to keep things aligned, I think the 
+maximum size of an instruction on 68000 is 2+4+4=10 bytes, so this could 
+help to keep things readable by padding with spaces too instead of tabs.
+
+&gt;<i> (The output is also coming from UAE, not Hatari code, I don't know
+</I>&gt;<i> how much sense it makes to change that.  Nicolas?)
+</I>
+I'm not sure it's a priority for now. Since the goal is to switch to 
+winuae cpu core one day, the less we modify the current uae-cpu core 
+today, the easier it will be to merge our modifications with winuae core. 
+Once this is done, we could try to beautify output.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001601.html">[hatari-devel] Release list (was Demos tested today, some more demos tested)
+</A></li>
+	<LI>Next message: <A HREF="001590.html">[hatari-devel] Protracker Ste
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1602">[ date ]</a>
+              <a href="thread.html#1602">[ thread ]</a>
+              <a href="subject.html#1602">[ subject ]</a>
+              <a href="author.html#1602">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

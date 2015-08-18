@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Some Hatari Bugs ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20Hatari%20Bugs%20%3F&In-Reply-To=%3C201003202201.04843.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001780.html">
+   <LINK REL="Next"  HREF="001746.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Some Hatari Bugs ?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20Hatari%20Bugs%20%3F&In-Reply-To=%3C201003202201.04843.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Some Hatari Bugs ?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Mar 20 21:01:04 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001780.html">[hatari-devel] Caps Lock bug in maxYMiser
+</A></li>
+        <LI>Next message: <A HREF="001746.html">[hatari-devel] Some Hatari Bugs ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1744">[ date ]</a>
+              <a href="thread.html#1744">[ thread ]</a>
+              <a href="subject.html#1744">[ subject ]</a>
+              <a href="author.html#1744">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Thanks for the logs, they helped me in reproducing your fullscreen toggle
+issue (with little code change), so I could fix it:
+	<A HREF="http://hg.berlios.de/repos/hatari/rev/e829357ea79a">http://hg.berlios.de/repos/hatari/rev/e829357ea79a</A>
+
+The problem was the screen content save &amp; restore which is used when
+SDL_WM_ToggleFullScreen() fails, it just doesn't work, so I removed it
+(I removed also SDL_WM_ToggleFullScreen() use as suggested earlier
+by Thomas).
+
+
+I also commited the change that makes ST/STe low/med rez border sizes
+automatically adapt to the max zoom setting as suggested by Thomas
+(it also removes border sizes configuration setting as they aren't then
+used anymore):
+	<A HREF="http://hg.berlios.de/repos/hatari/rev/6e41b2bbd122">http://hg.berlios.de/repos/hatari/rev/6e41b2bbd122</A>
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001780.html">[hatari-devel] Caps Lock bug in maxYMiser
+</A></li>
+	<LI>Next message: <A HREF="001746.html">[hatari-devel] Some Hatari Bugs ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1744">[ date ]</a>
+              <a href="thread.html#1744">[ thread ]</a>
+              <a href="subject.html#1744">[ subject ]</a>
+              <a href="author.html#1744">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

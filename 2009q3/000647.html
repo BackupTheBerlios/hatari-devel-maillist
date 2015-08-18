@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari window embedding and control socket
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20window%20embedding%20and%20control%20socket&In-Reply-To=%3C200908182233.52606.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000639.html">
+   <LINK REL="Next"  HREF="000643.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari window embedding and control socket</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20window%20embedding%20and%20control%20socket&In-Reply-To=%3C200908182233.52606.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari window embedding and control socket">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Aug 18 21:33:52 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000639.html">[hatari-devel] Hatari version 1.3.0 has been released
+</A></li>
+        <LI>Next message: <A HREF="000643.html">[hatari-devel] Hatari version 1.3.0 has been released
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#647">[ date ]</a>
+              <a href="thread.html#647">[ thread ]</a>
+              <a href="subject.html#647">[ subject ]</a>
+              <a href="author.html#647">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 17 August 2009, Kenneth Kaufman wrote:
+&gt;<i> Congratulations on getting out the new release!  :)
+</I>&gt;<i>
+</I>&gt;<i> Sorry i've not been around lately. I'm sad that I haven't managed to find
+</I>&gt;<i> the time to do something for HAtari but it really hasn't been possible.
+</I>&gt;<i> Hoping i'll manage to secure some time soon. Its really great though to
+</I>&gt;<i> see all the progress you guys are making on the project! :). Well done
+</I>&gt;<i> and my congratulation!! :D
+</I>
+Btw. I just noticed that you've discussed on the Hatari forum pages
+(this was the first time I read them :-)):
+	<A HREF="http://developer.berlios.de/forum/forum.php?forum_id=31528">http://developer.berlios.de/forum/forum.php?forum_id=31528</A>
+
+Adding a frame around the Hatari window and getting notifications about
+Hatari window sizes, on Windows.
+
+
+Support for this has been a long time in Hatari, but currently it works only
+for the X window system.
+
+To have the same support for Windows would require implementing
+some of the src/control.c file functionality also for Windows:
+- Remote control socket support
+  - Unix implementation is inside the HAVE_UNIX_DOMAIN_SOCKETS ifdef,
+    I assume Windows (WinSock?) implementation would be similar
+  - You could of course use also some other interprocess communcation
+    mechanism on Windows if that works there better than sockets
+- Embedding Hatari window inside parent window given in PARENT_WIN_ID
+  environment variable (see Control_ReparentWindow() function)
+   - libSDL code can be looked for an example on how to do this on Windows.
+     The SDL functionality for this cannot be used by Hatari because
+     that also disables all user input processing, but you can copy
+     the relevant part of the code to Hatari and leave input disabling out.
+
+Then, if you give Hatari a control socket name, you can then request Hatari
+to automatically inform your program about the window size changes through
+that socket[1].
+
+The remote control socket allows changing at run-time most Hatari options 
+that one can specify on the command line or doing actions one can do
+from the internal Hatari settings dialog.  It also allows synthetizing user
+input.
+
+The current Hatari window embedding code will automatically handle
+fullscreen on/off right i.e. disable embedding when going to fullscreen and
+re-embedding the Hatari window when leaving fullscreen.
+
+
+	- Eero
+
+[1] I found out that Gtk window embedding couldn't be gotten to
+automatically adapt to Hatari window size changes properly, so the size
+changes are done explicitly in the Python Hatari UI when receiving these
+messages.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000639.html">[hatari-devel] Hatari version 1.3.0 has been released
+</A></li>
+	<LI>Next message: <A HREF="000643.html">[hatari-devel] Hatari version 1.3.0 has been released
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#647">[ date ]</a>
+              <a href="thread.html#647">[ thread ]</a>
+              <a href="subject.html#647">[ subject ]</a>
+              <a href="author.html#647">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

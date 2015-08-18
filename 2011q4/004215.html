@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Wrong memory init
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wrong%20memory%20init&In-Reply-To=%3C4ED239D5.6010300%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004214.html">
+   <LINK REL="Next"  HREF="004216.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Wrong memory init</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wrong%20memory%20init&In-Reply-To=%3C4ED239D5.6010300%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Wrong memory init">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Nov 27 14:23:33 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004214.html">[hatari-devel] NBCD mem cycles ?
+</A></li>
+        <LI>Next message: <A HREF="004216.html">[hatari-devel] Wrong memory init
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4215">[ date ]</a>
+              <a href="thread.html#4215">[ thread ]</a>
+              <a href="subject.html#4215">[ subject ]</a>
+              <a href="author.html#4215">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello
+
+I spent some hard hours trying to fix the game Yolanda (on Pompey 
+Pirates 46).
+The game freezes after a few second because of a bad random number 
+generator that always returns 0.
+This random number is inititalized with the value in $100. By default, 
+this value is 0 under Hatari, because FastBoot is on, which bypasses the 
+TOS memory init functions that write data between $8 and $200.
+
+
+The &quot;culprit&quot; is in stMemory.c. I'm wondering what is this MMU reference 
+? I see this code is present since the initial import of tos.c in 2001, 
+but this looks like a bug to me, especially since Hatari works fine when 
+fastboot is turned off in System settings.
+
+         /* Fill in magic numbers, so TOS does not try to reference MMU */
+         if (ConfigureParams.System.bFastBoot
+             || (ConfigureParams.Memory.nMemorySize &gt; 4 &amp;&amp; !bIsEmuTOS))
+         {
+                 /* Write magic values to sysvars to signal valid config */
+                 STMemory_WriteLong(0x420, 0x752019f3);    /* memvalid */
+                 STMemory_WriteLong(0x43a, 0x237698aa);    /* memval2 */
+                 STMemory_WriteLong(0x51a, 0x5555aaaa);    /* memval3 */
+         }
+
+So, I would propose to remove this piece of code ; this has nearly no 
+impact on boot time.
+
+Additionnaly, I think bFastBoot should be false by default, to ensure 
+the system always starts in the maximum compatibility level. The user 
+can still change it later if he wants (this is used in tos.c, when patch 
+has TP_HDIMAGE_OFF ; is it still useful ?)
+
+Thomas (or others), any comment on this &quot;ancient&quot; behaviour ?
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004214.html">[hatari-devel] NBCD mem cycles ?
+</A></li>
+	<LI>Next message: <A HREF="004216.html">[hatari-devel] Wrong memory init
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4215">[ date ]</a>
+              <a href="thread.html#4215">[ thread ]</a>
+              <a href="subject.html#4215">[ subject ]</a>
+              <a href="author.html#4215">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

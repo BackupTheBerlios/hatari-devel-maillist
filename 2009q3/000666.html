@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] something not working with breakpoints ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20something%20not%20working%20with%20breakpoints%20%3F&In-Reply-To=%3Calpine.LMD.2.00.0909052047030.18737%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000665.html">
+   <LINK REL="Next"  HREF="000668.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] something not working with breakpoints ?</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20something%20not%20working%20with%20breakpoints%20%3F&In-Reply-To=%3Calpine.LMD.2.00.0909052047030.18737%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] something not working with breakpoints ?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Sep  5 20:53:06 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000665.html">[hatari-devel] something not working with breakpoints ?
+</A></li>
+        <LI>Next message: <A HREF="000668.html">[hatari-devel] something not working with breakpoints ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#666">[ date ]</a>
+              <a href="thread.html#666">[ thread ]</a>
+              <a href="subject.html#666">[ subject ]</a>
+              <a href="author.html#666">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 5 Sep 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Saturday 05 September 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;<i> I'm trying to take two on debug fusion cd 32, but I can't succeed to have
+</I>&gt;&gt;<i> a breakpoint triggered.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I run hatari --debug, then :
+</I>&gt;&gt;&gt;<i> b ( $44c).b = $fc
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> CPU condition breakpoint 1 with 1 condition(s) added.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> m $44c
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 00044C: 00 00 00 1f 80 00 00 00 00 08 00 00 04 ce 00 00
+</I>&gt;&gt;<i> .............&#206;..
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> c
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Returning to emulation...
+</I>&gt;&gt;<i> Inserted disk '/home/npomarede/Emul/ST/Games/Fuzion CD 032
+</I>&gt;&gt;<i> (1991)(Fuzion).st' to drive A:.
+</I>&gt;&gt;<i> Detected scancode offset = 8 (key: 'f2' with scancode $44)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -&gt; no breakpoint, I press alt + pause
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> CPU=$fcb740, VBL=358, FrameCycles=72, HBL=0, LineCycles=72, DSP=N/A
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> m $44c
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 00044C: fc 00 00 1f 80 00 00 01 00 08 00 00 04 ce 00 00
+</I>&gt;&gt;<i> &#252;............&#206;..
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> b
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 1 conditional CPU breakpoints:
+</I>&gt;&gt;<i>    1: ( $44c ) . b = $fc
+</I>&gt;<i>
+</I>&gt;<i> Works fine for me:
+</I>&gt;<i> --------------
+</I>&gt;&gt;<i> w $44c $fc
+</I>&gt;&gt;<i> c
+</I>&gt;<i> Returning to emulation...
+</I>&gt;<i> (0x44c).b = 0xfc
+</I>&gt;<i> 1. breakpoint '( $44c ) . b = $fc' conditions matched.
+</I>&gt;&gt;<i> m $44c
+</I>&gt;<i> 00044C: fc 00 00 3f 80 00 00 01 00 08 00 00 04 ce 00 00   ...?............
+</I>&gt;<i> -------------
+</I>&gt;<i>
+</I>&gt;<i> Could you try the attached patch and check that you see some output?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> The breakpoint seems ok, but it didn't triggered (I have same problem
+</I>&gt;&gt;<i> when I use a + addr, no breakpoint happens)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Any idea ? A change in some compilation flag/define ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+I get a breakpoint if I do like you with w $44c and continue with 'c'.
+
+In fact, I think I found the bug : when I add your printf, I get lots of 
+lines like :
+
+(0x44c).b = 0x0
+
+Then I insert the disk in drive A and press alt+r for reset, and at this 
+point, there's no more printf, so it seems resetting the ST is removing 
+the SPCFLAG_DEBUGGER flag :(
+
+If I press alt+pause and then immediatly 'c', I return to emulation and 
+the printf are back again -&gt; breakpoints are checked again.
+
+So, I think when Hatari is cold/warm rebooted, it should keep the state of 
+the SPCFLAG_DEBUGGER, else we have a list of active breakpoints that stay 
+persistent after the reset, but they're not checked anymore.
+
+Thomas, maybe this should go in 1.3.2 ? (I think it could puzzle some 
+users, but as it's limited to a few person that will use breakpoints, 
+maybe it's not worth to do another release)
+
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000665.html">[hatari-devel] something not working with breakpoints ?
+</A></li>
+	<LI>Next message: <A HREF="000668.html">[hatari-devel] something not working with breakpoints ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#666">[ date ]</a>
+              <a href="thread.html#666">[ thread ]</a>
+              <a href="subject.html#666">[ subject ]</a>
+              <a href="author.html#666">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

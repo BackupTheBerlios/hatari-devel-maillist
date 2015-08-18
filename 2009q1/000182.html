@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Joystick Button 2 patch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Joystick%20Button%202%20patch&In-Reply-To=%3C200902211613.55537.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000181.html">
+   <LINK REL="Next"  HREF="000189.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Joystick Button 2 patch</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Joystick%20Button%202%20patch&In-Reply-To=%3C200902211613.55537.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Joystick Button 2 patch">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Feb 21 15:13:55 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000181.html">[hatari-devel] Joystick Button 2 patch
+</A></li>
+        <LI>Next message: <A HREF="000189.html">[hatari-devel] Joystick Button 2 patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#182">[ date ]</a>
+              <a href="thread.html#182">[ thread ]</a>
+              <a href="subject.html#182">[ subject ]</a>
+              <a href="author.html#182">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 21 February 2009, Matthias Arndt wrote:
+&gt;<i> &gt; Then, I'd like to ask you to adapt the coding style of the files that
+</I>&gt;<i> &gt; you are changing. For example you've indented with spaces instead of
+</I>&gt;<i> &gt; tabs... that looks very ugly as soon as you use a tab with other than
+</I>&gt;<i> &gt; 8.
+</I>&gt;<i>
+</I>&gt;<i> Hum...everyewhere else you are forced to use spaces instead of TABs.
+</I>
+You must be talking about Python, Java or Windows coding... :-)
+
+For example Emacs has a specific indentation style for for TABs
+called &quot;linux&quot;.  An excerpt from the Linux kernel documenation:
+----
+  If you want to use the Linux kernel style for all C code, place
+  the following in your .emacs file:
+	(setq c-default-style &quot;linux&quot;)
+----
+
+
+&gt;<i> In the end, Eero is right to the point that the whole joystick subsystem
+</I>&gt;<i> could need a more flexible handling system. An idea might be to treat
+</I>&gt;<i> all possible controllers (keyboard emulation) as similar and one can map
+</I>&gt;<i> all possible input combinations to ST actions. We already have this to
+</I>&gt;<i> some extend but mapping firebuttons on USB pads/sticks is not taken care
+</I>&gt;<i> of yet.
+</I>
+I was mostly thinking of replacing the spacebar thingy and what you added
+to the configuration with a per joystick setting like: &quot;ButtonActions&quot;.
+
+It could be a 16-bit value per joystick button where one byte would have
+bits for the:
+- 4 joystick directions
+- fire
+- shift/alt/control key modifiers
+and another byte would have a keycode to trigger.
+
+Or maybe key modifiers should have byte of their own, then one could trigger
+also mouse button presses with any of the joysticks if needed.
+
+This way one could tie buttons to about any input action (e.g. one button to
+left+up+fire, one to up, one to space, one to control+alt+del etc.).
+
+The command line syntax could look like:
+*  --buttonactions&lt;port&gt; &lt;inputs&gt;
+   Trigger given input with buttons of joystick in given &lt;port&gt;.
+   See manual page for syntax on defining the inputs.
+
+And config file could look like this:
+-------
+[Joystick3]
+ButtonActions = ffff,00ab,0120
+--------
+(I think it would be clearest to give the values in hexadecimal.)
+
+
+&gt;&gt;<i> And for the STE/Jaguar joypad emulation, your joystick button remap code
+</I>&gt;&gt;<i> might be even wrong since the Jaguar joypads have more than one button!
+</I>&gt;&gt;<i> So I suggest to remove this options from all joysticks except joystick
+</I>&gt;&gt;<i> 1 again.
+</I>
+The config could have places for maximum number of buttons (6?).  Other 
+joystick types just cannot trigger the actions for all of the buttons code
+would supports.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000181.html">[hatari-devel] Joystick Button 2 patch
+</A></li>
+	<LI>Next message: <A HREF="000189.html">[hatari-devel] Joystick Button 2 patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#182">[ date ]</a>
+              <a href="thread.html#182">[ thread ]</a>
+              <a href="subject.html#182">[ subject ]</a>
+              <a href="author.html#182">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

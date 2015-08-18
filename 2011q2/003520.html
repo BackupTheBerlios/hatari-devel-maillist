@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Execution history debugger command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201106020215.20975.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003518.html">
+   <LINK REL="Next"  HREF="003521.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Execution history debugger command</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201106020215.20975.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Execution history debugger command">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Jun  2 01:15:20 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003518.html">[hatari-devel] Execution history debugger command
+</A></li>
+        <LI>Next message: <A HREF="003521.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3520">[ date ]</a>
+              <a href="thread.html#3520">[ thread ]</a>
+              <a href="subject.html#3520">[ subject ]</a>
+              <a href="author.html#3520">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On torstai 02 kes&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> &gt; As a principle, I don't run/use things at home or work for which I
+</I>&gt;<i> &gt; cannot get source code for (like Flashplayer), except in (open source)
+</I>&gt;<i> &gt; emulators.
+</I>
+And another thing is that I want some kind of signing for them (like there's
+for binary packages coming from distribution repositories)...  Otherwise
+in theory somebody could just have replaced them in the intervening years,
+if that www-site was cracked in the meanwhile, or some malicious
+intermediate http-proxy could be giving wrong binaries.
+
+
+&gt;<i> &gt; (Wine isn't an emulator.  It provides Win32 API and emulates some
+</I>&gt;<i> &gt; things, but the x86 code it runs directly.)
+</I>&gt;<i> 
+</I>&gt;<i> Well, then as a principle, I'm afraid I can't help you there. I'm not
+</I>&gt;<i> asking you to install some commercial program, we're just talking about
+</I>&gt;<i> a very good ST emulator that many people still consider superior to
+</I>&gt;<i> Hatari because of its nice UI.
+</I>&gt;<i> It won't install viruses, just test it for one hour and remove if after
+</I>&gt;<i> that if you prefer.
+</I>
+Before running it, does your version have same checksums as the version
+I just downloaded:
+$ md5sum Steem.exe steemupdate.exe unzipd32.dll 
+7d89731bd2bade75cf973ccd308ed50f  Steem.exe
+259d0340504a80fdcb2371367c3e704f  steemupdate.exe
+aaddb5561976f09c2d002d8ebc78d54d  unzipd32.dll
+?
+
+
+&gt;&gt;&gt;<i> Regarding the UI toolkit, I don't think QT would be such a bad choice ;
+</I>&gt;&gt;&gt;<i> at least it's really supported on Windows/Linux/OS X
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Supported significantly better than Gtk that's used by the current
+</I>&gt;&gt;<i> (remote) GUI?
+</I>&gt;<i>
+</I>&gt;<i> Clearly, yes. Trolltech/Nokia put a lot of work to ensure good 
+</I>&gt;<i> experience on all those 3 OSes.
+</I>
+Potentially true.  Has somebody on the list tested this both on OSX &amp;
+Windows? :-)
+
+
+[...]
+&gt;<i> Well, I think it's obviously easier to install QT than to install
+</I>&gt;<i> QT+python. Less dependencies for the user, he doesn't necessarily needs
+</I>&gt;<i> python,
+</I>
+With the all-in-one installer, there aren't any extra deps, everything
+needed should be installed in one go, from one place.
+
+
+[...]
+&gt;<i> &gt; If it's built into Hatari, I think it should be done with SDL[1].  This
+</I>&gt;<i> &gt; limits the &quot;UI&quot; to the size of the Hatari screen (SDL provides just one
+</I>&gt;<i> &gt; &quot;framebuffer&quot; as far as I know) which would complicate things because
+</I>&gt;<i> &gt; Hatari window size changes often on Falcon emulation.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; [1] While embedding Hatari SDL stuff to OSX UI is already working I
+</I>&gt;<i> &gt; think adding Qt to that mix would be a bad idea.
+</I>
+I mean, I have some doubts about it working.  Has somebody successfully
+mixed C++ Qt &amp; Objective-C Cocoa widgets in same program and succefully
+built &amp; run it?
+
+
+&gt;<i> Having SDL for the UI has the advantage of always being able to have all
+</I>&gt;<i> the settings on screen, even in fullscreen mode.
+</I>&gt;<i> 
+</I>&gt;<i> But doing a debugger limited to the size of the SDL screen is too
+</I>&gt;<i> limited. Today, it's already complicated to add some options to the UI
+</I>&gt;<i> by taking care of the SDL window's size. At best we would have the same
+</I>&gt;<i> number of characters as in Monst, which is really limited considering
+</I>&gt;<i> most monitors go beyond 1280x1024.
+</I>
+While the SDL debugger UI would be bound by the Hatari screen size, it
+doesn't mean that the output would have to be scaled like the Atari screen
+is.  Adding --desktop option support for ST mode too and running in
+fullscreen would guarantee largest possible resolution.
+
+ 
+&gt;<i> I think we could have the usual SDL UI for running Hatari and for
+</I>&gt;<i> example a QT UI with external/resizable/movable windows for the debugger.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; As a separate program the UI could be any size and the size could be
+</I>&gt;<i> &gt; fixed at startup.  Instead of separate windows, it could have e.g.
+</I>&gt;<i> &gt; separate screens which are switched using e.g. function keys.
+</I>&gt;<i> 
+</I>&gt;<i> I prefer having separate windows than many screens, because it implies
+</I>&gt;<i> you can have only one screen at a time, which is often a limitation if
+</I>&gt;<i> you want to have several hexa/asm dump visible at the same time to
+</I>&gt;<i> compare them.
+</I>
+If Hatari would be running at e.g. 1280x1024, you could fit several hex/asm
+dumps on same screen...  How many of them you typically and at maximum would
+want to compare at the same time ?
+
+(With single window approach it might be possible to offer the same
+UI both with SDL &amp; ncurses.  SDL can look nicer whereas ncurses on
+console would support copy/paste.)
+
+
+	 - Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003518.html">[hatari-devel] Execution history debugger command
+</A></li>
+	<LI>Next message: <A HREF="003521.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3520">[ date ]</a>
+              <a href="thread.html#3520">[ thread ]</a>
+              <a href="subject.html#3520">[ subject ]</a>
+              <a href="author.html#3520">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

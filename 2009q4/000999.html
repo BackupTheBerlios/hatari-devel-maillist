@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] GEMDOS emulation,	what are the legal ST memory areas to write to?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20emulation%2C%0A%09what%20are%20the%20legal%20ST%20memory%20areas%20to%20write%20to%3F&In-Reply-To=%3C200911250003.33536.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000994.html">
+   <LINK REL="Next"  HREF="000996.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] GEMDOS emulation,	what are the legal ST memory areas to write to?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20emulation%2C%0A%09what%20are%20the%20legal%20ST%20memory%20areas%20to%20write%20to%3F&In-Reply-To=%3C200911250003.33536.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] GEMDOS emulation,	what are the legal ST memory areas to write to?">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Nov 24 23:03:33 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000994.html">[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+</A></li>
+        <LI>Next message: <A HREF="000996.html">[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#999">[ date ]</a>
+              <a href="thread.html#999">[ thread ]</a>
+              <a href="subject.html#999">[ subject ]</a>
+              <a href="author.html#999">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 24 November 2009, Thomas Huth wrote:
+&gt;<i> On Tue, 24 Nov 2009 21:49:53 +0200
+</I>&gt;<i>
+</I>&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;<i> &gt; CPU breakpoint code uses this kind of check:
+</I>&gt;<i> &gt;             || (BreakAddr &gt; STRamEnd &amp;&amp; BreakAddr &lt; 0xe00000)
+</I>&gt;<i> &gt;             || BreakAddr &gt; 0xff0000)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Would something like in the attached patch be the right thing to
+</I>&gt;<i> &gt; check?
+</I>&gt;<i>
+</I>&gt;<i> Sounds fine for me. We just got to remember to extend this check when
+</I>&gt;<i> we've got TT-RAM one day, but I guess we'll quickly figure that out.
+</I>
+Sigh.  When I tested this, I noticed that the types in this function were
+all wrong.  According to ST internals, Size should be signed (and types for
+ANSI function return values were wrong too).  Same for Fwrite() which
+I need to fix also.
+
+I noticed this because HD Driver does a read like this and failed:
+...
+GEMDOS Fread(0, 28, 0xe8e8)
+GEMDOS Fread(0, 2147483647, 0xe904)
+GEMDOS Fread() end address 0x8000e903 not within ST-RAM (what about TT-RAM?)
+GEMDOS Fclose(0)
+GEMDOS call 0x30
+M68000 Bus Error at address $0.
+...
+
+-&gt; I needed to move the address validity check after this check:
+        /* Limit to size of file to prevent errors */
+        if (Size &gt; FileSize)
+                Size = FileSize;
+
+I finetuned that a bit.  Attached is a new patch.
+
+
+After reading gemdos.c code more, I found more things that are lacking
+proper validation:
+- GemDOS_SetDTA()
+- GemDOS_SNext()
+- GemDOS_SFirst()
+
+They also need a guard against the address being invalid as they set pDTA
+which is used in other functions as target for strcpy() etc operations.
+
+Especially ugly in several of them is this kind of code:
+-----------
+        /* Refresh pDTA pointer (from the current basepage) */
+        pDTA = (DTA *)STRAM_ADDR(...);
+
+        /* Was DTA ours or TOS? */
+        if (do_get_mem_long(pDTA-&gt;magic) != DTA_MAGIC_NUMBER)
+        {
+                /* redirect to TOS */
+                return false;
+        }
+or:
+        Drive = GemDOS_IsFileNameAHardDrive(pszFileName);
+        if (!ISHARDDRIVE(Drive))
+        {
+                /* redirect to TOS */
+                return false;
+        }
+-----------
+
+I.e. although it wasn't our DTA, leave it to point to the new address.
+Can that be right?
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: fread-rangecheck.diff
+Type: text/x-diff
+Size: 2069 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20091125/24341a4e/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20091125/24341a4e/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000994.html">[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+</A></li>
+	<LI>Next message: <A HREF="000996.html">[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#999">[ date ]</a>
+              <a href="thread.html#999">[ thread ]</a>
+              <a href="subject.html#999">[ subject ]</a>
+              <a href="author.html#999">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

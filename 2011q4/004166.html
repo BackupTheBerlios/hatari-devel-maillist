@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Union demo abort with new EmuTOS?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Union%20demo%20abort%20with%20new%20EmuTOS%3F&In-Reply-To=%3C20111110090418.3c6392a0%40think43%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004165.html">
+   <LINK REL="Next"  HREF="004169.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Union demo abort with new EmuTOS?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Union%20demo%20abort%20with%20new%20EmuTOS%3F&In-Reply-To=%3C20111110090418.3c6392a0%40think43%3E"
+       TITLE="[hatari-devel] Union demo abort with new EmuTOS?">th.huth at gmx.de
+       </A><BR>
+    <I>Thu Nov 10 09:04:18 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004165.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+        <LI>Next message: <A HREF="004169.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4166">[ date ]</a>
+              <a href="thread.html#4166">[ thread ]</a>
+              <a href="subject.html#4166">[ subject ]</a>
+              <a href="author.html#4166">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Thu, 10 Nov 2011 01:13:42 +0200
+schrieb Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">oak at helsinkinet.fi</A>&gt;:
+
+&gt;<i> When starting the Union demo from Persistance of Vision
+</I>&gt;<i> disk containing that:
+</I>&gt;<i> hatari --machine st -s 4 --fast-forward yes --tos etos512k.img
+</I>&gt;<i> pov-union.st
+</I>&gt;<i> 
+</I>&gt;<i> Pressing 1 to select the Union demo and then pressing space to
+</I>&gt;<i> proceed, Hatari aborts with this:
+</I>&gt;<i> hatari: /home/eero/work/hatari/src/vdi.c:769: VDI_Complete: Assertion 
+</I>&gt;<i> `VDI_isWorkstationOpen(VDIOpCode)' failed.
+</I>&gt;<i> Aborted
+</I>
+That's POV disk 112, isn't it? I just gave it a quick try but could not
+reproduce that abort here.
+
+&gt;<i> I definitely didn't have VDI mode on, or Bios intercept enabled
+</I>&gt;<i> so that e.g. emulated programs could enable VDI mode with Xbios().
+</I>
+Unless you enabled GEMDOS HD in your config file, the VDI code should
+never be called because the cartridge illegal opcodes are not installed
+in that case (see Cart_ResetImage()).
+
+&gt;<i> Maybe OpCode_VDI() should call VDI_Complete() only if VDI_OldPC is
+</I>&gt;<i> non-zero and zero the variable after completing the VDI call?
+</I>
+You should rather try to find out why OpCode_VDI() is called at all. I
+suggest that you look at Cart_ResetImage() first, maybe we got a bug
+in that logic there....
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004165.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+	<LI>Next message: <A HREF="004169.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4166">[ date ]</a>
+              <a href="thread.html#4166">[ thread ]</a>
+              <a href="subject.html#4166">[ subject ]</a>
+              <a href="author.html#4166">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

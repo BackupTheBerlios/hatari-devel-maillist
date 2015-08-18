@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] I'm lucky ;) K.prg  is working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3Calpine.LMD.2.00.1002251010430.5447%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001547.html">
+   <LINK REL="Next"  HREF="001549.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] I'm lucky ;) K.prg  is working</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3Calpine.LMD.2.00.1002251010430.5447%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] I'm lucky ;) K.prg  is working">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Feb 25 10:27:50 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001547.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+        <LI>Next message: <A HREF="001549.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1548">[ date ]</a>
+              <a href="thread.html#1548">[ thread ]</a>
+              <a href="subject.html#1548">[ subject ]</a>
+              <a href="author.html#1548">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 25 Feb 2010, Laurent Sallafranque wrote:
+
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> After some more tests, I arrive to this conclusion : K.prg is not related to 
+</I>&gt;<i> a cycles timing problem but to a do_specialties() problem.
+</I>&gt;<i>
+</I>&gt;<i> Just to help, I've added the different tests I realized with some comments.
+</I>&gt;<i>
+</I>&gt;<i> K.PRG uses the Graoumpf tracker code to play a GT2 module (on the screen 
+</I>&gt;<i> where we have the crash).
+</I>&gt;<i> Graoumpf Tracker uses a special level 6 interrupt from DSP to COMBEL in real 
+</I>&gt;<i> falcon, MFP in hatari.
+</I>
+Hello,
+
+I'm afraid that your tests 3 and 5 are wrong, at least the part where
+cycles != save_cycles because cycles is a local variable to m68k_run_1, so 
+it's normal that do_specialties doesn't change the value of cycles.
+But it will call M68000_AddCycles which is the correct counter to track 
+all cycles for this instruction.
+
+It's possible that my latest patch (using Cycles_GetCounter(CYCLES_COUNTER_CPU)
+breaks some programs that worked before, but it's really the correct way 
+to count how many cpu cycles where used since the latest instruction 
+(including time to process exceptions).
+
+If you move the dsp before do_specialties, you will never count the cycles 
+taken to procsss the exceptions, which means the DSP will not be run for 
+as long as it should to stay in synch with the 68020+ clock.
+
+You should adapt DSP_Run as we discussed by mail to consider the input 
+number of cycles is &quot;scaled&quot; to a 8 MHz cpu (when using nCpuFreqShift to 
+emulate 16 or 32 MHz) and to convert this in a number of cycle for a dsp 
+running at 32 MHz.
+
+Then, maybe there's a problem in do_specialties, but we would need some 
+traces to see where k.prg is stuck to have the context of the previous 
+instructions/exceptions, without very detailled traces at this level, it 
+will be hard to find the cause of the problem and to fix it.
+
+
+Nicolas
+
+
+&gt;<i>
+</I>&gt;<i> Extract of MFP code :
+</I>&gt;<i>
+</I>&gt;<i> /**
+</I>&gt;<i> * Check 'pending' registers to see if any MFP interrupts need servicing.
+</I>&gt;<i> * Request interrupt if necessary.
+</I>&gt;<i> * @return true if at least one MFP interrupt was allowed, else return false.
+</I>&gt;<i> */
+</I>&gt;<i> bool MFP_CheckPendingInterrupts(void)
+</I>&gt;<i> {
+</I>&gt;<i>   int    InterruptPossible;
+</I>&gt;<i>
+</I>&gt;<i>   /* Handle Falcon DSP interrupt. Note: This interrupt is not wired to
+</I>&gt;<i>    * the MFP on a real Falcon, we just handle it with the SPCFLAG_MFP
+</I>&gt;<i>    * to avoid taking care of another special flag in the CPU core! */
+</I>&gt;<i>   if (bDspHostInterruptPending &amp;&amp; regs.intmask &lt; 6)
+</I>&gt;<i>   {
+</I>&gt;<i>       M68000_Exception(IoMem_ReadByte(0xffa203)*4, M68000_EXC_SRC_INT_DSP);
+</I>&gt;<i>       bDspHostInterruptPending = false;
+</I>&gt;<i>       return true;
+</I>&gt;<i>   }
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Now the tests :
+</I>&gt;<i>
+</I>&gt;<i> TEST 1 :
+</I>&gt;<i>
+</I>&gt;<i> I've returned to version N-1 (before latest Nicolas' patch). K.PRG doesn't 
+</I>&gt;<i> run.
+</I>&gt;<i>
+</I>&gt;<i>   if (regs.spcflags) {
+</I>&gt;<i>       if (do_specialties ())
+</I>&gt;<i>           return;
+</I>&gt;<i>   }
+</I>&gt;<i>
+</I>&gt;<i>   /* Run DSP 56k code if necessary */
+</I>&gt;<i>   if (bDspEnabled) {
+</I>&gt;<i>       DSP_Run( cycles );
+</I>&gt;<i>   }
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> TEST 2 :
+</I>&gt;<i>
+</I>&gt;<i> If I invert the 2 blocks, it runs well :
+</I>&gt;<i>
+</I>&gt;<i>   /* Run DSP 56k code if necessary */
+</I>&gt;<i>   if (bDspEnabled) {
+</I>&gt;<i>       DSP_Run( cycles );
+</I>&gt;<i>   }
+</I>&gt;<i>
+</I>&gt;<i>   if (regs.spcflags) {
+</I>&gt;<i>       if (do_specialties ())
+</I>&gt;<i>           return;
+</I>&gt;<i>   }
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> TEST 3 :
+</I>&gt;<i>
+</I>&gt;<i> If I save cycles before calling (do_specialties(), K.PRG doesn't run.
+</I>&gt;<i>
+</I>&gt;<i>   save_cycles = cycles;
+</I>&gt;<i>
+</I>&gt;<i>   if (regs.spcflags) {
+</I>&gt;<i>       if (do_specialties ())
+</I>&gt;<i>           return;
+</I>&gt;<i>   }
+</I>&gt;<i>
+</I>&gt;<i>   /* Run DSP 56k code if necessary */
+</I>&gt;<i>   if (bDspEnabled) {
+</I>&gt;<i>       DSP_Run( save_cycles );
+</I>&gt;<i>   }
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> TEST 4 :
+</I>&gt;<i>
+</I>&gt;<i> I've added a printf before the return.
+</I>&gt;<i> Code never goes to the return, except when I quit Hatari.
+</I>&gt;<i> The problem is not here.
+</I>&gt;<i>
+</I>&gt;<i>    if (regs.spcflags) {
+</I>&gt;<i>       if (do_specialties ()) {
+</I>&gt;<i>           fprintf(stderr, &quot;RETURN \n&quot;);
+</I>&gt;<i>           return;
+</I>&gt;<i>       }
+</I>&gt;<i>   }
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> TEST 5 :
+</I>&gt;<i>
+</I>&gt;<i> I've added a test if cycles != save_cycles.
+</I>&gt;<i> It never happens.
+</I>&gt;<i>
+</I>&gt;<i> ===&gt; do_specialties() doesn't change the cycles value.
+</I>&gt;<i>
+</I>&gt;<i>   save_cycles = cycles;
+</I>&gt;<i>
+</I>&gt;<i>   if (regs.spcflags) {
+</I>&gt;<i>       if (do_specialties ())
+</I>&gt;<i>           return;
+</I>&gt;<i>   }
+</I>&gt;<i>
+</I>&gt;<i>   /* Run DSP 56k code if necessary */
+</I>&gt;<i>   if (bDspEnabled) {
+</I>&gt;<i>       if (save_cycles != cycles)
+</I>&gt;<i>           fprintf (stderr, &quot;Before : %d\t\t After : %d\n&quot;, cycCounter, 
+</I>&gt;<i> cycles);
+</I>&gt;<i>
+</I>&gt;<i>       DSP_Run( save_cycles );
+</I>&gt;<i>   }
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> TEST 6 : (to get some more infos)
+</I>&gt;<i>
+</I>&gt;<i> I've added a printf  regs.spcflags.
+</I>&gt;<i> I get Only these values :
+</I>&gt;<i>
+</I>&gt;<i> During falcon boot :
+</I>&gt;<i> 256
+</I>&gt;<i> 512
+</I>&gt;<i> 516
+</I>&gt;<i> 768
+</I>&gt;<i> 4
+</I>&gt;<i>
+</I>&gt;<i> On the falcon desktop:
+</I>&gt;<i> 768 -&gt; when I move the mouse, or after a certain time
+</I>&gt;<i>
+</I>&gt;<i> When I launch K.prg
+</I>&gt;<i> 256
+</I>&gt;<i> 512
+</I>&gt;<i> 768
+</I>&gt;<i> 4  ---&gt; only once
+</I>&gt;<i>
+</I>&gt;<i> When I quit hatari:
+</I>&gt;<i> 16 --&gt; only once.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hope this helps to understand the problem.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001547.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+	<LI>Next message: <A HREF="001549.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1548">[ date ]</a>
+              <a href="thread.html#1548">[ thread ]</a>
+              <a href="subject.html#1548">[ subject ]</a>
+              <a href="author.html#1548">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

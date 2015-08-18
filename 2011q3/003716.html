@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Froggies over the fence
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Froggies%20over%20the%20fence&In-Reply-To=%3C4E1E1C54.4040301%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003714.html">
+   <LINK REL="Next"  HREF="003777.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Froggies over the fence</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Froggies%20over%20the%20fence&In-Reply-To=%3C4E1E1C54.4040301%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Froggies over the fence">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Jul 14 00:29:40 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003714.html">[hatari-devel] Froggies over the fence
+</A></li>
+        <LI>Next message: <A HREF="003777.html">[hatari-devel] Froggies over the fence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3716">[ date ]</a>
+              <a href="thread.html#3716">[ thread ]</a>
+              <a href="subject.html#3716">[ subject ]</a>
+              <a href="author.html#3716">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 13/07/2011 19:28, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On keskiviikko 13 hein&#228;kuu 2011, Anders Eriksson wrote:
+</I>&gt;&gt;<i> I just want to report that it seems like Froggies over the fence demo has
+</I>&gt;&gt;<i> stopped working in the current version of Hatari.
+</I>&gt;<i>
+</I>&gt;<i> So it seems.
+</I>&gt;<i>
+</I>&gt;<i> I tested with 4MB STF + TOS 1.04.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> After selecting a screen in the main menu, the laoder doesn't appear.
+</I>&gt;<i>
+</I>&gt;<i> According to profiler, all time is spent on $0c0a1c. The code is:
+</I>&gt;<i> ---
+</I>&gt;&gt;<i> disasm 0x0c0a18
+</I>&gt;<i> $0c0a18 : 0811 0000                            btst      #0,(a1)
+</I>&gt;<i> 11169843/111698430 times/cycles:
+</I>&gt;<i> $0c0a1c : 67fa                                 beq.s     $c0a18
+</I>&gt;&gt;<i> e (a1)
+</I>&gt;<i>    value in RAM at ($fffffc00).l = $2000100
+</I>&gt;<i> ---
+</I>&gt;<i>
+</I>
+Hello
+
+since adding better timing emulation of the TX byte in rev 3315, a side 
+effect of this modification is that the menu never exited its custom 
+ikbd mode before the acia was reset.
+
+So the menu stayed in custom ikbd mode forevever, which locked the rest 
+of the code that expected the ikbd to be back to normal mode.
+
+I added a workaround to not cancel transits when ACIA is reset, but this 
+seems odd, according to the 6850's doc, a reset should initialize the 
+receive/transmit parts, so I understand it should imply that current 
+transfers are cancelled.
+
+This would need more tests on a real ST ; ACIA part should be rewritten 
+one day, the code related to TX/RX and cycles involved is getting too 
+complicated when compared to the 6850's doc and the special cases added 
+to handle custom ikbd programs also mess with the correct cycles timing.
+
+Anyway, as long as it works for now, I'm not too much in a hurry to 
+touch it :)  (this is not an ikbd problem, it's at the acia level)
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003714.html">[hatari-devel] Froggies over the fence
+</A></li>
+	<LI>Next message: <A HREF="003777.html">[hatari-devel] Froggies over the fence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3716">[ date ]</a>
+              <a href="thread.html#3716">[ thread ]</a>
+              <a href="subject.html#3716">[ subject ]</a>
+              <a href="author.html#3716">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

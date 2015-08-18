@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CD3375F.8040809%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002577.html">
+   <LINK REL="Next"  HREF="002589.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CD3375F.8040809%40free.fr%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Nov  4 23:44:47 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002577.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002589.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2588">[ date ]</a>
+              <a href="thread.html#2588">[ thread ]</a>
+              <a href="subject.html#2588">[ subject ]</a>
+              <a href="author.html#2588">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Some news :
+
+I've corrected many linking problems.
+There are still many to correct.
+
+I think I've included a bit more code than necessary.
+We'll clean that later, when hatari will run with WinUae core.
+
+
+But I've got a big problem with the main cpu core code :
+
+When linking, I get thousands of lines like these ones :
+
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x0): undefined reference to 
+`op_0000_0_ff'
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x10): undefined reference to 
+`op_0010_0_ff'
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x20): undefined reference to 
+`op_0018_0_ff'
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x30): undefined reference to 
+`op_0020_0_ff'
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x40): undefined reference to 
+`op_0028_0_ff'
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x50): undefined reference to 
+`op_0030_0_ff'
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x60): undefined reference to 
+`op_0038_0_ff'
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x70): undefined reference to 
+`op_0039_0_ff'
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x80): undefined reference to 
+`op_003c_0_ff'
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x90): undefined reference to 
+`op_0040_0_ff'
+...
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x52800): undefined reference to 
+`op_f370_21_ff'
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x52810): undefined reference to 
+`op_f378_21_ff'
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x52820): undefined reference to 
+`op_f379_21_ff'
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x52830): undefined reference to 
+`op_f37a_21_ff'
+cpu/libUaeCpu.a(cpustbl.c.o):(.rodata+0x52840): undefined reference to 
+`op_f37b_21_ff'
+
+
+I've included here the firsts and lasts lines.
+
+It seems that gencpu.c generates many opcodes in cputbl.h but doesn't 
+generate the corresponding code in cpuemu.c
+
+I've compared the size of the generated files.
+New winuae cpu core is bigger for cpustbl.c and cputbl.h, but is really 
+smaller for cpuemu.c (which shouldn't be from my point of view)
+
+New WinUAE core :
+987918  2010-11-04 22:06 cpuemu.c
+1121982 2010-11-04 22:06 cpustbl.c
+745982  2010-11-04 22:06 cputbl.h
+
+Old Uae_CPU core :
+2143826 2010-10-20 16:56 cpuemu.c
+237658  2010-10-20 16:56 cputbl.h
+453441  2010-10-20 16:56 cpustbl.c
+
+Have you got an idea of where the problem could be ?
+Have you encountered the same problem last time you included uae_core 
+into hatari ?
+
+Regards
+
+Laurent
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002577.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002589.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2588">[ date ]</a>
+              <a href="thread.html#2588">[ thread ]</a>
+              <a href="subject.html#2588">[ subject ]</a>
+              <a href="author.html#2588">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

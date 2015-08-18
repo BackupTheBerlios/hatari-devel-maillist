@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100125205036.483ca78f%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001348.html">
+   <LINK REL="Next"  HREF="001351.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100125205036.483ca78f%40phineus%3E"
+       TITLE="[hatari-devel] CMake build system">huth at users.berlios.de
+       </A><BR>
+    <I>Mon Jan 25 20:50:36 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001348.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001351.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1349">[ date ]</a>
+              <a href="thread.html#1349">[ thread ]</a>
+              <a href="subject.html#1349">[ subject ]</a>
+              <a href="author.html#1349">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 25 Jan 2010 21:06:20 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On Sunday 24 January 2010, Thomas Huth wrote:
+</I>&gt;<i> &gt; &gt; &gt; Phew, found that bug, too. Hatari can now be fully compiled with
+</I>&gt;<i> &gt; &gt; &gt; CMake + Xcode. If nobody objects, I'll remove the old Xcode
+</I>&gt;<i> &gt; &gt; &gt; project in a couple of days... (and maybe also the old
+</I>&gt;<i> &gt; &gt; &gt; configure.ac, since CMake does this job really better).
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; As it still works I'd just mark it as deprecated for the next
+</I>&gt;<i> &gt; &gt; release and remove it after that.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Why? configure.ac is already out-of-date (it's missing the portaudio
+</I>&gt;<i> &gt; test)
+</I>&gt;<i> 
+</I>&gt;<i> Portaudio is only needed for mic and usually that means that the
+</I>&gt;<i> machine needs to be fast enough to run DSP code at good speed
+</I>&gt;<i> (otherwise recordings most likely don't sound so good), so I think
+</I>&gt;<i> it's a minor wart.  Code builds fine without portaudio (and with
+</I>&gt;<i> portaudio when using default Makefile if one has installed the
+</I>&gt;<i> appropriate dev package).
+</I>
+Sorry, but this will only cause confusion. If we announce mic input
+support on the one hand, and then let the user run into this
+oh-by-the-way-the-autoconf-build-system-does-not-support-portaudio
+problem ... no, that's not a good idea.
+
+&gt;<i> CMake is getting popular, but it's not necessarily yet on all
+</I>&gt;<i> platforms on which Hatari is currently being build (BSD?  Wii?
+</I>&gt;<i> Maemo?  Amiga?).
+</I>
+It's certainly available on BSD and other unix-style operating systems.
+Concerning Wii, Amiga and the other exotic systems... I don't think that
+they were really using autoconf, but rather edited Makefile.cnf
+directly (and I didn't talk about removing the old Makefiles yet).
+
+&gt;<i> &gt; and the old Xcode project will be broken again as soon as we 
+</I>&gt;<i> &gt; introduce a new file or rename an existing file.
+</I>&gt;<i> 
+</I>&gt;<i> Was configure.ac used also for Xcode stuff?
+</I>
+No, see Hatari.xcodeproj/project.pbxproj - it's an ugly file created by
+the IDE, which also differs a little bit from Xcode version to the
+other, so it's also ugly to maintain this file in a versioning system.
+
+&gt;<i> &gt; I do not want to update this stuff anymore, do you?
+</I>&gt;<i> 
+</I>&gt;<i> Me neither, but I don't see any problem in keeping it still around for
+</I>&gt;<i> a while, while it works OK.
+</I>
+Do you know whether the configure.ac is still working at all? Have you
+tried recently? At least I haven't tried it since the last release...
+
+So for keeping this file, I suggest that somebody volunteers to take over
+the maintainance. If nobody volunteers, I'll remove it at the next weekend.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001348.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001351.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1349">[ date ]</a>
+              <a href="thread.html#1349">[ thread ]</a>
+              <a href="subject.html#1349">[ subject ]</a>
+              <a href="author.html#1349">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

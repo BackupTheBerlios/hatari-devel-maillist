@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Blitter interrupt CPU usage
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Blitter%20interrupt%20CPU%20usage&In-Reply-To=%3C4A6336FA.60503%40freemind-tobe.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000490.html">
+   <LINK REL="Next"  HREF="000493.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Blitter interrupt CPU usage</H1>
+    <B>Jean-Baptiste Berlioz</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Blitter%20interrupt%20CPU%20usage&In-Reply-To=%3C4A6336FA.60503%40freemind-tobe.com%3E"
+       TITLE="[hatari-devel] Blitter interrupt CPU usage">jb.berlioz at freemind-tobe.com
+       </A><BR>
+    <I>Sun Jul 19 17:08:42 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000490.html">[hatari-devel] Blitter interrupt CPU usage (was: Timer-D CPU	usage in latest Hatari)
+</A></li>
+        <LI>Next message: <A HREF="000493.html">[hatari-devel] Blitter interrupt CPU usage
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#492">[ date ]</a>
+              <a href="thread.html#492">[ thread ]</a>
+              <a href="subject.html#492">[ subject ]</a>
+              <a href="author.html#492">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE> &gt; Actually, although handling of Timer-D interrupts is a common issue,
+ &gt; it's not the only interrupt that can cause huge CPU usage.  I noticed
+ &gt; that in the STE mode, the Blitter emulation can cause Hatari to take
+ &gt; 76% of CPU on my  machine when running the &quot;Tribute to Rainbow TOS&quot;
+ &gt; demo from <A HREF="http://atari.freemind-tobe.com/.">http://atari.freemind-tobe.com/.</A>
+
+My nice little screen full of colors :) It use the blitter to change 2 
+palette registers every 16 pixels.
+
+I did test it when i rewrote the blitter emulation, as far i as 
+remember, the extra cpu load was caused by abusing the palette registers.
+
+&gt;&gt;<i> Also the timing of the Blitter emulation is not accurate according to
+</I>&gt;&gt;<i> the Paradox boys (and they are heavy Blitter abusers on their STE
+</I>&gt;&gt;<i> productions).
+</I>&gt;<i> 
+</I>&gt;<i> The Hatari compatibility.html page lists couple of demos where the blitter
+</I>&gt;<i> timing isn't yet accurate enough.
+</I>&gt;<i> 
+</I>
+Ah ok i must have a look at this :)
+
+It would be easier if blitter-addicts communicate their blitter settings 
+when they notice wrong timings. I'll try to get some informations on 
+#atariscne this evening.
+
+Tob&#233;
+
+PS: sorry for not being active on hatari development lately, you know, 
+girlfriend, work, a demo to finish :)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000490.html">[hatari-devel] Blitter interrupt CPU usage (was: Timer-D CPU	usage in latest Hatari)
+</A></li>
+	<LI>Next message: <A HREF="000493.html">[hatari-devel] Blitter interrupt CPU usage
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#492">[ date ]</a>
+              <a href="thread.html#492">[ thread ]</a>
+              <a href="subject.html#492">[ subject ]</a>
+              <a href="author.html#492">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

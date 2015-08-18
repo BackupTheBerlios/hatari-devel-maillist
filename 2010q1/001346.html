@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Wotanoid problem : final fix before commit ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wotanoid%20problem%20%3A%20final%20fix%20before%20commit%20%3F&In-Reply-To=%3C1326362859.20100124230828%40hol.gr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001345.html">
+   <LINK REL="Next"  HREF="001343.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Wotanoid problem : final fix before commit ?</H1>
+    <B>George Nakos</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wotanoid%20problem%20%3A%20final%20fix%20before%20commit%20%3F&In-Reply-To=%3C1326362859.20100124230828%40hol.gr%3E"
+       TITLE="[hatari-devel] Wotanoid problem : final fix before commit ?">ggn at hol.gr
+       </A><BR>
+    <I>Sun Jan 24 22:08:28 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001345.html">[hatari-devel] Wotanoid problem : final fix before commit ?
+</A></li>
+        <LI>Next message: <A HREF="001343.html">[hatari-devel] Wotanoid problem : final fix before commit ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1346">[ date ]</a>
+              <a href="thread.html#1346">[ thread ]</a>
+              <a href="subject.html#1346">[ subject ]</a>
+              <a href="author.html#1346">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Laurent,
+
+Sunday, January 24, 2010, 10:37:49 PM, you wrote:
+
+&gt;<i> Would you please give it a try ?
+</I>
+It works with $ffffffff :)
+
+&gt;<i> regards,
+</I>
+&gt;<i> Laurent
+</I>
+
+&gt;<i> George Nakos a &#233;crit :
+</I>&gt;&gt;<i> Hello Laurent,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Sunday, January 24, 2010, 10:10:38 PM, you wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i> Doesn't $FFFFFFFF is filtered in $7FFFFFFF somewhere in gemdos code 
+</I>&gt;&gt;&gt;<i> (with a AND or something like that ) ?
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I   tried  $ffffffff  on  my  ste  and it didn't read the file at all,
+</I>&gt;&gt;<i> whereas $7fffffff worked just fine. Didn't test on my falcon though...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i> Laurent
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i> Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> But in Wotanoid, the instruction is :
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> move.l      #-1,D0
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Regards
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Laurent
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> George Nakos a &#233;crit :
+</I>&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i> Hello Eero,
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Sunday, January 24, 2010, 8:46:27 PM, you wrote:
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> On Sunday 24 January 2010, George Nakos wrote:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> My  memory  is  a bit hazy, but I think this just tells gemdos to
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> read $ffffffff  bytes  from the file. Of course gemdos will read as
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> much as the  file  size  and then return an error in d0.l. It's the
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> lazy man's approach  to  doing  things  the  Right Way(tm) (i.e.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> getting the file length  -or knowing it beforehand- and calling
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> fread() with the proper amount of bytes)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> George, have you actually used this on actual HW so that it has worked?
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> With which TOS version(s) it works like that?
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Yup,  on  a STE with TOS 1.62UK and STFM with TOS 1.02UK. Also, that's
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> we use that in ULSv3 for a couple of years now and it works in all our
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> test equipment (MSTEs, Falcons, a TT, etc)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> George, regarding Thomas' comments and you saying that your memory
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> on this is a bit hazy...
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Could you verify that the value you've used is really &quot;$ffffffff&quot; and not
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> just the largest possible _signed_ value?
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i>  Just wrote a small program to test this, it works with $7fffffff, aka
+</I>&gt;&gt;&gt;&gt;&gt;<i>  biggest signed vaule.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>
+
+
+
+-- 
+Best regards,
+ George                            mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ggn at hol.gr</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001345.html">[hatari-devel] Wotanoid problem : final fix before commit ?
+</A></li>
+	<LI>Next message: <A HREF="001343.html">[hatari-devel] Wotanoid problem : final fix before commit ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1346">[ date ]</a>
+              <a href="thread.html#1346">[ thread ]</a>
+              <a href="subject.html#1346">[ subject ]</a>
+              <a href="author.html#1346">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

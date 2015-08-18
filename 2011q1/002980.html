@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Videl changes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Videl%20changes&In-Reply-To=%3C4D4D401E.2030706%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002982.html">
+   <LINK REL="Next"  HREF="002985.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Videl changes</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Videl%20changes&In-Reply-To=%3C4D4D401E.2030706%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Videl changes">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Feb  5 13:18:38 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002982.html">[hatari-devel] Videl changes
+</A></li>
+        <LI>Next message: <A HREF="002985.html">[hatari-devel] Videl changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2980">[ date ]</a>
+              <a href="thread.html#2980">[ thread ]</a>
+              <a href="subject.html#2980">[ subject ]</a>
+              <a href="author.html#2980">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 05/02/2011 13:11, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I'm not that sure to agree with all of this :
+</I>&gt;<i>
+</I>&gt;<i> Videl part :
+</I>&gt;<i>
+</I>&gt;<i> The Falcon is not an STe or ST : It has no Shifter but a Videl, and not
+</I>&gt;<i> a DMA with LM192 but a crossbar.
+</I>&gt;<i>
+</I>&gt;<i> There's no need to try to implement ST's Shifter specific code.
+</I>&gt;<i> In &quot;STe compatibility mode&quot;, the Falcon Behave like a STe, but it's only
+</I>&gt;<i> &quot;&quot;&quot;&quot;emulation&quot;&quot;&quot;&quot;.
+</I>&gt;<i>
+</I>&gt;<i> In Ste graphical mode, Videl is given some frequencies, width and height
+</I>&gt;<i> of pixels to generate a 320x200 screen.
+</I>&gt;<i> If you want to remove the borders in this mode, you have to play with
+</I>&gt;<i> Videl registers (Border begin, border end, ...)
+</I>&gt;<i>
+</I>&gt;<i> There's not special &quot;tricks&quot; used in STe to remove the borders.
+</I>&gt;<i> I'm nearly sure that none of the ST overscan demos would run natively on
+</I>&gt;<i> the Falcon.
+</I>&gt;<i>
+</I>&gt;<i> Another proves : nearly all Falcon specific demos and programs are
+</I>&gt;<i> running well by only copying the full screen (as done actually in videl.c).
+</I>&gt;<i>
+</I>&gt;<i> Falcon plasmas are all running well (from what I know), which mean they
+</I>&gt;<i> don't use video tricks but colors &quot;rotations&quot; or something else.
+</I>&gt;<i>
+</I>&gt;<i> Only a few programs are playing with the &quot;border color (color 0)&quot; like
+</I>&gt;<i> Reeking Rubber, or with the video pointer (like pinball dream).
+</I>&gt;<i>
+</I>&gt;<i> The best doc to understand the Videl is to read Mikro's videl
+</I>&gt;<i> documentation.
+</I>&gt;<i> Everything is explained.
+</I>&gt;<i>
+</I>&gt;<i> The main problem is the VBL/HBL timers that are dependant of all the
+</I>&gt;<i> Videl's hardware registers (horizontal and vertical registers) + BPP +
+</I>&gt;<i> frequency + monitor + ST palette or Falcon Palette.
+</I>&gt;<i>
+</I>&gt;<i> If we use the &quot;Shifter&quot; HBL, as it is done actually, we've got wrong
+</I>&gt;<i> timers in the Falcon emulation.
+</I>&gt;<i> The same for the VBL.
+</I>&gt;<i>
+</I>&gt;<i> (Another program that have a strange display I can't explain for now is
+</I>&gt;<i> UFO_WAR.
+</I>&gt;<i> It's using all the Videl registers to use Overscan mode.
+</I>&gt;<i>
+</I>&gt;<i> Last point : I haven't found a program that changes the palette except
+</I>&gt;<i> in the left border. If you know one...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> So, what I want to do is :
+</I>&gt;<i>
+</I>&gt;<i> - computing the correct border begin, border end and display them
+</I>&gt;<i> - compute HBL and VBL accordingly to Videl registers
+</I>&gt;<i> - take into account the video position registers (like in pinball dream).
+</I>&gt;<i> - take into account the half frame (videl works with half frame, not
+</I>&gt;<i> full frame).
+</I>&gt;<i>
+</I>&gt;<i> I think I've got at least one example of program for each of these
+</I>&gt;<i> problems.
+</I>&gt;<i> But if you encounter any graphical problem with a falcon programm,
+</I>&gt;<i> please tell me, I'll have a look and see if it's because of a known
+</I>&gt;<i> problem or a new one.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Falcon &quot;ST compatible mode&quot;.
+</I>&gt;<i>
+</I>&gt;<i> This mode is not magic ;)
+</I>&gt;<i> It only involve running the 68030 at 8 Mhz without cache, running the
+</I>&gt;<i> blitter at 8 Mhz and playing the sound in crossbar Ste compatibility mode.
+</I>&gt;<i>
+</I>&gt;<i> Everything is in register $ffff8007.b
+</I>&gt;<i>
+</I>&gt;<i> (It's a TODO in stMemory.c), but it should be somewhere else, as one can
+</I>&gt;<i> change from 16 to 8 Mhz when he wants in a program.
+</I>&gt;<i>
+</I>&gt;<i> This doesn't mean shifter or anything else.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Best regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+Well, I think we agree then ; my point is exactly &quot;let's forget how the
+shifter works in STF/STE mode, don't reuse the code of video.c in
+videl.c&quot; (we'll see later if some program still don't work in STE mode
+under falcon)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002982.html">[hatari-devel] Videl changes
+</A></li>
+	<LI>Next message: <A HREF="002985.html">[hatari-devel] Videl changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2980">[ date ]</a>
+              <a href="thread.html#2980">[ thread ]</a>
+              <a href="subject.html#2980">[ subject ]</a>
+              <a href="author.html#2980">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

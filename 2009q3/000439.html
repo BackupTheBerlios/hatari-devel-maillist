@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Latest Hatari HG version gets stuck sometimes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Latest%20Hatari%20HG%20version%20gets%20stuck%20sometimes&In-Reply-To=%3C200907040115.23930.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000438.html">
+   <LINK REL="Next"  HREF="000440.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Latest Hatari HG version gets stuck sometimes</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Latest%20Hatari%20HG%20version%20gets%20stuck%20sometimes&In-Reply-To=%3C200907040115.23930.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Latest Hatari HG version gets stuck sometimes">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Jul  4 00:15:23 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000438.html">[hatari-devel] screen conversion performance
+</A></li>
+        <LI>Next message: <A HREF="000440.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#439">[ date ]</a>
+              <a href="thread.html#439">[ thread ]</a>
+              <a href="subject.html#439">[ subject ]</a>
+              <a href="author.html#439">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Nicolas, could this be related to your recent video.c changes?
+
+For some reason Hatari seems now to sometimes get stuck looping here
+(doesn't update its screen, uses 100% CPU etc):
+-----------------
+1736            while ( ( PendingInterruptCount &lt;= 0 ) &amp;&amp; ( 
+PendingInterruptFunction ) &amp;&amp; ( ( regs.spcflags &amp; SPCFLAG_STOP ) == 0 ) )
+(gdb) next
+1738                CALL_VAR(PendingInterruptFunction);         /* call the 
+interrupt handler */
+(gdb) next
+1739                do_specialties_interrupt ( FALSE );         /* test if 
+there's an mfp/video interrupt and add non pending jitter */
+-----------------
+
+It will never exit this loop.
+
+
+At that point, PendingInterruptCount doesn't anymore change, it
+keeps at the same value:
+------------------
+(gdb) print PendingInterruptCount
+$3 = -76800
+(gdb) print ActiveInterrupt
+$4 = 3
+(gdb) print regs.spcflags
+$5 = 0
+------------------
+
+The value can change between different Hatari runs though:
+------------------
+(gdb) print PendingInterruptCount
+$1 = -115200
+(gdb) print PendingInterruptFunction
+$2 = (void (*)(void)) 0x8075690 &lt;Video_InterruptHandler_EndLine&gt;
+(gdb) cont
+Continuing.
+^C
+Program received signal SIGINT, Interrupt.
+[Switching to Thread 0xb79506b0 (LWP 4982)]
+0x08060d53 in Int_AcknowledgeInterrupt () at int.c:292
+292                             InterruptHandlers[i].Cycles -= 
+CycleSubtract;
+(gdb) print PendingInterruptCount
+$3 = -115200
+------------------
+
+Mostly the backtrace is this:
+------------------
+(gdb) bt
+#0  Int_AcknowledgeInterrupt () at int.c:266
+#1  0x080756bb in Video_InterruptHandler_EndLine () at video.c:1642
+#2  0x0807c3b9 in m68k_go (may_quit=1) at newcpu.c:1738
+#3  0x08063bc9 in M68000_Start () at m68000.c:224
+#4  0x08064709 in main (argc=6, argv=Cannot access memory at address 0x4
+) at main.c:712
+------------------
+
+This issue can be triggered by running Hatari with ST TOS and:
+	/hatari -m --fast-forward 1 --frameskips 0
+
+And after desktop comes up, toggling Pause on/off half a dozen times.
+If you don't get this, re-run Hatari and try again.
+
+(Pause/Unpause doesn't have or call anything related to interrupt handling.)
+
+&quot;make distclean &amp;&amp; make&quot; didn't help.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000438.html">[hatari-devel] screen conversion performance
+</A></li>
+	<LI>Next message: <A HREF="000440.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#439">[ date ]</a>
+              <a href="thread.html#439">[ thread ]</a>
+              <a href="subject.html#439">[ subject ]</a>
+              <a href="author.html#439">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

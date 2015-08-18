@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Bugs%20and%20GUI%20%28Was%3A%20Little%20AceTracker%20question%29&In-Reply-To=%3C4C42D7E8.1080801%40wanadoo.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002358.html">
+   <LINK REL="Next"  HREF="002360.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Bugs and GUI (Was: Little AceTracker question)</H1>
+    <B>Jerome Vernet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Bugs%20and%20GUI%20%28Was%3A%20Little%20AceTracker%20question%29&In-Reply-To=%3C4C42D7E8.1080801%40wanadoo.fr%3E"
+       TITLE="[hatari-devel] Bugs and GUI (Was: Little AceTracker question)">vernet.jerome at wanadoo.fr
+       </A><BR>
+    <I>Sun Jul 18 12:31:04 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002358.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+        <LI>Next message: <A HREF="002360.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2359">[ date ]</a>
+              <a href="thread.html#2359">[ thread ]</a>
+              <a href="subject.html#2359">[ subject ]</a>
+              <a href="author.html#2359">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>  Hi,
+
+Sorry I have only intermittent access to a (not so) public HotSpot (I 
+needed to hack it ;) ).
+
+Le 18/07/10 11:17, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Sunday 18 July 2010, Anders Eriksson wrote:
+</I>&gt;&gt;<i> Anyway here are snaps from all parts of Hatari 1.4.0 on OS X:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> <A HREF="http://ae.dhs.nu/pics/Hatari140_OSX/">http://ae.dhs.nu/pics/Hatari140_OSX/</A>
+</I>&gt;<i> Thanks, this is quite nice&amp;  interesting. :-)
+</I>&gt;<i>
+</I>&gt;<i> What's the &quot;Hatari help&quot; thingy and what &quot;Search&quot; does?
+</I>Help send the user to the Berlios Hatari pages. Search do nothing. There 
+may be a way to remove it, or need to build a real help for Hatari.
+&gt;<i> What the debugger looks like?  Does it have support for reading
+</I>&gt;<i> debugger commands from file (like the builtin debugger has)?
+</I>Nothing if you ran it from the finder. If launched from command line, it 
+show the same console debugger as for Hatari/linux. I tried to find a 
+way to embed a console in a MacOsX Windows. It should be possible.
+&gt;<i>
+</I>&gt;<i> Other comments:
+</I>&gt;<i>
+</I>&gt;<i> * The &quot;Enable debugger interface&quot; option most likely should be named
+</I>&gt;<i>    &quot;Invoke debugger on exceptions&quot;.
+</I>&gt;<i>
+</I>&gt;<i> * Who uses &quot;Enable Bios/Xbios interception&quot; and for what kind things?
+</I>&gt;<i>    Only thing I've myself used it so far is tracing Bios&amp;  Xbios, but OSX UI
+</I>&gt;<i>    doesn't support setting tracing options (like my Python/Gtk GUI does[1]).
+</I>Nobody. Are here because they are options in command line, but need to 
+be removed.
+&gt;<i> * &quot;New floppy image&quot; dialog misses support for creating HD (1.44MB)
+</I>&gt;<i>    and ED (2.88MB) disk images.
+</I>Ok, added to my todo list.
+&gt;<i> * The &quot;Falcon/TT aspect ratio&quot; setting is useless except for debugging
+</I>&gt;<i>    changes to Hatari's scaling code, so I think there's no point in offering
+</I>&gt;<i>    it to users.
+</I>Ok, removed
+&gt;<i>    What the &quot;Zoom ST-lowres.&quot; option is supposed to do?
+</I>&gt;<i>    (There's a --zoom command line option in Hatari, but it just selects one
+</I>&gt;<i>    of the pre-defined max. sizes which therefore overrides user's own max
+</I>&gt;<i>    settings + that code is not callable from GUI code)
+</I>It's an erro in the English Nib files. Used in the french version for 
+ST/STe border.
+&gt;<i> * Avi&amp;  sound recording options seem to be missing.  Btw. in case you
+</I>&gt;<i>    haven't noticed, Hatari will automatically save either in YM or WAV format
+</I>&gt;<i>    based on filename extension. :-)
+</I>Added.
+&gt;<i> * There should be different headings/names for IDE master&amp;  slave images.
+</I>&gt;<i>    GEMDOS write protection supports &quot;auto&quot; mode like floppies do, so plain
+</I>&gt;<i>    checkbox isn't enough.  Typo: &quot;Alow&quot; -&gt;  &quot;Allow&quot;.
+</I>?
+&gt;<i> * Joystick keys configuration is missing.
+</I>&gt;<i>    (I don't have them in Python/Gtk UI either)
+</I>May be hard to do ?
+&gt;<i> * MIDI input file setting is missing.
+</I>Added
+&gt;<i> * System settings screen looks pretty cramped.  IMHO it's  bad idea to stuff
+</I>&gt;<i>    memory settings there too + there's no support for saving&amp;  restoring
+</I>&gt;<i>    emulation memory state.
+</I>&gt;<i>
+</I>It's in the File menu (Memory Snapshot)
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002358.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+	<LI>Next message: <A HREF="002360.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2359">[ date ]</a>
+              <a href="thread.html#2359">[ thread ]</a>
+              <a href="subject.html#2359">[ subject ]</a>
+              <a href="author.html#2359">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

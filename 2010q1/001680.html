@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New Monitor/Window options dialog feedback?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20Monitor/Window%20options%20dialog%20feedback%3F&In-Reply-To=%3C201003152247.21565.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001669.html">
+   <LINK REL="Next"  HREF="001684.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New Monitor/Window options dialog feedback?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20Monitor/Window%20options%20dialog%20feedback%3F&In-Reply-To=%3C201003152247.21565.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] New Monitor/Window options dialog feedback?">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Mar 15 21:47:21 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001669.html">[hatari-devel] New Monitor/Window options dialog feedback?
+</A></li>
+        <LI>Next message: <A HREF="001684.html">[hatari-devel] New Monitor/Window options dialog feedback?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1680">[ date ]</a>
+              <a href="thread.html#1680">[ thread ]</a>
+              <a href="subject.html#1680">[ subject ]</a>
+              <a href="author.html#1680">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Any comments on these?
+
+On Saturday 13 March 2010, Eero Tamminen wrote:
+&gt;<i> &gt; 2) &quot;Window&quot; is also somewhat misleading. Hatari runs also on systems
+</I>&gt;<i> &gt; that do not have a window manager at all (e.g. Wii). I suggest to use
+</I>&gt;<i> &gt; &quot;Video&quot; or &quot;Host screen&quot; or something similar instead.
+</I>&gt;<i>
+</I>&gt;<i> Hm.  Should the &quot;Monitor&quot; dialog name to change too?
+</I>&gt;<i> Then it would be &quot;Atari screen&quot; and &quot;Host screen&quot;.
+</I>&gt;<i>
+</I>&gt;<i> &gt; 3) The &quot;Max doubled&quot; resolution setting feels very unintuitive. It took
+</I>&gt;<i> &gt; me a while till a figured out that I now have to increase the
+</I>&gt;<i> &gt; horizontal resolution to 832 instead of 800 to enable zooming of ST low
+</I>&gt;<i> &gt; resolution (with borders).
+</I>&gt;<i>
+</I>&gt;<i> That of course depends on one's border values (and therefore I like your
+</I>&gt;<i> suggestion later on).  The default max resolution values can be set so
+</I>&gt;<i> that screen gets doubled also with max borders.
+</I>
+I updated the default resolution.
+
+
+&gt;<i> &gt; The normal Hatari users likely do not now about the
+</I>&gt;<i> &gt; resolution of the emulated system, so I guess they will be _very_
+</I>&gt;<i> &gt; confused when they try to enable or disable the  zooming now. I suggest
+</I>&gt;<i> &gt; to add the &quot;Zoom low resolution&quot; checkbox again to avoid this confusing
+</I>&gt;<i> &gt; situation.
+</I>&gt;<i>
+</I>&gt;<i> How it should work UI wise?  Use of that conflicts with specifying the
+</I>&gt;<i> size of resolution.
+</I>
+It could only work to disable zooming.  And I'm not sure how useful that
+really is in addition to being able set max resolution...?
+
+
+&gt;<i> And if the resolution of whatever the &quot;Zoom low resolution&quot; uses, isn't
+</I>&gt;<i> suitable for the user, that's even worse.  One of the reasons for being
+</I>&gt;<i> able to specify the resolution is making sure that it will fit suitably
+</I>&gt;<i> to users' screen[1].  I.e. user can put there his screen size and Hatari
+</I>&gt;<i> adopts to that.
+</I>&gt;<i>
+</I>&gt;<i> [1] Therefore I made max resolution to have more priority than borders
+</I>&gt;<i> setting (and user gets a dialog when it doesn't fit).
+</I>&gt;<i>
+</I>&gt;<i> &gt; Another idea: Instead of using &quot;Max doubled&quot; resolution setting, you
+</I>&gt;<i> &gt; could rename it to &quot;Preferred resolution&quot;
+</I>&gt;<i>
+</I>&gt;<i> The problem with that name is that user isn't going to get his preferred
+</I>&gt;<i> resolution:
+</I>&gt;<i> - Falcon/TT resolution have only integer scaling factor
+</I>&gt;<i> - ST/STE resolution only doubles
+</I>&gt;<i>
+</I>&gt;<i> So I'd rather keep the &quot;Max&quot; in the name...
+</I>&gt;<i>
+</I>&gt;<i> &gt; or so, and then for ST/STE mode, you could use it to configure
+</I>&gt;<i> &gt; the border sizes in zoomed mode instead  (i.e. the nWindowBorderPixels
+</I>&gt;<i> &gt; and nFullScreenBorderPixels settings).
+</I>&gt;<i> &gt; What do you think?
+</I>&gt;<i>
+</I>&gt;<i> That sounds better, but if border size is taken from Max size, what
+</I>&gt;<i> should them be done about the border pixels settings?
+</I>&gt;<i>
+</I>&gt;<i> Remove them?  Use them as maximum border values?
+</I>
+To me it seems like both the normal window mode and fullscreen border values
+could be removed from configuration.  The screen.c border pixel values can
+be set automatically based on how much space there's left.
+
+I don't see why it should be necessary to be able to individually control
+how many pixels are shown on each side of the screen?  Anybody who wants
+to see all of borders, should just allow large enough resolution.
+
+
+&gt;<i> I guess, unlike now, doubling will then have more priority over having
+</I>&gt;<i> borders?  I mean, if user specifies 640x400 as max resoution, he would
+</I>&gt;<i> get doubled low res without borders...
+</I>
+Right?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001669.html">[hatari-devel] New Monitor/Window options dialog feedback?
+</A></li>
+	<LI>Next message: <A HREF="001684.html">[hatari-devel] New Monitor/Window options dialog feedback?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1680">[ date ]</a>
+              <a href="thread.html#1680">[ thread ]</a>
+              <a href="subject.html#1680">[ subject ]</a>
+              <a href="author.html#1680">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

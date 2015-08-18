@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] start and break question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20start%20and%20break%20question&In-Reply-To=%3C4DED4C83.4020508%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003550.html">
+   <LINK REL="Next"  HREF="003566.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] start and break question</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20start%20and%20break%20question&In-Reply-To=%3C4DED4C83.4020508%40free.fr%3E"
+       TITLE="[hatari-devel] start and break question">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Jun  6 23:54:11 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003550.html">[hatari-devel] start and break question
+</A></li>
+        <LI>Next message: <A HREF="003566.html">[hatari-devel] start and break question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3552">[ date ]</a>
+              <a href="thread.html#3552">[ thread ]</a>
+              <a href="subject.html#3552">[ subject ]</a>
+              <a href="author.html#3552">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks
+
+Regards
+
+Laurent
+
+
+Le 06/06/2011 23:45, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On maanantai 06 kes&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;&gt;<i> Currently the variable shows a value althought there's no program
+</I>&gt;&gt;&gt;<i> running, so I was wondering should it return zero until the text
+</I>&gt;&gt;&gt;<i> segment _size_ is also non-zero?
+</I>&gt;&gt;<i> I'm not sure if it's not possible to craft a &quot;wrong&quot; prg header with 0
+</I>&gt;&gt;<i> size and still have the tos to load it (I wonder if some packers are not
+</I>&gt;&gt;<i> changing those values, can't recall).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Maybe you can just check also that :
+</I>&gt;&gt;<i> 	BasepageTextSegment&gt;   0&amp;&amp;   pc = BasepageTextSegment&amp;&amp;  (pc).w = $601a
+</I>&gt;<i> Text segment doesn't contain the PRG file magic value ($601a), just code.
+</I>&gt;<i>
+</I>&gt;<i> But I guess it should in general be enough just to use:
+</I>&gt;<i> 	b pc = BasepageTextSegment
+</I>&gt;<i>
+</I>&gt;<i> Just remember to set it up only after desktop is up, otherwise it will
+</I>&gt;<i> break once of twice before the Desktop comes up (the basepage of TOS
+</I>&gt;<i> itself points to somewhere in ROM) and before TOS is fully initialized
+</I>&gt;<i> the code will complain that basepage is invalid (several &quot;million&quot;
+</I>&gt;<i> times with TOS4).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On maanantai 06 kes&#228;kuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i> This works well for me (I've tested with 2 progs).
+</I>&gt;&gt;<i> That's a nice option.
+</I>&gt;&gt;<i> Will you upload it ?
+</I>&gt;<i> Commited with docs update.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i> PS There's now also new &quot;info cookiejar&quot; command for checking cookiejar
+</I>&gt;<i> contents as it was only few additional lines.
+</I>&gt;<i>
+</I>&gt;<i> (Maybe some other things from Atari &quot;sysinfo&quot; program would be nice too.)
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003550.html">[hatari-devel] start and break question
+</A></li>
+	<LI>Next message: <A HREF="003566.html">[hatari-devel] start and break question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3552">[ date ]</a>
+              <a href="thread.html#3552">[ thread ]</a>
+              <a href="subject.html#3552">[ subject ]</a>
+              <a href="author.html#3552">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

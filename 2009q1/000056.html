@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Wii port
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wii%20port&In-Reply-To=%3C260bb65e0901181710g5b9b28ccjdd8b397a2b21903f%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000040.html">
+   <LINK REL="Next"  HREF="000064.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Wii port</H1>
+    <B>Yohanes Nugroho</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wii%20port&In-Reply-To=%3C260bb65e0901181710g5b9b28ccjdd8b397a2b21903f%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Wii port">yohanes at gmail.com
+       </A><BR>
+    <I>Mon Jan 19 02:10:08 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000040.html">[hatari-devel] Wii port
+</A></li>
+        <LI>Next message: <A HREF="000064.html">[hatari-devel] Wii port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#56">[ date ]</a>
+              <a href="thread.html#56">[ thread ]</a>
+              <a href="subject.html#56">[ subject ]</a>
+              <a href="author.html#56">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Thank you very much for your inputs. I will try to answer some of your
+questions, and do some of the things that you asked. I was also
+planning to port hatari to Symbian, but for now most Symbian hardware
+are too slow, but I also will give some arguments about somethings
+that might be useful if a Symbia port is going to be made.
+
+On Mon, Jan 19, 2009 at 12:16 AM, Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+&gt;<i> It needs some work first. Ifdefs should be avoided and if they're needed,
+</I>&gt;<i> they should prefereably be specific to some feature, not a platform.  For
+</I>&gt;<i> example:
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> * why things like these are &quot;GEKKO&quot;(?) specific:
+</I>&gt;<i> ---------------
+</I>&gt;<i> +ifneq ($(GEKKO), 1)
+</I>&gt;<i>        $(MAKE) -C tools/hmsa/
+</I>&gt;<i> +endif
+</I>&gt;<i> ---------------
+</I>&gt;<i> ?
+</I>
+two things:
+
+- currently the hmsa build system is a bit broken. It tries to use
+some objects generated from the cross compiler with objects generated
+from native compiler. It produces an error.
+
+- If I build for target, WII doesn't have a command console, and thus
+such tool is useless. The same will be true for Symbian and most
+mobile devices. Should there be a way to disable building hmsa
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> * There shouldn't be a need for separate config-*.h file.  Add a suitable
+</I>&gt;<i>  feature ifdef to the default one and define the needed thing in
+</I>&gt;<i>  the Makefile-wii.cnf compiler options.
+</I>
+Ok, i will do that.
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> * Why binary name cannot be &quot;Hatari&quot;:
+</I>&gt;<i> -------------------------------
+</I>&gt;<i> +ifneq ($(GEKKO), 1)
+</I>&gt;<i>  all: hatari
+</I>&gt;<i> +else
+</I>&gt;<i> +all: hatari.dol
+</I>&gt;<i> +endif
+</I>&gt;<i> -------------------------------
+</I>&gt;<i> ?
+</I>
+I think we should not assume the final output of the file should have
+a particular name. On Wii, the output of the compiler must be
+converted using a tool called elf2dol. In symbian, it must go through
+elf2e32 and then through makesis and signsis.
+
+&gt;<i>
+</I>&gt;<i> * It would be better that there were a define for path prefix in one place
+</I>&gt;<i>  e.g. in the paths.h and the code modified to take advantage of that.
+</I>&gt;<i> -------------------------------
+</I>&gt;<i> +#ifdef GEKKO
+</I>&gt;<i> +       strcpy(sConfigFileName, &quot;fat3:/apps/hatari/hatari.cfg&quot;);
+</I>&gt;<i> +#else
+</I>&gt;<i> (this may need a bit larger patch and cleaning up some Amiga stuff too)
+</I>
+
+ok, I was just following the AMIGA patch on that one.
+
+&gt;<i> * Ifdef should be about required feature (fileno()? select()?):
+</I>&gt;<i> ------------------------------
+</I>&gt;<i>  bool File_InputAvailable(FILE *fp)
+</I>&gt;<i>  {
+</I>&gt;<i> +
+</I>&gt;<i> +#ifndef GEKKO
+</I>&gt;<i> ------------------------------
+</I>
+ok, i understand this part
+
+&gt;<i>
+</I>&gt;<i> * These wii.* files don't seem to have anything Wii specific, so some more
+</I>&gt;<i>  generic define and file name should be used:
+</I>&gt;<i> ------------------------------
+</I>&gt;<i> -  unzip.c utils.c vdi.c video.c wavFormat.c xbios.c ymFormat.c zip.c
+</I>&gt;<i> +  unzip.c utils.c vdi.c video.c wavFormat.c xbios.c ymFormat.c zip.c \
+</I>&gt;<i> +       wii.c
+</I>&gt;<i> ...
+</I>&gt;<i> +#ifdef GEKKO
+</I>&gt;<i> +#include &quot;wii.h&quot;
+</I>&gt;<i> +#endif
+</I>&gt;<i> ------------------------------
+</I>
+yes, it is not wii specific, but for now, I don't know where to put it
+(there is no file that can be used as generic compatibility layer).
+
+
+&gt;<i> * Maybe you could instead of this put &quot;Wii&quot; into the version string
+</I>&gt;<i>  (in HG version normally &quot;devel&quot;, so it could be &quot;Wii-devel&quot;):
+</I>&gt;<i> -----------------------------
+</I>&gt;<i> +#ifndef GEKKO
+</I>&gt;<i>        { SGTEXT, 0, 0, 14,2, 12,1, &quot;============&quot; },
+</I>&gt;<i> +#else
+</I>&gt;<i> +       { SGTEXT, 0, 0, 1,2, 38,1, &quot;Wii Version (<A HREF="http://tinyhack.com">http://tinyhack.com</A>)&quot; },
+</I>&gt;<i> +#endif
+</I>&gt;<i> -----------------------------
+</I>&gt;<i> Thomas, maybe the Hatari name/version should be centralized in the about
+</I>&gt;<i> dialog?
+</I>
+that would be a great idea
+
+&gt;<i>
+</I>&gt;<i> * I don't think we want kludges around devel SDL version bugs,
+</I>&gt;<i>  your version of SDL should be fixed instead:
+</I>&gt;<i> -----------------------------
+</I>&gt;<i> +#ifdef GEKKO
+</I>&gt;<i> +                       //delay to make the message visible
+</I>&gt;<i> +                       SDL_Delay(2000);
+</I>&gt;<i> +#endif
+</I>
+The original code assumes that there will be a main window, and a
+console. The Wii only have a single console. The message displayed by
+error messages will be shown momentarily and returns to the main
+display. Symbian system will have the same problem (switch to console,
+and back to graphics mode).
+
+This is a temporary solution for displaying the error message. The
+correct way will be to make a dialog box that shows the error message,
+instead of putting the error to the console.
+
+&gt;<i> ...
+</I>&gt;<i> +#ifdef GEKKO
+</I>&gt;<i> +       SDL_ShowCursor(SDL_DISABLE);
+</I>&gt;<i> +#endif
+</I>&gt;<i> ...
+</I>&gt;<i> +#ifdef GEKKO
+</I>&gt;<i> +               SDL_Flip(pSdlGuiScrn);
+</I>&gt;<i> +#endif
+</I>&gt;<i> -----------------------------
+</I>
+I think this code is the correct way to display cursors on devices
+that doesn't have hardware cursor. At least that what testcursor.c do
+in SDL tests case (included in SDL distribution). Since I am not quite
+sure, i put the code inside ifdef GEKKO (it is actually fine if I
+remove the #ifdef GEKKO).
+
+&gt;<i> * Default settings are handled by providing a suitable configuration file
+</I>&gt;<i>  to Hatari etc/ directory, not by hard-coding them into source code:
+</I>&gt;<i> -----------------------------
+</I>&gt;<i> +#ifndef GEKKO
+</I>&gt;<i> +                        Main_RequestQuit();
+</I>&gt;<i> +#else
+</I>&gt;<i> +                        //in Wii, home button is mapped to quit
+</I>&gt;<i> +                       Dialog_DoProperty();           /* Show options dialog */
+</I>&gt;<i> +#endif
+</I>&gt;<i> ...
+</I>&gt;<i> +#ifdef GEKKO
+</I>&gt;<i> +               //currently SDL port for wii only handle this bit depth correctly
+</I>&gt;<i> +               BitCount = 32;
+</I>&gt;<i> +#endif
+</I>&gt;<i> -----------------------------
+</I>
+Ok, I can move the settings.
+
+
+-- 
+Regards
+Yohanes
+<A HREF="http://tinyhack.com/freewarelist/s603rd/">http://tinyhack.com/freewarelist/s603rd/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000040.html">[hatari-devel] Wii port
+</A></li>
+	<LI>Next message: <A HREF="000064.html">[hatari-devel] Wii port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#56">[ date ]</a>
+              <a href="thread.html#56">[ thread ]</a>
+              <a href="subject.html#56">[ subject ]</a>
+              <a href="author.html#56">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

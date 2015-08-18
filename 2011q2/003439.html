@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Filters utilized more effectively
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Filters%20utilized%20more%20effectively&In-Reply-To=%3C4DCFAE3B.30909%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003394.html">
+   <LINK REL="Next"  HREF="003373.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Filters utilized more effectively</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Filters%20utilized%20more%20effectively&In-Reply-To=%3C4DCFAE3B.30909%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Filters utilized more effectively">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun May 15 12:43:07 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003394.html">[hatari-devel] Filters utilized more effectively
+</A></li>
+        <LI>Next message: <A HREF="003373.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3439">[ date ]</a>
+              <a href="thread.html#3439">[ thread ]</a>
+              <a href="subject.html#3439">[ subject ]</a>
+              <a href="author.html#3439">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 01/05/2011 23:29, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 29/04/2011 07:49, David Savinkoff a &#233;crit :
+</I>&gt;&gt;<i> Hi All,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Here is a new patch for LMC1992 filtering:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The IIR filters for bass/treble now control the Volume.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The anti-alias filters are the best that I can do for
+</I>&gt;&gt;<i> the current DMA sound re-sampling method.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Anti-alias filtering is not performed at the 50066 Hz
+</I>&gt;&gt;<i> sampling rate; better sound and performance.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The result is better code and better sound without
+</I>&gt;&gt;<i> added compromise, complexity, or computation.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Sincerely,
+</I>&gt;&gt;<i> David Savinkoff
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hello
+</I>&gt;<i>
+</I>&gt;<i> thanks for your patch ; I'm in the middle of fixing a few things in
+</I>&gt;<i> dmasnd.c, so I can't commit your patch immediatly but I will do it asap
+</I>&gt;<i> in the next few days once I fix the current bug I'm working on.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>
+Hello
+
+I just applied your patch to the main source tree. Thanks again for it.
+
+Just a small question regarding :
+
++	/* Anti-alias filter is not required when nAudioFrequency == 50066 Hz */
++	if (nAudioFrequency&gt;50000 &amp;&amp; nAudioFrequency&lt;50100)
+
+Why don't you just use 	&quot;if (nAudioFrequency==50066)&quot; ?
+
+
+Nicolas
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003394.html">[hatari-devel] Filters utilized more effectively
+</A></li>
+	<LI>Next message: <A HREF="003373.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3439">[ date ]</a>
+              <a href="thread.html#3439">[ thread ]</a>
+              <a href="subject.html#3439">[ subject ]</a>
+              <a href="author.html#3439">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

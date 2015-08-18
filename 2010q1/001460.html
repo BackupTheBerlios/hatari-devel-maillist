@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] register locking in debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20register%20locking%20in%20debugger&In-Reply-To=%3C201002130006.57864.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001459.html">
+   <LINK REL="Next"  HREF="001461.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] register locking in debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20register%20locking%20in%20debugger&In-Reply-To=%3C201002130006.57864.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] register locking in debugger">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Feb 12 23:06:57 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001459.html">[hatari-devel] register locking in debugger
+</A></li>
+        <LI>Next message: <A HREF="001461.html">[hatari-devel] Whip and AFM
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1460">[ date ]</a>
+              <a href="thread.html#1460">[ thread ]</a>
+              <a href="subject.html#1460">[ subject ]</a>
+              <a href="author.html#1460">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 12 February 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> Regarding monst, it's possible to lock a register and choose hex dump or
+</I>&gt;<i> disasm dump ; this is possible for any register, the fact that it's a
+</I>&gt;<i> data or address reg shouldn't limit what kind of dump (as in highly
+</I>&gt;<i> optimized code, where all registers are used, it's often possible to
+</I>&gt;<i> store address in data reg for example).
+</I>
+The commited syntax is:
+	lock regaddr &lt;disasm|memdump&gt; &lt;register&gt;
+
+As only Rx registers are valid for DSP, one doesn't need to specify
+otherwise whether it's for CPU or DSP.
+
+
+&gt;<i> I don't know what should be shown ; problem is that if you lock several
+</I>&gt;<i> registers it will become quite a mess on screen.  My opinion is that some
+</I>&gt;<i> extra windows could be used to display locked registers or locked i/o
+</I>&gt;<i> spaces (like showing video regs, blitter regs, ...), with only a single
+</I>&gt;<i> text terminal as output, I'm afraid more advanced debugging functions
+</I>&gt;<i> (those that can display a lot of data) will prove to be hard to use in an
+</I>&gt;<i> efficient way.
+</I>
+What I've implemented supports locking only single thing at the time
+(to be shown when entering the debugger).
+
+If you want to know what multiple registers point at, I think it's better
+to improve the original &quot;registers&quot; command so that besides register
+values, it shows also few bytes from where they point at.
+
+Maybe like this:
+-------
+D0: 00000000: 602e 0404 00e0 0030 00e0 BT .B #$0000002e == 00000030 (TRUE)
+...
+A7: 0000886c: 00e0 0766 0000 0000 0000 ILLEGAL.L
+
+USP=00000000 ISP=0000886c MSP=00000000 VBR=00000000
+T=00 S=1 M=0 X=0 N=0 Z=0 V=0 C=0 IMASK=3
+FP0: 0 FP1: 0 FP2: 0 FP3: 0
+FP4: 0 FP5: 0 FP6: 0 FP7: 0
+N=0 Z=0 I=0 NAN=0
+prefetch 31fc008f
+00e01cb0: b290 62fc 31fc 008f 8606 CMP.L (A0),D1
+next PC: 00e01cb2
+-------
+
+
+&gt;<i> Perhaps something that should be taken care of in the python ui for
+</I>&gt;<i> instance.
+</I>
+Transferring the information between that and Hatari is a bit problematic,
+there's a strange delay between sending commands to Hatari and getting
+the results.
+
+I was thinking that I could try writing the debugger GUI at some point in
+a compiled language to see whether than delay disappears, maybe using
+C++ / Qt.  But that probably won't happen this year (I've never used Qt,
+this might be an OK project to try it :-)).
+
+Another possibility is that the issue is at kernel level, maybe it does some
+buffering aimed at higher throughput instead of low latency...
+
+
+&gt;<i> &gt; And should this kind of setting be saved to memory state file or
+</I>&gt;<i> &gt; configuration file?
+</I>&gt;<i>
+</I>&gt;<i> Maybe this should be saved to a specific hatari_debug.cfg file instead of
+</I>&gt;<i> using the memory state ; I think it's better if the memory state file
+</I>&gt;<i> changes only (or mostly) when the emulated machine changes, not when the
+</I>&gt;<i> ui/debugging interface change.
+</I>
+Hm. I probably should add a separate config file section for the debugger.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001459.html">[hatari-devel] register locking in debugger
+</A></li>
+	<LI>Next message: <A HREF="001461.html">[hatari-devel] Whip and AFM
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1460">[ date ]</a>
+              <a href="thread.html#1460">[ thread ]</a>
+              <a href="subject.html#1460">[ subject ]</a>
+              <a href="author.html#1460">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

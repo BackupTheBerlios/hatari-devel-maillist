@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] source level debugging with the Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20source%20level%20debugging%20with%20the%20Hatari%20debugger&In-Reply-To=%3Calpine.LMD.2.00.0912241432570.16082%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001138.html">
+   <LINK REL="Next"  HREF="001140.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] source level debugging with the Hatari debugger</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20source%20level%20debugging%20with%20the%20Hatari%20debugger&In-Reply-To=%3Calpine.LMD.2.00.0912241432570.16082%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] source level debugging with the Hatari debugger">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Dec 24 14:46:02 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001138.html">[hatari-devel] source level debugging with the Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="001140.html">[hatari-devel] Hatari debugger improvements
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1139">[ date ]</a>
+              <a href="thread.html#1139">[ thread ]</a>
+              <a href="subject.html#1139">[ subject ]</a>
+              <a href="author.html#1139">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 23 Dec 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I CCed this to Hatari-devel instead of MiNT list because the subject
+</I>&gt;<i> changed.
+</I>&gt;<i>
+</I>&gt;<i> On Sunday 20 December 2009, Vincent Rivi&#232;re wrote:
+</I>&gt;&gt;&gt;<i> It doesn't support showing symbols for the (CPU) code, but if somebody
+</I>&gt;&gt;&gt;<i> provides documentation on the Atari binary debug data format, some kind
+</I>&gt;&gt;&gt;<i> of a support for it might be considered.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The debug info is never loaded into memory (except by debuggers). For
+</I>&gt;&gt;<i> providing symbols in the Hatari debugger, you would have to find the
+</I>&gt;&gt;<i> executable path from somewhere, and load the debug info from it.
+</I>&gt;&gt;<i> Everything is possible in an emulator, but it could be tricky.
+</I>&gt;<i>
+</I>&gt;<i> Hatari already hooks pexec() call when emulating &quot;directory as a HDD&quot; at
+</I>&gt;<i> GEMDOS level.  I guess it would need another hook (called regardless of
+</I>&gt;<i> GEMDOS HDD emulation) when the pexec() has loaded the binary and relocated
+</I>&gt;<i> it.
+</I>&gt;<i>
+</I>&gt;<i> If program source level debugging is enabled, emulator could then load
+</I>&gt;<i> the program debugging symbols, add them to the debugger command line
+</I>&gt;<i> TAB completion list and breakpoint to the internal debugger so that one
+</I>&gt;<i> can set program specific breakpoints.
+</I>&gt;<i>
+</I>&gt;<i> Alternatively the internal Hatari debugger could do also the program loading
+</I>&gt;<i> (like pexec() does it) when explicitly requested by the user.  I don't know
+</I>&gt;<i> which approach would be more work.
+</I>&gt;<i>
+</I>&gt;<i> Once the program symbols and their (relocated) addresses are known,
+</I>&gt;<i> CPU disassembly can show the address label names too.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>
+Hello,
+
+this may be feasible, but is it really useful ?
+
+Apart from the complexity to load/parse the different debug symbols 
+formats (for example, if I recall correctly devpac could produce 3 
+different format), what will it be used for ?
+
+In any case, it won't be possible to use this with existing games/demos, 
+so only case would be for programs compiled with debug symbols (I don't 
+think there're a lot of them) or for homemade asm programs that users 
+would compile from their own sources.
+
+But in that case, I think that adebog or monst are way more powerful than 
+Hatari debugger, with a built in window system, register locking, search 
+in disasm mode, ...
+
+I really used a lot of this some years ago and I don't see how adding 
+symbol to hatari debugger would make it much useful than debugging 
+directly under the emulated atari, there so much power in monst that 
+making Hatari at the same level would be a huge task.
+
+Well, that's just my point, but I don't think this is worth the effort and 
+the added complexity/bloat that may result in the code (at least it would 
+be limited to debugui.c, so not much side effect on other parts)
+
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001138.html">[hatari-devel] source level debugging with the Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="001140.html">[hatari-devel] Hatari debugger improvements
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1139">[ date ]</a>
+              <a href="thread.html#1139">[ thread ]</a>
+              <a href="subject.html#1139">[ subject ]</a>
+              <a href="author.html#1139">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling Hatari code with Valgrind (was: Major	changes in DSP code)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind%20%28was%3A%20Major%0A%09changes%20in%20DSP%20code%29&In-Reply-To=%3C201012300127.26501.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002722.html">
+   <LINK REL="Next"  HREF="002725.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling Hatari code with Valgrind (was: Major	changes in DSP code)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind%20%28was%3A%20Major%0A%09changes%20in%20DSP%20code%29&In-Reply-To=%3C201012300127.26501.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Profiling Hatari code with Valgrind (was: Major	changes in DSP code)">oak at helsinkinet.fi
+       </A><BR>
+    <I>Thu Dec 30 00:27:26 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002722.html">[hatari-devel] Major changes in DSP code
+</A></li>
+        <LI>Next message: <A HREF="002725.html">[hatari-devel] Profiling Hatari code with Valgrind (was: Major	changes in DSP code)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2724">[ date ]</a>
+              <a href="thread.html#2724">[ thread ]</a>
+              <a href="subject.html#2724">[ subject ]</a>
+              <a href="author.html#2724">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 29 joulukuu 2010, Laurent Sallafranque wrote:
+&gt;<i> Thanks Eero to remind me valgrind, I forgot it.
+</I>&gt;<i> Can you also remind me the commands to use to analyse % of time each
+</I>&gt;<i> instruction takes ?
+</I>
+First make sure you've configured CMake to produce a Hatari binary that is
+compiled so that it's both optimized and contains debug symbols (use
+RELWITHDEBINFO build type and change it also to use -O3 as RELEASE
+build type).
+
+Then just prefix the hatari command with &quot;valgrind --tool=callgrind&quot;.
+
+
+If you're interested just about the DSP side, it's better if you minimize
+the effect of display updates and sound &amp; mic threading with options like:
+	-z 1 --frameskips 8 --sound off --mic off
+
+And if you don't want the profile to contain TOS bootup &amp; starting the DSP
+program, use a Hatari memory snapshot for profiling.
+
+
+After you've profiled long enough, use:
+	callgrind_control --dump
+
+And close Hatari (closing Hatari seems to do something funny in SDL which
+make callgrind not to work properly at its exit so you need to use
+&quot;callgrind_control --dump&quot; instead).
+
+Then give the last/largest callgrind.out.* file to kcachgrind.
+
+
+In the Kcachegrind configuration dialog &quot;Annotations&quot; tab you can add
+Hatari source directories so that Kcachegrind can correctly show the sources
+annotated with profiling results.  This works only if you have debug symbols
+in the Hatari binary.
+
+From the Kcachegrind output, besides callgraphs etc, it makes sense to check
+/ sort by how much functions are:
+- called
+- use CPU themselves
+- use CPU cumulatively (with functions called from them)
+
+I.e. whether one could look into optimizing number of calls, the function
+itself, or what other functions it calls.
+
+
+Attached is a screenshot of Kcachegrind output on 30l_coke.prg.
+With some other program the hotspots could be elsewhere, it's always
+good idea to profile several programs.
+
+
+	- Eero
+
+PS. Would the attached patch to dsp.c make sense?  The asm code GCC
+generates for it according to &quot;objdump -d&quot; changes &amp; and is couple of
+lines shorter (doesn't use a register for &quot;i&quot; value), but I have no idea
+whether it's any faster in practice.  Anyway it would be too small to
+be visible e.g. in &quot;top&quot;.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 30l_coke.png
+Type: image/png
+Size: 80795 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20101230/3f19830b/attachment.png">https://lists.berlios.de/pipermail/hatari-devel/attachments/20101230/3f19830b/attachment.png</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: dsp.diff
+Type: text/x-patch
+Size: 967 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20101230/3f19830b/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20101230/3f19830b/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002722.html">[hatari-devel] Major changes in DSP code
+</A></li>
+	<LI>Next message: <A HREF="002725.html">[hatari-devel] Profiling Hatari code with Valgrind (was: Major	changes in DSP code)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2724">[ date ]</a>
+              <a href="thread.html#2724">[ thread ]</a>
+              <a href="subject.html#2724">[ subject ]</a>
+              <a href="author.html#2724">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

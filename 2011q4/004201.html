@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Stereo DC filtering which accounts for DMA sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Stereo%20DC%20filtering%20which%20accounts%20for%20DMA%20sound&In-Reply-To=%3C4EC95264.9060609%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004146.html">
+   <LINK REL="Next"  HREF="004147.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Stereo DC filtering which accounts for DMA sound</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Stereo%20DC%20filtering%20which%20accounts%20for%20DMA%20sound&In-Reply-To=%3C4EC95264.9060609%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Stereo DC filtering which accounts for DMA sound">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Nov 20 20:17:56 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004146.html">[hatari-devel] Stereo DC filtering which accounts for DMA sound
+</A></li>
+        <LI>Next message: <A HREF="004147.html">[hatari-devel] Better disk change detection
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4201">[ date ]</a>
+              <a href="thread.html#4201">[ thread ]</a>
+              <a href="subject.html#4201">[ subject ]</a>
+              <a href="author.html#4201">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 06/11/2011 04:57, David Savinkoff wrote:
+&gt;<i> Hi Nicolas,
+</I>&gt;<i>
+</I>&gt;<i> &quot;The Seven Gates of Jambala&quot; on the Madness Demo has a noticeable
+</I>&gt;<i> difference in ambience. The stereo bass jumps and bounces from
+</I>&gt;<i> ear to ear because of shifting phase with the current DC filter.
+</I>&gt;<i> The stereo bass sounds refined, tight and proper with the new
+</I>&gt;<i> IIR filter (which performs identically to a first order Analog
+</I>&gt;<i> filter - eg. resistor + capacitor in the ST).
+</I>&gt;<i> Use headphones to examine the ambience closely.
+</I>&gt;<i>
+</I>
+Hello
+
+I got time to test your patch, but I didn't hear such difference as you 
+said with &quot;7 gates of jambala&quot; in STE mode or SH11INV in STF mode.
+
+At least, that's good news, because there's no quality regression, but I 
+don't hear differences using headphone.
+
+For instance, I don't understand what you mean by &quot;jump from ear to ear&quot; 
+? Do you mean sound goes from left channel to right channel ?
+
+If so, that would be a bug in the previous dmaSnd.c file, but not an 
+effect of the filter. There're 2 functions DmaSnd_LowPassFilterLeft and 
+DmaSnd_LowPassFilterRight, and as Madness uses stereo output, I don't 
+see how sound could go from one ear to the other ?
+
+Anyway, if this patch is &quot;mathematically&quot; more correct than the previous 
+one, I can apply it, it's just that I don't hear the differences (maybe 
+others do ? You can try by getting hatari 1.5 sources and applying the 3 
+patches sent on 4/11/2011 by David).
+
+By the way, you say this emulates an RC filter ; but what are the values 
+for R and C in the case of your patch ?
+
+Thanks
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004146.html">[hatari-devel] Stereo DC filtering which accounts for DMA sound
+</A></li>
+	<LI>Next message: <A HREF="004147.html">[hatari-devel] Better disk change detection
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4201">[ date ]</a>
+              <a href="thread.html#4201">[ thread ]</a>
+              <a href="subject.html#4201">[ subject ]</a>
+              <a href="author.html#4201">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

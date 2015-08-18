@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] switching from falcon to ste doesn't change cpu
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20switching%20from%20falcon%20to%20ste%20doesn%27t%20change%20cpu&In-Reply-To=%3C201005102101.28393.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002029.html">
+   <LINK REL="Next"  HREF="002012.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] switching from falcon to ste doesn't change cpu</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20switching%20from%20falcon%20to%20ste%20doesn%27t%20change%20cpu&In-Reply-To=%3C201005102101.28393.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] switching from falcon to ste doesn't change cpu">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon May 10 20:01:28 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002029.html">[hatari-devel] switching from falcon to ste doesn't change cpu
+</A></li>
+        <LI>Next message: <A HREF="002012.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2036">[ date ]</a>
+              <a href="thread.html#2036">[ thread ]</a>
+              <a href="subject.html#2036">[ subject ]</a>
+              <a href="author.html#2036">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 10 May 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> I agree that if the user choose a TOS version and we can identify this
+</I>&gt;<i> TOS and its cpu/blitter/video/whatever requirement, then it would be a
+</I>&gt;<i> good idea to force all the parameters (not only cpu type).
+</I>&gt;<i>
+</I>&gt;<i> But do we have such a list ? Some tos versions can be compatible with
+</I>&gt;<i> several cpu/speed, in that case we should have a default setting.
+</I>
+I think all TOSes work with all CPU speeds Hatari supports.  However,
+programs like overscan demos, are picky about CPU speed and don't
+work with &quot;random&quot; CPU speeds.
+
+If user doesn't have the statusbar enabled, Hatari claiming to switch to
+Falcon mode, but leaving CPU speed e.g. at 8Mhz could be quite confusing
+(&quot;I didn't remember this demo being this slow&quot; etc).
+
+
+&gt;<i> Also, this should not prevent the user to specify &quot;exotic&quot; combinations
+</I>&gt;<i> when using the command line, for example &quot;--tos tos_tt --cpuclock 16&quot;
+</I>&gt;<i> should still be possible ; in that case we would read arguments from left
+</I>&gt;<i> to right, the rightmost argument would override the 32 Mhz implied by
+</I>&gt;<i> &quot;--tos tos_tt&quot;
+</I>
+At argument parsing time, the last given argument &quot;wins&quot;.  TOS version
+vs. CPU &amp; machine type checks happen only after Hatari starts booting.
+
+As long as user gives a working configuration, exotic combinations work
+just fine.
+
+Commited:
+	<A HREF="http://hg.berlios.de/repos/hatari/rev/9d00b382eb24">http://hg.berlios.de/repos/hatari/rev/9d00b382eb24</A>
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002029.html">[hatari-devel] switching from falcon to ste doesn't change cpu
+</A></li>
+	<LI>Next message: <A HREF="002012.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2036">[ date ]</a>
+              <a href="thread.html#2036">[ thread ]</a>
+              <a href="subject.html#2036">[ subject ]</a>
+              <a href="author.html#2036">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Conditional breakpoint code, please comment!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C200906182300.58342.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000393.html">
+   <LINK REL="Next"  HREF="000395.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Conditional breakpoint code, please comment!</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C200906182300.58342.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Conditional breakpoint code, please comment!">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Jun 18 22:00:58 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000393.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+        <LI>Next message: <A HREF="000395.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#394">[ date ]</a>
+              <a href="thread.html#394">[ thread ]</a>
+              <a href="subject.html#394">[ subject ]</a>
+              <a href="author.html#394">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 18 June 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> &gt; I added support for %-prefix for boolean values and &quot;-prefix for
+</I>&gt;<i> &gt; strings. However, you cannot use in strings any of the characters that
+</I>&gt;<i> &gt; token currently uses for splitting the strings: ( ) &lt; &gt; = ! . &amp;
+</I>...
+&gt;<i> thanks for this, I know it would change the parser a little, but could it
+</I>&gt;<i> be possible to use 'xxxx' instead of &quot;xxxx for a string ? It's closer to
+</I>&gt;<i> the asm syntax and it looks strange to see a non closed &quot; when you're
+</I>&gt;<i> used to the '' or &quot;&quot; notation in many languages :)
+</I>
+Hm.  After thinking a bit more about how to implement that I think I'll
+remove the support for string-as-values.  They're not even nearly as useful
+as binary/hex/dec support and supporting strings properly would require
+quite a bit more code/complexity to the tokenizer function.
+
+If you need string-as-value calculations, you can use my old calculator:
+	<A HREF="http://koti.mbnet.fi/tammat/open.shtml#clac">http://koti.mbnet.fi/tammat/open.shtml#clac</A>
+---------
+$ clac
+Clac v1.13 (C) 1994-2006 by Eero Tamminen. Licensed under GPL. '?' for help.
+Expression: :h
+Expression: &quot;ICE!
+$49434521
+Expression: :b
+Expression: &quot;I + 0x20 * &quot;C
+'100010101001
+Expression: 1/3
+'0.0101010101010101010101010101010
+---------
+:<i>-)
+</I>
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000393.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+	<LI>Next message: <A HREF="000395.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#394">[ date ]</a>
+              <a href="thread.html#394">[ thread ]</a>
+              <a href="subject.html#394">[ subject ]</a>
+              <a href="author.html#394">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

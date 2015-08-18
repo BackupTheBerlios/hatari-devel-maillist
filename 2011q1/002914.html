@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New CPU and falcon emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20CPU%20and%20falcon%20emulation&In-Reply-To=%3CAANLkTinfAG5o-DSfqi3Xae5hWhHiqLqn6Ct5iFSABAUA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002910.html">
+   <LINK REL="Next"  HREF="002915.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New CPU and falcon emulation</H1>
+    <B>Miro Krop&#225;&#269;ek</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20CPU%20and%20falcon%20emulation&In-Reply-To=%3CAANLkTinfAG5o-DSfqi3Xae5hWhHiqLqn6Ct5iFSABAUA%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] New CPU and falcon emulation">miro.kropacek at gmail.com
+       </A><BR>
+    <I>Thu Jan 27 10:50:19 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002910.html">[hatari-devel] New CPU and falcon emulation
+</A></li>
+        <LI>Next message: <A HREF="002915.html">[hatari-devel] New CPU and falcon emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2914">[ date ]</a>
+              <a href="thread.html#2914">[ thread ]</a>
+              <a href="subject.html#2914">[ subject ]</a>
+              <a href="author.html#2914">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i>
+</I>&gt;<i> Don't hold your breath too much, it could take some time :)
+</I>&gt;<i>
+</I>Well, it can't be worse than it is now (I use sound disabled + patch timer d
++ inaccurate emulation), this seems to be sufficient for my coding atm, so
+take your time :)
+
+Also, winuae in 060 mode often emulates a 68060 with no really special video
+&gt;<i> effect (I mean no massive use of copper or blitter for example). So CPU
+</I>&gt;<i> emulation is really sped up by JIT.
+</I>&gt;<i>
+</I>I wouldn't be so sure about it. I for example use this:
+<A HREF="http://classicwb.abime.net/classicweb/litepics.htm">http://classicwb.abime.net/classicweb/litepics.htm</A> and you can see there's
+Copper used quite a much. Same for demos, not *every* effect
+in nowadays demos is just some stupid C2P texturemapper, I for example
+ported one Copper effect in Starstruck to Falcon.
+
+
+
+&gt;<i> In the case of the Falcon, JIT can speed up the CPU too, but the DSP will
+</I>&gt;<i> remain a true bottleneck, so in the end it's not obvious you will get has
+</I>&gt;<i> many fps as under winuae, even with jit.
+</I>&gt;<i>
+</I>&gt;<i> Well, we'll see ...
+</I>&gt;<i>
+</I>Fingers crossed ;-) And thanks for your cool work guys, looking back a few
+years, Hatari was just an average emulator and now.... Falcon emulation
+really gave it a new life (and new motivated developers as well! ;-)
+
+-- 
+MiKRO / Mystic Bytes
+<A HREF="http://mikro.atari.org">http://mikro.atari.org</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110127/6d06914b/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110127/6d06914b/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002910.html">[hatari-devel] New CPU and falcon emulation
+</A></li>
+	<LI>Next message: <A HREF="002915.html">[hatari-devel] New CPU and falcon emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2914">[ date ]</a>
+              <a href="thread.html#2914">[ thread ]</a>
+              <a href="subject.html#2914">[ subject ]</a>
+              <a href="author.html#2914">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

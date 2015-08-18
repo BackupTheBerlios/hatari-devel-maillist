@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] saving/restoring memory state from debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20saving/restoring%20memory%20state%20from%20debugger&In-Reply-To=%3Calpine.LMD.2.00.1002131433370.24512%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001462.html">
+   <LINK REL="Next"  HREF="001467.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] saving/restoring memory state from debugger</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20saving/restoring%20memory%20state%20from%20debugger&In-Reply-To=%3Calpine.LMD.2.00.1002131433370.24512%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] saving/restoring memory state from debugger">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Feb 13 14:38:02 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001462.html">[hatari-devel] Invoking the Debugger ?
+</A></li>
+        <LI>Next message: <A HREF="001467.html">[hatari-devel] saving/restoring memory state from debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1466">[ date ]</a>
+              <a href="thread.html#1466">[ thread ]</a>
+              <a href="subject.html#1466">[ subject ]</a>
+              <a href="author.html#1466">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 8 Feb 2010, Eero Tamminen wrote:
+
+&gt;&gt;<i> Eero, could you add a &quot;savestate/loadstate&quot; (or whatever you prefer) to
+</I>&gt;&gt;<i> be able to take a memory snapshot of Hatari
+</I>&gt;<i>
+</I>&gt;<i> Sure, I commited support for that.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> (I'm not sure loading the memory state from the debugger is that useful,
+</I>&gt;&gt;<i> so maybe &quot;loadstate&quot; can be forgotten) ?
+</I>&gt;<i>
+</I>&gt;<i> That was only few trivial lines more, so I added it for symmetry's sake. :-)
+</I>
+Hello,
+
+I just tried savestate ; this correctly saves the memory snapshot but it 
+doesn't seem to return to the debugui, as the '&gt;' doesn't come back and no 
+other commands are recognized.
+I had to press ctrl+c to get back to the debug mode with '&gt;'.
+
+Does it work for you ?
+
+
+BTW : I noticed that loading such a memory snapshot doesn't always work, 
+because Hatari expects some variables to be saved during the VBL interrupt 
+(when nHBL=0) ; I need to improve saving/loading so that it works at any 
+moment in the emulation.
+
+At the moment, you're likely to get :
+hatari: cycInt.c:377: CycInt_AddRelativeInterruptWithOffset: Assertion `CycleTime &gt;= 0' failed.
+
+
+Nicolas
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001462.html">[hatari-devel] Invoking the Debugger ?
+</A></li>
+	<LI>Next message: <A HREF="001467.html">[hatari-devel] saving/restoring memory state from debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1466">[ date ]</a>
+              <a href="thread.html#1466">[ thread ]</a>
+              <a href="subject.html#1466">[ subject ]</a>
+              <a href="author.html#1466">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

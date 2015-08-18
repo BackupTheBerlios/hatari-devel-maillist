@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Improved%20host%20long%20filename%20support%20for%20Hatari%0A%09GEMDOS%20Emulation%2C%20please%20TEST%21&In-Reply-To=%3C958618028.20100122134322%40hol.gr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001301.html">
+   <LINK REL="Next"  HREF="001309.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!</H1>
+    <B>George Nakos</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Improved%20host%20long%20filename%20support%20for%20Hatari%0A%09GEMDOS%20Emulation%2C%20please%20TEST%21&In-Reply-To=%3C958618028.20100122134322%40hol.gr%3E"
+       TITLE="[hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!">ggn at hol.gr
+       </A><BR>
+    <I>Fri Jan 22 12:43:22 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001301.html">[hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!
+</A></li>
+        <LI>Next message: <A HREF="001309.html">[hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1304">[ date ]</a>
+              <a href="thread.html#1304">[ thread ]</a>
+              <a href="subject.html#1304">[ subject ]</a>
+              <a href="author.html#1304">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Eero,
+
+Thursday, January 21, 2010, 12:33:38 AM, you wrote:
+
+&gt;&gt;<i> Attached is the latest patch for the improved long name support.
+</I>&gt;&gt;<i> It applies on top of the latest Hatari repository code.
+</I>
+&gt;&gt;<i> I'm going to commit it in couple of days to Hatari repository unless
+</I>&gt;&gt;<i> somebody has objections to it.  The main thing I would like to be tested
+</I>&gt;&gt;<i> is whether it works on something else than Linux/Unix, e.g. Windows.
+</I>
+&gt;&gt;<i> George, could you check Windows side?
+</I>
+I  just  managed  to  get  the patch working and compiled a version of
+hatari with that.
+
+&gt;&gt;<i> Improvements it provides over current Hatari GEMDOS emulation's
+</I>&gt;&gt;<i> cruder long host filename support are:
+</I>
+&gt;&gt;<i> * Renaming something like HDDRIVER.PRG to HDDRIVER.PR works properly.
+</I>&gt;&gt;<i>    (Current GEMDOS code tries always long match and if *.PRG is write
+</I>&gt;&gt;<i>    protected, rename fails, my code tries first exact match)
+</I>
+This works ok.
+
+&gt;&gt;<i> * Supports also long directory names, not just long file names.
+</I>
+Check. Just created a big directory name with spaces and it works.
+
+&gt;&gt;<i> * Illegal GEMDOS characters are converted to '@' _and_ matched correctly
+</I>&gt;&gt;<i>   when Atari programs try later to find the files with these names from
+</I>&gt;&gt;<i>   the emulated drive.
+</I>
+Also check, and with the dir name.
+
+&gt;&gt;<i> * In general one should now be able to have any kind of long filenames in
+</I>&gt;&gt;<i>   GEMDOS directories without them   breaking Atari fileselector, desktop
+</I>&gt;&gt;<i>   etc.
+</I>
+Yup, it seems to function ok so far.
+
+&gt;&gt;<i> Earlier version of the patch forced all callers of the host name search to
+</I>&gt;&gt;<i> have FILENAME_MAX sized buffer (or it asserted).  As changing everything
+</I>&gt;&gt;<i> that could get into that function would have made this patch much larger,
+</I>&gt;&gt;<i> I changed it to handle shorter buffers.
+</I>
+&gt;&gt;<i> It will also alert user with a Dialog if host filename won't fit to given
+</I>&gt;&gt;<i> buffer so that user can either:
+</I>&gt;&gt;<i> * Ask us to fix it, or
+</I>&gt;&gt;<i> * Move GEMDOS emu dir higher in the directory hierarchy to shorten
+</I>&gt;&gt;<i>   the host paths
+</I>
+
+
+
+
+-- 
+Best regards,
+ George                            mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ggn at hol.gr</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001301.html">[hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!
+</A></li>
+	<LI>Next message: <A HREF="001309.html">[hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1304">[ date ]</a>
+              <a href="thread.html#1304">[ thread ]</a>
+              <a href="subject.html#1304">[ subject ]</a>
+              <a href="author.html#1304">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

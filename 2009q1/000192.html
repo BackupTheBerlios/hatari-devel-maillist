@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Joystick Button 2 patch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Joystick%20Button%202%20patch&In-Reply-To=%3C200903010158.29895.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000191.html">
+   <LINK REL="Next"  HREF="000193.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Joystick Button 2 patch</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Joystick%20Button%202%20patch&In-Reply-To=%3C200903010158.29895.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Joystick Button 2 patch">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Mar  1 00:58:29 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000191.html">[hatari-devel] Joystick Button 2 patch
+</A></li>
+        <LI>Next message: <A HREF="000193.html">[hatari-devel] Joystick Button 2 patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#192">[ date ]</a>
+              <a href="thread.html#192">[ thread ]</a>
+              <a href="subject.html#192">[ subject ]</a>
+              <a href="author.html#192">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 28 February 2009, Eero Tamminen wrote:
+&gt;<i> Then I started to think that maybe something like this could be done also
+</I>&gt;<i> outside of Hatari and found these:
+</I>&gt;<i> - <A HREF="http://qjoypad.sourceforge.net/">http://qjoypad.sourceforge.net/</A>   (needs Qt)
+</I>&gt;<i> - <A HREF="http://rejoystick.sourceforge.net/">http://rejoystick.sourceforge.net/</A>  (needs SDL and Gtk2 for UI)
+</I>&gt;<i>
+</I>&gt;<i> Has anybody tested these?  According to their documentation QJoyPad does
+</I>&gt;<i> more, but even that doesn't seem to be supporting mapping joystick
+</I>&gt;<i> actions to other joystick actions (like button to up).
+</I>
+I tested QJoyPad and it builds fine with Qt3 in Debian Lenny after
+installing libxtst-dev &amp; qt3-dev-tools.
+
+*However*, the code is pretty awful:
+- it polls joysticks constantly at 1 microsecond interval
+  and takes half the CPU
+- it notifies itself about things with signals handlers in a way that is
+  both racy and can corrupt its memory
+- compiler &amp; valgrind warnings
+
+
+As to rejoystick, I wrote my own Makefile and fixed several issues from
+the code (took a long time to understand that it overwriting HOME
+environment variable was the cause for SDL trying to initialize DirectFB
+instead of X11...).   I.e. code is as bad as QJoyPad the issues just are
+different, and it has some limitations compared to QJoyPad:
+- hardcoded to support only first joystick
+- doesn't support emulating mouse clicks or movement
+  (but that's not so useful)
+
+This is also polling constantly (AFAIK the SDL issue I've mailed earlier,
+not an issue in rejoystick), but at larger interval so it doesn't take 
+significantly CPU.  Constants wakeups would be bad for a laptop
+battery though.
+
+
+[...]
+&gt;<i> But I guess you would prefer external program especially as such seem to
+</I>&gt;<i> already exist (and hopefully work with Hatari).   In that case the
+</I>&gt;<i> current Joystick button support could be remove from Hatari and manual
+</I>&gt;<i> could point people to these Joystick helper programs instead?
+</I>
+Both use XTest extension to fake key &amp; mouse events when Joystick stuff is
+done.  I think XTest supports XInput extension[1], so it might be
+theoretically possible to do joy -&gt; joy mapping, but if SDL reads joystick
+directly from /dev/js* (as I think it does), even that won't work.    I.e.
+I don't think it's practically possible to make these programs to do
+joy button -&gt; joy movement event mapping what Matthias was after. 
+
+Simulating keys with joystick works fine.
+
+
+	- Eero
+
+[1]&#160;There's no documentation on XTest, this info was from one of the Xorg
+developers.
+
+PS. I've understood that some use these programs to turn their joysticks 
+into remotes...
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000191.html">[hatari-devel] Joystick Button 2 patch
+</A></li>
+	<LI>Next message: <A HREF="000193.html">[hatari-devel] Joystick Button 2 patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#192">[ date ]</a>
+              <a href="thread.html#192">[ thread ]</a>
+              <a href="subject.html#192">[ subject ]</a>
+              <a href="author.html#192">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

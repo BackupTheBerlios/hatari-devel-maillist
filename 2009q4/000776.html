@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] debugger evaluate command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20debugger%20evaluate%20command&In-Reply-To=%3Calpine.LMD.2.00.0910061036440.2748%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000775.html">
+   <LINK REL="Next"  HREF="000777.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] debugger evaluate command</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20debugger%20evaluate%20command&In-Reply-To=%3Calpine.LMD.2.00.0910061036440.2748%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] debugger evaluate command">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Oct  6 10:45:44 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000775.html">[hatari-devel] debugger evaluate command
+</A></li>
+        <LI>Next message: <A HREF="000777.html">[hatari-devel] debugger evaluate command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#776">[ date ]</a>
+              <a href="thread.html#776">[ thread ]</a>
+              <a href="subject.html#776">[ subject ]</a>
+              <a href="author.html#776">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 6 Oct 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Tuesday 22 September 2009, Eero Tamminen wrote:
+</I>&gt;&gt;<i> Btw. Although the new debugger &quot;evaluate&quot; command should do most
+</I>&gt;&gt;<i> calculations just fine, it has still some bugs / restrictions:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> * Parenthesis (to change precedence) don't work yet.
+</I>&gt;<i>
+</I>&gt;<i> I had fixed the above issue after the mail, but for the ones below I would
+</I>&gt;<i> still like some comments...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> * For now binary prefix is &quot;'&quot;.  I'll probably remove the '%' modulo
+</I>&gt;&gt;<i>   operation support so that binary numbers can use same prefix as rest
+</I>&gt;&gt;<i>   of the debugger.
+</I>
+I think % would be better used as binary prefix, I'm not sure anyone uses 
+modulo.
+
+&gt;&gt;<i>
+</I>&gt;&gt;<i> * It doesn't support debugger number-base setting.  When I fix that, I'll
+</I>&gt;&gt;<i>   probably remove support for octal and &quot;ASCII&quot; numbers as DebugUI
+</I>&gt;&gt;<i> doesn't support those.  Octal numbers can be useful only for BCD / nibble
+</I>&gt;&gt;<i> number calculations, but I couldn't come up with reasonable prefix for
+</I>&gt;&gt;<i> them. ;-)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> * Calculations are done as doubles and signed longs.  Former means that
+</I>&gt;&gt;<i>   divisions can have funny results when printed (due to conversion
+</I>&gt;&gt;<i> accuracy) and that shift and logical OR &amp; AND operations support values
+</I>&gt;&gt;<i> only up to 0x7fffffff.  If floating point calculations aren't needed, I
+</I>&gt;&gt;<i> could change everything to use (signed) long longs?
+</I>
+I never needed float point when doing asm in atari, I don't think we 
+will need it in the debugger to fix some problems related to hatari.
+
+&gt;&gt;<i>
+</I>&gt;&gt;<i> Comments?
+</I>
+I'm not sure we should put too much extra evaluate commands in hatari ; of 
+course it's your time, so you're free to do it, but in the end I think 
+they're some much more complete calculators solutions that the user can 
+run from another terminal if he really wants to (adding that to the fact 
+that debugger mode is used by a very low percentage of users I guess)
+
+Apart from simple operations/conversions, I think we should not transform 
+hatari in a HP48 calculator :)
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i> PS. Any idea why BerliOS was down during the weekend?
+</I>
+No, but according to monitor.berlios.de, quite a lot of servers were down. 
+A little disappointing it took them more than 48h to bring it up.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000775.html">[hatari-devel] debugger evaluate command
+</A></li>
+	<LI>Next message: <A HREF="000777.html">[hatari-devel] debugger evaluate command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#776">[ date ]</a>
+              <a href="thread.html#776">[ thread ]</a>
+              <a href="subject.html#776">[ subject ]</a>
+              <a href="author.html#776">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New support for STE's 224 bytes overscan
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20support%20for%20STE%27s%20224%20bytes%20overscan&In-Reply-To=%3Calpine.LMD.2.00.0912071920341.29382%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001071.html">
+   <LINK REL="Next"  HREF="001073.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New support for STE's 224 bytes overscan</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20support%20for%20STE%27s%20224%20bytes%20overscan&In-Reply-To=%3Calpine.LMD.2.00.0912071920341.29382%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] New support for STE's 224 bytes overscan">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Dec  7 19:31:47 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001071.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+        <LI>Next message: <A HREF="001073.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1072">[ date ]</a>
+              <a href="thread.html#1072">[ thread ]</a>
+              <a href="subject.html#1072">[ subject ]</a>
+              <a href="author.html#1072">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 7 Dec 2009, Anders Eriksson wrote:
+
+&gt;<i> On Mon, 7 Dec 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> I just commited support for STE's specific left border's removal as used
+</I>&gt;&gt;<i> by DHS in their demos (More Or Less Zero Or Cernit Trandafir, also used in
+</I>&gt;&gt;<i> Save The Earth by Defence Force).
+</I>&gt;<i>
+</I>&gt;<i> Hi!
+</I>&gt;<i>
+</I>&gt;<i> Thanks a lot for adding this. A friend compiled it for me (I never seem
+</I>&gt;<i> to get it to compile) and it seems to behave exactly like before, eg a
+</I>&gt;<i> screen with wrong linewidth (I tested MOLZ so far). Is there any
+</I>&gt;<i> commandline switch I need to add for the new code to work ?
+</I>&gt;<i>
+</I>
+Hello,
+
+this is strange, the non working screens are now ok for me (for example 
+the picture asking to insert disk 2 in MOLZ).
+
+&gt;<i>
+</I>&gt;&gt;<i> Result should be close to a real STE, except for the 16 first displayed
+</I>&gt;&gt;<i> pixels that show 2 bitplanes under Hatari (under STE, this seems to
+</I>&gt;&gt;<i> completly show the background color, I'm not sure if it's the case ?).
+</I>&gt;<i>
+</I>&gt;<i> Hum, this seems to be perhaps a wrong approach, on the STe the screen is
+</I>&gt;<i> shifted a bit to the right with this method, as far as I can tell we are
+</I>&gt;<i> not losing any pixels. Eg, the pixels far to the right which are normally
+</I>&gt;<i> garbage with a traditional 230 byte overscan are now displaying perfectly
+</I>&gt;<i> looking graphics.
+</I>&gt;<i>
+</I>&gt;<i> To put it short, the pixels lost at the left are gained at the right. So
+</I>&gt;<i> as I see it, Hatari should just show the usual 416px screen and adjust the
+</I>&gt;<i> raster position by N cycles.
+</I>
+You mean on STE the screen is shifted to the left (not to the right) ? 
+Else I don't understand how the far right pixels would be more visible.
+
+
+&gt;<i> Oh and by the way, the leftmost part of the screen (before the graphics
+</I>&gt;<i> begin) shows the background colour on a real STe, not that it should
+</I>&gt;<i> matter for Hatari as this part shouldn't be displayed in normal cases.
+</I>
+Yes, I had a doubt on this ; I will clear the corresponding 2 bitplanes on 
+the left.
+
+How do you count 416 pixels ? 224 bytes would give 448 pixels, and as the 
+first 16 are background ones, this would leave 432. Do you count only 
+usable pixels ? (I count 8 pixels per bytes, even if the hi/lo switch are 
+sometimes adding some black bars or things like that).
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> And now to something completely different.. It's soon christmas, so here
+</I>&gt;<i> goes some wishes that would ease coding fullscreens quite a bit :)
+</I>&gt;<i>
+</I>&gt;<i> * A mode where Hatari shows all 512x313 pixels, with the &quot;non visible&quot;
+</I>&gt;<i> areas  toned out to say half brightness. This way one can easily follow
+</I>&gt;<i> every clock cycle graphicly. A popular way to determine rastertime is to change
+</I>&gt;<i> the background colour, today one can't see that if it's outside the
+</I>&gt;<i> visible area, as an example.
+</I>
+You can try to increase nWindowBorderPixelsLeft / nWindowBorderPixelsRight 
+in the config file. I never try to increase them to the equivalent of 512 
+bytes per line, but this could work.
+
+But on real ST, you wouldn't change the color outside the visible area, 
+or you wouldn't see the colors there too. Do you mean something that would 
+use Hatari in a way a nomal ST can't be used ?
+
+
+&gt;<i> * Fullscreen mode not to crop any pixels - on OS X today Hatari in a
+</I>&gt;<i> window crawls. Doing fastforward increases perhaps the speed by 20%, while
+</I>&gt;<i> in fullscreen it screams. However in fullscreen it's missing a lot of
+</I>&gt;<i> pixels.
+</I>
+Can't say, I run linux and don't have such problem. I don't know anything 
+about the OSX port.
+
+&gt;<i>
+</I>&gt;<i> Ok I'll stop now, thanks again for working on this overscan mode :-)
+</I>
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001071.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+	<LI>Next message: <A HREF="001073.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1072">[ date ]</a>
+              <a href="thread.html#1072">[ thread ]</a>
+              <a href="subject.html#1072">[ subject ]</a>
+              <a href="author.html#1072">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

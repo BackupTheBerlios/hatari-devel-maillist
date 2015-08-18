@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] updates to cmake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20updates%20to%20cmake%20build%20system&In-Reply-To=%3C901237725.20100313210248%40hol.gr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001664.html">
+   <LINK REL="Next"  HREF="001672.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] updates to cmake build system</H1>
+    <B>George Nakos</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20updates%20to%20cmake%20build%20system&In-Reply-To=%3C901237725.20100313210248%40hol.gr%3E"
+       TITLE="[hatari-devel] updates to cmake build system">ggn at hol.gr
+       </A><BR>
+    <I>Sat Mar 13 20:02:48 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001664.html">[hatari-devel] updates to cmake build system
+</A></li>
+        <LI>Next message: <A HREF="001672.html">[hatari-devel] updates to cmake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1668">[ date ]</a>
+              <a href="thread.html#1668">[ thread ]</a>
+              <a href="subject.html#1668">[ subject ]</a>
+              <a href="author.html#1668">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Npomarede,
+
+Saturday, March 13, 2010, 7:17:18 PM, you wrote:
+
+
+&gt;<i> Hello,
+</I>
+&gt;<i> I updated the cmake files today for better windows support.
+</I>
+&gt;<i> cmake will now handle the .rc file in gui-win, which means the executable
+</I>&gt;<i> will contain the correct hatari icon and this icon will be displayed on
+</I>&gt;<i> Windows' desktop for example.
+</I>
+&gt;<i> Also, in order to ease the needed work when we release a new version, I
+</I>&gt;<i> added a toolchain to build the windows version under linux (or any other
+</I>&gt;<i> OS with a working mingw setup). This is quite handy as it avoids to reboot
+</I>&gt;<i> with windows, as everything can be done under linux.
+</I>
+&gt;<i> In order to cross compile this version, you should have the mingw version
+</I>&gt;<i> of all headers/dll installed in your mingw's sysroot directory.
+</I>
+&gt;<i> Then just go to the source dir and type :
+</I>
+&gt;<i> cmake -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchain-mingw32.cmake .
+</I>
+&gt;<i> (a few warnings regarding some printf conversions used for --trace may
+</I>&gt;<i> appear, but they're harmless)
+</I>
+&gt;<i> I built a windows version using old Makefile system and new cmake system,
+</I>&gt;<i> which worked correctly under windows (as well as under wine for linux).
+</I>
+&gt;<i> But I havent tried to compile it directly under windows, nor under OSX.
+</I>
+&gt;<i> Could people using these OS report if things still work with cmake ?
+</I>
+
+I  ran  the  above  command  with a slight change (I call cmake-gui, I
+*hate*  supplying paths by hand). After the usual fiddling around with
+the usual &quot;can't find path for sdl&quot; and stuff, this is what I ended up
+with:
+
+Could NOT find READLINE  (missing:  READLINE_LIBRARY READLINE_INCLUDE_DIR)
+Could NOT find PORTAUDIO  (missing:  PORTAUDIO_LIBRARY PORTAUDIO_INCLUDE_DIR)
+CMake Error at C:/Program Files/CMake 2.8/share/cmake-2.8/Modules/CMakeDetermineRCCompiler.cmake:30 (MESSAGE):
+  Could not find compiler set in environment variable RC:
+
+  CMAKE_RC_COMPILER-NOTFOUND.
+Call Stack (most recent call first):
+  src/CMakeLists.txt:67 (ENABLE_LANGUAGE)
+
+
+CMake Error: Error required internal CMake variable not set, cmake may be not be built correctly.
+Missing variable is:
+CMAKE_RC_COMPILER_ENV_VAR
+CMake Error: Could not find cmake module file:C:/msys/1.0/home/Administrator/hatari/cunt/CMakeFiles/CMakeRCCompiler.cmake
+CMake Error: your RC compiler: &quot;CMAKE_RC_COMPILER-NOTFOUND&quot; was not found.   Please set CMAKE_RC_COMPILER to a valid compiler path or name.
+Configuring incomplete, errors occurred!
+
+
+
+Seems it's not picking up the win32 files???
+
+
+-- 
+Best regards,
+ George                            mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ggn at hol.gr</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001664.html">[hatari-devel] updates to cmake build system
+</A></li>
+	<LI>Next message: <A HREF="001672.html">[hatari-devel] updates to cmake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1668">[ date ]</a>
+              <a href="thread.html#1668">[ thread ]</a>
+              <a href="subject.html#1668">[ subject ]</a>
+              <a href="author.html#1668">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

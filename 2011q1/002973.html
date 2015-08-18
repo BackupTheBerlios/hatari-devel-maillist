@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] IoMem question :
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IoMem%20question%20%3A&In-Reply-To=%3C4D488F79.7060100%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002967.html">
+   <LINK REL="Next"  HREF="002976.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] IoMem question :</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IoMem%20question%20%3A&In-Reply-To=%3C4D488F79.7060100%40corp.free.fr%3E"
+       TITLE="[hatari-devel] IoMem question :">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Feb  1 23:55:53 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002967.html">[hatari-devel] IoMem question :
+</A></li>
+        <LI>Next message: <A HREF="002976.html">[hatari-devel] IoMem question :
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2973">[ date ]</a>
+              <a href="thread.html#2973">[ thread ]</a>
+              <a href="subject.html#2973">[ subject ]</a>
+              <a href="author.html#2973">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 01/02/2011 23:03, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Address 0xff8006 is read only.
+</I>&gt;<i> So, if I don't want a program to be able to write at this address,
+</I>&gt;<i> should I declare the write part as WriteWithoutInterception or
+</I>&gt;<i> IoMem_VoidWrite) ?
+</I>&gt;<i>
+</I>&gt;<i> This value is hardware fixed, it is fixed in STMemory_SetDefaultConfig
+</I>&gt;<i> STMemory_WriteByte(0xff8006, nFalcSysCntrl);
+</I>
+IoMem_VoidWrite is for region where there's no IO reg specified and no 
+bus error on access (for example $ff820b doesn't &quot;exist&quot; on STF/STE)
+
+IoMem_WriteWithoutInterception is for region where there's an IO reg 
+defined, but you don't care about emulating it.
+
+So, in your case ff8006 is really defined, so you should use 
+IoMem_WriteWithoutInterception for better consistency.
+
+Note that this doesn't prevent a program from writing at this address, 
+it just doesn't call a specific emulation's handler for this byte. The 
+byte will be written anyway in ff8006, it's just that if you don't do 
+anything with it in the emulation, it will be ignored.
+
+If writing to this address doesn't give a bus error on a real hardware, 
+then you don't want to block the write, you just need to ignore it by 
+not using the content of IoMem[0xff8006].
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002967.html">[hatari-devel] IoMem question :
+</A></li>
+	<LI>Next message: <A HREF="002976.html">[hatari-devel] IoMem question :
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2973">[ date ]</a>
+              <a href="thread.html#2973">[ thread ]</a>
+              <a href="subject.html#2973">[ subject ]</a>
+              <a href="author.html#2973">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

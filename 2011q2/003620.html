@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Emulation reset, old-UAE vs. WinAUE core
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Emulation%20reset%2C%20old-UAE%20vs.%20WinAUE%20core&In-Reply-To=%3C4DFE2B28.1030008%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003615.html">
+   <LINK REL="Next"  HREF="003622.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Emulation reset, old-UAE vs. WinAUE core</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Emulation%20reset%2C%20old-UAE%20vs.%20WinAUE%20core&In-Reply-To=%3C4DFE2B28.1030008%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Emulation reset, old-UAE vs. WinAUE core">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jun 19 19:00:24 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003615.html">[hatari-devel] Emulation reset, old-UAE vs. WinAUE core
+</A></li>
+        <LI>Next message: <A HREF="003622.html">[hatari-devel] Emulation reset, old-UAE vs. WinAUE core
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3620">[ date ]</a>
+              <a href="thread.html#3620">[ thread ]</a>
+              <a href="subject.html#3620">[ subject ]</a>
+              <a href="author.html#3620">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 18/06/2011 10:43, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I started to wonder why breakpoints didn't work anymore after emulation
+</I>&gt;<i> reset and noticed that while old UAE core always preserves the debugging
+</I>&gt;<i> flag on reset:
+</I>
+&gt;<i> So, why WinAUE always resets the debugger flag?
+</I>
+Hello
+
+Well, I guess WinUAE's core (not AUE please :) ) as being directly taken 
+from the Amiga version doesn't include this notion of debuger.
+
+It's fine for me if we don't backport everything from current UAE to 
+WinUAE, because I think we should first make the cpu core works before 
+backporting our own additions (else, we might add side effects and makes 
+it harder to fix the winuae's core in Hatari).
+The less we modify WinUAE's core for now, the more we can be sure the 
+remaining problems are in Hatari and we have a direction to look at.
+
+
+&gt;<i> Is there any reason why we wouldn't want it to be preserved always, either
+</I>&gt;<i> by explicitly preserving it in all of these places, or by always re-setting
+</I>&gt;<i> it after reset, like in the attached patch?
+</I>
+Your patch looks good to me, I also think debuging features should be 
+preserved when reseting (cold or warm). You can apply it if you like.
+
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Then I noticed also a problem related to WinUAE's resets.  While all
+</I>&gt;<i> old AUE m68k_reset() calls come from Reset_*() -&gt;  M68000_Reset()
+</I>&gt;<i> which is called on specific configuration changes or on keyboard
+</I>&gt;<i> shortcut...
+</I>&gt;<i>
+</I>
+&gt;<i>
+</I>&gt;<i> Should uae_reset() calls also be converted to DlgAlert_Notice()
+</I>&gt;<i> calls so that in those cases user also knows what happened and
+</I>&gt;<i> can reboot the emulation at his/her convenience?
+</I>
+
+Why not ; I don't consider this a top priority over the cpu emulation + 
+STF/STE integration, but if you have a patch for this, let's go for it.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003615.html">[hatari-devel] Emulation reset, old-UAE vs. WinAUE core
+</A></li>
+	<LI>Next message: <A HREF="003622.html">[hatari-devel] Emulation reset, old-UAE vs. WinAUE core
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3620">[ date ]</a>
+              <a href="thread.html#3620">[ thread ]</a>
+              <a href="subject.html#3620">[ subject ]</a>
+              <a href="author.html#3620">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

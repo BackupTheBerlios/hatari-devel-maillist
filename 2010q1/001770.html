@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Caps Lock bug in maxYMiser
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Caps%20Lock%20bug%20in%20maxYMiser&In-Reply-To=%3Calpine.DEB.1.10.1003211955030.2446%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001768.html">
+   <LINK REL="Next"  HREF="001780.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Caps Lock bug in maxYMiser</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Caps%20Lock%20bug%20in%20maxYMiser&In-Reply-To=%3Calpine.DEB.1.10.1003211955030.2446%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Caps Lock bug in maxYMiser">ae at dhs.nu
+       </A><BR>
+    <I>Sun Mar 21 20:01:54 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001768.html">[hatari-devel] Caps Lock bug in maxYMiser
+</A></li>
+        <LI>Next message: <A HREF="001780.html">[hatari-devel] Caps Lock bug in maxYMiser
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1770">[ date ]</a>
+              <a href="thread.html#1770">[ thread ]</a>
+              <a href="subject.html#1770">[ subject ]</a>
+              <a href="author.html#1770">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 21 Mar 2010, Eero Tamminen wrote:
+
+&gt;<i> Seems that Debian 1.2.13 version of SDL has backported support for
+</I>&gt;<i> SDL_DISABLE_LOCK_KEYS environment variable (checked from source).
+</I>&gt;<i>
+</I>&gt;<i> But when I tested it, for me setting the variable actually causes
+</I>&gt;<i> the MYM problem you reported earlier... So I guess it depends on how
+</I>&gt;<i> operating system reports these keys and this variable kind of
+</I>&gt;<i> reverses the effect of that.
+</I>&gt;<i>
+</I>&gt;<i> This variable could be mentioned in the documentation[1] though, once
+</I>&gt;<i> there's more data on which OSes, SDL version etc combinations this variable
+</I>&gt;<i> works and how.
+</I>
+I just installed Ubuntu 10.04 in VMware here and it acts exactly as 
+under OS X. Eg, capslock repeats in maxYMiser and if I set the env 
+variable to 1 it works as normal.
+
+One funny thing is that Hataris performance is better under VMware with 
+Ubuntu 10.04 than native under OS X, even though I only have VMware 
+running on one CPU-core while in OS X it can use two. But it's no surprise 
+really, as I've reported countless of times, something is broken in the OS 
+X version of Hatari performance wise.
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001768.html">[hatari-devel] Caps Lock bug in maxYMiser
+</A></li>
+	<LI>Next message: <A HREF="001780.html">[hatari-devel] Caps Lock bug in maxYMiser
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1770">[ date ]</a>
+              <a href="thread.html#1770">[ thread ]</a>
+              <a href="subject.html#1770">[ subject ]</a>
+              <a href="author.html#1770">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

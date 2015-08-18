@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger Question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20Question&In-Reply-To=%3C4B4BAA2C.4040706%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001206.html">
+   <LINK REL="Next"  HREF="001208.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger Question</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20Question&In-Reply-To=%3C4B4BAA2C.4040706%40free.fr%3E"
+       TITLE="[hatari-devel] Debugger Question">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Jan 11 23:46:04 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001206.html">[hatari-devel] Debugger Question
+</A></li>
+        <LI>Next message: <A HREF="001208.html">[hatari-devel] Debugger Question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1207">[ date ]</a>
+              <a href="thread.html#1207">[ thread ]</a>
+              <a href="subject.html#1207">[ subject ]</a>
+              <a href="author.html#1207">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've uploaded 2 disasm_functions :
+
+Crossbar_disasmRegisters()
+Videl_disasmRegisters()
+
+I've added the prototypes as extern in the respective .h files
+Is it OK for you ?
+
+Regards,
+
+Laurent
+
+
+
+Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Monday 11 January 2010, Laurent Sallafranque wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> I'd like to add a &quot;componet&quot; debugging to the debugger.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'm starting to have a look at the Videl component, and I've written this:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> /**
+</I>&gt;&gt;<i>  * VIDEL_disasmRegisters : display the Videl registers values.
+</I>&gt;&gt;<i>  */
+</I>&gt;&gt;<i> void VIDEL_disasmRegisters(void)
+</I>&gt;&gt;<i>     
+</I>&gt;<i> ...
+</I>&gt;<i>   
+</I>&gt;&gt;<i> I'd like to get the whole register values of the Videl at once with one
+</I>&gt;&gt;<i> debugger command. Something like &quot;vd&quot; for videl disasm would be great.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I could do the same for the crossbar (command cd for crossbar
+</I>&gt;&gt;<i> disassemble ?).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Do you think we could add this function to the debugger ?
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> I was thinking of adding an &quot;info&quot; function to the debugger which could
+</I>&gt;<i> provide this kind of information.  We could then have:
+</I>&gt;<i> 	info videl
+</I>&gt;<i> 	info crossbar
+</I>&gt;<i> 	info tos
+</I>&gt;<i> 	info program
+</I>&gt;<i> etc.
+</I>&gt;<i>
+</I>&gt;<i> (These things don't need to have one or two letter acronyms because
+</I>&gt;<i> I can add TAB completion for them like I've done for some of the other
+</I>&gt;<i> debugger commands.)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> However, if the provided information is machine specific (videl is Falcon
+</I>&gt;<i> only etc) or OS specific (TOS vs. MiNT...), it should have appropriate
+</I>&gt;<i> checks and show something like:
+</I>&gt;<i> 	&quot;No Videl&quot;
+</I>&gt;<i> when the HW or OS is not running.
+</I>&gt;<i>
+</I>&gt;<i> If you add these kind of functions to debug/info.c file:
+</I>&gt;<i> 	void Info_Videl(void)
+</I>&gt;<i> I can do the integration &amp; TAB completion.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001206.html">[hatari-devel] Debugger Question
+</A></li>
+	<LI>Next message: <A HREF="001208.html">[hatari-devel] Debugger Question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1207">[ date ]</a>
+              <a href="thread.html#1207">[ thread ]</a>
+              <a href="subject.html#1207">[ subject ]</a>
+              <a href="author.html#1207">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

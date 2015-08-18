@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Some more demos that fail with 1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20more%20demos%20that%20fail%20with%201.4&In-Reply-To=%3C201103312236.00360.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003281.html">
+   <LINK REL="Next"  HREF="003288.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Some more demos that fail with 1.4</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20more%20demos%20that%20fail%20with%201.4&In-Reply-To=%3C201103312236.00360.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Some more demos that fail with 1.4">oak at helsinkinet.fi
+       </A><BR>
+    <I>Thu Mar 31 21:36:00 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003281.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+        <LI>Next message: <A HREF="003288.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3287">[ date ]</a>
+              <a href="thread.html#3287">[ thread ]</a>
+              <a href="subject.html#3287">[ subject ]</a>
+              <a href="author.html#3287">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On torstai 31 maaliskuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 25/03/2011 22:17, Eero Tamminen a &#233;crit :
+</I>&gt;<i> here're some reports on some of those demos
+</I>&gt;<i> 
+</I>&gt;<i> &gt; * Pixel Twin's Mental Hangover actually crashes Hatari:
+</I>&gt;<i> &gt;     <A HREF="http://www.pouet.net/prod.php?which=11181">http://www.pouet.net/prod.php?which=11181</A>
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Valgrind says:
+</I>&gt;<i> &gt; ==4016== Invalid write of size 1
+</I>&gt;<i> &gt; ==4016==    at 0x40264DC: memset (mc_replace_strmem.c:602)
+</I>&gt;<i> &gt; ==4016==    by 0x80D18DC: Video_InterruptHandler_HBL (video.c:1942)
+</I>&gt;<i> &gt; ==4016==    by 0x810CB30: m68k_go (newcpu.c:1758)
+</I>&gt;<i> &gt; ==4016==    by 0x80B3A33: M68000_Start (m68000.c:241)
+</I>&gt;<i> &gt; ==4016==    by 0x80B4823: main (main.c:773)
+</I>&gt;<i> &gt; ==4016==  Address 0x4981d00 is 0 bytes after a block of size 614,400
+</I>&gt;<i> &gt; alloc'd ==4016==    at 0x4023F50: malloc (vg_replace_malloc.c:236)
+</I>&gt;<i> &gt; ==4016==    by 0x80C2E81: Screen_Init (screen.c:517)
+</I>&gt;<i> &gt; ==4016==    by 0x80B46C9: main (main.c:585)
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; (when it gets 4 bytes past the screen buffer, Hatari crashes)
+</I>&gt;<i> 
+</I>&gt;<i> Tough one, I spent some time figuring what was wrong. In fact, due to a
+</I>&gt;<i> very buggy loader in the boot sector, this demo can sometime consider it
+</I>&gt;<i> needs to load $c18f sectors with xbios(8) ! Since memory location for
+</I>&gt;<i> the sector is incremented by 512 bytes on each sector, you end up
+</I>&gt;<i> filling the whole ram (as well as the IO space !) with garbage read from
+</I>&gt;<i> wrong sectors.
+</I>
+How that can cause *Hatari* to crash here:
+         else
+               /* left border not removed, clear to color '0' */
+               memset(pSTScreen,0,SCREENBYTES_LEFT);
+?
+
+Is pSTscreen address taken from emulated RAM without checking that
+the pointed screen actually is within the emulated RAM?
+
+Hatari crash is much more serious than demo crash. :-)
+
+
+&gt;<i> The problem is that at the start of the boot sector D1=3e7bxxxx (number
+</I>&gt;<i> of sectors to read) and the loader doesn't clear the upper 16 bits...
+</I>&gt;<i> Now, since it works under Steem with the same TOS, I needed to
+</I>&gt;<i> understand why the upper 16 bits were 0 on a real STE.
+</I>&gt;<i> In fact, those bits in D1 are the result of initializing the TOS
+</I>&gt;<i> date/time by reading the real time clock at $fffc21-3f.
+</I>&gt;<i> 
+</I>&gt;<i> Since normal STF/STE didn't have an RTC, this loader worked (more or
+</I>&gt;<i> less by luck). When there's no RTC, D1=0 at the start of the boot.
+</I>&gt;<i> 
+</I>&gt;<i> Note that it depends on the TOS : with 1.04 or 1.62, D1!=0 but with 2.06
+</I>&gt;<i> the loader starts.
+</I>&gt;<i> 
+</I>&gt;<i> But after that, when all sectors are loaded, the demo check there's no
+</I>&gt;<i> cardridge connected to the ST (at $fa0000). Since HD emulation is at the
+</I>&gt;<i> same space under Hatari, it's considered as an ripping cardridge and the
+</I>&gt;<i> demo wipes the whole RAM with the blitter -&gt; bus errors again.
+</I>&gt;<i> 
+</I>&gt;<i> So, to run this demo, you need to disable RTC and HD emulation.
+</I>
+Verified.  Without these the demo works and Hatari doesn't segfault.
+
+
+&gt;<i> I added a note for this in compatibility.html.
+</I>
+I don't see this in repo, did you remember to push it?
+
+
+&gt;<i> &gt; * Songs of the Unexpected gets double bus error after playing the first
+</I>&gt;<i> &gt; song
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;     in the main demo for a while:
+</I>&gt;<i> &gt; 	<A HREF="http://www.pouet.net/prod.php?which=22398">http://www.pouet.net/prod.php?which=22398</A>
+</I>&gt;<i> 
+</I>&gt;<i> I can reproduce, it's quite random and never at the same time, so a
+</I>&gt;<i> little hard to fix for now.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; * Aura's Hifidelity dreams seems now fine:
+</I>&gt;<i> &gt; 	<A HREF="http://www.pouet.net/prod.php?which=996">http://www.pouet.net/prod.php?which=996</A>
+</I>&gt;<i> 
+</I>&gt;<i> It was an FDC problem that I fixed in 2008/12
+</I>
+It's a nice demo, maybe it should be listed in compat list? :-)
+
+
+&gt;<i> &gt; * Delirious 3 crashes on startup:
+</I>&gt;<i> &gt;    <A HREF="http://www.pouet.net/prod.php?which=21347">http://www.pouet.net/prod.php?which=21347</A>
+</I>&gt;<i> 
+</I>&gt;<i> Worked for me. Have you tried in STE mode ?
+</I>
+Yes, but actually the Pouet demo seems to be a different one than what
+I had. Pouet version file name is delir_3.msa and it doesn't react where it
+asks me to press either 1) or 2) i.e. demo is stuck in that screen.
+
+The file name for version I had was delirs3a.msa.  I have no idea where
+I got it (i.e. whether it's even supposed to work), sorry about that.
+
+
+&gt;<i> &gt; * Once the actual demo starts:
+</I>&gt;<i> &gt;    <A HREF="http://www.pouet.net/prod.php?which=15437">http://www.pouet.net/prod.php?which=15437</A>
+</I>&gt;<i> &gt;    
+</I>&gt;<i> &gt;    Bad taste dies to:
+</I>&gt;<i> &gt;    Your Atari program just did something terribly stupid:
+</I>&gt;<i> &gt;    VoidMem_xlate($533b0aa5)
+</I>&gt;<i> 
+</I>&gt;<i> I get this a few seconds after the yellow/red vector balls appear. Do
+</I>&gt;<i> you get the error at the same point ?
+</I>
+Yes.
+
+
+&gt;<i>  From what I see, the demo code seems to be altered by a bad write at
+</I>&gt;<i> address $404c2. The resulting wrong instruction tries to add.w on an odd
+</I>&gt;<i> address, which creates this crash.
+</I>&gt;<i> 
+</I>&gt;<i> I will need to add some code in Hatari to track what part of the demo is
+</I>&gt;<i> producing this bad write.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; * AFL pro fooball doesn't anymore freeze on startup:
+</I>&gt;<i> &gt;    <A HREF="../2010q2/002284.html">http://lists.berlios.de/pipermail/hatari-devel/2010q2/002284.html</A>
+</I>&gt;<i> &gt;    
+</I>&gt;<i> &gt;    But there's some screen update/color issue between the game halves
+</I>&gt;<i> &gt;    (when running a demo game) when panels from top&amp;  bottom are
+</I>&gt;<i> &gt;    scrolled towards screen center.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; * GGN's Kuovadis game (Daleks clone) dies at startup after screen goes
+</I>&gt;<i> &gt; blank
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;    and it tries to scan disk for mods.  I'm not sure where I got the
+</I>&gt;<i> &gt;    program,
+</I>&gt;<i> &gt; 	
+</I>&gt;<i> &gt;    GGN's page seems to be missing a link:
+</I>&gt;<i> &gt; 	<A HREF="http://users.hol.gr/~ggn/">http://users.hol.gr/~ggn/</A>
+</I>&gt;<i> 
+</I>&gt;<i> Havent't tested these 2 ones for now.
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003281.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+	<LI>Next message: <A HREF="003288.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3287">[ date ]</a>
+              <a href="thread.html#3287">[ thread ]</a>
+              <a href="subject.html#3287">[ subject ]</a>
+              <a href="author.html#3287">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

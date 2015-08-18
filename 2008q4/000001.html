@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Improving color alignment with pixels
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2008q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Improving%20color%20alignment%20with%20pixels&In-Reply-To=%3CPine.LNX.4.64.0812211906420.18426%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000000.html">
+   <LINK REL="Next"  HREF="000002.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Improving color alignment with pixels</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Improving%20color%20alignment%20with%20pixels&In-Reply-To=%3CPine.LNX.4.64.0812211906420.18426%40localhost%3E"
+       TITLE="[hatari-devel] Improving color alignment with pixels">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Dec 21 19:14:32 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000000.html">[hatari-devel] Improving color alignment with pixels
+</A></li>
+        <LI>Next message: <A HREF="000002.html">[hatari-devel] Improving color alignment with pixels
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1">[ date ]</a>
+              <a href="thread.html#1">[ thread ]</a>
+              <a href="subject.html#1">[ subject ]</a>
+              <a href="author.html#1">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 21 Dec 2008, Thomas Huth wrote:
+
+&gt;<i>
+</I>&gt;<i> Moving this thread to the new list at berlios.de ...
+</I>&gt;<i>
+</I>&gt;<i> On Mon, 15 Dec 2008 11:15:58 +0100 (CET)
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> On Mon, 15 Dec 2008, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">tobe at freemind-tobe.com</A> wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> How can i adjust these timings for the blitter ? Actually a word
+</I>&gt;&gt;&gt;&gt;&gt;<i> operation can take from 4 to 12 cycles.
+</I>&gt;&gt;&gt;&gt;&gt;<i> The cycles buffering implemented in blitter.c was mainly done to
+</I>&gt;&gt;&gt;&gt;&gt;<i> fix blitter-rasters, and if possible i would like to get ride of
+</I>&gt;&gt;&gt;&gt;&gt;<i> it.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> in order to do this, we would need to adapt
+</I>&gt;&gt;&gt;&gt;<i> Cycles_GetCounterOnWriteAcces to have a different result depending
+</I>&gt;&gt;&gt;&gt;<i> on whether the write was made by the cpu or by the blitter.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> As the blitter is using iomem funtions, one solution would be to
+</I>&gt;&gt;&gt;&gt;<i> add a parameter to the functions to tell if the write is performed
+</I>&gt;&gt;&gt;&gt;<i> by the cpu or by the blitter, and use this in
+</I>&gt;&gt;&gt;&gt;<i> Cycles_GetCounterOnWriteAcces.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Once this is done, we can have a case for the cpu timing and
+</I>&gt;&gt;&gt;&gt;<i> another one for the blitter.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Thomas, what would be your opinion on this ?
+</I>&gt;<i>
+</I>&gt;<i> Sounds ok for me, I also don't have a idea for a real better solution
+</I>&gt;<i> (with good performance).
+</I>
+
+I just committed a patch to do this. As we only have to differentiate 
+between cpu and blitter at the bus level, I added a variable named 
+'BusMode' which is by default BUS_MODE_CPU.
+When the blitter starts working, it sets BusMode to BUS_MODE_BLITTER.
+When done, it sets it back to BUS_MODE_CPU.
+
+This way, the overhead is minimal and I don't think we should see any 
+performance impact (no modification to IoMem functions required and no 
+parameter to add).
+
+Tob&#233;, you can now adjust blitter specific timings in cycles.c and 
+spec512.c (I might put the special case of spec512.c in cycles.c too, so 
+only cycles.c will be relevant).
+
+By knowing how many words were already processed by the blitter, you 
+should be able to determine how many cycles should be added to have a 
+precise value of the write cycle and obtain correct color alignment and 
+border removal with the blitter.
+
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000000.html">[hatari-devel] Improving color alignment with pixels
+</A></li>
+	<LI>Next message: <A HREF="000002.html">[hatari-devel] Improving color alignment with pixels
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1">[ date ]</a>
+              <a href="thread.html#1">[ thread ]</a>
+              <a href="subject.html#1">[ subject ]</a>
+              <a href="author.html#1">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

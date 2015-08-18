@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [Crossbar emulation] : new infos, + some help needed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5BCrossbar%20emulation%5D%20%3A%20new%20infos%2C%20%2B%20some%20help%20needed&In-Reply-To=%3C4ABA2F64.5080708%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000757.html">
+   <LINK REL="Next"  HREF="000740.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [Crossbar emulation] : new infos, + some help needed</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5BCrossbar%20emulation%5D%20%3A%20new%20infos%2C%20%2B%20some%20help%20needed&In-Reply-To=%3C4ABA2F64.5080708%40free.fr%3E"
+       TITLE="[hatari-devel] [Crossbar emulation] : new infos, + some help needed">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Sep 23 16:23:32 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000757.html">[hatari-devel] [Crossbar emulation] : new infos and a problem in DmaSnd.c (I think)
+</A></li>
+        <LI>Next message: <A HREF="000740.html">[hatari-devel] [Crossbar emulation] : new infos, + some help needed (complement of infos)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#739">[ date ]</a>
+              <a href="thread.html#739">[ thread ]</a>
+              <a href="subject.html#739">[ subject ]</a>
+              <a href="author.html#739">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok, for now, I've implemented the first part : DSP out and DMA sound play.
+Sound is better than before, but ... it plays too fast. (ARGHHHH !)
+I can hear it both from DMA sound play and DSP out play.
+
+I'll try to explain what I'm trying to code, from what I understand of 
+the subject :
+
+Falcon sound is composed of 3 parts :
+
+- DMA sound (play and record)
+- Crossbar
+- ADC/DAC
+
+Crossbar is composed of 4 parts :
+- DSP Xmit/Send
+- External Port send/receive
+- DAC/ADC
+- DMA record/playback
+
+Yes, it seems that there are 2 sets of DMA devices in the Falcon (one 
+for sound and one into the crossbar).
+
+My first problem was to understand which parameters are for each DMA, as 
+in the compendium, they're both names &quot;DMA&quot;.
+(In page B-28 of the compendium, you can read : (DMA OUT) is linked to 
+(DMA IN) for example).
+
+I've tried to name functions DmaSound into my code.
+Functions for DMA crossbar will be called DmaCB_xyz.
+So will I code DmaCB_handle (for int.c interrupts, ...)
+
+Actually, I've applied the correct frequencies for DSP out and DmaSound 
+play (I think).
+
+DmaSound play should go into DmaCB play which should go into the DAC.
+This one has a 32 bytes buffer for recording and for playing and it's 
+frequency can be different than the DmaSound frequency.
+I haven't coded the DmaCB for now.
+
+
+For the DAC part :
+
+I've taken the DAC code from DmaSound.c
+I've seen that DAC merges it's datas in a buffer coming from the PSG.
+
+I think that my frequency problem comes from this function, but I'm not 
+sure.
+Thomas, Would you please have a look at Crossbar_GenerateSamples() ?
+Can I use it the same as you did in DmaSound.c ?
+(You were reading the whole buffer at one time, I'm sending datas in 
+interrupted mode (at a certain frequency).
+
+
+
+Todo list :
+- finish to implement DmaCB (in and out), ADC, DmaSound record
+- multiplex (or not) DAC sound with psg sound
+- finish to code DSP Xmit and DSP receive correctly in all modes (use 
+SC0, SC1 and SC2)
+- implement the 2, 3 and 4 tracks playing/recording
+
+
+Regards,
+
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000757.html">[hatari-devel] [Crossbar emulation] : new infos and a problem in DmaSnd.c (I think)
+</A></li>
+	<LI>Next message: <A HREF="000740.html">[hatari-devel] [Crossbar emulation] : new infos, + some help needed (complement of infos)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#739">[ date ]</a>
+              <a href="thread.html#739">[ thread ]</a>
+              <a href="subject.html#739">[ subject ]</a>
+              <a href="author.html#739">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

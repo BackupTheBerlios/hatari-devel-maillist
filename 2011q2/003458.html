@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Compiling Hatari with Clang (from LLVM project) and the resulting signed comparison warnings
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compiling%20Hatari%20with%20Clang%20%28from%20LLVM%20project%29%0A%20and%20the%20resulting%20signed%20comparison%20warnings&In-Reply-To=%3CBANLkTiksJyu89Z7%2B-fZJLi6FJ%2BXwK8MwRA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003457.html">
+   <LINK REL="Next"  HREF="003478.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Compiling Hatari with Clang (from LLVM project) and the resulting signed comparison warnings</H1>
+    <B>Deniz Turkoglu</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compiling%20Hatari%20with%20Clang%20%28from%20LLVM%20project%29%0A%20and%20the%20resulting%20signed%20comparison%20warnings&In-Reply-To=%3CBANLkTiksJyu89Z7%2B-fZJLi6FJ%2BXwK8MwRA%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Compiling Hatari with Clang (from LLVM project) and the resulting signed comparison warnings">turkoglu.deniz at gmail.com
+       </A><BR>
+    <I>Sun May 22 12:22:01 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003457.html">[hatari-devel] Compiling Hatari with Clang (from LLVM project) and	the resulting signed comparison warnings
+</A></li>
+        <LI>Next message: <A HREF="003478.html">[hatari-devel] Compiling Hatari with Clang (from LLVM project) and the resulting signed comparison warnings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3458">[ date ]</a>
+              <a href="thread.html#3458">[ thread ]</a>
+              <a href="subject.html#3458">[ subject ]</a>
+              <a href="author.html#3458">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, May 22, 2011 at 11:15 AM, Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> As there was recently an article series on effects of having undefined
+</I>&gt;<i> behavior in C program:
+</I>&gt;<i> &#160; &#160; &#160; &#160;<A HREF="http://blog.llvm.org/">http://blog.llvm.org/</A>
+</I>&gt;<i>
+</I>&gt;<i> For fun I compiled Hatari with Clang:
+</I>&gt;<i> &#160; &#160; &#160; &#160;<A HREF="http://clang.llvm.org/">http://clang.llvm.org/</A>
+</I>&gt;<i>
+</I>&gt;<i> Only thing you need to do is:
+</I>&gt;<i> &#160; &#160; &#160; &#160;CC=clang ../configure
+</I>&gt;<i>
+</I>&gt;<i> (I first tried using -O4 which enables link time optimization too,
+</I>&gt;<i> but that apparently needs the new Gold linker.)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> There was a large amount of unsigned vs. signed comparison warnings:
+</I>&gt;<i>
+</I>&gt;<i> /home/eero/work/hatari/src/floppy.c:607:13: warning: comparison of integers
+</I>&gt;<i> of different signs: 'short' and 'Uint16' (aka 'unsigned short') [-Wsign-
+</I>&gt;<i> compare]
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;if (Count &gt; nSectorsPerTrack)
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;~~~~~ ^ ~~~~~~~~~~~~~~~~
+</I>&gt;<i> /home/eero/work/hatari/src/floppy.c:686:13: warning: comparison of integers
+</I>&gt;<i> of different signs: 'short' and 'Uint16' (aka 'unsigned short') [-Wsign-
+</I>&gt;<i> compare]
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;if (Count &gt; nSectorsPerTrack)
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;~~~~~ ^ ~~~~~~~~~~~~~~~~
+</I>&gt;<i>
+</I>&gt;<i> -&gt; As Count given to Floppy_ReadSectors() &amp; Floppy_WriteSectors() is
+</I>&gt;<i> &#160; always 1, either the count could be removed and function renamed
+</I>&gt;<i> &#160; *Sectors -&gt; *Sector, or it could be changed to Uint16.
+</I>&gt;<i>
+</I>&gt;<i> Which one I should do?
+</I>
+Great, I really like that project and on OSX they are pushing for it.
+Regarding the use of unsigned can we only use it when we really need
+to, and not when the value is always positive. Not that it poses a
+great risk in Hatari, just as a good practice :)
+
+The undefined behaviour series are nice, I think they should mention
+sequence points[1] a bit more though, they are mostly asked in
+interviews.
+
+[1] <A HREF="http://blog.susam.in/2010/05/sequence-points.html">http://blog.susam.in/2010/05/sequence-points.html</A>
+
+-deniz
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> /home/eero/work/hatari/src/fdc.c:1615:24: warning: comparison of integers of
+</I>&gt;<i> different signs: 'short' and 'unsigned short' [-Wsign-compare]
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;if (nReadWriteSector &gt; nReadWriteSectorsPerTrack) &#160; /*
+</I>&gt;<i> Advance into next track? */
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;~~~~~~~~~~~~~~~~ ^ ~~~~~~~~~~~~~~~~~~~~~~~~~
+</I>&gt;<i> /home/eero/work/hatari/src/fdc.c:1654:24: warning: comparison of integers of
+</I>&gt;<i> different signs: 'short' and 'unsigned short' [-Wsign-compare]
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;if (nReadWriteSector &gt; nReadWriteSectorsPerTrack) &#160; /*
+</I>&gt;<i> Advance to next track? */
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;~~~~~~~~~~~~~~~~ ^ ~~~~~~~~~~~~~~~~~~~~~~~~~
+</I>&gt;<i>
+</I>&gt;<i> /home/eero/work/hatari/src/msa.c:132:21: warning: comparison of integers of
+</I>&gt;<i> different signs: 'short' and 'Uint16' (aka 'unsigned short') [-Wsign-
+</I>&gt;<i> compare]
+</I>&gt;<i> &#160; &#160; &#160; &#160;if (pMSAHeader-&gt;ID == SDL_SwapBE16(0x0E0F))
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;~~~~~~~~~~~~~~ ^ &#160;~~~~~~~~~~~~~~~~~~~~
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> /home/eero/work/hatari/src/falcon/dsp_cpu.c:1529:19: warning: comparison of
+</I>&gt;<i> integers of different signs: 'Sint16' (aka 'short') and 'Uint16' (aka
+</I>&gt;<i> 'unsigned short')
+</I>&gt;<i> &#160; &#160; &#160;[-Wsign-compare]
+</I>&gt;<i> &#160; &#160; &#160; &#160;if (orig_modifier&gt;modulo) {
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;~~~~~~~~~~~~~^~~~~~~
+</I>&gt;<i> /home/eero/work/hatari/src/falcon/dsp_cpu.c:1530:18: warning: comparison of
+</I>&gt;<i> integers of different signs: 'Sint16' (aka 'short') and 'Uint16' (aka
+</I>&gt;<i> 'unsigned short')
+</I>&gt;<i> &#160; &#160; &#160;[-Wsign-compare]
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;while (modifier&gt;bufsize) {
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; ~~~~~~~~^~~~~~~~
+</I>&gt;<i> /home/eero/work/hatari/src/falcon/dsp_cpu.c:1542:19: warning: comparison of
+</I>&gt;<i> integers of different signs: 'Sint16' (aka 'short') and 'Uint16' (aka
+</I>&gt;<i> 'unsigned short')
+</I>&gt;<i> &#160; &#160; &#160;[-Wsign-compare]
+</I>&gt;<i> &#160; &#160; &#160; &#160;if (orig_modifier!=modulo) {
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;~~~~~~~~~~~~~^ ~~~~~~
+</I>&gt;<i> /home/eero/work/hatari/src/falcon/dsp_cpu.c:1543:12: warning: comparison of
+</I>&gt;<i> integers of different signs: 'Sint16' (aka 'short') and 'Uint16' (aka
+</I>&gt;<i> 'unsigned short')
+</I>&gt;<i> &#160; &#160; &#160;[-Wsign-compare]
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;if (r_reg&gt;hibound) {
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;~~~~~^~~~~~~~
+</I>&gt;<i> /home/eero/work/hatari/src/falcon/dsp_cpu.c:1545:19: warning: comparison of
+</I>&gt;<i> integers of different signs: 'Sint16' (aka 'short') and 'Uint16' (aka
+</I>&gt;<i> 'unsigned short')
+</I>&gt;<i> &#160; &#160; &#160;[-Wsign-compare]
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;} else if (r_reg&lt;lobound) {
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; ~~~~~^~~~~~~~
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> (And a huge amount of unused variables &amp; argument warnings from
+</I>&gt;<i> uae-cpu/cpuemu.c.)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &#160; &#160; &#160; &#160;- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003457.html">[hatari-devel] Compiling Hatari with Clang (from LLVM project) and	the resulting signed comparison warnings
+</A></li>
+	<LI>Next message: <A HREF="003478.html">[hatari-devel] Compiling Hatari with Clang (from LLVM project) and the resulting signed comparison warnings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3458">[ date ]</a>
+              <a href="thread.html#3458">[ thread ]</a>
+              <a href="subject.html#3458">[ subject ]</a>
+              <a href="author.html#3458">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

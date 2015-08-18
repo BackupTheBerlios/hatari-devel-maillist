@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP optimization?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20optimization%3F&In-Reply-To=%3C4D319E23.4030605%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002787.html">
+   <LINK REL="Next"  HREF="002796.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP optimization?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20optimization%3F&In-Reply-To=%3C4D319E23.4030605%40corp.free.fr%3E"
+       TITLE="[hatari-devel] DSP optimization?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Jan 15 14:16:19 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002787.html">[hatari-devel] DSP optimization?
+</A></li>
+        <LI>Next message: <A HREF="002796.html">[hatari-devel] DSP optimization?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2791">[ date ]</a>
+              <a href="thread.html#2791">[ thread ]</a>
+              <a href="subject.html#2791">[ subject ]</a>
+              <a href="author.html#2791">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 15/01/2011 11:57, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Now that Hatari DSP code doesn't anymore track Aranym, could we change
+</I>&gt;<i> the dsp_core to be a static array like CPU core data is?
+</I>&gt;<i>
+</I>&gt;<i> Accessing the core through a pointer is a small overhead in about everything
+</I>&gt;<i> DSP does and we don't gain anything from it as Hatari will never emulate
+</I>&gt;<i> more than one DSP at the time (like AFAIK has been the idea with the Aranym
+</I>&gt;<i> DSP code).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>
+Hello
+
+on contrary to what it may look, it's not obvious that such patch would 
+make things faster.
+
+For example on 680xx cpu, &quot;address register indirect with displacement&quot; 
+is faster than &quot;absolute long&quot;, which means &quot;move.l 12(a5),d0&quot; is faster 
+than &quot;move.l $75120,d0&quot;.
+
+I don't know for recent cpu (x86, arm or others), but it's also possible 
+you get similar results (harder to measure with moderm pipeline/reordering).
+
+It would need to be profiled to see if there's a real different between 
+dereferencing a pointer or accessing directly the memory address, but I 
+don't think the gain would be noticable on CPU that would benefit from 
+it, and it could even be negative on 680x0 cpu or others cpu.
+
+Nicolas
+
+
+&gt;<i> PS. I once even had a patch for that, but it's of course now out of date
+</I>&gt;<i> and I don't remember whether I ever profiled it.
+</I>&gt;<i>
+</I>&gt;<i> PPS. On quick&amp;  short profiling, Mahabharata DSP bottlenecks seems to
+</I>&gt;<i> be dsp_jclr_pp() and dsp56k_execute_instruction() functions, both of them
+</I>&gt;<i> executing over 20% of all instructions.
+</I>&gt;<i>
+</I>&gt;<i> (next ones are interrupt handling, m68k_go(), DSP_Run() with much smaller
+</I>&gt;<i> percentages.)
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002787.html">[hatari-devel] DSP optimization?
+</A></li>
+	<LI>Next message: <A HREF="002796.html">[hatari-devel] DSP optimization?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2791">[ date ]</a>
+              <a href="thread.html#2791">[ thread ]</a>
+              <a href="subject.html#2791">[ subject ]</a>
+              <a href="author.html#2791">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

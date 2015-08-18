@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger address base
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20address%20base&In-Reply-To=%3Calpine.LMD.2.00.0907312058400.1913%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000537.html">
+   <LINK REL="Next"  HREF="000542.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger address base</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20address%20base&In-Reply-To=%3Calpine.LMD.2.00.0907312058400.1913%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Debugger address base">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Jul 31 21:05:00 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000537.html">[hatari-devel] Debugger address base
+</A></li>
+        <LI>Next message: <A HREF="000542.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#539">[ date ]</a>
+              <a href="thread.html#539">[ thread ]</a>
+              <a href="subject.html#539">[ subject ]</a>
+              <a href="author.html#539">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 31 Jul 2009, Thomas Huth wrote:
+
+&gt;<i> On Thu, 30 Jul 2009 22:39:16 +0200 (CEST)
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> On Thu, 30 Jul 2009, Eero Tamminen wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Anyway, I think it might be better to have an option for forcing
+</I>&gt;&gt;&gt;<i> all numbers lacking prefix to be interpreted in certain number
+</I>&gt;&gt;&gt;<i> base.  The new &quot;value&quot; command could for example accept special
+</I>&gt;&gt;&gt;<i> &quot;dec&quot;, &quot;hex&quot; and &quot;bin&quot; argument for switching this.
+</I>&gt;<i>
+</I>&gt;<i> That sounds like a good idea! Could you implement this?
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i> The debugger prompt could show this mode.
+</I>&gt;<i>
+</I>&gt;<i> I'd rather would just show the mode when one enters the &quot;value&quot; command
+</I>&gt;<i> without arguments. I think you don't change the base too often, so
+</I>&gt;<i> showing it at each prompt sounds a little bit too much.
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i> In the config file this option could be named e.g.
+</I>&gt;&gt;&gt;<i> NumberInputBase.  But what should be the prefix used for decimal
+</I>&gt;&gt;&gt;<i> numbers when non-the prefixed input is being interpreted as hex or
+</I>&gt;&gt;&gt;<i> binary?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Yes, that's what I wondered too :) Maybe we could use '+' or '#' ?
+</I>&gt;<i>
+</I>&gt;<i> Sounds good, I'd prefer '+' but '#' is also fine for me.
+</I>&gt;<i>
+</I>&gt;<i> Thomas
+</I>
+By the way, there's a possibility that I think would be quite useful : to 
+be able to use Hatari's variable as breakpoint condition.
+
+The 2 variables I'm thinking about for now are nVBLs and nHBL, as 
+sometimes you know a problem will happen after a certain time, or only at 
+a certain line, so doing something like :
+
+VBL=30 &amp;&amp; HBL=263 &amp;&amp; ( $ff820a ) = 0
+
+would be really cool.
+
+Certainly some other variables could be exported this way, with a simple 
+table to associate a string to a pointer to that variable (we could assume 
+it's always 'int' size).
+
+Would change the parser and the breakpoint evaluation function, so I'm not 
+sure if it could be done before release (Eero ?)
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000537.html">[hatari-devel] Debugger address base
+</A></li>
+	<LI>Next message: <A HREF="000542.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#539">[ date ]</a>
+              <a href="thread.html#539">[ thread ]</a>
+              <a href="subject.html#539">[ subject ]</a>
+              <a href="author.html#539">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

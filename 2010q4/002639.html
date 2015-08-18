@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CE4012D.9050708%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002638.html">
+   <LINK REL="Next"  HREF="002640.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CE4012D.9050708%40free.fr%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Nov 17 17:22:05 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002638.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002640.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2639">[ date ]</a>
+              <a href="thread.html#2639">[ thread ]</a>
+              <a href="subject.html#2639">[ subject ]</a>
+              <a href="author.html#2639">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>OK, I've analyzed the problem a bit deeper :
+
+I've traced cpu (--trace cpu_disasm) with both old_cpu and winuae cpu in 
+both compatible =0 and compatible = 1 modes.
+I just trace the first 20 instructions when the &quot;real Atari&quot; is booting.
+
+I can see that :
+
+old_cpu gives the same output with compatible =0 and compatible = 1 modes.
+
+cpu video_cyc=     0   0@  0 : 00fc0030: 46fc 2700 4e70 0cb9 fa52 
+MV2SR.W #$2700
+cpu video_cyc=    16  16@  0 : 00fc0034: 4e70 0cb9 fa52 235f 00fa RESET.L
+cpu video_cyc=   148 148@  0 : 00fc0036: 0cb9 fa52 235f 00fa 0000 CMP.L 
+#$fa52235f,$00fa0000
+cpu video_cyc=   176 176@  0 : 00fc0040: 660a 4dfa 0008 4ef9 00fa BNE.B 
+#$0000000a == 00fc004c (TRUE)
+cpu video_cyc=   188 188@  0 : 00fc004c: 4dfa 0006 6000 0636 660a LEA.L 
+(PC,$0006) == $00fc0054,A6
+cpu video_cyc=   196 196@  0 : 00fc0050: 6000 0636 660a 13f9 0000 BT .W 
+#$0636 == 00fc0688 (TRUE)
+cpu video_cyc=   208 208@  0 : 00fc0688: 9bcd 0cad 7520 19f3 0420 SUBA.L 
+A5,A5
+cpu video_cyc=   216 216@  0 : 00fc068a: 0cad 7520 19f3 0420 6612 CMP.L 
+#$752019f3,(A5,$0420) == $00000420
+cpu video_cyc=   240 240@  0 : 00fc0692: 6612 0cad 2376 98aa 043a BNE.B 
+#$00000012 == 00fc06a6 (FALSE)
+cpu video_cyc=   248 248@  0 : 00fc0694: 0cad 2376 98aa 043a 6608 CMP.L 
+#$237698aa,(A5,$043a) == $0000043a
+cpu video_cyc=   272 272@  0 : 00fc069c: 6608 0cad 5555 aaaa 051a BNE.B 
+#$00000008 == 00fc06a6 (FALSE)
+cpu video_cyc=   280 280@  0 : 00fc069e: 0cad 5555 aaaa 051a 4ed6 CMP.L 
+#$5555aaaa,(A5,$051a) == $0000051a
+cpu video_cyc=   304 304@  0 : 00fc06a6: 4ed6 0777 0700 0070 0770 JMP.L (A6)
+
+
+WinUae CPU with compatible mode = 0 gives the same result too:
+(It stops far later with 20 bombs for other reasons I haven't found yet).
+
+CPU_EMU_0.c :
+
+cpu video_cyc=     0   0@  0 : 00FC0030 46fc 2700                MV2SR.W 
+#$2700
+cpu video_cyc=     0   0@  0 : 00FC0034 4e70                     RESET.L
+cpu video_cyc=     0   0@  0 : 00FC0036 0cb9 fa52 235f 00fa 0000 CMP.L 
+#$fa52235f,$00fa0000
+cpu video_cyc=     0   0@  0 : 00FC0040 660a                     BNE.B 
+#$0000000a == $00FC004C (T)
+cpu video_cyc=     0   0@  0 : 00FC004C 4dfa 0006                LEA.L 
+(PC,$0006) == $00fc0054,A6
+cpu video_cyc=     0   0@  0 : 00FC0050 6000 0636                BT .W 
+#$0636 == $00FC0688 (T)
+cpu video_cyc=     0   0@  0 : 00FC0688 9bcd                     SUBA.L 
+A5,A5
+cpu video_cyc=     0   0@  0 : 00FC068A 0cad 7520 19f3 0420      CMP.L 
+#$752019f3,(A5, $0420) == $00000420
+cpu video_cyc=     0   0@  0 : 00FC0692 6612                     BNE.B 
+#$00000012 == $00FC06A6 (F)
+cpu video_cyc=     0   0@  0 : 00FC0694 0cad 2376 98aa 043a      CMP.L 
+#$237698aa,(A5, $043a) == $0000043a
+cpu video_cyc=     0   0@  0 : 00FC069C 6608                     BNE.B 
+#$00000008 == $00FC06A6 (F)
+cpu video_cyc=     0   0@  0 : 00FC069E 0cad 5555 aaaa 051a      CMP.L 
+#$5555aaaa,(A5, $051a) == $0000051a
+cpu video_cyc=     0   0@  0 : 00FC06A6 4ed6                     JMP.L (A6)
+
+
+WinUae CPU with compatible mode = 1 gives very wrong result:
+(I've applied my little patch I sent yesterday in memory.h to let it run)
+
+CPU_EMU_11.c :
+
+cpu video_cyc=     0   0@  0 : 00FC0030 46fc 2700                MV2SR.W 
+#$2700
+cpu video_cyc=     0   0@  0 : 00FC0034 4e70                     RESET.L
+cpu video_cyc=     0   0@  0 : 00FC0038 fa52                     ILLEGAL.L
+cpu video_cyc=     0   0@  0 : 00FC003C 00fa                     ILLEGAL.L
+cpu video_cyc=     0   0@  0 : 00FC0040 660a                     BNE.B 
+#$0000000a == $00FC004C (F)
+cpu video_cyc=     0   0@  0 : 00FC0044 0008                     ILLEGAL.L
+cpu video_cyc=     0   0@  0 : 00FC0048 00fa                     ILLEGAL.L
+cpu video_cyc=     0   0@  0 : 00FC004C 4dfa 0006                LEA.L 
+(PC,$0006) == $00fc0054,A6
+cpu video_cyc=     0   0@  0 : 00FC0050 6000 0636                BT .W 
+#$0636 == $00FC0688 (T)
+cpu video_cyc=     0   0@  0 : 00FC0054 660a                     BNE.B 
+#$0000000a == $00FC0060 (F)
+
+
+Here, I've seen that the trace tells that the instruction is a reset, 
+but I've placed a fprintf in CPU_EMU_11.c in the RESET.L function, and 
+it never displays.
+I think that the CPU always executes ILLEGAL code instead, which 
+explains why the PC goes +4 by +4 and not only +2 after the RESET 
+instruction. In newcpu.c:run_1, opcode is always equal to 0.
+
+So the trace tells we're executing a RESET.L, but the instruction 
+executed is a ILLEGAL (opcode = 0)
+
+
+If I change one line in newcpu.c like this :
+
+static void m68k_run_1 (void)
+{
+     struct regstruct *r = &regs;
+
+     for (;;) {
+//        uae_u32 opcode  = r-&gt;ir;
+         uae_u32 opcode  = get_iword (0); &lt;-- this line
+
+
+I get the following trace :
+
+cpu video_cyc=     0   0@  0 : 00FC0030 46fc 2700                MV2SR.W 
+#$2700
+cpu video_cyc=     0   0@  0 : 00FC0034 4e70                     RESET.L
+cpu video_cyc=     0   0@  0 : 00FC0036 0cb9 fa52 235f 00fa 0000 CMP.L 
+#$fa52235f,$00fa0000
+cpu video_cyc=     0   0@  0 : 00FC0040 660a                     BNE.B 
+#$0000000a == $00FC004C (T)
+cpu video_cyc=     0   0@  0 : 00FC004C 4dfa 0006                LEA.L 
+(PC,$0006) == $00fc0054,A6
+cpu video_cyc=     0   0@  0 : 00FC0050 6000 0636                BT .W 
+#$0636 == $00FC0688 (T)
+cpu video_cyc=     0   0@  0 : 00FC0052 0636 660a 13f9 0000 0424 ADD.B 
+#$0a,(D1.W*2+139771120714788)+0 == $0a000000
+M68000 Bus Error writing at address $fc004e.
+cpu video_cyc=    52  52@  0 : 00000000 602e                     BT .B 
+#$0000002e == $00000030 (T)
+cpu video_cyc=    52  52@  0 : 00000030 0000 0000                OR.B 
+#$00,D0
+cpu video_cyc=    52  52@  0 : 00000034 0000 0000                OR.B 
+#$00,D0
+cpu video_cyc=    52  52@  0 : 00000038 0000 0000                OR.B 
+#$00,D0
+cpu video_cyc=    52  52@  0 : 0000003C 0000 0000                OR.B 
+#$00,D0
+
+The trace is good until the BT.w which doesn't jump (but the condition 
+result seems good, and the PC goes normally).
+
+
+So, it seems that WinUae (compatible = 0) works quite correctly and may 
+be the first cpu to try to let run.
+
+In compatible = 1 mode, there's something wrong with opcode computing in 
+the run_1 (...) function.
+(r-&gt;ir problem) ? Something else ?
+
+
+
+Last point, I'm not that sure that my yesterday's patch is good, as it 
+always return 0.
+Maybe it's this patch that generates all the problems.
+
+Could anybody have a little look at it ?
+(run actual hatari with --compatible = 1 generates a segfault)
+(The problem seems to be in memory.h in the get_wordi function)
+
+
+I continue to search :)
+
+Regards
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002638.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002640.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2639">[ date ]</a>
+              <a href="thread.html#2639">[ thread ]</a>
+              <a href="subject.html#2639">[ subject ]</a>
+              <a href="author.html#2639">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

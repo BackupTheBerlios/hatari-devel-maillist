@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari doesn't execute any instructions?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20doesn%27t%20execute%20any%20instructions%3F&In-Reply-To=%3Calpine.LMD.2.00.1005122251570.7194%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002069.html">
+   <LINK REL="Next"  HREF="002075.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari doesn't execute any instructions?</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20doesn%27t%20execute%20any%20instructions%3F&In-Reply-To=%3Calpine.LMD.2.00.1005122251570.7194%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Hatari doesn't execute any instructions?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed May 12 23:02:00 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002069.html">[hatari-devel] Hatari doesn't execute any instructions?
+</A></li>
+        <LI>Next message: <A HREF="002075.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2072">[ date ]</a>
+              <a href="thread.html#2072">[ thread ]</a>
+              <a href="subject.html#2072">[ subject ]</a>
+              <a href="author.html#2072">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 12 May 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I was debugging a freeze that happens with RG games:
+</I>&gt;<i> 	<A HREF="http://rg.atari.org/game.htm">http://rg.atari.org/game.htm</A>
+</I>&gt;<i>
+</I>&gt;<i> With the latest EmuTOS v0.8.5, Reservoir Gods Falcon games Bunion, Skyfall
+</I>&gt;<i> and Sworm freeze when a key is pressed.  After this, EmuTOS keeps looping
+</I>&gt;<i> on a single instruction:
+</I>&gt;<i> 	00e00c10: 0000 0380 4ef9 00e0 37cc OR.B #$80,D0
+</I>&gt;<i> 	00e00c14: 4ef9 00e0 37cc 46fc 2700 JMP.L $00e037cc
+</I>&gt;<i> 	00e00c1a: 46fc 2700 6000 fffe 0000 MV2SR.W #$2700
+</I>&gt;<i> =&gt;	00e00c1e: 6000 fffe 0000 4279 0001 BT .W #$fffe == 00e00c1e (TRUE)
+</I>&gt;<i> 	00e00c22: 0000 4279 0001 164c 4e75 OR.B #$79,D0
+</I>&gt;<i> 	00e00c26: 0001 164c 4e75 0000 a0ff OR.B #$4c,D1
+</I>&gt;<i> 	00e00c2a: 4e75 0000 a0ff 0000 0000 RTS.L
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Then I decided to check whether earlier, AHCC compiled EmuTOS (for which
+</I>&gt;<i> I have symbols) has the same issue and found something very strange...
+</I>&gt;<i> 	<A HREF="http://members.chello.nl/h.robbers/emutos_ahcc.zip">http://members.chello.nl/h.robbers/emutos_ahcc.zip</A>
+</I>&gt;<i>
+</I>&gt;<i> With that EmuTOS version, these RG games gets stuck at this instruction:
+</I>&gt;<i> CPU=$e00be6, VBL=4788, FrameCycles=68, HBL=0, LineCycles=68, DSP=N/A
+</I>&gt;&gt;<i> disasm $e00be0
+</I>&gt;<i> 	00e00be0: 0dfc 4e72 2700 46fc 2700 ILLEGAL.L
+</I>&gt;<i> 	00e00be2: 4e72 2700 46fc 2700 60fe STOP.L #$2700
+</I>&gt;<i> =&gt;	00e00be6: 46fc 2700 60fe 4279 0000 MV2SR.W #$2700
+</I>&gt;<i> 	00e00bea: 60fe 4279 0000 530c 4e75 BT .B #$fffffffe == 00e00bea (TRUE)
+</I>&gt;<i> 	00e00bec: 4279 0000 530c 4e75 0000 CLR.W $0000530c
+</I>&gt;<i> 	00e00bf2: 4e75 0000 a0ff 0000 0000 RTS.L
+</I>&gt;<i>
+</I>&gt;<i> Looks nearly the same as above, right?
+</I>&gt;<i>
+</I>&gt;<i> Then I tried profiling this, but unlike latest EmuTOS, it didn't produce any
+</I>&gt;<i> results.  Then I tried getting a cpu_disasm trace and even that didn't
+</I>&gt;<i> produce any output...
+</I>&gt;<i>
+</I>&gt;<i> After attaching Gdb to Hatari and setting some breakpoints, I found out that
+</I>&gt;<i> although Hatari was completely responsive (debugger worked etc), it wasn't
+</I>&gt;<i> anymore executing any m68k instructions.
+</I>&gt;<i>
+</I>&gt;<i> Hatari was stuck in newcpu.c::do_specialties () function, in this loop:
+</I>&gt;<i> -----------------
+</I>&gt;<i> 1564        /* Handle the STOP instruction */
+</I>&gt;<i> 1565        if ( regs.spcflags &amp; SPCFLAG_STOP ) {
+</I>&gt;<i> 1566            /* We first test if there's a pending interrupt that would
+</I>&gt;<i> */
+</I>&gt;<i> 1567            /* allow to immediatly leave the STOP state */
+</I>&gt;<i> -----------------
+</I>&gt;<i>
+</I>&gt;<i> Is it expected that emulation gets stuck like this with the above code?
+</I>
+Yes, it's normal.
+
+In the first case, cpu interrupt level is set to 
+7 (which means it can't be interrupted anymore) and then bt #$fffe will 
+cause and endless loop on the bt instruction.
+
+But in the 2nd case, the &quot;stop $2700&quot; instructs the cpu to stop until an 
+interrupt of level &gt;7 happens. This comes to waiting for a level 8 
+interrupt. But on 68000, interrupt level is on 3 bits, so max is 7. And 
+even level 7 can't be used (except with a cardridge or other HW 
+modifications). The highest usable interrupt is 6 (for MFP).
+So, the STOP instruction will wait forever, because there will never be a 
+level &gt;7 interrupt.
+
+I think this code is a kind of &quot;deadend&quot;, maybe it's used when things went 
+wrong or an uncorrectable error was detected in the compiled code, instead 
+of continuing execution and maybe giving false results.
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002069.html">[hatari-devel] Hatari doesn't execute any instructions?
+</A></li>
+	<LI>Next message: <A HREF="002075.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2072">[ date ]</a>
+              <a href="thread.html#2072">[ thread ]</a>
+              <a href="subject.html#2072">[ subject ]</a>
+              <a href="author.html#2072">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

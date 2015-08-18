@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005102235200.26510%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002038.html">
+   <LINK REL="Next"  HREF="002039.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005102235200.26510%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon May 10 22:46:12 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002038.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002039.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2041">[ date ]</a>
+              <a href="thread.html#2041">[ thread ]</a>
+              <a href="subject.html#2041">[ subject ]</a>
+              <a href="author.html#2041">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 10 May 2010, Laurent Sallafranque wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> A few month ago, MIXBUFFER_SIZE was 8192 instead of 16384.
+</I>&gt;<i> 
+</I>&gt;<i> I changed the value while playing with the crossbar.
+</I>&gt;<i> Perhaps now it could be set again to 8192.
+</I>&gt;<i> I'll do some tests with the crossbar.
+</I>&gt;<i> 
+</I>&gt;<i> Regards
+</I>&gt;<i> 
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>
+
+Hello,
+
+MIXBUFFER_SIZE should be large enough to store the equivalent of 4-5 VBL 
+of audio. So at 50 kHz @ 50 Hz VBL, 1000*5 = 5000 should be enough.
+
+But anyway, this would not fix the real cause of the problem which is in 
+SDL's init ; a shorter ring buffer for MixBuffer means it contains less 
+frames of sound, so automatically the maximum perceived delay is the 
+maximum number of frames storable in MixBuffer.
+
+So with MIXBUFFER_SIZE=5000 maybe you will just have a 5 VBL delay instead 
+of 15 VBL, but the real problem is that you should get 0 delay, not even 5.
+
+Another experiment can be to use the &quot;record avi&quot; function. I think that 
+you will get sound delay when using hatari &quot;live&quot;, but if you play the 
+recorded video later (using mplayer, vlc, ...) I expect there should be no 
+delay.
+This would confirm the problem is not in the way hatari use MixBuffer, but 
+in the audio system init (as mplayer can use alsa directly, I think delay 
+should disappear).
+
+
+Nicolas
+
+
+
+&gt;<i> 
+</I>&gt;<i> Le 10/05/2010 12:58, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit&#160;:
+</I>&gt;<i>       On Sun, 9 May 2010, David Savinkoff wrote:
+</I>&gt;<i>
+</I>&gt;<i>             &#160;&#160;&#160; desiredAudioSpec.freq = nAudioFrequency;
+</I>&gt;<i>             &#160;&#160;&#160; desiredAudioSpec.format = AUDIO_S16SYS;&#160;&#160;&#160;&#160;&#160;&#160; /* 16-Bit signed */
+</I>&gt;<i>             &#160;&#160;&#160; desiredAudioSpec.channels = 2;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; /* stereo */
+</I>&gt;<i>             &#160;&#160;&#160; desiredAudioSpec.samples = 1024;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; /* Buffer size */
+</I>&gt;<i>             &#160;&#160;&#160; desiredAudioSpec.callback = Audio_CallBack;
+</I>&gt;<i>             &#160;&#160;&#160; desiredAudioSpec.userdata = NULL;
+</I>&gt;<i>
+</I>&gt;<i>             Another thing is to make MIXBUFFER_SIZE in sound.h as small as
+</I>&gt;<i>             possible instead of the arbitrarily large 16384 because it
+</I>&gt;<i>             seems that some systems (mine) drift to a maximum delay.
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i>       Shortening MIXBUFFER_SIZE will not stop the drift, you will just drift in a smaller buffer, which will give the feeling the delay is shorter ; but
+</I>&gt;<i>       the delay problem will still be there, so I prefer finding another solution that really fixes it.
+</I>&gt;<i>
+</I>&gt;<i>       Can you try changing &quot;desiredAudioSpec.samples = 1024&quot; to
+</I>&gt;<i>       &quot;desiredAudioSpec.samples = 0&quot; ? This should make SDL computes an optimum samples value that gives apprx 46 ms latency.
+</I>&gt;<i>
+</I>&gt;<i>       Nicolas
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i>
+</I></PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002038.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002039.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2041">[ date ]</a>
+              <a href="thread.html#2041">[ thread ]</a>
+              <a href="subject.html#2041">[ subject ]</a>
+              <a href="author.html#2041">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new support for avi recording
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Calpine.LMD.2.00.0910101213080.32352%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000807.html">
+   <LINK REL="Next"  HREF="000812.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new support for avi recording</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Calpine.LMD.2.00.0910101213080.32352%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] new support for avi recording">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Oct 10 12:14:50 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000807.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000812.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#809">[ date ]</a>
+              <a href="thread.html#809">[ thread ]</a>
+              <a href="subject.html#809">[ subject ]</a>
+              <a href="author.html#809">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 10 Oct 2009, Christer Solskogen wrote:
+
+&gt;<i> On Thu, Oct 8, 2009 at 9:40 PM, Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Thursday 08 October 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;&gt;<i> after quite some time, I finally completed the avi recording support I
+</I>&gt;&gt;&gt;<i> started 2 months ago.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I took a quick look at the code. &#160;It looks otherwise fine, but:
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I see this when compiling it on a mac (cli):
+</I>&gt;<i>
+</I>&gt;<i> tenderheart:hatari solskogen$ make depend
+</I>&gt;<i> make -C src/ depend
+</I>&gt;<i> make cleandeps
+</I>&gt;<i> rm -f Makefile.dep */Makefile.dep
+</I>&gt;<i> make Makefile.dep
+</I>&gt;<i> ccache gcc -M -O3 -pipe -I.. -I./includes -Iuae-cpu -I./debug
+</I>&gt;<i> -I./falcon -DCONFDIR=\&quot;/etc\&quot; -I/opt/local/include/SDL -D_GNU_SOURCE=1
+</I>&gt;<i> -D_THREAD_SAFE -DENABLE_DSP_EMU=1 audio.c avi_record.c bios.c
+</I>&gt;<i> blitter.c cart.c cfgopts.c configuration.c options.c
+</I>&gt;<i> createBlankImage.c change.c control.c cycles.c dialog.c dim.c dmaSnd.c
+</I>&gt;<i> fdc.c file.c floppy.c gemdos.c hd6301_cpu.c hdc.c ide.c ikbd.c int.c
+</I>&gt;<i> ioMem.c ioMemTabST.c ioMemTabSTE.c ioMemTabTT.c ioMemTabFalcon.c joy.c
+</I>&gt;<i> keymap.c m68000.c main.c midi.c memorySnapShot.c mfp.c msa.c paths.c
+</I>&gt;<i> psg.c printer.c rs232.c reset.c rtc.c scandir.c st.c stMemory.c
+</I>&gt;<i> screen.c screenSnapShot.c shortcut.c sound.c spec512.c statusbar.c
+</I>&gt;<i> str.c tos.c unzip.c utils.c vdi.c video.c wavFormat.c xbios.c
+</I>&gt;<i> ymFormat.c zip.c &gt; Makefile.dep
+</I>&gt;<i> avi_record.c:62:17: error: png.h: No such file or directory
+</I>&gt;<i> make[2]: *** No rule to make target `Makefile.dep'.  Stop.
+</I>&gt;<i> make[1]: *** [depend] Error 2
+</I>&gt;<i> make: *** [depend] Error 2
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I have png.h in /opt/local/include/png.h. Hatari compiles without
+</I>&gt;<i> problems so I think that the error is bogus.
+</I>
+According to your gcc line, /opt/local/include/ is not included in gcc 
+search path ; try adding -I/opt/local/include/ to your gcc flags (or run 
+./configure again to update config.h)
+
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000807.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000812.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#809">[ date ]</a>
+              <a href="thread.html#809">[ thread ]</a>
+              <a href="subject.html#809">[ subject ]</a>
+              <a href="author.html#809">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

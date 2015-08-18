@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Conflicting mkdir?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conflicting%20mkdir%3F&In-Reply-To=%3C201107191022.17848.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003812.html">
+   <LINK REL="Next"  HREF="003776.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Conflicting mkdir?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conflicting%20mkdir%3F&In-Reply-To=%3C201107191022.17848.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Conflicting mkdir?">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Jul 19 09:22:17 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003812.html">[hatari-devel] Hatari 1.5.0 is released
+</A></li>
+        <LI>Next message: <A HREF="003776.html">[hatari-devel] Conflicting mkdir?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3775">[ date ]</a>
+              <a href="thread.html#3775">[ thread ]</a>
+              <a href="subject.html#3775">[ subject ]</a>
+              <a href="author.html#3775">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On tiistai 19 hein&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 18/07/2011 22:50, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; Where's the conflicting mkdir mentioned here:
+</I>&gt;<i> &gt; <A HREF="http://hg.berlios.de/repos/hatari/rev/3fd84456e225">http://hg.berlios.de/repos/hatari/rev/3fd84456e225</A>
+</I>&gt;<i> &gt; ?
+</I>&gt;<i> 
+</I>&gt;<i> winuae's sysdeps.h is defining
+</I>&gt;<i> 
+</I>&gt;<i> #define mkdir(x,y) mkdir(x)
+</I>
+Why?
+
+Any hatari code using mkdir is already defining it:
+---------
+$ grep mkdir $(find . -name '*.[ch]')
+./Visual.Studio/VisualStudioFix.h:      #ifndef mkdir
+./Visual.Studio/VisualStudioFix.h:      #define mkdir(name,mode) 
+_mkdir(name)
+./src/cpu/sysdeps.h:#define mkdir(x,y) mkdir(x)
+./src/cpu/sysdeps.h:#define mkdir(a,b) mkdir(a)
+./src/cpu/sysdeps.h:#define mkdir(a,b) mkdir(a)
+./src/cpu/sysdeps.h:#define mkdir(x,y) mkdir(x)
+./src/cpu/sysdeps.h:#define mkdir posixemu_mkdir
+./src/cpu/sysdeps.h:extern int mkdir (const TCHAR *, int);
+./src/gemdos.c:#if defined(WIN32) &amp;&amp; !defined(mkdir)
+./src/gemdos.c:#define mkdir(name,mode) mkdir(name)
+./src/gemdos.c: if (mkdir(psDirPath, 0755) == 0)
+./src/paths.c:#if defined(WIN32) &amp;&amp; !defined(mkdir)
+./src/paths.c:#define mkdir(name,mode) mkdir(name)
+./src/paths.c:                  if (mkdir(sHatariHomeDir, 0755) != 0)
+---------
+
+Only gemdos.c and paths.c are using mkdir, and those are
+defining it themselves.
+
+sysdedps.h actually seems to be defining it several times,
+3 times for windows...  Shouldn't those be removed instead
+or all defines moved to some common header that checks for
+WIN32?
+
+
+&gt;<i> but if you cross compile to build a windows binary, you get a conflict
+</I>&gt;<i> with mkdir from winnt.h which takes only one parameter.
+</I>
+Why that conflicts, all the defines are mapping mkdir calls to one
+parameter?
+
+
+&gt;<i> More generaly, the windows specific define in cpu/* should not be
+</I>&gt;<i> exported to other parts of Hatari, this will create conflict sooner or
+</I>&gt;<i> later when compiling for Windows.
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003812.html">[hatari-devel] Hatari 1.5.0 is released
+</A></li>
+	<LI>Next message: <A HREF="003776.html">[hatari-devel] Conflicting mkdir?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3775">[ date ]</a>
+              <a href="thread.html#3775">[ thread ]</a>
+              <a href="subject.html#3775">[ subject ]</a>
+              <a href="author.html#3775">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

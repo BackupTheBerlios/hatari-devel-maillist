@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Fullscreen / dualhead bug
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fullscreen%20/%20dualhead%20bug&In-Reply-To=%3C201102062041.04560.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002978.html">
+   <LINK REL="Next"  HREF="002999.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Fullscreen / dualhead bug</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fullscreen%20/%20dualhead%20bug&In-Reply-To=%3C201102062041.04560.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Fullscreen / dualhead bug">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Feb  6 19:41:04 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002978.html">[hatari-devel] Fullscreen / dualhead bug
+</A></li>
+        <LI>Next message: <A HREF="002999.html">[hatari-devel] Fullscreen / dualhead bug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2993">[ date ]</a>
+              <a href="thread.html#2993">[ thread ]</a>
+              <a href="subject.html#2993">[ subject ]</a>
+              <a href="author.html#2993">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 05 helmikuu 2011, Anders Eriksson wrote:
+&gt;<i> just a quick bug report:
+</I>&gt;<i> 
+</I>&gt;<i> When using Hatari in fullscreen mode with a dual head setup,
+</I>
+Dual head meaning in your case single X server providing separate screen
+(in X terminology) for each of the monitors?  Do they have the same
+resolution?
+
+
+&gt;<i> the screens
+</I>&gt;<i> get mirrored and when exiting back from Hatari fullscreen the screens are
+</I>&gt;<i> still mirrored. One needs to go to the monitor setup and re-configure it
+</I>&gt;<i> to have the normal dual-head setup back.
+</I>
+What exactly means mirrored?
+
+
+&gt;<i> Machine: HP dc5800 with Intel graphics
+</I>&gt;<i> OS: Ubuntu 10.10 with all updates
+</I>
+Ubuntu 10.10 as in Gnome v2 desktop?
+
+I'd file a bug against Ubuntu (or Gnome if Ubuntu is using standard Gnome
+window manager), seems like their window manager is buggy.  I would expect
+same issue with other SDL programs too.
+
+
+&gt;<i> Hatari: Latest hg
+</I>&gt;<i>
+</I>&gt;<i> In my opinion this is another reason why changing resolution isn't a good
+</I>&gt;<i> idea; a hardware scale to the native resolution would eliminate this
+</I>&gt;<i> problem, and it would also allow a fullscreen Hatari run on one screen,
+</I>
+Other fullscreen SDL programs work fine with your dual head setup?
+
+
+&gt;<i> and a devkit (in my case Eclipse / Vasm) on the other. Using (SDL)OpenGL
+</I>&gt;<i> backend would make it possible to use hardware scaling.
+</I>&gt;<i> 
+</I>&gt;<i> Yeah I know, I culdn't help plug that OpenGL would benefit Hatari, and
+</I>&gt;<i> not just for OS X ;-)
+</I>
+If you're not willing to do it yourself, then you need to find somebody
+to do it for you...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002978.html">[hatari-devel] Fullscreen / dualhead bug
+</A></li>
+	<LI>Next message: <A HREF="002999.html">[hatari-devel] Fullscreen / dualhead bug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2993">[ date ]</a>
+              <a href="thread.html#2993">[ thread ]</a>
+              <a href="subject.html#2993">[ subject ]</a>
+              <a href="author.html#2993">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

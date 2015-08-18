@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100117223520.00ecb0b9%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001267.html">
+   <LINK REL="Next"  HREF="001274.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100117223520.00ecb0b9%40phineus%3E"
+       TITLE="[hatari-devel] CMake build system">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Jan 17 22:35:20 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001267.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001274.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1269">[ date ]</a>
+              <a href="thread.html#1269">[ thread ]</a>
+              <a href="subject.html#1269">[ subject ]</a>
+              <a href="author.html#1269">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 17 Jan 2010 22:13:18 +0100
+Christer Solskogen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">christer.solskogen at gmail.com</A>&gt; wrote:
+
+&gt;<i> &gt; D'oh! Yet another command that is only defined by an optional cmake
+</I>&gt;<i> &gt; module... and I forgot to include the corresponding module in the
+</I>&gt;<i> &gt; CMakeList.txt :-(
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; It should be fixed now in the hg repository on the server...
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> Looks fine on Mac OS X too!
+</I>
+Great!
+
+&gt;<i> getconf: no such configuration parameter `LFS_CFLAGS'
+</I>... 
+&gt;<i> But there are two things I wonder about. The first is this
+</I>&gt;<i> 'LFS_CFLAGS' - It looks like something from Linux From Scratch, but I
+</I>&gt;<i> may be wrong.
+</I>
+LFS means Large Files Support here - it is used to determine the CFLAGS
+that have to be specified for enabling large file system support
+(needed for big hard disk images). You can ignore that line if you
+don't need it.
+
+&gt;<i> The other thing is that I wonder what my CFALGS are when
+</I>&gt;<i> I use cmake.
+</I>
+You can run &quot;make VERBOSE=1&quot; to see a full output of what is going on.
+The default should be to do a &quot;Release&quot; build with -O3 and w/o -g.
+You can also run &quot;cmake -LA&quot; to see a list of the cmake variables.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001267.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001274.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1269">[ date ]</a>
+              <a href="thread.html#1269">[ thread ]</a>
+              <a href="subject.html#1269">[ subject ]</a>
+              <a href="author.html#1269">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

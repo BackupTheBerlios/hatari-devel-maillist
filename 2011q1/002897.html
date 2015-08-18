@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Higher%20precision%20when%20generating%20samples%20-%3E%20use%0A%20nanosleep&In-Reply-To=%3C4D408679.9090202%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002894.html">
+   <LINK REL="Next"  HREF="002900.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Higher precision when generating samples -&gt; use nanosleep</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Higher%20precision%20when%20generating%20samples%20-%3E%20use%0A%20nanosleep&In-Reply-To=%3C4D408679.9090202%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Higher precision when generating samples -&gt; use nanosleep">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Jan 26 21:39:21 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002894.html">[hatari-devel] Higher precision when generating samples -&gt; use	nanosleep
+</A></li>
+        <LI>Next message: <A HREF="002900.html">[hatari-devel] Higher precision when generating samples -&gt; use	nanosleep
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2897">[ date ]</a>
+              <a href="thread.html#2897">[ thread ]</a>
+              <a href="subject.html#2897">[ subject ]</a>
+              <a href="author.html#2897">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 26/01/2011 20:56, Eero Tamminen a &#233;crit :
+
+&gt;&gt;<i> nanosleep is defined in POSIX.1-2001, so it should be OK to use under
+</I>&gt;&gt;<i> Linux and OSX. It seems cygwin is also providing a nanosleep function
+</I>&gt;&gt;<i> that uses Windows' internal calls, so it should be good for Windows too.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> With nanosleep, we could get a much better granularity.
+</I>&gt;<i>
+</I>&gt;<i> I think the reason why SDL isn't offering better granularity is that
+</I>&gt;<i> although some API would have higher accuracy, it doesn't mean that your
+</I>&gt;<i> program would get scheduled at such intervals.
+</I>&gt;<i>
+</I>&gt;<i> On my Debian testing i3 machine with 2.6.32 kernel, the scheduler tick is:
+</I>&gt;<i> 	$ grep '^CONFIG_HZ=' /boot/config-$(uname -r)
+</I>&gt;<i> 	CONFIG_HZ=250
+</I>&gt;<i>
+</I>&gt;<i> I.e. on my machine process CPU time slice size is 4ms.
+</I>&gt;<i>
+</I>&gt;<i> That means that any program/thread using CPU for few ms (on the same CPU),
+</I>&gt;<i> can add 4ms &quot;random&quot; delays to program timings. If there are multiple such
+</I>&gt;<i> programs/threads (on same CPU), it will be some multiple of that CPU slice
+</I>&gt;<i> size.  Even 1000Hz scheduler &quot;tick&quot; could still give n*1ms &quot;random&quot; delays.
+</I>&gt;<i>
+</I>&gt;<i> Only way to get guaranteed timings is to use real-time scheduling and that
+</I>&gt;<i> you really want to use only on programs/threads that been _designed_ to be
+</I>&gt;<i> real-time i.e. the code guarantees always to use less than certain low
+</I>&gt;<i> amount of CPU (so that it doesn't completely freeze the system), unlike
+</I>&gt;<i> Hatari does...
+</I>
+Regarding SDL, I think some part of it are just not up to date to what 
+recent OS/kernel can do nowadays. The fact that they don't provide a 
+finer granularity than 100 ms doesn't mean it's not safe/achievable.
+IMHO, SDL doesn't cover all possible functions an OS can do, it tries to 
+expose a common trunk that works the same under different OS.
+
+So, I think we can try to use finer functions when an OS provide them, 
+and default to SDL if we can't do better.
+
+I agree the program might not be scheduled at the expected time, but 
+it's already the case at 10ms, nothing guarantees you won't be scheduled 
+at 11 or 12 ms.
+
+So, the finer delay we can get, the better it is, then I also agree with 
+your next point :
+
+
+&gt;<i> I think it's more robust to have code that adapts to unprecise timings.
+</I>&gt;<i>
+</I>&gt;<i> Hatari sound behaving erratically when any program runs on background
+</I>&gt;<i> and on platforms which don't have submillisecond accuracy is not really
+</I>&gt;<i> good.
+</I>
+Internally, Hatari already does what you say about adjusting : if a 
+timer B interrupt is delayed by 4 or 8 cycles (because there's a 68000 
+instruction that can't be interrupted now), the next timer B interrupt 
+will be scheduled to happen 4 or 8 cycles earlier (relative to when the 
+delayed timer b happened).
+
+Here in Wait VBL, I think we can do the same :
+  - wait 16.67 ms using nanosleep
+  - read current nanotime
+  - if 16.67 ms were elapsed, we're good.
+  - else let's say we have a 4 ms granularity, so we are at 20 ms 
+instead of 16.67 : then next nanosleep should be 16.67-4 = 12.67 ms
+
+
+So, I don't think we should blindly to &quot;nanosleep (16.67ms)&quot; and 
+consider we're good. We should nanosleep if possible to the closest 
+value, then measure the difference at the end of the nanosleep and take 
+this into account for the next nanosleep.
+
+If possible and nanosleep is ok on a machine, it will be better to 
+alternate between 16.66 ms and 16.67 to emulate a 16.66666... ms delay 
+(60 Hz), than to alternate between 16 ms and 17 ms to also emulate 
+16.6666 ms delay.
+
+We could have a calibration routine at start that roughly try to see if 
+nanosleep can be used instead of SDL_Delay / millisleep and then a self 
+adapting code in Main_WaitOnVbl (as we already have today, expect ticks 
+would be nanosec, not millisec).
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002894.html">[hatari-devel] Higher precision when generating samples -&gt; use	nanosleep
+</A></li>
+	<LI>Next message: <A HREF="002900.html">[hatari-devel] Higher precision when generating samples -&gt; use	nanosleep
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2897">[ date ]</a>
+              <a href="thread.html#2897">[ thread ]</a>
+              <a href="subject.html#2897">[ subject ]</a>
+              <a href="author.html#2897">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

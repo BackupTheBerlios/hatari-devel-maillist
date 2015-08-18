@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20emulation%2C%0A%20what%20are%20the%20legal%20ST%20memory%20areas%20to%20write%20to%3F&In-Reply-To=%3C20091124222244.6bd51f99%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000996.html">
+   <LINK REL="Next"  HREF="000998.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20emulation%2C%0A%20what%20are%20the%20legal%20ST%20memory%20areas%20to%20write%20to%3F&In-Reply-To=%3C20091124222244.6bd51f99%40phineus%3E"
+       TITLE="[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?">huth at users.berlios.de
+       </A><BR>
+    <I>Tue Nov 24 22:22:44 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000996.html">[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+</A></li>
+        <LI>Next message: <A HREF="000998.html">[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#997">[ date ]</a>
+              <a href="thread.html#997">[ thread ]</a>
+              <a href="subject.html#997">[ subject ]</a>
+              <a href="author.html#997">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 24 Nov 2009 22:08:50 +0100 (CET)
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+
+&gt;<i>   - it is really forbidden to write above the end of the ram ? Of
+</I>&gt;<i> course, written value will be lost, but I think the writes should be
+</I>&gt;<i> allowed if address is out of ram, but silently discarded.
+</I>
+The problem is that this memory area might not be mapped at all when
+you compile Hatari with the ENABLE_SMALL_MEM flag. Then this might
+override some of the emulators data or cause a segmentation fault.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000996.html">[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+</A></li>
+	<LI>Next message: <A HREF="000998.html">[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#997">[ date ]</a>
+              <a href="thread.html#997">[ thread ]</a>
+              <a href="subject.html#997">[ subject ]</a>
+              <a href="author.html#997">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

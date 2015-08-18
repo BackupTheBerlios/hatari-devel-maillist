@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Multi brique 11 bombs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Multi%20brique%2011%20bombs&In-Reply-To=%3C20091121182720.0874d181%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000951.html">
+   <LINK REL="Next"  HREF="000952.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Multi brique 11 bombs</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Multi%20brique%2011%20bombs&In-Reply-To=%3C20091121182720.0874d181%40phineus%3E"
+       TITLE="[hatari-devel] Multi brique 11 bombs">huth at users.berlios.de
+       </A><BR>
+    <I>Sat Nov 21 18:27:20 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000951.html">[hatari-devel] Multi brique 11 bombs
+</A></li>
+        <LI>Next message: <A HREF="000952.html">[hatari-devel] Pinball dreams Falcon music is OK
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#953">[ date ]</a>
+              <a href="thread.html#953">[ thread ]</a>
+              <a href="subject.html#953">[ subject ]</a>
+              <a href="author.html#953">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 21 Nov 2009 17:52:49 +0100
+Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+
+&gt;<i> What is 11 bombs error ?
+</I>&gt;<i> 
+</I>&gt;<i> That's what I get with multi brique game.
+</I>&gt;<i> 
+</I>
+11 bombs mean illegal Line-F instruction. Line-F instructions are used
+for the FPU and MMU in the Falcon. So if you run with plain 68020, try
+to enable the &quot;+FPU&quot; mode. If it still crashes with 11 bombs, that most
+likely means that the game tries to re-program the MMU. So this program
+won't work with current Hatari since we don't have MMU emulation yet.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000951.html">[hatari-devel] Multi brique 11 bombs
+</A></li>
+	<LI>Next message: <A HREF="000952.html">[hatari-devel] Pinball dreams Falcon music is OK
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#953">[ date ]</a>
+              <a href="thread.html#953">[ thread ]</a>
+              <a href="subject.html#953">[ subject ]</a>
+              <a href="author.html#953">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

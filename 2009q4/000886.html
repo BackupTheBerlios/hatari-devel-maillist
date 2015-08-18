@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Register ff8260 mysteries
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Register%20ff8260%20mysteries&In-Reply-To=%3Calpine.LMD.2.00.0910241442400.4065%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000889.html">
+   <LINK REL="Next"  HREF="000890.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Register ff8260 mysteries</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Register%20ff8260%20mysteries&In-Reply-To=%3Calpine.LMD.2.00.0910241442400.4065%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Register ff8260 mysteries">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Oct 24 15:20:19 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000889.html">[hatari-devel] Hatari BeOS/Sun (and Windows) users?
+</A></li>
+        <LI>Next message: <A HREF="000890.html">[hatari-devel] HDC emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#886">[ date ]</a>
+              <a href="thread.html#886">[ thread ]</a>
+              <a href="subject.html#886">[ subject ]</a>
+              <a href="author.html#886">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 8 Sep 2009, Thomas Huth wrote:
+
+&gt;<i> On Sun, 6 Sep 2009 14:09:06 +0200 (CEST)
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> The problem is with code at 00fc0a9c ; it's called a first time
+</I>&gt;&gt;<i> before the menu is loaded (and set $44c to 0), and it's called a 2nd
+</I>&gt;&gt;<i> time when pressing F2.
+</I>&gt;<i>
+</I>&gt;<i> Looks like this is the XBIOS Setscreen() function, as far as I can see.
+</I>&gt;<i>
+</I>&gt;&gt;<i> It could be interesting to see on a real ST if the saved values have
+</I>&gt;&gt;<i> the upper bits randomly set to 1 or not (which would validate the
+</I>&gt;&gt;<i> fact that when 68000 is executed from ROM the bus has a different
+</I>&gt;&gt;<i> behavior).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Do you have an ST near you to check this ? (or I will have to unpack
+</I>&gt;&gt;<i> mine, which will take more time)
+</I>&gt;<i>
+</I>&gt;<i> My ST is also packed away, don't know when I've got some spare time to
+</I>&gt;<i> check it there again...
+</I>&gt;<i>
+</I>&gt;<i> Thomas
+</I>
+I had time to unpack my ST, to see if there was a different behaviour when 
+ROM was reading ff8260. Unfortunately, the unused bits are not set to 0 in 
+that case. But by further analyzing the menu code, I see this :
+
+0000b03a: 43f9 0000 baaa 1378 8260 LEA.L $0000baaa,A1
+0000b040: 1378 8260 0001 2378 044e MOVE.B $ffff8260,(A1,$0001) == $0000baab
+0000b046: 2378 044e 0002 4cf8 00ff MOVE.L $0000044e,(A1,$0002) == $0000baac
+0000b04c: 4cf8 00ff 8240 48e9 00ff MVMEL.L #$00ff,$ffff8240
+0000b052: 48e9 00ff 0006 41f8 fa01 MVMLE.L #$00ff,(A1,$0006) == $0000bab0
+...
+-&gt; the menu code is saving the hardware regs
+
+And the restore code when leaving the menu :
+
+0000b12e: 1358 000e 1358 0010 31fc MOVE.B (A0)+,(A1,$000e) == $fffffa2d
+0000b132: 1358 0010 31fc 0001 0452 MOVE.B (A0)+,(A1,$0010) == $fffffa2f
+0000b136: 31fc 0001 0452 4cf9 00ff MOVE.W #$0001,$00000452
+0000b13c: 4cf9 00ff 0000 b322 48f8 MVMEL.L #$00ff,$0000b322
+0000b144: 48f8 00ff 8240 3f39 0000 MVMLE.L #$00ff,$ffff8240
+0000b14a: 3f39 0000 baaa 2f39 0000 MOVE.W $0000baaa,-(A7)
+0000b150: 2f39 0000 baac 2f17 3f3c MOVE.L $0000baac,-(A7)
+000b156: 2f17 3f3c 0005 4e4e 4fef MOVE.L (A7),-(A7)
+0000b158: 3f3c 0005 4e4e 4fef 000c MOVE.W #$0005,-(A7)
+0000b15c: 4e4e 4fef 000c 41f9 ffff TRAP.L #$0000000e
+
+So, setscreen is called with the value obtained earlier from $ff8260 *but 
+without masking it*. The problem is that setscreen itself copies this 
+value directly into $ff8260 (which is not a problem), but also in $44c.
+
+Thus, $44c contains an illegal value ($fc in the case of Hatari), which is 
+not the expected value by the TOS to indicate low res (=0).
+
+When doing this on a real ST, the value we read from $ff8260 is sometimes 
+correctly masked, sometimes or'ed with $f8. This means that even on a real 
+ST the TOS should be wrongly restored and you would get 50% chance to 
+have a masked value in $44c.
+
+And just to be sure, I dumped the .st image to a floppy and tried it on a 
+real ST and ... just with the first try I got the message &quot;only in low 
+resolution&quot;.
+
+So, this menu is definitly bugged even on a ST.
+
+Only things I could do is to randomly set upper bits when reading $ff8260, 
+so the user get a chance that it works sometimes, but I'm not sure this is 
+worth the effort. Better change from med res, then back to low res using 
+the TOS menu, and this will work.
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000889.html">[hatari-devel] Hatari BeOS/Sun (and Windows) users?
+</A></li>
+	<LI>Next message: <A HREF="000890.html">[hatari-devel] HDC emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#886">[ date ]</a>
+              <a href="thread.html#886">[ thread ]</a>
+              <a href="subject.html#886">[ subject ]</a>
+              <a href="author.html#886">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

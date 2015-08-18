@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CPU breakpoints and single-stepping
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3C200906080024.51307.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000352.html">
+   <LINK REL="Next"  HREF="000357.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CPU breakpoints and single-stepping</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3C200906080024.51307.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] CPU breakpoints and single-stepping">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jun  7 23:24:51 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000352.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+        <LI>Next message: <A HREF="000357.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#355">[ date ]</a>
+              <a href="thread.html#355">[ thread ]</a>
+              <a href="subject.html#355">[ subject ]</a>
+              <a href="author.html#355">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 07 June 2009, Thomas Huth wrote:
+&gt;<i> &gt; I think I'll first add similar kind of breakpoints &amp; single stepping
+</I>&gt;<i> &gt; for DSP as you added for CPU and then start working on the break
+</I>&gt;<i> &gt; condition support (first as separate code debugUI).
+</I>&gt;<i>
+</I>&gt;<i> Well, I just had another idea: instead of re-creating such a complex
+</I>&gt;<i> framework for conditional breakpoints, why don't we simply use gdb
+</I>&gt;<i> instead? As far as I know, gdb can also connect to virtual machines (or
+</I>&gt;<i> external devices) through a stub. For example it is possible to use gdb
+</I>&gt;<i> with QEMU to debug the program that is running within QEMU (I never used
+</I>&gt;<i> this, though).
+</I>
+I think this is for the user-space qemu which runs single processes.
+
+If you do the same with system qemu (which is closer to Hatari), you
+would be debugging the whole thing which makes single process debugging
+quite tedious/impossible (context switches...).  For debugging processes
+in such an environment it's much better just to run Gdb server within the
+emulator and connect to that from outside the emulator with host cross-Gdb.
+
+
+&gt;<i> gdb has already conditional breakpoints as far as I know, and a lot of
+</I>&gt;<i> other nice features - even source code debugging might be possible!
+</I>
+Seeing source code/line info with Gdb assumes that:
+- You have matching binaries with debug symbols for Gdb.
+- Gdb understands binary format and the debug symbols in your binaries.
+  (on Atari would mean that the binaries would need to be built with gcc?)
+
+
+&gt;<i> Has anybody a clue what would have to be done to connect a 68k gdb to
+</I>&gt;<i> Hatari?
+</I>
+You provide the Gdb remote debugging (gdb server) socket/serial/etc API
+into which Gdb can connect to.
+
+Gdb would need to support the architecture which you want to debug, also in
+cross mode.  From MiNT list i've understood that for 68k this is fine (one
+can use gdbserver inside Aranym and run cross-Gdb on host), but not for
+DSP... And with Hatari you may want to debug both at the same time.
+
+I think this debugger work is more important for the DSP as that you cannot
+very well debug even with native Atari debuggers like one might be able to
+do for m68k side.
+
+
+&gt;<i> &gt; &gt; Well, but then you could only step one instruction. What if you
+</I>&gt;<i> &gt; &gt; want to skip 100 instructions? With my current implementation, this
+</I>&gt;<i> &gt; &gt; is possible...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Good idea.  -&gt; I'll keep separate single stepping.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Btw.  What do you think of the issue of multiple breakpoints vs.
+</I>&gt;<i> &gt; multiple break conditions?
+</I>&gt;<i>
+</I>&gt;<i> I agree with Nicolas that it might be useful to have multiple
+</I>&gt;<i> breakpoints - comes in very hand if you want to remove just one
+</I>&gt;<i> breakpoint and not the whole breakpoint condition.
+</I>
+Ok.  Attached is a start on conditional breakpoint handling.
+Handling of different addressing modes did / will make the code
+a bit bloated.
+
+(It builds but is otherwise untested.)
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: breakpoint.c
+Type: text/x-csrc
+Size: 8442 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090608/7c32dd8b/attachment.c">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090608/7c32dd8b/attachment.c</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000352.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+	<LI>Next message: <A HREF="000357.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#355">[ date ]</a>
+              <a href="thread.html#355">[ thread ]</a>
+              <a href="subject.html#355">[ subject ]</a>
+              <a href="author.html#355">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

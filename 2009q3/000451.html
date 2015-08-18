@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Latest Hatari HG version gets stuck sometimes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Latest%20Hatari%20HG%20version%20gets%20stuck%20sometimes&In-Reply-To=%3Calpine.LMD.2.00.0907070000260.3510%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000450.html">
+   <LINK REL="Next"  HREF="000452.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Latest Hatari HG version gets stuck sometimes</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Latest%20Hatari%20HG%20version%20gets%20stuck%20sometimes&In-Reply-To=%3Calpine.LMD.2.00.0907070000260.3510%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Latest Hatari HG version gets stuck sometimes">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Jul  7 00:08:00 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000450.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+        <LI>Next message: <A HREF="000452.html">[hatari-devel] DSP Instruction cycle count
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#451">[ date ]</a>
+              <a href="thread.html#451">[ thread ]</a>
+              <a href="subject.html#451">[ subject ]</a>
+              <a href="author.html#451">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 6 Jul 2009, Thomas Huth wrote:
+
+&gt;<i> On Sat, 04 Jul 2009 16:09:48 +0200
+</I>&gt;<i> Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Am Samstag, den 04.07.2009, 01:15 +0300 schrieb Eero Tamminen:
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Nicolas, could this be related to your recent video.c changes?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> For some reason Hatari seems now to sometimes get stuck looping here
+</I>&gt;&gt;&gt;<i> (doesn't update its screen, uses 100% CPU etc):
+</I>&gt;&gt;&gt;<i> [...]
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I don't know if this is related to Nicolas's patch.
+</I>&gt;&gt;<i> I can reproduce thsi lockup witha  totally blank screen (and even F12
+</I>&gt;&gt;<i> not working anymore) with the freshly released &quot;Just when&quot; Demo by XIA
+</I>&gt;&gt;<i> (<A HREF="http://files.dhs.nu/party/sommarhack2009/justwhen.zip">http://files.dhs.nu/party/sommarhack2009/justwhen.zip</A>)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> HG version from about 10mins ago, STE+4MB TOS 1.62de
+</I>&gt;<i>
+</I>&gt;<i> I also can't reproduce this problem. No matter whether I've got &quot;Patch
+</I>&gt;<i> timer-d&quot; enabled or not... I slowly get a really bad feeling about this
+</I>&gt;<i> bug... Could you please also try to uncomment the fprintf line right
+</I>&gt;<i> before the Int_AddRelativeInterrupt(... INTERRUPT_VIDEO_ENDLINE) line
+</I>&gt;<i> in the Video_InterruptHandler_EndLine() function, to see whether
+</I>&gt;<i> &quot;LineTimerBCycle - LineCycles + nCyclesPerLine&quot; behaves strange as soon
+</I>&gt;<i> as the problem occurs?
+</I>&gt;<i> By the way, which GCC version do you use?
+</I>&gt;<i>
+</I>&gt;<i> Thomas
+</I>
+Same for me, can't reproduce the 2 reported problems :(
+
+Maybe a variable that would not be correctly initialized under some gcc 
+version or some kind of side effect, I don't know.
+
+What is sure is that the new video.c code with its &quot;dynamic&quot; adjustment of 
+timer B/HBL interrupt will give this kind of &quot;results&quot; if something goes 
+wrong in the internal handling of interrupts (if one timer B int is 
+skipped/ignored, this can create this kind of loop).
+
+I saw such bugs earlier with Int_AddAbsoluteInterrupt not reordering the 
+int list before adding a new int, but this was already fixed in devel 
+version.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000450.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+	<LI>Next message: <A HREF="000452.html">[hatari-devel] DSP Instruction cycle count
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#451">[ date ]</a>
+              <a href="thread.html#451">[ thread ]</a>
+              <a href="subject.html#451">[ subject ]</a>
+              <a href="author.html#451">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

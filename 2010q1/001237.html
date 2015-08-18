@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Berlios compromised
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Berlios%20compromised&In-Reply-To=%3C20100116113426.83560%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001226.html">
+   <LINK REL="Next"  HREF="001229.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Berlios compromised</H1>
+    <B>Thomas H.</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Berlios%20compromised&In-Reply-To=%3C20100116113426.83560%40gmx.net%3E"
+       TITLE="[hatari-devel] Berlios compromised">th.huth at gmx.de
+       </A><BR>
+    <I>Sat Jan 16 12:34:26 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001226.html">[hatari-devel] Berlios compromised
+</A></li>
+        <LI>Next message: <A HREF="001229.html">[hatari-devel] Illusion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1237">[ date ]</a>
+              <a href="thread.html#1237">[ thread ]</a>
+              <a href="subject.html#1237">[ subject ]</a>
+              <a href="author.html#1237">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Datum: Thu, 14 Jan 2010 22:14:02 +0100 (CET)
+</I>&gt;<i> Von: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>
+</I>&gt;<i> 
+</I>&gt;<i> On the general point, I agree with Eero, I don't think Hatari would be an 
+</I>&gt;<i> interesting target for hackers, due to its lack of network connectivity 
+</I>&gt;<i> and its rather restricted users base (although they're very dedicated to 
+</I>&gt;<i> the atari !).
+</I>&gt;<i> 
+</I>&gt;<i> Regarding the 1.3.1 sources available on berlios, I compared them with my 
+</I>&gt;<i> current sources tree and didn't see anything that was not stricly hatari 
+</I>&gt;<i> related.
+</I>&gt;<i> Same for the hg tree stored on berlios, importing it doesn't show any 
+</I>&gt;<i> difference to my own tree.
+</I>&gt;<i> 
+</I>&gt;<i> So, I would say Hatari was not a target of this attacker, was not modified
+</I>&gt;<i> by non-official commiter and can be safely packaged in any distro.
+</I>
+I second that. I also think that the Hatari hg repository has not been modified. Fortunately we use Mercurial as versioning system, so each commit is secured with a SHA-1 hash checksum. That means it is hardly possible to modify the repository on the server directly without being noticed (you would see a clash with your local repository during the next checkout).
+
+I think the only possible way to attack the repository would be that the hacker got hold of a password of one of us developers and then checked in malicious code just like normal updates from us. But this is also very unlikely since I (and I guess also some of the other developers) normally tend to quickly read through all new changesets that I download from the server repository, and I never saw anything unusual there.
+
+&gt;<i> &gt; Hatari has been at BerliosOS only about a year (move happened dec 2008)
+</I>&gt;<i> &gt; and moved there because we were dissatisfied with Sourceforge:
+</I>&gt;<i> &gt; - slow
+</I>&gt;<i> &gt; - riddled with advertisements
+</I>&gt;<i> &gt; - no distributed versoin control (Mercurial) support
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; At least at that time there were no good other candinates for hosting
+</I>&gt;<i> that
+</I>&gt;<i> &gt; would have provided Mercurial (even support for Git was patchy).  Are
+</I>&gt;<i> there
+</I>&gt;<i> &gt; now?
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> Apart when server went down during a week end some months ago and this 
+</I>&gt;<i> recent attack, I don't have the feeling berlios is a bad hosting solution.
+</I>&gt;<i> At least for the size of our project and its relatively small activity, I 
+</I>&gt;<i> think it's just fine.
+</I>
+BerliOS is certainly not perfect - for example I am still waiting that the HG notify bug gets fixed (see <A HREF="https://developer.berlios.de/bugs/?func=detailbug&amp;group_id=1&amp;bug_id=16003">https://developer.berlios.de/bugs/?func=detailbug&amp;group_id=1&amp;bug_id=16003</A>). And their information policy concerning such security problems could really be faster and better. But at least they've posted a news item now:
+
+<A HREF="https://developer.berlios.de/forum/forum.php?forum_id=34372">https://developer.berlios.de/forum/forum.php?forum_id=34372</A>
+
+But apart from that, I also think it's still the best hosting solution for our project. Considering that we want to keep Mercurial as versioning system (which I personally would not want to miss anymore), there are not many alternatives, and most of them have other disadvantages.
+
+SourceForge now seems to offer Mercurial, too, and the website layout got much better again, with less advertisment than a year before. So moving back there might be an alternative. But do you think that their information policy regarding security problems is better than BerliOS? I don't think so.
+
+savannah.nongnu.org might be another alternative, but they are very picky (e.g. you have to write &quot;GNU/Linux&quot; instead of &quot;Linux&quot; everywhere in your project) and we would e.g. loose the possibility to use a non-free library like Pasti when it finally comes out for Linux... (Savannah forbits such GPL-linking exceptions that are normally possible).
+
+All other development sites that offer Mercurial seem either to be non-free or restricted to other superior projects (like Debian Alioth).
+
+So unless someone has a real good alternative idea, I'd also suggest to stay with BerliOS.
+
+ Thomas
+
+-- 
+Jetzt kostenlos herunterladen: Internet Explorer 8 und Mozilla Firefox 3.5 -
+sicherer, schneller und einfacher! <A HREF="http://portal.gmx.net/de/go/atbrowser">http://portal.gmx.net/de/go/atbrowser</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001226.html">[hatari-devel] Berlios compromised
+</A></li>
+	<LI>Next message: <A HREF="001229.html">[hatari-devel] Illusion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1237">[ date ]</a>
+              <a href="thread.html#1237">[ thread ]</a>
+              <a href="subject.html#1237">[ subject ]</a>
+              <a href="author.html#1237">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

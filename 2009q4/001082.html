@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Statusbar - additional info
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Statusbar%20-%20additional%20info&In-Reply-To=%3C200912092337.18865.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001081.html">
+   <LINK REL="Next"  HREF="001083.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Statusbar - additional info</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Statusbar%20-%20additional%20info&In-Reply-To=%3C200912092337.18865.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Statusbar - additional info">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Dec  9 22:37:18 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001081.html">[hatari-devel] Statusbar - additional info
+</A></li>
+        <LI>Next message: <A HREF="001083.html">[hatari-devel] Statusbar - additional info
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1082">[ date ]</a>
+              <a href="thread.html#1082">[ thread ]</a>
+              <a href="subject.html#1082">[ subject ]</a>
+              <a href="author.html#1082">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 09 December 2009, Konador, Cyprian wrote:
+&gt;<i> I've tweaked a bit statusbar. I've add fast forward indicator,
+</I>
+I haven't added this information because doing &quot;&gt;&quot; and &quot;&gt;&gt;&quot; with text
+doesn't look so good and one can already see fast forward state from
+the frameskip value if one is using auto-frameskip.
+
+I would rather have them done with suitable icons/images.
+At the same time LED drawing could be replaced with nicer LED images.
+
+These would need images for different toolbar sizes and led states.  These
+kind of images should be done only with couple of colors so that they aren't
+completely awful even in 8-bit mode.
+
+
+But if icons aren't feasible / Thomas doesn't like having them in Hatari,
+then at least I would skip &quot;&gt;&quot; and show only &quot;&gt;&gt;&quot; (when fast forward
+is enabled).
+
+
+&gt;<i> cpu type, cpu clock.
+</I>
+Where/when this information is needed?
+
+The currently shown information is relevant for bug reports, but the shown 
+machine type (ST/STE/TT/Falcon) already tells what you're proposing to show 
+(unless cpu type &amp; clock have been explicitly overridden by the user which
+is pretty rare).
+
+If there's no clear use for the extra information, I'd rather leave it out
+as UI clutter.
+
+
+If others think the information is userful, I think it would be clearer
+if for 68000 it would just skip &quot;000&quot;.  The information might also be
+clearer if separated with &quot;/&quot;:
+	8Mhz/4MB ST, TOS v1.02
+	32Mhz/030/14MB TT, EmuTOS
+	16Mhz/040/8MB Falcon, EmuTOS
+
+What do you think?
+
+
+&gt;<i> LED are a bit smaller now.
+</I>
+They were wide to look more like (Atari) leds. :-)
+
+
+&gt;<i> In additional, statusbar is visible  
+</I>&gt;<i> only in windowed mode, in fullscreen we can see overlay led. This is more
+</I>&gt;<i> pleasure, especially during watching demos/games.
+</I>
+You can switch statusbar to led from command line and from the options GUI.
+
+Currently led drawing has more overhead than statusbar, that's why I don't
+like it being hardcoded to be mode dependent.
+
+If you want that kind of a change, you need to make it to be configurable
+separately for fullscreen and windowed mode + allow changing them
+from the options GUI.  The main issue is where in the GUI you can fit
+the extra option(s)...
+
+Current command line options can still set both at the same.
+
+
+&gt;<i> Attached you can find mixed screen for ST/TT/Falcon.
+</I>&gt;<i>
+</I>&gt;<i> What you think about including that mod into Hatari?
+</I>
+The code itself look fine.  For patches, please send them in future
+in unified context diff format (diff -u).
+
+Only thing that was strange was this, what it's for?
++
++       Statusbar_UpdateInfo();
+        Statusbar_ShowMessage(surf, currentticks);
+
+(It should be called from appropriate places _outside_ statusbar.c.)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001081.html">[hatari-devel] Statusbar - additional info
+</A></li>
+	<LI>Next message: <A HREF="001083.html">[hatari-devel] Statusbar - additional info
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1082">[ date ]</a>
+              <a href="thread.html#1082">[ thread ]</a>
+              <a href="subject.html#1082">[ subject ]</a>
+              <a href="author.html#1082">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

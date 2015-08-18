@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger address base
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20address%20base&In-Reply-To=%3C200908090944.25666.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000543.html">
+   <LINK REL="Next"  HREF="000558.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger address base</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20address%20base&In-Reply-To=%3C200908090944.25666.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Debugger address base">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Aug  9 08:44:25 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000543.html">[hatari-devel] Debugger address base
+</A></li>
+        <LI>Next message: <A HREF="000558.html">[hatari-devel] Debugger address base
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#556">[ date ]</a>
+              <a href="thread.html#556">[ thread ]</a>
+              <a href="subject.html#556">[ subject ]</a>
+              <a href="author.html#556">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 03 August 2009, Thomas Huth wrote:
+&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;<i> &gt; &gt; &gt; &gt; The debugger prompt could show this mode.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; I'd rather would just show the mode when one enters the &quot;value&quot;
+</I>&gt;<i> &gt; &gt; command without arguments. I think you don't change the base too
+</I>&gt;<i> &gt; &gt; often, so showing it at each prompt sounds a little bit too much.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Why?  Currently prompt is just &quot;&gt;&quot; and I'd rather have some
+</I>&gt;<i> &gt; redundancy than debug something for a long time because I'd given
+</I>&gt;<i> &gt; something in wrong base (e.g. because I forgot that I just switched
+</I>&gt;<i> &gt; to other number base).
+</I>&gt;<i>
+</I>&gt;<i> Why? Just personal taste ;-) But showing it at the prompt is ok for me,
+</I>&gt;<i> too.
+</I>
+I'll show the selected number base only when Debugger is entered,
+not on every prompt.
+
+
+&gt;<i> &gt; Maybe the prompt should have also the current address for disasm /
+</I>&gt;<i> &gt; memdumping:
+</I>&gt;<i> &gt; 	0x2000 [dec]&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; :-)
+</I>&gt;<i>
+</I>&gt;<i> Nice idea, but how do you then differentiate between memdump and disasm
+</I>&gt;<i> address? (I think there are two separate variables which are storing
+</I>&gt;<i> these addresses)
+</I>
+True.  Both for CPU and DSP.
+
+Nicolas proposed that Debugger should show on entering information
+about the video variables.  If that's done, it could show as well PC and
+current addresses for dumping...
+
+Any proposals on what this information should look like (i.e. layout for
+it)?
+
+
+&gt;<i> &gt; &gt; &gt; &gt; In the config file this option could be named e.g.
+</I>&gt;<i> &gt; &gt; &gt; &gt; NumberInputBase.  But what should be the prefix used for decimal
+</I>&gt;<i> &gt; &gt; &gt; &gt; numbers when non-the prefixed input is being interpreted as hex
+</I>&gt;<i> &gt; &gt; &gt; &gt; or binary?
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; Yes, that's what I wondered too :) Maybe we could use '+' or '#' ?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Sounds good, I'd prefer '+'
+</I>
+Conditional breakpoints and lots of other debugging code use Uint32 for
+values, the &quot;+&quot; character got me started on thinking what should be done
+with negative values.  Currently breakcond.c doesn't even accept them:
+-------------
+&gt;<i> v -2
+</I>Value '-2' is in the supported number bases:
+- bin: %11111111111111111111111111111110
+- dec: 4294967294
+- hex: $fffffffe
+&gt;<i> b $fffffffe = -2
+</I>ERROR in parsed string:
+'$fffffffe = -2'
+             ^-invalid character
+-------------
+
+And even if it would accept them, comparisons like &quot;LineCycles &lt; 0&quot; don't
+work as the variables code uses are unsigned.
+
+
+Any suggestions on how that should be handled?
+
+Maybe have &quot;s&quot; (signed) appended to the &lt; or &gt; comparison characters to
+indicate that the comparison should be signed (both sides cast), like this:
+	&quot;LineCycles &lt;s 0&quot;   and  &quot;0 &gt;s LineCycles&quot;
+?
+(And parser could warn if one does comparison against zero without this)
+
+
+&gt;<i> &gt; So debugger isn't going at some point going to have support for doing
+</I>&gt;<i> &gt; also simple calcuations? :-)
+</I>&gt;<i>
+</I>&gt;<i> Ok, you're right. Let's better use '#' then.
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000543.html">[hatari-devel] Debugger address base
+</A></li>
+	<LI>Next message: <A HREF="000558.html">[hatari-devel] Debugger address base
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#556">[ date ]</a>
+              <a href="thread.html#556">[ thread ]</a>
+              <a href="subject.html#556">[ subject ]</a>
+              <a href="author.html#556">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

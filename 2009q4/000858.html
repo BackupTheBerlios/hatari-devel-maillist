@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new support for avi recording
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Calpine.LMD.2.00.0910201417590.30832%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000857.html">
+   <LINK REL="Next"  HREF="000798.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new support for avi recording</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Calpine.LMD.2.00.0910201417590.30832%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] new support for avi recording">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Oct 20 14:27:47 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000857.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000798.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#858">[ date ]</a>
+              <a href="thread.html#858">[ thread ]</a>
+              <a href="subject.html#858">[ subject ]</a>
+              <a href="author.html#858">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 18 Oct 2009, Eero Tamminen wrote:
+
+&gt;<i> The &quot;problem&quot; I was trying to solve was needing to give the --avi-fps option
+</I>&gt;<i> in bootup case.  But I guess most people will start it from the GUI anyway
+</I>&gt;<i> as recording the bootup would just slow down things &amp; waste disk...
+</I>
+Yes, most people will use the gui ; the --avi-fps will be used in very 
+rare case in a kind of &quot;expert mode only&quot;.
+
+&gt;<i>
+</I>&gt;<i> Maybe AviRecordDefaultFps should be zero by default and main.c complain
+</I>&gt;<i> if it's not set (with --avi-fps) when --avirecord is used?
+</I>&gt;<i>
+</I>&gt;<i> Or --avirecord option itself should require giving the FPS value instead of
+</I>&gt;<i> there being separate --avi-fps option?
+</I>
+Well --avi-fps is useful only when starting an immediate recording from 
+the command line with --avirecord (from the gui, current refreshrate 
+will be used, and that's the way to go).
+
+when starting from the command line with --avirecord, either to record the 
+boot sequence or to start an avi immediatly after restoring a memory 
+snapshot, the default fps will be 50, which should cover nearly all use 
+cases (since very few programs are really running in 60 Hz).
+
+So defaulting to 0 to force the user to explicitly give a fps seems 
+unnecessary to me, we can use a &quot;best guess&quot; with 50.
+
+And in the rare case where you would really want to record at 60 Hz, then 
+you need the optional --avi-fps parameter to do so.
+
+So for me, both paramaters should be kept separated and giving the fps 
+should not be mandatory (as most of the time you would give 50 which is 
+the default value)
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000857.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000798.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#858">[ date ]</a>
+              <a href="thread.html#858">[ thread ]</a>
+              <a href="subject.html#858">[ subject ]</a>
+              <a href="author.html#858">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] LMC1992 and Microwire emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4BA2AB8B.5000508%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001706.html">
+   <LINK REL="Next"  HREF="001718.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] LMC1992 and Microwire emulation</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4BA2AB8B.5000508%40free.fr%3E"
+       TITLE="[hatari-devel] LMC1992 and Microwire emulation">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Mar 18 23:39:07 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001706.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+        <LI>Next message: <A HREF="001718.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1714">[ date ]</a>
+              <a href="thread.html#1714">[ thread ]</a>
+              <a href="subject.html#1714">[ subject ]</a>
+              <a href="author.html#1714">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've uploaded the first release of LMC1992 bass/treble emulation.
+
+I haven't optimized anything for now on purpose. (I've kept all the 
+float variables).
+Optimizations will come after everything works well.
+
+I'm doing all my tests with Protracker STE.
+
+For now, it works but I can detect some problems :
+- if I move the bass slider to negatives, there's no more sound.
+- if I return to positive values, sound comes again
+- if I go to -10 value, sound is definitely lost.
+
+I've also got a question : how should I use the gain variable ?
+(can I consider it as the master volume ?)
+Which range of values does it accept ?
+I've set it to 1.0 for now.
+
+for info, here is the microwire range of values for the master volume :
+        000 000 : -80 dB
+        010 100 : -40 dB
+        101 XXX :   0 dB
+
+
+TODO:
+- take into account the table_50, table_25
+- take into account the 6, 12, 24 and 50 Khz sound replay frequencies
+- optimize everything from float to int.
+
+
+If code isn't finished for the main release, there's just to comment the 
+following lines to remove the bass/treble emulation.
+
+    /* Apply LMC1992 sound modifications (Bass and Treble) */
+    for (i = 0; i &lt; nSamplesToGenerate; i++) {
+        nBufIdx = (nMixBufIdx + i) % MIXBUFFER_SIZE;
+        MixBuffer[nBufIdx][0] = IIRfilterL(MixBuffer[nBufIdx][0]);
+        MixBuffer[nBufIdx][1] = IIRfilterR(MixBuffer[nBufIdx][1]);
+    }
+
+Many thanks to David for the FIR code.
+
+Regards
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001706.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+	<LI>Next message: <A HREF="001718.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1714">[ date ]</a>
+              <a href="thread.html#1714">[ thread ]</a>
+              <a href="subject.html#1714">[ subject ]</a>
+              <a href="author.html#1714">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

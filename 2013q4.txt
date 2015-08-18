@@ -1,0 +1,262 @@
+From oak at helsinkinet.fi  Sun Oct 27 10:49:19 2013
+From: oak at helsinkinet.fi (Eero Tamminen)
+Date: Sun, 27 Oct 2013 11:49:19 +0200
+Subject: [hatari-devel] HDC/ACSI command sector count & error handling?
+In-Reply-To: <201105110017.17208.eerot@users.berlios.de>
+References: <201105020014.06914.eerot@users.berlios.de>
+	<20110504063348.GA5994@seimet.de>
+	<201105110017.17208.eerot@users.berlios.de>
+Message-ID: <201310271149.19316.oak@helsinkinet.fi>
+
+Hi,
+
+Is this old thread relevant to the current ACSI discussion?
+
+	- Eero
+
+On keskiviikko 11 toukokuu 2011, Eero Tamminen wrote:
+> On keskiviikko 04 toukokuu 2011, Uwe Seimet wrote:
+> > > Uwe, could you comment on this?
+> > 
+> > I don't think I can comment on it in detail right now. As far byte 4 in
+> > the SCSI command block is concerned this is either a byte or a sector
+> > count, depending on the SCSI command. It tells the SCSI device the
+> > maximum number of bytes or sectors it shall return.
+> 
+> Thanks, so one cannot unconditionally get the sector count from it...
+> 
+> > http://en.wikipedia.org/wiki/SCSI_command provides more information,
+> > http://www.seagate.com/staticfiles/support/disc/manuals/scsi/100293068a
+> > .p df has all the details.
+> > The ST's ACSI/DMA bus is basically a stripped down SCSI bus and as far
+> > as the structure of commands is concerned they are identical to
+> > standard SCSI commands.
+> > Note that it is a restriction of the DMA chip that it always buffers 16
+> > bytes before they get available. This means that in order not to lose
+> > bytes the software sending the SCSI command has to ensure that the byte
+> > count is always a multiple of 16. When transferring sectors this is not
+> > an issue because the READ/WRITE commands use byte 4 as a sector count,
+> > and the sector size is usually be a multiple of 16. (Usually, but not
+> > always. There are SCSI drives where you can configure the sector size
+> > when formatting, and they allow sectors sizes that are not a multiple
+> > of 16.)
+> 
+> Any idea whether the HDC sector count needs to affect the DMA status
+> register byte or disk controller register byte?
+> 
+> (Currently it doesn't because the HDC sector cound fdc.c gets is always
+> zero.)
+> 
+> > > On sunnuntai 01 toukokuu 2011, Thomas Huth wrote:
+> > > > > >  From above you can see that "HDCSectorCount" can never get any
+> > > > > > 
+> > > > > > other value than zero (unlike e.g. FDCSectorCountRegister which
+> > > > > > seems to be used for similar purpose).  So what's the point in
+> > > > > > having that variable?
+> > > > > > 
+> > > > > > hdc.c code gets the HDC sector count with this macro, it
+> > > > > > doesn't use the variable:
+> > > > > > #define HD_SECTORCOUNT(a) (a.command[4]&  0xFF)        /* get
+> > > > > > sector count */
+> > > 
+> > > Attached is a cleanup patch for hdc.c which also makes this mismatch
+> > > clearer.
+> 
+> Has anybody comments on the patch?
+> 
+> Functionally it should be equivivalent to the current code.
+> 
+> > > > hdc.c originally hasn't been written by me but by Sven de
+> > > > Marothy... Dunno why this variable isn't used (anymore)? Maybe it
+> > > > was used in the past,
+> > > 
+> > > Looking at the first hdc.c source version from 2002:
+> > > 	http://hg.berlios.de/repos/hatari/rev/b518e26c49a6
+> > > 
+> > > That code worked similarly already from the beginning.
+> > > 
+> > > > or it is not necessary since the ACSI commands are executed
+> > > > immediately instead of delayed like the FDC commands?
+> > > 
+> > > In fdc.c, that variable (would) affect:
+> > > - Read DMA status byte (DMAStatus_ff8606rd variable)
+> > > 
+> > > - DiskControllerByte (0xff8604 HW register), when:
+> > >         if ((DMAModeControl_ff8606wr & 0x18) == 0x08)     /* HDC
+> > >         status reg
+> > > 
+> > > selected? */
+> > > 
+> > > Should those be affected by HDC command sector count, as the fdc.c
+> > > code seems to expect, or not, as it happens with the current hdc.c
+> > > code?
+> > > 
+> > > If it should affect them, do all HDC commands have a valid sector
+> > > count at command[4], or is the sector count something that's valid
+> > > only for specific HDC commands?
+> > > 
+> > > If former is true, the new HDC_GetSectorCount() function can just
+> > > return HDCCommand.command[4], otherwise e.g. the HD_SECTORCOUNT()
+> > > macro could be changed to store the queried sector count to an
+> > > internal hdc.c variable that will be returned by that function.
+> > > 
+> > > Or if the sector count isn't actually needed, it can be just removed
+> > > competely...
+> > > 
+> > > 
+> > > And another thing I noticed is that the DMA status register bit is
+> > > set only floppy read/write errors, not on HDC/ASCI read/write
+> > > errors...
+> 
+> Any idea whether the HDC read/write errors need to affect the DMA status
+> register too?
+> 
+> (I would image them to be pretty unlikely to happen with HD images
+> though, so this would be mostly for emulation accuracy reasons. :))
+
+From Uwe.Seimet at seimet.de  Sun Oct 27 11:16:39 2013
+From: Uwe.Seimet at seimet.de (Uwe Seimet)
+Date: Sun, 27 Oct 2013 11:16:39 +0100
+Subject: [hatari-devel] HDC/ACSI command sector count & error handling?
+In-Reply-To: <201310271149.19316.oak@helsinkinet.fi>
+References: <201105020014.06914.eerot@users.berlios.de>
+	<20110504063348.GA5994@seimet.de>
+	<201105110017.17208.eerot@users.berlios.de>
+	<201310271149.19316.oak@helsinkinet.fi>
+Message-ID: <20131027101639.GA6186@seimet.de>
+
+Hi Eero,
+
+I don't think that the FIFO behavior is causing the problems I have
+observed, at least not those related to unknown commands.
+As fara s the FIFO is conderned any hard disk driver compliant to the
+SCSI Driver specification (i. e. CBHD and HDDRIVER) has to ensure that any
+byte count can be transferred.
+In practice HDDRIVER (and I guess CBHD as well) when required sends an
+additional command (INQUIRY) just for the purpose of filling the FIFO with
+up to 16 bytes, so that everything is transferred. The excess bytes are
+internally discarded and the caller just sees the data that were
+transferred in response to the command he sent.
+
+So when using the SCSI Driver interface the caller does not have to care
+for this ACSI/DMA peculiarity but can treat the ACSI bus more or less
+like a regular SCSI bus.
+
+Take care
+
+Uwe
+
+> Hi,
+> 
+> Is this old thread relevant to the current ACSI discussion?
+> 
+> 	- Eero
+> 
+> On keskiviikko 11 toukokuu 2011, Eero Tamminen wrote:
+> > On keskiviikko 04 toukokuu 2011, Uwe Seimet wrote:
+> > > > Uwe, could you comment on this?
+> > > 
+> > > I don't think I can comment on it in detail right now. As far byte 4 in
+> > > the SCSI command block is concerned this is either a byte or a sector
+> > > count, depending on the SCSI command. It tells the SCSI device the
+> > > maximum number of bytes or sectors it shall return.
+> > 
+> > Thanks, so one cannot unconditionally get the sector count from it...
+> > 
+> > > http://en.wikipedia.org/wiki/SCSI_command provides more information,
+> > > http://www.seagate.com/staticfiles/support/disc/manuals/scsi/100293068a
+> > > .p df has all the details.
+> > > The ST's ACSI/DMA bus is basically a stripped down SCSI bus and as far
+> > > as the structure of commands is concerned they are identical to
+> > > standard SCSI commands.
+> > > Note that it is a restriction of the DMA chip that it always buffers 16
+> > > bytes before they get available. This means that in order not to lose
+> > > bytes the software sending the SCSI command has to ensure that the byte
+> > > count is always a multiple of 16. When transferring sectors this is not
+> > > an issue because the READ/WRITE commands use byte 4 as a sector count,
+> > > and the sector size is usually be a multiple of 16. (Usually, but not
+> > > always. There are SCSI drives where you can configure the sector size
+> > > when formatting, and they allow sectors sizes that are not a multiple
+> > > of 16.)
+> > 
+> > Any idea whether the HDC sector count needs to affect the DMA status
+> > register byte or disk controller register byte?
+> > 
+> > (Currently it doesn't because the HDC sector cound fdc.c gets is always
+> > zero.)
+> > 
+> > > > On sunnuntai 01 toukokuu 2011, Thomas Huth wrote:
+> > > > > > >  From above you can see that "HDCSectorCount" can never get any
+> > > > > > > 
+> > > > > > > other value than zero (unlike e.g. FDCSectorCountRegister which
+> > > > > > > seems to be used for similar purpose).  So what's the point in
+> > > > > > > having that variable?
+> > > > > > > 
+> > > > > > > hdc.c code gets the HDC sector count with this macro, it
+> > > > > > > doesn't use the variable:
+> > > > > > > #define HD_SECTORCOUNT(a) (a.command[4]&  0xFF)        /* get
+> > > > > > > sector count */
+> > > > 
+> > > > Attached is a cleanup patch for hdc.c which also makes this mismatch
+> > > > clearer.
+> > 
+> > Has anybody comments on the patch?
+> > 
+> > Functionally it should be equivivalent to the current code.
+> > 
+> > > > > hdc.c originally hasn't been written by me but by Sven de
+> > > > > Marothy... Dunno why this variable isn't used (anymore)? Maybe it
+> > > > > was used in the past,
+> > > > 
+> > > > Looking at the first hdc.c source version from 2002:
+> > > > 	http://hg.berlios.de/repos/hatari/rev/b518e26c49a6
+> > > > 
+> > > > That code worked similarly already from the beginning.
+> > > > 
+> > > > > or it is not necessary since the ACSI commands are executed
+> > > > > immediately instead of delayed like the FDC commands?
+> > > > 
+> > > > In fdc.c, that variable (would) affect:
+> > > > - Read DMA status byte (DMAStatus_ff8606rd variable)
+> > > > 
+> > > > - DiskControllerByte (0xff8604 HW register), when:
+> > > >         if ((DMAModeControl_ff8606wr & 0x18) == 0x08)     /* HDC
+> > > >         status reg
+> > > > 
+> > > > selected? */
+> > > > 
+> > > > Should those be affected by HDC command sector count, as the fdc.c
+> > > > code seems to expect, or not, as it happens with the current hdc.c
+> > > > code?
+> > > > 
+> > > > If it should affect them, do all HDC commands have a valid sector
+> > > > count at command[4], or is the sector count something that's valid
+> > > > only for specific HDC commands?
+> > > > 
+> > > > If former is true, the new HDC_GetSectorCount() function can just
+> > > > return HDCCommand.command[4], otherwise e.g. the HD_SECTORCOUNT()
+> > > > macro could be changed to store the queried sector count to an
+> > > > internal hdc.c variable that will be returned by that function.
+> > > > 
+> > > > Or if the sector count isn't actually needed, it can be just removed
+> > > > competely...
+> > > > 
+> > > > 
+> > > > And another thing I noticed is that the DMA status register bit is
+> > > > set only floppy read/write errors, not on HDC/ASCI read/write
+> > > > errors...
+> > 
+> > Any idea whether the HDC read/write errors need to affect the DMA status
+> > register too?
+> > 
+> > (I would image them to be pretty unlikely to happen with HD images
+> > though, so this would be mostly for emulation accuracy reasons. :))
+> _______________________________________________
+> hatari-devel mailing list
+> hatari-devel at lists.berlios.de
+> https://lists.berlios.de/mailman/listinfo/hatari-devel
+
+-- 
+-----------------------------------------------------------------------
+  Dr. Uwe Seimet                                http://www.seimet.de/
+

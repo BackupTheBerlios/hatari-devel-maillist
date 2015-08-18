@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari VDI mode colors issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20VDI%20mode%20colors%20issue&In-Reply-To=%3C20090815102900.24b48e56%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000594.html">
+   <LINK REL="Next"  HREF="000612.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari VDI mode colors issue</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20VDI%20mode%20colors%20issue&In-Reply-To=%3C20090815102900.24b48e56%40phineus%3E"
+       TITLE="[hatari-devel] Hatari VDI mode colors issue">huth at users.berlios.de
+       </A><BR>
+    <I>Sat Aug 15 10:29:00 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000594.html">[hatari-devel] Hatari VDI mode colors issue
+</A></li>
+        <LI>Next message: <A HREF="000612.html">[hatari-devel] Hatari VDI mode colors issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#597">[ date ]</a>
+              <a href="thread.html#597">[ thread ]</a>
+              <a href="subject.html#597">[ subject ]</a>
+              <a href="author.html#597">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 15 Aug 2009 11:00:02 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On Saturday 15 August 2009, Thomas Huth wrote:
+</I>&gt;<i> &gt; &gt; &gt; While monochrome and 4 planes modes are now fine, something's
+</I>&gt;<i> &gt; &gt; &gt; still broken in 2 planes mode.  Try:
+</I>&gt;<i> &gt; &gt; &gt;   ./hatari --machine st -s 4 --vdi-planes 2 --vdi-width 320
+</I>&gt;<i> &gt; &gt; &gt; --vdi-height 200 --tos etos512k.img -d .
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; With Hatari v1 it looks fine, with current Hatari  it looks
+</I>&gt;<i> &gt; &gt; &gt; broken like in the attached screenshot.
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; Funny thing is that if I use Falcon or TT emulation, it looks
+</I>&gt;<i> &gt; &gt; &gt; fine in current Hatari too.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; And using normal TOS works too.  Only Emutos + ST or STE mode + 2
+</I>&gt;<i> &gt; &gt; planes mode is broken (compared to Hatari v1).
+</I>&gt;<i> 
+</I>&gt;<i> Btw. The colors are wrong in 2-plane VDI mode (yellow instead of
+</I>&gt;<i> black) and there's also something wierd with the 4-plane VDI mode
+</I>&gt;<i> colors (they don't match non-VDI mode), but that's not a regression,
+</I>&gt;<i> it happens also with older Hatari versions.
+</I>
+Looks fine for me with TOS 1.02. Which TOS version are you using?
+
+&gt;<i> I've thought that it's a Emu/TOS issue, but could that also be a
+</I>&gt;<i> Hatari issue?  Compare e.g.:
+</I>&gt;<i> - GEM desktop in ST med-rez vs. 2-plane 640x200 VDI mode
+</I>&gt;<i>   (normal or Emu TOS)
+</I>
+I can't see any difference here... which TOS version and machine type
+are you using?
+
+&gt;<i> - GEM Nethack in TT med-rez vs. 4-plane 640x400 VDI mode
+</I>&gt;<i>   (works only with normal TOS, with EmuTOS complains about not
+</I>&gt;<i>   finding the RSC file)
+</I>
+I haven't tried that one yet, but since TT medium resolution is
+rendered by the videl code, there might be some minor differences...?
+
+&gt;<i> &gt; Looks like a bug in EmuTOS... seems like it does not mask out the
+</I>&gt;<i> &gt; upper bits when reading 0xff8260 ... uncomment the last two lines of
+</I>&gt;<i> &gt; Video_ShifterMode_ReadByte() in Hatari, then it works again.
+</I>&gt;<i> &gt; However, since Video_ShifterMode_ReadByte() now mimics the
+</I>&gt;<i> &gt; behaviour of an original Atari ST, it's not the fault of Hatari,
+</I>&gt;<i> &gt; it's the fault of EmuTOS.
+</I>&gt;<i> 
+</I>&gt;<i> Is it easy to fix in EmuTOS?
+</I>
+Yes, it was an easy fix, the current CVS version of EmuTOS now works
+fine.
+
+&gt;<i> (Sorry, still haven't installed cross-compiler for myself... :-/)
+</I>
+Well, then it's high time now ;-)
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000594.html">[hatari-devel] Hatari VDI mode colors issue
+</A></li>
+	<LI>Next message: <A HREF="000612.html">[hatari-devel] Hatari VDI mode colors issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#597">[ date ]</a>
+              <a href="thread.html#597">[ thread ]</a>
+              <a href="subject.html#597">[ subject ]</a>
+              <a href="author.html#597">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

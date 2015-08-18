@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Unable build mercurial version on ubuntu
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Unable%20build%20mercurial%20version%20on%20ubuntu&In-Reply-To=%3Cc1a0d1561002270945u59987dbduf843e5fabc644f46%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001577.html">
+   <LINK REL="Next"  HREF="001579.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Unable build mercurial version on ubuntu</H1>
+    <B>Christer Solskogen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Unable%20build%20mercurial%20version%20on%20ubuntu&In-Reply-To=%3Cc1a0d1561002270945u59987dbduf843e5fabc644f46%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Unable build mercurial version on ubuntu">christer.solskogen at gmail.com
+       </A><BR>
+    <I>Sat Feb 27 18:45:40 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001577.html">[hatari-devel] Unable build mercurial version on ubuntu
+</A></li>
+        <LI>Next message: <A HREF="001579.html">[hatari-devel] Unable build mercurial version on ubuntu
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1578">[ date ]</a>
+              <a href="thread.html#1578">[ thread ]</a>
+              <a href="subject.html#1578">[ subject ]</a>
+              <a href="author.html#1578">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, Feb 27, 2010 at 6:38 PM, Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+&gt;<i> Can you get CMake to show the GCC command line?
+</I>&gt;<i>
+</I>
+cd /home/solskogen/source/hatari/src/falcon &amp;&amp; /usr/bin/gcc
+-DCONFDIR=\&quot;/etc\&quot; -Wall -Wwrite-strings -Wsign-compare
+-Wmissing-prototypes -Wstrict-prototypes -Wcast-qual
+-Wbad-function-cast -Wpointer-arith  -O3 -DNDEBUG
+-I/home/solskogen/source/hatari
+-I/home/solskogen/source/hatari/src/includes
+-I/home/solskogen/source/hatari/src/debug
+-I/home/solskogen/source/hatari/src/falcon
+-I/home/solskogen/source/hatari/src/uae-cpu -I/usr/include/SDL     -o
+CMakeFiles/Falcon.dir/microphone.c.o   -c
+/home/solskogen/source/hatari/src/falcon/microphone.c
+/home/solskogen/source/hatari/src/falcon/microphone.c:30: warning:
+type defaults to &#8216;int&#8217; in declaration of &#8216;PaStreamCallbackTimeInfo&#8217;
+/home/solskogen/source/hatari/src/falcon/microphone.c:30: error:
+expected &#8216;;&#8217;, &#8216;,&#8217; or &#8216;)&#8217; before &#8216;*&#8217; token
+/home/solskogen/source/hatari/src/falcon/microphone.c:35: error:
+expected &#8216;=&#8217;, &#8216;,&#8217;, &#8216;;&#8217;, &#8216;asm&#8217; or &#8216;__attribute__&#8217; before
+&#8216;micro_inputParameters&#8217;
+/home/solskogen/source/hatari/src/falcon/microphone.c:50: warning:
+type defaults to &#8216;int&#8217; in declaration of &#8216;PaStreamCallbackTimeInfo&#8217;
+/home/solskogen/source/hatari/src/falcon/microphone.c:50: error:
+expected &#8216;;&#8217;, &#8216;,&#8217; or &#8216;)&#8217; before &#8216;*&#8217; token
+/home/solskogen/source/hatari/src/falcon/microphone.c: In function
+&#8216;Microphone_Start&#8217;:
+/home/solskogen/source/hatari/src/falcon/microphone.c:97: error:
+&#8216;micro_inputParameters&#8217; undeclared (first use in this function)
+/home/solskogen/source/hatari/src/falcon/microphone.c:97: error: (Each
+undeclared identifier is reported only once
+/home/solskogen/source/hatari/src/falcon/microphone.c:97: error: for
+each function it appears in.)
+/home/solskogen/source/hatari/src/falcon/microphone.c:97: warning:
+implicit declaration of function &#8216;Pa_GetDefaultInputDevice&#8217;
+/home/solskogen/source/hatari/src/falcon/microphone.c:117: error:
+&#8216;Microphone_Callback&#8217; undeclared (first use in this function)
+/home/solskogen/source/hatari/src/falcon/microphone.c:118: warning:
+passing argument 3 of &#8216;Pa_OpenStream&#8217; makes integer from pointer
+without a cast
+/usr/include/portaudio.h:325: note: expected &#8216;int&#8217; but argument is of
+type &#8216;void *&#8217;
+/home/solskogen/source/hatari/src/falcon/microphone.c:118: warning:
+passing argument 5 of &#8216;Pa_OpenStream&#8217; makes pointer from integer
+without a cast
+/usr/include/portaudio.h:325: note: expected &#8216;void *&#8217; but argument is
+of type &#8216;int&#8217;
+/home/solskogen/source/hatari/src/falcon/microphone.c:118: warning:
+passing argument 8 of &#8216;Pa_OpenStream&#8217; makes integer from pointer
+without a cast
+/usr/include/portaudio.h:325: note: expected &#8216;PaSampleFormat&#8217; but
+argument is of type &#8216;void *&#8217;
+/home/solskogen/source/hatari/src/falcon/microphone.c:118: error: too
+few arguments to function &#8216;Pa_OpenStream&#8217;
+make[2]: *** [src/falcon/CMakeFiles/Falcon.dir/microphone.c.o] Error 1
+make[2]: Leaving directory `/home/solskogen/source/hatari'
+make[1]: *** [src/falcon/CMakeFiles/Falcon.dir/all] Error 2
+make[1]: Leaving directory `/home/solskogen/source/hatari'
+make: *** [all] Error 2
+
+&gt;<i> What &quot;pkg-config --cflags portaudio-2.0&quot; outputs?
+</I>&gt;<i>
+</I>
+No package 'portaudio-2.0' found
+
+But:
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">solskogen at mawashi</A>:~/source/hatari/doc$ dpkg -l | grep portau
+ii  libportaudio-dev                                  18.1-7.1
+                               Portable audio I/O - development files
+ii  libportaudio0                                     18.1-7.1
+                               Portable audio I/O - shared library
+ii  libportaudio2
+19+svn20090620-0ubuntu2                         Portable audio I/O -
+shared library
+
+
+
+-- 
+chs,
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001577.html">[hatari-devel] Unable build mercurial version on ubuntu
+</A></li>
+	<LI>Next message: <A HREF="001579.html">[hatari-devel] Unable build mercurial version on ubuntu
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1578">[ date ]</a>
+              <a href="thread.html#1578">[ thread ]</a>
+              <a href="subject.html#1578">[ subject ]</a>
+              <a href="author.html#1578">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

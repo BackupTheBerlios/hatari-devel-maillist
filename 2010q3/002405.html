@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Unable to compile on OSX again (hg)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Unable%20to%20compile%20on%20OSX%20again%20%28hg%29&In-Reply-To=%3CAANLkTi%3DjKM0RhiAt%3DM6%3D2vFOAwgiA%2B7gpTdYtnC8unEM%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002434.html">
+   <LINK REL="Next"  HREF="002406.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Unable to compile on OSX again (hg)</H1>
+    <B>Christer Solskogen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Unable%20to%20compile%20on%20OSX%20again%20%28hg%29&In-Reply-To=%3CAANLkTi%3DjKM0RhiAt%3DM6%3D2vFOAwgiA%2B7gpTdYtnC8unEM%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Unable to compile on OSX again (hg)">christer.solskogen at gmail.com
+       </A><BR>
+    <I>Tue Sep 14 09:03:42 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002434.html">[hatari-devel] New FileSelector
+</A></li>
+        <LI>Next message: <A HREF="002406.html">[hatari-devel] New FileSelector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2405">[ date ]</a>
+              <a href="thread.html#2405">[ thread ]</a>
+              <a href="subject.html#2405">[ subject ]</a>
+              <a href="author.html#2405">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>/usr/bin/gcc  -Wall -Wwrite-strings -Wsign-compare
+-Wmissing-prototypes -Wstrict-prototypes -Wcast-qual
+-Wbad-function-cast -Wpointer-arith  -O3 -DNDEBUG
+-Wl,-search_paths_first -headerpad_max_install_names
+CMakeFiles/hatari.dir/audio.c.o CMakeFiles/hatari.dir/avi_record.c.o
+CMakeFiles/hatari.dir/bios.c.o CMakeFiles/hatari.dir/blitter.c.o
+CMakeFiles/hatari.dir/cart.c.o CMakeFiles/hatari.dir/cfgopts.c.o
+CMakeFiles/hatari.dir/configuration.c.o
+CMakeFiles/hatari.dir/options.c.o CMakeFiles/hatari.dir/change.c.o
+CMakeFiles/hatari.dir/control.c.o CMakeFiles/hatari.dir/cycInt.c.o
+CMakeFiles/hatari.dir/cycles.c.o CMakeFiles/hatari.dir/dialog.c.o
+CMakeFiles/hatari.dir/dmaSnd.c.o CMakeFiles/hatari.dir/fdc.c.o
+CMakeFiles/hatari.dir/file.c.o CMakeFiles/hatari.dir/floppy.c.o
+CMakeFiles/hatari.dir/gemdos.c.o CMakeFiles/hatari.dir/hd6301_cpu.c.o
+CMakeFiles/hatari.dir/hdc.c.o CMakeFiles/hatari.dir/ide.c.o
+CMakeFiles/hatari.dir/ikbd.c.o CMakeFiles/hatari.dir/ioMem.c.o
+CMakeFiles/hatari.dir/ioMemTabST.c.o
+CMakeFiles/hatari.dir/ioMemTabSTE.c.o
+CMakeFiles/hatari.dir/ioMemTabTT.c.o
+CMakeFiles/hatari.dir/ioMemTabFalcon.c.o CMakeFiles/hatari.dir/joy.c.o
+CMakeFiles/hatari.dir/keymap.c.o CMakeFiles/hatari.dir/m68000.c.o
+CMakeFiles/hatari.dir/main.c.o CMakeFiles/hatari.dir/midi.c.o
+CMakeFiles/hatari.dir/memorySnapShot.c.o CMakeFiles/hatari.dir/mfp.c.o
+CMakeFiles/hatari.dir/paths.c.o CMakeFiles/hatari.dir/psg.c.o
+CMakeFiles/hatari.dir/printer.c.o CMakeFiles/hatari.dir/resolution.c.o
+CMakeFiles/hatari.dir/rs232.c.o CMakeFiles/hatari.dir/reset.c.o
+CMakeFiles/hatari.dir/rtc.c.o CMakeFiles/hatari.dir/scandir.c.o
+CMakeFiles/hatari.dir/stMemory.c.o CMakeFiles/hatari.dir/screen.c.o
+CMakeFiles/hatari.dir/screenSnapShot.c.o
+CMakeFiles/hatari.dir/shortcut.c.o CMakeFiles/hatari.dir/sound.c.o
+CMakeFiles/hatari.dir/spec512.c.o CMakeFiles/hatari.dir/statusbar.c.o
+CMakeFiles/hatari.dir/str.c.o CMakeFiles/hatari.dir/tos.c.o
+CMakeFiles/hatari.dir/unzip.c.o CMakeFiles/hatari.dir/utils.c.o
+CMakeFiles/hatari.dir/vdi.c.o CMakeFiles/hatari.dir/video.c.o
+CMakeFiles/hatari.dir/wavFormat.c.o CMakeFiles/hatari.dir/xbios.c.o
+CMakeFiles/hatari.dir/ymFormat.c.o  -o hatari  -Ldebug -Lfalcon
+-Lgui-sdl -Luae-cpu debug/libDebug.a falcon/libFalcon.a
+gui-sdl/libGuiSdl.a libFloppy.a uae-cpu/libUaeCpu.a -framework SDL
+-framework Cocoa /usr/lib/libreadline.dylib /usr/lib/libz.dylib
+/opt/local/lib/libpng.dylib /usr/X11R6/lib/libX11.dylib
+Undefined symbols:
+  &quot;_main&quot;, referenced from:
+      start in crt1.10.6.o
+     (maybe you meant: _SDL_main)
+  &quot;_strnlen&quot;, referenced from:
+      _SDLGui_DrawDialog in libGuiSdl.a(sdlgui.c.o)
+ld: symbol(s) not found
+collect2: ld returned 1 exit status
+make[2]: *** [src/hatari] Error 1
+make[1]: *** [src/CMakeFiles/hatari.dir/all] Error 2
+make: *** [all] Error 2
+
+./configure --prefix=/opt/local --disable-osx-bundle
+
+-- 
+chs,
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002434.html">[hatari-devel] New FileSelector
+</A></li>
+	<LI>Next message: <A HREF="002406.html">[hatari-devel] New FileSelector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2405">[ date ]</a>
+              <a href="thread.html#2405">[ thread ]</a>
+              <a href="subject.html#2405">[ subject ]</a>
+              <a href="author.html#2405">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

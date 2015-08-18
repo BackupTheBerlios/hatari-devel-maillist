@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Union demo abort with new EmuTOS?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Union%20demo%20abort%20with%20new%20EmuTOS%3F&In-Reply-To=%3C201111100113.43045.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004162.html">
+   <LINK REL="Next"  HREF="004166.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Union demo abort with new EmuTOS?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Union%20demo%20abort%20with%20new%20EmuTOS%3F&In-Reply-To=%3C201111100113.43045.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Union demo abort with new EmuTOS?">oak at helsinkinet.fi
+       </A><BR>
+    <I>Thu Nov 10 00:13:42 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004162.html">[hatari-devel] EmuTOS 0.8.6 released
+</A></li>
+        <LI>Next message: <A HREF="004166.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4165">[ date ]</a>
+              <a href="thread.html#4165">[ thread ]</a>
+              <a href="subject.html#4165">[ subject ]</a>
+              <a href="author.html#4165">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I was testing the new EmuTOS with Hatari and bumbed
+into wierd error.
+
+When starting the Union demo from Persistance of Vision
+disk containing that:
+hatari --machine st -s 4 --fast-forward yes --tos etos512k.img pov-union.st
+
+Pressing 1 to select the Union demo and then pressing space to
+proceed, Hatari aborts with this:
+hatari: /home/eero/work/hatari/src/vdi.c:769: VDI_Complete: Assertion 
+`VDI_isWorkstationOpen(VDIOpCode)' failed.
+Aborted
+
+I definitely didn't have VDI mode on, or Bios intercept enabled
+so that e.g. emulated programs could enable VDI mode with Xbios().
+
+
+This is competely reproducible with EmuTOS 0.8.6, but it doesn't
+happen with normal TOS or earlier EmuTOS version[1].
+
+VDI_Complete() should be called only sometime after this:
+        if (bVdiAesIntercept &amp;&amp; nr == 0x22)
+        {
+         /* Intercept VDI &amp; AES exceptions (Trap #2) */
+          if(VDI_AES_Entry())
+          {
+            /* Set 'PC' to address of 'VDI_OPCODE' illegal instruction.
+             * This will call OpCode_VDI() after completion of Trap call!
+             * This is used to modify specific VDI return vectors contents.
+             */
+            VDI_OldPC = currpc;
+            currpc = CART_VDI_OPCODE_ADDR;
+          }
+        }
+
+Maybe OpCode_VDI() should call VDI_Complete() only if VDI_OldPC is
+non-zero and zero the variable after completing the VDI call?
+
+
+
+	- Eero
+
+[1] EmuTOS 0.8.5 gives in about same place:
+	M68000 Bus Error writing at address $0.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004162.html">[hatari-devel] EmuTOS 0.8.6 released
+</A></li>
+	<LI>Next message: <A HREF="004166.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4165">[ date ]</a>
+              <a href="thread.html#4165">[ thread ]</a>
+              <a href="subject.html#4165">[ subject ]</a>
+              <a href="author.html#4165">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

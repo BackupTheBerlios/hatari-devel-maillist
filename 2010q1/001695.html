@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Some Hatari Bugs ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20Hatari%20Bugs%20%3F&In-Reply-To=%3C201003170002.58096.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001711.html">
+   <LINK REL="Next"  HREF="001705.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Some Hatari Bugs ?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20Hatari%20Bugs%20%3F&In-Reply-To=%3C201003170002.58096.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Some Hatari Bugs ?">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Mar 16 23:02:57 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001711.html">[hatari-devel] Crossbar_Reset / Portaudio segfaults Hatari
+</A></li>
+        <LI>Next message: <A HREF="001705.html">[hatari-devel] Some Hatari Bugs ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1695">[ date ]</a>
+              <a href="thread.html#1695">[ thread ]</a>
+              <a href="subject.html#1695">[ subject ]</a>
+              <a href="author.html#1695">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 16 March 2010, Jerome Vernet wrote:
+&gt;<i> &gt; On Tuesday 16 March 2010, Jerome Vernet wrote:
+</I>&gt;<i> &gt;&gt; There is a new bug (latest sources) in full screen under MacOsx, see
+</I>&gt;<i> &gt;&gt; the screen capture.
+</I>&gt;<i> &gt;&gt; Seems to only happen when in Falcon Mode.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Please give exact steps on how you can reproduce this.
+</I>&gt;<i>
+</I>&gt;<i> I simply hit F11 to go in full screen. If I then change the Falcon
+</I>&gt;<i> Resolution, it's OK. Back to windowed mode OK, back in full screen,
+</I>&gt;<i> again same thing. I've put 1024x768 as Max Doubled Size.
+</I>
+I couldn't reproduce this on my machine.
+
+Could you verify that you have the latest sources?
+
+Your src/falcon/hostscreen.c file should have &quot;sizeChanged&quot; variable
+which I had added to deal with this kind of an issue.
+
+If you have it, please try commenting out this part of code:
+    if (sdlscrn &amp;&amp; (!bpp || sdlscrn-&gt;format-&gt;BitsPerPixel == bpp) &amp;&amp;
+...
+    {
+            /* skip redundant video mode change */
+            return;
+    }
+
+from HostScreen_setWindowSize() in hostscreen.c and tell whether that helps.
+
+
+&gt;<i> &gt;&gt; I also have issue with Disk Image, yet in Falcon Mode. When I open a
+</I>&gt;<i> &gt;&gt; disk Image in drive A, drive B show the same directory, even if I
+</I>&gt;<i> &gt;&gt; choose another disk image for disk B.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Do you mean that this doesn't happen with ST/e mode?
+</I>&gt;<i>
+</I>&gt;<i> No. It's OK under ST mode.
+</I>
+Couldn't reproduce this either.  (With CMake compiled Hatari, I was able
+to get Hatari to segfault once though.)
+
+Can somebody else on the list reproduce these issues?
+
+
+&gt;<i> &gt;&gt; Last thing, I build an Unix version under Debian Lenny. It was
+</I>&gt;<i> &gt;&gt; impossible to choose a ROM thru Hatari GUI, it never recorded the file
+</I>&gt;<i> &gt;&gt; I've selected.
+</I>
+What means it &quot;never recorded&quot;?  At which step it didn't take your
+selection into account?
+
+
+&gt;<i> &gt; I'm using Debian Lenny.  Selecting TOS image from the file browser in
+</I>&gt;<i> &gt; ROM dialog works fine for me.  Can you give more precise steps how to
+</I>&gt;<i> &gt; reproduce this issue?
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001711.html">[hatari-devel] Crossbar_Reset / Portaudio segfaults Hatari
+</A></li>
+	<LI>Next message: <A HREF="001705.html">[hatari-devel] Some Hatari Bugs ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1695">[ date ]</a>
+              <a href="thread.html#1695">[ thread ]</a>
+              <a href="subject.html#1695">[ subject ]</a>
+              <a href="author.html#1695">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

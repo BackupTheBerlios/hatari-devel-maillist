@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari 1.4 emulation bugs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%201.4%20emulation%20bugs&In-Reply-To=%3Calpine.DEB.1.10.1011051353560.387%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002593.html">
+   <LINK REL="Next"  HREF="002613.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari 1.4 emulation bugs</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%201.4%20emulation%20bugs&In-Reply-To=%3Calpine.DEB.1.10.1011051353560.387%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Hatari 1.4 emulation bugs">ae at dhs.nu
+       </A><BR>
+    <I>Fri Nov  5 14:01:27 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002593.html">[hatari-devel]  WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002613.html">[hatari-devel] Hatari 1.4 emulation bugs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2594">[ date ]</a>
+              <a href="thread.html#2594">[ thread ]</a>
+              <a href="subject.html#2594">[ subject ]</a>
+              <a href="author.html#2594">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi,
+
+while doing some testing, I found some bugs in Hatari 1.4 emulation for 
+some demos (I'm sure there are more, but these are the ones I've seen so 
+far).
+
+All tested on Mac OS X 1.6 with Hatari 1.4. I'm aware that Monsieur Styckx 
+have made some fixes regarding STe overscan since v1.4, but I've not been 
+able to test that yet, so maybe the errors for More Or Less Zero described 
+below are already fixed.
+
+Anyway, here's the list:
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+1.
+Wave of the future / ICE
+<A HREF="http://files.dhs.nu/files_demo/wavefut.zip">http://files.dhs.nu/files_demo/wavefut.zip</A>
+
+a) Top border flickers
+b) Sound crackles a bit
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+2.
+More Or Less Zero / DHS
+<A HREF="http://files.dhs.nu/demos/molz_hdd.zip">http://files.dhs.nu/demos/molz_hdd.zip</A>
+
+a) Fullscreens are shifted too much to the right (8px approx) - also seen in Cernit Trandafir and Tuttugandi (the 20 years STe megademo screen by DHS)
+b) When using hardware scroller in fullscreen, there is graphic garbage in the right border (Firehorn pic and interference circles), also seen in Tuttugandi
+c) Music and effects get unsynchronised after the plasma. In Hatari the sample loop that plays during the end of the plasma repeats four times, but on a real STe it repeats three times. The counter is on VBL and the soundchip is 25033 Hz. As far as I can tell either the VBL or soundchip frequency (or both) runs a little bit wrong speed (see video links below)
+
+Videos to illustrate the audio sync problem
+
+Real STe: <A HREF="http://ae.dhs.nu/tmp/molz_stesync.mp4">http://ae.dhs.nu/tmp/molz_stesync.mp4</A>
+Hatari 1.4: <A HREF="http://ae.dhs.nu/tmp/molz_hatarsynci.mp4">http://ae.dhs.nu/tmp/molz_hatarsynci.mp4</A>
+
+If you listen carefully you can hear that the audio loop at the end of the plasma goes on four times on Hatari and three times on the real STe. It is easy to spot the wrong sync after the spectrum 4096 image were the colours flash in sync to the drum when the chunky fullscreen effect begins.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+3.
+Space Tale / ICE
+<A HREF="http://files.dhs.nu/files_demo/spactale.zip">http://files.dhs.nu/files_demo/spactale.zip</A>
+
+a) Lower border in the intro with the two big sprites is not opened
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+4. 
+The Saw / Offbase
+<A HREF="http://pacidemo.planet-d.net/archives/THESAW.ZIP">http://pacidemo.planet-d.net/archives/THESAW.ZIP</A>
+
+a) Audio is garbage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+5.
+STNICCC 2000 / Oxygene
+<A HREF="http://files.dhs.nu/party/stniccc2000/oxygen.zip">http://files.dhs.nu/party/stniccc2000/oxygen.zip</A>
+
+a) Vector animation ends after a while, music continues
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+6.
+Fullparts by Hemoroids
+<A HREF="http://stknights.free.fr/uploads/fullparts.zip">http://stknights.free.fr/uploads/fullparts.zip</A>
+
+a) The overscan flickers when a new line begins in the text displayer
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+7.
+Brace by Diamond Design
+<A HREF="http://pacidemo.atarizone.com/archives/BRACE.ZIP">http://pacidemo.atarizone.com/archives/BRACE.ZIP</A>
+
+a) In the scrolltext screen with split low/med-res parts, the rasters flicker
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002593.html">[hatari-devel]  WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002613.html">[hatari-devel] Hatari 1.4 emulation bugs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2594">[ date ]</a>
+              <a href="thread.html#2594">[ thread ]</a>
+              <a href="subject.html#2594">[ subject ]</a>
+              <a href="author.html#2594">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

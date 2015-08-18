@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Ym / Dma mixing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3CPine.LNX.4.64.0902071323040.22798%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000125.html">
+   <LINK REL="Next"  HREF="000131.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Ym / Dma mixing</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3CPine.LNX.4.64.0902071323040.22798%40localhost%3E"
+       TITLE="[hatari-devel] Ym / Dma mixing">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Feb  7 13:34:42 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000125.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+        <LI>Next message: <A HREF="000131.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#127">[ date ]</a>
+              <a href="thread.html#127">[ thread ]</a>
+              <a href="subject.html#127">[ subject ]</a>
+              <a href="author.html#127">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 7 Feb 2009, Jean-Baptiste Berlioz wrote:
+
+&gt;&gt;<i> So, my &quot;vote&quot; would be to keep ym emulation simple by not adding this
+</I>&gt;&gt;<i> cumulative way of storing registers to replay the whole history at the
+</I>&gt;&gt;<i> end.
+</I>&gt;<i>
+</I>&gt;<i> Do you really thing the code is that comlex ? :)
+</I>
+Yes :) At least it's more complex than before for no audible gain :)
+
+
+&gt;<i> I find the interface between Ym emulation and the mixer far cleaner now,
+</I>&gt;<i> the old version was doing some strange things.
+</I>
+For me, the cleaner interface is to have the ym core (or any other sound 
+generating device) outputs a buffer of samples, and then the mixer only 
+have to mix array of bytes, without having to know how each byte has to be 
+generated (the case of dma is a little in between, because you don't 
+generate bytes, but you need to resample the buffer).
+
+I think the cleaner interface is something like :
+
+sample *DoMix ( sample *buffer1, int freq1 , sample *buffer2, int freq2, 
+[...] , int outfreq );
+
+That is, there's a complete abstraction of how the buffer were generated, 
+and DoMix can do all kind of filtering/interpolation independantly of how 
+buffers were generated.
+
+What strange things do you mean ?
+
+
+&gt;&gt;<i> Why do you use RecordSoundRegs in Sound_WriteReg
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>         RecordSoundRegs[reg] = data &amp; SoundRegsMask[reg];
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> and not directly SoundRegs (which is already masked).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Not a lot of bytes, but why using another copy of SoundRegs instead of
+</I>&gt;&gt;<i> referencing it directly in the record functions as today ?
+</I>&gt;<i>
+</I>&gt;<i> There's one copy (SoundRegs) to emulate the Ym, and one copy
+</I>&gt;<i> (RecordSoundRegs) for recording .ym files.
+</I>
+Yes, but since they contain the same values, why not considering that the 
+ym core is providing an array that can be read by other modules without 
+doing another copy ?
+
+&gt;&gt;<i> I don't know ; does it really improve sound a lot at 44.1 kHz ? I'm not
+</I>&gt;&gt;<i> sure the real problem to get a sound really close to dma is resampling,
+</I>&gt;&gt;<i> but more in the modeling of filters that match the original 1 kohm
+</I>&gt;&gt;<i> resistance between the sound chip and the left/right output for instance.
+</I>&gt;<i>
+</I>&gt;<i> Downsampling or upsampling to close sample rates does generate wrong
+</I>&gt;<i> frequencies. Audio resampling is far different than bitmap resampling.
+</I>
+I agree, and I would say they're not that different in fact because 
+resampling gfx without advanced interpolation will usually give some not 
+really nice results.
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000125.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+	<LI>Next message: <A HREF="000131.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#127">[ date ]</a>
+              <a href="thread.html#127">[ thread ]</a>
+              <a href="subject.html#127">[ subject ]</a>
+              <a href="author.html#127">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

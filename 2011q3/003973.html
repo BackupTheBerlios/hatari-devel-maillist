@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] HD Driver v8.23 (full) gets stuck at startup?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20HD%20Driver%20v8.23%20%28full%29%20gets%20stuck%20at%20startup%3F&In-Reply-To=%3C4E5E9215.1010901%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003972.html">
+   <LINK REL="Next"  HREF="003977.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] HD Driver v8.23 (full) gets stuck at startup?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20HD%20Driver%20v8.23%20%28full%29%20gets%20stuck%20at%20startup%3F&In-Reply-To=%3C4E5E9215.1010901%40free.fr%3E"
+       TITLE="[hatari-devel] HD Driver v8.23 (full) gets stuck at startup?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Aug 31 21:57:09 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003972.html">[hatari-devel] HD Driver v8.23 (full) gets stuck at startup?
+</A></li>
+        <LI>Next message: <A HREF="003977.html">[hatari-devel] HD Driver v8.23 (full) gets stuck at startup?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3973">[ date ]</a>
+              <a href="thread.html#3973">[ thread ]</a>
+              <a href="subject.html#3973">[ subject ]</a>
+              <a href="author.html#3973">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I haven't got HG Driver full version, so I can't do tests on this.
+I'll test tonight the new Dfree() version code.
+
+Good job.
+
+Regards
+
+Laurent
+
+
+Le 31/08/2011 21:50, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Any ideas why full (v8.23) HD driver gets stuck when one runs it, both
+</I>&gt;<i> with ACSI or IDE emulation?
+</I>&gt;<i>
+</I>&gt;<i> For example after starting Hatari with empty HD image:
+</I>&gt;<i> $ dd if=/dev/zero of=hd.img bs=1k count=$((1024*16))
+</I>&gt;<i> $ zip2st hddr823.zip
+</I>&gt;<i> $ hatari --machine falcon --tos tos404.img --ide-master hd.img hddr823.st
+</I>&gt;<i>
+</I>&gt;<i> And then running hdddriver.prg from a:\hddr823\auto\, it prints this
+</I>&gt;<i> and stops:
+</I>&gt;<i> -----------
+</I>&gt;<i> HDDRIVER V8.23
+</I>&gt;<i> C 1989-2008 Uwe Seimet
+</I>&gt;<i>
+</I>&gt;<i> Atari IDE 00.00: Hatari IDE master disk, Direct Access
+</I>&gt;<i> -----------
+</I>&gt;<i>
+</I>&gt;<i> Only after a very long time (minutes), it continues:
+</I>&gt;<i> -----------
+</I>&gt;<i> Partitions: C
+</I>&gt;<i>
+</I>&gt;<i> Allocated memory: 45 KByte
+</I>&gt;<i> -----------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> According to &quot;profile&quot; this is what it seems to be doing when stuck:
+</I>&gt;<i> -----------
+</I>&gt;<i> $0211c0 : 4e90                                 jsr       (a0)
+</I>&gt;<i> $0211c2 : 0800 0006                            btst      #6,d0
+</I>&gt;<i> $0211c6 : 6642                                 bne.s     $2120a
+</I>&gt;<i> $0211c8 : 0800 0005                            btst      #5,d0
+</I>&gt;<i> $0211cc : 6624                                 bne.s     $211f2
+</I>&gt;<i> $0211ce : 4a38 fa23                            tst.b     $fffffa23.w
+</I>&gt;<i> $0211d2 : 6aec                                 bpl.s     $211c0
+</I>&gt;<i> $0211d4 : 4e90                                 jsr       (a0)
+</I>&gt;<i> $0211d6 : 0800 0006                            btst      #6,d0
+</I>&gt;<i> $0211da : 662e                                 bne.s     $2120a
+</I>&gt;<i> $0211dc : 0800 0005                            btst      #5,d0
+</I>&gt;<i> $0211e0 : 6610                                 bne.s     $211f2
+</I>&gt;<i> $0211e2 : 4a38 fa23                            tst.b     $fffffa23.w
+</I>&gt;<i> $0211e6 : 6bec                                 bmi.s     $211d4
+</I>&gt;<i> $0211e8 : 5381                                 subq.l    #1,d1
+</I>&gt;<i> $0211ea : 66d4                                 bne.s     $211c0
+</I>&gt;<i> ...
+</I>&gt;<i> $02167a : 31fc 0089 8606                       move.w    #$89,$ffff8606.w
+</I>&gt;<i> $021680 : 3038 8604                            move.w    $ffff8604.w,d0
+</I>&gt;<i> $021684 : 4e75                                 rts
+</I>&gt;<i> -----------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> HD driver demo v8.21 doesn't get stuck and neither does Cecile driver
+</I>&gt;<i> (but latter is less useful because it doesn't allow access to GEMDOS HD
+</I>&gt;<i> emu partitions).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003972.html">[hatari-devel] HD Driver v8.23 (full) gets stuck at startup?
+</A></li>
+	<LI>Next message: <A HREF="003977.html">[hatari-devel] HD Driver v8.23 (full) gets stuck at startup?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3973">[ date ]</a>
+              <a href="thread.html#3973">[ thread ]</a>
+              <a href="subject.html#3973">[ subject ]</a>
+              <a href="author.html#3973">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

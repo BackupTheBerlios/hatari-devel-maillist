@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New CPU, MacOsX Build
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20CPU%2C%20MacOsX%20Build&In-Reply-To=%3C4D457A5D.4010900%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002950.html">
+   <LINK REL="Next"  HREF="002954.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New CPU, MacOsX Build</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20CPU%2C%20MacOsX%20Build&In-Reply-To=%3C4D457A5D.4010900%40free.fr%3E"
+       TITLE="[hatari-devel] New CPU, MacOsX Build">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Jan 30 15:49:01 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002950.html">[hatari-devel] New CPU, MacOsX Build
+</A></li>
+        <LI>Next message: <A HREF="002954.html">[hatari-devel] New CPU, MacOsX Build
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2951">[ date ]</a>
+              <a href="thread.html#2951">[ thread ]</a>
+              <a href="subject.html#2951">[ subject ]</a>
+              <a href="author.html#2951">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've done the test twice (with : htop -d 5)
+
+The demo starts with 80-83% of CPU
+When it arrives at the point when there's Yamaha + MP2 sound, cpu fall 
+near 70-75%, but sound starts to have problem (not only sound, the whole 
+demo lags)
+In the green labyrinth, sound and animation lag a lot.
+
+Just after this screen, CPU retuns to about 80-85% and everything runs well.
+
+There's another &quot;green part screen&quot; after where cpu goes to 70-75% and 
+the whole demo lags a little.
+
+I really don't think we're on a DSL, CPU or anything you want problem here.
+
+It's only an emulation problem that have to be corrected, and I'm still 
+pretty sure that Videl emulation may help).
+That's only my 2 cents advice here ;)
+
+Laurent
+
+
+
+Le 30/01/2011 15:26, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On sunnuntai 30 tammikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i> Le 30/01/2011 10:39, Jerome Vernet a &#233;crit :
+</I>&gt;&gt;&gt;<i> Le 30/01/11 00:24, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;&gt;&gt;<i> For the sound, I've detected a strange behaviour (I spoke about it in
+</I>&gt;&gt;&gt;&gt;<i> a previous message).
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> If you restart the same demo 2 or 3 times, sound becomes perfect. I
+</I>&gt;&gt;&gt;&gt;<i> don't know why yet, I'll search this.
+</I>&gt;&gt;&gt;&gt;<i> I've heard beam demo yesterday with perfect sound (this demo is
+</I>&gt;&gt;&gt;&gt;<i> really nice).
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Could you try to launch it 2 or 3 times (on the same hatari's cession
+</I>&gt;&gt;&gt;&gt;<i> if possible ?)
+</I>&gt;&gt;&gt;<i> You're right, I have exactly the same thing here. First try, bad
+</I>&gt;&gt;&gt;<i> sound, second try, no sound, third, correct sound, at least until
+</I>&gt;&gt;&gt;<i> something start to go bad (musique goes more and more bad), from the
+</I>&gt;&gt;&gt;<i> start of the green 3D labyrinthe. At this point, Hatari use 104% of my
+</I>&gt;&gt;&gt;<i> Core2Duo 2.2Ghz, FS (set to auto) skip from 1 to 2.
+</I>&gt;&gt;&gt;<i> Then sound become good for the rest.
+</I>&gt;&gt;<i> Ok, thanks a lot for the test.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've got exactly the same behaviour : nice music after a few tries, then
+</I>&gt;&gt;<i> music goes wrong in the green labyrinth, then music is nice again to the
+</I>&gt;&gt;<i> end.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I thing the problem in the labyrinth is not related to music (crossbar
+</I>&gt;&gt;<i> or DSP), but timings (maybe again videl).
+</I>&gt;&gt;<i> For me, top never goes up to 92% cpu for this screen.
+</I>&gt;<i> What CPU frequency governor you're using?
+</I>&gt;<i> Are you monitoring CPU consumption of all your cores?
+</I>&gt;<i> If you're using &quot;auto&quot; frameskip, does frameskip ever go over 0?
+</I>&gt;<i>
+</I>&gt;<i> It's still possible that there just isn't enough CPU for the DSP emulation
+</I>&gt;<i> and that's why it sounds occasionally bad.
+</I>&gt;<i>
+</I>&gt;<i> &quot;top&quot; gives a running average over multiple seconds, over all cores.
+</I>&gt;<i> Something like &quot;htop -d 5&quot; should show information a bit closer to reality.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002950.html">[hatari-devel] New CPU, MacOsX Build
+</A></li>
+	<LI>Next message: <A HREF="002954.html">[hatari-devel] New CPU, MacOsX Build
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2951">[ date ]</a>
+              <a href="thread.html#2951">[ thread ]</a>
+              <a href="subject.html#2951">[ subject ]</a>
+              <a href="author.html#2951">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

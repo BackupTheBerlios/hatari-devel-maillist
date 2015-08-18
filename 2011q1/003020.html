@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] MacOsx: bad color in falcon mode
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MacOsx%3A%20bad%20color%20in%20falcon%20mode&In-Reply-To=%3C4D572496.7050107%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003019.html">
+   <LINK REL="Next"  HREF="003021.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] MacOsx: bad color in falcon mode</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MacOsx%3A%20bad%20color%20in%20falcon%20mode&In-Reply-To=%3C4D572496.7050107%40free.fr%3E"
+       TITLE="[hatari-devel] MacOsx: bad color in falcon mode">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Feb 13 01:23:50 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003019.html">[hatari-devel] MacOsx: bad color in falcon mode
+</A></li>
+        <LI>Next message: <A HREF="003021.html">[hatari-devel] MacOsx: bad color in falcon mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3020">[ date ]</a>
+              <a href="thread.html#3020">[ thread ]</a>
+              <a href="subject.html#3020">[ subject ]</a>
+              <a href="author.html#3020">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Ok, I've fixed this problem.
+PaceMaker is now displaying correctly again.
+
+When one's write to $ff8260, the videl.bUseSTShifter variable was not 
+updated.
+
+I had moved it from video.c to videl.c.
+I've introduced a call to VIDEL_ST_ShiftModeWriteByte to compute 
+correctly videl.bUseSTShifter variable.
+
+These 3 added lines of code in video.c should be removed when all the 
+video code will run from videl emulation.
+(If they stay here, it won't be a problem, as the called function will 
+be the VIDEL one, it would become 3 lines of death code).
+
+Regards
+
+Laurent
+
+
+
+
+Le 12/02/2011 22:33, Jerome Vernet a &#233;crit :
+&gt;<i> Le 12/02/11 21:30, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;<i> Do you speak about the pacemaker demo from paradox ?
+</I>&gt;<i> Yes. It's my favorite test for Hatari improvment. I like the demo!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Have you seen it running in Falcon mode in a previous version of 
+</I>&gt;&gt;<i> Hatari ?
+</I>&gt;<i> I'm pretty sure.  And I think that i's also working on my Flacon and 
+</I>&gt;<i> the TT.
+</I>&gt;<i>
+</I>&gt;<i> Have a doubt, suddenly... So I run it under a 15 May 2010 build left 
+</I>&gt;<i> on my hard disk, and it's OK. PACEMAKER run perfectly in the may 2010 
+</I>&gt;<i> version, not with the latest (bad color, balls not displayed, etc).
+</I>&gt;<i>
+</I>&gt;<i> JV
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Le 12/02/2011 09:11, Jerome Vernet a &#233;crit :
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> just playing with the latest sources. I have a problem in Falcon 
+</I>&gt;&gt;&gt;<i> Mode (old UAE core), while running PaceMaker demo: color are totally 
+</I>&gt;&gt;&gt;<i> wrong. Work in ST/STe mode.
+</I>&gt;&gt;&gt;<i> Do not know wich revision broke this demo.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Ono more thing about MacOsX build: I have .nib files wich work under 
+</I>&gt;&gt;&gt;<i> 10.4 and 10.5 also. Hatari is building with my gui-osx sources under 
+</I>&gt;&gt;&gt;<i> 10.4, 10.5 and 10.6, without problem with cmake, and seems to work 
+</I>&gt;&gt;&gt;<i> exacly the same way on the 3 MacOsX versions, under ppc or x86. But 
+</I>&gt;&gt;&gt;<i> still need to build one version for each, differences in MacOsX 
+</I>&gt;&gt;&gt;<i> library version...
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I also have an new UAE core build, wich look like very impressive in 
+</I>&gt;&gt;&gt;<i> Falcon mode, running more demos than with the old one, with sound. 
+</I>&gt;&gt;&gt;<i> Nice job !
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Jerome
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003019.html">[hatari-devel] MacOsx: bad color in falcon mode
+</A></li>
+	<LI>Next message: <A HREF="003021.html">[hatari-devel] MacOsx: bad color in falcon mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3020">[ date ]</a>
+              <a href="thread.html#3020">[ thread ]</a>
+              <a href="subject.html#3020">[ subject ]</a>
+              <a href="author.html#3020">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

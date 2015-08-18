@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] FYI: new --desktop option
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C201103302328.51690.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003259.html">
+   <LINK REL="Next"  HREF="003211.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] FYI: new --desktop option</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C201103302328.51690.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] FYI: new --desktop option">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Mar 30 22:28:51 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003259.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+        <LI>Next message: <A HREF="003211.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3277">[ date ]</a>
+              <a href="thread.html#3277">[ thread ]</a>
+              <a href="subject.html#3277">[ subject ]</a>
+              <a href="author.html#3277">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On tiistai 29 maaliskuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> So, what I'd like to do is not to have the screen size change while
+</I>&gt;<i> hatari is running ; I'd like to have 4 parameters to set border width
+</I>&gt;<i> and 1 or 2 parameters to set zooming factor on X and/or Y axis.
+</I>&gt;<i> 
+</I>&gt;<i> Once those parameters are set, Hatari would display the content of the
+</I>&gt;<i> emulated video memory inside this area, but there wouldn't be more
+</I>&gt;<i> resizing as what we have today, it's just that it would be possible to
+</I>&gt;<i> specify independant values for each border instead of specifying a total
+</I>&gt;<i> X/Y size for Hatari's window.
+</I>
+Ok, but it still needs to take into account maximum resolution supported
+by SDL to prevent Hatari aborting when resulting/requested resolution is
+too large.
+
+The current code will prefer doubling over full borders, if both don't fit
+on screen at the same time.
+
+If user will now be able to separately specify:
+- enabling doubling &amp; borders
+- specifying them both in X &amp; Y direction
+
+In which order you think these should be preferred in case all of them don't
+fit into screen?  For example if doubling &amp; borders fit fully in horizontal
+direction, but in vertical direction you need to choose between the two?
+
+
+Also, if --desktop option is taken into use for ST/STE screens too, the most
+likely case is a lot of black borders in fullscreen.  Even otherwise you're 
+going to have black borders with 460x2 horizontal resolution as it doesn't
+match standard resolutions offered by monitors:
+	<A HREF="http://en.wikipedia.org/wiki/File:Vector_Video_Standards2.svg">http://en.wikipedia.org/wiki/File:Vector_Video_Standards2.svg</A>
+
+Have you considered adding centering of the ST/STE screen contents so that
+it doesn't just end in top left corner of the resolution provided by SDL for
+fullscreen?
+
+
+
+Then to the options dialog layout...
+
+You proposed something like this:
+-----------------------------------------------
+STF/STE
+[] Double X on low res  [] Double Y on low res
+[] Double Y on med res
+displayed pixels in borders
+       xx left xx right
+       xx top  xx bottom
+-----------------------------------------------
+Falcon/TT
+[] Keep desktop resolution
+Max zoomed win    &lt;- xxx -&gt;
+                 x &lt;- xxx -&gt;
+-----------------------------------------------
+
+
+Could you update it so that it has all of this stuff:
+------------------------
+  Hatari screen options        Falcon/TT only:
+
+  [] Fullscreen   Frame skip:  [] Keep desktop
+   		   o Off          resolution
+  Indicators:	   o 1
+   o Statusbar	   o 2         Max zoomed win:
+   o Drive led 	   o 4           &lt;- xxx -&gt;
+   o None	   o Auto      x &lt;- xxx -&gt;
+
+
+    Screen capture        [  Screenshot  ]
+
+     [] Crop statusbar    [  Record AVI  ]
+
+
+           [ Back to main menu ]
+----------------------
+
+And it still fits into something like 64x25 characters, or propose
+something else that is implementable in the SDL GUI?
+
+
+It would be nice to be able to move some of that stuff to the Monitor
+options dialog[1], but I don't think they really would belong there.  :-/
+What do you think?
+
+[2] The ST/STE borders option is there mainly because it was easier to
+    fit there...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003259.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+	<LI>Next message: <A HREF="003211.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3277">[ date ]</a>
+              <a href="thread.html#3277">[ thread ]</a>
+              <a href="subject.html#3277">[ subject ]</a>
+              <a href="author.html#3277">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

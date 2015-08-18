@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Newcore and hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Newcore%20and%20hatari&In-Reply-To=%3C4E996A29.2040806%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004093.html">
+   <LINK REL="Next"  HREF="004095.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Newcore and hatari</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Newcore%20and%20hatari&In-Reply-To=%3C4E996A29.2040806%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Newcore and hatari">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Oct 15 13:10:33 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004093.html">[hatari-devel] Newcore and hatari
+</A></li>
+        <LI>Next message: <A HREF="004095.html">[hatari-devel] Hatari v1.6 features?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4094">[ date ]</a>
+              <a href="thread.html#4094">[ thread ]</a>
+              <a href="subject.html#4094">[ subject ]</a>
+              <a href="author.html#4094">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 14/10/2011 18:57, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I've done a few tests with hatari ST new core (no cycle exact, no prefetch)
+</I>&gt;<i>
+</I>&gt;<i> Some demos and games are running, but the most important seem to have
+</I>&gt;<i> problems.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Some running prgs I've tested :
+</I>&gt;<i>
+</I>&gt;<i> Oh crickey (to the main menu, I haven't tested after), but the first
+</I>&gt;<i> image is buggy
+</I>&gt;<i> Turrican 2
+</I>&gt;<i> Faith demo :)
+</I>&gt;<i> old stuuf demo
+</I>&gt;<i> fish&amp;chips
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Some demos not running :
+</I>&gt;<i>
+</I>&gt;<i> Dark side of the spoon doens't run
+</I>&gt;<i> flippo (says it's not a 8 Mhz atari)
+</I>&gt;<i> many more.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I thought about merging all Nicolas'patches from gencpu and newcpu to
+</I>&gt;<i> the new core.
+</I>&gt;<i>
+</I>&gt;<i> Nicolas, do you plan to do something with the new core for hatari v1.6
+</I>&gt;<i> or do you have some other projects ?
+</I>
+Hello
+
+I don't think I will have time to work on cpu for 1.6 ; fdc code took 
+quite a lot of time and I'd like to do a release with it and other 
+improvements we could get before the end of the year (christmas gift or 
+so :) )
+
+Regarding merging the patches from uae-cpu into winuae cpu, I wonder if 
+it could not create conflicts with getting a fully working falcon cpu 
+with prefetch, caches and cycles.
+Adding those patch could add complexity in winuae core and makes it 
+harder to debug the winuae core in Hatari.
+
+So far, we have a working core for STF/STE (68000 based) computers with 
+uae-cpu ; winuae cpu already gives good result for Falcon mode. I agree 
+it would be good to merge everything in one CPU, but I think it would be 
+easier to merge both CPU when they all work &gt; 95 %.
+
+For STF, it's already the case, but for Falcon some cpu cases are not OK 
+yet. I think that winuae core should be working with almost all falcon 
+demos/programs before merging 68000 patches in it.
+
+ From the user point of view, we have a solution (even if it's at 
+compile time) to make ST or Falcon work in the best mode.
+
+I think efforts would be better used to improve falcon mode, because the 
+user will really see the improvement in the next release. Merging today 
+patch from uae-cpu into winuae will not be necessarily visible to the 
+users immediatly, because if the winuae cpu is not 100 % working, they 
+will not use it.
+
+I don't say those patches should not be merged (even if some of them 
+should be completly rewritten), but I have the feeling it's a little too 
+early to do it.
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004093.html">[hatari-devel] Newcore and hatari
+</A></li>
+	<LI>Next message: <A HREF="004095.html">[hatari-devel] Hatari v1.6 features?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4094">[ date ]</a>
+              <a href="thread.html#4094">[ thread ]</a>
+              <a href="subject.html#4094">[ subject ]</a>
+              <a href="author.html#4094">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Unable to compile hatari on Solaris 11
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Unable%20to%20compile%20hatari%20on%20Solaris%2011&In-Reply-To=%3C20110509080600.354f49c4%40think43%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003406.html">
+   <LINK REL="Next"  HREF="003311.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Unable to compile hatari on Solaris 11</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Unable%20to%20compile%20hatari%20on%20Solaris%2011&In-Reply-To=%3C20110509080600.354f49c4%40think43%3E"
+       TITLE="[hatari-devel] Unable to compile hatari on Solaris 11">huth at users.berlios.de
+       </A><BR>
+    <I>Mon May  9 08:06:00 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003406.html">[hatari-devel] Unable to compile hatari on Solaris 11
+</A></li>
+        <LI>Next message: <A HREF="003311.html">[hatari-devel] Wrong timestamp of copied files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3407">[ date ]</a>
+              <a href="thread.html#3407">[ thread ]</a>
+              <a href="subject.html#3407">[ subject ]</a>
+              <a href="author.html#3407">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Mon, 9 May 2011 07:52:36 +0200
+schrieb Christer Solskogen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">christer.solskogen at gmail.com</A>&gt;:
+
+&gt;<i> On Sun, May 8, 2011 at 9:29 PM, Thomas Huth &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">huth at users.berlios.de</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i> &gt; Am Fri, 29 Apr 2011 08:56:17 +0200
+</I>&gt;<i> &gt; schrieb Christer Solskogen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">christer.solskogen at gmail.com</A>&gt;:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; /home/et0640/source/hatari/src/uae-cpu:
+</I>&gt;<i> &gt;&gt; Undefined &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; first referenced
+</I>&gt;<i> &gt;&gt; &#160;symbol &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; in file
+</I>&gt;<i> &gt;&gt; socket
+</I>&gt;<i> &gt;&gt; &#160;CMakeFiles/hatari.dir/control.c.o (symbol belongs to implicit
+</I>&gt;<i> &gt;&gt; dependency /usr/lib/libsocket.so.1) connect
+</I>&gt;<i> &gt;&gt; &#160; &#160; &#160; CMakeFiles/hatari.dir/control.c.o (symbol belongs to
+</I>&gt;<i> &gt;&gt; implicit dependency /usr/lib/libsocket.so.1) ld: fatal: symbol
+</I>&gt;<i> &gt;&gt; referencing errors. No output written to hatari collect2: ld
+</I>&gt;<i> &gt;&gt; returned 1 exit status make[2]: *** [src/hatari] Error 1
+</I>&gt;<i> &gt;&gt; make[2]: Leaving directory `/home/et0640/source/hatari'
+</I>&gt;<i> &gt;&gt; make[1]: *** [src/CMakeFiles/hatari.dir/all] Error 2
+</I>&gt;<i> &gt;&gt; make[1]: Leaving directory `/home/et0640/source/hatari'
+</I>&gt;<i> &gt;&gt; make: *** [all] Error 2
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If I get the FindX11 module of CMake right, it already checks for
+</I>&gt;<i> &gt; libsocket... we just used the wrong variable in our
+</I>&gt;<i> &gt; CMakeLists.txt... could you please try the following patch to see
+</I>&gt;<i> &gt; whether this fixes this issue:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; diff -r 75b86c628507 src/CMakeLists.txt
+</I>&gt;<i> &gt; --- a/src/CMakeLists.txt &#160; &#160; &#160; &#160;Sun May 01 23:02:05 2011 +0300
+</I>&gt;<i> &gt; +++ b/src/CMakeLists.txt &#160; &#160; &#160; &#160;Sun May 08 21:27:12 2011 +0200
+</I>&gt;<i> &gt; @@ -122,7 +122,7 @@
+</I>&gt;<i> &gt; &#160;endif(PNG_FOUND)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &#160;if(X11_FOUND)
+</I>&gt;<i> &gt; - &#160; &#160; &#160; target_link_libraries(hatari ${X11_X11_LIB})
+</I>&gt;<i> &gt; + &#160; &#160; &#160; target_link_libraries(hatari ${X11_LIBRARIES})
+</I>&gt;<i> &gt; &#160;endif(X11_FOUND)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &#160;if(PORTAUDIO_FOUND)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> That patch was already applied to mercurial.
+</I>&gt;<i> Linking worked perfect :-) hatari works on Solaris (11) now :-)
+</I>
+Great to hear that! Thanks for trying it out!
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003406.html">[hatari-devel] Unable to compile hatari on Solaris 11
+</A></li>
+	<LI>Next message: <A HREF="003311.html">[hatari-devel] Wrong timestamp of copied files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3407">[ date ]</a>
+              <a href="thread.html#3407">[ thread ]</a>
+              <a href="subject.html#3407">[ subject ]</a>
+              <a href="author.html#3407">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

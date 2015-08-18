@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005100933340.6656%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002031.html">
+   <LINK REL="Next"  HREF="002034.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005100933340.6656%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon May 10 09:41:22 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002031.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002034.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2032">[ date ]</a>
+              <a href="thread.html#2032">[ thread ]</a>
+              <a href="subject.html#2032">[ subject ]</a>
+              <a href="author.html#2032">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 9 May 2010, David Savinkoff wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> Your system at 11025 Hz:
+</I>&gt;<i> Sound_ResetBufferIndex SoundBufferSize 352 SAMPLES_PER_FRAME 221
+</I>&gt;<i> 
+</I>&gt;<i> My system at 11025 Hz:
+</I>&gt;<i> Sound_ResetBufferIndex SoundBufferSize 1024 SAMPLES_PER_FRAME 184
+</I>&gt;<i> 
+</I>&gt;<i> Notice that your system automagically? changed SoundBufferSize
+</I>&gt;<i> even though Hatari sets desiredAudioSpec.samples = 1024
+</I>&gt;<i> This is the reason you don't see the difference in delay;
+</I>&gt;<i> maybe desiredAudioSpec.samples could be calculated in
+</I>&gt;<i> Hatari for systems that are not magic.
+</I>&gt;<i> 
+</I>&gt;<i> See line 106 in audio.c:
+</I>&gt;<i> 
+</I>&gt;<i> &#160;&#160;&#160; /* Set up SDL audio: */
+</I>&gt;<i> &#160;&#160;&#160; desiredAudioSpec.freq = nAudioFrequency;
+</I>&gt;<i> &#160;&#160;&#160; desiredAudioSpec.format = AUDIO_S16SYS;&#160;&#160;&#160;&#160;&#160;&#160; /* 16-Bit signed */
+</I>&gt;<i> &#160;&#160;&#160; desiredAudioSpec.channels = 2;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; /* stereo */
+</I>&gt;<i> &#160;&#160;&#160; desiredAudioSpec.samples = 1024;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; /* Buffer size */
+</I>&gt;<i> &#160;&#160;&#160; desiredAudioSpec.callback = Audio_CallBack;
+</I>&gt;<i> &#160;&#160;&#160; desiredAudioSpec.userdata = NULL;
+</I>&gt;<i> 
+</I>&gt;<i> Another thing is to make MIXBUFFER_SIZE in sound.h as small as
+</I>&gt;<i> possible instead of the arbitrarily large 16384 because it
+</I>&gt;<i> seems that some systems (mine) drift to a maximum delay.
+</I>&gt;<i> 
+</I>&gt;<i> I'm using SDL 1.2.13 -- there is 1.2.14. I'll see if I can
+</I>&gt;<i> get it to work. What SDL are you using? I also wonder if
+</I>&gt;<i> there are special features that can be en/disabled that
+</I>&gt;<i> make the difference here.
+</I>&gt;<i> 
+</I>&gt;<i> David Savinkoff
+</I>
+Hi,
+
+It's strange that you get 184 samples per frame at 11025 kHz ; at 50 Hz, 
+you should get 11025/50 = 220.5 -&gt; 221. There's something wrong here,
+184 @ 50 Hz gives 9.2 kHz. But at 60 Hz it gives 183.75-&gt;184.
+Are you running at 60 Hz, maybe with a NTSC tos (I don't know if this 
+exist) ?
+
+I'm using SDL 1.2.14, I don't know if this matters. Are you using alsa as 
+your main sound system ? Maybe your sound card'specific driver has some 
+limitation and doesn't advertise some parameters needed by alsa/sdl ?
+
+I will have a look at SDL's source code to see how they compute &quot;size&quot; and 
+what could be needed to this ourselve.
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002031.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002034.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2032">[ date ]</a>
+              <a href="thread.html#2032">[ thread ]</a>
+              <a href="subject.html#2032">[ subject ]</a>
+              <a href="author.html#2032">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

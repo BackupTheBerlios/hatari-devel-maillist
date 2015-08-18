@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Killing impact screen problem : I've found the problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Killing%20impact%20screen%20problem%20%3A%20I%27ve%20found%20the%0A%20problem&In-Reply-To=%3Calpine.LMD.2.00.1002032221430.12528%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001410.html">
+   <LINK REL="Next"  HREF="001412.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Killing impact screen problem : I've found the problem</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Killing%20impact%20screen%20problem%20%3A%20I%27ve%20found%20the%0A%20problem&In-Reply-To=%3Calpine.LMD.2.00.1002032221430.12528%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Killing impact screen problem : I've found the problem">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Feb  3 22:27:48 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001410.html">[hatari-devel] Killing impact screen problem : I've found the	problem
+</A></li>
+        <LI>Next message: <A HREF="001412.html">[hatari-devel] Killing impact screen problem : I've found the problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1411">[ date ]</a>
+              <a href="thread.html#1411">[ thread ]</a>
+              <a href="subject.html#1411">[ subject ]</a>
+              <a href="author.html#1411">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 3 Feb 2010, Eero Tamminen wrote:
+
+&gt;&gt;<i> I don't think that adding something like the following patch is a good
+</I>&gt;&gt;<i> idea:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> if (hscrolloffset !=0)
+</I>&gt;&gt;<i>    fvram +=2;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Perhaps &quot;atariVideoRAM&quot; is the problem too ?
+</I>&gt;<i>
+</I>&gt;<i> You can look into Video_CopyScreenLineColor() in video.c how it does STE HW
+</I>&gt;<i> scrolling.  Maybe Videl code isn't taking into account everything doe in
+</I>&gt;<i> there?
+</I>&gt;<i>
+</I>&gt;<i> (I guess in the Videl case you can ignore the border handling code)
+</I>&gt;<i>
+</I>&gt;<i> Nicolas?
+</I>
+Hello,
+
+I really don't have any clue on how the falcon memory is working. Sure 
+that in ST/STE mode, we can use the same routs are those for plain STE in 
+video.c/screen.c but for the problem reported by laurent, I think it's 
+falcon specific.
+
+On STE low res, using hscroll requires 8 more bytes per line (due to 
+prefetching), but I don't know if similar adjustements are needed on 
+falcon.
+
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Any idea of how to correct this correctly.
+</I>&gt;<i>
+</I>&gt;<i> I also wonder whether we really need always to use Videl drawing routines:
+</I>&gt;<i>       /* Now draw the screen! */
+</I>&gt;<i>        if (ConfigureParams.System.nMachineType == MACHINE_FALCON
+</I>&gt;<i> &amp;&amp; !bUseVDIRes)
+</I>&gt;<i>        {
+</I>&gt;<i>                bScreenChanged = VIDEL_renderScreen();
+</I>&gt;<i>        }
+</I>&gt;<i>
+</I>&gt;<i> Couldn't we on Falcon &amp; TT use the ST/STE screen rendering when
+</I>&gt;<i> using ST/STE screen mode on them?  Those drawing routines handle
+</I>&gt;<i> scrolling etc fine.
+</I>
+Yes, maybe some &quot;shortcuts&quot; could be used to call STE screen functions, 
+but does someone know how to determine when videl is in such mode ?
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001410.html">[hatari-devel] Killing impact screen problem : I've found the	problem
+</A></li>
+	<LI>Next message: <A HREF="001412.html">[hatari-devel] Killing impact screen problem : I've found the problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1411">[ date ]</a>
+              <a href="thread.html#1411">[ thread ]</a>
+              <a href="subject.html#1411">[ subject ]</a>
+              <a href="author.html#1411">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Fixes for possible bug in dmasnd.c
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fixes%20for%20possible%20bug%20in%20dmasnd.c&In-Reply-To=%3Calpine.LMD.2.00.1004271826110.13240%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001932.html">
+   <LINK REL="Next"  HREF="001941.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Fixes for possible bug in dmasnd.c</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fixes%20for%20possible%20bug%20in%20dmasnd.c&In-Reply-To=%3Calpine.LMD.2.00.1004271826110.13240%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Fixes for possible bug in dmasnd.c">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Apr 27 18:40:50 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001932.html">[hatari-devel] Linking with readline
+</A></li>
+        <LI>Next message: <A HREF="001941.html">[hatari-devel] Fixes for possible bug in dmasnd.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1936">[ date ]</a>
+              <a href="thread.html#1936">[ thread ]</a>
+              <a href="subject.html#1936">[ subject ]</a>
+              <a href="author.html#1936">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hello,
+
+while running EPSS demo by Unit 17, I got the following crash of Hatari :
+
+#3  0xb7b9bb08 in __assert_fail () from /lib/i686/libc.so.6
+#4  0x08082b9d in CycInt_AddRelativeInterruptWithOffset (CycleTime=-3840, CycleType=1, Handler=INTERRUPT_DMASOUND, CycleOffset=0)    at /home/npomarede/src/hatari-work/src/cycInt.c:377
+#5  0x08082ccb in CycInt_AddRelativeInterrupt (CycleTime=-3840, CycleType=1, Handler=INTERRUPT_DMASOUND) at /home/npomarede/src/hatari-work/src/cycInt.c:337
+#6  0x080835c0 in DmaSnd_StartNewFrame () at /home/npomarede/src/hatari-work/src/dmaSnd.c:283
+#7  0x0808397e in DmaSnd_EndOfFrameReached (nMixBufIdx=5532, nSamplesToGenerate=1) at /home/npomarede/src/hatari-work/src/dmaSnd.c:302
+#8  DmaSnd_GenerateSamples (nMixBufIdx=5532, nSamplesToGenerate=1) at /home/npomarede/src/hatari-work/src/dmaSnd.c:346
+#9  0x080a45eb in Sound_GenerateSamples () at /home/npomarede/src/hatari-work/src/sound.c:1049
+#10 Sound_Update () at /home/npomarede/src/hatari-work/src/sound.c:1081
+#11 0x0808384e in DmaSnd_InterruptHandler () at /home/npomarede/src/hatari-work/src/dmaSnd.c:476
+#12 0x080ce1d3 in m68k_run_1 (may_quit=1) at /home/npomarede/src/hatari-work/src/uae-cpu/newcpu.c:1755
+#13 m68k_go (may_quit=1) at /home/npomarede/src/hatari-work/src/uae-cpu/newcpu.c:1847
+#14 0x08098b55 in M68000_Start () at /home/npomarede/src/hatari-work/src/m68000.c:228
+
+
+After quite some time of debugging, I found 2 problems :
+
+   1) dma end address could sometimes be &lt;= dma start address
+   2) after case 1) happened, hatari could crash
+
+First point happened because the dma sound end of frame's interrupt 
+sometimes happened during the exact moment where the demo wrote some new 
+values to dma start/end register. This means the new loaded addresses were 
+partially wrong.
+
+In fact, around hbl 222, the program is doing &quot;clr.b $ff8901 + move.b 
+#3,$ff8901&quot; to force an immediate reloading of the dma addresses. But in 
+that case we should call SoundUpdate() when dma is stopped, to output all 
+the samples that were generated up to hbl 222, else the next end of frame 
+interrupt would happen near the start of the vbl, instead of hbl 222.
+
+When this happened and dma end &lt;= dma start, there was a second problem 
+with the test &quot;dma.frameLen &lt;= 0&quot; because frameLen is unsigned. As this 
+was not detected, frameLen was in fact something like 4 billions samples 
+to play, and this could lead to a crash of Hatari.
+
+
+These fixes should correct the 2 bugs, but they should not improve/degrade 
+sound quality as most of the time it would just have resulted in a crash.
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001932.html">[hatari-devel] Linking with readline
+</A></li>
+	<LI>Next message: <A HREF="001941.html">[hatari-devel] Fixes for possible bug in dmasnd.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1936">[ date ]</a>
+              <a href="thread.html#1936">[ thread ]</a>
+              <a href="subject.html#1936">[ subject ]</a>
+              <a href="author.html#1936">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

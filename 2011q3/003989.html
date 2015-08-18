@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon 68030 cycles question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%2068030%20cycles%20question&In-Reply-To=%3C4E63F683.4020000%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003990.html">
+   <LINK REL="Next"  HREF="003991.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon 68030 cycles question</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%2068030%20cycles%20question&In-Reply-To=%3C4E63F683.4020000%40free.fr%3E"
+       TITLE="[hatari-devel] Falcon 68030 cycles question">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Sep  5 00:06:59 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003990.html">[hatari-devel] Looking for a floppy disk analyzer
+</A></li>
+        <LI>Next message: <A HREF="003991.html">[hatari-devel] Falcon 68030 cycles question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3989">[ date ]</a>
+              <a href="thread.html#3989">[ thread ]</a>
+              <a href="subject.html#3989">[ subject ]</a>
+              <a href="author.html#3989">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I was reading an article from Mikro about falcon cycles
+<A HREF="http://mikro.naprvyraz.sk/docs/mikro/030_stram.html">http://mikro.naprvyraz.sk/docs/mikro/030_stram.html</A> , and he says :
+
+...
+So correct timing should look like this [...for 16 bit bus] :
+
+move.w (an)+,dn 0       1        7(1/0/0)        9(1/1/0)
+move.l (an)+,dn 0       1       11(2/0/0)       13(2/1/0)
+
+
+bus activity for move.w:
+1*4 (data read) + 0*4 (prefetching) = 4 in cache-case or
+1*4 (data read) + 1*4 (prefetching) = 8 in non-cache-case
+
+bus activity for move.l:
+2*4 (data read) + 0*4 (prefetching) = 8  in cache-case or
+2*4 (data read) + 1*4 (prefetching) = 12 in non-cache-case
+
+
+Here we see we needn't care  about  1-word vs 2-word instructions anymore since
+our bus can transfer only words :) That means if an instruction takes one word,
+it needs 1*4 clock periods, if it  takes  two words, it needs 2*4 clock periods
+etc.
+
+
+I've done a test with hatari (newcpu) and I get :
+
+cpu video_cyc= 23170 310@ 45 : 0005C2E2 3018                     MOVE.W 
+(A0)+,D0
+cpu video_cyc= 23174 314@ 45 : 0005C2E4 2018                     MOVE.L 
+(A0)+,D0
+cpu video_cyc= 23180 320@ 45 : 0005C2E6 6100 5c68                BSR.W 
+#$5c68 == $00061
+
+(cacr = 00000008)
+
+If I read it correctly, the move.w takes 4 cycles (OK) but the move.l 
+takes 6 cycles instead of 8 (winuae seems to use 68030 cycles for a 32 
+bits bus, not 16).
+
+Is there a way to give the correct cycles values to hatari for 16 bit 
+bus instead of 32 ?
+
+Mikro, have you got a falcon specific table of cycles for each 
+instruction that I could use to compare with hatari ?
+( I'm not that strong in 68030 cycles).
+
+Regards
+
+Laurent
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110905/86c3288f/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110905/86c3288f/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003990.html">[hatari-devel] Looking for a floppy disk analyzer
+</A></li>
+	<LI>Next message: <A HREF="003991.html">[hatari-devel] Falcon 68030 cycles question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3989">[ date ]</a>
+              <a href="thread.html#3989">[ thread ]</a>
+              <a href="subject.html#3989">[ subject ]</a>
+              <a href="author.html#3989">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

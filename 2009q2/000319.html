@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP debugging and breakpoints
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3C200906042337.35924.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000318.html">
+   <LINK REL="Next"  HREF="000320.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP debugging and breakpoints</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3C200906042337.35924.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] DSP debugging and breakpoints">oak at helsinkinet.fi
+       </A><BR>
+    <I>Thu Jun  4 22:37:35 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000318.html">[hatari-devel] A problem with Thomas' mail adress
+</A></li>
+        <LI>Next message: <A HREF="000320.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#319">[ date ]</a>
+              <a href="thread.html#319">[ thread ]</a>
+              <a href="subject.html#319">[ subject ]</a>
+              <a href="author.html#319">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+(I changed the Subject.  Should have done that already for previous mail.)
+
+On Thursday 04 June 2009, Laurent Sallafranque wrote:
+&gt;<i> &gt; Sure, as long as it works fine your you.
+</I>&gt;<i>
+</I>&gt;<i> It does :)
+</I>&gt;<i> But I would have prefered a &quot;dm x addr&quot; instead of &quot;dm xaddr&quot;
+</I>&gt;<i> (with a space between x and addr).
+</I>
+Fine with me.
+
+
+[...]
+&gt;<i> My question was : if the code arrives at the adress of my breakpoint,
+</I>&gt;<i> I'd like hatari to go automaticaly to the debugger mode (exactly as if I
+</I>&gt;<i> had pressed the &quot;pause&quot; key, but automatically).
+</I>
+Two alternatives:
+1. DSP emu calls the debugger by itself (DebugUI())
+2. DSP emu sets &quot;breakpoint triggered&quot; condition and returns
+    back from DSP emu and Debug UI will then be called from the Hatari
+    main code
+
+Thomas, what the SPCFLAG_BRK, SPCFLAG_TRACE &amp; SPCFLAG_DOTRACE etc
+stuff in the UAE core is for?
+
+
+&gt;<i> For now, I just think at a simple breakpoint (eg : db &lt;adress&gt; seems
+</I>&gt;<i> fine). If dsp_core-&gt;pc reaches this adress, hatari would pause and open
+</I>&gt;<i> the debug mode console.
+</I>&gt;<i> I would be able to have a look at memory and registers states.
+</I>
+So you've thought to have single breakpoint address checked by DSP emu
+instead of a breakpoint instruction?
+
+The breakpoint address checking would be more convenient for singlestepping
+I think.  Then single stepping would just (temporarily) set the DSP emu
+breakpoint address to next pc address and exit from DebugUI.  In other
+cases it would restore the user set breakpoint address before exiting
+from DebugUI.
+
+
+&gt;<i> I would then do a new bg &lt;adress2&gt; to see some values later in the
+</I>&gt;<i> emulated code.
+</I>&gt;<i>
+</I>&gt;<i> The best would be to have conditional breakpoints, but it'll be for
+</I>&gt;<i> later. (Something like : if A1 &gt; $1000, break).
+</I>&gt;<i> (I'm dreaming ;)
+</I>
+Hm.  Maybe we should embed Lua interpreter to Hatari for the builtin
+debugger and the interpreter would be provided with the register etc
+relevant info so that you could script things...  Or maybe things like
+this would be easier done in an external program connecting to Hatari. :-)
+
+
+	- Eero
+
+
+&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i> Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (as the breakpoint discussion may be generally interesting,
+</I>&gt;<i> &gt; I put CC on -devel.)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On Wednesday 03 June 2009, Laurent Sallafranque wrote:
+</I>&gt;<i> &gt;&gt; I've finished to implement DSP memory X, Y, P debug mode.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Just tell me if this is ok for you.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Sure, as long as it works fine your you.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; I'd like to add a DSP breakpoint function.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Maybe &quot;db &lt;address&gt;&quot; command?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If you write the function to do the thing on the DSP side, I can add
+</I>&gt;<i> &gt; what's required in the debug UI.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Btw. How you you've thought to implement it?  Adding a single
+</I>&gt;<i> &gt; &quot;breakpoint address register&quot; to the DSP emulation, or using some kind
+</I>&gt;<i> &gt; of a breakpoint instruction which the debugger can use to replace the
+</I>&gt;<i> &gt; instruction you're interested about and which will result in DSP emu
+</I>&gt;<i> &gt; calling the debug UI?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Debug UI would then need to restore the instruction, singlestep that
+</I>&gt;<i> &gt; instruction, replace instruction again with the breakpoint instruction
+</I>&gt;<i> &gt; and continue.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Latter would allow multiple breakpoints and e.g. counters (debug UI
+</I>&gt;<i> &gt; would continue running the code until breakpoint has been hit &lt;count&gt;
+</I>&gt;<i> &gt; times) , but would be more complicated (needs also singlestep
+</I>&gt;<i> &gt; functionality etc).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; My only problem is : how can I stop hatari and open the debugmode ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Start Hatari with the -D option and press Pause/Break key.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (Without -D, Pause key will just pause emulation.)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 	- Eero
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; PS. Have you tried using something like this within the emulation:
+</I>&gt;<i> &gt;   <A HREF="http://www.dhs.nu/gfx_screenshots.other/dsp_56001_debugger.gif">http://www.dhs.nu/gfx_screenshots.other/dsp_56001_debugger.gif</A>
+</I>&gt;<i> &gt; ?
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000318.html">[hatari-devel] A problem with Thomas' mail adress
+</A></li>
+	<LI>Next message: <A HREF="000320.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#319">[ date ]</a>
+              <a href="thread.html#319">[ thread ]</a>
+              <a href="subject.html#319">[ subject ]</a>
+              <a href="author.html#319">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CPU breakpoints and single-stepping
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3C200906082155.39758.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000357.html">
+   <LINK REL="Next"  HREF="000359.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CPU breakpoints and single-stepping</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3C200906082155.39758.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] CPU breakpoints and single-stepping">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jun  8 20:55:39 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000357.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+        <LI>Next message: <A HREF="000359.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#358">[ date ]</a>
+              <a href="thread.html#358">[ thread ]</a>
+              <a href="subject.html#358">[ subject ]</a>
+              <a href="author.html#358">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 08 June 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> &gt;&gt;&gt; Btw.  What do you think of the issue of multiple breakpoints vs.
+</I>&gt;<i> &gt;&gt;&gt; multiple break conditions?
+</I>
+Btw.  I was thinking that the conditional breakpoint checking will
+be quite a bit slower than normal address based breakpoints, so
+maybe we should have both?
+
+I.e. both CPU &amp; DSP could both be:
+- single-stepped
+- have separate (fast) address breakpoints
+- have separate (slow) conditional breakpoints
+
+
+The debugger syntax would be following:
+
+a - list address breakpoints
+a &lt;address&gt; -&#160;toggle breakpoint at given address
+
+b - list conditional breakpoints
+b &lt;index&gt; - remove given conditional breakpoint (and list remaining?)
+b &lt;condition&gt; - add conditional breakpoint
+
+c [steps] - continue execution (for 'steps' instructions)
+
+ (I'd like to change 'b' shortcut to 'conditional breakpoint' as 'c'
+shortcut was already reserved and 'a' was free for 'breakpoint address'.)
+
+DSP debugging shorcuts would just add 'd' into beginning.
+
+
+&gt;<i> &gt; Ok.  Attached is a start on conditional breakpoint handling.
+</I>&gt;<i> &gt; Handling of different addressing modes did / will make the code
+</I>&gt;<i> &gt; a bit bloated.
+</I>&gt;<i>
+</I>&gt;<i> Nice code, thanks for doing this so rapidly.
+</I>
+I'll add it to repo under name breakcond.c so that you can track  it
+easier.  After it's about ready, I will look into (I think fairly small)
+changes required to debugui.c/dsp.c/Makefile for integrating it.
+
+(If the code's not satisfactory for Thomas, single extra .c file is easy
+to remove. :-))
+
+
+&gt;<i> I haven't tested it yet, but just looking at the way you handle multiple
+</I>&gt;<i> breakpoints, why storing the conditions &quot;flat&quot; in static bp_condition_t
+</I>&gt;<i> BreakConditions[16] with the help of BP_NEXT_NEW to mark the end of a
+</I>&gt;<i> breakpoint ?
+</I>&gt;<i>
+</I>&gt;<i> This seems a little difficult then to directly access breakpoint Nbr 5
+</I>&gt;<i> for example,
+</I>
+The breakpoint manipulation for user doesn't matter speedwise, but
+checking functionality called for every instruction does.  I was thinking
+that it would be faster to check if it's all in one array (and it saves
+trivial amount of memory ;-)).
+
+
+&gt;<i> and if you remove it, you have to rearrange BreakConditions[].
+</I>
+Also with array of arrays you need to do memmove().
+
+
+&gt;<i> What about this structure to store breakpoints consisting of optionnaly
+</I>&gt;<i> many conditions :
+</I>&gt;<i>
+</I>&gt;<i> #define MAX_BREAKPOINTS 16
+</I>&gt;<i> #define MAX_COND_PER_BREAKPOINT 6
+</I>&gt;<i>
+</I>&gt;<i> structure BreakPoint {
+</I>&gt;<i> bp_condition_t BreakPointConditions[ MAX_COND_PER_BREAKPOINT ];
+</I>&gt;<i> int NbConditions;
+</I>&gt;<i> }
+</I>&gt;<i> CpuBreakPoint[ MAX_BREAKPOINTS ];
+</I>&gt;<i>
+</I>&gt;<i> This way access to a given breakpoint is faster,
+</I>
+In the CPU/DSP mainloop where the speed matters, you need to go through
+all of the breakpoints (but not necessarily through all conditions).
+
+I think whether array of arrays or a single array is faster depends on do
+you have more separate breakpoints (with array of arrays you have more
+code to go through in this case) or conditions with AND booleans
+(with single array you need to scan forward).
+
+
+&gt;<i> and if you remove one 
+</I>&gt;<i> breakpoint, just set NbConditions to 0 to ignore this entry.
+</I>&gt;<i>
+</I>&gt;<i> What do you think ? (just a suggestion, as you propose some code I don't
+</I>&gt;<i> want to impose my view :) )
+</I>
+I need to think about this a bit more when I add the breakpoint listing
+and removal functionality.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000357.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+	<LI>Next message: <A HREF="000359.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#358">[ date ]</a>
+              <a href="thread.html#358">[ thread ]</a>
+              <a href="subject.html#358">[ subject ]</a>
+              <a href="author.html#358">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

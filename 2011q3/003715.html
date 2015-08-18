@@ -1,0 +1,308 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari frozen after it's been paused for few	hours
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%0A%20%3D%3Fiso-8859-1%3Fq%3FHatari_frozen_after_it%3D27s_been_pau%3F%3D%0A%20%3D%3Fiso-8859-1%3Fq%3Fsed_for_few%3D09hours%3F%3D&In-Reply-To=%3C201107140051.08008.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003710.html">
+   <LINK REL="Next"  HREF="003717.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari frozen after it's been paused for few	hours</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%0A%20%3D%3Fiso-8859-1%3Fq%3FHatari_frozen_after_it%3D27s_been_pau%3F%3D%0A%20%3D%3Fiso-8859-1%3Fq%3Fsed_for_few%3D09hours%3F%3D&In-Reply-To=%3C201107140051.08008.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari frozen after it's been paused for few	hours">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Jul 13 23:51:07 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003710.html">[hatari-devel] Hatari frozen after it's been paused for	few	hours
+</A></li>
+        <LI>Next message: <A HREF="003717.html">[hatari-devel] Hatari frozen after it's been paused for few	hours
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3715">[ date ]</a>
+              <a href="thread.html#3715">[ thread ]</a>
+              <a href="subject.html#3715">[ subject ]</a>
+              <a href="author.html#3715">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 13 hein&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> What happens if you let Hatari in STE mode idle under GEM without
+</I>&gt;<i> starting any program ? Does it freeze too?
+</I>
+Yes.  I also didn't notice it earlier, but when Hatari freezes,
+it starts taking all CPU.
+
+
+&gt;<i> Does it freeze in STF mode ?
+</I>
+Yes.  It's enough just to do:
+	hatari -d stmp3/
+
+And wait 10-60 minutes.  Maybe one needs to be in desktop workspace so
+that Hatari doesn't even accidentally receive any input events?
+
+Running two Hatari instances at the same time would seem to trigger
+the issue more easily.
+
+
+&gt;<i> Is the freeze a consequence of playing STE DMA sound ?
+</I>
+Apparently not, but normal sound could, as:
+
+&gt;<i> &gt; After an hour, I have these warnings on terminal and Hatari is
+</I>&gt;<i> &gt; frozen:
+</I>&gt;<i> &gt; Your system is too slow, some sound samples were not correctly emulated
+</I>...
+&gt;<i> This message will happen if the audio buffer is not updated fast enough,
+</I>&gt;<i> so it's consistent with the fact that hatari is frozen.
+</I>
+If I use &quot;--sound off&quot; option, I get those messages constantly.
+
+And with sound disabled, I couldn't trigger the freeze.
+
+
+This is where frozen Hatari spends its time according to Oprofile:
+-----
+# opcontrol --init
+# opcontrol --no-vmlinux --separate=kernel
+# opcontrol --start
+&lt;wait couple of minutes&gt;
+# opcontrol --stop
+$ opreport -l src/hatari
+...
+samples  %        image name               symbol name
+1475718  79.6711  no-vmlinux               /no-vmlinux
+192327   10.3834  [vdso]                   [vdso]
+118832    6.4155  [vdso]                   [vdso]
+51229     2.7658  hatari                   Main_WaitOnVbl
+11215     0.6055  libasound.so.2.0.0       /usr/lib/libasound.so.2.0.0
+2763      0.1492  libc-2.11.2.so           gettimeofday
+37        0.0020  libSDL-1.2.so.0.11.3     /usr/lib/libSDL-1.2.so.0.11.3
+35        0.0019  libc-2.11.2.so           memcpy
+26        0.0014  libc-2.11.2.so           memset
+13       7.0e-04  libc-2.11.2.so           poll
+11       5.9e-04  libc-2.11.2.so           ioctl
+10       5.4e-04  libc-2.11.2.so           __i686.get_pc_thunk.bx
+9        4.9e-04  libpthread-2.11.2.so     pthread_mutex_lock
+7        3.8e-04  hatari                   Audio_CallBack
+-----
+I.e. almost all of the time goes to doing syscalls, and some audio stuff.
+I think the [vdso] stuff is the kernel provided use-space part of syscall
+calling.
+
+This means that Hatari isn't spending any time in emulating e.g.
+the m68k CPU where normally most CPU is spent.  Even the memcpy &amp; memset
+is also audio stuff, not e.g. SDL screen blitting (I verified that
+separately).
+
+
+Strace tells this about the syscalls:
+-----
+strace -c -f -p $(pidof hatari|cut -d' ' -f1)
+Process 3395 attached with 2 threads - interrupt to quit
+^C
+Process 3395 detached
+Process 3396 detached
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 99.89    6.264392        4381      1430           poll
+  0.11    0.007004           0   1753130           gettimeofday
+  0.00    0.000142           0     19317           ioctl
+  0.00    0.000005           0      1431           read
+  0.00    0.000000           0         1           restart_syscall
+  0.00    0.000000           0      2862           semop
+------ ----------- ----------- --------- --------- ----------------
+100.00    6.271543               1778171           total
+-----
+I.e. Hatari does a huge amount of gettimeofday() calls, but polling
+may actually be taking most of the time spent for syscalls on kernel
+side (strace isn't very accurate tool for measuring that).
+
+
+If one ignores gettimeofday() calls which are done from the
+Main_WaitOnVbl(), Hatari is repeating this:
+-----
+[pid  3396] poll([{fd=5, events=POLLIN|POLLERR|POLLNVAL}], 1, -1) = 1 
+([{fd=5, revents=POLLIN}])
+[pid  3396] ioctl(6, 0x4122, 0xb6a54f08) = 0
+[pid  3396] ioctl(6, 0x4122, 0)         = 0
+[pid  3396] ioctl(6, 0x4122, 0)         = 0
+[pid  3396] ioctl(6, 0x4122, 0xb6a54fa8) = 0
+[pid  3396] ioctl(6, 0x4122, 0xb6a54f38) = 0
+[pid  3396] ioctl(6, 0x4122, 0xb6a54ee8) = 0
+[pid  3396] ioctl(6, 0x4122, 0xb7441164) = 0
+[pid  3396] ioctl(6, 0x4122, 0x40)      = 0
+[pid  3396] ioctl(7, USBDEVFS_IOCTL or USBDEVFS_IOCTL32, 0x9fd94d0) = 0
+[pid  3396] ioctl(6, 0x4122, 0x10)      = 0
+[pid  3396] semop(458752, {{0, 0, 0}, {0, 1, SEM_UNDO}}, 2) = 0
+[pid  3396] semop(458752, {{0, -1, SEM_UNDO|IPC_NOWAIT}}, 1) = 0
+[pid  3396] read(5, &quot;\1\0\0\0\2346\0\0\24\1\312\33\1\0\0\0&quot;, 64) = 16
+[pid  3396] ioctl(6, 0x4122, 0xb6a54ff8) = 0
+[pid  3396] ioctl(6, 0x4122, 0xb6a54f2c) = 0
+[pid  3396] ioctl(6, 0x4122, 0x400)     = 0
+[pid  3396] poll([{fd=5, events=POLLIN|POLLERR|POLLNVAL}], 1, -1) = 1 
+([{fd=5, revents=POLLIN}])
+-----
+
+
+As to where all of these functions are called from:
+functracer -s -a poll,gettimeofday,semop,read,ioctl -o . -p $(pidof hatari)
+sp-rtrace-postproc -c &lt; 3395-0.rtrace.txt |sp-rtrace-resolve &gt; 
+hatari.rtrace.txt
+rtrace-calltree --type=count --limit=1 hatari.rtrace.txt &gt; hatari.dot
+dot -Tsvg hatari.dot &gt; hatari.svg
+
+-&gt; As can be seen from the attached callgraph, most gettimeofday() system
+   calls are done from the Main_WaitOnVbl() function, rest of the syscalls,
+   including poll()s, are all done from the audio thread.
+
+
+When looking at the htop output (which shows threads separately),
+audio thread seems to be taking more CPU than normally.  Normally
+(when no sound is playing), audio thread takes ~10% of the CPU that
+Hatari takes, but after Hatari freezes, audio thread takes nearly
+half of Hatari's 100% CPU usage.
+
+When comparing Hatari instances emulating STF &amp; STE, the STF one seems
+to spend more time in sound thread for some reason.
+
+
+But note that behavior of both sound thread &amp; Hatari main loop is
+strange.  When I step through the code in Main_WaitOnVbl() with Gdb,
+the code runs within this loop:
+        /* Now busy-wait for the right tick: */
+        while (nDelay &gt; 0)
+        {
+                CurrentTicks = Time_GetTicks();
+                nDelay = DestTicks - CurrentTicks;
+        }
+
+But Gdb will always tell nDelay to have the same value:
+----
+(gdb) info locals
+CurrentTicks = &lt;value optimized out&gt;
+DestTicks = 4294978206
+FrameDuration_micro = 19979
+nDelay = 18403
+----
+Despite the Time_GetTicks() calls which Gdb stepping shows just as:
+        gettimeofday ( &amp;now , NULL );
+
+
+If somebody knows x86 assembly, I believe this to be the above loop
+in Hatari binary (output of &quot;objdump -d&quot;):
+-----------
+ 80b51cb:       e8 f0 f3 ff ff          call   80b45c0 &lt;Time_Delay&gt;
+Main_WaitOnVbl+0x190:
+ 80b51d0:       8d 5d e0                lea    -0x20(%ebp),%ebx
+ 80b51d3:       89 1c 24                mov    %ebx,(%esp)
+ 80b51d6:       c7 44 24 04 00 00 00    movl   $0x0,0x4(%esp)
+ 80b51dd:       00 
+ 80b51de:       e8 2d ee fc ff          call   8084010 &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">gettimeofday at plt</A>&gt;
+ 80b51e3:       8b 35 c0 3b 2a 08       mov    0x82a3bc0,%esi
+ 80b51e9:       31 d2                   xor    %edx,%edx
+ 80b51eb:       69 45 e0 40 42 0f 00    imul   $0xf4240,-0x20(%ebp),%eax
+ 80b51f2:       8b 3d c4 3b 2a 08       mov    0x82a3bc4,%edi
+ 80b51f8:       03 45 e4                add    -0x1c(%ebp),%eax
+ 80b51fb:       89 f1                   mov    %esi,%ecx
+ 80b51fd:       29 c1                   sub    %eax,%ecx
+ 80b51ff:       89 fb                   mov    %edi,%ebx
+ 80b5201:       19 d3                   sbb    %edx,%ebx
+ 80b5203:       83 fb 00                cmp    $0x0,%ebx
+ 80b5206:       7f c8                   jg     80b51d0 
+&lt;Main_WaitOnVbl+0x190&gt;
+ 80b5208:       0f 8c eb fe ff ff       jl     80b50f9 &lt;Main_WaitOnVbl+0xb9&gt;
+ 80b520e:       83 f9 00                cmp    $0x0,%ecx
+ 80b5211:       77 bd                   ja     80b51d0 
+&lt;Main_WaitOnVbl+0x190&gt;
+-----------
+
+How the value Hatari calculates from gettimeofday() results
+can always be same?
+
+The only reasonable error that gettimeofday() manual page reports
+is if the args for it are at invalid address, but at least in
+Hatari source code &quot;now&quot; is in stack:
+        Sint64          ticks_micro;
+        struct timeval  now;
+        gettimeofday ( &amp;now , NULL );
+        ticks_micro = now.tv_sec * 1000000UL + now.tv_usec;
+        return ticks_micro;
+
+I don't know enough x86 asm to see from above disassembly whether
+it's in stack still in the optimized code?
+
+
+	- Eero
+
+
+&gt;<i> Nicolas
+</I>&gt;<i> 
+</I>&gt;<i> &gt;&gt; Backtrace was following:
+</I>&gt;<i> &gt;&gt; -------
+</I>&gt;<i> &gt;&gt; #0  0xb77f1424 in __kernel_vsyscall ()
+</I>&gt;<i> &gt;&gt; #1  0xb74690e6 in gettimeofday () at
+</I>&gt;<i> &gt;&gt; ../sysdeps/unix/syscall-template.S:82 #2  0x080b52a3 in Time_GetTicks
+</I>&gt;<i> &gt;&gt; () at /home/eero/work/hatari/src/main.c:122 #3  Main_WaitOnVbl () at
+</I>&gt;<i> &gt;&gt; /home/eero/work/hatari/src/main.c:342
+</I>&gt;<i> &gt;&gt; #4  0x0810dc21 in m68k_run_1 (may_quit=1) at
+</I>&gt;<i> &gt;&gt; /home/eero/work/hatari/src/uae- cpu/newcpu.c:1776
+</I>&gt;<i> &gt;&gt; #5  m68k_go (may_quit=1) at
+</I>&gt;<i> &gt;&gt; /home/eero/work/hatari/src/uae-cpu/newcpu.c:1872 #6  0x080b40d4 in
+</I>&gt;<i> &gt;&gt; M68000_Start () at /home/eero/work/hatari/src/m68000.c:241 #7
+</I>&gt;<i> &gt;&gt; 0x080b4ece in main (argc=6, argv=0xbf804994) at
+</I>&gt;<i> &gt;&gt; /home/eero/work/hatari/src/main.c:776
+</I>&gt;<i> &gt;&gt; ...
+</I>&gt;<i> &gt;&gt; #3  Main_WaitOnVbl () at /home/eero/work/hatari/src/main.c:342
+</I>&gt;<i> &gt;&gt; 342                     CurrentTicks = Time_GetTicks();
+</I>&gt;<i> &gt;&gt; (gdb) info locals
+</I>&gt;<i> &gt;&gt; CurrentTicks =&lt;value optimized out&gt;
+</I>&gt;<i> &gt;&gt; DestTicks = 4294977719
+</I>&gt;<i> &gt;&gt; FrameDuration_micro = 19979
+</I>&gt;<i> &gt;&gt; nDelay = 18449
+</I>&gt;<i> &gt;&gt; -------
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; I.e. Main loop seems to be still running, but keys aren't being
+</I>&gt;<i> &gt;&gt; processed.
+</I>-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: hatari.svg
+Type: image/svg+xml
+Size: 43935 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110714/f9828600/attachment.svg">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110714/f9828600/attachment.svg</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003710.html">[hatari-devel] Hatari frozen after it's been paused for	few	hours
+</A></li>
+	<LI>Next message: <A HREF="003717.html">[hatari-devel] Hatari frozen after it's been paused for few	hours
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3715">[ date ]</a>
+              <a href="thread.html#3715">[ thread ]</a>
+              <a href="subject.html#3715">[ subject ]</a>
+              <a href="author.html#3715">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

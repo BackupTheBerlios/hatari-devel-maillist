@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Higher%20precision%20when%20generating%20samples%20-%3E%20use%0A%20nanosleep&In-Reply-To=%3C4D407538.8000903%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002890.html">
+   <LINK REL="Next"  HREF="002899.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Higher precision when generating samples -&gt; use nanosleep</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Higher%20precision%20when%20generating%20samples%20-%3E%20use%0A%20nanosleep&In-Reply-To=%3C4D407538.8000903%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Higher precision when generating samples -&gt; use nanosleep">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Jan 26 20:25:44 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002890.html">[hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+</A></li>
+        <LI>Next message: <A HREF="002899.html">[hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2893">[ date ]</a>
+              <a href="thread.html#2893">[ thread ]</a>
+              <a href="subject.html#2893">[ subject ]</a>
+              <a href="author.html#2893">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 26/01/2011 19:22, David Savinkoff a &#233;crit :
+&gt;<i>
+</I>&gt;&gt;<i> On Jan 26, 2011, Nicolas Pomar&#232;de&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt;  wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> With nanosleep, we could get a much better granularity.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> We could define our own &quot;FineSleep&quot; function and uses the best possible
+</I>&gt;&gt;<i> alternatives depending on the OS / compilation flags (1st nanosleep,
+</I>&gt;&gt;<i> then SDL_Delay, active wait on SDL_GetTicks, etc.).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I think it would fix the VBL precision problem with very few changes to
+</I>&gt;&gt;<i> Hatari. Any opinion on this ?
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I would like to see Hatari have the right amount of samples per VBL
+</I>&gt;<i> for recording sound/video syncronization. This much should be done
+</I>&gt;<i> without touching emulated-time/actual-time syncronization because
+</I>&gt;<i> my patch takes care of this. Nanosleep makes the timing better but
+</I>&gt;<i> still not exact because 'exact' is 'not possible'. My patch continuously
+</I>&gt;<i> corrects the timing similar to driving a car (or helicopter) in a straight
+</I>&gt;<i> line; you drive straight with 0 units of steering until you need to
+</I>&gt;<i> correct with maybe -20 units of steering, then continue with 0 units,
+</I>&gt;<i> then maybe 20 units, then 0, ... Note that this works so good that
+</I>&gt;<i> it will prevent some potential hidden bugs from presenting symptoms.
+</I>&gt;<i> Also, my patch will work with any timer precision on any computer.
+</I>&gt;<i>
+</I>&gt;<i> David
+</I>
+But that's what my latest committed patch does : it really computes the 
+exact number of samples, adjusting it by +1 when needed to take care of 
+the rouding errors.
+
+Uncomment line 1147 in sound.c and you will see the number of generated 
+samples ; doing the sum on 1 second should give the same number of 
+samples as the current replay frequency.
+
+I understand what your patch does, and I agree with the method, but now 
+that my latest fix computes the right number of samples, we should only 
+have to modify Main_WaitOnVbl().
+For example, to emulate a nearly correct 60 Hz VBL, we would alternate 
+between 16.66 ms and 16.67 ms using nanosleep(). No need to modify 
+sound.c or audio.c.
+
+
+Nicolas
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002890.html">[hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+</A></li>
+	<LI>Next message: <A HREF="002899.html">[hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2893">[ date ]</a>
+              <a href="thread.html#2893">[ thread ]</a>
+              <a href="subject.html#2893">[ subject ]</a>
+              <a href="author.html#2893">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling Hatari code with Valgrind (was: Major	changes in DSP code)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind%20%28was%3A%20Major%0A%09changes%20in%20DSP%20code%29&In-Reply-To=%3C1293697557.4d1c4215009d0%40imp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002725.html">
+   <LINK REL="Next"  HREF="002717.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling Hatari code with Valgrind (was: Major	changes in DSP code)</H1>
+    <B>laurent.sallafranque at free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind%20%28was%3A%20Major%0A%09changes%20in%20DSP%20code%29&In-Reply-To=%3C1293697557.4d1c4215009d0%40imp.free.fr%3E"
+       TITLE="[hatari-devel] Profiling Hatari code with Valgrind (was: Major	changes in DSP code)">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Dec 30 09:25:57 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002725.html">[hatari-devel] Profiling Hatari code with Valgrind (was: Major	changes in DSP code)
+</A></li>
+        <LI>Next message: <A HREF="002717.html">[hatari-devel] Hatari UI; Installation and Syntax
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2726">[ date ]</a>
+              <a href="thread.html#2726">[ thread ]</a>
+              <a href="subject.html#2726">[ subject ]</a>
+              <a href="author.html#2726">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'll have a look at all of this next year ;)
+
+For your crossbar question, the answear is no.
+
+Crossbar is a data transfer &quot;component&quot; between 4 inputs and outputs (DMA, DSP,
+Mic and Extern DSP). You can transfer everything you want, not only sound.
+
+For example, the 4K demo &quot;NoCrew: Aggressive Party 2&quot; uses DSP play / DMA record
+in handshake mode to display the tridi screen. (It's referenced in the
+compatibility list)
+
+So, the crossbar has to run continuously.
+
+About the crossbar, as I sais in a previous message, I think there's a problem
+which would explain many DSP problems : the frequency of the crossbar has t obe
+precise and constant, but because of instructions like DIV, MUL, MOVEM, ... we
+can miss some clocks, which would explain why sometimes, sound is so dirty.
+I'll make a specific thread about this problem soon).
+
+I know there'a also a problem in the SSI part when DSP transfers datas in 16
+bits and DMA gets the datas in 8 bits. I'll have to fix this.
+
+I'll have a look at your dsp.c patch soon.
+
+Best regards,
+
+Laurent
+
+
+Selon Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">oak at helsinkinet.fi</A>&gt;:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On torstai 30 joulukuu 2010, Eero Tamminen wrote:
+</I>&gt;<i> &gt; Attached is a screenshot of Kcachegrind output on 30l_coke.prg.
+</I>&gt;<i> &gt; With some other program the hotspots could be elsewhere, it's always
+</I>&gt;<i> &gt; good idea to profile several programs.
+</I>&gt;<i>
+</I>&gt;<i> For example for wildfire.prg, the profile looks like the attached one.
+</I>&gt;<i>
+</I>&gt;<i> Btw. In this and previous one I'm a bit surprised by Crossbar interrupt
+</I>&gt;<i> handler part.  These 4kB DSP demos don't have any sound and isn't Crossbar
+</I>&gt;<i> supposed to be involved only(?) with sound?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002725.html">[hatari-devel] Profiling Hatari code with Valgrind (was: Major	changes in DSP code)
+</A></li>
+	<LI>Next message: <A HREF="002717.html">[hatari-devel] Hatari UI; Installation and Syntax
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2726">[ date ]</a>
+              <a href="thread.html#2726">[ thread ]</a>
+              <a href="subject.html#2726">[ subject ]</a>
+              <a href="author.html#2726">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

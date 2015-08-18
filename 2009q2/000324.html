@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP debugging and breakpoints
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3Calpine.LMD.2.00.0906052352490.16915%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000323.html">
+   <LINK REL="Next"  HREF="000331.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP debugging and breakpoints</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3Calpine.LMD.2.00.0906052352490.16915%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] DSP debugging and breakpoints">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Jun  6 00:19:48 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000323.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+        <LI>Next message: <A HREF="000331.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#324">[ date ]</a>
+              <a href="thread.html#324">[ thread ]</a>
+              <a href="subject.html#324">[ subject ]</a>
+              <a href="author.html#324">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 5 Jun 2009, Eero Tamminen wrote:
+
+&gt;<i> Btw. I thought a bit more about the register value conditions on breakpoints
+</I>&gt;<i> and they could actually be doable.  debugui.c could parse the condition
+</I>&gt;<i> string given to breakpoint or single step command:
+</I>&gt;<i> 	db &lt;address&gt; [
+</I>&gt;<i> 		&lt;register&gt; &lt;comparison&gt; &lt;value&gt;
+</I>&gt;<i> 		[ | &lt;register&gt; &lt;comparison&gt; &lt;value&gt; ]
+</I>&gt;<i> 		[ &amp; &lt;register&gt; &lt;comparison&gt; &lt;value&gt; ]
+</I>&gt;<i> 	]
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> where condition could be one of these:
+</I>&gt;<i> 	&lt;, &gt;, =, !
+</I>&gt;<i>
+</I>&gt;<i> like in:
+</I>&gt;<i> 	db 01b4 A1 &gt; 1000 &amp; D0 = 20
+</I>&gt;<i>
+</I>
+That's the idea I had when thinking about the 68000 breakpoints.
+Possible extensions I saw were also :
+  - add a .b .w .l suffix after the register name to limit the size
+    of the comparison.
+  - use the () syntax as in 68000 to indicate &quot;read the memory pointed by
+    this register/address&quot;
+  - in your db example, don't specify an address, but make it optional by
+    using a more generic approach using the name 'pc' ; so setting a
+    breakpoint would not be &quot;db &lt;addr&gt;&quot; but &quot;db pc=&lt;addr&gt;&quot;
+  - use the '&amp;' to apply an optionnal mask before doing the comparison
+
+The syntax I was thinking about would allow things like :
+
+pc=$1200  : stop when pc=$1200 (before executing the instruction at $1200)
+
+(a0)=32 : stop when the 32 bits pointed by a0 contain the value 32
+
+($ff820a).b = 2 : stop when the byte stored at address $ff820a=2
+
+($ff8260).b &amp; 3 = 1 : stop when the byte stored at address $ff8260, masked 
+with a binary &quot;and 3&quot; is 1 -&gt; useful to stop when the resolution is 
+changed, as only bit 0 and 1 of $ff8260 have a meaning on STF/E.
+
+(a1).w = d1 : stop if the 16 bits pointed by a0 are the same as the 16 
+lower bits of register d0.
+
+
+This means we would have some reserved word (=regs)that should be 
+interpreted as 68000 registers, not as some hexa values : a0 to a7, d0 to 
+d7, pc, ssp, ..., + more for dsp reg.
+
+A breakpoint &quot;unit&quot; would be :
+
+&lt;value&gt; &lt;comparison&gt; &lt;value&gt;
+
+where &lt;value&gt; could be
+   regs[.size] [&amp;mask]
+|<i> (regs)[.size] [&amp;mask]
+</I>|<i> constant[.size]
+</I>|<i> (constant)[.size]
+</I>
+Then as you suggest, we should be able to &quot;chain&quot; many units with &quot;and&quot; or 
+&quot;or&quot; to have a more complex condition for the final breakpoint.
+
+Based on the skeleton code you wrote, I think this could be quite feasible 
+with a little extra work, and would give a very good flexibility.
+
+Then we should be able to have many breakpoints at the same time, each 
+breakpoint being the combination of one or more condition.
+
+This means we would have a linked list (or a limited size array, that's 
+easier to handle) of max N breakpoints, each entry would contain a 
+structure describing one breakpoint (a breakpoint could be a combination 
+of many conditions with &quot;or&quot; or &quot;and&quot;)
+
+If breakpoint mode is set during execution, then we should scan the N 
+entries of the main breakpoints table to see if a breakpoint matches. As 
+soon as a match is found, we call DebugUI.
+
+
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000323.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+	<LI>Next message: <A HREF="000331.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#324">[ date ]</a>
+              <a href="thread.html#324">[ thread ]</a>
+              <a href="subject.html#324">[ subject ]</a>
+              <a href="author.html#324">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

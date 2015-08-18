@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Timer-D CPU usage in latest Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Timer-D%20CPU%20usage%20in%20latest%20Hatari&In-Reply-To=%3C200907122135.10923.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000454.html">
+   <LINK REL="Next"  HREF="000475.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Timer-D CPU usage in latest Hatari</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Timer-D%20CPU%20usage%20in%20latest%20Hatari&In-Reply-To=%3C200907122135.10923.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Timer-D CPU usage in latest Hatari">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jul 12 20:35:10 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000454.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+        <LI>Next message: <A HREF="000475.html">[hatari-devel] Timer-D CPU usage in latest Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#474">[ date ]</a>
+              <a href="thread.html#474">[ thread ]</a>
+              <a href="subject.html#474">[ subject ]</a>
+              <a href="author.html#474">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 11 July 2009, Thomas Huth wrote:
+&gt;<i> 2) What about Spectrum 512 screens? Could you please test how much CPU 
+</I>&gt;<i> time this (old) renderer currently takes on your system (e.g. the &quot;Clown
+</I>&gt;<i> screen&quot; in the menu of Automation 136)?
+</I>
+The Clown screen takes ~53% CPU for me[1].
+
+I took some rough measures from other demos
+(with &quot;--zoom 1 --borders on --frameskips 0&quot;):
+- CareBears SoWatt menu: ~48% CPU usage
+- 1984 NoCooper demo SoZatt menu: ~55% CPU usage
+  - the &quot;colorshock&quot; screen in this demo managed to take: ~70% CPU
+
+When I zoomed the last screen, the *ST* emulation actually took all of CPU
+with the X server CPU usage (automatic frameskip kicked in).  I had no clue
+Hatari's ST emulation could take all CPU (on my 1.4Ghz machine)[2].
+
+As a comparison, CheckPoint's SureTrip demo causes Hatari to take only
+~25% of CPU usage for first screens.
+
+
+[1]: Using the &quot;Patch Timer-D&quot; option nearly halves the Clown screen CPU
+usage to ~29% and nearly reduces the &quot;colorshock&quot; screen CPU usage to
+1/3 (to ~28%).  SureTrip goes to 5-20%.  This is because without this
+optimization in these cases by far most of the time is spent in handling
+the MFP Timer-D interrupts. According to Valgrind/Callgrind/Kcachegrind
+1/2 CPU goes to MFP Timer-D, 1/3 to sound handling (mainly SDL_mixer
+thread + ALSA), 1/6 to m68k emulation and Spec512 conversion/palette
+routines etc.
+
+[2]: I hadn't noticed the significance of this earlier because I've earlier 
+run Hatari always with the Timer-D patched.  More importantly, it seems to
+have an effect only if it's done at bootup (I guess only TOS sets
+the frequency, at least in these cases I tested).  I.e. if one toggles
+it at run-time from the GUI, there's *no* difference which can mislead
+people.
+
+The most amazing effect of Timer-D is on idle (TOS 1.4) GEM desktop.
+Without patched Timer-D, current Hatari takes 40% CPU, with patched Timer-D
+it takes 1-3% CPU (and occasionally 20%, Hatari v1.0 takes 20% constantly).
+
+
+Currently Timer-D patching can be controlled only from the GUI &amp; config
+file.  Because of [1]&#160;&amp; [2], I think there should be a commandline option
+for it too, maybe:
+  --patch-timerd &lt;boolean&gt;  Enable for much improved performance
+
+It's performance impact should also be highlighted better in the manual.
+Maybe I should add an &quot;How to speed up Hatari performance&quot; section
+to the manual (e.g. the www-site FAQ doesn't mention Timer-D at all)?  
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000454.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+	<LI>Next message: <A HREF="000475.html">[hatari-devel] Timer-D CPU usage in latest Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#474">[ date ]</a>
+              <a href="thread.html#474">[ thread ]</a>
+              <a href="subject.html#474">[ subject ]</a>
+              <a href="author.html#474">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

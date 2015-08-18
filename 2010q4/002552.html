@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Catching trap exit?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Catching%20trap%20exit%3F&In-Reply-To=%3C201010202140.21681.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002548.html">
+   <LINK REL="Next"  HREF="002654.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Catching trap exit?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Catching%20trap%20exit%3F&In-Reply-To=%3C201010202140.21681.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Catching trap exit?">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Oct 20 20:40:21 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002548.html">[hatari-devel] Catching trap exit?
+</A></li>
+        <LI>Next message: <A HREF="002654.html">[hatari-devel] Catching trap exit?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2552">[ date ]</a>
+              <a href="thread.html#2552">[ thread ]</a>
+              <a href="subject.html#2552">[ subject ]</a>
+              <a href="author.html#2552">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 19 October 2010, Nicolas Pomar&#232;de wrote:
+&gt;<i> &gt; Do you mean shortcut for:
+</I>&gt;<i> &gt; 	b pc ! &quot;pc&quot; :once
+</I>&gt;<i> &gt; or for:
+</I>&gt;<i> &gt; 	c 1
+</I>&gt;<i> &gt; debugger command?
+</I>&gt;<i>
+</I>&gt;<i> this should be for the case where you execute one opcode at (pc) then
+</I>&gt;<i> stop, so I think it's more for &quot;c 1&quot;
+</I>&gt;<i>
+</I>&gt;<i> Your 1st example would not work for the following code :
+</I>&gt;<i>
+</I>&gt;<i> 	move	#1567,d0
+</I>&gt;<i> .loop	dbf	d0,loop
+</I>&gt;<i>
+</I>&gt;<i> When pc = .loop, you will execute 1568 dbf, but pc won't change (from
+</I>&gt;<i> the point of view of the debugger, it will change at the 68000 level),
+</I>&gt;<i> so I think your 1set example will only break after the last dbf ?
+</I>
+Yes.  I wasn't sure which one you were asking for. :-)
+
+
+&gt;<i> I think the correst &quot;step&quot; command should be the one that breaks 1568
+</I>&gt;<i> times.
+</I>
+Do you think &quot;c 1&quot; really needs a shortcut?
+
+
+&gt;<i> &gt;&gt;    - you can have a more elaborate step instruction that breaks after
+</I>&gt;<i> &gt;&gt; opcodes that changes PC by jumping elsewhere. This is handy to execute
+</I>&gt;<i> &gt;&gt; a sub routine / trap handler as a whole, without going step by step in
+</I>&gt;<i> &gt;&gt; the routine.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Is the longest such instruction shorter than shortest such instruction?
+</I>&gt;<i>
+</I>&gt;<i> ?? Sorry, I don't understand what is &quot;such instruction&quot; ?
+</I>&gt;<i>
+</I>&gt;<i> &gt; If yes, then a shortcut for this is enough:
+</I>&gt;<i> &gt; 	b pc&gt;  &quot;pc&quot;&amp;&amp;  pc&lt;  &quot;pc&lt;maxlen + 1&gt;&quot; :once
+</I>
+This would would also need special case for rt[drs] instructions where
+it would do just:
+	pc ! &quot;pc&quot; :once
+
+
+&gt;<i> what is maxlen ? If it's the maximum size of a branch instruction, then
+</I>&gt;<i> it won't work the way you propose.
+</I>&gt;<i>
+</I>&gt;<i> jsr $123456.l will take 6 bytes
+</I>&gt;<i> trap / bsr.s will take 2 bytes
+</I>
+Ok, so it will really need to know the instruction length.
+
+-&gt; Will need to wait Markus' code and it (hopefully) providing
+    a function for this...
+
+I guess breakpoints will then also need some flag to silence the normal
+output from breakpoint matching as that could be annoying. :-)
+
+
+&gt;<i> &gt; I quickly looked at these values but they didn't seem to match the next
+</I>&gt;<i> &gt; instruction address so I guess I was doing something wrong.  How you
+</I>&gt;<i> &gt; would get that value in Hatari C-code?
+</I>&gt;<i>
+</I>&gt;<i> Have a look at m68k_do_rts in cpuemu.h :
+</I>&gt;<i> m68k_setpc(get_long(m68k_areg(regs, 7)));
+</I>&gt;<i>
+</I>&gt;<i> so get_long(m68k_areg(regs, 7)) is what you need to return from a non
+</I>&gt;<i> exception branch (for exceptions, return pc is at 2(a7), so
+</I>&gt;<i> get_long(m68k_areg(regs, 7)+2) will do the trick)
+</I>
+On the Hatari side that should be:
+	STMemory_ReadLong(Regs[REG_A7]+2)
+
+Which I've already tried.  However, it doesn't give the same value as what
+the UAE disassembly function gives as next value.
+
+When there's a VDI exception, I get:
+next PC: $fe5bcc
+(sp): $fe1f1a
+2(sp): $1f1a000c
+
+And for Bios exceptions which have the opcode in stack, I get (for example):
+next PC: $fc9260
+(sp): $70000
+2(sp): $0
+
+Debugger is called at the end of newcpu.c::do_specialties() which seems
+to happen before the exception handling in AUE core.  At this point D0
+is at least OK, but could it affect what's on the stack?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002548.html">[hatari-devel] Catching trap exit?
+</A></li>
+	<LI>Next message: <A HREF="002654.html">[hatari-devel] Catching trap exit?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2552">[ date ]</a>
+              <a href="thread.html#2552">[ thread ]</a>
+              <a href="subject.html#2552">[ subject ]</a>
+              <a href="author.html#2552">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CpuCore New patch with 3 important changes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CpuCore%20New%20patch%20with%203%20important%20changes&In-Reply-To=%3C4E960C37.802%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004091.html">
+   <LINK REL="Next"  HREF="004093.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CpuCore New patch with 3 important changes</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CpuCore%20New%20patch%20with%203%20important%20changes&In-Reply-To=%3C4E960C37.802%40corp.free.fr%3E"
+       TITLE="[hatari-devel] WinUae CpuCore New patch with 3 important changes">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Oct 12 23:52:55 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004091.html">[hatari-devel] WinUae CpuCore New patch with 3 important changes
+</A></li>
+        <LI>Next message: <A HREF="004093.html">[hatari-devel] Newcore and hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4092">[ date ]</a>
+              <a href="thread.html#4092">[ thread ]</a>
+              <a href="subject.html#4092">[ subject ]</a>
+              <a href="author.html#4092">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 12/10/2011 23:44, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi all,
+</I>&gt;<i>
+</I>&gt;<i> I've just uploaded a new patch for the winUae core.
+</I>&gt;<i>
+</I>&gt;<i> I know I should have split this patch in 3 parts as it concerns 3
+</I>&gt;<i> different things, I apologize for that.
+</I>&gt;<i>
+</I>&gt;<i> This patch does 3 things :
+</I>&gt;<i>
+</I>&gt;<i> 1) I've reintruduced the nCurInstrCycPos in all the cores and the call
+</I>&gt;<i> to M68000_AddCyclesWithPairing(cpu_cycles) in the 68000 core only.
+</I>&gt;<i> Like this, there's less work to do now to upgrade the compatibility of
+</I>&gt;<i> this new core.
+</I>&gt;<i>
+</I>&gt;<i> I've done some Atari St(FE) tests : some demo runs, some are not yet
+</I>&gt;<i> running, but it seems to be quite often the same problem (bus error at
+</I>&gt;<i> addr $7, ...)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 2) I've fixed all the cycle exact cpus.
+</I>&gt;<i>
+</I>&gt;<i> Now these cpu's are running. Of course, I haven't yet implemented the
+</I>&gt;<i> cycle exact into thedifferent components of hatari.
+</I>&gt;<i> I think we should try to reach thesame level of compatibility with the
+</I>&gt;<i> new core as we had with the old one before using the cycle exact.
+</I>&gt;<i>
+</I>&gt;<i> Now, only the 68040 + MMU doest'n run.
+</I>&gt;<i>
+</I>&gt;<i> I've found something strange : if I change the core while hatari is
+</I>&gt;<i> running (for example switching from 68030 to 68000), hatari doesn't
+</I>&gt;<i> reparameters correctly.
+</I>&gt;<i> I have to save my new parameters into hatari.cfg, quit hatari and then
+</I>&gt;<i> restart it to allow the changes to be taken into account). This will
+</I>&gt;<i> have to be fixed.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 3) I've found and corrected the problem with all the falcon demos and
+</I>&gt;<i> games that need to run at 32 Mhz only.
+</I>&gt;<i>
+</I>&gt;<i> This fix EKo System, Are you experienced, Lost Blubb, Time out, Cebit93
+</I>&gt;<i> demo, outline 2006 intro, bounds42, watership, ...)
+</I>&gt;<i> I've tested all of them with 68030 CPU and prefetch mode activated.
+</I>&gt;<i> I've tested some of them with 68030 no prefetch and some of them with
+</I>&gt;<i> 68030 cycle exact.
+</I>&gt;<i>
+</I>&gt;<i> Some of them still have some glitched or a noisy music, some other works
+</I>&gt;<i> well, but all runs when they were freezing before at 16 Mhz.
+</I>&gt;<i>
+</I>&gt;<i> The problem was in the call of add_cycles (I shouldn't multiply the
+</I>&gt;<i> cycles by 2).
+</I>&gt;<i>
+</I>&gt;<i> Could someone confirm that these programs run well now ?
+</I>&gt;<i>
+</I>&gt;<i> Best regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>
+Hello Laurent
+
+regarding your patches, as it fixes 3 important things, it would be 
+better to do 3 commits for each separate problem you fix, else we just 
+see a global commit, and it's hard to see which part of the commit is 
+related to point 1), 2) or 3).
+
+In that case, if they were regression, we could not use the &quot;bisect&quot; 
+option of Mercurial, because all the changes are in only 1 changeset.
+
+Please, post individual patches for each issue next time.
+
+Thanks
+
+Nicolas
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004091.html">[hatari-devel] WinUae CpuCore New patch with 3 important changes
+</A></li>
+	<LI>Next message: <A HREF="004093.html">[hatari-devel] Newcore and hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4092">[ date ]</a>
+              <a href="thread.html#4092">[ thread ]</a>
+              <a href="subject.html#4092">[ subject ]</a>
+              <a href="author.html#4092">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

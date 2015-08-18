@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Potential bug with MSA disk images
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Potential%20bug%20with%20MSA%20disk%20images&In-Reply-To=%3CPine.LNX.4.64.0901181133530.29839%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000036.html">
+   <LINK REL="Next"  HREF="000038.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Potential bug with MSA disk images</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Potential%20bug%20with%20MSA%20disk%20images&In-Reply-To=%3CPine.LNX.4.64.0901181133530.29839%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Potential bug with MSA disk images">ae at dhs.nu
+       </A><BR>
+    <I>Sun Jan 18 11:38:56 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000036.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+        <LI>Next message: <A HREF="000038.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#35">[ date ]</a>
+              <a href="thread.html#35">[ thread ]</a>
+              <a href="subject.html#35">[ subject ]</a>
+              <a href="author.html#35">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 18 Jan 2009, Matthias Arndt wrote:
+
+&gt;<i> Hello team,
+</I>&gt;<i>
+</I>&gt;<i> by accident I discovered a potential issue with MSA disk images:
+</I>&gt;<i>
+</I>&gt;<i> a) Booted a utility disk image with a Bootsector writer
+</I>&gt;<i> b) Used the utiliy on disk A.MSA (all in drive A:)
+</I>&gt;<i> c) pushed &quot;Eject&quot; button in disk image dialogue
+</I>&gt;<i> d) inserted disk B.MSA (which was definitly different than A.MSA)
+</I>&gt;<i> e) resetted Hatari to get A.MSA loaded with the new bootsector
+</I>&gt;<i>
+</I>&gt;<i> BUT: B.MSA was still inserted and was overwritten with the old A.MSA
+</I>&gt;<i>
+</I>&gt;<i> Ermmm, this sounds really dodgy to me :(
+</I>&gt;<i> Thank god I didn't loose anything important, just some game menus which
+</I>&gt;<i> are entirely replaceable from CDs...
+</I>&gt;<i>
+</I>&gt;<i> My Hatari version is a fresh Mercurial build from last week.
+</I>
+Hi SSB,
+
+I think this is the problem I had when coding our latest demo; Hatari 
+wouldn't recognize that I had changed floppy. I thought it was down to the 
+Hatari disk image creation, but apparently not so. Anyway I was told that 
+Hatari have no bug like that :)
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000036.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+	<LI>Next message: <A HREF="000038.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#35">[ date ]</a>
+              <a href="thread.html#35">[ thread ]</a>
+              <a href="subject.html#35">[ subject ]</a>
+              <a href="author.html#35">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

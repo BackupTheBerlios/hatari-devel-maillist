@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Linking with readline
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Linking%20with%20readline&In-Reply-To=%3C201004272208.08013.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001951.html">
+   <LINK REL="Next"  HREF="001942.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Linking with readline</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Linking%20with%20readline&In-Reply-To=%3C201004272208.08013.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Linking with readline">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Apr 27 21:08:07 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001951.html">[hatari-devel] Fixes for possible bug in dmasnd.c
+</A></li>
+        <LI>Next message: <A HREF="001942.html">[hatari-devel] Current HG version won't compile - DebugUI_Completion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1937">[ date ]</a>
+              <a href="thread.html#1937">[ thread ]</a>
+              <a href="subject.html#1937">[ subject ]</a>
+              <a href="author.html#1937">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 27 April 2010, David Savinkoff wrote:
+&gt;<i> cmake -DCMAKE_C_FLAGS=-lncurses ..
+</I>&gt;<i>
+</I>&gt;<i> works for me.
+</I>
+CMake should really use LINKER flags also when linking its test things.
+And it might e.g. later leave CFLAGS out from linking of them, so I think
+it's best to recommend using both:
+ -DCMAKE_C_FLAGS=-lncurses
+ -DCMAKE_EXE_LINKER_FLAGS=-lncurses
+
+I updated the readme accordingly.
+
+
+&gt;<i> with unimportant gcc warnings see the attachment.
+</I>
+There are some &quot;&gt;= 0&quot; checks for unsigned opcodes.
+Those are harmless.  The typepunned warning for dsp.c
+might be something to look into (Laurent?).
+
+
+Thanks for solving this!
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001951.html">[hatari-devel] Fixes for possible bug in dmasnd.c
+</A></li>
+	<LI>Next message: <A HREF="001942.html">[hatari-devel] Current HG version won't compile - DebugUI_Completion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1937">[ date ]</a>
+              <a href="thread.html#1937">[ thread ]</a>
+              <a href="subject.html#1937">[ subject ]</a>
+              <a href="author.html#1937">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

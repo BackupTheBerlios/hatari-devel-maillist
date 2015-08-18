@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Building on OS X (was: Suggestion about small	additions for v1.4)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Building%20on%20OS%20X%20%28was%3A%20Suggestion%20about%20small%0A%09additions%20for%20v1.4%29&In-Reply-To=%3C20100516194314.45550%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002137.html">
+   <LINK REL="Next"  HREF="002152.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Building on OS X (was: Suggestion about small	additions for v1.4)</H1>
+    <B>Thomas H.</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Building%20on%20OS%20X%20%28was%3A%20Suggestion%20about%20small%0A%09additions%20for%20v1.4%29&In-Reply-To=%3C20100516194314.45550%40gmx.net%3E"
+       TITLE="[hatari-devel] Building on OS X (was: Suggestion about small	additions for v1.4)">th.huth at gmx.de
+       </A><BR>
+    <I>Sun May 16 21:43:14 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002137.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002152.html">[hatari-devel] Building on OS X
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2142">[ date ]</a>
+              <a href="thread.html#2142">[ thread ]</a>
+              <a href="subject.html#2142">[ subject ]</a>
+              <a href="author.html#2142">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+-------- Original-Nachricht --------
+&gt;<i> Datum: Sat, 15 May 2010 12:10:34 +0200
+</I>&gt;<i> Von: Jerome Vernet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">vernet.jerome at wanadoo.fr</A>&gt;
+</I>
+&gt;<i> Le 15/05/10 10:47, Thomas H. a &#233;crit :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; And how does line 169 (and the lines before) of your SDL_keyboard.h look
+</I>&gt;<i> like? My SDL_keyboard.h has only 122 lines ... so I guess this problem is
+</I>&gt;<i> related to your SDL 1.3 ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;    
+</I>&gt;<i> /**
+</I>&gt;<i>   *  \brief Set the rectangle used to type Unicode text inputs.
+</I>&gt;<i>   *
+</I>&gt;<i>   *  \sa SDL_StartTextInput()
+</I>&gt;<i>   */
+</I>&gt;<i> extern DECLSPEC void SDLCALL SDL_SetTextInputRect(SDL_Rect *rect);
+</I>&gt;<i> 
+</I>&gt;<i> I tried cmake -G Xcode and got exactly the same error with the XCode 
+</I>&gt;<i> project created.
+</I>&gt;<i> What I cannot understand is that the FrameWork have exactly the same 
+</I>&gt;<i> line, and it's working.
+</I>
+This sounds really strange ... do you maybe have the SDL version 1.2 also somewhere installed on your system, so that CMake is mixing up the header files between those two versions?
+
+ 
+&gt;<i> I try to understand how cmake work, without success ;). The only thing I 
+</I>&gt;<i> can see is that I may need to add this to CMakeList.txt in hatari/src:
+</I>&gt;<i> 
+</I>&gt;<i> # When building for OSX, define specific sources for gui and ressources
+</I>&gt;<i> if(ENABLE_OSX_BUNDLE)
+</I>&gt;<i>      set(GUIOSX_SOURCES
+</I>&gt;<i>          gui-osx/AlertHooks.m gui-osx/PrefsController.m gui-osx/Shared.m
+</I>&gt;<i>          gui-osx/CreateFloppyController.m gui-osx/SDLMain.m)
+</I>&gt;<i>      set_source_files_properties(${GUIOSX_SOURCES} PROPERTIES LANGUAGE C)
+</I>&gt;<i>      set(GUIOSX_RSRCS
+</I>&gt;<i>          gui-osx/Hatari.icns gui-osx/English.lproj gui-osx/French.lproj)
+</I>&gt;<i> endif(ENABLE_OSX_BUNDLE)
+</I>&gt;<i> 
+</I>&gt;<i> I think this will build correctly with cmake.
+</I>
+Ok, I've added French.lproj now to that CMakeList.txt file. I gave it a quick try on my old PowerPC, and that seems to work (French.lproj shows up in the XCode project for me), but I get some other build warnings there now:
+
+/Users/thomas/devel/hatari/hatari/src/gui-osx/SDLMain.m:392: warning: method definition for '-endCaptureAnimation_AVI:' not found
+/Users/thomas/devel/hatari/hatari/src/gui-osx/SDLMain.m:392: warning: method definition for '-captureAnimation_AVI:' not found
+
+And when I try to run the application, I get these error messages:
+
+2010-05-16 21:31:07.180 hatari[3476] Could not connect the action ejectIdeHdImage: to target of class PrefsController
+2010-05-16 21:31:07.182 hatari[3476] Could not connect the action chooseIdeHdImage: to target of class PrefsController
+
+... and the Mac OS X GUI then does not show up. Something seems to be missing here, did you maybe not submit a full update? Could you please try to build a clean new checkout of the Hatari repository to see whether it is working for you?
+
+ Thanks,
+  Thomas
+
+-- 
+GRATIS f&#252;r alle GMX-Mitglieder: Die maxdome Movie-FLAT!
+Jetzt freischalten unter <A HREF="http://portal.gmx.net/de/go/maxdome01">http://portal.gmx.net/de/go/maxdome01</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002137.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002152.html">[hatari-devel] Building on OS X
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2142">[ date ]</a>
+              <a href="thread.html#2142">[ thread ]</a>
+              <a href="subject.html#2142">[ subject ]</a>
+              <a href="author.html#2142">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

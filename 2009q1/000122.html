@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Ym / Dma mixing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3CPine.LNX.4.64.0902071117030.22798%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000120.html">
+   <LINK REL="Next"  HREF="000123.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Ym / Dma mixing</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3CPine.LNX.4.64.0902071117030.22798%40localhost%3E"
+       TITLE="[hatari-devel] Ym / Dma mixing">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Feb  7 11:23:39 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000120.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+        <LI>Next message: <A HREF="000123.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#122">[ date ]</a>
+              <a href="thread.html#122">[ thread ]</a>
+              <a href="subject.html#122">[ subject ]</a>
+              <a href="author.html#122">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 7 Feb 2009, Thomas Huth wrote:
+
+&gt;<i> Some Falcon games / demos that run with 50 kHz DMA sound have really,
+</I>&gt;<i> really bad sound quality. I guess this is due to the downsampling to
+</I>&gt;<i> 44.1 kHz. So a proper sample rate convertion function could be helpful
+</I>&gt;<i> here. So I really would not mind to add an additional autoconf test for
+</I>&gt;<i> this.
+</I>
+Could this be that those programs are also using some LMC functions to 
+alter volume/filters that are not supported yet ?
+
+Because from my own experiment when emulating ym on amiga some times ago, 
+even if linear resampling is not the perfect way, I never noticed such 
+distortion.
+
+Perhaps a 1st step would be to add lmc support and see if current linear 
+interpolation has some fixable flaws, and then we could see if we can 
+improve it further using an external library ? (as anyway we will still 
+need a built-in resampling for the system that don't have libresample).
+
+Could you give some example names of such programs with really bad sound ?
+
+
+Nicolas
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000120.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+	<LI>Next message: <A HREF="000123.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#122">[ date ]</a>
+              <a href="thread.html#122">[ thread ]</a>
+              <a href="subject.html#122">[ subject ]</a>
+              <a href="author.html#122">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

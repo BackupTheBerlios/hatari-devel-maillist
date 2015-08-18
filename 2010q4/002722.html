@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Major changes in DSP code
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Major%20changes%20in%20DSP%20code&In-Reply-To=%3C4D1BA365.3030507%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002710.html">
+   <LINK REL="Next"  HREF="002724.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Major changes in DSP code</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Major%20changes%20in%20DSP%20code&In-Reply-To=%3C4D1BA365.3030507%40free.fr%3E"
+       TITLE="[hatari-devel] Major changes in DSP code">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Dec 29 22:08:53 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002710.html">[hatari-devel] Major changes in DSP code
+</A></li>
+        <LI>Next message: <A HREF="002724.html">[hatari-devel] Profiling Hatari code with Valgrind (was: Major	changes in DSP code)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2722">[ date ]</a>
+              <a href="thread.html#2722">[ thread ]</a>
+              <a href="subject.html#2722">[ subject ]</a>
+              <a href="author.html#2722">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+Thanks Eero to remind me valgrind, I forgot it.
+Can you also remind me the commands to use to analyse % of time each 
+instruction takes ?
+
+Regards,
+
+Laurent
+
+
+Le 21/12/2010 23:31, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On tiistai 21 joulukuu 2010, Thomas Huth wrote:
+</I>&gt;&gt;<i> One possibility for profiling is compiling with the &quot;-pg&quot; option and
+</I>&gt;&gt;<i> then to use gprof. I think Eero did a lot of profiling in the past, so
+</I>&gt;&gt;<i> I think he could advise the best possibilities for profiling...
+</I>&gt;<i> gprof isn't IMHO that good.  It only covers stuff you've instrumented
+</I>&gt;<i> (not e.g. SDL) and instrumentation skews the results (especially for small
+</I>&gt;<i> often called functions) and there's no nice GUI for it.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I've myself used valgrind+callgrind and viewed the results in KCachegrind:
+</I>&gt;<i> 	<A HREF="http://kcachegrind.sourceforge.net/html/Home.html">http://kcachegrind.sourceforge.net/html/Home.html</A>
+</I>&gt;<i>
+</I>&gt;<i> It gives very good results, only downside of Valgrind is that its CPU
+</I>&gt;<i> emulation slows down the program execution a lot (while allowing Valgrind to
+</I>&gt;<i> catch everything without any need to instrument anything).
+</I>&gt;<i>
+</I>&gt;<i> Valgrind of course offers a lot of other debugging facilities:
+</I>&gt;<i> - allocation tracker (massif)
+</I>&gt;<i> - couple of memory access checkers (memcheck&amp;  DHAT)
+</I>&gt;<i> - couple of thread data race checkers (hellgrind&amp;  DRD)
+</I>&gt;<i> - CPU usage callgraphing and CPU cache usage checkers
+</I>&gt;<i>    (callgrind&amp;  cachegrind)
+</I>&gt;<i> - some other, experimental checkers
+</I>&gt;<i>
+</I>&gt;<i> So it's a good all-around tool.  See:
+</I>&gt;<i> 	<A HREF="http://valgrind.org/">http://valgrind.org/</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> If one wants to profile the whole system (to see also what SDL asks X server
+</I>&gt;<i> to do etc), I would use either Oprofile or Sysprof:
+</I>&gt;<i> 	<A HREF="http://oprofile.sourceforge.net/about/">http://oprofile.sourceforge.net/about/</A>
+</I>&gt;<i> 	<A HREF="http://sysprof.com/">http://sysprof.com/</A>
+</I>&gt;<i>
+</I>&gt;<i> When checking where the time went on the Nokia 770/N800/N810 (ARM) tablets,
+</I>&gt;<i> I got the bottleneck functions on the device with Oprofile and then analyzed
+</I>&gt;<i> from x86 data with valgrind/kcachegrind how/when/why those functions get
+</I>&gt;<i> called in/from Hatari.
+</I>&gt;<i>
+</I>&gt;<i> All of these tools are available e.g. in Debian.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;&gt;<i>   Thomas
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Sun, 19 Dec 2010 23:04:28 +0100
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent Sallafranque&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;  wrote:
+</I>&gt;&gt;&gt;<i> The main difference for me is that before the changes, I was running
+</I>&gt;&gt;&gt;<i> full speed but I could hear my CPU FAN speeding.
+</I>&gt;&gt;&gt;<i> I don't hear it anymore.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> What's the best way to profile ?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Regards
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Laurent
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Le 19/12/2010 15:30, Thomas Huth a &#233;crit :
+</I>&gt;&gt;&gt;&gt;<i> On Sat, 18 Dec 2010 09:28:27 +0100
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Laurent Sallafranque&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;   wrote:
+</I>&gt;&gt;&gt;&gt;&gt;<i> All of these changes should result in a little more dsp speed.
+</I>&gt;&gt;&gt;&gt;&gt;<i> Thomas, can you test this and tell me if this speeds up your
+</I>&gt;&gt;&gt;&gt;&gt;<i> falcon ?
+</I>&gt;&gt;&gt;&gt;<i> Which program / demo do you suggest for testing? I don't have
+</I>&gt;&gt;&gt;&gt;<i> much spare time to test a lot right now... Anyway, you could also
+</I>&gt;&gt;&gt;&gt;<i> simply do some profiling on your own, if your changes really make a
+</I>&gt;&gt;&gt;&gt;<i> difference, you should also see a difference on your fast computer.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>    Thomas
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002710.html">[hatari-devel] Major changes in DSP code
+</A></li>
+	<LI>Next message: <A HREF="002724.html">[hatari-devel] Profiling Hatari code with Valgrind (was: Major	changes in DSP code)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2722">[ date ]</a>
+              <a href="thread.html#2722">[ thread ]</a>
+              <a href="subject.html#2722">[ subject ]</a>
+              <a href="author.html#2722">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

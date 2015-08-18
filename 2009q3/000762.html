@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Can I use portaudio lib ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Can%20I%20use%20portaudio%20lib%20%3F&In-Reply-To=%3C4AC38C62.1090108%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000761.html">
+   <LINK REL="Next"  HREF="000763.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Can I use portaudio lib ?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Can%20I%20use%20portaudio%20lib%20%3F&In-Reply-To=%3C4AC38C62.1090108%40free.fr%3E"
+       TITLE="[hatari-devel] Can I use portaudio lib ?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Sep 30 18:50:42 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000761.html">[hatari-devel] Can I use portaudio lib ?
+</A></li>
+        <LI>Next message: <A HREF="000763.html">[hatari-devel] Hatari Macport
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#762">[ date ]</a>
+              <a href="thread.html#762">[ thread ]</a>
+              <a href="subject.html#762">[ subject ]</a>
+              <a href="author.html#762">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've uploaded a very first preview of portaudio library + microphone.c
+TODO :
+- thread the micro_Run function
+- write Jack sound in a circular buffer
+- read the buffer in Crossbar_InterruptHandler_ADCXmit()
+
+
+I've linked the ADC to DSP in and DAC.
+I think I'll rewrite the crossbar code later. Consider it as 
+experimental tests for now.
+
+The main problem I encounter for now is the frequencies interrupts.
+
+If you listen to willi's adventure, sound seems beautiful and correct.
+But some other DSP sound programs gives nothing good.
+
+I need interrupts to give the sound to the DSP at correct time.
+I don't understand everything with int.c
+
+I use the following code to calculate the interrupt (example taken from 
+DSP Xmit):
+
+static void Crossbar_StartDspXmitHandler(void)
+{
+    Uint16 nCbSrc = IoMem_ReadWord(0xff8930);
+    int freq = 1;
+
+    if ((nCbSrc &amp; 0x60) == 0x00)
+    {
+        /* Internal 25.175 MHz clock */
+        freq = 25175000 / Crossbar_DetectSampleRate();
+    }
+    else if ((nCbSrc &amp; 0x60) == 0x40)
+    {
+        /* Internal 32 MHz clock */
+        freq = 32000000 / Crossbar_DetectSampleRate();
+    }
+
+    Int_AddRelativeInterrupt(CPU_FREQ/freq/256, INT_CPU_CYCLE, 
+INTERRUPT_DSPXMIT);
+}
+
+
+It gives correct sound for willi's adventures.
+But I don't understand why I should divide the frequency from CPU_FREQ.
+And more, CPU_FREQ is 16 Mhz on Falcon, not 8 Mhz.
+(I'm just asking myself if the 32 Mhz CPU problem we encounter with Eko 
+Demo and many more programs wouldn't be linked to an internal relative 
+or absolute timer)
+
+Shouldn't there be a 25 MHz interrupt for 25 Mhz sound and a 32 Mhz 
+interrupt for the 32 Mhz sound.
+
+
+Another problem is the Buffer size needed by the DAC. I'll have to 
+create a second buffer for portaudio. I'm afrzid I'll need a buffer with 
+the same size (as DAC and ADC are running at the same frequency).
+
+As long as I don't get the correct frequencies for a devices in the 
+crossbar, I won't be able to link them correctly and finish to code the 
+DSP input.
+
+It starts to become complicated. :)
+
+Regards
+
+Laurent
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000761.html">[hatari-devel] Can I use portaudio lib ?
+</A></li>
+	<LI>Next message: <A HREF="000763.html">[hatari-devel] Hatari Macport
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#762">[ date ]</a>
+              <a href="thread.html#762">[ thread ]</a>
+              <a href="subject.html#762">[ subject ]</a>
+              <a href="author.html#762">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

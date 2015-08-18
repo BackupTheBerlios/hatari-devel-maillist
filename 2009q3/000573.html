@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari interrupts still assert, if VDI mode is used
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20interrupts%20still%20assert%2C%0A%20if%20VDI%20mode%20is%20used&In-Reply-To=%3Calpine.LMD.2.00.0908110011370.4732%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000570.html">
+   <LINK REL="Next"  HREF="000574.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari interrupts still assert, if VDI mode is used</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20interrupts%20still%20assert%2C%0A%20if%20VDI%20mode%20is%20used&In-Reply-To=%3Calpine.LMD.2.00.0908110011370.4732%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Hatari interrupts still assert, if VDI mode is used">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Aug 11 00:19:42 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000570.html">[hatari-devel] Hatari interrupts still assert,	if VDI mode is used
+</A></li>
+        <LI>Next message: <A HREF="000574.html">[hatari-devel] Hatari interrupts still assert,	if VDI mode is used
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#573">[ date ]</a>
+              <a href="thread.html#573">[ thread ]</a>
+              <a href="subject.html#573">[ subject ]</a>
+              <a href="author.html#573">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 10 Aug 2009, Eero Tamminen wrote:
+
+&gt;<i> I verified that Hatari doesn't assert anymore, but the VDI mode doesn't
+</I>&gt;<i> work properly.
+</I>&gt;<i>
+</I>&gt;<i> If I try something that I'm sure that worked earlier:
+</I>&gt;<i> hatari --machine tt --tos etos512k.img -s 14 --vdi-planes 1 --vdi-width
+</I>&gt;<i> 1024 --vdi-height 768
+</I>&gt;<i>
+</I>&gt;<i> Or try just some more normal screen size:
+</I>&gt;<i>  hatari --machine st -s 4 --vdi-planes 1--vdi-width 640 --vdi-height 400
+</I>&gt;<i>
+</I>&gt;<i> The colors are inversed.
+</I>&gt;<i>
+</I>&gt;<i> If I start things with &quot;--vdi-planes 4&quot; the whole screen is black.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I quickly tested and this worked fine at least with Hatari v1.0.1.
+</I>&gt;<i>
+</I>&gt;<i> (When using regular TOS instead of EmuTOS the Atari bootup logo looks
+</I>&gt;<i> crappy, but they work otherwise.)
+</I>&gt;<i>
+</I>
+Hi,
+
+I'm not really familiar with VDI, but at 1st sight, I don't see how the 
+interrupt changes in video.c could be related and create such bitmap 
+shifting.
+
+In fact, with falcon mode, tos 4.04 and 1 plane in VDI, I get only the gem 
+menu line and the rest of the screen is a &quot;grey&quot; pattern, but sthg is 
+definitly drawn on the screen.
+
+Also, running under hatari 1.1.0
+
+./hatari -s 4 --machine st --vdi-planes 4 --vdi-width 800 --vdi-height 600
+
+gives the same results as now with devel version (yellow colors).
+
+Same result under hatari 1.1.0 and devel :
+./hatari -s 14 --machine falcon --tos ~/Emul/ST/steem/tos404.img --vdi-planes 1 --vdi-width 800 --vdi-height 600
+
+(with some nasty illegal accesses in the console)
+
+And same with vdi planes set to 4 : illegal accesses and eventually 2 bombs.
+
+So, I'm afraid something is broken since at least version 1.1.0 :(
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000570.html">[hatari-devel] Hatari interrupts still assert,	if VDI mode is used
+</A></li>
+	<LI>Next message: <A HREF="000574.html">[hatari-devel] Hatari interrupts still assert,	if VDI mode is used
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#573">[ date ]</a>
+              <a href="thread.html#573">[ thread ]</a>
+              <a href="subject.html#573">[ subject ]</a>
+              <a href="author.html#573">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

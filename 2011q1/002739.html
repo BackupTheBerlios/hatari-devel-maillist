@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Console I/O on Windows
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Console%20I/O%20on%20Windows&In-Reply-To=%3C4D23764F.7060404%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002738.html">
+   <LINK REL="Next"  HREF="002740.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Console I/O on Windows</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Console%20I/O%20on%20Windows&In-Reply-To=%3C4D23764F.7060404%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Console I/O on Windows">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Jan  4 20:34:39 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002738.html">[hatari-devel] Console I/O on Windows
+</A></li>
+        <LI>Next message: <A HREF="002740.html">[hatari-devel] Console I/O on Windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2739">[ date ]</a>
+              <a href="thread.html#2739">[ thread ]</a>
+              <a href="subject.html#2739">[ subject ]</a>
+              <a href="author.html#2739">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 04/01/2011 20:13, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On perjantai 31 joulukuu 2010, Vincent Rivi&#232;re wrote:
+</I>&gt;&gt;<i> I use the official Hatari 1.4.0 on Windows.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> When Hatari starts, it opens a console window, but it is useless because
+</I>&gt;&gt;<i> it always remains empty. Debug output and debugger are unusable.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It seems that Hatari is compiled as a graphical application (versus
+</I>&gt;&gt;<i> console), then the console is opened afterwards. Unfortunately this does
+</I>&gt;&gt;<i> not work, stdio and stderr are not routed to that console.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Instead, when compiled with GCC, Hatari should be linked with
+</I>&gt;&gt;<i> &quot;--subsystem console&quot; so the console will be automatically opened at
+</I>&gt;&gt;<i> startup and everything will be fine.
+</I>&gt;<i>
+</I>&gt;<i> AFAIK Nicolas built the Windows version (using Linux cross-compiler for
+</I>&gt;<i> Hatari Windows binaries).
+</I>&gt;<i>
+</I>
+Hello,
+
+Hatari is built under linux with mingw ; here're the last line to link 
+hatari.exe :
+
+/usr/bin/i586-pc-mingw32-gcc   -Wcast-qual -Wbad-function-cast 
+-Wpointer-arith -Wmissing-prototypes -Wstrict-prototypes -Wall 
+-Wwrite-strings -Wsign-compare -Wformat-security -O3 -DNDEBUG 
+-Wl,--whole-archive CMakeFiles/hatari.dir/objects.a 
+-Wl,--no-whole-archive  -o hatari.exe -Wl,--out-implib,libhatari.dll.a 
+-Wl,--major-image-version,0,--minor-image-version,0 
+-L/home/npomarede/src/hbuild_win/src/debug 
+-L/home/npomarede/src/hbuild_win/src/falcon 
+-L/home/npomarede/src/hbuild_win/src/gui-sdl 
+-L/home/npomarede/src/hbuild_win/src/uae-cpu debug/libDebug.a 
+falcon/libFalcon.a gui-sdl/libGuiSdl.a libFloppy.a uae-cpu/libUaeCpu.a 
+-lmingw32 -Wl,-Bstatic -lSDLmain -Wl,-Bdynamic 
+/usr/i586-pc-mingw32/sys-root/mingw/bin/SDL.dll -Wl,-Bstatic -lm 
+-lSDLmain -Wl,-Bdynamic 
+/usr/i586-pc-mingw32/sys-root/mingw/bin/readline.dll -lz -lpng -lws2_32 
+/usr/i586-pc-mingw32/sys-root/mingw/bin/SDL.dll -Wl,-Bstatic -lm 
+-Wl,-Bdynamic /usr/i586-pc-mingw32/sys-root/mingw/bin/readline.dll -lz 
+-lpng -lws2_32 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 
+-loleaut32 -luuid -lcomdlg32 -ladvapi32
+
+According to gcc, -mconsole is the default when not specified and tells 
+to build a console application.
+-mwindows should be used to build a GUI application (it's not used here).
+
+Vincent, could you tell me what bytes you changed (using an hex editor I 
+guess) to modify the behaviour of the exe ? I will try to adapt the 
+flags to get the same header.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002738.html">[hatari-devel] Console I/O on Windows
+</A></li>
+	<LI>Next message: <A HREF="002740.html">[hatari-devel] Console I/O on Windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2739">[ date ]</a>
+              <a href="thread.html#2739">[ thread ]</a>
+              <a href="subject.html#2739">[ subject ]</a>
+              <a href="author.html#2739">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

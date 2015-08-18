@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] I'm lucky ;) K.prg  is working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3C4B83F5B5.2090607%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001528.html">
+   <LINK REL="Next"  HREF="001530.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] I'm lucky ;) K.prg  is working</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3C4B83F5B5.2090607%40free.fr%3E"
+       TITLE="[hatari-devel] I'm lucky ;) K.prg  is working">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Feb 23 16:35:17 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001528.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+        <LI>Next message: <A HREF="001530.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1529">[ date ]</a>
+              <a href="thread.html#1529">[ thread ]</a>
+              <a href="subject.html#1529">[ subject ]</a>
+              <a href="author.html#1529">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>OK, I'll try all these tests tonight.
+But just a last question :
+
+Why shouldn't we execute some DSP code if there was an exception or 
+interrupt ?
+(the return after do_specialties ())
+
+Regards
+
+Laurent
+
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+&gt;<i> On Tue, 23 Feb 2010, Laurent Sallafranque wrote:
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i> It would be interesting to know which part of do_specialties is causing 
+</I>&gt;&gt;<i> K.prg to freeze before moving code.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Ok to investigate deeper, but :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What is do_specialties code ?
+</I>&gt;<i>
+</I>&gt;<i> It mostly handles all exceptions/interrupts that can happen after a 
+</I>&gt;<i> cpu instruction (as well as other less frequent things).
+</I>&gt;<i>
+</I>&gt;&gt;<i> What should I search here ?
+</I>&gt;<i>
+</I>&gt;<i> I don't have the exact idea ; but first thing would be to run with 
+</I>&gt;<i> --trace all, and see if your printfs (for cycle &gt; 50) are correlated 
+</I>&gt;<i> with a stange dsp behaviour and if there's a cpu exception or 
+</I>&gt;<i> hbl/vbl/timer just before or after the last cpu instruction.
+</I>&gt;<i>
+</I>&gt;<i> No need to look at do_specialties for now, but you should try to 
+</I>&gt;<i> isolate a piece of cpu/dsp code that causes the lock in K.prg and see 
+</I>&gt;<i> if that's always in the same cpu context (interrupts, particular 
+</I>&gt;<i> instruction, ... ?)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+</I>&gt;&gt;&gt;<i> On Tue, 23 Feb 2010, Laurent Sallafranque wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Hello,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I've had a lot of chance today.
+</I>&gt;&gt;&gt;&gt;<i> I was investigating about 68030 Cycles, and I saw in newcpu.c that DSP
+</I>&gt;&gt;&gt;&gt;<i> call was after a potential return.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I've inverted the DSP call and the potential return and I've tested 
+</I>&gt;&gt;&gt;&gt;<i> K.prg
+</I>&gt;&gt;&gt;&gt;<i> It's working.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Returning to previous state freezes K.prg
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I've been really lucky, because I've tested all the non compatible
+</I>&gt;&gt;&gt;&gt;<i> programs and demos and they're not concerned by this patch.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Here is the patch.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> diff -r 4a0c21b49fb4 src/uae-cpu/newcpu.c
+</I>&gt;&gt;&gt;&gt;<i> --- a/src/uae-cpu/newcpu.c      Sun Feb 21 23:00:19 2010 +0200
+</I>&gt;&gt;&gt;&gt;<i> +++ b/src/uae-cpu/newcpu.c      Tue Feb 23 13:41:23 2010 +0100
+</I>&gt;&gt;&gt;&gt;<i> @@ -1759,15 +1759,15 @@
+</I>&gt;&gt;&gt;&gt;<i>          }
+</I>&gt;&gt;&gt;&gt;<i> #endif
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> +       /* Run DSP 56k code if necessary */
+</I>&gt;&gt;&gt;&gt;<i> +       if (bDspEnabled) {
+</I>&gt;&gt;&gt;&gt;<i> +           DSP_Run(cycles);
+</I>&gt;&gt;&gt;&gt;<i> +       }
+</I>&gt;&gt;&gt;&gt;<i> +
+</I>&gt;&gt;&gt;&gt;<i>        if (regs.spcflags) {
+</I>&gt;&gt;&gt;&gt;<i>            if (do_specialties ())
+</I>&gt;&gt;&gt;&gt;<i>                return;
+</I>&gt;&gt;&gt;&gt;<i>        }
+</I>&gt;&gt;&gt;&gt;<i> -
+</I>&gt;&gt;&gt;&gt;<i> -       /* Run DSP 56k code if necessary */
+</I>&gt;&gt;&gt;&gt;<i> -       if (bDspEnabled) {
+</I>&gt;&gt;&gt;&gt;<i> -           DSP_Run(cycles);
+</I>&gt;&gt;&gt;&gt;<i> -       }
+</I>&gt;&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> @@ -1812,15 +1812,15 @@
+</I>&gt;&gt;&gt;&gt;<i>        while (PendingInterruptCount &lt;= 0 &amp;&amp; PendingInterruptFunction)
+</I>&gt;&gt;&gt;&gt;<i>          CALL_VAR(PendingInterruptFunction);
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> +       /* Run DSP 56k code if necessary */
+</I>&gt;&gt;&gt;&gt;<i> +       if (bDspEnabled) {
+</I>&gt;&gt;&gt;&gt;<i> +           DSP_Run(cycles);
+</I>&gt;&gt;&gt;&gt;<i> +       }
+</I>&gt;&gt;&gt;&gt;<i> +
+</I>&gt;&gt;&gt;&gt;<i>        if (regs.spcflags) {
+</I>&gt;&gt;&gt;&gt;<i>            if (do_specialties ())
+</I>&gt;&gt;&gt;&gt;<i>                return;
+</I>&gt;&gt;&gt;&gt;<i>        }
+</I>&gt;&gt;&gt;&gt;<i> -
+</I>&gt;&gt;&gt;&gt;<i> -       /* Run DSP 56k code if necessary */
+</I>&gt;&gt;&gt;&gt;<i> -       if (bDspEnabled) {
+</I>&gt;&gt;&gt;&gt;<i> -           DSP_Run(cycles);
+</I>&gt;&gt;&gt;&gt;<i> -       }
+</I>&gt;&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Do you think there's no risk to apply it ?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> It doesn't seem to break the working programs.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I'm not against moving this part if you can find the explanation on 
+</I>&gt;&gt;&gt;<i> why it works better this way :)
+</I>&gt;&gt;&gt;<i> The fact that moving some code fixes the problem is usually hiding a 
+</I>&gt;&gt;&gt;<i> deeper problem.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> It's good that it doesn't break anything, but what you do with that 
+</I>&gt;&gt;&gt;<i> is that :
+</I>&gt;&gt;&gt;<i>  - you emulate 680xx
+</I>&gt;&gt;&gt;<i>  - you emulate dsp
+</I>&gt;&gt;&gt;<i>  - you emulate 680xx exceptions from the latest 680xx instruction
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> So the flow :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>  - cpu
+</I>&gt;&gt;&gt;<i>  - exception
+</I>&gt;&gt;&gt;<i>  - dsp
+</I>&gt;&gt;&gt;<i>  - cpu
+</I>&gt;&gt;&gt;<i>  - exception
+</I>&gt;&gt;&gt;<i>  - dsp
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> becomes
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>  - cpu
+</I>&gt;&gt;&gt;<i>  - dsp
+</I>&gt;&gt;&gt;<i>  - exception
+</I>&gt;&gt;&gt;<i>  - cpu
+</I>&gt;&gt;&gt;<i>  - dsp
+</I>&gt;&gt;&gt;<i>  - exception
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> And in the end, 2 dsp calls are separated by cpu+exception or 
+</I>&gt;&gt;&gt;<i> exception+cpu, which take the same time just in a different order.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> So, I'm not sure this is a general solution ; perhaps do_specialties 
+</I>&gt;&gt;&gt;<i> is changing some values before the dsp emulation that would cause 
+</I>&gt;&gt;&gt;<i> the problem ?
+</I>&gt;&gt;&gt;<i> But in that case we should find which values instead of just moving 
+</I>&gt;&gt;&gt;<i> the block of code.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> It would be interesting to know which part of do_specialties is 
+</I>&gt;&gt;&gt;<i> causing K.prg to freeze before moving code.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Nicolas
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001528.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+	<LI>Next message: <A HREF="001530.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1529">[ date ]</a>
+              <a href="thread.html#1529">[ thread ]</a>
+              <a href="subject.html#1529">[ subject ]</a>
+              <a href="author.html#1529">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

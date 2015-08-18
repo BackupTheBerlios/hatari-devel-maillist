@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mega STe registers
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mega%20STe%20registers&In-Reply-To=%3Calpine.LMD.2.00.1002282226080.16571%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001612.html">
+   <LINK REL="Next"  HREF="001616.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mega STe registers</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mega%20STe%20registers&In-Reply-To=%3Calpine.LMD.2.00.1002282226080.16571%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Mega STe registers">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Feb 28 22:34:59 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001612.html">[hatari-devel] Mega STe registers
+</A></li>
+        <LI>Next message: <A HREF="001616.html">[hatari-devel] Mega STe registers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1613">[ date ]</a>
+              <a href="thread.html#1613">[ thread ]</a>
+              <a href="subject.html#1613">[ subject ]</a>
+              <a href="author.html#1613">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 28 Feb 2010, Jerome Vernet wrote:
+
+&gt;<i> Le 28/02/10 20:56, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> I just noticed that Oxyge's Calimer-O demo:
+</I>&gt;&gt;<i> 	<A HREF="http://leonard.oxg.free.fr/demos/atari/CALIME_P.zip">http://leonard.oxg.free.fr/demos/atari/CALIME_P.zip</A>
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Gives following when loading:
+</I>&gt;&gt;<i> 	M68000 Bus Error at address $ff8e21.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> This is MegaSTE cache/processor control register.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Maybe it should be emulated e.g. with a dummy function?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 
+</I>&gt;<i> Does Hatari handle 16/8 Mhz software switch for the MegaSTe ?
+</I>&gt;<i>
+</I>&gt;<i> Jerome
+</I>
+The demo is doing clr.b $ff8e21, which will disable the cache and set cpu 
+freq to 8 Mhz instead of 16 on a megaste.
+So, this is only needed in case you boot Hatari in MegaSte mode (we don't 
+have such a mode as this just means using 16 Mhz cpu).
+
+For the sake of completness, we could emulate this but this means we 
+should have a setting to explicitly set the system to 'mega ste', else 
+this register should not be emulated.
+
+But when it comes to watching demo, I'm not sure it's that important for 
+now, as only very few demos would run at 16 MHz, the user is certainly 
+already using a 8 MHz cpu.
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001612.html">[hatari-devel] Mega STe registers
+</A></li>
+	<LI>Next message: <A HREF="001616.html">[hatari-devel] Mega STe registers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1613">[ date ]</a>
+              <a href="thread.html#1613">[ thread ]</a>
+              <a href="subject.html#1613">[ subject ]</a>
+              <a href="author.html#1613">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

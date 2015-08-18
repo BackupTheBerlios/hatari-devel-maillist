@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Wotanoid problem : Fixed for me ;)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wotanoid%20problem%20%3A%20Fixed%20for%20me%20%3B%29&In-Reply-To=%3C1612610964.20100124013850%40hol.gr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001324.html">
+   <LINK REL="Next"  HREF="001326.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Wotanoid problem : Fixed for me ;)</H1>
+    <B>George Nakos</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wotanoid%20problem%20%3A%20Fixed%20for%20me%20%3B%29&In-Reply-To=%3C1612610964.20100124013850%40hol.gr%3E"
+       TITLE="[hatari-devel] Wotanoid problem : Fixed for me ;)">ggn at hol.gr
+       </A><BR>
+    <I>Sun Jan 24 00:38:50 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001324.html">[hatari-devel] Wotanoid problem : Fixed for me ;)
+</A></li>
+        <LI>Next message: <A HREF="001326.html">[hatari-devel] Wotanoid problem : Fixed for me ;)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1325">[ date ]</a>
+              <a href="thread.html#1325">[ thread ]</a>
+              <a href="subject.html#1325">[ subject ]</a>
+              <a href="author.html#1325">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Laurent,
+
+Sunday, January 24, 2010, 1:21:17 AM, you wrote:
+
+&gt;<i> Sorry, little mistake, the problem is in Fread, not Fopen.
+</I>
+&gt;<i> I've looked at the compendium.
+</I>&gt;<i> I haven't found anything about this -1 length call.
+</I>
+My  memory  is  a bit hazy, but I think this just tells gemdos to read
+$ffffffff  bytes  from the file. Of course gemdos will read as much as
+the  file  size  and then return an error in d0.l. It's the lazy man's
+approach  to  doing  things  the  Right Way(tm) (i.e. getting the file
+length  -or knowing it beforehand- and calling fread() with the proper
+amount of bytes)
+
+-- 
+Best regards,
+ George                            mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ggn at hol.gr</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001324.html">[hatari-devel] Wotanoid problem : Fixed for me ;)
+</A></li>
+	<LI>Next message: <A HREF="001326.html">[hatari-devel] Wotanoid problem : Fixed for me ;)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1325">[ date ]</a>
+              <a href="thread.html#1325">[ thread ]</a>
+              <a href="subject.html#1325">[ subject ]</a>
+              <a href="author.html#1325">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

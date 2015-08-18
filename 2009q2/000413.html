@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new version of video.c
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20version%20of%20video.c&In-Reply-To=%3C752526d20906231153w3320c5a2n204212533e593169%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000410.html">
+   <LINK REL="Next"  HREF="000412.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new version of video.c</H1>
+    <B>K&#229;re Andersen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20version%20of%20video.c&In-Reply-To=%3C752526d20906231153w3320c5a2n204212533e593169%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] new version of video.c">kareandersen at gmail.com
+       </A><BR>
+    <I>Tue Jun 23 20:53:13 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000410.html">[hatari-devel] new version of video.c
+</A></li>
+        <LI>Next message: <A HREF="000412.html">[hatari-devel] EKO System
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#413">[ date ]</a>
+              <a href="thread.html#413">[ thread ]</a>
+              <a href="subject.html#413">[ subject ]</a>
+              <a href="author.html#413">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Replying to myself to document my findings:
+
+On Mon, Jun 22, 2009 at 5:46 PM, K&#229;re Andersen&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">kareandersen at gmail.com</A>&gt; wrote:
+
+&gt;<i> So, skimming the code, the first thing that strikes me, is that there
+</I>&gt;<i> is no 32-bit conversion routine for High res - only 8 bit. This is
+</I>&gt;<i> quite likely to kill speed on OS X due to earlier discussed
+</I>&gt;<i> compositing display manager (Quartz). I dont know how this will
+</I>&gt;<i> register with gprof, and i still have very little experience in using
+</I>&gt;<i> it, but the theory is sound enough :) (8 bit converted to 32-bit while
+</I>&gt;<i> beeing shipped back and forth to the video hardware due to compositing
+</I>&gt;<i> is slower than 32-bit not beeing converted while beeing shipped back
+</I>&gt;<i> and forth...)
+</I>
+And alltho this is bad, it was not what was causing the problems at
+large. The real problem in ST High stims from the way frameskip is
+handled. Removing the frameskip hack from the VBL code,
+
+-	if (nVBLs % (nFrameSkips+1))
+-		return;
+
+solves all problems with ST High here. If frameskipping is set to 0,
+no skipping should occur imo. With current Hatari code, this is not
+the case... In my working copy of the code, all references to
+frameskipping are now removed...
+
+&gt;<i> I guess there is no way around it now - i will implement my conversion
+</I>&gt;<i> routines for all ST modes (currently only for ST Low) and send them to
+</I>&gt;<i> whoever wants to review them. Hopefully i can get this done some time
+</I>&gt;<i> tonight...
+</I>
+And this i have done, resulting in _massive_ speed increases - at
+least on my computer. Frameskipping is no longer neccesary at all. As
+should be on a computer this insanely &quot;fast&quot; (Core2Quad / GeForce
+8800GT) ;)
+
+Code review and testing still required tho. Will clean the code up and
+mail patches to Thothy sometime tonight (as in, early tomorrow morning
+or so).
+
+Hope this is of some use for Hatari :)
+
+-Kaare
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000410.html">[hatari-devel] new version of video.c
+</A></li>
+	<LI>Next message: <A HREF="000412.html">[hatari-devel] EKO System
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#413">[ date ]</a>
+              <a href="thread.html#413">[ thread ]</a>
+              <a href="subject.html#413">[ subject ]</a>
+              <a href="author.html#413">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

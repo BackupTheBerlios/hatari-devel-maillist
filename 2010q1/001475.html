@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] MFP problem with Bolo
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MFP%20problem%20with%20Bolo&In-Reply-To=%3Calpine.LMD.2.00.1002131953540.862%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001478.html">
+   <LINK REL="Next"  HREF="001476.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] MFP problem with Bolo</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MFP%20problem%20with%20Bolo&In-Reply-To=%3Calpine.LMD.2.00.1002131953540.862%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] MFP problem with Bolo">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Feb 13 20:06:51 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001478.html">[hatari-devel] Invoking Debugger under MacOsX
+</A></li>
+        <LI>Next message: <A HREF="001476.html">[hatari-devel] MFP problem with Bolo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1475">[ date ]</a>
+              <a href="thread.html#1475">[ thread ]</a>
+              <a href="subject.html#1475">[ subject ]</a>
+              <a href="author.html#1475">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 7 Feb 2010, Thomas Huth wrote:
+
+&gt;<i>
+</I>&gt;<i> Hi Nicolas!
+</I>&gt;<i>
+</I>&gt;<i> I wanted to play the breakout game &quot;Bolo&quot; today (one of the games that
+</I>&gt;<i> I owned when I was a child...), but there seems to be a problem with
+</I>&gt;<i> the MFP emulation... Right before the first level starts, it hangs
+</I>&gt;<i> forever in this loop here:
+</I>&gt;<i>
+</I>&gt;<i> 0002b15e: 13c1 ffff fa23 1039 ffff MOVE.B D1,$fffffa23
+</I>&gt;<i> 0002b164: 1039 ffff fa23 b001 66f0 MOVE.B $fffffa23,D0
+</I>&gt;<i> 0002b16a: b001 66f0 4e75 41f9 0002 CMP.B D1,D0
+</I>&gt;<i> 0002b16c: 66f0 4e75 41f9 0002 b060 BNE.B #$fffffff0 == 0002b15e (TRUE)
+</I>&gt;<i>
+</I>&gt;<i> D1 contains the value 0xff. Seems like the Timer C counter never
+</I>&gt;<i> reaches the value 0xff, it seems to be reloaded with the value 0xfe
+</I>&gt;<i> instead once it has expired...
+</I>&gt;<i> The game works fine when I manually break this loop, so this seems to
+</I>&gt;<i> be the only problem. Could you maybe have a look when you've got some
+</I>&gt;<i> spare time?
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>  Thomas
+</I>&gt;<i>
+</I>
+[cc'ing this to devel list, to keep track of the issue]
+
+Hello,
+
+I remember this game too, one of the very first one for monochrome screen, 
+very fine gfx at this time.
+
+I gave this one a (deep) look, and this is a very vicious problem.
+In fact it seems that when TCDR is at 01 and is decremented (which will 
+triger the interrupt) then TCDR is reloaded with $ff *before* the 
+interrupt in $114 is called by the cpu (else, the routine in $114 takes 
+approx 800 cycles, which is superior to the 652 cycles to decrement TCDR 
+so it's impossible to read $ff after the RTE).
+
+So, the only explanation is that fffa23 is read with $ff just before the 
+68000 interrupt.
+
+This goes in the same category as audio art by big alec and super hang on : 
+the mfp is running asynchronously to the 68000 and there seems to be a 
+delay when mfp data reg goes to 0 before the int request is sent to the 
+68000 (in Hatari this is immediate, hence the problem). During this delay, 
+the cpu has the time to run one instruction, which will allow to read 
+$fffa23 with $ff.
+
+One solution would be to delay all mfp ints to the next cpu instruction, 
+but this might broke some demos that rely on very precise timings (but if 
+it's how it works on real hardware, then it's the way to go anyway).
+
+Marked on my todo list, I will try to write some code to measure this 
+precisely on a real ST.
+
+Regards
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001478.html">[hatari-devel] Invoking Debugger under MacOsX
+</A></li>
+	<LI>Next message: <A HREF="001476.html">[hatari-devel] MFP problem with Bolo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1475">[ date ]</a>
+              <a href="thread.html#1475">[ thread ]</a>
+              <a href="subject.html#1475">[ subject ]</a>
+              <a href="author.html#1475">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

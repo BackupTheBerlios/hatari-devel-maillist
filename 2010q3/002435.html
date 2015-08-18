@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Pasti support and other things
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Pasti%20support%20and%20other%20things&In-Reply-To=%3C9603C3DD-DD73-4CF1-B0CB-0D7742DF2060%40sarnau.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002429.html">
+   <LINK REL="Next"  HREF="002438.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Pasti support and other things</H1>
+    <B>Markus Fritze</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Pasti%20support%20and%20other%20things&In-Reply-To=%3C9603C3DD-DD73-4CF1-B0CB-0D7742DF2060%40sarnau.com%3E"
+       TITLE="[hatari-devel] Pasti support and other things">my at sarnau.com
+       </A><BR>
+    <I>Fri Sep 24 06:16:40 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002429.html">[hatari-devel] Pasti support and other things
+</A></li>
+        <LI>Next message: <A HREF="002438.html">[hatari-devel] Pasti support and other things
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2435">[ date ]</a>
+              <a href="thread.html#2435">[ thread ]</a>
+              <a href="subject.html#2435">[ subject ]</a>
+              <a href="author.html#2435">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Eero,
+
+&gt;<i> Is the code under GPL compatible open source license?
+</I>
+I will check. It is used in many different open-source emulators.
+
+
+&gt;<i> Can you post an example of what they output looks like?
+</I>
+
+Here a piece that probably everybody knows :-) With the exception of the [address] this should be standard Motorola mnemonics.
+
+
+Markus
+
+00e00000: 602e                           BRA.S    *+$30 [$E00030] 
+00e00002: 0206 00e0                      ANDI.B   #$E0,D6 
+00e00006: 0030 00e0 0000                 ORI.B    #$E0,(0,A0,D0.W) 
+00e0000c: 0000 68cc                      ORI.B    #$CC,D0 
+00e00010: 00e0                           UNRECOGNIZED 
+00e00012: 0030 00e3 25a2                 ORI.B    #$E3,(-$5E,A0,D2.W) 
+00e00018: 1114                           MOVE.B   (A4),-(A0) 
+00e0001a: 1991 0003                      MOVE.B   (A1),(3,A4,D0.W) 
+00e0001e: 176e 0000 3df6                 MOVE.B   (0,A6),($3DF6,A3) 
+00e00024: 0000 10c9                      ORI.B    #$C9,D0 
+00e00028: 0000 5cd4                      ORI.B    #$D4,D0 
+00e0002c: 0000 0000                      ORI.B    #0,D0 
+00e00030: 46fc 2700                      MOVE     #$2700,SR 
+00e00034: 4e70                           RESET 
+00e00036: 0cb9 fa52 235f 00fa 0000       CMPI.L   #$FA52235F,$FA0000 
+00e00040: 660a                           BNE.S    *+$C [$E0004C] 
+00e00042: 4dfa 0008                      LEA      (8,PC) [$E0004C],A6 
+00e00046: 4ef9 00fa 0004                 JMP      $FA0004 
+00e0004c: 4dfa 0006                      LEA      (6,PC) [$E00054],A6 
+00e00050: 6000 0b60                      BRA      *+$B62 [$E00BB2] 
+00e00054: 6628                           BNE.S    *+$2A [$E0007E] 
+00e00056: 11f8 0424 8001                 MOVE.B   $424.w,$FFFF8001.w 
+00e0005c: 0cb8 3141 5926 0426            CMPI.L   #$31415926,$426.w 
+00e00064: 6618                           BNE.S    *+$1A [$E0007E] 
+00e00066: 2038 042a                      MOVE.L   $42A.w,D0 
+00e0006a: 4a38 042a                      TST.B    $42A.w 
+00e0006e: 660e                           BNE.S    *+$10 [$E0007E] 
+00e00070: 0800 0000                      BTST     #0,D0 
+00e00074: 6608                           BNE.S    *+$A [$E0007E] 
+00e00076: 2040                           MOVEA.L  D0,A0 
+00e00078: 4dfa ffe2                      LEA      (-$1E,PC) [$E0005C],A6 
+00e0007c: 4ed0                           JMP      (A0) 
+00e0007e: 41f8 8800                      LEA      $FFFF8800.w,A0 
+00e00082: 10bc 0007                      MOVE.B   #7,(A0) 
+00e00086: 117c 00c0 0002                 MOVE.B   #$C0,(2,A0) 
+00e0008c: 10bc 000e                      MOVE.B   #$E,(A0) 
+00e00090: 117c 0007 0002                 MOVE.B   #7,(2,A0) 
+00e00096: 0839 0000 00e0 001d            BTST     #0,$E0001D 
+00e0009e: 670e                           BEQ.S    *+$10 [$E000AE] 
+00e000a0: 4dfa 0006                      LEA      (6,PC) [$E000A8],A6 
+00e000a4: 6000 132c                      BRA      *+$132E [$E013D2] 
+00e000a8: 11fc 0002 820a                 MOVE.B   #2,$FFFF820A.w 
+00e000ae: 43f8 8240                      LEA      $FFFF8240.w,A1 
+00e000b2: 303c 000f                      MOVE.W   #$F,D0 
+00e000b6: 41fa 0b18                      LEA      ($B18,PC) [$E00BD0],A0 
+00e000ba: 32d8                           MOVE.W   (A0)+,(A1)+ 
+00e000bc: 51c8 fffc                      DBF      D0,*-$2 [$E000BA] 
+00e000c0: 11fc 0001 8201                 MOVE.B   #1,$FFFF8201.w 
+00e000c6: 4238 8203                      CLR.B    $FFFF8203.w 
+00e000ca: 1c38 0424                      MOVE.B   $424.w,D6 
+00e000ce: 11c6 8001                      MOVE.B   D6,$FFFF8001.w 
+00e000d2: 2a38 042e                      MOVE.L   $42E.w,D5 
+00e000d6: 4dfa 0006                      LEA      (6,PC) [$E000DE],A6 
+00e000da: 6000 0ad6                      BRA      *+$AD8 [$E00BB2] 
+00e000de: 6700 0122                      BEQ      *+$124 [$E00202] 
+00e000e2: 4246                           CLR.W    D6 
+00e000e4: 11fc 000a 8001                 MOVE.B   #$A,$FFFF8001.w 
+00e000ea: 307c 0008                      MOVEA.W  #8,A0 
+00e000ee: 43f9 0020 0008                 LEA      $200008,A1 
+00e000f4: 4240                           CLR.W    D0 
+00e000f6: 30c0                           MOVE.W   D0,(A0)+ 
+00e000f8: 32c0                           MOVE.W   D0,(A1)+ 
+00e000fa: d07c fa54                      ADD.W    #$FA54,D0 
+00e000fe: b0fc 0200                      CMPA.W   #$200,A0 
+00e00102: 66f2                           BNE.S    *-$C [$E000F6] 
+00e00104: 11fc 005a 820d                 MOVE.B   #$5A,$FFFF820D.w 
+00e0010a: 4a38 8203                      TST.B    $FFFF8203.w 
+00e0010e: 1038 820d                      MOVE.B   $FFFF820D.w,D0 
+00e00112: b03c 005a                      CMP.B    #$5A,D0 
+00e00116: 6616                           BNE.S    *+$18 [$E0012E] 
+00e00118: 4238 820d                      CLR.B    $FFFF820D.w 
+00e0011c: 4a78 8240                      TST.W    $FFFF8240.w 
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100923/cedb052a/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100923/cedb052a/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002429.html">[hatari-devel] Pasti support and other things
+</A></li>
+	<LI>Next message: <A HREF="002438.html">[hatari-devel] Pasti support and other things
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2435">[ date ]</a>
+              <a href="thread.html#2435">[ thread ]</a>
+              <a href="subject.html#2435">[ subject ]</a>
+              <a href="author.html#2435">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

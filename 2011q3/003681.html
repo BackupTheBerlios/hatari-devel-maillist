@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] mac OS X version for Hatari 1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20mac%20OS%20X%20version%20for%20Hatari%201.5&In-Reply-To=%3CCAEK_UgjrYPwVtG_1AamEGWcepsy1bs4XWiOYcz0SU6qjP-SRfg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003680.html">
+   <LINK REL="Next"  HREF="003684.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] mac OS X version for Hatari 1.5</H1>
+    <B>Deniz Turkoglu</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20mac%20OS%20X%20version%20for%20Hatari%201.5&In-Reply-To=%3CCAEK_UgjrYPwVtG_1AamEGWcepsy1bs4XWiOYcz0SU6qjP-SRfg%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] mac OS X version for Hatari 1.5">turkoglu.deniz at gmail.com
+       </A><BR>
+    <I>Mon Jul 11 18:35:07 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003680.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+        <LI>Next message: <A HREF="003684.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3681">[ date ]</a>
+              <a href="thread.html#3681">[ thread ]</a>
+              <a href="subject.html#3681">[ subject ]</a>
+              <a href="author.html#3681">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, Jul 11, 2011 at 12:04 PM, Nicolas Pomar&#232;de
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt; wrote:
+&gt;<i> Le 11/07/2011 11:54, Christer Solskogen a &#233;crit :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Sat, Jul 9, 2011 at 6:57 PM, Nicolas Pomar&#232;de&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt;
+</I>&gt;&gt;<i> &#160;wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Good, thanks a lot for testing. A few more sound patches to commit and
+</I>&gt;&gt;&gt;<i> release should be ready to be made (at last !)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Here is the build log on Mac OS X 10.6 (with warnings)
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Thanks for the logs, this is roughly &#160;what I get too under linux, so those
+</I>&gt;<i> warnings should be harmless.
+</I>&gt;<i>
+</I>&gt;&gt;<i> [ 17%] Building C object src/debug/CMakeFiles/Debug.dir/debugui.c.o
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/debug/debugui.c: In function
+</I>&gt;&gt;<i> &#8216;DebugUI_GetCommand&#8217;:
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/debug/debugui.c:700: warning:
+</I>&gt;&gt;<i> assignment discards qualifiers from pointer target type
+</I>&gt;<i>
+</I>&gt;<i> This one seems new ? Eero ?
+</I>
+It expects a char* and we pass a const, replaced it strdup (or we can
+plain cast).
+
+&gt;<i>
+</I>&gt;&gt;<i> [ 26%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp_cpu.c.o
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c: In function
+</I>&gt;&gt;<i> &#8216;dsp_pm_4&#8217;:
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: warning:
+</I>&gt;&gt;<i> &#8216;save_ly&#8217; may be used uninitialized in this function
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: note:
+</I>&gt;&gt;<i> &#8216;save_ly&#8217; was declared here
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: warning:
+</I>&gt;&gt;<i> &#8216;save_lx&#8217; may be used uninitialized in this function
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: note:
+</I>&gt;&gt;<i> &#8216;save_lx&#8217; was declared here
+</I>&gt;<i>
+</I>&gt;<i> Laurent knows about those one, they're &quot;normal&quot;
+</I>&gt;<i>
+</I>&gt;&gt;<i> [ 30%] Building C object src/falcon/CMakeFiles/Falcon.dir/videl.c.o
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/falcon/videl.c: In function
+</I>&gt;&gt;<i> &#8216;VIDEL_ST_ShiftModeWriteByte&#8217;:
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/falcon/videl.c:214: warning:
+</I>&gt;&gt;<i> &#8216;video_mode&#8217; may be used uninitialized in this function
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/falcon/videl.c:214: warning:
+</I>&gt;&gt;<i> &#8216;line_width&#8217; may be used uninitialized in this function
+</I>&gt;<i>
+</I>&gt;<i> I think these are also intended.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Linking C static library libFalcon.a
+</I>&gt;&gt;<i> /usr/bin/ranlib: file: libFalcon.a(microphone.c.o) has no symbols
+</I>&gt;&gt;<i> /usr/bin/ranlib: file: libFalcon.a(microphone.c.o) has no symbols
+</I>&gt;<i>
+</I>&gt;<i> I don't know, maybe OS X specific.
+</I>
+It turns out this means it is not used:
+
+<A HREF="http://stackoverflow.com/questions/4929255/building-static-libraries-on-mac-using-cmake-and-gcc">http://stackoverflow.com/questions/4929255/building-static-libraries-on-mac-using-cmake-and-gcc</A>
+
+&gt;<i>
+</I>&gt;&gt;<i> [ 54%] Building C object src/CMakeFiles/hatari.dir/dmaSnd.c.o
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/dmaSnd.c:371: warning:
+</I>&gt;&gt;<i> &#8216;DmaSnd_FIFO_ReadByte&#8217; defined but not used
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/dmaSnd.c:389: warning:
+</I>&gt;&gt;<i> &#8216;DmaSnd_FIFO_ReadWord&#8217; defined but not used
+</I>&gt;<i>
+</I>&gt;<i> I will remove these soon, they're not used anymore.
+</I>&gt;<i>
+</I>&gt;&gt;<i> [ 90%] Building C object src/CMakeFiles/hatari.dir/gui-osx/Shared.m.o
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/Shared.m: In function
+</I>&gt;&gt;<i> &#8216;-[ModalWrapper runModal:]&#8217;:
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/Shared.m:26: warning: class
+</I>&gt;&gt;<i> 'ModalWrapper' does not implement the 'NSWindowDelegate' protocol
+</I>
+This is OSX 10.6 acting up, fixed.
+
+&gt;&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/Shared.m: In function
+</I>&gt;&gt;<i> &#8216;GuiOsx_ExportPathString&#8217;:
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/Shared.m:63: warning:
+</I>&gt;&gt;<i> &#8216;cString&#8217; is deprecated (declared at
+</I>&gt;&gt;<i> /System/Library/Frameworks/Foundation.framework/Headers/NSString.h:367)
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/Shared.m:63: warning:
+</I>&gt;&gt;<i> &#8216;cString&#8217; is deprecated (declared at
+</I>&gt;&gt;<i> /System/Library/Frameworks/Foundation.framework/Headers/NSString.h:367)
+</I>
+Replaced the deprecated method.
+
+&gt;&gt;<i> [ 91%] Building C object
+</I>&gt;&gt;<i> src/CMakeFiles/hatari.dir/gui-osx/CreateFloppyController.m.o
+</I>&gt;&gt;<i> [ 92%] Building C object src/CMakeFiles/hatari.dir/gui-osx/SDLMain.m.o
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m: In function
+</I>&gt;&gt;<i> &#8216;-[SDLMain debugUI:]&#8217;:
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:338: warning:
+</I>&gt;&gt;<i> implicit declaration of function &#8216;DebugUI&#8217;
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m: In function &#8216;main&#8217;:
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:681: warning:
+</I>&gt;&gt;<i> passing argument 2 of &#8216;NSApplicationMain&#8217; from incompatible pointer
+</I>&gt;&gt;<i> type
+</I>
+Indeed they are harmless, but removed the warnings anyway. The patch
+is attached, the binary works. The version number is still 1.4 for OSX
+btw, if we are going to release soon we should change it :)
+
+-deniz
+
+&gt;<i>
+</I>&gt;<i> Can't say for this part, seems to be harmless, but I don't have OS X to look
+</I>&gt;<i> further.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: osxpatches.diff
+Type: application/octet-stream
+Size: 1959 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110711/00682f20/attachment.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110711/00682f20/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003680.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+	<LI>Next message: <A HREF="003684.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3681">[ date ]</a>
+              <a href="thread.html#3681">[ thread ]</a>
+              <a href="subject.html#3681">[ subject ]</a>
+              <a href="author.html#3681">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

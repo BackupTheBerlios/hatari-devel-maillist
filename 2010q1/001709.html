@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] video.c happily overwriting Hatari memory and crashing (when user uses border pixel values &lt; 16)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20video.c%20happily%20overwriting%20Hatari%20memory%20and%0A%20crashing%20%28when%20user%20uses%20border%20pixel%20values%20%3C%2016%29&In-Reply-To=%3Calpine.LMD.2.00.1003180008450.15404%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001707.html">
+   <LINK REL="Next"  HREF="001710.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] video.c happily overwriting Hatari memory and crashing (when user uses border pixel values &lt; 16)</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20video.c%20happily%20overwriting%20Hatari%20memory%20and%0A%20crashing%20%28when%20user%20uses%20border%20pixel%20values%20%3C%2016%29&In-Reply-To=%3Calpine.LMD.2.00.1003180008450.15404%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] video.c happily overwriting Hatari memory and crashing (when user uses border pixel values &lt; 16)">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Mar 18 00:14:49 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001707.html">[hatari-devel] video.c happily overwriting Hatari memory and	crashing (when user uses border pixel values &lt; 16)
+</A></li>
+        <LI>Next message: <A HREF="001710.html">[hatari-devel] video.c happily overwriting Hatari memory and	crashing (when user uses border pixel values &lt; 16)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1709">[ date ]</a>
+              <a href="thread.html#1709">[ thread ]</a>
+              <a href="subject.html#1709">[ subject ]</a>
+              <a href="author.html#1709">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 17 Mar 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I was getting this crash in video.c on Falcon emulation after applying
+</I>&gt;<i> the BorderPixels patch (from another mail which affects ST/e borders
+</I>&gt;<i> handling):
+</I>&gt;<i> --------
+</I>&gt;<i> Program received signal SIGSEGV, Segmentation fault.
+</I>&gt;<i> [Switching to Thread 0xb79c96b0 (LWP 4444)]
+</I>&gt;<i> 0xb7c67727 in memset () from /lib/i686/cmov/libc.so.6
+</I>&gt;<i> (gdb) bt
+</I>&gt;<i> #0  0xb7c67727 in memset () from /lib/i686/cmov/libc.so.6
+</I>&gt;<i> #1  0x0808001f in Video_InterruptHandler_HBL () at video.c:1862
+</I>&gt;<i> #2  0x08087d39 in m68k_go (may_quit=1) at newcpu.c:1754
+</I>&gt;<i> #3  0x0806bf04 in M68000_Start () at m68000.c:228
+</I>&gt;<i> ---------
+</I>&gt;<i>
+</I>&gt;<i> Crash happens on this line:
+</I>&gt;<i>                        memset(pSTScreen,0,SCREENBYTES_LEFT-2);
+</I>&gt;<i>
+</I>&gt;<i> includes/screen.h:
+</I>&gt;<i> #define SCREENBYTES_LEFT    (nBorderPixelsLeft/2)  /* Bytes for left border
+</I>&gt;<i> */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> After reading the code, I think the issue comes from the patch zeroing
+</I>&gt;<i> nBorderPixels* screen.c variables when borders aren't enabled and memset()
+</I>&gt;<i> getting -2 as count as result.   It's not a bug in the patch, the patch just
+</I>&gt;<i> reveals an existing bug in video.c.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> In the current code nBorderPixels* variables values come from configuration
+</I>&gt;<i> values and are truncated down to something divisable by 16.  If user happens
+</I>&gt;<i> to set this to 15 or smaller, Hatari can crash.
+</I>&gt;<i>
+</I>&gt;<i> Even worse is this in video.c:
+</I>&gt;<i> memset ( pSTScreen, 0, SCREENBYTES_LEFT-BORDERBYTES_LEFT_2_STE+4 );
+</I>&gt;<i> memcpy ( pSTScreen+SCREENBYTES_LEFT-BORDERBYTES_LEFT_2_STE+4,
+</I>&gt;<i> pVideoRaster+VideoOffset+4, BORDERBYTES_LEFT_2_STE-4 );
+</I>&gt;<i>
+</I>&gt;<i> Or:
+</I>&gt;<i> memset(pSTScreen,0,SCREENBYTES_LEFT-4*2);
+</I>&gt;<i> memcpy(pSTScreen+SCREENBYTES_LEFT-4*2, pVideoRaster, 4*2);
+</I>&gt;<i>
+</I>&gt;<i> These will result in video.c overwriting 16 bytes before pSTScreen.
+</I>&gt;<i>
+</I>&gt;<i> Needs to be fixed before release...
+</I>&gt;<i>
+</I>
+Well, the code is clearly &quot;designed&quot; that way, having border a multiple of 
+sthg else than 16 would not have a real meaning, because we must have a 
+number of bytes that matches 4 planes in lowres.
+
+What should we do with 15 ? Add a &quot;black&quot; bytes to go to the closest 16 
+bytes multiple ? This would be quite tricky to handle and would create a 
+lot of cases in video.c (and this part is already quite complicated).
+
+I think the gui should not allow to set a non multiple of 16 for the 
+border when in st/ste mode, handling that in video.c would create too much 
+problem (from what I understood, changing borders was mainly asked by 
+users running in falcon mode, not in ste/stf)
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001707.html">[hatari-devel] video.c happily overwriting Hatari memory and	crashing (when user uses border pixel values &lt; 16)
+</A></li>
+	<LI>Next message: <A HREF="001710.html">[hatari-devel] video.c happily overwriting Hatari memory and	crashing (when user uses border pixel values &lt; 16)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1709">[ date ]</a>
+              <a href="thread.html#1709">[ thread ]</a>
+              <a href="subject.html#1709">[ subject ]</a>
+              <a href="author.html#1709">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

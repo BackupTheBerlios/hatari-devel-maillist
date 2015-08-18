@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Cmake warnings
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Cmake%20warnings&In-Reply-To=%3C201001190024.52035.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001277.html">
+   <LINK REL="Next"  HREF="001279.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Cmake warnings</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Cmake%20warnings&In-Reply-To=%3C201001190024.52035.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Cmake warnings">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jan 18 23:24:51 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001277.html">[hatari-devel] Cmake warnings
+</A></li>
+        <LI>Next message: <A HREF="001279.html">[hatari-devel] Cmake warnings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1278">[ date ]</a>
+              <a href="thread.html#1278">[ thread ]</a>
+              <a href="subject.html#1278">[ subject ]</a>
+              <a href="author.html#1278">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 18 January 2010, Laurent Sallafranque wrote:
+&gt;<i> I've compiled the latest Hatari version with cmake;make
+</I>&gt;<i>
+</I>&gt;<i> I've got the following warnings :
+</I>&gt;<i>
+</I>&gt;<i> [ 3%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp_cpu.c.o
+</I>&gt;<i> /home/laurent/Atari/hatari/src/falcon/dsp_cpu.c: In function
+</I>&gt;<i> &#8216;dsp_jsset_pp&#8217;:
+</I>&gt;<i> /home/laurent/Atari/hatari/src/falcon/dsp_cpu.c:890: warning: array
+</I>&gt;<i> subscript is above array bounds
+</I>
+The sizes of arrays are:
+
+---- dsp_core.h -------
+        /* External ram[] (mapped to p:) */
+        Uint32  ramext[DSP_RAMSIZE];
+
+        /* rom[0] is x:, rom[1] is y: */
+        Uint32  rom[2][512];
+
+        /* Internal ram[0] is x:, ram[1] is y:, ram[2] is p: */
+        Uint32  ramint[3][512];
+--------------------
+
+
+The code accessing them is:
+
+------- dsp_cpu.c ---------
+static Uint32 cur_inst;
+...
+static Uint32 read_memory(int space, Uint16 address)
+{
+...
+        /* Internal ROM ? */
+        if (address &lt; 0x200) {
+                if (dsp_core-&gt;registers[DSP_REG_OMR] &amp; (1&lt;&lt;DSP_OMR_DE)) {
+890                     return dsp_core-&gt;rom[space][address] &amp; BITMASK(24);
+----------------------
+I.e. issue is in rom array offsets.
+
+
+Then all of the functions gcc complains about have the same code to
+call read_memory():
+static void dsp_jsset_pp(void)
+static void dsp_jsclr_pp(void)
+static void dsp_btst_pp(void)
+static void dsp_jset_pp(void)
+static void dsp_jclr_pp(void)
+------------
+        Uint32 memspace, addr, value, numbit, newaddr;
+
+        memspace = (cur_inst&gt;&gt;6) &amp; 1;
+        value = (cur_inst&gt;&gt;8) &amp; BITMASK(6);
+...
+        addr = 0xffc0 + value;
+        value = read_memory(memspace, addr);
+-------------
+
+0xffc0 = 1111111111000000 i.e. last six bits are empty.
+&quot;value&quot; is a positive integer with at max six bits.  This means
+that addr value will be 0xffc0 - 0xffff.
+
+Which clearly doesn't fit into the 512 addresses rom array has.
+
+I.e. to me it seems a real bug.
+
+
+I'll check the errors for my code later.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001277.html">[hatari-devel] Cmake warnings
+</A></li>
+	<LI>Next message: <A HREF="001279.html">[hatari-devel] Cmake warnings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1278">[ date ]</a>
+              <a href="thread.html#1278">[ thread ]</a>
+              <a href="subject.html#1278">[ subject ]</a>
+              <a href="author.html#1278">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

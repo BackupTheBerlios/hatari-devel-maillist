@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] LLVM static analyzer output
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LLVM%20static%20analyzer%20output&In-Reply-To=%3C4DD93CDC.7060907%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003463.html">
+   <LINK REL="Next"  HREF="003468.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] LLVM static analyzer output</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LLVM%20static%20analyzer%20output&In-Reply-To=%3C4DD93CDC.7060907%40corp.free.fr%3E"
+       TITLE="[hatari-devel] LLVM static analyzer output">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun May 22 18:42:04 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003463.html">[hatari-devel] LLVM static analyzer output
+</A></li>
+        <LI>Next message: <A HREF="003468.html">[hatari-devel] LLVM static analyzer output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3465">[ date ]</a>
+              <a href="thread.html#3465">[ thread ]</a>
+              <a href="subject.html#3465">[ subject ]</a>
+              <a href="author.html#3465">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here're the results from gcc 4.6 :
+
+uae-cpu/build68k.c: In function 'main':
+uae-cpu/build68k.c:83:7: attention : variable 'patbits' set but not used 
+[-Wunused-but-set-variable]
+
+uae-cpu/fpp.c: In function 'restore_fpu':
+uae-cpu/fpp.c:1358:9: attention : variable 'model' set but not used 
+[-Wunused-but-set-variable]
+
+-&gt; uae's specific ; leave it this way
+
+debug/debugui.c: In function 'DebugUI_SetOptions':
+debug/debugui.c:344:32: attention : to be safe all intermediate pointers 
+in cast from 'char **' to 'const char **' must be 'const' qualified 
+[-Wcast-qual]
+
+cfgopts.c: In function 'update_config':
+cfgopts.c:280:21: attention : variable 'next' set but not used 
+[-Wunused-but-set-variable]
+
+-&gt; don't store the result of strtok ?
+
+file.c: In function 'File_Open':
+file.c:524:14: attention : variable 'rd' set but not used 
+[-Wunused-but-set-variable]
+file.c:524:6: attention : variable 'wr' set but not used 
+[-Wunused-but-set-variable]
+
+-&gt; only used in assert ; any way to remove the warning ?
+
+ide.c: In function 'ide_atapi_cmd':
+ide.c:1754:20: attention : variable 'start_track' set but not used 
+[-Wunused-but-set-variable]
+ide.c:1754:15: attention : variable 'msf' set but not used 
+[-Wunused-but-set-variable]
+
+main.c: In function 'main':
+main.c:739:33: attention : to be safe all intermediate pointers in cast 
+from 'char **' to 'const char **' must be 'const' qualified [-Wcast-qual]
+
+
+In file included from screen.c:1266:0:
+convert/med640x16_spec.c: In function 
+'Line_ConvertMediumRes_640x16Bit_Spec':
+convert/med640x16_spec.c:41:19: attention : variable 'edx' set but not 
+used [-Wunused-but-set-variable]
+In file included from screen.c:1273:0:
+convert/med640x32_spec.c: In function 
+'Line_ConvertMediumRes_640x32Bit_Spec':
+convert/med640x32_spec.c:41:19: attention : variable 'edx' set but not 
+used [-Wunused-but-set-variable]
+
+-&gt; leave it this way to keep the same logic in all convert/*c files
+
+video.c: In function 'Video_DrawScreen':
+video.c:2526:7: attention : variable 'bScreenChanged' set but not used 
+[-Wunused-but-set-variable]
+
+-&gt; we don't use the return result of the functions ; remove 
+bScreenChanged ?
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003463.html">[hatari-devel] LLVM static analyzer output
+</A></li>
+	<LI>Next message: <A HREF="003468.html">[hatari-devel] LLVM static analyzer output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3465">[ date ]</a>
+              <a href="thread.html#3465">[ thread ]</a>
+              <a href="subject.html#3465">[ subject ]</a>
+              <a href="author.html#3465">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

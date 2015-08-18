@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mouse ungrab, palette?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20ungrab%2C%20palette%3F&In-Reply-To=%3Calpine.LMD.2.00.0906012334030.8490%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000309.html">
+   <LINK REL="Next"  HREF="000311.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mouse ungrab, palette?</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20ungrab%2C%20palette%3F&In-Reply-To=%3Calpine.LMD.2.00.0906012334030.8490%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Mouse ungrab, palette?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jun  1 23:37:05 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000309.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+        <LI>Next message: <A HREF="000311.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#310">[ date ]</a>
+              <a href="thread.html#310">[ thread ]</a>
+              <a href="subject.html#310">[ subject ]</a>
+              <a href="author.html#310">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 2 Jun 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Monday 01 June 2009, Thomas H. wrote:
+</I>&gt;&gt;&gt;<i> * adds --grab command line option for enabling mouse grabbing also
+</I>&gt;&gt;&gt;<i>   from command line:
+</I>&gt;&gt;&gt;<i> * ungrabs mouse when Hatari is paused (and regrabs when unpaused)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Looks fine for me, too. Maybe just add curly braces to the if-clauses in
+</I>&gt;&gt;<i> main.c (since the body of the if-clause is two lines including the
+</I>&gt;&gt;<i> comment) ?
+</I>&gt;<i>
+</I>&gt;<i> Done &amp; commited with manual updates.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> There's also a feature to change Steem palette.  This can be used to
+</I>&gt;&gt;&gt;&gt;<i> see whether there's actually something on screen.  Would that be
+</I>&gt;&gt;&gt;&gt;<i> useful for Hatari too, e.g. for debugging DSP issues?  And how it
+</I>&gt;&gt;&gt;&gt;<i> should work?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Any comments on the feature of forcing the default palette?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I never used that feature in Steem, and I never missed it yet.
+</I>&gt;&gt;<i> Would it be sufficient to write other color values to the color register
+</I>&gt;&gt;<i> with the help of the debugger? Something like &quot;w ff8240 0f 00&quot; ?
+</I>&gt;<i>
+</I>&gt;<i> Seems so.  As the color registers are different for:
+</I>&gt;<i> - ST/e: 16x 12/16-bit entries, ff8240-&gt;ff8260
+</I>&gt;<i> - TT: 256x  12/16-bit entries, ff8400-&gt;ff8500
+</I>&gt;<i> -Falcon/Videl: 256x 24/32-bit entries, ff9800-&gt;ff9c00
+</I>
+But if you write to ff8240 for instance and go back to the demo, chances 
+are high that the demo will change ff8240 on the next VBL, so the write to 
+ff8240 will be lost, and you will see the altered color only for a blink 
+of the eye, not very useful.
+
+If such feature is needed, I think it should be made at the convert/*c 
+level functions, this is the only place where you can be sure the palette 
+will be correctly overridden.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000309.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+	<LI>Next message: <A HREF="000311.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#310">[ date ]</a>
+              <a href="thread.html#310">[ thread ]</a>
+              <a href="subject.html#310">[ subject ]</a>
+              <a href="author.html#310">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

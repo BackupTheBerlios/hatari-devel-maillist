@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005131106410.6570%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002075.html">
+   <LINK REL="Next"  HREF="002076.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005131106410.6570%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu May 13 11:13:53 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002075.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002076.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2081">[ date ]</a>
+              <a href="thread.html#2081">[ thread ]</a>
+              <a href="subject.html#2081">[ subject ]</a>
+              <a href="author.html#2081">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 12 May 2010, David Savinkoff wrote:
+
+&gt;<i> Hi Nicolas,
+</I>&gt;<i> 
+</I>&gt;<i> &gt; If you want to force &quot;samples&quot; instead of using 1024, you can specify
+</I>&gt;<i> &gt; a value between 10 and 100 ms. A value of 20 ms ...
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> I tested this just now at 20 ms and it worked (tos206uk 11025 Hz 20 ms),
+</I>&gt;<i> but when I changed settings to 44100 Hz buffer sync was lost.
+</I>&gt;<i> A quick fix to reduce symptoms would be to reduce MIXBUFFER_SIZE also.
+</I>&gt;<i> Defining MIXBUFFER_SIZE&#160; to 2048 has much less delay when buffer sync
+</I>&gt;<i> is lost, as loss of buffer sync loss is in several hundreds of milliseconds.
+</I>&gt;<i> 
+</I>&gt;<i> David Savinkoff
+</I>&gt;<i>
+</I>
+As I previously explained reducing MIXBUFFER_SIZE doesn't fix 
+anything, it just hide the problem because you're looping through a 
+shorter buffer using modulo.
+
+As you say, a loss of buffer sync would be less noticeable, but the real 
+question is &quot;why does the OS/driver lose sync ?&quot;. The real cause should be 
+fixed, not hidden.
+
+And 2048 is too short when playing sound at 50 kHz, we need to have 4-5 
+frames ahead of sound, so that would mean at least 5000 samples.
+
+(in your case it's like if your sound card had some kind of latency when 
+sound freq is changed and several frames were dropped)
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002075.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002076.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2081">[ date ]</a>
+              <a href="thread.html#2081">[ thread ]</a>
+              <a href="subject.html#2081">[ subject ]</a>
+              <a href="author.html#2081">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

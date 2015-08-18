@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] LMC1992 and Microwire emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4267153.563354.1269862105415.JavaMail.nitido%40priv-edtnes92%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001798.html">
+   <LINK REL="Next"  HREF="001800.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] LMC1992 and Microwire emulation</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4267153.563354.1269862105415.JavaMail.nitido%40priv-edtnes92%3E"
+       TITLE="[hatari-devel] LMC1992 and Microwire emulation">dsavnkff at telus.net
+       </A><BR>
+    <I>Mon Mar 29 13:28:25 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001798.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+        <LI>Next message: <A HREF="001800.html">[hatari-devel] Help with Mercurial
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1799">[ date ]</a>
+              <a href="thread.html#1799">[ thread ]</a>
+              <a href="subject.html#1799">[ subject ]</a>
+              <a href="author.html#1799">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100329/46b83d32/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100329/46b83d32/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: dmaSnd.mr29.c.patch
+Type: application/octet-stream
+Size: 8288 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100329/46b83d32/attachment.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100329/46b83d32/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: audio.mr27.c.patch
+Type: application/octet-stream
+Size: 482 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100329/46b83d32/attachment-0001.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100329/46b83d32/attachment-0001.obj</A>&gt;
+-------------- next part --------------
+Hi,
+
+Enclosed is a patch to audio.c -- Now the filters also respond
+to user selected frequencies on the fly. (same patch as before)
+
+Enclosed is a patch that fixes a few more problems with the
+filters, and provides a true/false variable to enable the
+anti-aliasing filters. (new patch against the tip)
+
+The anti-aliasing filters provide noticeable improvement in the
+Madness demo and the Xmas2004 Paradox demo works properly.
+
+Upon investigating this further, I simply found a bug in
+integrating the anti-aliasing filter with hatari.
+
+Enjoy, I think the filters are debugged.
+
+David Savinkoff
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001798.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+	<LI>Next message: <A HREF="001800.html">[hatari-devel] Help with Mercurial
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1799">[ date ]</a>
+              <a href="thread.html#1799">[ thread ]</a>
+              <a href="subject.html#1799">[ subject ]</a>
+              <a href="author.html#1799">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari performance issue on OSX
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20performance%20issue%20on%20OSX&In-Reply-To=%3C201005270119.07037.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002187.html">
+   <LINK REL="Next"  HREF="002193.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari performance issue on OSX</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20performance%20issue%20on%20OSX&In-Reply-To=%3C201005270119.07037.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari performance issue on OSX">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu May 27 00:19:06 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002187.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+        <LI>Next message: <A HREF="002193.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2192">[ date ]</a>
+              <a href="thread.html#2192">[ thread ]</a>
+              <a href="subject.html#2192">[ subject ]</a>
+              <a href="author.html#2192">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 26 May 2010, Anders Eriksson wrote:
+&gt;<i> On Tue, 25 May 2010, Eero Tamminen wrote:
+</I>&gt;<i> &gt; Hm.   If the issue doesn't happen with compositing on Linux, but
+</I>&gt;<i> &gt; happens on OSX, and the CPU usage is in the Hatari process, then there
+</I>&gt;<i> &gt; are a couple possibilities:
+</I>&gt;<i> &gt; - Your SDL does something funny
+</I>&gt;<i> &gt; - You compiler does something funny
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Next step would be profiling where the CPU goes in Hatari.  Does it go
+</I>&gt;<i> &gt; to Hatari binary i.e. Atari screen conversion to SDL surface, which I
+</I>&gt;<i> &gt; think indicates compiling issue, or does it go to SDL library which
+</I>&gt;<i> &gt; indicates the issue is in SDL.  Former could be something you can fix,
+</I>&gt;<i> &gt; latter could be something that we could work around, if you can find
+</I>&gt;<i> &gt; out what it is.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Do you have e.g. Apple's Shark profiler?
+</I>&gt;<i>
+</I>&gt;<i> yes Shark is a part of Xocde, I have never
+</I>&gt;<i> started it though. But did now and ran the Hatari tests again. I can't
+</I>&gt;<i> make anyting out of the figures myself, but here are the outputs:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://ae.dhs.nu/tmp/w_1x.txt">http://ae.dhs.nu/tmp/w_1x.txt</A>
+</I>&gt;<i> <A HREF="http://ae.dhs.nu/tmp/w_2x.txt">http://ae.dhs.nu/tmp/w_2x.txt</A>
+</I>&gt;<i> <A HREF="http://ae.dhs.nu/tmp/fs_1x.txt">http://ae.dhs.nu/tmp/fs_1x.txt</A>
+</I>&gt;<i> <A HREF="http://ae.dhs.nu/tmp/fs_2x.txt">http://ae.dhs.nu/tmp/fs_2x.txt</A>
+</I>
+Thanks, these show already something useful!
+
+Couple of extra questions:
+
+* Did you have borders enabled?  (I guess yes)
+* Did you profile just the running of  the demo or also Hatari startup?
+* Does Shark profile include only information on the running process
+  or also the other processes + OSX kernel?
+
+
+Top 5 bottlenecks on 1x zoom are:
+- 7.6%, m68k_go, Hatari
+- 7.4%, ConvertSpec512_320x32Bit, Hatari
+- 7.2%, sseCGSConvertXXXX8888TransposeMask, CoreGraphics
+- 4.1%, Video_ColorReg_WriteWord, Hatari
+  3.9%, lo_alltraps, mach_kernel
+
+m68k_go = main function for m68k emulation
+ConvertSpec512_320x32Bit = converts 4-bit Atari screen
+	with palette tricks to host 32-bit format.
+
+Btw. I had forgotten that OSX is using 32-bit screen, so there's more
+overhead than on my system from the conversion as it needs to deal
+with more data (I'm running 16-bit myself).  That doesn't seem to grow
+so much though. 
+
+
+On 2x zoom the bottlenecks are:
+- 13.7%, sseCGSConvertXXXX8888TransposeMask, CoreGraphics
+- 9.4%, ConvertSpec512_640x32Bit, Hatari
+  5.9%, lo_alltraps, mach_kernel
+- 4.4%, pmap_enter, mach_kernel
+- 4.4%, m68k_go, Hatari
+
+The main issue seems to be some sseCGSConvertXXXX8888TransposeMask()
+function.    I assume this is some Quarz function called by SDL or libraries
+below it, Hatari definitely isn't calling it.
+
+This is a mail I found on the subject:
+	<A HREF="http://lists.apple.com/archives/quartz-dev/2008/Oct/msg00034.html">http://lists.apple.com/archives/quartz-dev/2008/Oct/msg00034.html</A>
+
+Somebody on OSX needs to debug why that thing is called and how it can be
+avoided.  It probable requires fixing SDL, either its surface allocation or
+blitting code.
+
+
+	- Eero
+
+PS.  This wasn't an issue, but in general when profiling graphics, you could
+use --sound off so that the stuff that audio threads do wouldn't appear on
+the profiles.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002187.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+	<LI>Next message: <A HREF="002193.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2192">[ date ]</a>
+              <a href="thread.html#2192">[ thread ]</a>
+              <a href="subject.html#2192">[ subject ]</a>
+              <a href="author.html#2192">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

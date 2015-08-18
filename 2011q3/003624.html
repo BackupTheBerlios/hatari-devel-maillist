@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New STE DMA audio emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C4E0D04AC.6080000%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="003627.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New STE DMA audio emulation</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C4E0D04AC.6080000%40corp.free.fr%3E"
+       TITLE="[hatari-devel] New STE DMA audio emulation">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Jul  1 01:20:12 CEST 2011</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="003627.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3624">[ date ]</a>
+              <a href="thread.html#3624">[ thread ]</a>
+              <a href="subject.html#3624">[ subject ]</a>
+              <a href="author.html#3624">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello
+
+I just committed the result of my work on improving STE sound quality 
+during the last weeks.
+
+-&gt; go to the end of this mail if you're not interested in the technical 
+explanations :)
+
+To simplify, there were 2 kinds of problem :
+
+  - the number of samples to emulate per VBL was not precise enough ; it 
+was even wrong in fact.
+
+  - the dma audio internal work was not fully, most notably the 8 bytes 
+FIFO was missing, which is essential to a correct sound emulation
+
+
+For the 1st point, the bad number of sample could be seen for example in 
+&quot;More or less zero&quot; by DHS. After the plasma and the spec512 image, 
+there should be a kind of white &quot;flash&quot; when the next screen start which 
+should be synchronised with a sound.
+
+The problem is that all sound emulation was based on the assumption that 
+the video runs at 50 Hz (PAL mode). But in fact this is wrong, a real ST 
+provides approx 50.053 VBL per sec ! (a VBL is 160256 cycles, which is 
+not an exact divider of the 8.021247 clock freq).
+
+In order to fix this, I added a new file clocks_timings.c ; the purpose 
+of this file is to put all the hardware's clocks informations for all 
+emulated Atari machines in a single file. This file then provides some 
+functions to compute the exact values of VBL per sec, length of a VBL in 
+micro sec, ...
+
+I went through the official schematics of all known Atari models in 
+order to describe the relation between all the clocks (some clocks are 
+derived from master clocks)
+
+Note that although the clock for each component is defined in this file, 
+it doesn't mean that changing it will have an effect on the emulation 
+(that's the plan for later versions at least) (for example, changing cpu 
+clock won't make the cpu go faster or slower)
+
+So for now, consider this file as a kind of improved documentation with 
+some useful wrappers for some video timings.
+
+Regarding the 50 Hz problem, it was previously admitted that when 
+emulating sound at 44100 Hz, this meant 44100/50=882 samples per VBL.
+With a real 50.053 VBL per sec value, you can see that the number of 
+sample per VBL is in fact ~881.066.
+
+Precision is very important, numbers should not be truncated, so all 
+computations are made with 64 bit integers, to emulate a 32 bit integer 
+part and a 32 bit fractional part.
+
+Those changes mainly applied to sound.c
+
+
+For the 2nd point, it was the inner DMA audio emulation that needed 
+improvements. This was quite hearable in Hextracker by Paulo Simoes : 
+the sound was perturbated by some small &quot;clicks&quot; or some kinds of 
+background &quot;static&quot; noise that altered the expected result.
+
+At this point, emulating the 8 bytes FIFO used by the DMA audio was 
+necessary, as this gives seamless playback when using double buffer to 
+produce sound : the new buffer's address is enabled by turning DMA audio 
+off and on. the fact is that during the time DMA is off to prepare the 
+next buffer addresses, the sound is not disabled ! As long as the FIFO 
+has some bytes left, it produces sound even when DMA audio is off.
+
+I wrote some small test programs to precisely measures how the DMA audio 
+FIFO is filled/emptied at each HBL (many thanks to Anders / Evil for 
+running these on his STE and sending me the results).
+Using those results, I was able to finetune Hatari's emulation and to 
+verify the DMA audio / FIFO are now behaving just like a real STE (for 
+example, after 50 VBL Hatari now only has a 0 or 2 bytes difference with 
+the measured number of bytes played at 50066 Hz on a real STE : 50018 or 
+50020 instead of 50020 on a real STE).
+This certainly makes Hatari the most accurate emulator regarding STE 
+sound :) (Steem produces ~50152 bytes for the same test, haven't tested 
+with Saint)
+
+
+The code I committed contains some debug traces and a lot of variables 
+need to be saved in the memory snapshot ; don't worry about this, I will 
+clean everything once I get enough feedback to consider the code as stable.
+
+
+Non tech part :
+---------------
+
+Please test this new version with all your favorite STE programs. For 
+great results, don't forget to run Hextracker which gives really clear 
+output even with 7 voices or more. &quot;Amiga Demo 2&quot; by Leonard/Oxygene now 
+also has a very good sound output.
+
+I didn't have time to look at all the demos in the compatibilty list, 
+don't hesitate to test the ones known to have a bad sound and to report 
+the new results.
+
+
+Regarding Hatari 1.5 release, I think this should now be very close. 
+Once I get enough confirmation that nothing is broken with this new 
+code, I will clean some unused parts, modify the memory snapshot format 
+to save those new structures (sorry, it won't be possible to reload 
+snapshot made with Hatari 1.4) and we should be good :)
+
+
+PS : could someone with OSX access add the 2 files clocks_timings.c/.h 
+to the project, else it might not compile anymore.
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="003627.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3624">[ date ]</a>
+              <a href="thread.html#3624">[ thread ]</a>
+              <a href="subject.html#3624">[ subject ]</a>
+              <a href="author.html#3624">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

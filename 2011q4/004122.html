@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DC and Subsonic IIR Filter for Digi Sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DC%20and%20Subsonic%20IIR%20Filter%20for%20Digi%20Sound&In-Reply-To=%3C3290593.576080.1319918408115.JavaMail.nitido%40priv-edtnes97%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004121.html">
+   <LINK REL="Next"  HREF="004123.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DC and Subsonic IIR Filter for Digi Sound</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DC%20and%20Subsonic%20IIR%20Filter%20for%20Digi%20Sound&In-Reply-To=%3C3290593.576080.1319918408115.JavaMail.nitido%40priv-edtnes97%3E"
+       TITLE="[hatari-devel] DC and Subsonic IIR Filter for Digi Sound">dsavnkff at telus.net
+       </A><BR>
+    <I>Sat Oct 29 22:00:08 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004121.html">[hatari-devel] DC and Subsonic IIR Filter for Digi Sound
+</A></li>
+        <LI>Next message: <A HREF="004123.html">[hatari-devel] DC and Subsonic IIR Filter for Digi Sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4122">[ date ]</a>
+              <a href="thread.html#4122">[ thread ]</a>
+              <a href="subject.html#4122">[ subject ]</a>
+              <a href="author.html#4122">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Anders,
+
+Thanks for the sound files. I believe the sound bugs can be worked out
+with these files as it is easy to hear what is going on.
+
+The patch you applied is activated, the difference in the bass might
+be heard if patched an unpatched versions of Hatari are compared.
+The bass should be positively affected by the dc/subsonic IIR filter
+because the previous FIR method is suboptimal; the 512 taps can only
+address a cutoff frequency of 44100/512 = 86 Hz; running average
+filters have bad frequency domain properties; and, and the delay
+on a FIR filter is 512/2 = 256 samples!; and this delayed DC blocking
+is applied to the current sound!
+
+The IIR filter provided is fast(er?), and the perfectly correct method.
+
+I want perfect sound, this filter is just one step forward.
+
+David
+
+___________________In reponse to:____________________________
+
+Oct 29, 2011 04:18:25 AM, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A> wrote:
+
+On Fri, 28 Oct 2011, David Savinkoff wrote:
+
+&gt;<i> Here is a real DC and Subsonic filter for the ultimate in sonic experience.
+</I>&gt;<i> Deep stirring bass tones are clearly defined with this digital infinite
+</I>&gt;<i> impulse response filter. Punchy walking bass lines with subtle nuances in
+</I>&gt;<i> attack are cleanly transmitted to round out the bottom end. :)
+</I>
+Hi!
+
+Interesting work, is there something special one have to do to activate 
+it after compile time? I applied the patch, it seemed to go ok:
+
+ae$ patch &lt;../../sound.c.2011oct28c.diff
+(Stripping trailing CRs from patch.)
+patching file sound.c
+QuadMBP:src ae$
+
+Both linear and table mixing sounds just like the original Hatari 1.5 
+here. Your previous patch from Aug 5 had much better audio on the Linear 
+mixing mode.
+
+Here are some comparisons of YM sample quality on Hatari 1.5, with your 
+Aug 5 patch and a real machine.
+
+<A HREF="http://ae.dhs.nu/tmp/sound/">http://ae.dhs.nu/tmp/sound/</A>
+
+All normalized to 0 dB to have equal volume. I'd say your Aug 5 patch is 
+by far the best we have yet :) Looking forward to see if your new patch 
+from today is possible to activate.
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004121.html">[hatari-devel] DC and Subsonic IIR Filter for Digi Sound
+</A></li>
+	<LI>Next message: <A HREF="004123.html">[hatari-devel] DC and Subsonic IIR Filter for Digi Sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4122">[ date ]</a>
+              <a href="thread.html#4122">[ thread ]</a>
+              <a href="subject.html#4122">[ subject ]</a>
+              <a href="author.html#4122">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

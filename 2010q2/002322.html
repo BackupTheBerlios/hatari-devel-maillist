@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Disabling microphone at run-time?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Disabling%20microphone%20at%20run-time%3F&In-Reply-To=%3C201006161730.38893.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002318.html">
+   <LINK REL="Next"  HREF="002326.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Disabling microphone at run-time?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Disabling%20microphone%20at%20run-time%3F&In-Reply-To=%3C201006161730.38893.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Disabling microphone at run-time?">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Jun 16 16:30:38 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002318.html">[hatari-devel] CMake usage?
+</A></li>
+        <LI>Next message: <A HREF="002326.html">[hatari-devel] Disabling microphone at run-time?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2322">[ date ]</a>
+              <a href="thread.html#2322">[ thread ]</a>
+              <a href="subject.html#2322">[ subject ]</a>
+              <a href="author.html#2322">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Falcon emulation doesn't work with Mudflap because there's
+no way to disable microphone (except by removing portaudio
+dev package or manually disabling HAVE_PORTAUDIO from config.h).
+
+The problem here is the same as with sound, audio libraries create
+threads (visible in Gdb) and Mudflap aborts after detecting inconsistencies.
+I think the issue's in Mudflap threading support, not the audio libraries or
+Hatari code using them (but I'm not sure).
+
+For the ST emulation I just use &quot;--sound off&quot; to work around this, but that
+doesn't seem to affect microphone/crossbar code.  Would it be possible
+to either:
+- have sound disabling disable also microphone initialization, or
+- have separate option for enabling/disabling mic
+?
+
+Laurent?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002318.html">[hatari-devel] CMake usage?
+</A></li>
+	<LI>Next message: <A HREF="002326.html">[hatari-devel] Disabling microphone at run-time?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2322">[ date ]</a>
+              <a href="thread.html#2322">[ thread ]</a>
+              <a href="subject.html#2322">[ subject ]</a>
+              <a href="author.html#2322">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

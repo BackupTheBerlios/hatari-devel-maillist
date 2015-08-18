@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Twelve%20demo%20bombs%20with%20fast-forward%20and%20freezes%0A%20on%20Falcon%3F&In-Reply-To=%3C4DE57237.80703%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003506.html">
+   <LINK REL="Next"  HREF="003484.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Twelve%20demo%20bombs%20with%20fast-forward%20and%20freezes%0A%20on%20Falcon%3F&In-Reply-To=%3C4DE57237.80703%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Jun  1 00:56:55 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003506.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?
+</A></li>
+        <LI>Next message: <A HREF="003484.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3507">[ date ]</a>
+              <a href="thread.html#3507">[ thread ]</a>
+              <a href="subject.html#3507">[ subject ]</a>
+              <a href="author.html#3507">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 01/06/2011 00:41, Laurent Sallafranque a &#233;crit :
+&gt;<i> I've commented the IoMem_bput line, and I don't get anymore the M68000
+</I>&gt;<i> Bus Error writing at address $ff8901.
+</I>&gt;<i> (tested with voice.prg). Of course, without this line, it doesn't work
+</I>&gt;<i> well, as sound continues to play.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Should I use something else than IoMem_bput here (IoMem_WriteByte for
+</I>&gt;<i> example) ?
+</I>&gt;<i>
+</I>&gt;<i> What's the difference between these to memory acces ?
+</I>
+Use the source :)
+
+IoMem_bput in ioMem.c is checking that the cpu is not doing a bus error 
+(supervisor mode set, correct access size, ...)
+
+IoMem_WriteByte in include/ioMem.h is modifying the memory without any 
+check.
+
+So, basically IoMem_bput should be called when emulating the cpu and you 
+want to emulate all the checks done on a real hardware when memory is 
+accessed by the cpu.
+
+IoMem_WriteByte is when you want to modify the Atari's memory by just 
+changing some byte without doing any checks.
+
+-&gt; In your case where you want to directly modify memory, you must 
+always use IoMem_WriteByte
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003506.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?
+</A></li>
+	<LI>Next message: <A HREF="003484.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3507">[ date ]</a>
+              <a href="thread.html#3507">[ thread ]</a>
+              <a href="subject.html#3507">[ subject ]</a>
+              <a href="author.html#3507">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

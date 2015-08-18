@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Videl code and registers
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Videl%20code%20and%20registers&In-Reply-To=%3C533114308.29860131267781087038.JavaMail.root%40mail-zstore-1-b.gicm.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001627.html">
+   <LINK REL="Next"  HREF="001631.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Videl code and registers</H1>
+    <B>LAURENT SALLAFRANQUE</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Videl%20code%20and%20registers&In-Reply-To=%3C533114308.29860131267781087038.JavaMail.root%40mail-zstore-1-b.gicm.net%3E"
+       TITLE="[hatari-devel] Videl code and registers">laurent.sallafranque at arkea.com
+       </A><BR>
+    <I>Fri Mar  5 10:24:47 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001627.html">[hatari-devel] Hatari version string?
+</A></li>
+        <LI>Next message: <A HREF="001631.html">[hatari-devel] [hatari-users] User selectable threshold for	window zooming
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1630">[ date ]</a>
+              <a href="thread.html#1630">[ thread ]</a>
+              <a href="subject.html#1630">[ subject ]</a>
+              <a href="author.html#1630">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+One of the best and most complete doc about videl can be found at the following address :
+
+<A HREF="http://mikro.umpc.sk/docs/mikro/videl.html">http://mikro.umpc.sk/docs/mikro/videl.html</A>
+
+You'll find many explanitions here.
+
+I started to have a look at this to rewrite the Videl code, but for now, I'm working on the STe microwire and LMC1992 emulation. (I'll comit soon).
+
+I think that Videl emulation should work with a &quot;cpuCycle&quot; interrupt under hatari.
+It would interrupt after each &quot;halfline&quot; to take into account correctly the &quot;rasters&quot; emulation and all other registers change that can happen during the screen display.
+
+Regards,
+
+Laurent
+
+
+
+&lt;--------  Eero wrote  ---------------&gt; 
+
+I just noticed following in Aura's Videl doc:
+------------------
+$FFFF82A8 [R/W] W _____A9876543210  Vertical Display Begin (VDB)
+
+On which halfline should  begin  gfx  display.  If  VDB  &gt;  VFT,  no display 
+is present. If VDB &gt; VDE, display is present from VDB to VFT.
+
+$FFFF82AA [R/W] W _____A9876543210  Vertical Display End (VDE)
+
+On which halfline should end gfx display. If  VDE &lt; VFT, no display is 
+present. If VDE &lt; VDB, display is present from VDE to VFT.
+------------------
+
+VFT - VDB = 300 which would be fine width except that VDB &lt; VDE.
+
+And from what I've seen of the register values, this is always true:
+	VDE &lt; VFT,
+although according to Aura's doc it would mean that no display is
+present...?
+
+
+
+Laurent Sallafranque
+CICM / groupe Arkea
+Domaine Ged/Archivage
+1 rue Louis Lichou
+29480 Le Relecq Kerhuon
+T&#233;l : 02 98 00 20 76
+
+--
+Ce message et  toutes les pieces jointes (ci-apres  le &quot;message&quot;) sont
+confidentiels et etablis a l'intention exclusive de ses destinataires.
+Toute  utilisation ou  diffusion  non autorisee  est interdite.   Tout
+message  etant  susceptible  d'alteration,  l'emetteur  decline  toute
+responsabilite au titre de  ce message  s'il a  ete altere, deforme ou
+falsifie.
+                -----------------------------------
+This message and any  attachments (the &quot;message&quot;) are confidential and
+intended  solely   for  the   addressees.  Any  unauthorised   use  or
+dissemination is prohibited. As e-mails are susceptible to alteration,
+the issuer shall  not be  liable for  the  message if altered, changed
+or falsified.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001627.html">[hatari-devel] Hatari version string?
+</A></li>
+	<LI>Next message: <A HREF="001631.html">[hatari-devel] [hatari-users] User selectable threshold for	window zooming
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1630">[ date ]</a>
+              <a href="thread.html#1630">[ thread ]</a>
+              <a href="subject.html#1630">[ subject ]</a>
+              <a href="author.html#1630">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

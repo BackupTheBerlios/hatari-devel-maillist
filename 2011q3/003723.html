@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Froggies over the fence
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Froggies%20over%20the%20fence&In-Reply-To=%3C4E1EAFBF.5050300%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003720.html">
+   <LINK REL="Next"  HREF="003733.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Froggies over the fence</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Froggies%20over%20the%20fence&In-Reply-To=%3C4E1EAFBF.5050300%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Froggies over the fence">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Jul 14 10:58:39 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003720.html">[hatari-devel] Froggies over the fence
+</A></li>
+        <LI>Next message: <A HREF="003733.html">[hatari-devel] Moai demo as regressed a lot since hatari 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3723">[ date ]</a>
+              <a href="thread.html#3723">[ thread ]</a>
+              <a href="subject.html#3723">[ subject ]</a>
+              <a href="author.html#3723">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 14/07/2011 02:32, David Savinkoff a &#233;crit :
+&gt;<i> On Jul 13, 2011, Nicolas Pomar&#232;de&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt;  wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hello
+</I>&gt;<i>
+</I>&gt;<i> &lt;snip&gt;
+</I>&gt;<i>
+</I>&gt;&gt;<i> I added a workaround to not cancel transits when ACIA is reset, but this
+</I>&gt;&gt;<i> seems odd, according to the 6850's doc, a reset should initialize the
+</I>&gt;&gt;<i> receive/transmit parts, so I understand it should imply that current
+</I>&gt;&gt;<i> transfers are cancelled.
+</I>&gt;&gt;<i>
+</I>&gt;<i> I looked at ikbd.c and could not determine whether the code emulated
+</I>&gt;<i> the double-buffered nature of the RX and TX registers.
+</I>&gt;<i> If double-buffering is not emulated, then your workaround appears
+</I>&gt;<i> correct for RX but should not be applied to TX.
+</I>&gt;<i> Note that the ACIA internally uses a shift register and a latch
+</I>&gt;<i> (effectively 2 registers) for each of RX and TX; the latch is not reset.
+</I>&gt;<i> I believe the latched TX value is ignored then overwritten the next time
+</I>&gt;<i> you send a byte. The RX value can be read as many times as you like.
+</I>&gt;<i>
+</I>&gt;<i> David
+</I>&gt;<i>
+</I>
+Hello
+
+no, ikbd.c doesn't emulate the double buffer. As the code in ikbd.c is 
+getting rather complex, I prefered not adding it 2 months ago, unless I 
+found a program that really needs it.
+
+But I didn't found a doc that clearly tells what happens to the latch 
+and shift register when acia is reset.
+
+In the case of Froggies's menu, move.b #$ff,$fffc02 should set 
+tx_latch=$ff and tx_shift=$ff.
+
+But if acia is reset before the whole $ff byte was sent to the ikbd, 
+what happens to tx_shift (that was already partially shifted) ?
+Or does it mean that after the reset tx_latch is send again ? But that 
+seems odd, I would expect tx_latch to be copied in tx_shift only when a 
+write is detected in tx_latch.
+
+Why do you say the workaround doesn't work for TX ? On the contrary, it 
+works because the $ff byte to be sent to the ikbd is not canceled.
+
+Well, as I said, acia part should be rewritten after doing various 
+measures on a real ST, regarding RX and TX delays.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003720.html">[hatari-devel] Froggies over the fence
+</A></li>
+	<LI>Next message: <A HREF="003733.html">[hatari-devel] Moai demo as regressed a lot since hatari 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3723">[ date ]</a>
+              <a href="thread.html#3723">[ thread ]</a>
+              <a href="subject.html#3723">[ subject ]</a>
+              <a href="author.html#3723">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

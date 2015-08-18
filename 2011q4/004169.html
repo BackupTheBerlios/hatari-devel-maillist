@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Union demo abort with new EmuTOS?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Union%20demo%20abort%20with%20new%20EmuTOS%3F&In-Reply-To=%3C201111102213.47431.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004166.html">
+   <LINK REL="Next"  HREF="004170.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Union demo abort with new EmuTOS?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Union%20demo%20abort%20with%20new%20EmuTOS%3F&In-Reply-To=%3C201111102213.47431.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Union demo abort with new EmuTOS?">oak at helsinkinet.fi
+       </A><BR>
+    <I>Thu Nov 10 21:13:47 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004166.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+        <LI>Next message: <A HREF="004170.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4169">[ date ]</a>
+              <a href="thread.html#4169">[ thread ]</a>
+              <a href="subject.html#4169">[ subject ]</a>
+              <a href="author.html#4169">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On torstai 10 marraskuu 2011, Thomas Huth wrote:
+&gt;<i> Am Thu, 10 Nov 2011 01:13:42 +0200
+</I>&gt;<i> schrieb Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">oak at helsinkinet.fi</A>&gt;:
+</I>&gt;<i> &gt; When starting the Union demo from Persistance of Vision
+</I>&gt;<i> &gt; disk containing that:
+</I>&gt;<i> &gt; hatari --machine st -s 4 --fast-forward yes --tos etos512k.img
+</I>&gt;<i> &gt; pov-union.st
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Pressing 1 to select the Union demo and then pressing space to
+</I>&gt;<i> &gt; proceed, Hatari aborts with this:
+</I>&gt;<i> &gt; hatari: /home/eero/work/hatari/src/vdi.c:769: VDI_Complete: Assertion
+</I>&gt;<i> &gt; `VDI_isWorkstationOpen(VDIOpCode)' failed.
+</I>&gt;<i> &gt; Aborted
+</I>&gt;<i> 
+</I>&gt;<i> That's POV disk 112, isn't it?
+</I>
+Yes.
+
+Another wierd thing is that if I use normal TOS, I get different
+demo screen when selecting &quot;Illegal exceptions&quot; than with EmuTOS.
+
+
+&gt;<i> I just gave it a quick try but could not reproduce that abort here.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; I definitely didn't have VDI mode on, or Bios intercept enabled
+</I>&gt;<i> &gt; so that e.g. emulated programs could enable VDI mode with Xbios().
+</I>&gt;<i> 
+</I>&gt;<i> Unless you enabled GEMDOS HD in your config file, the VDI code should
+</I>&gt;<i> never be called because the cartridge illegal opcodes are not installed
+</I>&gt;<i> in that case (see Cart_ResetImage()).
+</I>
+I have HD emulation enabled in the config file.
+
+Without it, the Union demo just freezes.
+
+
+&gt;<i> &gt; Maybe OpCode_VDI() should call VDI_Complete() only if VDI_OldPC is
+</I>&gt;<i> &gt; non-zero and zero the variable after completing the VDI call?
+</I>
+I printed from OpCode_VDI() the addresses of CART_VDI_OPCODE_ADDR,
+PC address when then function is called and VDI_OldPC + the instructions
+at these addresses:
+CARTVDI PC: 0xfa0028, instr: 0xc
+current PC: 0x58112, instr: 0xc
+VDI Old PC: 0x0, instr: 0x602e
+
+-&gt; This function isn't called because something called VDI trap in UAE
+   emulationbecause VDI_OldPC is zero. Current PC doesn't match one
+   telling Cartridge code that it show jump to VDI now.
+
+
+Doing this in debugger:
+&gt;<i> a 0x58112
+</I>&gt;<i> history on
+</I>&gt;<i> c
+</I>
+Gives this as track of how it arrives there:
+&gt;<i> history 26
+</I>$0580fe : a000                                 linea     #0                        
+; Line-A Initialization
+$e00adc : 206f 0002                            movea.l   2(sp),a0
+$e00ae0 : 2248                                 movea.l   a0,a1
+$e00ae2 : 4280                                 clr.l     d0
+$e00ae4 : 3018                                 move.w    (a0)+,d0
+$e00ae6 : 2f48 0002                            move.l    a0,2(sp)
+$e00aea : 0240 0fff                            andi.w    #$fff,d0
+$e00aee : 4a40                                 tst.w     d0
+$e00af0 : 6b00 0018                            bmi       $e00b0a
+$e00af4 : b07a 0170                            cmp.w     $e00c66(pc),d0
+$e00af8 : 6a00 0010                            bpl       $e00b0a
+$e00afc : 41fa 0128                            lea       $e00c26(pc),a0
+$e00b00 : e548                                 lsl.w     #2,d0
+$e00b02 : 2070 0800                            movea.l   (a0,d0.l),a0
+$e00b06 : 4e90                                 jsr       (a0)
+$e00b62 : 41f9 0000 527a                       lea       $527a,a0
+$e00b68 : 2008                                 move.l    a0,d0
+$e00b6a : 43f9 0002 20b0                       lea       $220b0,a1
+$e00b70 : 45fa 00b4                            lea       $e00c26(pc),a2
+$e00b74 : 4e75                                 rts       
+$e00b08 : 4e73                                 rte       
+$058100 : c000                                 and.b     d0,d0
+$058102 : 0000 0000                            ori.b     #0,d0
+$058106 : 0000 0000                            ori.b     #0,d0
+$05810a : 0000 0000                            ori.b     #0,d0
+$05810e : 0000 0000                            ori.b     #0,d0
+Debugger: *CPU breakpoint*
+&gt;<i> d
+</I>$058112 : 000c                                 DC.W      $000c
+
+Does the Union demo crap out with EmuTOS because one of the line-A
+variables has a bogus value?
+
+
+&gt;<i> You should rather try to find out why OpCode_VDI() is called at all. I
+</I>&gt;<i> suggest that you look at Cart_ResetImage() first, maybe we got a bug
+</I>&gt;<i> in that logic there....
+</I>
+        if (bUseVDIRes || ConfigureParams.HardDisk.bUseHardDiskDirectories)
+        {
+                /* Copy built-in cartrige data into the cartridge memory of 
+the ST */
+                memcpy(&amp;RomMem[0xfa0000], Cart_data, sizeof(Cart_data));
+                PatchIllegal = true;
+        }
+...
+        if (PatchIllegal == true)
+        {
+                //fprintf ( stderr ,&quot; Cart_ResetImage patch\n&quot; );
+                /* Hatari's specific illegal opcodes for HD emulation */
+                cpufunctbl[GEMDOS_OPCODE] = OpCode_GemDos;      /* 0x0008 */
+                cpufunctbl[SYSINIT_OPCODE] = OpCode_SysInit;    /* 0x000a */
+                cpufunctbl[VDI_OPCODE] = OpCode_VDI;            /* 0x000c */
+        }
+
+
+-&gt; OpCode_VDI() is called because EmuTOS+demo tried to execute illegal
+   opcode 0x000c when HD emulation is enabled.
+
+
+Hatari can avoid the abort by checking that VDI_OldPC is valid (see
+attached patch), but how I can make it to raise illegal instruction
+exception if it isn't?
+
+
+	- Eero
+
+PS.  After the patch, or when HD emulation is disabled, this illegal
+instruction matching to &quot;VDI opcode&quot; (and things leading to it) can
+be caught with:
+	history on
+	b (pc).w = 12
+    c
+&lt;when back in debugger&gt;
+    history 64
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: vdi-opcode.diff
+Type: text/x-patch
+Size: 629 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20111110/fe4dcbee/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20111110/fe4dcbee/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004166.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+	<LI>Next message: <A HREF="004170.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4169">[ date ]</a>
+              <a href="thread.html#4169">[ thread ]</a>
+              <a href="subject.html#4169">[ subject ]</a>
+              <a href="author.html#4169">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

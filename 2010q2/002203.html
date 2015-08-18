@@ -1,0 +1,769 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari performance issue on OSX
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20performance%20issue%20on%20OSX&In-Reply-To=%3C4BFFC196.9040305%40wanadoo.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002202.html">
+   <LINK REL="Next"  HREF="002206.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari performance issue on OSX</H1>
+    <B>Jerome Vernet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20performance%20issue%20on%20OSX&In-Reply-To=%3C4BFFC196.9040305%40wanadoo.fr%3E"
+       TITLE="[hatari-devel] Hatari performance issue on OSX">vernet.jerome at wanadoo.fr
+       </A><BR>
+    <I>Fri May 28 15:13:58 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002202.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+        <LI>Next message: <A HREF="002206.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2203">[ date ]</a>
+              <a href="thread.html#2203">[ thread ]</a>
+              <a href="subject.html#2203">[ subject ]</a>
+              <a href="author.html#2203">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here is what I get with SDL Debug, while running PaceMaker Demo (STe 
+Mode). One thing curious, there is DSP thing, but it's an STe demo...
+
+         50.1%    50.1%    SDL    BlitNtoN
+     0.0%    50.1%    SDL     SDL_SoftBlit
+     0.0%    50.1%    SDL      SDL_LowerBlit
+     0.0%    50.1%    SDL       SDL_UpdateRects
+     0.0%    50.1%    Hatari        Screen_DrawFrame
+     0.0%    50.1%    Hatari         Screen_Draw
+     0.0%    50.1%    Hatari          Video_InterruptHandler_VBL
+     0.0%    50.1%    Hatari           m68k_go
+     0.0%    50.1%    Hatari            M68000_Start
+     0.0%    50.1%    Hatari             SDL_main
+     11.9%    11.9%    Hatari    dsp56k_execute_instruction
+     0.0%    9.0%    Hatari     DSP_Run
+     0.0%    1.1%    Hatari     op_10b8_0_ff
+     0.0%    0.7%    Hatari     dsp56k_execute_instruction
+     0.0%    0.2%    Hatari     BlitterState
+     0.0%    0.1%    Hatari     STmem_lput
+     0.0%    0.1%    Hatari     STmem_bput
+     0.0%    0.0%    Hatari     op_eed0_0_ff
+     0.0%    0.0%    Hatari     -[PrefsController saveConfigAs:]
+     0.0%    0.0%    Hatari     STmem_wput
+     0.0%    0.0%    Hatari     get_disp_ea_000
+     0.0%    0.0%    Hatari     op_10b0_3_ff
+     0.0%    0.0%    Hatari     PendingInterruptFunction
+     0.0%    0.0%    Hatari     op_e18_0_ff
+     0.0%    0.0%    Hatari     op_a30_3_ff
+     0.0%    0.0%    Hatari     m68k_go
+     0.0%    0.0%    Hatari     op_e7d0_5_ff
+     0.0%    0.0%    Hatari     op_e6d8_5_ff
+     0.0%    0.0%    Hatari     op_e28_0_ff
+     0.0%    0.0%    Hatari     op_d170_3_ff
+     0.0%    0.0%    Hatari     op_d158_5_ff
+     0.0%    0.0%    Hatari     op_cf8_0_ff
+     0.0%    0.0%    Hatari     op_c79_0_ff
+     0.0%    0.0%    Hatari     op_c0d0_5_ff
+     0.0%    0.0%    Hatari     op_b0e0_5_ff
+     0.0%    0.0%    Hatari     op_81e0_5_ff
+     0.0%    0.0%    Hatari     op_660_0_ff
+     0.0%    0.0%    Hatari     op_4650_5_ff
+     0.0%    0.0%    Hatari     op_4050_5_ff
+     0.0%    0.0%    Hatari     op_3170_0_ff
+     0.0%    0.0%    Hatari     op_3110_5_ff
+     0.0%    0.0%    Hatari     op_30fb_0_ff
+     0.0%    0.0%    Hatari     op_30d0_5_ff
+     0.0%    0.0%    Hatari     op_303b_0_ff
+     0.0%    0.0%    Hatari     op_2f9_0_ff
+     0.0%    0.0%    Hatari     BlitterVars
+     0.0%    0.0%    libSystem.B.dylib     0xfffffa15 [unreadable]
+     0.0%    0.0%    libSystem.B.dylib     0xffff1d00 [26.7KB]
+     0.0%    0.0%    Hatari     0x16a530 [800.8KB]
+     0.0%    0.0%    Hatari     op_e60_0_ff
+     0.0%    0.0%    Hatari     op_e5e0_5_ff
+     0.0%    0.0%    Hatari     op_e50_0_ff
+     0.0%    0.0%    Hatari     op_e4d8_5_ff
+     0.0%    0.0%    Hatari     op_e4d0_5_ff
+     0.0%    0.0%    Hatari     op_e3d0_5_ff
+     0.0%    0.0%    Hatari     op_e0e0_5_ff
+     0.0%    0.0%    Hatari     op_d148_5_ff
+     0.0%    0.0%    Hatari     op_d060_5_ff
+     0.0%    0.0%    Hatari     op_d058_5_ff
+     0.0%    0.0%    Hatari     op_d050_5_ff
+     0.0%    0.0%    Hatari     op_cfc_0_ff
+     0.0%    0.0%    Hatari     op_ce8_0_ff
+     0.0%    0.0%    Hatari     op_ce0_0_ff
+     0.0%    0.0%    Hatari     op_c70_0_ff
+     0.0%    0.0%    Hatari     op_c68_0_ff
+     0.0%    0.0%    Hatari     op_c58_0_ff
+     0.0%    0.0%    Hatari     op_c0fb_3_ff
+     0.0%    0.0%    Hatari     op_c07b_3_ff
+     0.0%    0.0%    Hatari     op_b0d0_5_ff
+     0.0%    0.0%    Hatari     op_9150_5_ff
+     0.0%    0.0%    Hatari     op_9148_5_ff
+     0.0%    0.0%    Hatari     op_907b_3_ff
+     0.0%    0.0%    Hatari     op_9070_3_ff
+     0.0%    0.0%    Hatari     op_9058_5_ff
+     0.0%    0.0%    Hatari     op_81d0_5_ff
+     0.0%    0.0%    Hatari     op_8170_3_ff
+     0.0%    0.0%    Hatari     op_8150_5_ff
+     0.0%    0.0%    Hatari     op_80e0_5_ff
+     0.0%    0.0%    Hatari     op_8058_5_ff
+     0.0%    0.0%    Hatari     op_5070_3_ff
+     0.0%    0.0%    Hatari     op_4e73_4_ff
+     0.0%    0.0%    Hatari     op_46fb_3_ff
+     0.0%    0.0%    Hatari     op_460_0_ff
+     0.0%    0.0%    Hatari     op_44e0_0_ff
+     0.0%    0.0%    Hatari     op_44d8_0_ff
+     0.0%    0.0%    Hatari     op_4478_0_ff
+     0.0%    0.0%    Hatari     op_4460_0_ff
+     0.0%    0.0%    Hatari     op_4279_0_ff
+     0.0%    0.0%    Hatari     op_4260_5_ff
+     0.0%    0.0%    Hatari     op_4258_0_ff
+     0.0%    0.0%    Hatari     op_4250_5_ff
+     0.0%    0.0%    Hatari     op_41b0_0_ff
+     0.0%    0.0%    Hatari     op_4190_0_ff
+     0.0%    0.0%    Hatari     op_4079_0_ff
+     0.0%    0.0%    Hatari     op_4070_0_ff
+     0.0%    0.0%    Hatari     op_4068_0_ff
+     0.0%    0.0%    Hatari     op_4050_0_ff
+     0.0%    0.0%    Hatari     op_33fb_0_ff
+     0.0%    0.0%    Hatari     op_33e8_0_ff
+     0.0%    0.0%    Hatari     op_31d0_0_ff
+     0.0%    0.0%    Hatari     op_31b9_0_ff
+     0.0%    0.0%    Hatari     op_3158_0_ff
+     0.0%    0.0%    Hatari     op_3120_5_ff
+     0.0%    0.0%    Hatari     op_3120_0_ff
+     0.0%    0.0%    Hatari     op_3118_5_ff
+     0.0%    0.0%    Hatari     op_30f0_0_ff
+     0.0%    0.0%    Hatari     op_30e0_5_ff
+     0.0%    0.0%    Hatari     op_30d8_0_ff
+     0.0%    0.0%    Hatari     op_30a0_5_ff
+     0.0%    0.0%    Hatari     op_3090_5_ff
+     0.0%    0.0%    Hatari     op_3060_5_ff
+     0.0%    0.0%    Hatari     op_3020_0_ff
+     0.0%    0.0%    Hatari     op_2f0_0_ff
+     0.0%    0.0%    Hatari     op_278_0_ff
+     0.0%    0.0%    Hatari     op_270_0_ff
+     0.0%    0.0%    Hatari     op_260_0_ff
+     0.0%    0.0%    Hatari     op_250_0_ff
+     0.0%    0.0%    Hatari     GemDOS_OpCode
+     0.0%    0.0%    Hatari     Configuration_SetDefault
+     0.0%    0.0%    libSystem.B.dylib     0xfffffa1b [unreadable]
+     0.0%    0.0%    Hatari     0x10f0 [unknown]
+     0.0%    0.0%    Hatari     -[PrefsController saveAllControls]
+     0.0%    0.0%    Hatari     -[PrefsController commitAndClose:]
+     6.9%    6.9%    Hatari    dsp_jmp_imm
+     4.9%    4.9%    CoreGraphics    sseCGSConvertXXXX8888TransposeMask
+     2.4%    2.4%    mach_kernel    lo_alltraps
+     1.9%    1.9%    Hatari    DSP_Run
+     1.4%    1.4%    mach_kernel    pmap_enter
+     1.2%    1.2%    Hatari    m68k_go
+     1.0%    1.0%    DspFuncLib    
+DspFuncHelper::process_IIR_xmm_LR(float*, float*, float*, float*, 
+unsigned int)
+     1.0%    1.0%    mach_kernel    ml_set_interrupts_enabled
+     0.9%    0.9%    mach_kernel    vm_page_lookup
+     0.9%    0.9%    Hatari    Cycles_UpdateCounters
+     0.7%    0.7%    mach_kernel    phys_attribute_clear
+     0.6%    0.6%    mach_kernel    pmap_remove_range
+     0.5%    0.5%    Hatari    Cycles_GetCounter
+     0.5%    0.5%    mach_kernel    flush_tlb64
+     0.5%    0.5%    Hatari    Spec512_UpdatePaletteSpan
+     0.5%    0.5%    Hatari    ConvertSpec512_640x16Bit
+     0.4%    0.4%    Hatari    op_1030_5_ff
+     0.4%    0.4%    Hatari    CycInt_UpdateInterrupt
+     0.4%    0.4%    Hatari    CycInt_SetNewInterrupt
+     0.4%    0.4%    mach_kernel    pmap64_pdpt
+     0.3%    0.3%    Hatari    Cycles_SetCounter
+     0.3%    0.3%    mach_kernel    hw_lock_to
+     0.3%    0.3%    Hatari    op_80b0_5_ff
+     0.3%    0.3%    mach_kernel    vm_fault
+     0.2%    0.2%    mach_kernel    vm_map_lookup_locked
+     0.2%    0.2%    Hatari    Video_InterruptHandler_HBL
+     0.2%    0.2%    mach_kernel    pmap_flush_tlbs
+     0.2%    0.2%    mach_kernel    vm_fault_copy_cleanup
+     0.2%    0.2%    mach_kernel    user_trap
+     0.2%    0.2%    mach_kernel    pmap_pte
+     0.2%    0.2%    mach_kernel    hw_lock_unlock
+     0.2%    0.2%    DspFuncLib    
+DspFuncDRC::_dynamicRangeControl(float*, float*, unsigned long, unsigned 
+long)
+     0.2%    0.2%    mach_kernel    vm_map_lookup_entry
+     0.2%    0.2%    Hatari    get_disp_ea_000
+     0.2%    0.2%    Hatari    Line_ConvertLowRes_640x16Bit
+     0.2%    0.2%    DspFuncLib    DspFunc3ChOutput::process(unsigned 
+long, unsigned long)
+     0.1%    0.1%    Hatari    YM2149_NextSample
+     0.1%    0.1%    mach_kernel    vm_map_enter
+     0.1%    0.1%    mach_kernel    pmap64_pde
+     0.1%    0.1%    mach_kernel    OSAddAtomic64
+     0.1%    0.1%    mach_kernel    lck_rw_lock_shared
+     0.1%    0.1%    mach_kernel    lck_rw_done
+     0.1%    0.1%    Hatari    op_4c98_5_ff
+     0.1%    0.1%    mach_kernel    vm_fault_enter
+     0.1%    0.1%    Hatari    op_6701_5_ff
+     0.1%    0.1%    Hatari    STmem_bget
+     0.1%    0.1%    mach_kernel    lck_mtx_lock_spin
+     0.1%    0.1%    mach_kernel    _rtc_nanotime_read
+     0.1%    0.1%    mach_kernel    lck_mtx_unlock_darwin10
+     0.1%    0.1%    mach_kernel    vm_page_remove
+     0.1%    0.1%    DspFuncLib    
+DspFuncCrossover::processWithSpecificBuff(float*, unsigned long)
+     0.1%    0.1%    mach_kernel    memory_object_recover_named
+     0.1%    0.1%    Hatari    CycInt_AddRelativeInterruptWithOffset
+     0.1%    0.1%    mach_kernel    assert_wait_possible
+     0.1%    0.1%    mach_kernel    vm_page_insert_internal
+     0.1%    0.1%    mach_kernel    usimple_lock
+     0.1%    0.1%    Hatari    Video_InterruptHandler_EndLine
+     0.1%    0.1%    mach_kernel    pmap_protect
+     0.1%    0.1%    Hatari    op_3039_5_ff
+     0.1%    0.1%    mach_kernel    lck_rw_done_gen
+     0.1%    0.1%    DspFuncLib    DspFuncVolume::process(unsigned long, 
+unsigned long)
+     0.1%    0.1%    mach_kernel    OSCompareAndSwap
+     0.1%    0.1%    Hatari    op_2039_5_ff
+     0.1%    0.1%    Hatari    op_4a79_5_ff
+     0.1%    0.1%    Hatari    STmem_wget
+     0.1%    0.1%    Hatari    op_6700_5_ff
+     0.1%    0.1%    Hatari    Video_ConvertPosition
+     0.1%    0.1%    Hatari    op_1c8_5_ff
+     0.1%    0.1%    libSystem.B.dylib    __bzero
+     0.1%    0.1%    Hatari    op_2030_5_ff
+     0.0%    0.0%    Hatari    Blitter_AddCycles
+     0.0%    0.0%    Hatari    STmem_lget
+     0.0%    0.0%    Hatari    STmem_bput
+     0.0%    0.0%    DspFuncLib    
+DspFunc2Dot1Crossover::_IIR_2ndOrder_downmixLR(unsigned long, unsigned 
+long, float*, unsigned long)
+     0.0%    0.0%    libSystem.B.dylib    __nanotime
+     0.0%    0.0%    Hatari    op_e150_5_ff
+     0.0%    0.0%    Hatari    op_b080_5_ff
+     0.0%    0.0%    Hatari    op_1038_5_ff
+     0.0%    0.0%    libobjc.A.dylib    objc_msgSend
+     0.0%    0.0%    mach_kernel    lck_mtx_lock
+     0.0%    0.0%    mach_kernel    chudxnu_cpu_alloc
+     0.0%    0.0%    mach_kernel    ast_pending
+     0.0%    0.0%    Hatari    Screen_DrawFrame
+     0.0%    0.0%    mach_kernel    lo_mach_scall
+     0.0%    0.0%    AppleHDA    AppleHDAEngine::clipOutputSamples(void 
+const*, void*, unsigned long, unsigned long, _IOAudioStreamFormat 
+const*, IOAudioStream*)
+     0.0%    0.0%    Hatari    op_b079_5_ff
+     0.0%    0.0%    Hatari    op_6600_5_ff
+     0.0%    0.0%    Hatari    op_6000_5_ff
+     0.0%    0.0%    Hatari    MFP_CheckPendingInterrupts
+     0.0%    0.0%    mach_kernel    lck_rw_lock_exclusive
+     0.0%    0.0%    DspFuncLib    DspFuncLimiter::process(unsigned 
+long, unsigned long)
+     0.0%    0.0%    Hatari    Blitter_SourceFetch
+     0.0%    0.0%    libSystem.B.dylib    __memcpy
+     0.0%    0.0%    CoreFoundation    __CFRunLoopCollectSources0
+     0.0%    0.0%    Hatari    Video_InitShifterLines
+     0.0%    0.0%    libSystem.B.dylib    tiny_malloc_from_free_list
+     0.0%    0.0%    Hatari    op_c00_5_ff
+     0.0%    0.0%    Hatari    op_800_5_ff
+     0.0%    0.0%    Hatari    op_51c8_5_ff
+     0.0%    0.0%    Hatari    op_10c0_5_ff
+     0.0%    0.0%    libSystem.B.dylib    mach_msg_trap
+     0.0%    0.0%    DspFuncLib    DspFunc::getDSPParameter(unsigned long)
+     0.0%    0.0%    CoreFoundation    CFRetain
+     0.0%    0.0%    Hatari    Blitter_ReadWord
+     0.0%    0.0%    AppleHDA    
+AppleHDAWidgetSTAC9220::~AppleHDAWidgetSTAC9220()
+     0.0%    0.0%    Hatari    M68000_Exception
+     0.0%    0.0%    Hatari    AdjustLinePaletteRemap
+     0.0%    0.0%    libSystem.B.dylib    __spin_lock
+     0.0%    0.0%    mach_kernel    vm_page_deactivate_internal
+     0.0%    0.0%    Hatari    Video_AddInterruptHBL
+     0.0%    0.0%    Hatari    STmem_lput
+     0.0%    0.0%    libSystem.B.dylib    spin_lock
+     0.0%    0.0%    mach_kernel    
+OSMetaClassBase::safeMetaCast(OSMetaClassBase const*, OSMetaClass const*)
+     0.0%    0.0%    Hatari    op_e100_5_ff
+     0.0%    0.0%    Hatari    op_4a28_5_ff
+     0.0%    0.0%    mach_kernel    memcpy
+     0.0%    0.0%    Hatari    intlev
+     0.0%    0.0%    DspFuncLib    DspFuncMultiBandDRC::process(unsigned 
+long, unsigned long)
+     0.0%    0.0%    Hatari    do_specialties_interrupt
+     0.0%    0.0%    Hatari    CycInt_AcknowledgeInterrupt
+     0.0%    0.0%    Hatari    Blitter_InterruptHandler
+     0.0%    0.0%    mach_kernel    bcopy
+     0.0%    0.0%    Hatari    Video_GetPosition
+     0.0%    0.0%    Hatari    Video_AddInterrupt
+     0.0%    0.0%    libSystem.B.dylib    szone_free_definite_size
+     0.0%    0.0%    Hatari    Spec512_StartScanLine
+     0.0%    0.0%    Hatari    Spec512_EndScanLine
+     0.0%    0.0%    Hatari    Sound_Update
+     0.0%    0.0%    Hatari    MFP_InterruptRequest
+     0.0%    0.0%    Hatari    IoMem_bget
+     0.0%    0.0%    CoreAudio    HP_IOThread::WorkLoop()
+     0.0%    0.0%    DspFuncLib    
+DspFunc2Dot1Crossover::_IIR_2ndOrder(unsigned long, unsigned long, 
+float*, unsigned long)
+     0.0%    0.0%    Hatari    do_specialties
+     0.0%    0.0%    Hatari    Blitter_SourceRead
+     0.0%    0.0%    Hatari    Blitter_FlushCycles
+     0.0%    0.0%    CoreAudio    AUGenericOutputEntry
+     0.0%    0.0%    Hatari    Video_TimerB_GetPos
+     0.0%    0.0%    CarbonCore    TSLockMutex
+     0.0%    0.0%    Hatari    Spec512_StartFrame
+     0.0%    0.0%    Hatari    op_9028_5_ff
+     0.0%    0.0%    Hatari    op_4cd8_5_ff
+     0.0%    0.0%    Hatari    op_48e0_5_ff
+     0.0%    0.0%    Hatari    op_41fa_5_ff
+     0.0%    0.0%    Hatari    op_1028_5_ff
+     0.0%    0.0%    Hatari    MakeSR
+     0.0%    0.0%    Hatari    IoMem_bput
+     0.0%    0.0%    mach_kernel    iokit_user_client_trap
+     0.0%    0.0%    CoreAudio    
+IOA_Time::GetCurrentTime(AudioTimeStamp&amp;) const
+     0.0%    0.0%    CoreAudio    IOA_HWTime::Update(double, bool&amp;, bool&amp;)
+     0.0%    0.0%    mach_kernel    get_user_regs
+     0.0%    0.0%    DspFuncLib    
+DspFunc2Dot1Crossover::_Crossover2Dot1_monoLFE(float*, float*, float*, 
+unsigned long)
+     0.0%    0.0%    CoreFoundation    CFBasicHashGetBucket
+     0.0%    0.0%    CoreFoundation    CFArrayGetCount
+     0.0%    0.0%    Hatari    Blitter_ProcessWord
+     0.0%    0.0%    Hatari    Blitter_LOP_3
+     0.0%    0.0%    SDL    audioCallback
+     0.0%    0.0%    Hatari    Audio_CallBack
+     0.0%    0.0%    CoreGraphics    argb32_image
+     0.0%    0.0%    CoreGraphics    _blt_image_initialize
+     0.0%    0.0%    libSystem.B.dylib    __gettimeofday
+     0.0%    0.0%    Hatari    Video_StartHBL
+     0.0%    0.0%    Hatari    Video_HBL_GetPos
+     0.0%    0.0%    libSystem.B.dylib    szone_free
+     0.0%    0.0%    libSystem.B.dylib    semaphore_timedwait_signal_trap
+     0.0%    0.0%    SDL    SDL_PumpEvents
+     0.0%    0.0%    libRIP.A.dylib    ripl_BltImage
+     0.0%    0.0%    libSystem.B.dylib    pthread_self
+     0.0%    0.0%    libSystem.B.dylib    pthread_once
+     0.0%    0.0%    libSystem.B.dylib    pthread_mutex_lock
+     0.0%    0.0%    libSystem.B.dylib    pthread_getspecific
+     0.0%    0.0%    libSystem.B.dylib    pthread_cond_timedwait_relative_np
+     0.0%    0.0%    mach_kernel    pmap_clear_reference
+     0.0%    0.0%    mach_kernel    OSAddAtomic
+     0.0%    0.0%    Hatari    op_5128_5_ff
+     0.0%    0.0%    Hatari    op_5079_5_ff
+     0.0%    0.0%    Hatari    op_4ce8_5_ff
+     0.0%    0.0%    Hatari    op_41e8_5_ff
+     0.0%    0.0%    Hatari    op_303c_5_ff
+     0.0%    0.0%    Hatari    op_3028_5_ff
+     0.0%    0.0%    Hatari    op_11fc_5_ff
+     0.0%    0.0%    libSystem.B.dylib    memset
+     0.0%    0.0%    libSystem.B.dylib    malloc_zone_calloc
+     0.0%    0.0%    mach_kernel    mach_absolute_time
+     0.0%    0.0%    Hatari    M68000_WaitState
+     0.0%    0.0%    mach_kernel    kernel_preempt_check
+     0.0%    0.0%    IOAudioFamily    
+IOAudioStream::processOutputSamples(IOAudioClientBuffer*, unsigned long, 
+unsigned long, bool)
+     0.0%    0.0%    DspFuncLib    DspFunc::getInputBuffer(unsigned long)
+     0.0%    0.0%    Hatari    CycInt_AddRelativeInterrupt
+     0.0%    0.0%    mach_kernel    current_processor
+     0.0%    0.0%    mach_kernel    current_proc
+     0.0%    0.0%    Hatari    ConvertLowRes_640x16Bit
+     0.0%    0.0%    CoreFoundation    CFRelease
+     0.0%    0.0%    CoreFoundation    CFEqual
+     0.0%    0.0%    CoreFoundation    CFBasicHashGetElements
+     0.0%    0.0%    Hatari    Blitter_EndLine
+     0.0%    0.0%    Hatari    Blitter_DestRead
+     0.0%    0.0%    libSystem.B.dylib    __compare_and_swap32
+     0.0%    0.0%    CoreFoundation    __CFStringHash
+     0.0%    0.0%    CoreFoundation    __CFBasicHashStandardCallback
+     0.0%    0.0%    CoreGraphics    x_mem_dealloc_chain
+     0.0%    0.0%    mach_kernel    vm_page_rename
+     0.0%    0.0%    mach_kernel    vm_object_lock_shared
+     0.0%    0.0%    mach_kernel    vm_object_lock
+     0.0%    0.0%    libSystem.B.dylib    szone_size
+     0.0%    0.0%    Hatari    SysMem_lget
+     0.0%    0.0%    SDL    SDL_UnlockSurface
+     0.0%    0.0%    SDL    SDL_UnlockAudio_Default
+     0.0%    0.0%    HIToolbox    RunCurrentEventLoopInMode
+     0.0%    0.0%    libRIP.A.dylib    ripc_DrawImage
+     0.0%    0.0%    libRIP.A.dylib    ripc_AcquireImage
+     0.0%    0.0%    CoreGraphics    releaseCopiedData
+     0.0%    0.0%    libSystem.B.dylib    pthread_equal
+     0.0%    0.0%    Hatari    PSG_ff8802_WriteByte
+     0.0%    0.0%    Hatari    Printer_EmptyInternalBuffer
+     0.0%    0.0%    Hatari    Printer_CheckIdleStatus
+     0.0%    0.0%    mach_kernel    OSArray::getObject(unsigned int) const
+     0.0%    0.0%    Hatari    op_e048_5_ff
+     0.0%    0.0%    Hatari    op_c30_5_ff
+     0.0%    0.0%    Hatari    op_828_5_ff
+     0.0%    0.0%    Hatari    op_7000_5_ff
+     0.0%    0.0%    Hatari    op_6401_5_ff
+     0.0%    0.0%    Hatari    op_5179_5_ff
+     0.0%    0.0%    Hatari    op_5088_5_ff
+     0.0%    0.0%    Hatari    op_5040_5_ff
+     0.0%    0.0%    Hatari    op_4e71_5_ff
+     0.0%    0.0%    Hatari    op_4840_5_ff
+     0.0%    0.0%    Hatari    op_41f9_5_ff
+     0.0%    0.0%    Hatari    op_3030_5_ff
+     0.0%    0.0%    Hatari    op_1180_5_ff
+     0.0%    0.0%    libobjc.A.dylib    object_getClass
+     0.0%    0.0%    libobjc.A.dylib    objc_msgSend_fpret
+     0.0%    0.0%    libobjc.A.dylib    objc_collectingEnabled
+     0.0%    0.0%    AudioToolbox    NativeInt16ToFloat32_X86
+     0.0%    0.0%    Hatari    MFP_InterruptHandler_TimerD
+     0.0%    0.0%    Hatari    MFP_InputOnChannel
+     0.0%    0.0%    mach_kernel    mach_kauth_cred_uthread_update
+     0.0%    0.0%    mach_kernel    lock_read
+     0.0%    0.0%    mach_kernel    ipc_kmsg_get
+     0.0%    0.0%    mach_kernel    ipc_entry_lookup
+     0.0%    0.0%    mach_kernel    IORecursiveLockLock
+     0.0%    0.0%    mach_kernel    IOMemoryDescriptor::getLength() const
+     0.0%    0.0%    Hatari    IoMem_lput
+     0.0%    0.0%    Hatari    IKBD_KeyboardData_ReadByte
+     0.0%    0.0%    mach_kernel    i386_signal_cpu
+     0.0%    0.0%    CoreAudio    HP_IOProcList::GetNumberIOProcs() const
+     0.0%    0.0%    mach_kernel    get_threadtask
+     0.0%    0.0%    libSystem.B.dylib    free
+     0.0%    0.0%    Hatari    Exception
+     0.0%    0.0%    DspFuncLib    DspFuncVolume::getMetaClass() const
+     0.0%    0.0%    DspFuncLib    DspFuncManager::isDSPEnabledWithBlocks()
+     0.0%    0.0%    DspFuncLib    DspFuncEQ::_equalizer(float*, float*, 
+unsigned long)
+     0.0%    0.0%    DspFuncLib    
+DspFuncDRC::processWithSpecificBuff(float*, float*, unsigned long, 
+unsigned long)
+     0.0%    0.0%    Hatari    DmaSnd_SoundControl_ReadWord
+     0.0%    0.0%    mach_kernel    cpu_NMI_interrupt
+     0.0%    0.0%    mach_kernel    copyin_kern
+     0.0%    0.0%    CoreGraphics    CGImageGetBitmapInfo
+     0.0%    0.0%    CoreGraphics    CGDataProviderCreateWithCopyOfData
+     0.0%    0.0%    CoreGraphics    CGContextGetTypeID
+     0.0%    0.0%    CoreFoundation    CFUniCharGetBitmapPtrForPlane
+     0.0%    0.0%    CoreFoundation    CFSetContainsValue
+     0.0%    0.0%    CoreFoundation    CFBasicHashFindBucket
+     0.0%    0.0%    AudioToolbox    
+BufferedAudioConverter::FillBuffer(unsigned long&amp;, AudioBufferList&amp;, 
+AudioStreamPacketDescription*)
+     0.0%    0.0%    Hatari    Blitter_Control_WriteByte
+     0.0%    0.0%    AudioToolbox    AudioConverterFillComplexBuffer
+     0.0%    0.0%    AudioToolbox    
+AudioConverterChain::RenderOutput(CABufferList*, unsigned long, unsigned 
+long&amp;, AudioStreamPacketDescription*)
+     0.0%    0.0%    CoreFoundation    _CFRelease
+     0.0%    0.0%    libSystem.B.dylib    _Block_object_dispose
+     0.0%    0.0%    libstdc++.6.dylib    __dynamic_cast
+     0.0%    0.0%    libstdc++.6.dylib    
+__cxxabiv1::__vmi_class_type_info::__do_dyncast(int, 
+__cxxabiv1::__class_type_info::__sub_kind, __cxxabiv1::__class_type_info 
+const*, void const*, __cxxabiv1::__class_type_info const*, void const*, 
+__cxxabiv1::__class_type_info::__dyncast_result&amp;) const
+     0.0%    0.0%    CoreFoundation    __CFRunLoopRun
+     0.0%    0.0%    CoreFoundation    ___CFBasicHashFindBucket1
+     0.0%    0.0%    CoreFoundation    -[__NSCFDate 
+timeIntervalSinceReferenceDate]
+     0.0%    0.0%    Foundation    +[NSAutoreleasePool allocWithZone:]
+     0.0%    0.0%    mach_kernel    zfree
+     0.0%    0.0%    mach_kernel    zalloc_canblock
+     0.0%    0.0%    CoreGraphics    x_mem_alloc_bucket
+     0.0%    0.0%    CoreGraphics    x_list_prepend_
+     0.0%    0.0%    HIToolbox    WindowData::GetStructureControl()
+     0.0%    0.0%    mach_kernel    vm_purgeable_q_advance_all
+     0.0%    0.0%    mach_kernel    vm_page_insert
+     0.0%    0.0%    mach_kernel    vm_page_copy
+     0.0%    0.0%    mach_kernel    vm_map_submap_pmap_clean
+     0.0%    0.0%    mach_kernel    vm_map_simplify_entry
+     0.0%    0.0%    mach_kernel    vm_map_copyout
+     0.0%    0.0%    mach_kernel    vm_map_copy_overwrite
+     0.0%    0.0%    mach_kernel    vm32_copy
+     0.0%    0.0%    Hatari    Video_StoreFirstLinePalette
+     0.0%    0.0%    Hatari    Video_InterruptHandler_VBL
+     0.0%    0.0%    Hatari    Video_GetPosition_OnWriteAccess
+     0.0%    0.0%    Hatari    Video_ColorReg_WriteWord
+     0.0%    0.0%    libSystem.B.dylib    tiny_free_list_remove_ptr
+     0.0%    0.0%    libSystem.B.dylib    tiny_free_list_add_ptr
+     0.0%    0.0%    mach_kernel    throttle_lowpri_io
+     0.0%    0.0%    CarbonCore    ThreadIsCooperative
+     0.0%    0.0%    mach_kernel    thread_exception_return
+     0.0%    0.0%    libSystem.B.dylib    szone_memalign
+     0.0%    0.0%    libSystem.B.dylib    szone_malloc_should_clear
+     0.0%    0.0%    Hatari    SysMem_wput
+     0.0%    0.0%    Hatari    STmem_xlate
+     0.0%    0.0%    Hatari    STmem_wput
+     0.0%    0.0%    Hatari    Statusbar_Update
+     0.0%    0.0%    mach_kernel    space_deallocate
+     0.0%    0.0%    Hatari    Sound_Update_VBL
+     0.0%    0.0%    Hatari    ShortCut_ActKey
+     0.0%    0.0%    CoreGraphics    shape_data_valid
+     0.0%    0.0%    CoreGraphics    shape_accum_shape
+     0.0%    0.0%    mach_kernel    semaphore_wait_trap_internal
+     0.0%    0.0%    libSystem.B.dylib    semaphore_wait_trap
+     0.0%    0.0%    mach_kernel    semaphore_wait_continue
+     0.0%    0.0%    libSystem.B.dylib    semaphore_wait
+     0.0%    0.0%    mach_kernel    semaphore_destroy
+     0.0%    0.0%    SDL    SDL_UnlockAudio
+     0.0%    0.0%    SDL    SDL_mutexP
+     0.0%    0.0%    SDL    SDL_LockAudio_Default
+     0.0%    0.0%    SDL    SDL_CheckKeyRepeat
+     0.0%    0.0%    Hatari    Screen_Handle8BitPalettes
+     0.0%    0.0%    libRIP.A.dylib    RIPLayerInitialize
+     0.0%    0.0%    libRIP.A.dylib    ripl_Synchronize
+     0.0%    0.0%    libRIP.A.dylib    ripd_Geometry
+     0.0%    0.0%    libRIP.A.dylib    ripc_ReleaseClipState
+     0.0%    0.0%    libRIP.A.dylib    ripc_Operation
+     0.0%    0.0%    libRIP.A.dylib    ripc_Initialize
+     0.0%    0.0%    libRIP.A.dylib    ripc_GetImageTransformation
+     0.0%    0.0%    libRIP.A.dylib    ripc_GetClipState
+     0.0%    0.0%    libRIP.A.dylib    ripc_Finalize
+     0.0%    0.0%    CoreGraphics    regionFinalize
+     0.0%    0.0%    SDL    QZ_UpdateRects
+     0.0%    0.0%    SDL    QZ_PumpEvents
+     0.0%    0.0%    libSystem.B.dylib    pthread_mutex_unlock
+     0.0%    0.0%    Hatari    PSG_Set_SelectRegister
+     0.0%    0.0%    Hatari    PSG_Set_DataRegister
+     0.0%    0.0%    Hatari    PSG_Get_DataRegister
+     0.0%    0.0%    libSystem.B.dylib    OSAtomicCompareAndSwapLong
+     0.0%    0.0%    Hatari    op_d1fc_5_ff
+     0.0%    0.0%    Hatari    op_d040_5_ff
+     0.0%    0.0%    Hatari    op_c70_5_ff
+     0.0%    0.0%    Hatari    op_c28_5_ff
+     0.0%    0.0%    Hatari    op_c07c_5_ff
+     0.0%    0.0%    Hatari    op_c03c_5_ff
+     0.0%    0.0%    Hatari    op_b0fc_5_ff
+     0.0%    0.0%    Hatari    op_b07c_5_ff
+     0.0%    0.0%    Hatari    op_b040_5_ff
+     0.0%    0.0%    Hatari    op_b010_5_ff
+     0.0%    0.0%    Hatari    op_8f8_5_ff
+     0.0%    0.0%    Hatari    op_8b8_5_ff
+     0.0%    0.0%    Hatari    op_7c_5_ff
+     0.0%    0.0%    Hatari    op_6e01_5_ff
+     0.0%    0.0%    Hatari    op_6400_5_ff
+     0.0%    0.0%    Hatari    op_5140_5_ff
+     0.0%    0.0%    Hatari    op_4a90_5_ff
+     0.0%    0.0%    Hatari    op_48e8_5_ff
+     0.0%    0.0%    Hatari    op_4279_5_ff
+     0.0%    0.0%    Hatari    op_33f0_5_ff
+     0.0%    0.0%    Hatari    op_31fc_5_ff
+     0.0%    0.0%    Hatari    op_3140_5_ff
+     0.0%    0.0%    Hatari    op_3128_5_ff
+     0.0%    0.0%    Hatari    op_30c0_5_ff
+     0.0%    0.0%    Hatari    op_21c8_5_ff
+     0.0%    0.0%    Hatari    op_117c_5_ff
+     0.0%    0.0%    Hatari    op_1140_5_ff
+     0.0%    0.0%    Hatari    op_10bc_5_ff
+     0.0%    0.0%    Hatari    op_1098_5_ff
+     0.0%    0.0%    Hatari    op_103a_5_ff
+     0.0%    0.0%    Hatari    op_1010_5_ff
+     0.0%    0.0%    Hatari    op_0_5_ff
+     0.0%    0.0%    libobjc.A.dylib    objc_memmove_collectable
+     0.0%    0.0%    libobjc.A.dylib    objc_exception_try_enter
+     0.0%    0.0%    Foundation    NSPopAutoreleasePool
+     0.0%    0.0%    libSystem.B.dylib    mk_timer_arm
+     0.0%    0.0%    libSystem.B.dylib    mig_get_reply_port
+     0.0%    0.0%    Hatari    MFP_InterruptHandler_TimerC
+     0.0%    0.0%    libSystem.B.dylib    memmove
+     0.0%    0.0%    CoreGraphics    mem_heap_malloc
+     0.0%    0.0%    libSystem.B.dylib    malloc_zone_from_ptr
+     0.0%    0.0%    libSystem.B.dylib    malloc_zone_free
+     0.0%    0.0%    Hatari    MakeFromSR
+     0.0%    0.0%    Hatari    Main_WaitOnVbl
+     0.0%    0.0%    Hatari    Main_EventHandler
+     0.0%    0.0%    mach_kernel    mach_port_extract_member
+     0.0%    0.0%    mach_kernel    mach_msg_receive_results
+     0.0%    0.0%    mach_kernel    mach_msg_overwrite_trap
+     0.0%    0.0%    libSystem.B.dylib    mach_msg
+     0.0%    0.0%    mach_kernel    lock_done
+     0.0%    0.0%    mach_kernel    lck_spin_unlock
+     0.0%    0.0%    mach_kernel    ipc_right_check
+     0.0%    0.0%    mach_kernel    ipc_object_translate_two
+     0.0%    0.0%    mach_kernel    ipc_mqueue_copyin
+     0.0%    0.0%    mach_kernel    ipc_kobject_server
+     0.0%    0.0%    mach_kernel    ipc_kmsg_copyout_header
+     0.0%    0.0%    mach_kernel    ipc_kmsg_copyout
+     0.0%    0.0%    mach_kernel    ipc_kmsg_alloc
+     0.0%    0.0%    mach_kernel    
+IOUserClient::getTargetAndTrapForIndex(IOService**, unsigned long)
+     0.0%    0.0%    mach_kernel    IOService::getState() const
+     0.0%    0.0%    mach_kernel    iokit_lookup_connect_ref
+     0.0%    0.0%    IOKit    IOConnectTrap6
+     0.0%    0.0%    IOAudioFamily    IOAudioStream::lockStreamForIO()
+     0.0%    0.0%    IOAudioFamily    
+IOAudioStream::clipOutputSamples(unsigned long, unsigned long)
+     0.0%    0.0%    IOAudioFamily    
+IOAudioEngineUserClient::performClientOutput(unsigned long, unsigned 
+long, IOAudioClientBufferSet*, unsigned long, unsigned long)
+     0.0%    0.0%    IOAudioFamily    
+IOAudioClientBufferSet::setWatchdogTimeout(UnsignedWide*)
+     0.0%    0.0%    CoreAudio    IOA_Time::TranslateTime(AudioTimeStamp 
+const&amp;, AudioTimeStamp&amp;) const
+     0.0%    0.0%    CoreAudio    IOA_Time::GetRingBufferOffset(double) 
+const
+     0.0%    0.0%    CoreAudio    
+IOA_SingleDevice::TranslateTime(AudioTimeStamp const&amp;, AudioTimeStamp&amp;)
+     0.0%    0.0%    CoreAudio    IOA_HWDevice::WriteOutputData(unsigned 
+long, unsigned long, unsigned long, unsigned long long)
+     0.0%    0.0%    CoreAudio    
+IOA_HWDevice::IsIOAudioFlipped(unsigned int)
+     0.0%    0.0%    mach_kernel    inval_copy_windows
+     0.0%    0.0%    CoreGraphics    img_data_lock
+     0.0%    0.0%    Hatari    IKBD_GetJoystickData
+     0.0%    0.0%    CoreAudio    HP_IOThread::PerformIO(AudioTimeStamp 
+const&amp;, double)
+     0.0%    0.0%    CoreAudio    
+HP_IOThread::CalculateNextWakeUpTime(AudioTimeStamp const&amp;, double, 
+AudioTimeStamp&amp;, bool, bool, bool&amp;)
+     0.0%    0.0%    CoreAudio    
+HP_IOProcList::GetIOProcByIndex(unsigned long) const
+     0.0%    0.0%    CoreAudio    
+HP_IOProc::SetIOBufferActualDataSize(bool, unsigned long, unsigned long, 
+unsigned long)
+     0.0%    0.0%    CoreAudio    HP_IOProc::RefreshBufferList(HP_Device 
+const&amp;, bool, AudioBufferList*, std::vector&lt;IOBuffer*, 
+std::allocator&lt;IOBuffer*&gt; &gt; const&amp;)
+     0.0%    0.0%    CoreAudio    HP_IOProc::Call(AudioTimeStamp const&amp;, 
+AudioTimeStamp const&amp;, AudioBufferList const*, AudioTimeStamp const&amp;, 
+AudioBufferList*)
+     0.0%    0.0%    libSystem.B.dylib    gettimeofday
+     0.0%    0.0%    HIToolbox    GetMainEventQueue
+     0.0%    0.0%    HIToolbox    GetHIObjectRefTable()
+     0.0%    0.0%    HIToolbox    FlushWindowObject(WindowData*, void**, 
+unsigned char)
+     0.0%    0.0%    HIToolbox    FlushAllBuffers(__CFRunLoopObserver*, 
+unsigned long, void*)
+     0.0%    0.0%    libSystem.B.dylib    floor$fenv_access_off
+     0.0%    0.0%    Hatari    FDC_DiskControllerStatus_ReadWord
+     0.0%    0.0%    DspFuncLib    fabs
+     0.0%    0.0%    Hatari    dyld_stub_SDL_UnlockAudio
+     0.0%    0.0%    libSystem.B.dylib    dyld_stub__spin_unlock
+     0.0%    0.0%    DspFuncLib    DspFuncManager::process(void const*, 
+void const*, unsigned long, unsigned long)
+     0.0%    0.0%    DspFuncLib    DspFuncManager::getSampleRate()
+     0.0%    0.0%    DspFuncLib    DspFuncEQ::process(unsigned long, 
+unsigned long)
+     0.0%    0.0%    DspFuncLib    DspFuncEQ::getMetaClass() const
+     0.0%    0.0%    DspFuncLib    
+DspFunc::getTempBufferAddress(unsigned long)
+     0.0%    0.0%    DspFuncLib    DspFunc2Dot1Crossover::getMetaClass() 
+const
+     0.0%    0.0%    DspFuncLib    DspBuffer::setBufferAddress(void*)
+     0.0%    0.0%    DspFuncLib    DspBuffer::getMetaClass() const
+     0.0%    0.0%    Hatari    DmaSnd_SoundModeCtrl_WriteByte
+     0.0%    0.0%    Hatari    CycInt_RemovePendingInterrupt
+     0.0%    0.0%    mach_kernel    current_thread
+     0.0%    0.0%    HIToolbox    CreateEventWithCGEvent
+     0.0%    0.0%    Hatari    Convert_StartFrame
+     0.0%    0.0%    mach_kernel    convert_port_to_locked_task
+     0.0%    0.0%    libobjc.A.dylib    class_createInstanceFromZone
+     0.0%    0.0%    CoreGraphics    CGTypeRegisterWithCallbacks
+     0.0%    0.0%    CoreGraphics    CGSGetRegionData
+     0.0%    0.0%    CoreGraphics    CGSDisplaySynchronizeSeed
+     0.0%    0.0%    CoreGraphics    CGSDeviceLock
+     0.0%    0.0%    CoreGraphics    CGSConvertXBGR8888toRGBA8888
+     0.0%    0.0%    CoreGraphics    CGRenderingStateGetAllowsAntialiasing
+     0.0%    0.0%    CoreGraphics    CGRectIsEmpty
+     0.0%    0.0%    CoreGraphics    CGImageGetRenderingIntent
+     0.0%    0.0%    CoreGraphics    CGImageGetEPSRep
+     0.0%    0.0%    CoreGraphics    CGGStateRenderingReset
+     0.0%    0.0%    CoreGraphics    CGFontDefaultGetSmoothingContrast
+     0.0%    0.0%    CoreGraphics    CGDataProviderGetTypeID
+     0.0%    0.0%    CoreGraphics    CGContextDrawImage
+     0.0%    0.0%    CoreGraphics    CGContextDelegateSetCallbacks
+     0.0%    0.0%    CoreGraphics    CGColorTransformRelease
+     0.0%    0.0%    CoreGraphics    CGClipStackGetIdentifier
+     0.0%    0.0%    CoreGraphics    CGBlt_initialize
+     0.0%    0.0%    CoreGraphics    CGBitmapContextCreateImage
+     0.0%    0.0%    CoreGraphics    CGAffineTransformConcat
+     0.0%    0.0%    CoreGraphics    CGAccessSessionRewind
+     0.0%    0.0%    CoreGraphics    CGAccessSessionCreate
+     0.0%    0.0%    CoreFoundation    CFStringGetLength
+     0.0%    0.0%    CoreFoundation    CFRunLoopRunInMode
+     0.0%    0.0%    CoreFoundation    CFRunLoopGetMain
+     0.0%    0.0%    CoreFoundation    CFQSortArray
+     0.0%    0.0%    CoreFoundation    CFDictionaryGetValue
+     0.0%    0.0%    CoreFoundation    CFBasicHashGetCountOfKey
+     0.0%    0.0%    CoreFoundation    CFBasicHashGetCount
+     0.0%    0.0%    CoreFoundation    CFAllocatorAllocate
+     0.0%    0.0%    CoreAudio    
+CAStreamBasicDescription::NormalizeLinearPCMFormat(AudioStreamBasicDescription&amp;)
+     0.0%    0.0%    HIToolbox    BlockUntilNextEventMatchingListInMode
+     0.0%    0.0%    Hatari    Blitter_SourceShift
+     0.0%    0.0%    Hatari    Blitter_SetState
+     0.0%    0.0%    Hatari    Blitter_HOP_2
+     0.0%    0.0%    Hatari    Blitter_DestYInc_WriteWord
+     0.0%    0.0%    Hatari    Blitter_BeginLine
+     0.0%    0.0%    CoreAudio    AUNetSendEntry
+     0.0%    0.0%    CoreAudio    AUMultibandCompressorEntry
+     0.0%    0.0%    AudioToolbox    
+AudioConverterChain::CallInputProc(unsigned long)
+     0.0%    0.0%    Hatari    Audio_Unlock
+     0.0%    0.0%    AppleHDA    
+AppleHDAEngine::getHighestPriorityConnectedPathSet()
+     0.0%    0.0%    libSystem.B.dylib    _sysenter_trap
+     0.0%    0.0%    CoreGraphics    _shape_pool_malloc
+     0.0%    0.0%    libSystem.B.dylib    _pthread_mutex_init
+     0.0%    0.0%    libSystem.B.dylib    _pthread_cond_wait
+     0.0%    0.0%    AppKit    _DPSConvertMaskToEventTypeList
+     0.0%    0.0%    libobjc.A.dylib    
+_class_instancesHaveAssociatedObjects
+     0.0%    0.0%    libobjc.A.dylib    _class_getSuperclass
+     0.0%    0.0%    CoreGraphics    _CGSWindowByID
+     0.0%    0.0%    CoreGraphics    _CGSLockWindow
+     0.0%    0.0%    CoreGraphics    _CGSFlushWindowRegion
+     0.0%    0.0%    CoreGraphics    _CGSConnectionByID
+     0.0%    0.0%    CoreFoundation    _CFRuntimeSetInstanceTypeID
+     0.0%    0.0%    CoreFoundation    _CFRuntimeCreateInstance
+     0.0%    0.0%    CoreFoundation    _CFRunLoopSetCurrent
+     0.0%    0.0%    CoreFoundation    _CFRetain
+     0.0%    0.0%    CoreFoundation    _CFExecutableLinkedOnOrAfter
+     0.0%    0.0%    CoreFoundation    _CFAutoreleasePoolPop
+     0.0%    0.0%    CoreFoundation    _CFAutoreleasePoolAddObject
+     0.0%    0.0%    libSystem.B.dylib    __memcpy_chk
+     0.0%    0.0%    libSystem.B.dylib    __divdi3
+     0.0%    0.0%    libSystem.B.dylib    __commpage_gettimeofday
+     0.0%    0.0%    libRIP.A.dylib    __CGWindowContextDelegateCreate
+     0.0%    0.0%    CoreFoundation    __CFRunLoopDoSources0
+     0.0%    0.0%    CoreFoundation    __CFRunLoopDoObservers
+     0.0%    0.0%    CoreFoundation    
+__CFBasicHashGetCountOfValue_block_invoke_1
+     0.0%    0.0%    CoreFoundation    __addHandler2
+     0.0%    0.0%    CoreAudio    0x700097d2 [127B]
+     0.0%    0.0%    CoreAudio    0x70008d3a [274B]
+     0.0%    0.0%    CoreAudio    0x70008b4c [282B]
+     0.0%    0.0%    CoreAudio    0x70006afc [188B]
+     0.0%    0.0%    CoreAudio    0x70006734 [85B]
+     0.0%    0.0%    CoreAudio    0x70005664 [681B]
+     0.0%    0.0%    CoreAudio    0x700018ba [53B]
+     0.0%    0.0%    AppKit    -[NSWindowGraphicsContext initWithWindow:]
+     0.0%    0.0%    CoreFoundation    +[NSDate distantPast]
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002202.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+	<LI>Next message: <A HREF="002206.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2203">[ date ]</a>
+              <a href="thread.html#2203">[ thread ]</a>
+              <a href="subject.html#2203">[ subject ]</a>
+              <a href="author.html#2203">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

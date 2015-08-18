@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Higher%20precision%20when%20generating%20samples%20-%3E%20use%0A%20nanosleep&In-Reply-To=%3C4D40A485.2000701%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002900.html">
+   <LINK REL="Next"  HREF="002898.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Higher precision when generating samples -&gt; use nanosleep</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Higher%20precision%20when%20generating%20samples%20-%3E%20use%0A%20nanosleep&In-Reply-To=%3C4D40A485.2000701%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Higher precision when generating samples -&gt; use nanosleep">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Jan 26 23:47:33 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002900.html">[hatari-devel] Higher precision when generating samples -&gt; use	nanosleep
+</A></li>
+        <LI>Next message: <A HREF="002898.html">[hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2903">[ date ]</a>
+              <a href="thread.html#2903">[ thread ]</a>
+              <a href="subject.html#2903">[ subject ]</a>
+              <a href="author.html#2903">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 26/01/2011 22:32, Eero Tamminen a &#233;crit :
+&gt;&gt;<i> If possible and nanosleep is ok on a machine, it will be better to
+</I>&gt;&gt;<i> alternate between 16.66 ms and 16.67 to emulate a 16.66666... ms delay
+</I>&gt;&gt;<i> (60 Hz), than to alternate between 16 ms and 17 ms to also emulate
+</I>&gt;&gt;<i> 16.6666 ms delay.
+</I>&gt;<i>
+</I>&gt;<i> Well, any process/thread (like X server, composite manager, SDL sound thread
+</I>&gt;<i> etc. doing what Hatari asks them to do) will probably take at least 1ms of
+</I>&gt;<i> time.  And then there's the monitor sync to consider...
+</I>&gt;<i>
+</I>&gt;<i> While using nanosleep() isn't much extra CMake&amp;  C-code, I don't think it's
+</I>&gt;<i> going to help at all with the US TOS sound delay.  That delay is in several
+</I>&gt;<i> hundreds of ms, SDL having &quot;just&quot; 1ms accuracy cannot be a cause for that.
+</I>&gt;<i>
+</I>
+I think sthg iw wrong in what you wrote ; the sound delay problem as 
+first reported by David is not about the delay suddenly jumping to 
+several hundreds of ms, it's about about SDL sleeping for 16 ms instead 
+of 16.66666 ms (4% error), which VBL after VBL slowly accumulates and 
+gives a growing delay (until the ring buffer &quot;loops&quot; and delay goes to 0 
+and grows again).
+
+So yes, it's completly about a 1ms accuracy problem, even a 0.666 ms 
+problem :)  If we were able to do sub-ms sleep, we could do a faster 
+convergence toward the correct 16.6666 ms delay.
+
+Even with absolutly no other process running that Hatari, SDL_Delay at 
+1ms level will diverge if used without a self adaptation mechanism.
+
+
+&gt;<i> The mentioned standard POSIX functions use highest available HW
+</I>&gt;<i> accuracy when kernel has been configured with high resolution timers
+</I>&gt;<i> support.  About everything should have it nowadays:
+</I>&gt;<i> $ grep -e cpu -e clock -e resolution /proc/timer_list
+</I>&gt;<i> cpu: 0
+</I>&gt;<i>   clock 0:
+</I>&gt;<i>    .resolution: 1 nsecs
+</I>&gt;<i>   clock 1:
+</I>&gt;<i>    .resolution: 1 nsecs
+</I>&gt;<i> cpu: 1
+</I>&gt;<i>   clock 0:
+</I>&gt;<i>    .resolution: 1 nsecs
+</I>&gt;<i>   clock 1:
+</I>&gt;<i>    .resolution: 1 nsecs
+</I>&gt;<i> cpu: 2
+</I>&gt;<i>   clock 0:
+</I>&gt;<i>    .resolution: 1 nsecs
+</I>&gt;<i>   clock 1:
+</I>&gt;<i>    .resolution: 1 nsecs
+</I>&gt;<i> cpu: 3
+</I>&gt;<i>   clock 0:
+</I>&gt;<i>    .resolution: 1 nsecs
+</I>&gt;<i>   clock 1:
+</I>&gt;<i>    .resolution: 1 nsecs
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> That's not much help for non-realtime process though when there are other
+</I>&gt;<i> processes running in the system.
+</I>
+Of course, that's not as perfect as a real interrupt that would 
+immediatly calls Video_InterruptHandler_VBL every 50 or 60 fps with no 
+latency, but still the smaller error margin we have when sleeping (nano 
+instead of milli), the better approximation/correction we will get in 
+Main_WaitOnVbl()  (because chances are rather high that if the user 
+doesn't run anything than Hatari, nanosleep will quite often be able to 
+do 16.67 ms precisely ; if more processes are running, results will be 
+less stable, but it can't be worse that what we have with ms-sleep)
+
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002900.html">[hatari-devel] Higher precision when generating samples -&gt; use	nanosleep
+</A></li>
+	<LI>Next message: <A HREF="002898.html">[hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2903">[ date ]</a>
+              <a href="thread.html#2903">[ thread ]</a>
+              <a href="subject.html#2903">[ subject ]</a>
+              <a href="author.html#2903">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

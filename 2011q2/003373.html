@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari crashes with Mental Hangover demo
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20crashes%20with%20Mental%20Hangover%20demo&In-Reply-To=%3C201104301946.37613.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003439.html">
+   <LINK REL="Next"  HREF="003376.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari crashes with Mental Hangover demo</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20crashes%20with%20Mental%20Hangover%20demo&In-Reply-To=%3C201104301946.37613.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari crashes with Mental Hangover demo">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Apr 30 18:46:37 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003439.html">[hatari-devel] Filters utilized more effectively
+</A></li>
+        <LI>Next message: <A HREF="003376.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3373">[ date ]</a>
+              <a href="thread.html#3373">[ thread ]</a>
+              <a href="subject.html#3373">[ subject ]</a>
+              <a href="author.html#3373">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 01 huhtikuu 2011, Eero Tamminen wrote:
+&gt;<i> On torstai 31 maaliskuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;&gt;<i> Is pSTscreen address taken from emulated RAM without checking that
+</I>&gt;&gt;&gt;<i> the pointed screen actually is within the emulated RAM?
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> possible, havent't checked that.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;&gt;<i> Hatari crash is much more serious than demo crash. :-)
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Yes, I agree that whatever the ST does, it should not crash Hatari, but
+</I>&gt;&gt;<i> regarding this special case, it takes too much time before it crashes
+</I>&gt;&gt;<i> for me and it's actually too hard to reproduce and track.
+</I>
+Hatari segfaults always in the same place (VBL 1654). With fast-forward that
+happens within 2 secs:
+-----
+$ time ./hatari --fast-forward yes --frameskips 9999 --sound off --machine 
+ste --tos tos162de.img mental_h.msa 
+...
+Segmentation fault
+
+real    0m1.287s
+-----
+
+
+&gt;<i> So the screen value just grew infinitely.  Next question is why it
+</I>&gt;<i> normally doesn't grow infinitely and how to track that... :-)
+</I>
+Now Hatari crashes because border size gets overwritten...
+
+#1  0x080d1185 in Video_CopyScreenLineColor () at 
+/home/eero/work/hatari/src/video.c:1898
+1898                    memset(pSTScreen, 0, SCREENBYTES_LINE);
+(gdb) print nBorderPixelsLeft
+$3 = 825505336
+(gdb) print nBorderPixelsRight
+$4 = 10023
+
+(gdb) watch nBorderPixelsLeft
+Hardware watchpoint 1: nBorderPixelsLeft
+(gdb) watch nBorderPixelsRight
+Hardware watchpoint 2: nBorderPixelsRight
+
+(gdb) run --fast-forward yes --frameskips 9999 --sound off --machine ste --
+tos tos162de.img mental_h.msa
+
+Hardware watchpoint 1: nBorderPixelsLeft
+
+Old value = 0
+New value = 825505336
+0x08094628 in FDC_DMADataFromFloppy () at 
+/home/eero/work/hatari/src/fdc.c:1567
+1567            memcpy(&amp;STRam[FDC_ReadDMAAddress()], DMASectorWorkSpace, 
+NUMBYTESPERSECTOR );
+(gdb) bt
+#0  0x08094628 in FDC_DMADataFromFloppy () at 
+/home/eero/work/hatari/src/fdc.c:1567
+#1  FDC_InterruptHandler_Update () at /home/eero/work/hatari/src/fdc.c:466
+#2  0x0810d551 in m68k_run_1 (may_quit=1) at /home/eero/work/hatari/src/uae-
+cpu/newcpu.c:1776
+#3  m68k_go (may_quit=1) at /home/eero/work/hatari/src/uae-cpu/newcpu.c:1872
+#4  0x080b3de4 in M68000_Start () at /home/eero/work/hatari/src/m68000.c:241
+#5  0x080b4bd4 in main (argc=12, argv=0xbffff2b4) at 
+/home/eero/work/hatari/src/main.c:773
+
+(gdb) print FDC_ReadDMAAddress()
+$7 = 16776850
+
+
+When looking at the fdc.c, it obviously doesn't do any address validation 
+before scribling over Hatari process memory with &quot;a random&quot; offset it got
+from the emulated Atari program.
+
+However, I'm not sure whether the right thing is to mask the FDC DMA address
+to a valid address, just ignore requests with invalid address or raise an
+exception?
+
+The attached patch logs &amp; ignores invalid FDC DMA addresses used in fdc.c
+and hdc.c.  This fixes the Hatari crash, but the demo doesn't work so I
+guess the address should be masked instead...?
+
+
+Btw. Second patch does some code cleanup by removing from fdc.h header
+anything that doesn't doesn't need to be there + sets functions only used
+within fdc.c as static.  Is it OK to commit it?
+
+
+	- Eero
+
+PS. While doing the patches, I noticed:
+$ grep HDCSectorCount $(find . -type f)
+./hdc.h:extern short int HDCSectorCount;
+./hdc.c:short int HDCSectorCount;
+./hdc.c:       fprintf(hdlogFile, &quot;HDC sector count: 0x%x\n&quot;, 
+HDCSectorCount);
+./fdc.c:       HDCSectorCount = 0;
+./fdc.c:               DMAStatus_ff8606rd |= (HDCSectorCount)?0x2:0;         
+/* HDC */
+./fdc.c:               DiskControllerByte = HDCSectorCount;
+
+What's the point in sector count that's never non-zero?
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: fdc.diff
+Type: text/x-patch
+Size: 4390 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110430/fc5fb36f/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110430/fc5fb36f/attachment.bin</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: cleanup.diff
+Type: text/x-patch
+Size: 11115 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110430/fc5fb36f/attachment-0001.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110430/fc5fb36f/attachment-0001.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003439.html">[hatari-devel] Filters utilized more effectively
+</A></li>
+	<LI>Next message: <A HREF="003376.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3373">[ date ]</a>
+              <a href="thread.html#3373">[ thread ]</a>
+              <a href="subject.html#3373">[ subject ]</a>
+              <a href="author.html#3373">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

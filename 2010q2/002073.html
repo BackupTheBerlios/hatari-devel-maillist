@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Suggestion about small additions for v1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3C201005130014.50942.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002067.html">
+   <LINK REL="Next"  HREF="002079.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Suggestion about small additions for v1.4</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3C201005130014.50942.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Suggestion about small additions for v1.4">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed May 12 23:14:50 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002067.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002079.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2073">[ date ]</a>
+              <a href="thread.html#2073">[ thread ]</a>
+              <a href="subject.html#2073">[ subject ]</a>
+              <a href="author.html#2073">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 12 May 2010, Anders Eriksson wrote:
+&gt;<i> Oh no don't try this on me :)  I've reported many times that in OS X
+</I>&gt;<i> window mode, Hatari is slow as snails, while in fullscreen it works fast.
+</I>
+I assumed it was slower than you would like it to be, not slower than it
+should be (as it works fine for me).  If you expect to be understood, you
+need to quantify your issues properly / be exact (give FPS numbers etc).
+
+
+&gt;<i> &gt; Does the slowness you're reporting happen only when overlay LED is
+</I>&gt;<i> &gt; enabled (not necessary visible) and statusbar is disabled?
+</I>&gt;<i> &gt; Or does it happen also if statusbar is enabled or both statusbar &amp; led
+</I>&gt;<i> &gt; are disabled?
+</I>&gt;<i>
+</I>&gt;<i> The general slowness is whatever of statusbar/HUD status. It's something
+</I>&gt;<i> to do with updating the actual window.
+</I>
+Just to verify, even when running hatari with both &quot;--statusbar off&quot; 
+and &quot;--drive-led off&quot; options, it's slow in windowed mode?
+
+
+&gt;<i> &gt; To me it seems 1/2 (or maybe 1/3) of normal speed.  I think easy way to
+</I>&gt;<i> &gt; check how much the slowdown is would be to try frameskip values of 1 or
+</I>&gt;<i> &gt; 2. Btw. If OSX SDL is doing VSync() on windowed mode and you have an
+</I>&gt;<i> &gt; LCD monitor, you probably should be running Hatari with frameskip
+</I>&gt;<i> &gt; anyway. Otherwise OSX/SDL is forcing e.g. monochrome mode (71Hz
+</I>&gt;<i> &gt; updates...) to be running too slowly as LCD refresh is usually
+</I>&gt;<i> &gt; something like 60Hz. (My CRT refresh is 85Hz so I cannot see issues
+</I>&gt;<i> &gt; like this.)
+</I>&gt;<i>
+</I>&gt;<i> Come on, so the solution to a small little green box slowing down Hatari
+</I>&gt;<i> to a crawl is to frameskip it,
+</I>
+I mean, needing that even after you disable the --drive-led.
+
+If your OS / SDL is limiting (Vsync()ing) window updates to your (LCD)
+monitor updates (60Hz?) and you ask the emulation to run at higher screen
+update frequency, things will *obviously* be slower than they should.
+
+In other words, if your monitor doesn't offer high enough frequency to show
+all the emulated Atari frames, there are only two possibilities:
+- skip frames from the Atari emulation
+- things running at slower speed than on Atari
+
+However, this *should* be an issue only for 71Hz emulation, but as there
+have been some issue (mentioned in Hatari code) in getting accurate timing
+information on OSX, I guess it might be an issue also when the emulation
+runs at 60Hz.
+
+Do things work better if you run in Hatari something using 50Hz mode?
+(*after* disabling both statusbar &amp; drive-led)?
+
+If they do, one possibility would be to skip wait on the Hatari side on OSX
+and assume on OSX SDL or OS will be doing it with Vsync(). That would be
+quite fragile though as Hatari has no API to query whether OS or SDL
+actually uses or provides VSync() and whether that matches the frequncy at
+which the emulated program is running.
+
+
+&gt;<i> not to fix the thing that slows it down?
+</I>
+To get OSX SDL to be fixed, you need to complain to SDL OSX maintainer.
+We don't maintain it.
+
+
+&gt;&gt;<i> Well, yours seems to have problems getting the updates to screen
+</I>&gt;&gt;<i> frequently enough.  ;-))
+</I>&gt;<i>
+</I>&gt;<i> Funny, now you remember that I've reported performance issues before..
+</I>
+To be exact, I was referring to this mail discussion we're having here. :-)
+
+
+&gt;<i> &gt; Is it implemented on top of SDL?
+</I>&gt;<i>
+</I>&gt;<i> I have no idea, but the implementation is great.
+</I>
+On Linux Vice seems to be using X window system directly, so I guess on OSX
+it uses OSX facilities directly.  I.e. it's not using a portable library
+like SDL for that.
+
+(If we wouldn't be using SDL, then somebody using OSX would need to code
+that support to Hatari and maintain it. And same thing for every other
+platform where somebody would like to run Hatari.)
+
+
+&gt;<i> &gt;&gt; This wouldn't even let me go to fullscreen at all.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; It works fine on Linux SDL.  Please file a bug against OSX SDL,
+</I>&gt;<i> &gt; HWSURFACE is an optional thing according to SDL documenation.
+</I>&gt;<i> &gt; See the documentation on it to see why I asked to test removing it:
+</I>&gt;<i> &gt; 	<A HREF="http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetVideoMode">http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetVideoMode</A>
+</I>&gt;<i>
+</I>&gt;<i> Wonderful, I knew this was coming, Hatari is fault free and the problem
+</I>&gt;<i> lies elsewhere, even though Hatari includes the &quot;elsewhere&quot; code.
+</I>
+Jerome reported that it's not a problem for him.  Do you have different
+SDL or OSX version than him?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002067.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002079.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2073">[ date ]</a>
+              <a href="thread.html#2073">[ thread ]</a>
+              <a href="subject.html#2073">[ subject ]</a>
+              <a href="author.html#2073">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

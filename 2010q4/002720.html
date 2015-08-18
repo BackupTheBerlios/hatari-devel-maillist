@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari UI; Installation and Syntax
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20UI%3B%20Installation%20and%20Syntax&In-Reply-To=%3C201012282107.57160.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002717.html">
+   <LINK REL="Next"  HREF="002719.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari UI; Installation and Syntax</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20UI%3B%20Installation%20and%20Syntax&In-Reply-To=%3C201012282107.57160.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Hatari UI; Installation and Syntax">oak at helsinkinet.fi
+       </A><BR>
+    <I>Tue Dec 28 20:07:57 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002717.html">[hatari-devel] Hatari UI; Installation and Syntax
+</A></li>
+        <LI>Next message: <A HREF="002719.html">[hatari-devel] Problem with NVDI and latest hatari sources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2720">[ date ]</a>
+              <a href="thread.html#2720">[ thread ]</a>
+              <a href="subject.html#2720">[ subject ]</a>
+              <a href="author.html#2720">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On maanantai 27 joulukuu 2010, David Savinkoff wrote:
+&gt;<i> 1) Shouldn't
+</I>&gt;<i> /tmp/local/share/hatari/hconsole/hconsole.py
+</I>
+At least on my setup it goes to:
+	/usr/local/share/hatari/hconsole/
+?
+
+
+&gt;<i> have a wrapper installed into
+</I>&gt;<i> /usr/local/bin or /usr/bin ?
+</I>
+It's intended more for experimenting how to use Hatari remote UI (which is
+about same as XBios(255) Hatari API) or as a module you import when building
+your own scripting around Hatari so running it from Hatari hg repo or
+/usr/share seemed fine to me.  Its manual page tells where one finds it
++ hatariui manual page has reference to hconsole so it's not completely
+hidden...
+
+
+&gt;<i> 2) Hatariui gives me a SyntaxError
+</I>&gt;<i> 
+</I>&gt;<i> $ ./hatariui
+</I>&gt;<i> Traceback (most recent call last):
+</I>&gt;<i>   File &quot;./../share/hatari/hatariui/hatariui.py&quot;, line 29, in ?
+</I>&gt;<i>     from debugui import HatariDebugUI
+</I>&gt;<i>   File &quot;/tmp/local/share/hatari/hatariui/debugui.py&quot;, line 25, in ?
+</I>&gt;<i>     from uihelpers import UInfo, create_button, create_toggle, \
+</I>&gt;<i>   File &quot;/tmp/local/share/hatari/hatariui/uihelpers.py&quot;, line 351
+</I>&gt;<i>     class FselAndEjectFactory():
+</I>&gt;<i>                               ^
+</I>&gt;<i> SyntaxError: invalid syntax
+</I>&gt;<i> $
+</I>&gt;<i> 
+</I>&gt;<i> How I fixed it on my system (pygtk2 2.10.1 and python 2.4.3)
+</I>
+Those work with Python 2.5 &amp; 2.6, but removing the redundant ()
+doesn't hurt either, so I commited your fix.  Thanks!
+
+
+&gt;<i> Removing () allows my system to work, shown below:
+</I>&gt;<i> line 351
+</I>&gt;<i> class FselAndEjectFactory():
+</I>&gt;<i> class FselAndEjectFactory:
+</I>&gt;<i> 
+</I>&gt;<i> line 383
+</I>&gt;<i> class FselEntry():
+</I>&gt;<i> class FselEntry:
+</I>
+Was that the only problem with Python 2.4?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002717.html">[hatari-devel] Hatari UI; Installation and Syntax
+</A></li>
+	<LI>Next message: <A HREF="002719.html">[hatari-devel] Problem with NVDI and latest hatari sources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2720">[ date ]</a>
+              <a href="thread.html#2720">[ thread ]</a>
+              <a href="subject.html#2720">[ subject ]</a>
+              <a href="author.html#2720">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [Crossbar emulation] : new infos and a problem in DmaSnd.c (I think)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5BCrossbar%20emulation%5D%20%3A%20new%20infos%20and%20a%20problem%0A%20in%20DmaSnd.c%20%28I%20think%29&In-Reply-To=%3C20090928224216.7b8814d9%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000755.html">
+   <LINK REL="Next"  HREF="000739.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [Crossbar emulation] : new infos and a problem in DmaSnd.c (I think)</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5BCrossbar%20emulation%5D%20%3A%20new%20infos%20and%20a%20problem%0A%20in%20DmaSnd.c%20%28I%20think%29&In-Reply-To=%3C20090928224216.7b8814d9%40phineus%3E"
+       TITLE="[hatari-devel] [Crossbar emulation] : new infos and a problem in DmaSnd.c (I think)">huth at users.berlios.de
+       </A><BR>
+    <I>Mon Sep 28 22:42:16 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000755.html">[hatari-devel] [Crossbar emulation] : new infos and a problem in DmaSnd.c (I think)
+</A></li>
+        <LI>Next message: <A HREF="000739.html">[hatari-devel] [Crossbar emulation] : new infos, + some help needed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#757">[ date ]</a>
+              <a href="thread.html#757">[ thread ]</a>
+              <a href="subject.html#757">[ subject ]</a>
+              <a href="author.html#757">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 28 Sep 2009 22:32:44 +0200
+Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+
+&gt;<i> At first view, it seems to work.
+</I>&gt;<i> 
+</I>&gt;<i> Do you want to give it a try ?
+</I>
+I currently don't know any STE/Falcon program that really needs this
+feature. Do you have a program that depends on this?
+
+ Thomas
+
+
+&gt;<i> 
+</I>&gt;<i> Thomas Huth a &#233;crit :
+</I>&gt;<i> &gt; On Tue, 22 Sep 2009 00:11:45 +0200
+</I>&gt;<i> &gt; Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; Another problem (I think) :
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Thomas, in dmaSnd.c, I think there's a problem in :
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; void DmaSnd_FrameCountHigh_ReadByte(void)
+</I>&gt;<i> &gt;&gt; void DmaSnd_FrameCountMed_ReadByte(void)
+</I>&gt;<i> &gt;&gt; void DmaSnd_FrameCountLow_ReadByte(void)
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; You call DmaSnd_GetFrameCount().
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;     if (nDmaSoundControl &amp; DMASNDCTRL_PLAY)
+</I>&gt;<i> &gt;&gt;         nActCount = nFrameStartAddr + (int)FrameCounter;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; The problem (I think is that you always return (nFrameStartAddr +
+</I>&gt;<i> &gt;&gt; 0), as FrameCounter is only computed in a loop in
+</I>&gt;<i> &gt;&gt; DmaSnd_GenerateSamples. 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Looks like you're right. I guess there should be a call to
+</I>&gt;<i> &gt; Sound_Update() at the start of DmaSnd_GetFrameCount() so that the
+</I>&gt;<i> &gt; FrameCounter get's updated right, what do you think? That should
+</I>&gt;<i> &gt; call Sound_GenerateSamples() which then calls
+</I>&gt;<i> &gt; DmaSound_GenerateSamples() which then finally updates the
+</I>&gt;<i> &gt; FrameCounter variable.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  Thomas
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000755.html">[hatari-devel] [Crossbar emulation] : new infos and a problem in DmaSnd.c (I think)
+</A></li>
+	<LI>Next message: <A HREF="000739.html">[hatari-devel] [Crossbar emulation] : new infos, + some help needed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#757">[ date ]</a>
+              <a href="thread.html#757">[ thread ]</a>
+              <a href="subject.html#757">[ subject ]</a>
+              <a href="author.html#757">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Conditional breakpoint code, please comment!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C200906162257.42841.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000384.html">
+   <LINK REL="Next"  HREF="000386.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Conditional breakpoint code, please comment!</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C200906162257.42841.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Conditional breakpoint code, please comment!">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Jun 16 21:57:42 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000384.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+        <LI>Next message: <A HREF="000386.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#385">[ date ]</a>
+              <a href="thread.html#385">[ thread ]</a>
+              <a href="subject.html#385">[ subject ]</a>
+              <a href="author.html#385">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 16 June 2009, Eero Tamminen wrote:
+&gt;<i> &gt; (for example, some demos could store packed data at
+</I>&gt;<i> &gt; odd address, and then you could do something like (a0) = 'ICE!' to add
+</I>&gt;<i> &gt; a breakpoint (hint : we could also have the possibility to use 4 ascii
+</I>&gt;<i> &gt; chars as a 32 bits value :-) ))
+</I>&gt;<i>
+</I>&gt;<i> What kind of a syntax/prefix you'd thought for ASCII and binary values?
+</I>&gt;<i>
+</I>&gt;<i> Should they be allowed also for specifying addresses, or is it enough
+</I>&gt;<i> that addresses can be specified only as decimal or hexadecimal?
+</I>
+Btw.  Laurent, I just started to think about DSP memory addresses in
+the conditional breakpoints.  I don't currently have any clue how they're
+supposed to be used in the DSP code.
+
+I mean, with DSP addresses, you need also to specify which memory space
+it belongs to.  It could be specified e.g. as &quot;x$200&quot;, &quot;$x200&quot;, &quot;$200x&quot;.
+
+But the main thing is about what to do with the indirect addressing, how
+it's determined into which memory space a register points into?  Is it based
+on what register is used or some other information?  Or would you (also)
+need to be able to specify it in the breakpoint e.g. like in:
+	(x0/p).w &amp; 3 = $200&quot;
+?
+
+If memory space needs to be explicitly specified in indirect register
+addressing, then there needs to be some separator for the address space
+like '/' above.  I would use it them also in addresses like in &quot;x/$200&quot;...
+
+
+&gt;<i> Btw. Decimal is currently the default number format in conditional
+</I>&gt;<i> breakpoints, hexadecimal values need to have the '$' prefix as you
+</I>&gt;<i> requested earlier.
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000384.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+	<LI>Next message: <A HREF="000386.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#385">[ date ]</a>
+              <a href="thread.html#385">[ thread ]</a>
+              <a href="subject.html#385">[ subject ]</a>
+              <a href="author.html#385">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

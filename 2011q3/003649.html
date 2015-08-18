@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Clang warnings for the DSP code
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Clang%20warnings%20for%20the%20DSP%20code&In-Reply-To=%3C201107050128.56923.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003645.html">
+   <LINK REL="Next"  HREF="003652.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Clang warnings for the DSP code</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Clang%20warnings%20for%20the%20DSP%20code&In-Reply-To=%3C201107050128.56923.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Clang warnings for the DSP code">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Jul  5 00:28:56 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003645.html">[hatari-devel] Clang warnings for the DSP code
+</A></li>
+        <LI>Next message: <A HREF="003652.html">[hatari-devel] Clang warnings for the DSP code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3649">[ date ]</a>
+              <a href="thread.html#3649">[ thread ]</a>
+              <a href="subject.html#3649">[ subject ]</a>
+              <a href="author.html#3649">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On tiistai 05 hein&#228;kuu 2011, Laurent Sallafranque wrote:
+&gt;<i> &gt;         numreg1 = numreg2 = DSP_REG_NULL;
+</I>&gt;<i> 
+</I>&gt;<i> This line was added to avoid some compiler warnings.
+</I>&gt;<i> In fact, numreg1 and numreg2 are always computed (in a if or a else
+</I>&gt;<i> section). Both of these sections contains a switch with only 4
+</I>&gt;<i> possibilities.
+</I>
+If GCC gives a warning, unlike Clang, its analyzer doesn't notice that
+numreg2 gets always a value here:
+------
+        if (memspace) {                                                                                                                                              
+                /* Y: */                                                                                                                                             
+                numreg2 = DSP_REG_A + ((cur_inst&gt;&gt;19) &amp; 1);                                                                                                          
+        } else {                                                                                                                                                     
+                /* X: */                                                                                                                                             
+                numreg2 = DSP_REG_A + ((cur_inst&gt;&gt;17) &amp; 1);                                                                                                          
+        }
+-------
+
+I guess this is the GCC bug about it outputting warnings before
+completing it's dead code analysis (a GCC bug I think Vincent
+mailed about earlier), which is supposed to be (at least partly)
+fixed in latest GCC version.
+
+
+&gt;<i> The best, for my point of view, would be to remove the init line with
+</I>&gt;<i> DSP_REG_NULL.
+</I>
+For now, I think it's nicer to get warning with Clang than
+with GCC, as GCC's used a lot more.  Hopefully GCC warnings
+get fixed in later GCC releases...
+
+
+&gt;<i> /home/eero/work/hatari/src/falcon/dsp_cpu.c:3851:3: warning:
+</I>&gt;<i> Pass-by-value argument in function call is undefined
+</I>&gt;<i>                  write_memory(DSP_SPACE_X, l_addr, save_lx);
+</I>&gt;<i>                  ^                                 ~~~~~~~
+</I>&gt;<i> 
+</I>&gt;<i> I really don't understand what's wrong here.
+</I>
+First I thought that dsp_pm_read_accu24() might not be setting value for
+save_lx in all cases, but that doesn't seem to be the case.
+
+I guess my Clang version (v1.1) just doesn't notice that numreg value
+is limited to 0-7 with:
+        numreg = (cur_inst&gt;&gt;16) &amp; BITMASK(2);                                                                                                                        
+        numreg |= (cur_inst&gt;&gt;17) &amp; (1&lt;&lt;2); 
+
+and that the latesat switch case covers all of its possible values.
+I.e. the warning is bogus.
+
+I just wonder why GCC doesn't give a warning in that case...
+
+
+&gt;<i> Finally, static void dsp_update_rn_modulo(Uint32 numreg, Sint16
+</I>&gt;<i> modifier) function :
+</I>&gt;<i>
+</I>&gt;<i> This function is quite sentitive. I'll give a closer look at the
+</I>&gt;<i> documentation.
+</I>
+&gt;<i> On tiistai 05 hein&#228;kuu 2011, Laurent Sallafranque wrote:
+</I>&gt;<i> modulo is in the following range :  0 &lt; mod &lt;=32767
+</I>
+What guarantees that this keeps to 15 bits:
+        modulo = dsp_core.registers[DSP_REG_M0+numreg]+1; 
+?
+
+
+&gt;<i> modifier and orig_modifier can be any 16bits value
+</I>&gt;<i> lobound and hibound seem to be unsigned (they are addresses)
+</I>
+And r_reg is Sint16 because its value can sometimes be negative?
+
+In the last line of the function it's cast to unsigned...
+        dsp_core.registers[DSP_REG_R0+numreg] = ((Uint32) r_reg) &amp; 
+BITMASK(16); 
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003645.html">[hatari-devel] Clang warnings for the DSP code
+</A></li>
+	<LI>Next message: <A HREF="003652.html">[hatari-devel] Clang warnings for the DSP code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3649">[ date ]</a>
+              <a href="thread.html#3649">[ thread ]</a>
+              <a href="subject.html#3649">[ subject ]</a>
+              <a href="author.html#3649">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari dsp debug mode ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20dsp%20debug%20mode%20%3F&In-Reply-To=%3C200904191429.04669.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000260.html">
+   <LINK REL="Next"  HREF="000271.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari dsp debug mode ?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20dsp%20debug%20mode%20%3F&In-Reply-To=%3C200904191429.04669.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari dsp debug mode ?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Apr 19 13:29:04 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000260.html">[hatari-devel] Hatari dsp debug mode ?
+</A></li>
+        <LI>Next message: <A HREF="000271.html">[hatari-devel] Hatari dsp debug mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#261">[ date ]</a>
+              <a href="thread.html#261">[ thread ]</a>
+              <a href="subject.html#261">[ subject ]</a>
+              <a href="author.html#261">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 19 April 2009, Eero Tamminen wrote:
+&gt;<i> As to DSP debugging function stubs, they're now up to you.  :-)  You
+</I>&gt;<i> could put the address (range) string parsing to separate functions if you
+</I>&gt;<i> can share them with the m68k debugger functions.
+</I>
+FYI: I commited range parsing for debugger DSP stubs to the repository:
+-----------------
+parse DSP addresses for DSP debugger stubs:
+- generalize range parsing to a new parseRange() function
+- add range parsing to DSP debugging stubs
+- improve the parsing error and DSP stubs TODO messages a bit
+- in the stubs check whether DSP is enabled
+- add new DSP_GetPC() function for the DSP disassemly stub
+- add example for outputting DSP regs/disasm/memdump on debugger invoking
+
+diffstat:
+ src/debugui.c    |  255 +++++++++++++++++++++++++++++++++++++++++---------
+ src/falcon/dsp.c |   14 ++
+ src/falcon/dsp.h |    1 +
+-----------------
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000260.html">[hatari-devel] Hatari dsp debug mode ?
+</A></li>
+	<LI>Next message: <A HREF="000271.html">[hatari-devel] Hatari dsp debug mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#261">[ date ]</a>
+              <a href="thread.html#261">[ thread ]</a>
+              <a href="subject.html#261">[ subject ]</a>
+              <a href="author.html#261">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

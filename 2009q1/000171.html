@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] MiNT and Hatari drives
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MiNT%20and%20Hatari%20drives&In-Reply-To=%3C200902190152.27163.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000150.html">
+   <LINK REL="Next"  HREF="000172.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] MiNT and Hatari drives</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MiNT%20and%20Hatari%20drives&In-Reply-To=%3C200902190152.27163.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] MiNT and Hatari drives">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Feb 19 00:52:27 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000150.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+        <LI>Next message: <A HREF="000172.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#171">[ date ]</a>
+              <a href="thread.html#171">[ thread ]</a>
+              <a href="subject.html#171">[ subject ]</a>
+              <a href="author.html#171">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 12 February 2009, Eero Tamminen wrote:
+&gt;<i> I added something like this to my ~/.mtoolsrc file:
+</I>&gt;<i> 	e: file=&quot;/home/eerot/hd.img&quot; partition=1
+</I>&gt;<i>
+</I>&gt;<i> And then tried following:
+</I>&gt;<i> 	dd if=/dev/zero of=~/hd.img bs=1M count=8
+</I>&gt;<i> 	mpartition -Ica -t 8 e:
+</I>&gt;<i> 	mformat e:
+</I>&gt;<i> 	mcopy &lt;stuff&gt; e:
+</I>&gt;<i>
+</I>&gt;<i> If I do:
+</I>&gt;<i> 	hatari --machine falcon -s 4 --ide hd.img cecile.st
+</I>&gt;<i>
+</I>&gt;<i> where cecile.st has cecile.prg driver in its auto/ folder, the mtools
+</I>&gt;<i> formatted partition shows up as C: in TOS and I can see &amp; browse
+</I>&gt;<i> anything I had copied to the HD image with Mtools.
+</I>&gt;<i>
+</I>&gt;<i> Same happens also without any HD driver when using EmuTOS:
+</I>&gt;<i> 	hatari --machine falcon --tos etos512.img -s 4 --acsi hd.img
+</I>&gt;<i>
+</I>&gt;<i> However, in both cases the drive free and used information is bogus and
+</I>&gt;<i> e.g. trying to delete directories from C: gives errors about bogus files
+</I>&gt;<i> that cannot be removed.  When using EmuTOS, these bogus files actually
+</I>&gt;<i> show up in the file system (every directory has at least a file
+</I>&gt;<i> called &quot;At&quot;).  For EmuTOS/--acsi this happens at least also with Hatari
+</I>&gt;<i> v1.0.1.
+</I>&gt;<i>
+</I>&gt;<i> Now I'm wondering, is this bug in Mtools (Debian Lenny version)?  In
+</I>&gt;<i> Hatari? Both in Cecile and EmuTOS?
+</I>&gt;<i>
+</I>&gt;<i> (I guess next step is testing losetup, fdisk &amp; mkfs.vfat to see whether
+</I>&gt;<i> it was Mtools...)
+</I>
+This worked better:
+
+First prepare disk image of suitable size (below, 8MB) and its mount point:
+$&#160;mkdir hd
+$ dd if=/dev/zero of=hd.img bs=1M count=8
+$&#160;/sbin/fdisk -C 8 -H 16 -S 63 hd.img
+
+And give following input to fdisk:
+- &quot;n&quot; (new)
+- &quot;p&quot; (primary)
+- &quot;1&quot; (partition)
+- &quot;1&quot; (cylinder)
+- &quot;&quot; (Enter, to use all available space)
+- &quot;t&quot; (partition type),
+- &quot;4&quot; (FAT16, &lt;32MB)
+- &quot;a&quot; (toggle bootable)
+- &quot;1&quot; (partition)
+- &quot;w&quot; (write partition table to disk)
+
+Then make a loopback device of the just created disk first partition,
+create an Atari variation of DOS filesystem on it and and mount the new
+loop device into a directory. For this you need root rights:
+$ su
+# offset=$(fdisk -lu hd.img | awk '/hd.img1/{print $2}')
+# losetup -f hd.img -o $((512*$offset))
+# loop=$(losetup -a | tail -1 | cut -d: -f1)
+# mkdosfs -A -n myname $loop
+# mount $loop hd
+
+After you've copied the relevant files to the &quot;hd&quot; directory, you can
+unmount it:
+# umount hd
+# losetup -d $loop
+
+I looked at the disk image with hex editor and the directory entries had
+some strange crap. &quot;-A&quot; option[1] used above fixed that.
+
+With above stuff EmuTOS also shows correct disk size, but EmuTOS
+recognizes these disk only as ACSI, not as IDE:
+  hatari --machine falcon --tos etos512.img -s 4 --acsi hd.img
+
+Cecile is needed to use them as IDE disks, and the bootable flag is needed
+to make Cecile recognize the partition.  To make the partitioning, one could
+use also the mpartition incantation from above, but I trust fdisk more...
+
+[1] Mtools mformat doesn't seem to have any Atari partition option.
+  I.e. copying stuff from host needs root rights for losetup &amp; mount. :-/
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000150.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+	<LI>Next message: <A HREF="000172.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#171">[ date ]</a>
+              <a href="thread.html#171">[ thread ]</a>
+              <a href="subject.html#171">[ subject ]</a>
+              <a href="author.html#171">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

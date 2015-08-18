@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] start and break question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20start%20and%20break%20question&In-Reply-To=%3C201106130014.29576.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003586.html">
+   <LINK REL="Next"  HREF="003544.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] start and break question</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20start%20and%20break%20question&In-Reply-To=%3C201106130014.29576.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] start and break question">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jun 12 23:14:29 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003586.html">[hatari-devel] start and break question
+</A></li>
+        <LI>Next message: <A HREF="003544.html">[hatari-devel] start and break question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3590">[ date ]</a>
+              <a href="thread.html#3590">[ thread ]</a>
+              <a href="subject.html#3590">[ subject ]</a>
+              <a href="author.html#3590">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 12 kes&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> &gt; So:
+</I>&gt;<i> &gt; 	b VBL = {VBL+4}
+</I>&gt;<i> &gt; ?
+</I>&gt;<i> 
+</I>&gt;<i> Yes, or VBL = {VBL} + 4
+</I>
+That won't work.
+
+Breakpoints support only numbers, variables (like register names), indirect
+addressing of them and a width (like &quot;(a1).w&quot;) + mask (like &quot;&amp; %11&quot;) for
+that.  And having multiple of them with conditions between these.
+
+Breakpoints don't support *run-time* evaluated arithemetic operations such
+as addition i.e. parsing arbitrary arithmetic operations and storing
+that parsetree[1] for run-time usage.
+
+So, it needs to be:
+	b VBL = {VBL+4}
+
+
+&gt;<i> I don't think there's a big need for breakpoints with parts of the 
+</I>&gt;<i> condition not being run-time evaluated (ie at the time the command is 
+</I>&gt;<i> parsed).
+</I>
+Hatari debugger already has parse-time arithmetic expression evaluation
+for _all_ debugger commands.  All expressions in given command that are
+enclosed in &quot;&quot;/{} are evaluated before _any_ other debugger command
+parsing (splitting args etc) is done.  It's separate code from
+breakpoints and doesn't support conditionals[2] (and currently all
+its indirect accesses are long-accesses).
+
+[1]
+There isn't any _run-time_ evaluation of arithmetic expressions for
+conditional breakpoints, which is only place where such would (currently)
+be useful, as evaluating strings (like evaluate.c does) would be too slow.
+Because of how breakcond.c works[3] and for performance reasons,
+it would require:
+- pre-parsing of the expression and
+- evaluating at run-time just the resulting parsetree
+which would IMHO complicate the already hairy breakcond.c code too much.
+
+
+With new PC based breakpoints, the expression evaluation performance
+wouldn't anymore be an issue as they don't need to be evaluated on every 
+instruction.  So, they could just store the user given expression as
+string and evaluate that with the current arithmetic expression engine
+at run-time.
+
+[2]
+However, if you want there to be also (potentially multiple) conditionals
+for these, it means that PC breakpoints need conditional breakpoint engine
+(breakcond.c) instead of the arithmetic expression evaluation engine
+(evaluate.c).
+
+And if you want conditional breakpoints to have a possibility for run-time
+evaluated arithmetic expressions, you need a delimeter for that which is
+separate from the delimer that indicates parser-time arithmetic
+expression, and code to include such expression strings to parsed
+conditions.
+
+
+[3] Technical background:
+
+There are some functionality overlaps with these two evaluation engines
+(both accept variables/registers/symbols), but internally they work very
+differently.
+
+Breakcond.c has two clearly separate phases, one that parses the expression
+completely to an internal representation and another which evaluates
+the parsed binary result; whereas evaluate.c treats the expression as
+stream, it's evaluated while it's parsed according to the operator 
+precedence.
+
+Half of the evaluate.c code is for parsing numbers in different bases
+&amp; formats and these functions are used also by breakcond.c.  Rest of
+evaluate.c then handles arithmetic operations, their precedence
+and indirect addressing.
+
+
+&gt;<i> But maybe we could have a syntax that allows both run time and parse
+</I>&gt;<i> time value breakpoints ; what about saying that :
+</I>&gt;<i>   - a register/internal variable is always run time evaluated when
+</I>&gt;<i> provided directly with its name
+</I>&gt;<i>   - when the reg/variable is enclosed in {} then the current value of
+</I>&gt;<i> the reg/variable is substituted at parse time.
+</I>
+That's already supported with the conditional breakpoint and arithmetic
+expression evaluation combination.  Latter has currently the '&quot;' delimeter,
+and we're discussing changing that delimeter to {} and adding separate
+delimeter for run-time evaluated _arithmetic_ expressions.
+
+
+&gt;<i> So, if D0=12
+</I>&gt;<i> b D0=40  will break when D0 reach 40
+</I>&gt;<i> b {D0}=40 will break when 12=40 (ie never)
+</I>
+These are already supported (with &quot;&quot; being used instead of {}).
+
+Even something like this works:
+	b d0 &amp; &quot;2*(symbol)&quot; = &quot;VBL+4&quot;
+
+(Mask d0 at run-time by doubled current value at address &quot;symbol1&quot;
+and compare it to current VBL value + 4.)
+
+
+&gt;<i> b VBL={VBL}+4  will break after 4 VBLs
+</I>&gt;<i> b VBL=VBL+4  will never break because the same variable can't have 2
+</I>&gt;<i> different values
+</I>
+But arithmetic operations aren't be supported by conditional breakpoint
+parser and neither are (single or multiple) conditions by arithmetic
+expression parser.  I think it would be possible to add support for
+run-time evaluated arithmetic expressions to conditional breakpoints
+if there's a separate syntax for indicating them, like [].
+
+So, think carefully whether in addition to parse-time arithmetic
+evaluation, you want with PC breakpoints:
+1. run-time evaluated arithmetic expressions, or
+2. run-time evaluated conditions, or
+3. both...
+:<i>-)
+</I>
+1) would be easiest to do and similar to MonST.
+
+2) might be enough for most cases, but need significantly more work.
+
+3) would need even more work and the code &amp; syntax would be more complex:
+	b [data+2] = {a1-2}
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003586.html">[hatari-devel] start and break question
+</A></li>
+	<LI>Next message: <A HREF="003544.html">[hatari-devel] start and break question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3590">[ date ]</a>
+              <a href="thread.html#3590">[ thread ]</a>
+              <a href="subject.html#3590">[ subject ]</a>
+              <a href="author.html#3590">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20emu%20and%20STE%20compatibility%20%28D-Bug%20games%29&In-Reply-To=%3C4D6196D3.8070708%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003098.html">
+   <LINK REL="Next"  HREF="003101.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon emu and STE compatibility (D-Bug games)</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20emu%20and%20STE%20compatibility%20%28D-Bug%20games%29&In-Reply-To=%3C4D6196D3.8070708%40free.fr%3E"
+       TITLE="[hatari-devel] Falcon emu and STE compatibility (D-Bug games)">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Feb 20 23:33:55 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003098.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+        <LI>Next message: <A HREF="003101.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3100">[ date ]</a>
+              <a href="thread.html#3100">[ thread ]</a>
+              <a href="subject.html#3100">[ subject ]</a>
+              <a href="author.html#3100">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Is it OK like this ?
+
+Laurent
+
+Le 20/02/2011 23:18, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On sunnuntai 20 helmikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;&gt;<i>   Pretty much well done now ... it's just a little bit confusing that
+</I>&gt;&gt;&gt;<i>   the
+</I>&gt;&gt;<i> STE mode is activated when &quot;isFalconInSteMode&quot; is false... when I read
+</I>&gt;&gt;<i> the code I would rather expect isFalconInSteMode == true would mean
+</I>&gt;&gt;<i> that the STE mode is activated...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Yes, I thought about it. As the Ste compatibility mode is activated when
+</I>&gt;&gt;<i> the bit = 0, I've kept the same behaviour for the variable. But like
+</I>&gt;&gt;<i> you, I think it can be confusing.
+</I>&gt;&gt;<i> If you ask for, I change it.
+</I>&gt;<i> -------
+</I>&gt;<i> static Uint8 falconBusMode;                           /* Falcon bus mode
+</I>&gt;<i> (0=STe compatible bus; 1= Falcon bus) */
+</I>&gt;<i> ...
+</I>&gt;<i>                if (falconBusMode == 0) {
+</I>&gt;<i> --------
+</I>&gt;<i>
+</I>&gt;<i> No magic variables, please.  If it's bool, use true&amp;  false and variable
+</I>&gt;<i> name where it's clear what true means, with non-bools like above, please use
+</I>&gt;<i> enums for the names of the possible states.
+</I>&gt;<i>
+</I>&gt;<i> For example:
+</I>&gt;<i> ---------
+</I>&gt;<i> static enum {
+</I>&gt;<i> 	FALCON_BUS_STE,
+</I>&gt;<i> 	FALCON_BUS_16MHZ
+</I>&gt;<i> } falconBusMode;
+</I>&gt;<i> ----------
+</I>&gt;<i>
+</I>&gt;<i> (C++ and maybe GCC too check that one doesn't try to put wrong values to
+</I>&gt;<i> enums.)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003098.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+	<LI>Next message: <A HREF="003101.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3100">[ date ]</a>
+              <a href="thread.html#3100">[ thread ]</a>
+              <a href="subject.html#3100">[ subject ]</a>
+              <a href="author.html#3100">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

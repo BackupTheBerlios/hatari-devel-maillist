@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] measuring Hatari performance (was: Very big DSP optimisations)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20measuring%20Hatari%20performance%20%28was%3A%20Very%20big%20DSP%0A%20optimisations%29&In-Reply-To=%3Calpine.LMD.2.00.0904232358500.27492%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000265.html">
+   <LINK REL="Next"  HREF="000267.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] measuring Hatari performance (was: Very big DSP optimisations)</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20measuring%20Hatari%20performance%20%28was%3A%20Very%20big%20DSP%0A%20optimisations%29&In-Reply-To=%3Calpine.LMD.2.00.0904232358500.27492%40localhost%3E"
+       TITLE="[hatari-devel] measuring Hatari performance (was: Very big DSP optimisations)">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Apr 24 00:11:49 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000265.html">[hatari-devel] measuring Hatari performance (was: Very big DSP	optimisations)
+</A></li>
+        <LI>Next message: <A HREF="000267.html">[hatari-devel] measuring Hatari performance (was: Very big DSP	optimisations)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#266">[ date ]</a>
+              <a href="thread.html#266">[ thread ]</a>
+              <a href="subject.html#266">[ subject ]</a>
+              <a href="author.html#266">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 24 Apr 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Friday 17 April 2009, Eero Tamminen wrote:
+</I>&gt;&gt;<i> So... I have been thinking that Hatari should have some performance
+</I>&gt;&gt;<i> metrics.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thomas, maybe when the HATARI_TRACE define is set, Hatari could could
+</I>&gt;&gt;<i> show a count of how many frames it has displayed and e.g. output a
+</I>&gt;&gt;<i> running average of that at certain interval + number of shown frames e.g.
+</I>&gt;&gt;<i> on SIGUSR1.
+</I>&gt;<i>
+</I>&gt;<i> I though that it could be done a bit more simple, see the attachment.
+</I>&gt;<i> The code is so simple that I think it could be included into Hatari as
+</I>&gt;<i> is...?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Use like this:
+</I>&gt;<i>
+</I>&gt;<i> * Start Hatari so that it works as fast as it can:
+</I>&gt;<i>     hatari --fast-forward yes
+</I>&gt;<i> * Press Pause or F12, or invoke them in some automated way:
+</I>&gt;<i>    sudo apt-get install xautomation
+</I>&gt;<i>    xte 'sleep 10' 'key Pause'
+</I>&gt;<i>  (after unpause, counter starts again from zero)
+</I>&gt;<i>
+</I>&gt;<i> So, to measure whether some e.g. DSP optimization made things faster, one
+</I>&gt;<i> could have a dir which has in auto/-folder a test program that starts
+</I>&gt;<i> automatically and then some script could start Hatari with that and after
+</I>&gt;<i> some fixed interval simulate a Pause key press.  If the FPS increased, the
+</I>&gt;<i> optimization is improvement.
+</I>&gt;<i>
+</I>&gt;<i> NOTE: For short time periods the FPS value seems to fluctuate quite a lot,
+</I>&gt;<i> Hatari needs to run several tens of seconds for FPS to keep fairly stable
+</I>&gt;<i> (with few percentages).  Hatari speed depends also a lot on what options are
+</I>&gt;<i> used (frame skip, spec512, zooming, sound etc), so they need to be kept
+</I>&gt;<i> same.  And of course there shouldn't be any background activity in the
+</I>&gt;<i> meanwhile (better is to run the test multiple times until it stabilizes)
+</I>&gt;<i> and one should measure only one optimization at the time.
+</I>&gt;<i>
+</I>
+Hello,
+
+this is similar to something I proposed some times ago to measure the 
+impact of some modifications regarding screen rendering (and it similar to 
+some pc games that run a predefined sequence for 30 sec to see how fast 
+your PC is), but it has some drawbacks under multitasking OS (linux or 
+others) :
+
+  - any running program will interfere with hatari, so you need to be sure 
+you close all other apps.
+
+  - sound can be a problem and can generate latency ; hatari should be run 
+with sound off.
+
+
+Nevertheless, this could give some first results on whether a modification 
+has some impact ; but if the modif only change cpu ressources a few %, it 
+will be hard to measure because this method has a rather big error margin.
+
+But one could imagine an option 'run for x VBLs then exit'. This way, 
+you could restore a memory snapshot of the same demo sequence for example, 
+run it full speed for 30*50 VBLs then exit and measure the time it took.
+
+Perhaps we could also disable video output in that case, to be sure that 
+no sound/video layer is slowing down hatari and that we're measuring only 
+hatari's routines (this means rendering the st/falcon screen in memory, 
+but not sending it to the user's display).
+
+But the most precise way would certainly be to put some &quot;probes&quot; at 
+specific location when entering/exiting various functions and sum the 
+total time.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000265.html">[hatari-devel] measuring Hatari performance (was: Very big DSP	optimisations)
+</A></li>
+	<LI>Next message: <A HREF="000267.html">[hatari-devel] measuring Hatari performance (was: Very big DSP	optimisations)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#266">[ date ]</a>
+              <a href="thread.html#266">[ thread ]</a>
+              <a href="subject.html#266">[ subject ]</a>
+              <a href="author.html#266">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

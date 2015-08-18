@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Troubles compiling latest Hatari with new avi support
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%20support&In-Reply-To=%3Calpine.LMD.2.00.0910082303230.21930%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000791.html">
+   <LINK REL="Next"  HREF="000800.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Troubles compiling latest Hatari with new avi support</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%20support&In-Reply-To=%3Calpine.LMD.2.00.0910082303230.21930%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Troubles compiling latest Hatari with new avi support">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Oct  8 23:04:24 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000791.html">[hatari-devel] Troubles compiling latest Hatari with new	avi	support
+</A></li>
+        <LI>Next message: <A HREF="000800.html">[hatari-devel] Troubles compiling latest Hatari with new	avi	support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#796">[ date ]</a>
+              <a href="thread.html#796">[ thread ]</a>
+              <a href="subject.html#796">[ subject ]</a>
+              <a href="author.html#796">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 8 Oct 2009, Matthias Arndt wrote:
+
+&gt;<i> Am Donnerstag, den 08.10.2009, 21:11 +0200 schrieb Thomas Huth:
+</I>&gt;&gt;<i> Matthias,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> could you try to #include &lt;SDL_endian.h&gt; at the beginning of
+</I>&gt;&gt;<i> avi_record.c to see whether this helps?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Some SDL header files have to be included explicitely in older versions
+</I>&gt;&gt;<i> of the SDL...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  Thomas
+</I>&gt;<i>
+</I>&gt;<i> That really did help!
+</I>&gt;<i>
+</I>&gt;<i> Thanks a lot! Shall I submit a patch or will someone else do with the
+</I>&gt;<i> next commit?
+</I>&gt;<i>
+</I>&gt;<i> cheers,
+</I>&gt;<i> Matthias
+</I>
+I saw it was missing when compared to wavFormat.c ; try getting the 
+sources again to see if the patch is OK.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000791.html">[hatari-devel] Troubles compiling latest Hatari with new	avi	support
+</A></li>
+	<LI>Next message: <A HREF="000800.html">[hatari-devel] Troubles compiling latest Hatari with new	avi	support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#796">[ date ]</a>
+              <a href="thread.html#796">[ thread ]</a>
+              <a href="subject.html#796">[ subject ]</a>
+              <a href="author.html#796">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] EmuTOS screen
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EmuTOS%20screen&In-Reply-To=%3C4E261431.1000409%40freesbee.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003863.html">
+   <LINK REL="Next"  HREF="003818.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] EmuTOS screen</H1>
+    <B>Vincent Rivi&#232;re</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EmuTOS%20screen&In-Reply-To=%3C4E261431.1000409%40freesbee.fr%3E"
+       TITLE="[hatari-devel] EmuTOS screen">vincent.riviere at freesbee.fr
+       </A><BR>
+    <I>Wed Jul 20 01:33:05 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003863.html">[hatari-devel] OS X binaries
+</A></li>
+        <LI>Next message: <A HREF="003818.html">[hatari-devel] EmuTOS screen
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3816">[ date ]</a>
+              <a href="thread.html#3816">[ thread ]</a>
+              <a href="subject.html#3816">[ subject ]</a>
+              <a href="author.html#3816">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 01/07/2010 11:18, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Thomas, could you comment on what would be the correct thing
+</I>&gt;<i> to do with this?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Friday 25 June 2010, Eero Tamminen wrote:
+</I>&gt;&gt;<i> On Saturday 19 June 2010, Vincent Rivi&#232;re wrote:
+</I>&gt;&gt;&gt;<i> I have noticed 2 problems with Hatari in ST mode and EmuTOS:
+</I>&gt;&gt;&gt;<i> - The EmuTOS welcome screen never appears
+</I>&gt;&gt;&gt;<i> - Ctrl+Alt+Shift+Del crashes with a double bus error
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> However, the same rom works well on Steem.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Also, everything works well with Hatari in Falcon mode.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Reproduced the welcome screen issue.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> (my WM catches the keyboard shortcut so I cannot try that now)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Starting from EmuTOS 0.8.5, the welcome screen is only displayed on
+</I>&gt;&gt;&gt;<i> cold boots. It is detected like this:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> coldboot = (memvalid!=0x752019f3 || memval2!=0x237698aa ||
+</I>&gt;&gt;&gt;<i> memval3!=0x5555aaaa);
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Ok, EmuTOS bios.c sets these values after coldboot...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> It looks like the problem comes from Hatari... but who knows.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hatari stMemory.c does following in STMemory_SetDefaultConfig()
+</I>&gt;&gt;<i> which is called after TOS is loaded[1]:
+</I>&gt;&gt;<i> --------
+</I>&gt;&gt;<i>          /* Fill in magic numbers, so TOS does not try to reference MMU */
+</I>&gt;&gt;<i>          STMemory_WriteLong(0x420, 0x752019f3);            /* memvalid -
+</I>&gt;&gt;<i> configuration is valid */
+</I>&gt;&gt;<i>          STMemory_WriteLong(0x43a, 0x237698aa);            /* another
+</I>&gt;&gt;<i> magic # */
+</I>&gt;&gt;<i>          STMemory_WriteLong(0x51a, 0x5555aaaa);            /* and another
+</I>&gt;&gt;<i> */ --------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> There's a &quot;bIsEmuTOS&quot; variable which could be used here, but I wonder
+</I>&gt;&gt;<i> which TOS versions do MMU checks depending on these variables and do
+</I>&gt;&gt;<i> they do these checks always?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Also, to me it seemed that these are set also with Falcon emulation, so
+</I>&gt;&gt;<i> I don't understand why there's a difference based on what Hatari
+</I>&gt;&gt;<i> emulates...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>
+I'm disappointed that Hatari 1.5 has been released and those issues I 
+reported last year have not been investigated further. Hatari is shipped 
+with EmuTOS, this is a good thing, but because of those Hatari bugs the 
+EmuTOS user experience is not what it should be.
+
+-- 
+Vincent Rivi&#232;re
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003863.html">[hatari-devel] OS X binaries
+</A></li>
+	<LI>Next message: <A HREF="003818.html">[hatari-devel] EmuTOS screen
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3816">[ date ]</a>
+              <a href="thread.html#3816">[ thread ]</a>
+              <a href="subject.html#3816">[ subject ]</a>
+              <a href="author.html#3816">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

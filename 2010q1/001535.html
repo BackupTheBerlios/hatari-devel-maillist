@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] I'm lucky ;) K.prg  is working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3C4B842AC6.1040905%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001534.html">
+   <LINK REL="Next"  HREF="001542.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] I'm lucky ;) K.prg  is working</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3C4B842AC6.1040905%40free.fr%3E"
+       TITLE="[hatari-devel] I'm lucky ;) K.prg  is working">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Feb 23 20:21:42 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001534.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+        <LI>Next message: <A HREF="001542.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1535">[ date ]</a>
+              <a href="thread.html#1535">[ thread ]</a>
+              <a href="subject.html#1535">[ subject ]</a>
+              <a href="author.html#1535">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've detected something else too.
+
+Instructions &gt; 50 cycles are always the same :
+
+Movem.L
+ADD.L
+CLR.L
+
+Are these instructions's cycles correctly computed ?
+
+
+I've also this line :
+
+cpu exception 33 currpc 31262 buspc 31260 newpc fa002a fault_e3 0 op_e3 
+0 addr_e3 0                                    
+
+I don't know 68000 as much as you do.
+
+
+
+Some examples :
+
+cpu video_cyc=  2372 324@  4 : 00e08352: 4cdf 38f8 4e5e 4e75 4e56 
+MVMEL.L #$38f8,(A7)+
+cycles &gt; 50 : 154
+
+cpu video_cyc=  2372 324@  4 : 00e08352: 4cdf 38f8 4e5e 4e75 4e56 
+MVMEL.L #$38f8,(A7)+
+cycles &gt; 50 : 154
+
+cpu video_cyc=   332 332@  0 : 00e00d0e: 4cdf 0180 51cf ffec 4eb9 
+MVMEL.L #$0180,(A7)+
+cycles &gt; 50 : 58
+
+cpu video_cyc=   640 128@  1 : 00e00d48: 4cdf 7fff 5279 0000 0452 
+MVMEL.L #$7fff,(A7)+
+cycles &gt; 50 : 266
+
+cpu video_cyc=   774 262@  1 : 00e00dc8: 4cd9 f8f8 4a78 059e 6702 
+MVMEL.L #$f8f8,(A1)+
+cycles &gt; 50 : 186
+
+cpu video_cyc=  1018 506@  1 : 00e00d94: 48e1 1f1f 23c9 0000 04a2 
+MVMLE.L #$1f1f,-(A1)
+cycles &gt; 50 : 178
+
+cpu video_cyc=  2038 502@  3 : 00e0810e: 42b9 0000 186e 0839 0002 CLR.L 
+$0000186e
+cycles &gt; 50 : 58
+
+cpu video_cyc=143794 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">434 at 280</A> : 00e356b0: 52b9 0000 9a4e 4ab9 0000 ADD.L 
+#$00000001,$00009a4e
+cycles &gt; 50 : 58
+
+cpu video_cyc=   190 190@  0 : 00e00cc4: 52b9 0000 0462 2038 045a ADD.L 
+#$00000001,$00000462
+cycles &gt; 50 : 58
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001534.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+	<LI>Next message: <A HREF="001542.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1535">[ date ]</a>
+              <a href="thread.html#1535">[ thread ]</a>
+              <a href="subject.html#1535">[ subject ]</a>
+              <a href="author.html#1535">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

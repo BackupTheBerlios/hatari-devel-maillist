@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] MoonGames
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MoonGames&In-Reply-To=%3Calpine.LMD.2.00.0911221846030.24324%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000977.html">
+   <LINK REL="Next"  HREF="000981.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] MoonGames</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MoonGames&In-Reply-To=%3Calpine.LMD.2.00.0911221846030.24324%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] MoonGames">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Nov 22 18:50:05 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000977.html">[hatari-devel] MoonGames
+</A></li>
+        <LI>Next message: <A HREF="000981.html">[hatari-devel] MoonGames
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#979">[ date ]</a>
+              <a href="thread.html#979">[ thread ]</a>
+              <a href="subject.html#979">[ subject ]</a>
+              <a href="author.html#979">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 22 Nov 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Sunday 22 November 2009, Eero Tamminen wrote:
+</I>&gt;&gt;&gt;<i> Uninitialized exception handler #28!
+</I>&gt;<i> ...
+</I>&gt;&gt;<i> This value refers to the next PC position on exceptions.  I.e. the
+</I>&gt;&gt;<i> exception handler address is zero.  What's the exception number (&quot;nr&quot;)?
+</I>&gt;<i>
+</I>&gt;<i> Er, should have read your mail better. :-)
+</I>&gt;<i>
+</I>&gt;<i> Exception 28 is VBL according to the Exception() function comments.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Looking at the end of this function, one possible issue for the game not
+</I>&gt;&gt;<i> working properly could be that an incorrect number of cycles are used for
+</I>&gt;&gt;<i> that exception.
+</I>&gt;<i>
+</I>&gt;<i> Thomas, Nicolas, I'm not familiar with the cycle adding stuff.  Are
+</I>&gt;<i> the values for these same between ST, MegaST(e), TT, Falcon...?
+</I>&gt;<i>
+</I>
+I don't think so, they're 68000 specific ; but on the other end, I would 
+be very surprised that some falcon programs are relying on strict cycles 
+counting (with cache and things like that on the 68030, it's almost 
+impossible to &quot;predict&quot; how it will run (except if you flush the cache at 
+some regular points)).
+
+But the question is : does it work without -D ? Some programs sometimes 
+try to generate an exception in order to determine what hardware is used. 
+It's harmless, but if -D is used you will have to use 'c' to continue.
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000977.html">[hatari-devel] MoonGames
+</A></li>
+	<LI>Next message: <A HREF="000981.html">[hatari-devel] MoonGames
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#979">[ date ]</a>
+              <a href="thread.html#979">[ thread ]</a>
+              <a href="subject.html#979">[ subject ]</a>
+              <a href="author.html#979">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

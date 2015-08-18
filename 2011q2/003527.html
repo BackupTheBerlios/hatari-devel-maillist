@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari UI with Qt
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20UI%20with%20Qt&In-Reply-To=%3C201106030935.11043.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003580.html">
+   <LINK REL="Next"  HREF="003530.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari UI with Qt</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20UI%20with%20Qt&In-Reply-To=%3C201106030935.11043.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari UI with Qt">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Jun  3 08:35:10 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003580.html">[hatari-devel] Steem debugger features not in Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="003530.html">[hatari-devel] start and break question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3527">[ date ]</a>
+              <a href="thread.html#3527">[ thread ]</a>
+              <a href="subject.html#3527">[ subject ]</a>
+              <a href="author.html#3527">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On torstai 02 kes&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 02/06/2011 20:27, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; Hm.  Switching Hatari itself from SDL-only to Qt+SDL would be quite
+</I>&gt;<i> &gt; large change.  Before considering that, I'd like to see for a bit
+</I>&gt;<i> &gt; longer how well Nokia manages Qt...
+</I>&gt;<i> 
+</I>&gt;<i> By doing a quick search for QT + SDL, it appears it's quite easy to
+</I>&gt;<i> embed an SDL program in a QT ones (need to pass to SDL the window's id
+</I>&gt;<i> provided by QT)
+</I>
+After looking at some of the search results, that's exactly the same way
+as what I use in the PyGtk Hatari UI.
+
+However, you will then have same issues that the PyGtk UI has:
+1. embedding SDL window using SDL's own facilities disables all of SDL's
+   own input processing
+2. embedding of SDL window is completely OS specific, it's not something
+   you write once and it works everywhere
+3. SDL has separate windows for fullscreen &amp; windowed mode
+
+1) is why I had to add my own code to Hatari for embedding its window.
+
+2) is the reason why the current Hatari &amp; Python UI have embedding support
+only for X11 as I only know how to do it on X11.
+
+I've understood from SDL's code that it's possible also on Windows, but as
+I cannot test it myself (and it requires also Windows specific socket code
+in case of remote API, somebody else needs to look into that).
+
+
+&gt;<i> Regarding what nokia will do with QT, even if development stopped
+</I>&gt;<i> definitly today, QT 4.7 is powerful enough to fill all our needs.
+</I>
+Doing Hatari's own UI with Qt will also mean switching from C to C++
+compiler.  As WinUAE &amp; Aranym are both C++ code, that will make some
+things easier.
+
+However, while I like Qt as widget set, I don't like C++ (debugging or
+otherwise), it reminds me too much of Perl (missing orthogonality in
+the language design etc).  If C's facilities for writing OO-code aren't
+enough, I'd rather use some higher level language like Python than C++. :-/
+
+
+&gt;<i> &gt; Ok, then it really needs a real, modern widget toolkit.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; In that case I think it's better to do the UI separately from Hatari
+</I>&gt;<i> &gt; and utilize the remote API.  Only if the remote UI turns out
+</I>&gt;<i> &gt; infeasible, I would go for integrating everything to Hatari binary
+</I>&gt;<i> &gt; itself.
+</I>&gt;<i> 
+</I>&gt;<i> I wonder if this could be an opportunity to &quot;clean&quot; Hatari and do a
+</I>&gt;<i> proper abstraction between the hardware emulation (which in the end
+</I>&gt;<i> mostly provides one video frame and one sound frame per vbl) and the
+</I>&gt;<i> emulator (which is reponsible for displaying video result and sending
+</I>&gt;<i> sound data to the audio system used by the OS).
+</I>
+Using a real widget toolkit for the UI provides:
+- good file selector that supports remote file systems, user shortcuts etc
+- support for internationalization and UTF-8 (filenames etc)
+- UI that scales automatically with content (needed for localization)
+etc.
+
+Doing Hatari options dialogs with something like that and their size
+not being constrained by Hatari's own window size is really nice.
+
+
+&gt;<i> The remote API implies to develop a lot of protocol to exchange data
+</I>&gt;<i> between the emulation and the emulator's UI ; I'm not really a big fan
+</I>&gt;<i> of this client-server mode when both parts are running on the same
+</I>&gt;<i> computer.
+</I>
+Except for debugger, it's really quite small amount of data &amp; one-way.
+
+For the debugger data, there's no need for extra protocol, you can
+either save the information to a file with existing debugger facilities
+or give debugger a filename that's actually a fifo.  For things like CPU
+instruction traces, you would anyway want to use a temporary file
+as you need to give it to some external viewer that can efficiently
+handle (potentially) really huge files.
+
+For the debugger data I think only thing needed is formalizing the current
+output a bit more (e.g. use tabs to separate columns), so that UI can find
+the data from it when it wants to put it into table columns instead of just 
+showing it as-is with monospace font.  Output might need also a terminator
+so that UI knows when to stop reading the fifo, but these are more of
+debugger code cleanup that new protocol...
+
+(I really don't want to support two different data output formats e.g. for
+disassembly, one for internal CLI debugger and one for internal GUI
+debugger.)
+
+
+Regarding the current (Python) Hatari UI, handling the configuration
+in Python without being able to re-use Hatari's configuration structures
+&amp; code was much more pain that the small amount of socket data.  That
+shouldn't be a problem for native code as it can include code from Hatari.
+
+
+&gt;<i> I think that what has beed made with SDL can be abstracted in a
+</I>&gt;<i> &quot;modularized&quot; way to allow other toolkits to access the emulation's data
+</I>&gt;<i> (registers, IO, ram, cpu, dsp, configuration, ...).
+</I>&gt;<i> 
+</I>&gt;<i> This would require some work to refactor some code in Hatari, but then
+</I>&gt;<i> it would benefit us for the emulation-emulator's UI integration in the
+</I>&gt;<i> same program, which would save some time on working on a remote API.
+</I>&gt;<i> 
+</I>&gt;<i> At least, openmsx and vice went this way, and they succeeded in doing
+</I>&gt;<i> it. I think it's the best choice performance-wise.
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003580.html">[hatari-devel] Steem debugger features not in Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="003530.html">[hatari-devel] start and break question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3527">[ date ]</a>
+              <a href="thread.html#3527">[ thread ]</a>
+              <a href="subject.html#3527">[ subject ]</a>
+              <a href="author.html#3527">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

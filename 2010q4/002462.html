@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Some news
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20news&In-Reply-To=%3C20101006234915.5275933f%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002453.html">
+   <LINK REL="Next"  HREF="002464.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Some news</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20news&In-Reply-To=%3C20101006234915.5275933f%40phineus%3E"
+       TITLE="[hatari-devel] Some news">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Oct  6 23:49:15 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002453.html">[hatari-devel] Some news
+</A></li>
+        <LI>Next message: <A HREF="002464.html">[hatari-devel] Some news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2462">[ date ]</a>
+              <a href="thread.html#2462">[ thread ]</a>
+              <a href="subject.html#2462">[ subject ]</a>
+              <a href="author.html#2462">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 06 Oct 2010 22:16:05 +0200
+Nicolas Pomar&#232;de &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt; wrote:
+
+&gt;<i> Le 06/10/2010 21:26, Laurent Sallafranque a &#233;crit :
+</I>&gt;<i> &gt; Hello,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I'm actually working on the main 68000 code (uae code)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I've started to integrate the latest WinUae code to hatari.
+</I>&gt;<i> &gt; Like this, we'll have a better 680x0 emulation, a much better 68030
+</I>&gt;<i> &gt; (with MMU) and why not, a 68060 (if we want to emulate the ct60
+</I>&gt;<i> &gt; cards and be able to see some recent demos).
+</I>&gt;<i> &gt;
+</I>[...]
+&gt;<i> That's good new, but try to keep a version of hatari that can be
+</I>&gt;<i> build with current uae or with winuae's one committing a new cpu core
+</I>&gt;<i> and removing the current one from mercurial does not look like a good
+</I>&gt;<i> option now, we will certainly need months of test/regression before
+</I>&gt;<i> considering the new core does all the current one does (I know some
+</I>&gt;<i> stack/exceptions used in some protections are not correctly emulated
+</I>&gt;<i> in winuae ; also some opcodes (tas for example) work differently).
+</I>&gt;<i>
+</I>&gt;<i> I think best would be to have a &quot;winuae-cpu&quot; directory in addition to 
+</I>&gt;<i> &quot;uae-cpu&quot; and have some define + flags in cmake to be able to choose
+</I>&gt;<i> the cpu core at compile time.
+</I>
+I second that, please open a new directory for that CPU core instead.
+I suggest to simply use &quot;cpu&quot; as directory name instead, at least this
+is what I used a couple of years ago when I started to work on the
+WinUAE CPU core (but then got interrupted by Nicolas' improvements for
+the old UAE core ;-)). You can find my old work here:
+
+<A HREF="http://hatari.cvs.sourceforge.net/viewvc/hatari/hatari/src/cpu/?pathrev=WINUAE_CPU_BRANCH">http://hatari.cvs.sourceforge.net/viewvc/hatari/hatari/src/cpu/?pathrev=WINUAE_CPU_BRANCH</A>
+
+Maybe it's a little bit useful to see which parts I had to modify to
+get it working at least a little bit...
+
+
+&gt;<i> I think it would be good also when modifying winuae's sources to not 
+</I>&gt;<i> remove amiga's specific code to put atari's one instead, but to keep 
+</I>&gt;<i> both with some conditionial defines.
+</I>&gt;<i> 
+</I>&gt;<i> eg :
+</I>&gt;<i> 
+</I>&gt;<i> #ifedef HATARI_BUILD
+</I>&gt;<i> .... &lt;new hatari code&gt;
+</I>&gt;<i> #else
+</I>&gt;<i> .... &lt;original amiga/winuae code&gt;
+</I>&gt;<i> #endif
+</I>&gt;<i> 
+</I>&gt;<i> This way we can keep track of all specific modifications made for
+</I>&gt;<i> hatari and it will be much easier to backport future winuae's
+</I>&gt;<i> improvements in hatari.
+</I>
+Hmm, but that will render the WinUAE code even more unreadable than it
+currently is?
+
+I think the best, but very time consuming solution would be to make all
+those CPU core files as independent from the emulated system as
+possible, and then to submit these patches upstream to WinUAE, but
+whether they would accept such patches is another question...
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002453.html">[hatari-devel] Some news
+</A></li>
+	<LI>Next message: <A HREF="002464.html">[hatari-devel] Some news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2462">[ date ]</a>
+              <a href="thread.html#2462">[ thread ]</a>
+              <a href="subject.html#2462">[ subject ]</a>
+              <a href="author.html#2462">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

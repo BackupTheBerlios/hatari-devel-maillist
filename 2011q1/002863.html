@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon sound and memory snapshot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20sound%20and%20memory%20snapshot&In-Reply-To=%3C367228781.631021.1295613003710.JavaMail.root%40mail-zstore-1-a.gicm.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002873.html">
+   <LINK REL="Next"  HREF="002864.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon sound and memory snapshot</H1>
+    <B>LAURENT SALLAFRANQUE</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20sound%20and%20memory%20snapshot&In-Reply-To=%3C367228781.631021.1295613003710.JavaMail.root%40mail-zstore-1-a.gicm.net%3E"
+       TITLE="[hatari-devel] Falcon sound and memory snapshot">laurent.sallafranque at arkea.com
+       </A><BR>
+    <I>Fri Jan 21 13:30:03 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002873.html">[hatari-devel] MP2 question
+</A></li>
+        <LI>Next message: <A HREF="002864.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2863">[ date ]</a>
+              <a href="thread.html#2863">[ thread ]</a>
+              <a href="subject.html#2863">[ subject ]</a>
+              <a href="author.html#2863">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+&gt;<i>From what I see, Crossbar is not included in memorySnapShot.c
+</I>
+The following lines are missing.
+
+In the header part of the code :
+#include crossbar.h
+
+
+In MemorySnapShot_Capture() function and in MemorySnapShot_Restore() function, there should be a call to Crossbar_MemorySnapShot_Capture()
+
+Maybe with a if to save/restore DmaSnd_MemorySnapShot_Capture() or Crossbar_MemorySnapShot_Capture() or maybe saving both of them without the if.
+
+
+Everything was implemented in crossbar.c and crossbar.h, but not used.
+
+Eero, feel free to change and upload the code, as I'm not at home this week end.
+
+Regards
+
+Laurent Sallafranque
+
+--
+Ce message et  toutes les pieces jointes (ci-apres  le &quot;message&quot;) sont
+confidentiels et etablis a l'intention exclusive de ses destinataires.
+Toute  utilisation ou  diffusion  non autorisee  est interdite.   Tout
+message  etant  susceptible  d'alteration,  l'emetteur  decline  toute
+responsabilite au titre de  ce message  s'il a  ete altere, deforme ou
+falsifie.
+                -----------------------------------
+This message and any  attachments (the &quot;message&quot;) are confidential and
+intended  solely   for  the   addressees.  Any  unauthorised   use  or
+dissemination is prohibited. As e-mails are susceptible to alteration,
+the issuer shall  not be  liable for  the  message if altered, changed
+or falsified.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002873.html">[hatari-devel] MP2 question
+</A></li>
+	<LI>Next message: <A HREF="002864.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2863">[ date ]</a>
+              <a href="thread.html#2863">[ thread ]</a>
+              <a href="subject.html#2863">[ subject ]</a>
+              <a href="author.html#2863">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

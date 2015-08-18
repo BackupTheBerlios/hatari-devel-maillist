@@ -1,0 +1,693 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Sound problem with PowerUp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Sound%20problem%20with%20PowerUp&In-Reply-To=%3C4BE59CDA.4040907%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002006.html">
+   <LINK REL="Next"  HREF="002008.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Sound problem with PowerUp</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Sound%20problem%20with%20PowerUp&In-Reply-To=%3C4BE59CDA.4040907%40free.fr%3E"
+       TITLE="[hatari-devel] Sound problem with PowerUp">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat May  8 19:18:18 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002006.html">[hatari-devel] Sound problem with PowerUp
+</A></li>
+        <LI>Next message: <A HREF="002008.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2011">[ date ]</a>
+              <a href="thread.html#2011">[ thread ]</a>
+              <a href="subject.html#2011">[ subject ]</a>
+              <a href="author.html#2011">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've added some CPU traces while powerup is running.
+
+When cpu video_cyc=160316, nSoundCycles goes to 159720.
+It looks like nSoundCycles value goes from positive to negative value or 
+something like that.
+This results in entering a loop during 159720 cycles, where no CPU 
+instruction is played.
+Only calls to DmaSnd_GenerateSamples() are generated during this time.
+
+Any idea ?
+
+...
+cpu video_cyc=   332 332@  0 : 0001356e: 55c8 ffbe 6500 0066 301f DBCS.W 
+D0,#$ffbe == 0001352e (FALSE)
+cpu video_cyc=   344 344@  0 : 0001352e: 1c32 5800 2c46 1416 d55c MOVE.B 
+(A2, D5.L*1, $00) == $0001378a,D6
+cpu video_cyc=   360 360@  0 : 00013532: 2c46 1416 d55c d644 db41 
+MOVEA.L D6,A6
+cpu video_cyc=   364 364@  0 : 00013534: 1416 d55c d644 db41 655a MOVE.B 
+(A6),D2
+cpu video_cyc=   372 372@  0 : 00013536: d55c d644 db41 655a 1c32 ADD.W 
+D2,(A4)+
+nSoundCycles : 376
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :2
+cpu video_cyc=   440 440@  0 : 000158fe: 4e61 3f06 3f07 227a de92 
+MVR2USP.L A1
+cpu video_cyc=   444 444@  0 : 00015900: 3f06 3f07 227a de92 3e19 MOVE.W 
+D6,-(A7)
+cpu video_cyc=   452 452@  0 : 00015902: 3f07 227a de92 3e19 6b28 MOVE.W 
+D7,-(A7)
+...
+cpu video_cyc=160280  24@  0 : 00015908: 3e19 6b28 23c9 0001 3798 MOVE.W 
+(A1)+,D7
+cpu video_cyc=160288  32@  0 : 0001590a: 6b28 23c9 0001 3798 3c29 BMI.B 
+#$00000028 == 00015934 (FALSE)
+cpu video_cyc=160296  40@  0 : 0001590c: 23c9 0001 3798 3c29 0800 MOVE.L 
+A1,$00013798
+cpu video_cyc=160316  60@  0 : 00015912: 3c29 0800 0246 fffe 0247 MOVE.W 
+(A1,$0800) == $00014474,D6
+nSoundCycles : 159720
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+...
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+frameLen : 2      dma.frameCounter_int : 2        n : 2  
+nSamplesToGenerate :879
+cpu video_cyc=    72  72@  0 : 00015916: 0246 fffe 0247 fffe 3c3b AND.W 
+#$fffe,D6
+cpu video_cyc=    80  80@  0 : 0001591a: 0247 fffe 3c3b 6020 1c3b AND.W 
+#$fffe,D7
+cpu video_cyc=    88  88@  0 : 0001591e: 3c3b 6020 1c3b 701c 33c6 MOVE.W 
+(PC, D6.W*1, $20) == $00015a2a,D6
+cpu video_cyc=   104 104@  0 : 00015922: 1c3b 701c 33c6 0001 593e MOVE.B 
+(PC, D7.W*1, $1c) == $00015a40,D6
+cpu video_cyc=   120 120@  0 : 00015926: 33c6 0001 593e 3e1f 3c1f MOVE.W 
+D6,$0001593e
+cpu video_cyc=   136 136@  0 : 0001592c: 3e1f 3c1f 4e69 4e73 43fa MOVE.W 
+(A7)+,D7
+cpu video_cyc=   144 144@  0 : 0001592e: 3c1f 4e69 4e73 43fa de66 MOVE.W 
+(A7)+,D6
+cpu video_cyc=   152 152@  0 : 00015930: 4e69 4e73 43fa de66 3e19 
+MVUSP2R.L A1
+
+
+Regards
+
+Laurent
+
+
+Le 08/05/2010 00:31, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> First, sorry for the length of the mail.
+</I>&gt;<i>
+</I>&gt;<i> I investigate on PowerUp STE game.
+</I>&gt;<i>
+</I>&gt;<i> I've added some fprintf in the code to try to understand the problem.
+</I>&gt;<i>
+</I>&gt;<i> Here is what I get :
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Correct sound:
+</I>&gt;<i>
+</I>&gt;<i> nSoundCycles : 453
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :2
+</I>&gt;<i> nSoundCycles : 410
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :2
+</I>&gt;<i> nSoundCycles : 423
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :2
+</I>&gt;<i> nSoundCycles : 324
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :1
+</I>&gt;<i> nSoundCycles : 467
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :2
+</I>&gt;<i> nSoundCycles : 420
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :2
+</I>&gt;<i> nSoundCycles : 381
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :2
+</I>&gt;<i> nSoundCycles : 358
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> From here, sound becomes bad and DmaSnd_GenerateSamples is called but 
+</I>&gt;<i> not Sound_SetSamplesPassed (how is this possible ?)
+</I>&gt;<i>
+</I>&gt;<i> nSoundCycles : 72709
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :400
+</I>&gt;<i>
+</I>&gt;<i> Sound becomes OK again :
+</I>&gt;<i>
+</I>&gt;<i> nSoundCycles : 243
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :1
+</I>&gt;<i> nSoundCycles : 386
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :2
+</I>&gt;<i> nSoundCycles : 339
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Sound becomes KO again :
+</I>&gt;<i>
+</I>&gt;<i> nSoundCycles : 84442
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :464
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :464
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :464
+</I>&gt;<i> frameLen : 2      dma.frameCounter_int : 2        n : 2  
+</I>&gt;<i> nSamplesToGenerate :464
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The nSoundCycles display is taken from static void 
+</I>&gt;<i> Sound_SetSamplesPassed(void) in sound.c
+</I>&gt;<i>
+</I>&gt;<i> static void Sound_SetSamplesPassed(void)
+</I>&gt;<i> {
+</I>&gt;<i>     int nSampleCycles;
+</I>&gt;<i>     int nSamplesPerFrame;
+</I>&gt;<i>     int nSoundCycles;
+</I>&gt;<i>
+</I>&gt;<i>     nSoundCycles = Cycles_GetCounter(CYCLES_COUNTER_SOUND);
+</I>&gt;<i> +    fprintf(stderr, &quot;nSoundCycles : %d\n&quot;, nSoundCycles);
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The second fprintf (framelen  dma.frameCounter_Int nSampletogenerate) 
+</I>&gt;<i> is added in DmaSnd_GenerateSamples() in DmaSound.c
+</I>&gt;<i>
+</I>&gt;<i>     }
+</I>&gt;<i>     else
+</I>&gt;<i>     {
+</I>&gt;<i>         /* Stereo 8-bit */
+</I>&gt;<i>
+</I>&gt;<i>         FreqRatio *= 2;
+</I>&gt;<i>         n = dma.frameCounter_int &amp; ~1;
+</I>&gt;<i>
+</I>&gt;<i>         for (i = 0; i &lt; nSamplesToGenerate; i++)
+</I>&gt;<i>         {
+</I>&gt;<i>             /* Is end of DMA buffer reached ? */
+</I>&gt;<i>             if ((dma.frameCounter_int | 1) &gt;= dma.frameLen) {
+</I>&gt;<i> +        fprintf(stderr, &quot;frameLen : %d      dma.frameCounter_int : 
+</I>&gt;<i> %d        n : %d  nSamplesToGenerate :%d\n&quot;,
+</I>&gt;<i>                     dma.frameLen,
+</I>&gt;<i>                     dma.frameCounter_int,
+</I>&gt;<i>                     n,
+</I>&gt;<i>                     nSamplesToGenerate);
+</I>&gt;<i>                 if (DmaSnd_EndOfFrameReached())
+</I>&gt;<i>                     break;
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The nSoundCycles value becomes very big after a few correct values (7 
+</I>&gt;<i> values in the upper trace).
+</I>&gt;<i> nSampletoGenerate becomes very big and the same sounds are read in the 
+</I>&gt;<i> buffer for 400 samples instead of 2 samples.
+</I>&gt;<i>
+</I>&gt;<i> May there be a bug in the computing of the nSoundCycles value ?
+</I>&gt;<i>
+</I>&gt;<i> How is it possible that I've got the displays of 
+</I>&gt;<i> &quot;DmaSnd_GenerateSamples()&quot; but not &quot;Sound_SetSamplesPassed()&quot; ?
+</I>&gt;<i>
+</I>&gt;<i> Any idea ?
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002006.html">[hatari-devel] Sound problem with PowerUp
+</A></li>
+	<LI>Next message: <A HREF="002008.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2011">[ date ]</a>
+              <a href="thread.html#2011">[ thread ]</a>
+              <a href="subject.html#2011">[ subject ]</a>
+              <a href="author.html#2011">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

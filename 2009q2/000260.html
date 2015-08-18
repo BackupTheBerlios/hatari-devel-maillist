@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari dsp debug mode ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20dsp%20debug%20mode%20%3F&In-Reply-To=%3C200904190052.04843.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000270.html">
+   <LINK REL="Next"  HREF="000261.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari dsp debug mode ?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20dsp%20debug%20mode%20%3F&In-Reply-To=%3C200904190052.04843.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari dsp debug mode ?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Apr 18 23:52:04 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000270.html">[hatari-devel] Hatari GEMDOS path handling issue?
+</A></li>
+        <LI>Next message: <A HREF="000261.html">[hatari-devel] Hatari dsp debug mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#260">[ date ]</a>
+              <a href="thread.html#260">[ thread ]</a>
+              <a href="subject.html#260">[ subject ]</a>
+              <a href="author.html#260">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 18 April 2009, Eero Tamminen wrote:
+&gt;<i> &gt; I've looked at your code.
+</I>&gt;<i> &gt; It's a good way to do it, but I thought at the single call to
+</I>&gt;<i> &gt; dsp_Debug(param).
+</I>&gt;<i>
+</I>&gt;<i> What kind of parameter that would be?  It may need to contain up to three
+</I>&gt;<i> values:
+</I>&gt;<i> - memory space (X/Y/P)
+</I>&gt;<i> - start address
+</I>&gt;<i> - end address
+</I>&gt;<i>
+</I>&gt;<i> And last two can be optional (if omitted, previous end address would be
+</I>&gt;<i> used as start address).  For register dump there would be no args.
+</I>&gt;<i>
+</I>&gt;<i> &gt; Like this, we would only have to implement 1 new function in dsp.c (and
+</I>&gt;<i> &gt; dsp.h).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; It would receive a parameter which would tell what is required to
+</I>&gt;<i> &gt; debug.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Do you agree with this ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If you want, I can try to fill the Todo sections.
+</I>&gt;<i>
+</I>&gt;<i> I'll do tomorrow couple of commits (using PC as default address and
+</I>&gt;<i> adding the DSP stubs) after re-reviewing my change.
+</I>
+Done.
+
+It's now easy to manually edit debugui.c to output memdump or disassembly
+from some address whenever it's invoked (I modified the code a little +
+added comments &amp; example).
+
+As to DSP debugging function stubs, they're now up to you.  :-)  You could
+put the address (range) string parsing to separate functions if you can
+share them with the m68k debugger functions.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000270.html">[hatari-devel] Hatari GEMDOS path handling issue?
+</A></li>
+	<LI>Next message: <A HREF="000261.html">[hatari-devel] Hatari dsp debug mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#260">[ date ]</a>
+              <a href="thread.html#260">[ thread ]</a>
+              <a href="subject.html#260">[ subject ]</a>
+              <a href="author.html#260">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

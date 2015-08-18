@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Portaudio making trouble (at least on mac)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Portaudio%20making%20trouble%20%28at%20least%20on%20mac%29&In-Reply-To=%3C200910012123.02896.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000771.html">
+   <LINK REL="Next"  HREF="000772.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Portaudio making trouble (at least on mac)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Portaudio%20making%20trouble%20%28at%20least%20on%20mac%29&In-Reply-To=%3C200910012123.02896.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Portaudio making trouble (at least on mac)">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Oct  1 20:23:02 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000771.html">[hatari-devel] Portaudio making trouble (at least on mac)
+</A></li>
+        <LI>Next message: <A HREF="000772.html">[hatari-devel] Portaudio making trouble (at least on mac)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#773">[ date ]</a>
+              <a href="thread.html#773">[ thread ]</a>
+              <a href="subject.html#773">[ subject ]</a>
+              <a href="author.html#773">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 01 October 2009, Christer Solskogen wrote:
+&gt;<i> Hatari runs and compile fine without portaudio. The only thing I see a
+</I>&gt;<i> lot of is this:
+</I>&gt;<i>
+</I>&gt;<i> Package portaudio-2.0 was not found in the pkg-config search path.
+</I>&gt;<i> Perhaps you should add the directory containing `portaudio-2.0.pc'
+</I>&gt;<i> to the PKG_CONFIG_PATH environment variable
+</I>&gt;<i> No package 'portaudio-2.0' found
+</I>
+These should come only once per Makefile:
+./debug/Makefile
+./uae-cpu/Makefile
+./Makefile
+./falcon/Makefile
+./gui-sdl/Makefile
+
+I.e. 2 x 5 warnings.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000771.html">[hatari-devel] Portaudio making trouble (at least on mac)
+</A></li>
+	<LI>Next message: <A HREF="000772.html">[hatari-devel] Portaudio making trouble (at least on mac)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#773">[ date ]</a>
+              <a href="thread.html#773">[ thread ]</a>
+              <a href="subject.html#773">[ subject ]</a>
+              <a href="author.html#773">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

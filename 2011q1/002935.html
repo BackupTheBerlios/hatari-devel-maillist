@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari CPU frequency shifter issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20CPU%20frequency%20shifter%20issue&In-Reply-To=%3C201101292259.33818.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002924.html">
+   <LINK REL="Next"  HREF="002938.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari CPU frequency shifter issue</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20CPU%20frequency%20shifter%20issue&In-Reply-To=%3C201101292259.33818.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Hatari CPU frequency shifter issue">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sat Jan 29 21:59:33 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002924.html">[hatari-devel] Hatari CPU frequency shifter issue
+</A></li>
+        <LI>Next message: <A HREF="002938.html">[hatari-devel] Hatari CPU frequency shifter issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2935">[ date ]</a>
+              <a href="thread.html#2935">[ thread ]</a>
+              <a href="subject.html#2935">[ subject ]</a>
+              <a href="author.html#2935">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 28 tammikuu 2011, Eero Tamminen wrote:
+&gt;&gt;<i> Actually, no memory snapshots are required.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Just opening and closing the Hatari Options menu breaks the Mahab demo
+</I>&gt;&gt;<i> for me.
+</I>&gt;<i> 
+</I>&gt;<i> F12 + Enter does it.   Canceling the Options menu with Esc doesn't have
+</I>&gt;<i> any issues.
+</I>&gt;<i> 
+</I>&gt;<i> After iterating this a lot with debug prints, I found out that
+</I>&gt;<i> although no options were changed, this code in
+</I>&gt;<i> configuration.c::Configuration_Apply():
+</I>...
+&gt;<i> Changes the nCpuFreqShift from zero to one and that breaks (freezes)
+</I>&gt;<i> Mahab.
+</I>&gt;<i> 
+</I>&gt;<i> If Hatari is started with something else than --machine st/ste,
+</I>&gt;<i> nCpuFreqShift is non-zero and Mahab won't even start.
+</I>&gt;<i> 
+</I>&gt;<i> I strongly think that above code should be moved to
+</I>&gt;<i> M68000_CheckCpuLevel() which is called both by TOS switch and
+</I>&gt;<i> Configuration_Apply() code.  Rest of the CPU related checks are anyway
+</I>&gt;<i> done there already.
+</I>&gt;<i> 
+</I>&gt;<i> Does anybody have any objections for this?
+</I>
+Patch attached.  With this it made sense to rename the function too
+and re-ordering the lines in tos.c makes it a bit clearer what affects what.
+
+This fixes Hatari to always work the same way (as it should) regardless of
+TOS version changes and means that Mahab demo doesn't anymore work
+when using the old UAE core (even when starting with ST emulation).
+
+
+&gt;<i> As to nCpuFreqShift variable, besides above code, it's referenced only in
+</I>&gt;<i> following places:
+</I>&gt;<i> ----------
+</I>&gt;<i> ./includes/m68000.h:extern int nCpuFreqShift;
+</I>&gt;<i> ./includes/m68000.h:    cycles = cycles &gt;&gt; nCpuFreqShift;
+</I>&gt;<i> ./includes/m68000.h:    cycles = cycles &gt;&gt; nCpuFreqShift;
+</I>&gt;<i> ./m68000.c:int nCpuFreqShift;              /* Used to emulate higher CPU
+</I>&gt;<i> frequencies: 0=8MHz, 1=16MHz, 2=32Mhz */
+</I>&gt;<i> ./blitter.c:    nCyclesMainCounter += all_cycles &gt;&gt; nCpuFreqShift;
+</I>&gt;<i> ./blitter.c:
+</I>&gt;<i> CycInt_AddRelativeInterrupt((CurrentInstrCycles+nWaitStateCycles)&gt;&gt;nCpuFr
+</I>&gt;<i> eqShift, ----------
+</I>&gt;<i> 
+</I>&gt;<i> Because Mahab works fine with it being zero and breaks when it's
+</I>&gt;<i> non-zero, maybe DSP cycle count isn't taking it into account properly?
+</I>
+Laurent?
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: cpu-settings.diff
+Type: text/x-patch
+Size: 5116 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110129/9228f02b/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110129/9228f02b/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002924.html">[hatari-devel] Hatari CPU frequency shifter issue
+</A></li>
+	<LI>Next message: <A HREF="002938.html">[hatari-devel] Hatari CPU frequency shifter issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2935">[ date ]</a>
+              <a href="thread.html#2935">[ thread ]</a>
+              <a href="subject.html#2935">[ subject ]</a>
+              <a href="author.html#2935">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

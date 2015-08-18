@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Wrong memory init
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wrong%20memory%20init&In-Reply-To=%3C4ED2ACAC.7030103%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004216.html">
+   <LINK REL="Next"  HREF="004219.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Wrong memory init</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wrong%20memory%20init&In-Reply-To=%3C4ED2ACAC.7030103%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Wrong memory init">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Nov 27 22:33:32 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004216.html">[hatari-devel] Wrong memory init
+</A></li>
+        <LI>Next message: <A HREF="004219.html">[hatari-devel] Stereo DC filtering which accounts for DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4217">[ date ]</a>
+              <a href="thread.html#4217">[ thread ]</a>
+              <a href="subject.html#4217">[ subject ]</a>
+              <a href="author.html#4217">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 27/11/2011 21:20, Thomas Huth wrote:
+&gt;<i>
+</I>&gt;<i>   Hi!
+</I>&gt;<i>
+</I>&gt;<i> Am Sun, 27 Nov 2011 14:23:33 +0100
+</I>&gt;<i> schrieb Nicolas Pomar&#232;de&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt;:
+</I>&gt;<i>
+</I>&gt;&gt;<i> I spent some hard hours trying to fix the game Yolanda (on Pompey
+</I>&gt;&gt;<i> Pirates 46).
+</I>&gt;<i>
+</I>&gt;<i> Welcome to the club ;-) I also already spent countless hours with that
+</I>&gt;<i> game to figure out what goes wrong there. But unlike you I always
+</I>&gt;<i> failed in the past (maybe just because we did not have that fast-boot
+</I>&gt;<i> option in Hatari yet)...
+</I>
+Yes, at one point I really suspected a TOS problem rather than hardware 
+emulation, and that's really the harder to fix, having to go through TOS 
+is really a pain and time consuming :)
+
+That's often the problem with games compilation (compared to demos), 
+they sometimes uses &quot;shortcuts&quot; (ie ugly coding) that can conflict with 
+the way we patch tos.
+
+&gt;<i> // As TOS checks hardware for memory size + connected devices on boot-up
+</I>&gt;<i> // we set these values ourselves and fill in the magic numbers so TOS
+</I>&gt;<i> // skips these tests which would crash the emulator as the reference the MMU
+</I>&gt;<i>
+</I>&gt;<i> So I guess in the early days of WinSTon there was a problem when TOS
+</I>&gt;<i> tried to detect the memory size, so that test got bypassed by patching
+</I>&gt;<i> the memvalid variables.
+</I>&gt;<i>
+</I>&gt;<i> I agree that this is not necessary anymore for normal TOS when using
+</I>&gt;<i> less than 4 MiB of memory...
+</I>
+Yes, Winston certainly put some code back then when the hardware was not 
+as correctly emulated as it is now.
+
+&gt;<i> So I would suggest to change the if-statement like this:
+</I>&gt;<i>
+</I>&gt;<i> if ((ConfigureParams.System.bFastBoot&amp;&amp;  bIsEmuTOS)
+</I>&gt;<i>       || (ConfigureParams.Memory.nMemorySize&gt;  4&amp;&amp;  !bIsEmuTOS))
+</I>&gt;<i>
+</I>&gt;<i> That means patch it when fast boot has been enabled for EmuTOS or patch
+</I>&gt;<i> it when using&gt;  4 MiB memory when using normal TOS.
+</I>&gt;<i>
+</I>&gt;<i> What do you think?
+</I>
+I'm OK with that, the code block should not be removed but slightly 
+changed to not apply in most common STF/STE case with &lt; 4 MB.
+
+&gt;<i>
+</I>&gt;&gt;<i> Additionnaly, I think bFastBoot should be false by default, to ensure
+</I>&gt;&gt;<i> the system always starts in the maximum compatibility level.
+</I>&gt;<i>
+</I>&gt;<i> You mean &quot;ConfigureParams.System.bFastBoot = false&quot; in configuration.c ?
+</I>&gt;<i> ... that's fine with me.
+</I>
+That's it.
+
+
+&gt;&gt;<i> The user can still change it later if he wants(this is used in tos.c, when
+</I>&gt;&gt;<i> patch has TP_HDIMAGE_OFF ; is it still useful ?)
+</I>&gt;<i>
+</I>&gt;<i> It makes a big difference with TOS 2.05 and TOS 2.06. That TOS patch is
+</I>&gt;<i> used to skip the annoying memory test sequence there, so I'd say we
+</I>&gt;<i> should keep this.
+</I>
+OK ; I usually press 'esc' when this happens, but I agree it's useful.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004216.html">[hatari-devel] Wrong memory init
+</A></li>
+	<LI>Next message: <A HREF="004219.html">[hatari-devel] Stereo DC filtering which accounts for DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4217">[ date ]</a>
+              <a href="thread.html#4217">[ thread ]</a>
+              <a href="subject.html#4217">[ subject ]</a>
+              <a href="author.html#4217">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

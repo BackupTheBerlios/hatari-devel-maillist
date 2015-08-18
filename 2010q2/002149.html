@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari performance issue on OSX
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20performance%20issue%20on%20OSX&In-Reply-To=%3C201005172252.11222.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002085.html">
+   <LINK REL="Next"  HREF="002173.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari performance issue on OSX</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20performance%20issue%20on%20OSX&In-Reply-To=%3C201005172252.11222.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari performance issue on OSX">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon May 17 21:52:11 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002085.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002173.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2149">[ date ]</a>
+              <a href="thread.html#2149">[ thread ]</a>
+              <a href="subject.html#2149">[ subject ]</a>
+              <a href="author.html#2149">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 13 May 2010, Anders Eriksson wrote:
+&gt;<i> Test setup:
+</I>&gt;<i>
+</I>&gt;<i> Atari STe
+</I>&gt;<i> TOS 1.62
+</I>&gt;<i> More accurate CPU ON
+</I>&gt;<i> Frameskip 0
+</I>
+Borders on or off?   (If with ON, with what max width &amp; height?)
+
+
+&gt;<i> Froggies Over The Fence main menu (<A HREF="http://pouet.net/prod.php?which=8936">http://pouet.net/prod.php?which=8936</A>)
+</I>&gt;<i>
+</I>&gt;<i>   ---------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> | Machine     | W1x | W2x | FS1x | FS2x |
+</I>&gt;<i> |=======================================|
+</I>&gt;<i> | Macbook Pro | 35% | 65% | 21%  | 23%  |
+</I>&gt;<i> |---------------------------------------|
+</I>&gt;<i> | VMware      | 19% | 20% | 18%  | 19%  |
+</I>&gt;<i> |---------------------------------------|
+</I>&gt;<i> | Mac Mini    | 31% | 76% | 15%  | 18%  |
+</I>&gt;<i> |---------------------------------------|
+</I>&gt;<i> | U9200       | 35% | 37% | 23%  | 26%  |
+</I>&gt;<i>
+</I>&gt;<i>   ---------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> W1x = Windowed mode 1x zoom
+</I>&gt;<i> W2x = Windowed mode 2x zoom
+</I>&gt;<i> FS1x = Fullscreen mode 1x zoom
+</I>&gt;<i> FS2x = Fullscreen mode 2x zoom
+</I>
+Thanks!
+
+What the percentage is?  Whole system CPU usage?  Hatari CPU usage?
+I guess these numbers are with the slowed down Hatari?
+
+What are the numbers when you set frame skip to 1?
+
+
+For me[1], Hatari takes ~33% and X server ~12% of CPU, i.e. whole system CPU
+usage is a bit over 40% when using 2x zoom.  With 1x zoom, X server CPU
+usage drops to 5% and whole system CPU usage a bit below 40%.
+
+[1] 7 years old Athlon XP 1.4Ghz with Matrox G550 card in AGP x4 slot
+     running Debian stable.
+
+
+&gt;<i> So what conclusions we can draw from this is that running Hatari inside a
+</I>&gt;<i> virtual machine with Ubuntu is (much) faster than running it native in OS
+</I>&gt;<i> X. Both for windowed mode and fullscreen mode. This if anything should
+</I>&gt;<i> make it pretty clear that something is not done perfectly in the OS X
+</I>&gt;<i> rendering.
+</I>
+In which process(es) the CPU is spent according to &quot;top&quot;?
+
+
+Zoom doesn't change how many SDL updates are done, only thing that changes
+is the area Hatari ask SDL to blit to screen.
+
+
+&gt;<i> I could do more tests with more machines, but I think this shows that
+</I>&gt;<i> something is not working as it should.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> If we look at CPU useage increase between windowed 1x and 2x zoom:
+</I>&gt;<i>
+</I>&gt;<i> Macbook Pro : 1.86 times slower
+</I>&gt;<i> VMware      : 1.05 times slower
+</I>&gt;<i> Mac Mini    : 2.45 times slower
+</I>&gt;<i> U9200       : 1.06 times slower
+</I>&gt;<i>
+</I>&gt;<i> From this we can see that the 2x zoom makes 5-6% difference in Ubuntu
+</I>&gt;<i> both on real ahrdware on virtualised inside VMware/OS X.
+</I>&gt;<i> The native OS X version slowes down a lot more.
+</I>
+On my machine, on Hatari side it's almost within margin of error[2],
+on X server (i.e. system) side, zooming doubles the X server CPU usage.
+Which seems logical as there's double the data to handle.
+
+[2] With this particular demo rest of the overhead in emulation is much
+ larger than the cycles spent in zooming the Atari screen content, so
+ the zoom size doesn't really show in Hatari CPU usage.
+
+
+&gt;<i> Next the comparison for fullscreen 1x and 2x zoom:
+</I>&gt;<i>
+</I>&gt;<i> Macbook Pro : 1.10 times slower
+</I>&gt;<i> VMware      : 1.06 times slower
+</I>&gt;<i> Mac Mini    : 1.20 times slower
+</I>&gt;<i> U9200       : 1.13 times slower
+</I>&gt;<i>
+</I>&gt;<i> And in fullscreen OS X is much more on par with the rest, I'd say the
+</I>&gt;<i> differencies here are within the margin of error.
+</I>
+My guess:  in fullscreen OSX switches compositing off, so that application
+can draw directly to the screen.  AFAIK Linux compositing managers usually
+do the same.
+
+
+&gt;<i> Can you now belive that the OS X version of Hatari renders much too slow
+</I>&gt;<i> in windowed mode?
+</I>&gt;<i>
+</I>&gt;<i> &gt; Just to verify, even when running hatari with both &quot;--statusbar off&quot;
+</I>&gt;<i> &gt; and &quot;--drive-led off&quot; options, it's slow in windowed mode?
+</I>&gt;<i>
+</I>&gt;<i> Yes, it doesn't matter as long as long as the HUD is not active. If the
+</I>&gt;<i> HUD becomes active, it will slow down in OS X windowed mode only.
+</I>&gt;<i>
+</I>&gt;<i> &gt; If your OS / SDL is limiting (Vsync()ing) window updates to your (LCD)
+</I>&gt;<i> &gt; monitor updates (60Hz?) and you ask the emulation to run at higher
+</I>&gt;<i> &gt; screen update frequency, things will *obviously* be slower than they
+</I>&gt;<i> &gt; should.
+</I>&gt;<i>
+</I>&gt;<i> I don't ask it to be faster than the host screen frequency if vsync is
+</I>&gt;<i> used, how could I? My host is either 60 or 50 Hz and the Atari ST/e is at
+</I>&gt;<i> 50 Hz. I don't do these tests in monochrome mode.
+</I>
+If your system cannot keep up with the 50Hz screen refresh rate of Hatari,
+and SDL is doing Vsync, next speeds that you get on 60Hz monitor are 30Hz,
+20Hz, 15Hz...
+
+Try enable compositing on Linux and see whether you get the same effect
+as what happens on OSX.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002085.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002173.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2149">[ date ]</a>
+              <a href="thread.html#2149">[ thread ]</a>
+              <a href="subject.html#2149">[ subject ]</a>
+              <a href="author.html#2149">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger usage examples?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20usage%20examples%3F&In-Reply-To=%3C201106120110.34994.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003579.html">
+   <LINK REL="Next"  HREF="003592.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger usage examples?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20usage%20examples%3F&In-Reply-To=%3C201106120110.34994.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Debugger usage examples?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jun 12 00:10:34 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003579.html">[hatari-devel] Debugger usage examples?
+</A></li>
+        <LI>Next message: <A HREF="003592.html">[hatari-devel] Debugger usage examples?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3582">[ date ]</a>
+              <a href="thread.html#3582">[ thread ]</a>
+              <a href="subject.html#3582">[ subject ]</a>
+              <a href="author.html#3582">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 11 kes&#228;kuu 2011, Eero Tamminen wrote:
+&gt;<i> Currently only command where expression doesn't need quoting is
+</I>&gt;<i> address breakpoint (&quot;a&quot;).
+</I>&gt;<i> 
+</I>&gt;<i> Same can be done for any command that either:
+</I>&gt;<i> - takes only a single input value and never more, or
+</I>&gt;<i> - all other input to the command is separated by some character
+</I>&gt;<i>   that cannot be used in the expressions.
+</I>&gt;<i> 
+</I>&gt;<i> In case of &quot;a&quot; command, the options are separated with ':' character
+</I>&gt;<i> which isn't used by expressions.
+</I>&gt;<i> 
+</I>&gt;<i> However, currently there aren't any other such commands,
+</I>&gt;<i> besides &quot;a&quot; and &quot;c&quot; (continue), but for &quot;c&quot; I didn't think
+</I>&gt;<i> non-quoted expression evalution to be necessary. :-)
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i> One possibility would be separate range values with some other character
+</I>&gt;<i> like ':' instead of '-':
+</I>&gt;<i> 	d $100:$200
+</I>
+Actually, after looking at the code, getting this:
+	d pc
+	d text
+
+Working shouldn't be that hard.  I just need to add CPU/DSP flag to
+Eval_Range() function calls and then user can give range start &amp; end
+addresses as also as varibles, registers or symbol values.
+
+&gt;<i> Then you could instead of:
+</I>&gt;<i> 	d &quot;pc&quot;-&quot;pc+$20&quot;
+</I>&gt;<i> use:
+</I>&gt;<i> 	d pc:pc+$20
+</I>&gt;<i> 	d pc
+</I>&gt;<i> 
+</I>&gt;<i> Same for the &quot;m&quot; command.
+</I>
+For arithmetic expressions (&quot;pc+$20&quot;) and indirect addressing (&quot;(a0)&quot;),
+one will still need quotes, but I don't those are needed that much.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003579.html">[hatari-devel] Debugger usage examples?
+</A></li>
+	<LI>Next message: <A HREF="003592.html">[hatari-devel] Debugger usage examples?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3582">[ date ]</a>
+              <a href="thread.html#3582">[ thread ]</a>
+              <a href="subject.html#3582">[ subject ]</a>
+              <a href="author.html#3582">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

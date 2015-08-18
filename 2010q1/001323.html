@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Wotanoid problem : Fixed for me ;)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wotanoid%20problem%20%3A%20Fixed%20for%20me%20%3B%29&In-Reply-To=%3C4B5B82B0.9040607%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001322.html">
+   <LINK REL="Next"  HREF="001324.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Wotanoid problem : Fixed for me ;)</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wotanoid%20problem%20%3A%20Fixed%20for%20me%20%3B%29&In-Reply-To=%3C4B5B82B0.9040607%40free.fr%3E"
+       TITLE="[hatari-devel] Wotanoid problem : Fixed for me ;)">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Jan 24 00:13:52 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001322.html">[hatari-devel] Wotanoid problem
+</A></li>
+        <LI>Next message: <A HREF="001324.html">[hatari-devel] Wotanoid problem : Fixed for me ;)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1323">[ date ]</a>
+              <a href="thread.html#1323">[ thread ]</a>
+              <a href="subject.html#1323">[ subject ]</a>
+              <a href="author.html#1323">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok, I've got wotanoid working ;)
+
+I had to patch 2 parts of hatari : gemdos and iomemtabFalcon
+
+As I'm not an expert at all with gemdos, I prefer asking you if my fix 
+is correct before upload it.
+
+The problem is in Fopen.
+The second value passed (number of octets to read was -1in the program)
+
+With this value, we immediately return.
+The Fread reads 0 octets and nothing is loaded from the file.
+
+I've added a test :
+if the parameter = -1, It loads the whole file.
+
+
+For iomemtabFalcon, I had to patch another memory address.
+
+Patch is just below.
+could you tell me if this is OK for you ?
+
+Regards
+
+Laurent
+
+
+
+
+diff -r ebc4d432fc2e src/gemdos.c
+--- a/src/gemdos.c      Fri Jan 22 00:44:43 2010 +0100
++++ b/src/gemdos.c      Sun Jan 24 00:11:54 2010 +0100
+@@ -1747,6 +1747,9 @@
+
+        nBytesLeft = FileSize-CurrentPos;
+
++       if (Size = -1)
++               Size = FileSize;
++
+        /* Check for bad size and End Of File */
+        if (Size &lt;= 0 || nBytesLeft &lt;= 0)
+        {
+
+
+diff -r ebc4d432fc2e src/ioMemTabFalcon.c
+--- a/src/ioMemTabFalcon.c      Fri Jan 22 00:44:43 2010 +0100
++++ b/src/ioMemTabFalcon.c      Sun Jan 24 00:11:54 2010 +0100
+@@ -236,6 +236,7 @@
+
+        { 0xff9200, SIZE_WORD, Joy_StePadButtons_ReadWord, 
+IoMem_WriteWithoutInterception },    /* Joypad fire buttons */
+        { 0xff9202, SIZE_WORD, Joy_StePadMulti_ReadWord, 
+Joy_StePadMulti_WriteWord },     /* Joypad directions/buttons/selection */
++       { 0xff9206, SIZE_BYTE, IoMem_VoidRead, IoMem_VoidWrite 
+},                               /* No bus error here ; fix Wotanoid*/
+        { 0xff9210, SIZE_BYTE, IoMem_VoidRead, IoMem_VoidWrite 
+},                               /* No bus error here */
+        { 0xff9211, SIZE_BYTE, IoMem_VoidRead, 
+IoMem_WriteWithoutInterception },          /* Joypad 0 X position (?) */
+        { 0xff9212, SIZE_BYTE, IoMem_VoidRead, IoMem_VoidWrite 
+},                               /* No bus error here */
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001322.html">[hatari-devel] Wotanoid problem
+</A></li>
+	<LI>Next message: <A HREF="001324.html">[hatari-devel] Wotanoid problem : Fixed for me ;)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1323">[ date ]</a>
+              <a href="thread.html#1323">[ thread ]</a>
+              <a href="subject.html#1323">[ subject ]</a>
+              <a href="author.html#1323">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

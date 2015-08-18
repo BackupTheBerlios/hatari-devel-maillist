@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Catching trap exit?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Catching%20trap%20exit%3F&In-Reply-To=%3C201011210143.50940.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002552.html">
+   <LINK REL="Next"  HREF="002667.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Catching trap exit?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Catching%20trap%20exit%3F&In-Reply-To=%3C201011210143.50940.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Catching trap exit?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Nov 21 00:43:50 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002552.html">[hatari-devel] Catching trap exit?
+</A></li>
+        <LI>Next message: <A HREF="002667.html">[hatari-devel] Catching trap exit?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2654">[ date ]</a>
+              <a href="thread.html#2654">[ thread ]</a>
+              <a href="subject.html#2654">[ subject ]</a>
+              <a href="author.html#2654">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 20 October 2010, Eero Tamminen wrote:
+&gt;<i> Ok, so it will really need to know the instruction length.
+</I>&gt;<i>
+</I>&gt;<i> -&gt; Will need to wait Markus' code and it (hopefully) providing
+</I>&gt;<i>     a function for this...
+</I>&gt;<i>
+</I>&gt;<i> I guess breakpoints will then also need some flag to silence the normal
+</I>&gt;<i> output from breakpoint matching as that could be annoying. :-)
+</I>&gt;<i>
+</I>&gt;<i> &gt; &gt; I quickly looked at these values but they didn't seem to match the
+</I>&gt;<i> &gt; &gt; next instruction address so I guess I was doing something wrong.  How
+</I>&gt;<i> &gt; &gt; you would get that value in Hatari C-code?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Have a look at m68k_do_rts in cpuemu.h :
+</I>&gt;<i> &gt; m68k_setpc(get_long(m68k_areg(regs, 7)));
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; so get_long(m68k_areg(regs, 7)) is what you need to return from a non
+</I>&gt;<i> &gt; exception branch (for exceptions, return pc is at 2(a7), so
+</I>&gt;<i> &gt; get_long(m68k_areg(regs, 7)+2) will do the trick)
+</I>&gt;<i>
+</I>&gt;<i> On the Hatari side that should be:
+</I>&gt;<i> 	STMemory_ReadLong(Regs[REG_A7]+2)
+</I>&gt;<i>
+</I>&gt;<i> Which I've already tried.  However, it doesn't give the same value as
+</I>&gt;<i> what the UAE disassembly function gives as next value.
+</I>&gt;<i>
+</I>&gt;<i> When there's a VDI exception, I get:
+</I>&gt;<i> next PC: $fe5bcc
+</I>&gt;<i> (sp): $fe1f1a
+</I>&gt;<i> 2(sp): $1f1a000c
+</I>&gt;<i>
+</I>&gt;<i> And for Bios exceptions which have the opcode in stack, I get (for
+</I>&gt;<i> example): next PC: $fc9260
+</I>&gt;<i> (sp): $70000
+</I>&gt;<i> 2(sp): $0
+</I>&gt;<i>
+</I>&gt;<i> Debugger is called at the end of newcpu.c::do_specialties() which seems
+</I>&gt;<i> to happen before the exception handling in AUE core.  At this point D0
+</I>&gt;<i> is at least OK, but could it affect what's on the stack?
+</I>
+I forgot to mail the code demonstrating this.  It's now attached.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: trap-exit.diff
+Type: text/x-diff
+Size: 3446 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20101121/114e5cff/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20101121/114e5cff/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002552.html">[hatari-devel] Catching trap exit?
+</A></li>
+	<LI>Next message: <A HREF="002667.html">[hatari-devel] Catching trap exit?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2654">[ date ]</a>
+              <a href="thread.html#2654">[ thread ]</a>
+              <a href="subject.html#2654">[ subject ]</a>
+              <a href="author.html#2654">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

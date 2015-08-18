@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] source level debugging with the Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20source%20level%20debugging%20with%20the%20Hatari%20debugger&In-Reply-To=%3C4B37DAB7.9090908%40defence-force.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001140.html">
+   <LINK REL="Next"  HREF="001145.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] source level debugging with the Hatari debugger</H1>
+    <B>Mickael Pointier</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20source%20level%20debugging%20with%20the%20Hatari%20debugger&In-Reply-To=%3C4B37DAB7.9090908%40defence-force.org%3E"
+       TITLE="[hatari-devel] source level debugging with the Hatari debugger">mike at defence-force.org
+       </A><BR>
+    <I>Sun Dec 27 23:07:51 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001140.html">[hatari-devel] Hatari debugger improvements
+</A></li>
+        <LI>Next message: <A HREF="001145.html">[hatari-devel] source level debugging with the Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1143">[ date ]</a>
+              <a href="thread.html#1143">[ thread ]</a>
+              <a href="subject.html#1143">[ subject ]</a>
+              <a href="author.html#1143">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE><A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> this may be feasible, but is it really useful ?
+</I>&gt;<i>
+</I>&gt;<i> Apart from the complexity to load/parse the different debug symbols 
+</I>&gt;<i> formats (for example, if I recall correctly devpac could produce 3 
+</I>&gt;<i> different format), what will it be used for ?
+</I>&gt;<i>
+</I>&gt;<i> In any case, it won't be possible to use this with existing 
+</I>&gt;<i> games/demos, so only case would be for programs compiled with debug 
+</I>&gt;<i> symbols (I don't think there're a lot of them) or for homemade asm 
+</I>&gt;<i> programs that users would compile from their own sources.
+</I>&gt;<i>
+</I>&gt;<i> But in that case, I think that adebog or monst are way more powerful 
+</I>&gt;<i> than Hatari debugger, with a built in window system, register locking, 
+</I>&gt;<i> search in disasm mode, ...
+</I>&gt;<i>
+</I>&gt;<i> I really used a lot of this some years ago and I don't see how adding 
+</I>&gt;<i> symbol to hatari debugger would make it much useful than debugging 
+</I>&gt;<i> directly under the emulated atari, there so much power in monst that 
+</I>&gt;<i> making Hatari at the same level would be a huge task.
+</I>&gt;<i>
+</I>&gt;<i> Well, that's just my point, but I don't think this is worth the effort 
+</I>&gt;<i> and the added complexity/bloat that may result in the code (at least 
+</I>&gt;<i> it would be limited to debugui.c, so not much side effect on other parts)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>Well, a native emulator debugger has many advantages compared to 
+something like MonST/Adebog.
+
+In Euphoric (Oric emulator), we have the possibility to load a file 
+containing just a simple list of adresses/labels, and this by itself is 
+a great help.
+
+Problem of MonST/Adebog/TurboAss, etc... is that they interact with what 
+you are currently debugging. Typically an Atari ST demo uses a gazillion 
+of timers, replaces the VBl, cut the mfp, etc... and is totally 
+impossible to debug with MonST (monst dies as soon as the VBL is 
+disabled). You can do it with Adebog in IPL/7, but then you have 
+restrictions about what you can do.
+
+I don't think such an emulator-integrated debugger should be able to 
+understand all the file formats of the universe, but just being able to 
+load symbols/address files would make it possible to break at any time, 
+and have symbols in the rom, in the program, etc... if you add the 
+possibility to add symbols from the debugger and then save them, you can 
+progressively start to comment the program you are debugging.
+
+A real native debugger can also support non intrusive breakpoints, 
+breakpoints on data changes, conditional breakpoints that do not hog the 
+machine, etc....
+
+   Micka&#235;l Pointier
+
+
+
+
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001140.html">[hatari-devel] Hatari debugger improvements
+</A></li>
+	<LI>Next message: <A HREF="001145.html">[hatari-devel] source level debugging with the Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1143">[ date ]</a>
+              <a href="thread.html#1143">[ thread ]</a>
+              <a href="subject.html#1143">[ subject ]</a>
+              <a href="author.html#1143">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

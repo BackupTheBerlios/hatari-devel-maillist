@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] mac OS X version for Hatari 1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20mac%20OS%20X%20version%20for%20Hatari%201.5&In-Reply-To=%3C4E1ACABC.40400%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003679.html">
+   <LINK REL="Next"  HREF="003681.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] mac OS X version for Hatari 1.5</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20mac%20OS%20X%20version%20for%20Hatari%201.5&In-Reply-To=%3C4E1ACABC.40400%40corp.free.fr%3E"
+       TITLE="[hatari-devel] mac OS X version for Hatari 1.5">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jul 11 12:04:44 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003679.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+        <LI>Next message: <A HREF="003681.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3680">[ date ]</a>
+              <a href="thread.html#3680">[ thread ]</a>
+              <a href="subject.html#3680">[ subject ]</a>
+              <a href="author.html#3680">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 11/07/2011 11:54, Christer Solskogen a &#233;crit :
+&gt;<i> On Sat, Jul 9, 2011 at 6:57 PM, Nicolas Pomar&#232;de&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt;  wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Good, thanks a lot for testing. A few more sound patches to commit and
+</I>&gt;&gt;<i> release should be ready to be made (at last !)
+</I>&gt;<i>
+</I>&gt;<i> Here is the build log on Mac OS X 10.6 (with warnings)
+</I>&gt;<i>
+</I>
+Thanks for the logs, this is roughly  what I get too under linux, so 
+those warnings should be harmless.
+
+&gt;<i> [ 17%] Building C object src/debug/CMakeFiles/Debug.dir/debugui.c.o
+</I>&gt;<i> /Users/solskogen/source/hatari/src/debug/debugui.c: In function
+</I>&gt;<i> &#8216;DebugUI_GetCommand&#8217;:
+</I>&gt;<i> /Users/solskogen/source/hatari/src/debug/debugui.c:700: warning:
+</I>&gt;<i> assignment discards qualifiers from pointer target type
+</I>
+This one seems new ? Eero ?
+
+&gt;<i> [ 26%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp_cpu.c.o
+</I>&gt;<i> /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_pm_4&#8217;:
+</I>&gt;<i> /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: warning:
+</I>&gt;<i> &#8216;save_ly&#8217; may be used uninitialized in this function
+</I>&gt;<i> /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: note:
+</I>&gt;<i> &#8216;save_ly&#8217; was declared here
+</I>&gt;<i> /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: warning:
+</I>&gt;<i> &#8216;save_lx&#8217; may be used uninitialized in this function
+</I>&gt;<i> /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: note:
+</I>&gt;<i> &#8216;save_lx&#8217; was declared here
+</I>
+Laurent knows about those one, they're &quot;normal&quot;
+
+&gt;<i> [ 30%] Building C object src/falcon/CMakeFiles/Falcon.dir/videl.c.o
+</I>&gt;<i> /Users/solskogen/source/hatari/src/falcon/videl.c: In function
+</I>&gt;<i> &#8216;VIDEL_ST_ShiftModeWriteByte&#8217;:
+</I>&gt;<i> /Users/solskogen/source/hatari/src/falcon/videl.c:214: warning:
+</I>&gt;<i> &#8216;video_mode&#8217; may be used uninitialized in this function
+</I>&gt;<i> /Users/solskogen/source/hatari/src/falcon/videl.c:214: warning:
+</I>&gt;<i> &#8216;line_width&#8217; may be used uninitialized in this function
+</I>
+I think these are also intended.
+
+
+&gt;<i> Linking C static library libFalcon.a
+</I>&gt;<i> /usr/bin/ranlib: file: libFalcon.a(microphone.c.o) has no symbols
+</I>&gt;<i> /usr/bin/ranlib: file: libFalcon.a(microphone.c.o) has no symbols
+</I>
+I don't know, maybe OS X specific.
+
+&gt;<i> [ 54%] Building C object src/CMakeFiles/hatari.dir/dmaSnd.c.o
+</I>&gt;<i> /Users/solskogen/source/hatari/src/dmaSnd.c:371: warning:
+</I>&gt;<i> &#8216;DmaSnd_FIFO_ReadByte&#8217; defined but not used
+</I>&gt;<i> /Users/solskogen/source/hatari/src/dmaSnd.c:389: warning:
+</I>&gt;<i> &#8216;DmaSnd_FIFO_ReadWord&#8217; defined but not used
+</I>
+I will remove these soon, they're not used anymore.
+
+&gt;<i> [ 90%] Building C object src/CMakeFiles/hatari.dir/gui-osx/Shared.m.o
+</I>&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/Shared.m: In function
+</I>&gt;<i> &#8216;-[ModalWrapper runModal:]&#8217;:
+</I>&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/Shared.m:26: warning: class
+</I>&gt;<i> 'ModalWrapper' does not implement the 'NSWindowDelegate' protocol
+</I>&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/Shared.m: In function
+</I>&gt;<i> &#8216;GuiOsx_ExportPathString&#8217;:
+</I>&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/Shared.m:63: warning:
+</I>&gt;<i> &#8216;cString&#8217; is deprecated (declared at
+</I>&gt;<i> /System/Library/Frameworks/Foundation.framework/Headers/NSString.h:367)
+</I>&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/Shared.m:63: warning:
+</I>&gt;<i> &#8216;cString&#8217; is deprecated (declared at
+</I>&gt;<i> /System/Library/Frameworks/Foundation.framework/Headers/NSString.h:367)
+</I>&gt;<i> [ 91%] Building C object
+</I>&gt;<i> src/CMakeFiles/hatari.dir/gui-osx/CreateFloppyController.m.o
+</I>&gt;<i> [ 92%] Building C object src/CMakeFiles/hatari.dir/gui-osx/SDLMain.m.o
+</I>&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m: In function
+</I>&gt;<i> &#8216;-[SDLMain debugUI:]&#8217;:
+</I>&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:338: warning:
+</I>&gt;<i> implicit declaration of function &#8216;DebugUI&#8217;
+</I>&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m: In function &#8216;main&#8217;:
+</I>&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:681: warning:
+</I>&gt;<i> passing argument 2 of &#8216;NSApplicationMain&#8217; from incompatible pointer
+</I>&gt;<i> type
+</I>
+Can't say for this part, seems to be harmless, but I don't have OS X to 
+look further.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003679.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+	<LI>Next message: <A HREF="003681.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3680">[ date ]</a>
+              <a href="thread.html#3680">[ thread ]</a>
+              <a href="subject.html#3680">[ subject ]</a>
+              <a href="author.html#3680">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

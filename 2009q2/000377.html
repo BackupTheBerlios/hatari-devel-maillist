@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CPU breakpoints and single-stepping
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3C20090614234555.44c21087%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000367.html">
+   <LINK REL="Next"  HREF="000341.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CPU breakpoints and single-stepping</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3C20090614234555.44c21087%40phineus%3E"
+       TITLE="[hatari-devel] CPU breakpoints and single-stepping">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Jun 14 23:45:55 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000367.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+        <LI>Next message: <A HREF="000341.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#377">[ date ]</a>
+              <a href="thread.html#377">[ thread ]</a>
+              <a href="subject.html#377">[ subject ]</a>
+              <a href="author.html#377">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 8 Jun 2009 00:24:51 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> &gt; Has anybody a clue what would have to be done to connect a 68k gdb
+</I>&gt;<i> &gt; to Hatari?
+</I>&gt;<i> 
+</I>&gt;<i> You provide the Gdb remote debugging (gdb server) socket/serial/etc
+</I>&gt;<i> API into which Gdb can connect to.
+</I>&gt;<i> 
+</I>&gt;<i> Gdb would need to support the architecture which you want to debug,
+</I>&gt;<i> also in cross mode.  From MiNT list i've understood that for 68k this
+</I>&gt;<i> is fine (one can use gdbserver inside Aranym and run cross-Gdb on
+</I>&gt;<i> host), but not for DSP... And with Hatari you may want to debug both
+</I>&gt;<i> at the same time.
+</I>&gt;<i> 
+</I>&gt;<i> I think this debugger work is more important for the DSP as that you
+</I>&gt;<i> cannot very well debug even with native Atari debuggers like one
+</I>&gt;<i> might be able to do for m68k side.
+</I>
+You're right. I completely forgot about the DSP when I mentioned GDB.
+So let's forget that GDB idea, especially since Eero started with the
+conditional breakpoints already...
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000367.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+	<LI>Next message: <A HREF="000341.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#377">[ date ]</a>
+              <a href="thread.html#377">[ thread ]</a>
+              <a href="subject.html#377">[ subject ]</a>
+              <a href="author.html#377">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

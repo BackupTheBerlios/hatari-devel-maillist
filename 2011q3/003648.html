@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] nicolas, can you explain me ...
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20nicolas%2C%20can%20you%20explain%20me%20...&In-Reply-To=%3C4E1236EA.3080505%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003646.html">
+   <LINK REL="Next"  HREF="003650.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] nicolas, can you explain me ...</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20nicolas%2C%20can%20you%20explain%20me%20...&In-Reply-To=%3C4E1236EA.3080505%40corp.free.fr%3E"
+       TITLE="[hatari-devel] nicolas, can you explain me ...">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jul  4 23:55:54 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003646.html">[hatari-devel] nicolas, can you explain me ...
+</A></li>
+        <LI>Next message: <A HREF="003650.html">[hatari-devel] Hatari frozen after it's been paused for few hours
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3648">[ date ]</a>
+              <a href="thread.html#3648">[ thread ]</a>
+              <a href="subject.html#3648">[ subject ]</a>
+              <a href="author.html#3648">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 04/07/2011 23:41, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Nicolas, can you explain me what was the little programm you asked some
+</I>&gt;<i> of us to test on real hardware ?
+</I>&gt;<i> (it gives a certain value for steem, a better one for us compared to
+</I>&gt;<i> real hardware).
+</I>&gt;<i>
+</I>&gt;<i> What is it supposed to compute and can I use the same program or a
+</I>&gt;<i> similar one for Falcon DMA tests ?
+</I>&gt;<i>
+</I>&gt;<i> regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>
+This is a very small program that basically starts a sample, waits for a 
+number of VBL, then reads the current frame counter.
+
+For maximum precision, the STE version use synchronisation with the 
+shifter to get an always repeatable case, but this part would certainly 
+not work on Falcon (68030 instruction don't take the same amount than 
+the one use in 68000). But doing a stop #2300 should be a good start to 
+get in sync with the VBL on falcon too.
+
+Note that doing this kind of precide measure requires to already have an 
+accurate cpu and video emulation, as they are used as the reference to 
+compare against the dma part. Problem is that those parts are not 
+complete on falcon too, so the measure under Hatari could be partiallt 
+wrong (this is a kind of &quot;chicken and egg&quot; problem).
+
+Anyway, here's the code I used on STE :
+
+
+DMA_50VBL_RunTest
+         movem.l d0-d7/a0-a6,-(sp)
+
+         move.l  #Int_Empty,$70.w
+
+         stop    #$2300                  ; wait for VBL
+
+         lea     $ffff8209.w,a0
+
+         moveq   #0,d0
+.wait_video
+         move.b  (a0),d0
+         beq.s   .wait_video             ; wait for video counter to 
+start (video line 63)
+         not.w   d0
+         lsr.w   d0,d0                   ; sync with the video
+;-- 212
+
+
+         move.b  #0,$ff8901              ; stop dma audio
+
+         move.b  #$00,$ff8907
+         move.b  #$00,$ff8905
+         move.b  #$01,$ff8903            ; start = $10000
+
+         move.b  #$00,$ff8913
+         move.b  #$00,$ff8911
+         move.b  #$02,$ff890f            ; end = $20000
+
+         move.b  #$83,$ff8921            ; mono 50066 Hz
+
+         move.b  #1,$ff8901              ; start dma audio
+
+         move.w  #49,d0
+.wait_vbl
+         stop    #$2300
+         dbf     d0,.wait_vbl
+
+         moveq   #0,d0
+.wait_video2
+         move.b  (a0),d0
+         beq.s   .wait_video2            ; wait for video counter to 
+start (video line 63)
+         not.w   d0
+         lsr.w   d0,d0                   ; sync with the video
+;-- 212
+
+         moveq   #0,d0
+         move.b  $ff8909,d0
+         lsl.l   #8,d0
+         move.b  $ff890b,d0
+         lsl.l   #8,d0
+         move.b  $ff890d,d0              ; current dma counter
+
+         sub.l   #$10000,d0              ; current-start = nb bytes played
+
+         move.b  #0,$ff8901              ; stop dma audio
+
+
+         lea     DMA_50VBL_TextNbBytes(pc),a0
+         jsr     PrintHexWord		; print value of D0
+
+         pea     DMA_50VBL_Text
+         move.w  #9,-(sp)
+         trap    #1
+         addq.l  #6,sp
+
+         movem.l (sp)+,d0-d7/a0-a6
+         rts
+
+
+I wrote quite a lot of similar tests to measure many video timings or 
+ym2149 emulation.
+
+The idea is to have a *very* simple test where all other components are 
+turned off, except the one you want to measure, to avoid side effects. 
+This is really the most effective way to validate the emulation part by 
+part, at one point running a full demo to isolate a single problem 
+creates too much dependancies and can lead to wrong assumptions.
+
+
+Nicolas
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003646.html">[hatari-devel] nicolas, can you explain me ...
+</A></li>
+	<LI>Next message: <A HREF="003650.html">[hatari-devel] Hatari frozen after it's been paused for few hours
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3648">[ date ]</a>
+              <a href="thread.html#3648">[ thread ]</a>
+              <a href="subject.html#3648">[ subject ]</a>
+              <a href="author.html#3648">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

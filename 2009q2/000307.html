@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] regression with mouse in custom ikbd routines
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20regression%20with%20mouse%20in%20custom%20ikbd%20routines&In-Reply-To=%3C20090601095750.198560%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000303.html">
+   <LINK REL="Next"  HREF="000308.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] regression with mouse in custom ikbd routines</H1>
+    <B>Thomas H.</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20regression%20with%20mouse%20in%20custom%20ikbd%20routines&In-Reply-To=%3C20090601095750.198560%40gmx.net%3E"
+       TITLE="[hatari-devel] regression with mouse in custom ikbd routines">th.huth at gmx.de
+       </A><BR>
+    <I>Mon Jun  1 11:57:50 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000303.html">[hatari-devel] regression with mouse in custom ikbd routines
+</A></li>
+        <LI>Next message: <A HREF="000308.html">[hatari-devel] regression with mouse in custom ikbd routines
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#307">[ date ]</a>
+              <a href="thread.html#307">[ thread ]</a>
+              <a href="subject.html#307">[ subject ]</a>
+              <a href="author.html#307">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Datum: Sun, 31 May 2009 20:32:13 +0200 (CEST)
+</I>&gt;<i> Von: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>
+</I>&gt;<i> 
+</I>&gt;<i> I just noticed that on dragonnels demo menu and froggies over the fence 
+</I>&gt;<i> menu, the mouse does not react as it used to.
+</I>&gt;<i> 
+</I>&gt;<i> Especially in dragonnels, moving the mouse up/down is scrolling the list 
+</I>&gt;<i> at a very very slow pace.
+</I>&gt;<i> 
+</I>&gt;<i> In transbeauce 2 main menu, which also uses custom ikbd, the keyboard 
+</I>&gt;<i> handling is still OK, so the problem doesn't seem to be related to custom 
+</I>&gt;<i> ikbd, but to a change to the mouse somewhere (but I can't say when the 
+</I>&gt;<i> change happened).
+</I>&gt;<i> 
+</I>&gt;<i> Perhaps someone remembers doing some modifications to the mouse recently 
+</I>&gt;<i> that could explain this ?
+</I>
+According to the changelog of ikbd.c, the last important change to that file was this:
+
+changeset:   1506:5f7b3e42e756
+user:        Thomas Huth &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">huth at users.berlios.de</A>&gt;
+date:        Sat Dec 27 17:38:05 2008 +0100
+summary:     Introduced a new Int event handler which takes care of sending keyboard, joystick and mouse events regularly.
+
+I changed the code so that it does not depend on video.c anymore, but uses an independent &quot;Int&quot;-timer to send keyboard updates. Maybe the timer frequency is not right yet. Try increasing the cycle number for Int_AddRelativeInterrupt in IKBD_InterruptHandler_AutoSend() to see whether this helps...
+
+ Thomas
+
+-- 
+Nur bis 31.05.: GMX FreeDSL Komplettanschluss mit DSL 6.000 Flatrate und
+Telefonanschluss nur 17,95 Euro/mtl.!* <A HREF="http://portal.gmx.net/de/go/dsl02">http://portal.gmx.net/de/go/dsl02</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000303.html">[hatari-devel] regression with mouse in custom ikbd routines
+</A></li>
+	<LI>Next message: <A HREF="000308.html">[hatari-devel] regression with mouse in custom ikbd routines
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#307">[ date ]</a>
+              <a href="thread.html#307">[ thread ]</a>
+              <a href="subject.html#307">[ subject ]</a>
+              <a href="author.html#307">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

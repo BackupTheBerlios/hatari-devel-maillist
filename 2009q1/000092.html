@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [hatari-tracking] /hgroot/repos/hatari: 2 new	changesets
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Bhatari-tracking%5D%20/hgroot/repos/hatari%3A%202%20new%0A%09changesets&In-Reply-To=%3C200901292040.57562.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000100.html">
+   <LINK REL="Next"  HREF="000095.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [hatari-tracking] /hgroot/repos/hatari: 2 new	changesets</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Bhatari-tracking%5D%20/hgroot/repos/hatari%3A%202%20new%0A%09changesets&In-Reply-To=%3C200901292040.57562.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] [hatari-tracking] /hgroot/repos/hatari: 2 new	changesets">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Jan 29 19:40:57 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000100.html">[hatari-devel] Control.c does not compile...
+</A></li>
+        <LI>Next message: <A HREF="000095.html">[hatari-devel] [hatari-tracking] /hgroot/repos/hatari: 2 new	changesets
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#92">[ date ]</a>
+              <a href="thread.html#92">[ thread ]</a>
+              <a href="subject.html#92">[ subject ]</a>
+              <a href="author.html#92">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Why did you revert Thomas' changes from Saturday?
+
+	- Eero
+
+On Wednesday 28 January 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-tracking at lists.berlios.de</A> wrote:
+&gt;<i> details:   /hgroot/repos/hatari/rev/86ca15e7a297
+</I>&gt;<i> changeset: 1597:86ca15e7a297
+</I>&gt;<i> user:      jbberlioz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">jb.berlioz at freemind-tobe.com</A>&gt;
+</I>&gt;<i> date:      Wed Jan 28 21:14:02 2009 +0100
+</I>&gt;<i> description:
+</I>&gt;<i> Improve blitter implementation and cycles counting.
+</I>&gt;<i>
+</I>&gt;<i> details:   /hgroot/repos/hatari/rev/b1f24941e3dc
+</I>&gt;<i> changeset: 1598:b1f24941e3dc
+</I>&gt;<i> user:      jbberlioz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">jb.berlioz at freemind-tobe.com</A>&gt;
+</I>&gt;<i> date:      Wed Jan 28 21:14:49 2009 +0100
+</I>&gt;<i> description:
+</I>&gt;<i> Fix blitter.c version.
+</I>&gt;<i>
+</I>&gt;<i> diffstat:
+</I>&gt;<i>
+</I>&gt;<i> 1 files changed, 178 insertions(+), 86 deletions(-)
+</I>&gt;<i> src/blitter.c |  264
+</I>&gt;<i> ++++++++++++++++++++++++++++++++++++++-------------------
+</I>&gt;<i>
+</I>&gt;<i> diffs (truncated from 373 to 300 lines):
+</I>&gt;<i>
+</I>&gt;<i> diff -r 2bb9b1b5519d -r b1f24941e3dc src/blitter.c
+</I>&gt;<i> --- a/src/blitter.c	Tue Jan 27 23:38:19 2009 +0200
+</I>&gt;<i> +++ b/src/blitter.c	Wed Jan 28 21:14:49 2009 +0100
+</I>&gt;<i> @@ -9,8 +9,17 @@
+</I>&gt;<i>   *
+</I>&gt;<i>   * This file has originally been taken from STonX, but it has been
+</I>&gt;<i> completely * modified for better maintainability and higher
+</I>&gt;<i> compatibility. - *
+</I>&gt;<i> - * NOTES:
+</I>&gt;<i> + */
+</I>&gt;<i> +
+</I>&gt;<i> +
+</I>&gt;<i> +/* 2008/12/21	[NP]	Set BusMode to BUS_MODE_BLITTER while in
+</I>&gt;<i> Blitter_Start(). Allow	*/ +/*			to adjust timings when reading/writing IO
+</I>&gt;<i> mem (see video.c).	*/ +
+</I>&gt;<i> +
+</I>&gt;<i> +
+</I>&gt;<i> +const char Blitter_rcsid[] = &quot;Hatari $Id: blitter.c,v 1.38 2009-01-28
+</I>&gt;<i> 21:11:00 jbberlioz Exp $&quot;; +
+</I>&gt;<i> +/* NOTES:
+</I>&gt;<i>   *
+</I>&gt;<i> -------------------------------------------------------------------------
+</I>&gt;<i>--- * Strange end mask condition ((~(0xffff&gt;&gt;skew)) &gt; end_mask_1)
+</I>&gt;<i>   *
+</I>&gt;<i> @@ -23,7 +32,6 @@
+</I>&gt;<i>   * Does smudge mode change the line register ?
+</I>&gt;<i>   *
+</I>&gt;<i> -------------------------------------------------------------------------
+</I>&gt;<i>--- */
+</I>&gt;<i> -const char Blitter_fileid[] = &quot;Hatari blitter.c : &quot; __DATE__ &quot; &quot;
+</I>&gt;<i> __TIME__;
+</I>[...]
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000100.html">[hatari-devel] Control.c does not compile...
+</A></li>
+	<LI>Next message: <A HREF="000095.html">[hatari-devel] [hatari-tracking] /hgroot/repos/hatari: 2 new	changesets
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#92">[ date ]</a>
+              <a href="thread.html#92">[ thread ]</a>
+              <a href="subject.html#92">[ subject ]</a>
+              <a href="author.html#92">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

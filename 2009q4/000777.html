@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] debugger evaluate command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20debugger%20evaluate%20command&In-Reply-To=%3C200910061226.52228.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000776.html">
+   <LINK REL="Next"  HREF="000778.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] debugger evaluate command</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20debugger%20evaluate%20command&In-Reply-To=%3C200910061226.52228.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] debugger evaluate command">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Oct  6 11:26:52 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000776.html">[hatari-devel] debugger evaluate command
+</A></li>
+        <LI>Next message: <A HREF="000778.html">[hatari-devel] debugger evaluate command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#777">[ date ]</a>
+              <a href="thread.html#777">[ thread ]</a>
+              <a href="subject.html#777">[ subject ]</a>
+              <a href="author.html#777">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 06 October 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> &gt;&gt; * For now binary prefix is &quot;'&quot;.  I'll probably remove the '%' modulo
+</I>&gt;<i> &gt;&gt;   operation support so that binary numbers can use same prefix as rest
+</I>&gt;<i> &gt;&gt;   of the debugger.
+</I>&gt;<i>
+</I>&gt;<i> I think % would be better used as binary prefix, I'm not sure anyone uses
+</I>&gt;<i> modulo.
+</I>
+OK.
+
+
+&gt;<i> &gt;&gt; * It doesn't support debugger number-base setting.  When I fix that,
+</I>&gt;<i> &gt;&gt; I'll probably remove support for octal and &quot;ASCII&quot; numbers as DebugUI
+</I>&gt;<i> &gt;&gt; doesn't support those.  Octal numbers can be useful only for BCD /
+</I>&gt;<i> &gt;&gt; nibble number calculations, but I couldn't come up with reasonable
+</I>&gt;<i> &gt;&gt; prefix for them. ;-)
+</I>
+Any suggestion for octal prefix?  What's used by Atari debuggers /
+assemblers for that?
+
+
+&gt;<i> &gt;&gt; * Calculations are done as doubles and signed longs.  Former means
+</I>&gt;<i> &gt;&gt; that divisions can have funny results when printed (due to conversion
+</I>&gt;<i> &gt;&gt; accuracy) and that shift and logical OR &amp; AND operations support
+</I>&gt;<i> &gt;&gt; values only up to 0x7fffffff.  If floating point calculations aren't
+</I>&gt;<i> &gt;&gt; needed, I could change everything to use (signed) long longs?
+</I>&gt;<i>
+</I>&gt;<i> I never needed float point when doing asm in atari, I don't think we
+</I>&gt;<i> will need it in the debugger to fix some problems related to hatari.
+</I>
+Well, I was thinking that it could be useful when one is doing e.g. demo
+coding (pre-calcs...), but I agree that this can probably be done
+(better) &quot;off-line&quot; and it isn't that useful when debugging.
+-&gt; I'll change it to long longs.
+
+
+&gt;<i> &gt;&gt; Comments?
+</I>&gt;<i>
+</I>&gt;<i> I'm not sure we should put too much extra evaluate commands in hatari ;
+</I>&gt;<i> of course it's your time, so you're free to do it, but in the end I think
+</I>&gt;<i> they're some much more complete calculators solutions that the user can
+</I>&gt;<i> run from another terminal if he really wants to (adding that to the fact
+</I>&gt;<i> that debugger mode is used by a very low percentage of users I guess)
+</I>
+Is there any free calculator that supports both binary &amp; shift operations
+and oct/dec/hex modes conveniently?  I haven't found any.
+
+Btw. I nowadays use python interpreter to do calculations as it has in
+recent years gained pretty good calculation support (order of predecense,
+math functions, infinite precision, binary and shift operations etc) and is
+available everywhere.  However, for bin/oct/hex it's still pretty
+inconvenient:
+	&gt;&gt;&gt; hex(int(oct(20),8) + int(hex(10),16))
+	0x1e
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000776.html">[hatari-devel] debugger evaluate command
+</A></li>
+	<LI>Next message: <A HREF="000778.html">[hatari-devel] debugger evaluate command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#777">[ date ]</a>
+              <a href="thread.html#777">[ thread ]</a>
+              <a href="subject.html#777">[ subject ]</a>
+              <a href="author.html#777">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

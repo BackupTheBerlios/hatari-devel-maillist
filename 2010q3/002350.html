@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Freeze / abort in Talk2Talk 2 demo?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Freeze%20/%20abort%20in%20Talk2Talk%202%20demo%3F&In-Reply-To=%3C006d01cb21c1%249caba350%246600a8c0%40peranburk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002349.html">
+   <LINK REL="Next"  HREF="002351.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Freeze / abort in Talk2Talk 2 demo?</H1>
+    <B>Per Almered</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Freeze%20/%20abort%20in%20Talk2Talk%202%20demo%3F&In-Reply-To=%3C006d01cb21c1%249caba350%246600a8c0%40peranburk%3E"
+       TITLE="[hatari-devel] Freeze / abort in Talk2Talk 2 demo?">per at brainfish.net
+       </A><BR>
+    <I>Mon Jul 12 14:56:14 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002349.html">[hatari-devel] Freeze / abort in Talk2Talk 2 demo?
+</A></li>
+        <LI>Next message: <A HREF="002351.html">[hatari-devel] Freeze / abort in Talk2Talk 2 demo?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2350">[ date ]</a>
+              <a href="thread.html#2350">[ thread ]</a>
+              <a href="subject.html#2350">[ subject ]</a>
+              <a href="author.html#2350">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I can try to re-save that particular song in a newer version of
+maxYMiser, and if you want, I could deliver the source code for
+the &quot;readme&quot; program too, just let me know if that would help!
+
+
+Per.
+
+&gt;<i> -----Ursprungligt meddelande-----
+</I>&gt;<i> Fr&#229;n: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel-bounces at lists.berlios.de</A> 
+</I>&gt;<i> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel-bounces at lists.berlios.de</A>] F&#246;r 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>
+</I>&gt;<i> Skickat: den 12 juli 2010 14:41
+</I>&gt;<i> Till: Mailing list for Hatari developers
+</I>&gt;<i> &#196;mne: Re: [hatari-devel] Freeze / abort in Talk2Talk 2 demo?
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> On Mon, 12 Jul 2010, Anders Eriksson wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; On Mon, 12 Jul 2010, Eero Tamminen wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; I tried to debug the issue, but CMake by default makes 
+</I>&gt;<i> non-debuggable 
+</I>&gt;<i> &gt;&gt; binaries. Main thing Gdb told is that Hatari goes often to 
+</I>&gt;<i> &gt;&gt; Video_InterruptHandler_EndLine().
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; After re-compiling Hatari with asserts and -g (+ still using -O3), 
+</I>&gt;<i> &gt;&gt; reading the demo text + scrolling up &amp; down many times, I got an 
+</I>&gt;<i> &gt;&gt; assert:
+</I>&gt;<i> &gt;&gt; hatari: /home/eero/work/hatari/src/cycInt.c:378:
+</I>&gt;<i> &gt;&gt; CycInt_AddRelativeInterruptWithOffset: Assertion 
+</I>&gt;<i> `CycleTime &gt;= 0' failed.
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; Can somebody reproduce this (freeze, or abort when asserts are 
+</I>&gt;<i> &gt;&gt; enabled)?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I have a feeling it's not the scrolling, it will crash even 
+</I>&gt;<i> if you let 
+</I>&gt;<i> &gt; it be
+</I>&gt;<i> &gt; for itself. I have some suspicion it might be the maxYMiser 
+</I>&gt;<i> soundrout, 
+</I>&gt;<i> &gt; because I've seen this in other (older though) maxYMiser 
+</I>&gt;<i> songs. But just a 
+</I>&gt;<i> &gt; hunch.
+</I>&gt;<i> 
+</I>&gt;<i> Hi
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> hmmm, crashes here too, even without scrolling that much. As 
+</I>&gt;<i> there's no 
+</I>&gt;<i> border removal / resolution changes, I suspect this may be a 
+</I>&gt;<i> problem in 
+</I>&gt;<i> the STE DMA sound emulation, which uses internal hatari's 
+</I>&gt;<i> timers too (as 
+</I>&gt;<i> it happened once in the EPSS demo).
+</I>&gt;<i> I will try to capture some traces, but this will be difficult 
+</I>&gt;<i> as it's not 
+</I>&gt;<i> easily reproduceable and the demo can run quite a lot before freezing.
+</I>&gt;<i> 
+</I>&gt;<i> Nicolas
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hata">https://lists.berlios.de/mailman/listinfo/hata</A>&gt; ri-devel
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> __________ Information from ESET NOD32 Antivirus, 
+</I>&gt;<i> version of virus signature database 5271 (20100712) __________
+</I>&gt;<i> 
+</I>&gt;<i> The message was checked by ESET NOD32 Antivirus.
+</I>&gt;<i> 
+</I><A HREF="http://www.eset.com">http://www.eset.com</A>
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002349.html">[hatari-devel] Freeze / abort in Talk2Talk 2 demo?
+</A></li>
+	<LI>Next message: <A HREF="002351.html">[hatari-devel] Freeze / abort in Talk2Talk 2 demo?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2350">[ date ]</a>
+              <a href="thread.html#2350">[ thread ]</a>
+              <a href="subject.html#2350">[ subject ]</a>
+              <a href="author.html#2350">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

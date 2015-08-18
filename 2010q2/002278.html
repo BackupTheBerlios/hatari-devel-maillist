@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Little AceTracker question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Little%20AceTracker%20question&In-Reply-To=%3Calpine.DEB.1.10.1006081004320.2933%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002277.html">
+   <LINK REL="Next"  HREF="002279.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Little AceTracker question</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Little%20AceTracker%20question&In-Reply-To=%3Calpine.DEB.1.10.1006081004320.2933%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Little AceTracker question">ae at dhs.nu
+       </A><BR>
+    <I>Tue Jun  8 10:17:41 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002277.html">[hatari-devel] Little AceTracker question
+</A></li>
+        <LI>Next message: <A HREF="002279.html">[hatari-devel] Little AceTracker question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2278">[ date ]</a>
+              <a href="thread.html#2278">[ thread ]</a>
+              <a href="subject.html#2278">[ subject ]</a>
+              <a href="author.html#2278">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 7 Jun 2010, Laurent Sallafranque wrote:
+
+&gt;<i> While testing aceTracker, I've found a song that seems to work well:
+</I>&gt;<i> <A HREF="http://505.atari.org/AM.htm">http://505.atari.org/AM.htm</A>
+</I>&gt;<i> The music is called  DSP_CHIP
+</I>
+Hello,
+
+this song is the one that plays best, but it doesn't play correct. My 
+computer is too slow to play it realtime (only 2.2 GHz Core2Duo) so I made 
+a video recording.
+
+<A HREF="http://ae.dhs.nu/tmp/dspchip.mp4">http://ae.dhs.nu/tmp/dspchip.mp4</A>
+
+About 1/4 into position 5 there is a strange sound sort of in the 
+background (dark echo or something).
+
+BTW. I wish we could use uncompressed video recording, PNG is reaaaally 
+slow to save 640x480 screens when there is some graphics (also true for 
+ST-LOW with detailed graphics).
+
+
+&gt;<i> Another help needed: if someone could sample the falcon sound when aceTracker 
+</I>&gt;<i> starts and just press the &quot;Z&quot; key.
+</I>&gt;<i> And the same question with the &quot;Y&quot; key.
+</I>&gt;<i>
+</I>&gt;<i> No MP3 here, I'd like to know the real values and compare them with the 
+</I>&gt;<i> values going out of Hatari.
+</I>
+Z and Y are just two different notes, and with a fresh loaded ACE Tracker 
+without any sound patch in memory, it shouldn't make any sound at all.
+
+Plus I don't think you can get any reliable data from sampling a Falcon 
+and comparing it with Hatari as there are so many factors involved.
+
+Falcon: Analouge output, can be 32780 Hz, 44100 Hz, 48000 Hz or 49170 Hz, 
+most often there is also a bass-boost in the Falcon. All of this will make 
+different results if you sample the Falcon. Not to mention volume levels.
+
+Hatari: Sound scaling from 32780 to 44100 (and all other combos) can also 
+make datas unreliable.
+
+I think you need a Falcon.
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002277.html">[hatari-devel] Little AceTracker question
+</A></li>
+	<LI>Next message: <A HREF="002279.html">[hatari-devel] Little AceTracker question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2278">[ date ]</a>
+              <a href="thread.html#2278">[ thread ]</a>
+              <a href="subject.html#2278">[ subject ]</a>
+              <a href="author.html#2278">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crosscompiling Hatari for GP2X Wiz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C1301587250.2938.14.camel%40jll%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003280.html">
+   <LINK REL="Next"  HREF="003284.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crosscompiling Hatari for GP2X Wiz</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C1301587250.2938.14.camel%40jll%3E"
+       TITLE="[hatari-devel] Crosscompiling Hatari for GP2X Wiz">marndt at asmsoftware.de
+       </A><BR>
+    <I>Thu Mar 31 18:00:50 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003280.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+        <LI>Next message: <A HREF="003284.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3282">[ date ]</a>
+              <a href="thread.html#3282">[ thread ]</a>
+              <a href="subject.html#3282">[ subject ]</a>
+              <a href="author.html#3282">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Mittwoch, den 30.03.2011, 23:53 +0300 schrieb Eero Tamminen:
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On keskiviikko 30 maaliskuu 2011, Matthias Arndt wrote:
+</I>&gt;<i> &gt; Am Mittwoch, den 30.03.2011, 21:33 +0200 schrieb Matthias Arndt:
+</I>&gt;<i> &gt; &gt; &gt; &gt; How can I configure Hatari via commandline or the configfile to
+</I>&gt;<i> &gt; &gt; &gt; &gt; engage such videomode?
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; You cannot specify the flags on the command line currently.
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; You can change the flags manually
+</I>&gt;<i> &gt; &gt; &gt; in	src/screen.c::Screen_SetResolution().
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I think neither HW_SURFACE nor FULLSCREEN changed anything.
+</I>&gt;<i> &gt; I get output from  resolution.c
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; WARNING: invalid desktop size 240x320, defaulting to 832x576!
+</I>&gt;<i> 
+</I>&gt;<i> You didn't apply my patch?
+</I>
+Not yet but I don't suspect it is a real problem at the moment because I
+do get a working green desktop shown by now.
+
+But I will apply the patch later unless you plan to make it a mainstream
+commit. In that case I would simply wait for that commit.
+
+&gt;<i> &gt; This is correct as the display in the wiz is actually an upright one
+</I>&gt;<i> &gt; with 240x320 resolution with all stuffs drawn rotated by 90 degrees.
+</I>&gt;<i> &gt; However the libSDL I link against has a fix that rotates a 320x240
+</I>&gt;<i> &gt; surface automatically.
+</I>&gt;<i> 
+</I>&gt;<i> &gt;From above warning message it can be seen that your SDL thinks the correct
+</I>&gt;<i> screen resolution to be 240x320, not 320x240...?
+</I>
+The real resolution IS 240x320 but it is scaled/rotated accordingly if
+setup as 320x240 by the libSDL.
+
+All SDL game ports for the Wiz do initialize the screen as 320x240 as
+far as I know. My own game quadromania does so - and this works.
+
+&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; However, yesterday I had patched resolution.c with the following lines:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 		DesktopWidth = 320;
+</I>&gt;<i> &gt; 		DesktopHeight = 240;
+</I>&gt;<i> 
+</I>&gt;<i> Unless you applied the patch I sent for Anders, Desktop size doesn't affect
+</I>&gt;<i> ST/STE resolutions. Only the user specified ones do that.
+</I>
+Even better, esp as the code compiles now.
+
+&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; and got the &quot;Video mode not supported&quot; error aswell.
+</I>&gt;<i> &gt; I suspect this is not the real culprit :(
+</I>&gt;<i> 
+</I>&gt;<i> Did you use:
+</I>&gt;<i> 	--max-width 320 --max-height 240
+</I>&gt;<i> 
+</I>&gt;<i> options?
+</I>
+
+Not yet, but I will try it. Sofar I only hardcoded 320x240 into screen.c
+
+Matthias
+
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003280.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+	<LI>Next message: <A HREF="003284.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3282">[ date ]</a>
+              <a href="thread.html#3282">[ thread ]</a>
+              <a href="subject.html#3282">[ subject ]</a>
+              <a href="author.html#3282">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

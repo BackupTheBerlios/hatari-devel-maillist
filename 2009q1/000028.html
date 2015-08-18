@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Makefile executes script instead of installing it
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Makefile%20executes%20script%20instead%20of%20installing%20it&In-Reply-To=%3Cd11682ae25e2f.496f4a27%40shaw.ca%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000049.html">
+   <LINK REL="Next"  HREF="000029.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Makefile executes script instead of installing it</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Makefile%20executes%20script%20instead%20of%20installing%20it&In-Reply-To=%3Cd11682ae25e2f.496f4a27%40shaw.ca%3E"
+       TITLE="[hatari-devel] Makefile executes script instead of installing it">vertex at shaw.ca
+       </A><BR>
+    <I>Thu Jan 15 23:37:27 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000049.html">[hatari-devel] Midi support broken?
+</A></li>
+        <LI>Next message: <A HREF="000029.html">[hatari-devel] Makefile executes script instead of installing it
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#28">[ date ]</a>
+              <a href="thread.html#28">[ thread ]</a>
+              <a href="subject.html#28">[ subject ]</a>
+              <a href="author.html#28">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I had to change the Makefile to compile Hatari.
+The required correction is at the end.
+
+*** bad diff ***
+--- a/Makefile    Sun Nov 02 16:27:27 2008 +0000
++++ b/Makefile    Tue Jan 06 12:24:23 2009 +0200
+@@ -63,6 +63,7 @@
+     $(INSTALL) -d $(DESTDIR)$(DOCDIR)/images
+     $(INSTALL_PROGRAM) src/hatari $(DESTDIR)$(BINDIR)/hatari
+     $(INSTALL_PROGRAM) tools/hmsa/hmsa $(DESTDIR)$(BINDIR)/hmsa
++    $(INSTALL_SCRIPT) tools/zip2st.sh $(DESTDIR)$(BINDIR)/zip2st
+     $(INSTALL_DATA) src/hatari-icon.bmp $(DESTDIR)$(DATADIR)/hatari-icon.bmp
+     if test -f src/tos.img -a \! -f $(DESTDIR)$(DATADIR)/tos.img ; then \
+       $(INSTALL_DATA) src/tos.img $(DESTDIR)$(DATADIR)/tos.img ; \
+
+
+*** Correction ***
++    $(INSTALL_PROGRAM) tools/zip2st.sh $(DESTDIR)$(BINDIR)/zip2st
+
+
+David Savinkoff
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000049.html">[hatari-devel] Midi support broken?
+</A></li>
+	<LI>Next message: <A HREF="000029.html">[hatari-devel] Makefile executes script instead of installing it
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#28">[ date ]</a>
+              <a href="thread.html#28">[ thread ]</a>
+              <a href="subject.html#28">[ subject ]</a>
+              <a href="author.html#28">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

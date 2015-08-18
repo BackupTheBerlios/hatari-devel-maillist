@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Multiple%20GEMDOS%20HDD%2C%0A%09Enh.%20CPU%20MHZ%20select%20%26%20VC6%20Compatiblity&In-Reply-To=%3C200902052253.18393.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000110.html">
+   <LINK REL="Next"  HREF="000124.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Multiple%20GEMDOS%20HDD%2C%0A%09Enh.%20CPU%20MHZ%20select%20%26%20VC6%20Compatiblity&In-Reply-To=%3C200902052253.18393.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Feb  5 21:53:18 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000110.html">[hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity
+</A></li>
+        <LI>Next message: <A HREF="000124.html">[hatari-devel] Multiple GEMDOS HDD, Enh. CPU MHZ select &amp; VC6 Compatiblity
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#111">[ date ]</a>
+              <a href="thread.html#111">[ thread ]</a>
+              <a href="subject.html#111">[ subject ]</a>
+              <a href="author.html#111">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'll answer here to one comment in the patch tracker:
+&gt;<i> * I'll scratch CPU speed selector for now (P.S. there are issues currently
+</I>&gt;<i> with the existing CPU speed timing when compared to a real Falcon 
+</I>&gt;<i> [based on my 32mhz falcon, my demos run about the right speed at over
+</I>&gt;<i> twice the CPU rate]).
+</I>
+Do you mean that when you run your demo on a real Falcon
+that's modified to run at 32Mhz, you had to set Hatari to
+64Mhz to achive same speed with Hatari Falcon emulation?
+
+&gt;<i> Don't know how to improve or fix this unfortunately.    
+</I>
+Are you using DSP?  AFAIK Hatari DSP isn't currently speed accurate
+at all and missing some synchronization between Hatari &amp; DSP which
+can make things quite a bit slower.
+
+
+On Thursday 05 February 2009, Kenneth Kaufman wrote:
+&gt;<i> Thanks for all the feed back Thomas, its greatly appriciated and its all
+</I>&gt;<i> positive stuff :).
+</I>&gt;<i>
+</I>&gt;<i> &gt; assume this happened because you've started your changes with Hatari&gt;
+</I>&gt;<i> &gt; 1.2.0, but then later created the diff agains the tip development&gt;
+</I>&gt;<i> &gt; version... that's not good.
+</I>&gt;<i>
+</I>&gt;<i> It must be... though I'm not entirely certain how this managed to
+</I>&gt;<i> happened. When I realised there was a newer version of HAtari on
+</I>&gt;<i> Mercurial I downloaded a copy of Tortoise and received a new copy from
+</I>&gt;<i> Mercurial. I compared each file using WinDiff and tried to rationalise my
+</I>&gt;<i> changes against the latest version, I must have made a mistake on those
+</I>&gt;<i> two files O_o.
+</I>
+This kind of issue can happen if you do &quot;hg pull&quot; and then overwrite
+the files.  You can use &quot;hg diff&quot; to see what's changed.  If Windiff
+is nice UI for viewing diffs, hg can be configured to use an external
+diff viewer (hg manual mentioned about that) for the &quot;hg diff&quot; command.
+
+
+&gt;<i>  &gt; &gt; o Visual Studio 6 Compatibility - &gt; &gt; You've got some strange
+</I>&gt;<i>  &gt; &gt; changes in there, for example:&gt; &gt; +#if defined(__WIN32__)&gt;
+</I>&gt;<i>  &gt; &gt; BlitterState.have_src = true;&gt; +#else&gt; + BlitterState.have_src =
+</I>&gt;<i>  &gt; &gt; true;&gt; +#endif&gt; &gt; That seems to be nonsense. Please try to read over
+</I>&gt;<i>  &gt; &gt; your patch again&gt; before you send them in, so that this does not
+</I>&gt;<i>  &gt; &gt; happen.
+</I>&gt;<i>
+</I>&gt;<i> That is an error. The true should have been upper cased (Visual Studio is
+</I>&gt;<i> pedantic about C, if its a C file it applies all the old style C laws
+</I>&gt;<i> [like no built in type for bool]).
+</I>[...]
+&gt;<i>   &gt; Instead of using &quot; #if !defined(__WIN32__) &quot; here again, it might be
+</I>&gt;<i>   &gt; a&gt; better idea to create a unistd.h file for VC6 and stick it
+</I>&gt;<i>   &gt; somewhere&gt; where only VC6 can find it (maybe in the gui-win folder?)
+</I>&gt;<i>
+</I>&gt;<i> Yes, right... sorry.
+</I>
+You could actually copy the relevant parts of all the needed C99 standard
+headers to this new directory and add &quot;-I&lt;dir&gt;&quot; to the compiler flags for
+VC6.
+
+Thomas, if there are other old compilers that would need supporting, maybe
+the directory should be called something like &quot;c89-compat&quot; (I don't see what
+unistd.h, stdbool.h etc have to do with GUI :-)).
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000110.html">[hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity
+</A></li>
+	<LI>Next message: <A HREF="000124.html">[hatari-devel] Multiple GEMDOS HDD, Enh. CPU MHZ select &amp; VC6 Compatiblity
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#111">[ date ]</a>
+              <a href="thread.html#111">[ thread ]</a>
+              <a href="subject.html#111">[ subject ]</a>
+              <a href="author.html#111">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

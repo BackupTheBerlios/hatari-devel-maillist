@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] regression with mouse in custom ikbd routines
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20regression%20with%20mouse%20in%20custom%20ikbd%20routines&In-Reply-To=%3Calpine.LMD.2.00.0906011233410.831%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000307.html">
+   <LINK REL="Next"  HREF="000316.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] regression with mouse in custom ikbd routines</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20regression%20with%20mouse%20in%20custom%20ikbd%20routines&In-Reply-To=%3Calpine.LMD.2.00.0906011233410.831%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] regression with mouse in custom ikbd routines">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jun  1 12:35:41 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000307.html">[hatari-devel] regression with mouse in custom ikbd routines
+</A></li>
+        <LI>Next message: <A HREF="000316.html">[hatari-devel] A problem with Thomas' mail adress
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#308">[ date ]</a>
+              <a href="thread.html#308">[ thread ]</a>
+              <a href="subject.html#308">[ subject ]</a>
+              <a href="author.html#308">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 1 Jun 2009, Thomas H. wrote:
+
+&gt;&gt;<i> Datum: Sun, 31 May 2009 20:32:13 +0200 (CEST)
+</I>&gt;&gt;<i> Von: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I just noticed that on dragonnels demo menu and froggies over the fence
+</I>&gt;&gt;<i> menu, the mouse does not react as it used to.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Especially in dragonnels, moving the mouse up/down is scrolling the list
+</I>&gt;&gt;<i> at a very very slow pace.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In transbeauce 2 main menu, which also uses custom ikbd, the keyboard
+</I>&gt;&gt;<i> handling is still OK, so the problem doesn't seem to be related to custom
+</I>&gt;&gt;<i> ikbd, but to a change to the mouse somewhere (but I can't say when the
+</I>&gt;&gt;<i> change happened).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Perhaps someone remembers doing some modifications to the mouse recently
+</I>&gt;&gt;<i> that could explain this ?
+</I>&gt;<i>
+</I>&gt;<i> According to the changelog of ikbd.c, the last important change to that file was this:
+</I>&gt;<i>
+</I>&gt;<i> changeset:   1506:5f7b3e42e756
+</I>&gt;<i> user:        Thomas Huth &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">huth at users.berlios.de</A>&gt;
+</I>&gt;<i> date:        Sat Dec 27 17:38:05 2008 +0100
+</I>&gt;<i> summary:     Introduced a new Int event handler which takes care of sending keyboard, joystick and mouse events regularly.
+</I>&gt;<i>
+</I>&gt;<i> I changed the code so that it does not depend on video.c anymore, but uses an independent &quot;Int&quot;-timer to send keyboard updates. Maybe the timer frequency is not right yet. Try increasing the cycle number for Int_AddRelativeInterrupt in IKBD_InterruptHandler_AutoSend() to see whether this helps...
+</I>&gt;<i>
+</I>&gt;<i> Thomas
+</I>&gt;<i>
+</I>
+Yes, as it was called once per VBL when handled in video.c, I changed the 
+cycles value to set the int from 60000 to 160000 (which is approx one VBL 
+at 50 Hz). Mouse movement is now correct again, so I think this value 
+should be increased/corrected for next release.
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000307.html">[hatari-devel] regression with mouse in custom ikbd routines
+</A></li>
+	<LI>Next message: <A HREF="000316.html">[hatari-devel] A problem with Thomas' mail adress
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#308">[ date ]</a>
+              <a href="thread.html#308">[ thread ]</a>
+              <a href="subject.html#308">[ subject ]</a>
+              <a href="author.html#308">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

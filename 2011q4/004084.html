@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow HD boot with the new floppy code
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20HD%20boot%20with%20the%20new%20floppy%20code&In-Reply-To=%3C4E9060B8.9050507%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004082.html">
+   <LINK REL="Next"  HREF="004085.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow HD boot with the new floppy code</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20HD%20boot%20with%20the%20new%20floppy%20code&In-Reply-To=%3C4E9060B8.9050507%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Slow HD boot with the new floppy code">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Oct  8 16:39:52 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004082.html">[hatari-devel] Slow HD boot with the new floppy code
+</A></li>
+        <LI>Next message: <A HREF="004085.html">[hatari-devel] Slow HD boot with the new floppy code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4084">[ date ]</a>
+              <a href="thread.html#4084">[ thread ]</a>
+              <a href="subject.html#4084">[ subject ]</a>
+              <a href="author.html#4084">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 08/10/2011 13:12, Anders Eriksson a &#233;crit :
+&gt;<i> On Sat, 8 Oct 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i> If you press a key (i.e. skip the memory test), HD starts to boot
+</I>&gt;&gt;&gt;<i> immediately. That was also the case for Hatari before new code.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Yes, but before new code, FDC timings were notably wrong in most case,
+</I>&gt;&gt;<i> a side effect of this was that the time out to check a disk is
+</I>&gt;&gt;<i> inserted was not correct and the floppy part was much faster.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> With correct FDC timings, it takes more time for floppy A: to time
+</I>&gt;&gt;<i> out. I would need to check if there's an easy way to shorten this, but
+</I>&gt;&gt;<i> changing FDC timings could have negative effects and prevent programs
+</I>&gt;&gt;<i> that works now from not working anymore again.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Maybe you can press &quot;alt + x&quot; to toggle fast forward mode during boot,
+</I>&gt;&gt;<i> or start Hatari with an empty disk image inserted in drive A: (using
+</I>&gt;&gt;<i> --disk-a option) ?
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> on an ST, STe, TT or Falcon the boot starts directly if you have an
+</I>&gt;<i> harddisk, no wait for floppydrive even with no floppy in. The machine
+</I>&gt;<i> just checks if there's a disk in the drive, and if not, it tries to boot
+</I>&gt;<i> from harddisk.
+</I>&gt;<i>
+</I>&gt;<i> The only delay is on Falcon without IDE disk, there's a slight timeout
+</I>&gt;<i> before jumping to SCSI boot (this can be reduced via undocumented NVRAM
+</I>&gt;<i> values though, but it was too long ago to remember exactly what).
+</I>&gt;<i>
+</I>
+OK, so maybe this means our HD emulation is not correct and the TOS is 
+not aware that an HD is present and floppy disk should be skipped.
+
+So extra code might be needed in the IDE/gemdos HD emulation to have the 
+TOS react faster as on a real Falcon.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004082.html">[hatari-devel] Slow HD boot with the new floppy code
+</A></li>
+	<LI>Next message: <A HREF="004085.html">[hatari-devel] Slow HD boot with the new floppy code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4084">[ date ]</a>
+              <a href="thread.html#4084">[ thread ]</a>
+              <a href="subject.html#4084">[ subject ]</a>
+              <a href="author.html#4084">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

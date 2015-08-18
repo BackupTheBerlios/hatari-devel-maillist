@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP debug reworked
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debug%20reworked&In-Reply-To=%3C201005162334.01879.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002095.html">
+   <LINK REL="Next"  HREF="002232.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP debug reworked</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debug%20reworked&In-Reply-To=%3C201005162334.01879.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] DSP debug reworked">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun May 16 22:34:01 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002095.html">[hatari-devel] DSP debug reworked
+</A></li>
+        <LI>Next message: <A HREF="002232.html">[hatari-devel] DSP debug reworked
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2144">[ date ]</a>
+              <a href="thread.html#2144">[ thread ]</a>
+              <a href="subject.html#2144">[ subject ]</a>
+              <a href="author.html#2144">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 13 May 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> &gt; But I was thinking of another solution, for two reasons:
+</I>&gt;<i> &gt; - long longs are slower (only 64-bit CPUs support them natively, on
+</I>&gt;<i> &gt; other systems compiler needs several instructions for them)
+</I>&gt;<i> &gt; - what we do when we run out of 64 flag bits?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; What if subsystems with more flags would have their own flag variables?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; For example video stuff has currently 8 flags.  You could use for those
+</I>&gt;<i> &gt; a different macro (LOG_TRACE_VIDEO()?) which uses a different flag
+</I>&gt;<i> &gt; variable.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (Support for different variables would need to be added to log.c too.)
+</I>&gt;<i>
+</I>&gt;<i> regarding &quot;long long&quot; I agree they may not be native on all
+</I>&gt;<i> architectures, but they're at the core of cycInt.c, and
+</I>&gt;<i> CycInt_SetNewInterrupt is called much more often than log could be, so
+</I>&gt;<i> that shouldn't be noticeable.
+</I>
+The interrupt handling is earlier already about the heaviest thing in Hatari
+for ST emulation on my 32-bit machine (about the same as the m86k emulation
+itself).  Maybe it's because of 64-bit stuff there? :-)
+
+
+&gt;<i> I don't think we will need more than 64 different log levels. We already
+</I>&gt;<i> added logs in all parts, we need a few more for the DSP and maybe some
+</I>&gt;<i> others here and there, but we shouldn't need more than 32 new ones.
+</I>&gt;<i> 64 should be a limit we can manage.
+</I>&gt;<i>
+</I>&gt;<i> We should have a method :
+</I>&gt;<i>   - which is fast to test (so we don't get too much penalty when debug
+</I>&gt;<i> code is enabled at compile time)
+</I>&gt;<i>
+</I>&gt;<i>   - which doesn't require to change the existing LOG calls in all the
+</I>&gt;<i> sources.
+</I>
+Neither proposal requires this.
+
+
+&gt;<i> I'm not sure we require such a level of detail to split log macros
+</I>&gt;<i> between video, sound, ...
+</I>&gt;<i>
+</I>&gt;<i> Current code basically does :
+</I>&gt;<i>  	if (LogTraceFlags &amp; level)
+</I>&gt;<i>  		{ print ... }
+</I>&gt;<i>
+</I>&gt;<i> new possible methods :
+</I>&gt;<i>
+</I>&gt;<i>   1) set LogTraceFlags to Uint64 -&gt; nothing else to change, we now have
+</I>&gt;<i> 64 bits to play with and the test remains fast (apart from dealing with
+</I>&gt;<i> 64 bits int)
+</I>&gt;<i>
+</I>&gt;<i>   2) have a global variable LogTraceOn = true or false and some
+</I>&gt;<i> additional Uint32 to store flags (LogTraceFlags1, LogTraceFlags2, ...)
+</I>&gt;<i>
+</I>&gt;<i> with 2), code could become :
+</I>&gt;<i>  	if ( LogTraceOn )
+</I>&gt;<i>  	{
+</I>&gt;<i>  		if ( level matches LogTraceFlags1 level
+</I>&gt;<i>
+</I>&gt;<i>  			|| level matches LogTraceFlags2 )
+</I>&gt;<i>
+</I>&gt;<i>  			{ print ... }
+</I>&gt;<i>  	}
+</I>
+None of above is necessary with what I proposed.
+
+
+If we would e.g. decide that video.c trace would have its own flags
+variable, we would have just:
+
+in log.h additional define:
+#define LOG_VIDEO_TRACE(level, args...) \
+        if (unlikely(LogTraceVideoFlags &amp; level)) fprintf(TraceFile, args)
+
+And in video.c repace LOG_TRACE with LOG_VIDEO_TRACE.
+
+Only complication would be in log.c log options parsing because it would
+need to set bits in different flag variables.
+
+
+&gt;<i> problem is : how do we compare *rapidly* the value of level with several
+</I>&gt;<i> LogTraceFlagsX variables ?
+</I>
+Trivially. :-)
+
+
+&gt;<i> I would go for 1st solution, as it requires nearly no changes ; or any
+</I>&gt;<i> other solution that doesn't require to modify all the sources files that
+</I>&gt;<i> have LOG_TRACE calls (only modifications should go to log.c / log.h) as
+</I>&gt;<i> this would come to commit nearly the whole source tree, which is quite
+</I>&gt;<i> overkill and not really readable.
+</I>
+I guess the 64-bit thing could be tried first and if it seems to be causing
+performance issue (would be hard to see though because with macros it's not
+centralized to single place), then use separate flag variables.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002095.html">[hatari-devel] DSP debug reworked
+</A></li>
+	<LI>Next message: <A HREF="002232.html">[hatari-devel] DSP debug reworked
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2144">[ date ]</a>
+              <a href="thread.html#2144">[ thread ]</a>
+              <a href="subject.html#2144">[ subject ]</a>
+              <a href="author.html#2144">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

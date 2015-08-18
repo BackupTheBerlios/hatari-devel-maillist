@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Little trace question :
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Little%20trace%20question%20%3A&In-Reply-To=%3C4DA4C099.5050007%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003337.html">
+   <LINK REL="Next"  HREF="003339.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Little trace question :</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Little%20trace%20question%20%3A&In-Reply-To=%3C4DA4C099.5050007%40free.fr%3E"
+       TITLE="[hatari-devel] Little trace question :">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Apr 12 23:14:01 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003337.html">[hatari-devel] Little trace question :
+</A></li>
+        <LI>Next message: <A HREF="003339.html">[hatari-devel] Little trace question :
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3338">[ date ]</a>
+              <a href="thread.html#3338">[ thread ]</a>
+              <a href="subject.html#3338">[ subject ]</a>
+              <a href="author.html#3338">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here is what I get with video traces too :
+(just tell me if this HBL change is normal)
+
+Here is the trace for HBL 262 start :
+
+cpu video_cyc=133064 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">476 at 261</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133076 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">488 at 261</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133080 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">492 at 261</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133092 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">504 at 261</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+HBL 261 video_cyc=133096 pending_cyc=0 jitter=4
+HBL 262 start=133096 207e8
+cpu video_cyc=133096   <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">0 at 262</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133108  <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">12 at 262</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133112  <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">16 at 262</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133124  <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">28 at 262</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+
+...
+
+Here is the trace for HBL 263 start :
+
+cpu video_cyc=133460 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">364 at 262</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133464 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">368 at 262</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133476 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">380 at 262</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133480 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">384 at 262</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133492 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">396 at 262</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+EndLine TB 262 video_cyc=133496 line_cyc=400 pending_int_cnt=0
+cpu video_cyc=133496 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">400 at 262</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133508 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">412 at 262</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133512 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">416 at 262</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133524 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">428 at 262</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133528 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">432 at 262</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133540 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">444 at 262</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133544 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">448 at 262</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133556 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">460 at 262</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133560 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">464 at 262</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133572 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">476 at 262</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133576 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">480 at 262</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133588 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">492 at 262</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133592 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">496 at 262</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+HBL 262 video_cyc=133604 pending_cyc=0 jitter=4
+cpu video_cyc=133604 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133096 at 264</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133608 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133100 at 264</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133620 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133112 at 264</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133624 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133116 at 264</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133636 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133128 at 264</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133640 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133132 at 264</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+
+
+Regards,
+
+Laurent
+
+
+Le 12/04/2011 22:54, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 12/04/2011 22:46, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've done a trace of Lotus09 game.
+</I>&gt;&gt;<i> It loops forverer at startup.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I can see a strange trace. (This appears many times, always at same HBL
+</I>&gt;&gt;<i> line).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I just want to be sure I read correctly the trace:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> cpu video_cyc=133568 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">472 at 262</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;&gt;<i> cpu video_cyc=133580 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">484 at 262</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;&gt;<i> cpu video_cyc=133584 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">488 at 262</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;&gt;<i> cpu video_cyc=133596 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">500 at 262</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;&gt;<i> cpu video_cyc=133600 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">504 at 262</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;&gt;<i> cpu video_cyc=133612 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133104 at 264</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;&gt;<i> cpu video_cyc=133616 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133108 at 264</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;&gt;<i> cpu video_cyc=133628 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133120 at 264</A> : $e00d66 : 67f8 beq.s $e00d60
+</I>&gt;&gt;<i> cpu video_cyc=133632 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133124 at 264</A> : $e00d60 : b0b9 0000 0466 cmp.l $466,d0
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If I understand it well, it means that at video cycle 133600, I'm in HBL
+</I>&gt;&gt;<i> 262, my instruction should be 12 cycles.
+</I>&gt;&gt;<i> But next instruction is executed (133104 - 504) cycles later ? (2 HBL
+</I>&gt;&gt;<i> later ?)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If this is true, I think I've got a problem with something like
+</I>&gt;&gt;<i> do_specialties.
+</I>&gt;&gt;<i> May this be an artefact of video.c (something that happends at HBL 262,
+</I>&gt;&gt;<i> cycle 504) ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> You only included cpu traces, what are the video traces ? Certainly a 
+</I>&gt;<i> VBL might add some extra cycles between the 2 instructions.
+</I>&gt;<i>
+</I>&gt;<i> I think this game is running at 60 Hz, and what you see is due to the 
+</I>&gt;<i> VBL starting at hbl 263 and video cycle not yet reset to 0.
+</I>&gt;<i>
+</I>&gt;<i> There's the same &quot;problem&quot; in 50 Hz on hbl 313 (just run --trace 
+</I>&gt;<i> cpu_all while just booting to gem desktop), cycles on the last line 
+</I>&gt;<i> are not correct in the trace, but in all cases this never was a 
+</I>&gt;<i> problem and should not cause a bug (never see it until there).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Your problem might related to sthg else.
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003337.html">[hatari-devel] Little trace question :
+</A></li>
+	<LI>Next message: <A HREF="003339.html">[hatari-devel] Little trace question :
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3338">[ date ]</a>
+              <a href="thread.html#3338">[ thread ]</a>
+              <a href="subject.html#3338">[ subject ]</a>
+              <a href="author.html#3338">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

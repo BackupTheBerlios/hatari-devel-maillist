@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari v1.6 features?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20v1.6%20features%3F&In-Reply-To=%3C31845878.1096092.1321601480601.JavaMail.nitido%40priv-edtnes92%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004196.html">
+   <LINK REL="Next"  HREF="004198.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari v1.6 features?</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20v1.6%20features%3F&In-Reply-To=%3C31845878.1096092.1321601480601.JavaMail.nitido%40priv-edtnes92%3E"
+       TITLE="[hatari-devel] Hatari v1.6 features?">dsavnkff at telus.net
+       </A><BR>
+    <I>Fri Nov 18 08:31:20 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004196.html">[hatari-devel] 68000 cycles, read and write cycles
+</A></li>
+        <LI>Next message: <A HREF="004198.html">[hatari-devel] X + op head cycles
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4197">[ date ]</a>
+              <a href="thread.html#4197">[ thread ]</a>
+              <a href="subject.html#4197">[ subject ]</a>
+              <a href="author.html#4197">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All,
+
+My comment on Oct15:
+ Hopefully the per=0 issue is trivial.
+
+My comment Today:
+ It is, but it's per&lt;=5 not per=0 because this kicks in
+ for ultra-sonic dc level which is Paulo's Quartet mode
+ stuff (I just had to figure out what Hatari was doing).
+
+
+Nicolas said on Oct 15:
+ This patch improves linear mixing in the sense that
+ instead of summing/averaging volumes it also applies
+ a filter similar to the one in the ST. But it doesn't
+ take into account the period of each voice in this
+ operation.
+
+My comment Today:
+ Paulo's tables are correct and the period 'is'
+ accounted for because all frequencies are 50%
+ duty cycle. (f=2MHz/16*p)
+
+ The psgstrep table is for hearable YM frequencies
+ (the dc offset And sound are present).
+
+ The psgquart table is the dc offset caused by 50%
+ duty cycle ultrasonic sound. This dc offset comes
+ into play when the amplitude (not frequency) changes,
+ but before a dc steady-state sets in.
+ The ultrasonic sound is removed because it is not
+ needed (even for emulation). per&lt;=5 is the best
+ digital filter! ...without bleps ;)
+
+ Hatari already does what is required for Quartet
+ mode, but uses incorrect levels. Two tables would
+ make it better.
+
+ My two algorithms are smooth empirical formulas based
+ on circuit analysis, taking period into consideration,
+ and are in agreement with the measured data.
+ There is no point in making the formula exactly imperfect
+ because it would not be smooth and a table could be used
+ instead (the best fitted curve is ideal).
+
+Hatari can do it. Lets get patching.
+
+David
+
+__________________In response to:_____________________________
+
+
+Oct 15, 2011 06:51:39 PM, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">dsavnkff at telus.net</A> wrote:
+
+Hi All,
+
+I've been secretly doing things in regard with digi-sound and have
+come up with a few things, including:
+
+- another way to expand the ym-table from 16 to 32 (done)
+- ym-table with geometric mean interpolation (done)
+- better dc level shifter (will do on a rainy day soon)
+
+A quick 'n dirty improvement can be made simply by changing
+#define DC_ADJUST_BUFFERLEN		512		/* must be a power of 2 */
+to 8192 in sound.c
+
+There is an emulation bug that makes noise in the XMAS 2004 demo
+when Miss Claus shows up. I think that some ym register is not fully
+emulated.
+
+Hopefully the per=0 issue is trivial.
+
+Digi-sound is going to get a lot better
+
+David
+__________________In response to:_____________________________
+Oct 15, 2011 02:26:35 PM, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A> wrote:
+
+Le 15/10/2011 22:02, Anders Eriksson a &#233;crit :
+&gt;<i> On Sat, 15 Oct 2011, Eero Tamminen wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> As Nicolas mentioned that he's planning to release Hatari v1.6
+</I>&gt;&gt;<i> before end of the year, I updated the Hatari release notes
+</I>&gt;&gt;<i> (FDC stuff needs more details I think).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What things are still to be completed before this?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> David Savinkoff sent a patch for much better YM sample sound than in
+</I>&gt;<i> Hatari 1.5. It seems to have gone unnoticed by most people (I havn't
+</I>&gt;<i> seen it discussed and I don't think it went upstream?).
+</I>&gt;<i>
+</I>&gt;<i> The audio quality is very close to a real ST, so stuff like sample demos
+</I>&gt;<i> and soundtrackers sound a lot better and noise-free.
+</I>&gt;<i>
+</I>&gt;<i> Here's Davids original mail, I also attach his patch.
+</I>
+
+Hello
+
+it's true that David patch was not included so far ; I still have to 
+ponder if it's better to use this patch or to use volume tables as 
+measured on a real ST.
+
+This patch improves linear mixing in the sense that instead of 
+summing/averaging volumes it also applies a filter similar to the one in 
+the ST. But it doesn't take into account the period of each voice in 
+this operation.
+
+Final output signal depends on the volume of the 3 voices, but also on 
+the period of each of this voice, as all 3 of them are wired together 
+and the feedback effect will be different when freq changes.
+
+So, regarding quality, I think we have this choices (from lower to better) :
+
+  - linear mixing
+  - david's version with filter
+  - table mixing measured on a real ST
+
+But even the 3rd method is not perfect, because those tables are often 
+built for 1 or 2 different frequencies (per=0 and per!=0)
+
+Sound conversion from digital to &quot;analog&quot; (ie the ST's signal) is a 
+complex matter, it's quite subjective and hard to build a good model 
+that reproduces the wiring &quot;errors&quot; in the ST.
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004196.html">[hatari-devel] 68000 cycles, read and write cycles
+</A></li>
+	<LI>Next message: <A HREF="004198.html">[hatari-devel] X + op head cycles
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4197">[ date ]</a>
+              <a href="thread.html#4197">[ thread ]</a>
+              <a href="subject.html#4197">[ subject ]</a>
+              <a href="author.html#4197">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

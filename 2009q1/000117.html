@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Ym / Dma mixing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3C498C7F6E.1000600%40freemind-tobe.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000109.html">
+   <LINK REL="Next"  HREF="000118.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Ym / Dma mixing</H1>
+    <B>Jean-Baptiste Berlioz</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3C498C7F6E.1000600%40freemind-tobe.com%3E"
+       TITLE="[hatari-devel] Ym / Dma mixing">jb.berlioz at freemind-tobe.com
+       </A><BR>
+    <I>Fri Feb  6 19:20:30 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000109.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+        <LI>Next message: <A HREF="000118.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#117">[ date ]</a>
+              <a href="thread.html#117">[ thread ]</a>
+              <a href="subject.html#117">[ subject ]</a>
+              <a href="author.html#117">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+Here is a patch that affects sound emulation and mixing.
+This is work in progress, it needs some cleanup, fixes and improvements.
+
+I'm sending it for reviews, suggestions, tests and complete rejection :)
+
+This is a quite large path sorry.
+
+Commit message:
+&quot;&quot;&quot;
+Change the sound generation and mixing procedures.
++ Ym and Dma emulation are no longer dependant.
++ Samples are generated on demand when the SDL audio callback is triggered.
++ Mixing occurs in the SDL audio callback.
++ No more desync between SDL buffer and mixing buffer (no more mixing 
+buffer btw)
++ The SDL audio buffer size is frequency dependant (and small).
++ Dma samples are generated via linear interpolation (still not the best 
+method).
++ Sound is paused when exit confirmation is displayed.
++ Added some 4 pole filters (configurable).
+- Sound recording is broken (i'll fix it asap).
+- Ym register history can overflow.
+&quot;&quot;&quot;
+
+Note the two last lines :)
+
+One of the most important change is the way samples are generated in the 
+Ym emulation:
+
+- Now, when a ym register is written, the affected sample number is 
+computed and the change is stored in a list.
+When the SDL audio callback needs samples, it calls the ym emulation, 
+and the ym emulation replay the history and generate the samples.
+
+- The Dma sound generation is done the same way. The SDL audio callback 
+ask some samples to the Dma emulation (but there's no history).
+
+This way, the ym and dma emulation are two independent things.
+
+The mixing is done in the SDL audio callback, and everything related to 
+mixing was moved in audio.c (sound.c is for ym things only and dmasnd.c 
+is for dma things only).
+
+Now i need to fix sound recording (storing the mixed samples in a 
+buffer), and i need to test and improve the ym registers history, when a 
+software is abusing the ym registers, it might overflow the history.
+
+The next steps are:
+- fix sound recording (quite easy)
+- handle history overflow (need to write a test program)
+- improve the dma resampling and filtering (not too hard)
+- implement LMC sound filters (the good things for the end, always)
+
+The patch has been exported by 'hg export' and can be imported by 'hg 
+import'.
+
+Cheers,
+JB
+
+PS: about 'improve the dma resampling', maybe *optionally* with a 
+configure flag we could use libsamplerate ?
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: soundmix.patch.gz
+Type: application/x-gzip
+Size: 11064 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090206/1c7cc6d1/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090206/1c7cc6d1/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000109.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+	<LI>Next message: <A HREF="000118.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#117">[ date ]</a>
+              <a href="thread.html#117">[ thread ]</a>
+              <a href="subject.html#117">[ subject ]</a>
+              <a href="author.html#117">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

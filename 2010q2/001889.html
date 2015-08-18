@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Problem in falcon mode ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%20falcon%20mode%20%3F&In-Reply-To=%3C4BCF487A.9000102%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001887.html">
+   <LINK REL="Next"  HREF="001888.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Problem in falcon mode ?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%20falcon%20mode%20%3F&In-Reply-To=%3C4BCF487A.9000102%40free.fr%3E"
+       TITLE="[hatari-devel] Problem in falcon mode ?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Apr 21 20:48:26 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001887.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+        <LI>Next message: <A HREF="001888.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1889">[ date ]</a>
+              <a href="thread.html#1889">[ thread ]</a>
+              <a href="subject.html#1889">[ subject ]</a>
+              <a href="author.html#1889">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+As long as I installed gc++, I had no more errors.
+I didn't have the poraudio errors anymore.
+
+Laurent
+
+
+
+Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Wednesday 21 April 2010, Laurent Sallafranque wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Ok, I've sold my cmake problem by installing Gcc-c++ package.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cmake compiles well now.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> I don't see why the errors you get would be g++ related, as Hatari's
+</I>&gt;<i> not compiled with that.
+</I>&gt;<i>
+</I>&gt;<i> Do you still get these issues resulting from something in portaudio:
+</I>&gt;<i> ---------
+</I>&gt;<i> -- Looking for cfmakeraw
+</I>&gt;<i> CMake Error at CMakeLists.txt:9 (ADD_EXECUTABLE):
+</I>&gt;<i>   Target &quot;cmTryCompileExec&quot; links to item &quot; /usr/lib/libportaudio.so&quot; which
+</I>&gt;<i>   has leading or trailing whitespace.  This is now an error according to
+</I>&gt;<i>   policy CMP0004.
+</I>&gt;<i>
+</I>&gt;<i> CMake Error: Internal CMake error, TryCompile generation of cmake failed
+</I>&gt;<i> -- Looking for cfmakeraw - not found
+</I>&gt;<i> ---------
+</I>&gt;<i> ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> But when I try make, it doesn't compile (and there are some warnings) :
+</I>&gt;&gt;<i> [ 79%] Building C object src/CMakeFiles/hatari.dir/rs232.c.o
+</I>&gt;&gt;<i> /home/laurent/Atari/hatari/src/rs232.c:57: error: static declaration of
+</I>&gt;&gt;<i> &#8216;cfmakeraw&#8217; follows non-static declaration
+</I>&gt;&gt;<i> /usr/include/termios.h:77: note: previous declaration of &#8216;cfmakeraw&#8217; was
+</I>&gt;&gt;<i> here
+</I>&gt;&gt;<i> make[2]: *** [src/CMakeFiles/hatari.dir/rs232.c.o] Erreur 1
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Your problem seems to be that portaudio somehow messes up CMake
+</I>&gt;<i> cfmakeraw() detection and therefore Hatari will use it's own version
+</I>&gt;<i> instead.  Which naturally conflicts with the system one...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Portaudio being related to audio might explain also other audio related 
+</I>&gt;<i> issues...
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001887.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+	<LI>Next message: <A HREF="001888.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1889">[ date ]</a>
+              <a href="thread.html#1889">[ thread ]</a>
+              <a href="subject.html#1889">[ subject ]</a>
+              <a href="author.html#1889">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari frozen after it's been paused for few hours
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20frozen%20after%20it%27s%20been%20paused%20for%20few%20hours&In-Reply-To=%3C201107050143.59672.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003648.html">
+   <LINK REL="Next"  HREF="003651.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari frozen after it's been paused for few hours</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20frozen%20after%20it%27s%20been%20paused%20for%20few%20hours&In-Reply-To=%3C201107050143.59672.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari frozen after it's been paused for few hours">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Jul  5 00:43:59 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003648.html">[hatari-devel] nicolas, can you explain me ...
+</A></li>
+        <LI>Next message: <A HREF="003651.html">[hatari-devel] Hatari frozen after it's been paused for few	hours
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3650">[ date ]</a>
+              <a href="thread.html#3650">[ thread ]</a>
+              <a href="subject.html#3650">[ subject ]</a>
+              <a href="author.html#3650">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I was running Oxygen's Amiga STE demo under latest Hatari
+and paused it for couple of hours.  When I unpaused Hatari,
+it didn't react to anything anymore.  Gdb tells following:
+(gdb) bt
+#0  0xb7738424 in __kernel_vsyscall ()
+#1  0xb7659876 in ?? ()
+#2  0x080b5398 in Main_WaitOnVbl () at /home/eero/work/hatari/src/main.c:330
+#3  0x0810dba1 in m68k_run_1 (may_quit=1) at /home/eero/work/hatari/src/uae-
+cpu/newcpu.c:1774
+#4  m68k_go (may_quit=1) at /home/eero/work/hatari/src/uae-cpu/newcpu.c:1872
+#5  0x080b40d4 in M68000_Start () at /home/eero/work/hatari/src/m68000.c:241
+#6  0x080b4ece in main (argc=6, argv=0xbfbd7e24) at 
+/home/eero/work/hatari/src/main.c:776
+(gdb) up
+#1  0xb7659876 in ?? ()
+(gdb) 
+#2  0x080b5398 in Main_WaitOnVbl () at /home/eero/work/hatari/src/main.c:330
+330                             Time_Delay(nDelay - 1000);
+(gdb) print nDelay
+$1 = -1078100952
+
+Ticks had wrapped?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003648.html">[hatari-devel] nicolas, can you explain me ...
+</A></li>
+	<LI>Next message: <A HREF="003651.html">[hatari-devel] Hatari frozen after it's been paused for few	hours
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3650">[ date ]</a>
+              <a href="thread.html#3650">[ thread ]</a>
+              <a href="subject.html#3650">[ subject ]</a>
+              <a href="author.html#3650">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

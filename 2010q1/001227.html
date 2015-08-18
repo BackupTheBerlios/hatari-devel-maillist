@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Big problems with bus error on Falcon
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Big%20problems%20with%20bus%20error%20on%20Falcon&In-Reply-To=%3C201001142345.25963.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001235.html">
+   <LINK REL="Next"  HREF="001230.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Big problems with bus error on Falcon</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Big%20problems%20with%20bus%20error%20on%20Falcon&In-Reply-To=%3C201001142345.25963.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Big problems with bus error on Falcon">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Jan 14 22:45:25 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001235.html">[hatari-devel] IDE bus errors (was: Big problems with bus error on Falcon)
+</A></li>
+        <LI>Next message: <A HREF="001230.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1227">[ date ]</a>
+              <a href="thread.html#1227">[ thread ]</a>
+              <a href="subject.html#1227">[ subject ]</a>
+              <a href="author.html#1227">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 14 January 2010, Laurent Sallafranque wrote:
+&gt;<i> &gt; M68000 Bus Error at address $f00000.
+</I>&gt;<i>
+</I>&gt;<i> I've seen many programs that does Bus error on Hatari Falcon.
+</I>&gt;<i> I've corrected the Illusion demo yesterday (I added void read/write for
+</I>&gt;<i> a certain address in IoMemtabFalcon).
+</I>
+This is address 0xff800A.  According to docs it's unassigned.
+
+
+&gt;<i> There was already a similar patch 1 line before the one I've added
+</I>&gt;<i> yesterday (probably to let run another program).
+</I>&gt;<i>
+</I>&gt;<i> Another strange thing : the game conquest stops with a bus error at
+</I>&gt;<i> address $ff8901.
+</I>
+Did it try to read or write a word from an odd address?
+
+
+&gt;<i> This address is mapped in IoMemTabFalcon and in Crossbar.c
+</I>&gt;<i> This is really strange.
+</I>&gt;<i>
+</I>&gt;<i> Many programs are doing Illegal Rom writing. (I haven't verified if they
+</I>&gt;<i> are not just trying to read the Rom).
+</I>&gt;<i>
+</I>&gt;<i> I was asking myself if there isn't a problem with memory reading/writing
+</I>&gt;<i> ?
+</I>&gt;<i>
+</I>&gt;<i> Is it possible on the real hardware to read at a N/A address without
+</I>&gt;<i> receiving bombs ?
+</I>
+No idea, I don't have a Falcon.  :-)
+
+
+&gt;<i> (Perhaps we shouldn't be so strict)
+</I>
+Btw. I was looking at the current Falcon mappings:
+
+For example:
+        { 0xff8006, SIZE_WORD, IoMem_ReadWithoutInterception, 
+IoMem_WriteWithoutInterception }, /* Falcon configuration */
+
+
+*Byte* at 0xff8006 is monitor type (programs cannot change), but
+the next byte is Falcon processor control byte:
+	bit 0: 030 speed (set 16Mhz, unset 8Mhz)
+	bit 2: blitter speed (set 16Mhz, unset 8Mhz)
+	bit 5: STE bus emulation (0=on, 1=off)
+
+Shouldn't we emulate at least the first two bits?
+
+
+Then:
+        { 0xff800A, SIZE_WORD, IoMem_VoidRead, 
+IoMem_VoidWrite },                               /* No bus error here */
+        { 0xff800C, SIZE_WORD, IoMem_VoidRead, 
+IoMem_VoidWrite },                               /* No bus error here */
+        { 0xff8060, SIZE_LONG, IoMem_VoidRead, 
+IoMem_VoidWrite },                               /* No bus error here */
+
+According to my documentation whole 0xff8008 - 0xff81ff range is unassigned.
+Why these particular addresses are singled out, why all the (503) addresses
+in this range aren't the same?
+
+
+Then to video handling...
+
+        { 0xff820e, SIZE_BYTE, IoMem_ReadWithoutInterception, 
+IoMem_WriteWithoutInterception }, /* Falcon line offset */
+        { 0xff820f, SIZE_BYTE, Video_LineWidth_ReadByte, 
+Video_LineWidth_WriteByte },
+        { 0xff8210, SIZE_WORD, IoMem_ReadWithoutInterception, 
+IoMem_WriteWithoutInterception }, /* Falcon line width */
+
+The Video_LineWidth_WriteByte() callback doc says:
+ * Write video line width register (0xff820f) - STE only.
+ * Content of LineWidth is added to the shifter counter when display is
+ * turned off (start of the right border, usually at cycle 376)
+
+Shouldn't we handle that specifically for Falcon?
+(byte = 256 pixels in HiColor, but on Falcon the width is a word)
+
+
+And if I read video.c right, horizontal scrolling isn't taken into account
+on Falcon?
+        { 0xff8264, SIZE_BYTE, IoMem_ReadWithoutInterception, 
+IoMem_WriteWithoutInterception }, /* Falcon horizontal fine scrolling 
+high ? */
+        { 0xff8265, SIZE_BYTE, Video_HorScroll_Read, 
+Video_HorScroll_Write },                /* horizontal fine scrolling */
+
+
+Code is also missing e.g. horizontal &amp; vertical display &amp; border begin &amp; end 
+register handling:
+        { 0xff8280, 68, IoMem_ReadWithoutInterception, 
+IoMem_WriteWithoutInterception }, /* TODO: Falcon video */
+
+So I guess display size can be wrong?
+
+
+According to my documentation, 0xff860e - 0xff86ff is unassigned,
+is this a bug:
+        { 0xff860e, SIZE_BYTE, IoMem_VoidRead, 
+IoMem_VoidWrite },                               /* No bus error here */
+        { 0xff860f, SIZE_BYTE, FDC_FloppyMode_ReadByte, 
+FDC_FloppyMode_WriteByte },             /* Floppy mode (?) register */
+
+
+0xff8700 - 0xff878e are SCSI registers with the areas 0xff8716 - 0xff877f - 
+and 0xff8790 - 0xff879f being unassigned.  ioMemTabFalcon didn't have
+anything on them.  Would be good to have comment on them.
+
+
+Microwire registers not implemented:
+        { 0xff8922, SIZE_WORD, IoMem_VoidRead, 
+IoMem_VoidWrite },                                     /* Microwire data */
+        { 0xff8924, SIZE_WORD, IoMem_VoidRead, 
+IoMem_VoidWrite },                                     /* Microwire mask */
+
+
+These were not in my document, what the crossbar thing does here?
+        { 0xff893b, SIZE_BYTE, IoMem_ReadWithoutInterception, 
+IoMem_WriteWithoutInterception }, /* No bus error here */
+        { 0xff893c, SIZE_WORD, Crossbar_CodecStatus_ReadWord, 
+Crossbar_CodecStatus_WriteWord }, /* CODEC status */
+        { 0xff893e, SIZE_WORD, IoMem_ReadWithoutInterception, 
+IoMem_WriteWithoutInterception }, /* No bus error here */
+?
+
+
+GPIO data stuff not implemented:
+        { 0xff8940, SIZE_WORD, IoMem_ReadWithoutInterception, 
+IoMem_WriteWithoutInterception }, /* GPx direction */
+        { 0xff8942, SIZE_WORD, IoMem_ReadWithoutInterception, 
+IoMem_WriteWithoutInterception }, /* GPx port */
+
+
+SCC DMA and port registers not implemented:
+        { 0xff8c80, 8, IoMem_VoidRead, 
+IoMem_WriteWithoutInterception },                        /* TODO: SCC */
+
+
+According to my documentation, these STE/Falcon paddle regs are WORD,
+not BYTE sized (like they're both in STE &amp; Falcon ioMemTab files):
+       { 0xff9210, SIZE_BYTE, IoMem_VoidRead, 
+IoMem_VoidWrite },                               /* No bus error here */
+        { 0xff9211, SIZE_BYTE, IoMem_VoidRead, 
+IoMem_WriteWithoutInterception },          /* Joypad 0 X position (?) */
+        { 0xff9212, SIZE_BYTE, IoMem_VoidRead, 
+IoMem_VoidWrite },                               /* No bus error here */
+        { 0xff9213, SIZE_BYTE, IoMem_VoidRead, 
+IoMem_WriteWithoutInterception },          /* Joypad 0 Y position (?) */
+        { 0xff9214, SIZE_BYTE, IoMem_VoidRead, 
+IoMem_VoidWrite },                               /* No bus error here */
+        { 0xff9215, SIZE_BYTE, IoMem_VoidRead, 
+IoMem_WriteWithoutInterception },          /* Joypad 1 X position (?) */
+        { 0xff9216, SIZE_BYTE, IoMem_VoidRead, 
+IoMem_VoidWrite },                               /* No bus error here */
+        { 0xff9217, SIZE_BYTE, IoMem_VoidRead, 
+IoMem_WriteWithoutInterception },          /* Joypad 1 Y position (?) */
+
+
+Light pen isn't implemented either:
+        { 0xff9220, SIZE_WORD, IoMem_VoidRead, 
+IoMem_WriteWithoutInterception },              /* Lightpen X position */
+        { 0xff9222, SIZE_WORD, IoMem_VoidRead, 
+IoMem_WriteWithoutInterception },              /* Lightpen Y position */
+
+
+My documentation says this is unassigned:
+        { 0xffff82, SIZE_WORD, IoMem_VoidRead, 
+IoMem_VoidWrite },                               /* No bus errors here */
+
+
+It would be nice if the &quot;No bus errors here&quot;  things added would have
+comments why they are there...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001235.html">[hatari-devel] IDE bus errors (was: Big problems with bus error on Falcon)
+</A></li>
+	<LI>Next message: <A HREF="001230.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1227">[ date ]</a>
+              <a href="thread.html#1227">[ thread ]</a>
+              <a href="subject.html#1227">[ subject ]</a>
+              <a href="author.html#1227">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

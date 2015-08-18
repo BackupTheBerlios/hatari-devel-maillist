@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Makefiles removal?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Makefiles%20removal%3F&In-Reply-To=%3C201006132336.51273.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002305.html">
+   <LINK REL="Next"  HREF="002306.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Makefiles removal?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Makefiles%20removal%3F&In-Reply-To=%3C201006132336.51273.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Makefiles removal?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jun 13 22:36:51 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002305.html">[hatari-devel] Makefiles removal?
+</A></li>
+        <LI>Next message: <A HREF="002306.html">[hatari-devel] Makefiles removal?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2309">[ date ]</a>
+              <a href="thread.html#2309">[ thread ]</a>
+              <a href="subject.html#2309">[ subject ]</a>
+              <a href="author.html#2309">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 13 June 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> &gt; Hm. Actually it seems that OSX support has been added to latest
+</I>&gt;<i> &gt; Valgrind release:
+</I>&gt;<i> &gt; 	<A HREF="http://valgrind.org/downloads/current.html">http://valgrind.org/downloads/current.html</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (Windows support isn't even considered by Valgrind developers, but I've
+</I>&gt;<i> &gt; understood that it's possible to use Valgrind with Wine to debug
+</I>&gt;<i> &gt; Windows binaries on Linux.  After one's built them on Linux using a
+</I>&gt;<i> &gt; Windows cross-compiler. :-))
+</I>&gt;<i>
+</I>&gt;<i> Having valgrind on linux itself should be good enough to debug all
+</I>&gt;<i> non-gui code and would profit to the windows/osx version as the emulator
+</I>&gt;<i> code is common.
+</I>
+While Valgrind is a great tool, for emulators like Hatari it's not as useful
+as for normal programs.  Valgrind wraps syscalls and allocation related
+functions and tracks whether memory going to these wrapped functions is
+already free, or not allocated or initialized.
+
+Emulators are &quot;just&quot; large state machines dealing with structures so
+Hatari's emulation part itself doesn't do dynamic allocations and very
+little syscalls.  Even the SDL GUI uses very few allocs.
+
+That's why I added Mudflap support to Hatari.  It can catch things that
+Valgrind cannot i.e. stack and local or static array bounds overwrites
+which can potentially happen in many more places in Hatari code than
+issues with dynamically allocated or uninitialized memory.
+
+(For performance reasons Mudflap doesn't check everything so it also can
+miss some things and there's nothing that catches wrong values put to the
+arrays. :-))
+
+
+Because debugger uses dynamic allocations, I added both valgrind &amp; mudflap
+checks to its functionality tests.
+
+
+&gt;<i> As for the gui, I'm not sure it's the cause of many 
+</I>&gt;<i> problem today related to bad memory management / allocation.
+</I>
+Well, the Hatari OSX version has crashes only when the OSX GUI is used, so
+maybe it could profit from some Valgrinding...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002305.html">[hatari-devel] Makefiles removal?
+</A></li>
+	<LI>Next message: <A HREF="002306.html">[hatari-devel] Makefiles removal?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2309">[ date ]</a>
+              <a href="thread.html#2309">[ thread ]</a>
+              <a href="subject.html#2309">[ subject ]</a>
+              <a href="author.html#2309">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

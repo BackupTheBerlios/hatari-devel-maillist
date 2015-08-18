@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Moai demo as regressed a lot since hatari 1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Moai%20demo%20as%20regressed%20a%20lot%20since%20hatari%201.4&In-Reply-To=%3CCAN5rfbTdCFhBXQ0enkhctjUpL_YhryJchaK3A1SoB08ZeOLEPg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003729.html">
+   <LINK REL="Next"  HREF="003720.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Moai demo as regressed a lot since hatari 1.4</H1>
+    <B>Miro Krop&#225;&#269;ek</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Moai%20demo%20as%20regressed%20a%20lot%20since%20hatari%201.4&In-Reply-To=%3CCAN5rfbTdCFhBXQ0enkhctjUpL_YhryJchaK3A1SoB08ZeOLEPg%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Moai demo as regressed a lot since hatari 1.4">miro.kropacek at gmail.com
+       </A><BR>
+    <I>Thu Jul 14 13:55:23 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003729.html">[hatari-devel] Moai demo as regressed a lot since hatari 1.4
+</A></li>
+        <LI>Next message: <A HREF="003720.html">[hatari-devel] Froggies over the fence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3730">[ date ]</a>
+              <a href="thread.html#3730">[ thread ]</a>
+              <a href="subject.html#3730">[ subject ]</a>
+              <a href="author.html#3730">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i>
+</I>&gt;<i> And the 2 componants that are probably not well accurate are the 68030 (16
+</I>&gt;<i> bits bus) and the Videl.
+</I>&gt;<i>
+</I>Trust me, you don't need to make Videl very accurate... it's true it takes
+some time from the bus but this time can be quite easily calculated (amounts
+of words needed per one vbl), things like wait states or single/double
+lines... this makes no sense. That would be really a huge coincidence some
+demo would be timed to tightly even 1-2% balance in CPU speed would make a
+difference.
+
+Is access to memory always rounded to the next 4 cycles ?
+&gt;<i> (saw in memory.c)
+</I>&gt;<i>
+</I>Yes, just keep in mind it's 16-bit access, i.e. four cycles for every word
+access. As a proof of concept, you could try to divide access time in UAE by
+two, might uncover some interesting things.
+
+-- 
+MiKRO / Mystic Bytes
+<A HREF="http://mikro.atari.org">http://mikro.atari.org</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110714/04243b06/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110714/04243b06/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003729.html">[hatari-devel] Moai demo as regressed a lot since hatari 1.4
+</A></li>
+	<LI>Next message: <A HREF="003720.html">[hatari-devel] Froggies over the fence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3730">[ date ]</a>
+              <a href="thread.html#3730">[ thread ]</a>
+              <a href="subject.html#3730">[ subject ]</a>
+              <a href="author.html#3730">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

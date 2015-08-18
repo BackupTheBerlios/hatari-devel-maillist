@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Small bugs (fix before 1.4?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20bugs%20%28fix%20before%201.4%3F%29&In-Reply-To=%3C20100603213024.211170%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002253.html">
+   <LINK REL="Next"  HREF="002255.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Small bugs (fix before 1.4?)</H1>
+    <B>Thomas H.</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20bugs%20%28fix%20before%201.4%3F%29&In-Reply-To=%3C20100603213024.211170%40gmx.net%3E"
+       TITLE="[hatari-devel] Small bugs (fix before 1.4?)">th.huth at gmx.de
+       </A><BR>
+    <I>Thu Jun  3 23:30:24 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002253.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+        <LI>Next message: <A HREF="002255.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2254">[ date ]</a>
+              <a href="thread.html#2254">[ thread ]</a>
+              <a href="subject.html#2254">[ subject ]</a>
+              <a href="author.html#2254">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Datum: Thu, 3 Jun 2010 21:05:56 +0200 (CEST)
+</I>&gt;<i> Von: Anders Eriksson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>&gt;
+</I>
+&gt;<i> On Thu, 3 Jun 2010, Eero Tamminen wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt;&gt; I've now tried with nForceBpp = 0 and nForceBpp = 32, the screenshots
+</I>&gt;<i> &gt;&gt; remain the same.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Did the mask bits change when you did that?
+</I>&gt;<i> 
+</I>&gt;<i> Hello,
+</I>&gt;<i> 
+</I>&gt;<i> yes they did. Here are the new printouts.
+</I>&gt;<i> 
+</I>&gt;<i> R: mask = 0x0000ff00, shift=8, loss=0
+</I>&gt;<i> G: mask = 0x00ff0000, shift=16, loss=0
+</I>&gt;<i> B: mask = 0xff000000, shift=24, loss=0
+</I>
+Now that's interesting ... your Pixels seem to be stored in big endian format although your running on a little endian Mac !?!?
+
+When I run the printf lines on my x86 Laptop, I get this output:
+
+R: mask = 0x00ff0000, shift=16, loss=0
+G: mask = 0x0000ff00, shift=8, loss=0
+B: mask = 0x000000ff, shift=0, loss=0
+
+... and this is what the code was also expecting until now.
+
+I've changed the code now a little bit so that it now takes the screen format as reported by the SDL into account:
+
+static inline void PixelConvert_32to24Bits(Uint8 *dst, Uint32 *src, int w, SDL_PixelFormat *fmt)
+{
+        int x;
+        for (x = 0; x &lt; w; x++, src++)
+        {
+                *dst++ = (((*src &amp; fmt-&gt;Rmask) &gt;&gt; fmt-&gt;Rshift) &lt;&lt; fmt-&gt;Rloss);
+                *dst++ = (((*src &amp; fmt-&gt;Gmask) &gt;&gt; fmt-&gt;Gshift) &lt;&lt; fmt-&gt;Gloss);
+                *dst++ = (((*src &amp; fmt-&gt;Bmask) &gt;&gt; fmt-&gt;Bshift) &lt;&lt; fmt-&gt;Bloss);
+        }
+}
+
+I hope this solves at least the problem in 32 bpp mode... please update and try again whether the screenshots look better now!
+
+ Thomas
+
+-- 
+GRATIS f&#252;r alle GMX-Mitglieder: Die maxdome Movie-FLAT!
+Jetzt freischalten unter <A HREF="http://portal.gmx.net/de/go/maxdome01">http://portal.gmx.net/de/go/maxdome01</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002253.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+	<LI>Next message: <A HREF="002255.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2254">[ date ]</a>
+              <a href="thread.html#2254">[ thread ]</a>
+              <a href="subject.html#2254">[ subject ]</a>
+              <a href="author.html#2254">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

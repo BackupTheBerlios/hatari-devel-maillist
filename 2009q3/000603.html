@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issues with DMA sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20DMA%20sound&In-Reply-To=%3Calpine.LMD.2.00.0908151146450.12129%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000602.html">
+   <LINK REL="Next"  HREF="000605.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issues with DMA sound</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20DMA%20sound&In-Reply-To=%3Calpine.LMD.2.00.0908151146450.12129%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Issues with DMA sound">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Aug 15 11:53:56 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000602.html">[hatari-devel] Issues with DMA sound
+</A></li>
+        <LI>Next message: <A HREF="000605.html">[hatari-devel] Issues with DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#603">[ date ]</a>
+              <a href="thread.html#603">[ thread ]</a>
+              <a href="subject.html#603">[ subject ]</a>
+              <a href="author.html#603">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 15 Aug 2009, Per Almered wrote:
+
+&gt;<i> That's great! I'll get back to you once I've tested the new engine
+</I>&gt;<i> too. BTW, is there a reliable way to detect Hatari, so I can serve
+</I>&gt;<i> different versions of the music depending on the emulator?
+</I>&gt;<i>
+</I>
+Hello,
+
+no there's no such things, as hatari is supposed to be &quot;undetectable&quot; from 
+the running program, to ensure maximum compatibility and the closest 
+emulation possible of a real Atari. This should &quot;force&quot; us to correct bug 
+:<i>)
+</I>
+And serving different version of the music would not be a good idea, 
+because if you music is &quot;tuned&quot; for Hatari because of a sound difference, 
+then the day we'll fix Hatari then your music will sound bad again.
+
+So, better warn the user that problems are known with 
+Steem/Saint/Hatari/... or any emulator in general (or that it requires at 
+least v1.3 of Hatari in the case the volume problem is gone is gone with 
+this new release).
+
+By the way, do you use the LMC chip to change DMA sample 
+volumes/filter/..., or do you play sample with the default hardware 
+settings ? Because LMC is clearly not fully implemented for now.
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000602.html">[hatari-devel] Issues with DMA sound
+</A></li>
+	<LI>Next message: <A HREF="000605.html">[hatari-devel] Issues with DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#603">[ date ]</a>
+              <a href="thread.html#603">[ thread ]</a>
+              <a href="subject.html#603">[ subject ]</a>
+              <a href="author.html#603">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

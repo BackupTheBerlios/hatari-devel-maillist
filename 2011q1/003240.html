@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crosscompiling Hatari for GP2X Wiz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C201103272059.32244.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003238.html">
+   <LINK REL="Next"  HREF="003247.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crosscompiling Hatari for GP2X Wiz</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C201103272059.32244.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Crosscompiling Hatari for GP2X Wiz">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Mar 27 19:59:32 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003238.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+        <LI>Next message: <A HREF="003247.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3240">[ date ]</a>
+              <a href="thread.html#3240">[ thread ]</a>
+              <a href="subject.html#3240">[ subject ]</a>
+              <a href="author.html#3240">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 27 maaliskuu 2011, Matthias Arndt wrote:
+&gt;<i> &gt; No need for that, just configure the keys in the Hatari configuration
+</I>&gt;<i> &gt; file.
+</I>&gt;<i> 
+</I>&gt;<i> Can it map joystick events (e.q. buttons)?
+</I>
+Specific key events have been supported &quot;forever&quot;.
+
+
+&gt;<i> The target has no keyboard, just a joystick + stylus as SDL mouse.
+</I>
+That's similar to N800, so there shouldn't be any problem.
+
+
+&gt;<i> &gt; A suitable &quot;etc/gp2x.cfg&quot; config file should be enough.  The etc/
+</I>&gt;<i> &gt; subdir already has example configs for Windows WinCE phones and
+</I>&gt;<i> &gt; Nokia's Linux N8x0 tablets.
+</I>&gt;<i> 
+</I>&gt;<i> Yes, I planned to have a special configuration file.
+</I>&gt;<i> But I also wanted to lock out options such as selecting large screen
+</I>&gt;<i> resolutions
+</I>
+Just set maximum window/resolution size suitably.
+
+
+&gt;<i> and Falcon support.
+</I>
+Why?  Some Falcon programs (e.g. Flu &amp; Blue 4k demos by NewBeat) need less
+CPU than some of the ST demos that use overscan and especially palette
+switching with spec512 mode.
+
+
+&gt;<i> The device will do ST/STE stuff well but it has not enough power for
+</I>&gt;<i> Falcon with DSP gizmos.
+</I>
+Just build Hatari without DSP support.  Set:
+	ENABLE_DSP_EMU:BOOL=1
+
+To zero / false.
+
+
+On sunnuntai 27 maaliskuu 2011, Matthias Arndt wrote:
+&gt;<i> Am Sonntag, den 27.03.2011, 18:50 +0300 schrieb Eero Tamminen:
+</I>&gt;<i> I edited all tools for the Wiz toolchain now. within CmakeCache.txt
+</I>&gt;<i> 
+</I>&gt;<i> The Make itself fails with the buildcpu things:
+</I>
+You can change this:
+	CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
+
+To TRUE to see what it does.
+
+
+&gt;<i> [18:38:34] <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at jll</A>: ~/src/hatari/wiz
+</I>&gt;<i> $ make
+</I>&gt;<i> [  4%] Built target Floppy
+</I>&gt;<i> [ 11%] Built target Falcon
+</I>&gt;<i> [ 11%] Built target build68k
+</I>&gt;<i> Linking C executable gencpu
+</I>&gt;<i> CMakeFiles/gencpu.dir/readcpu.c.o: In function `read_table68k':
+</I>&gt;<i> readcpu.c:(.text+0x13dc): undefined reference to `n_defs68k'
+</I>&gt;<i> readcpu.c:(.text+0x13e0): undefined reference to `defs68k'
+</I>&gt;<i> collect2: ld returned 1 exit status
+</I>&gt;<i> make[2]: *** [src/uae-cpu/gencpu] Fehler 1
+</I>&gt;<i> make[1]: *** [src/uae-cpu/CMakeFiles/gencpu.dir/all] Fehler 2
+</I>&gt;<i> make: *** [all] Fehler 2
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> I think the wrong files are compiled with the target gcc here:
+</I>&gt;<i> 
+</I>&gt;<i> [18:36:40] <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at jll</A>: ~/src/hatari/wiz
+</I>&gt;<i> $ file ./src/uae-cpu/CMakeFiles/gencpu.dir/readcpu.c.o
+</I>&gt;<i> ./src/uae-cpu/CMakeFiles/gencpu.dir/readcpu.c.o: ELF 32-bit LSB
+</I>&gt;<i> relocatable, ARM, version 1, not stripped
+</I>
+Thomas?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003238.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+	<LI>Next message: <A HREF="003247.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3240">[ date ]</a>
+              <a href="thread.html#3240">[ thread ]</a>
+              <a href="subject.html#3240">[ subject ]</a>
+              <a href="author.html#3240">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

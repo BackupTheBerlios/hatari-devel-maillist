@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Control.c does not compile...
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Control.c%20does%20not%20compile...&In-Reply-To=%3C20090130202610.0cd33611%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000097.html">
+   <LINK REL="Next"  HREF="000099.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Control.c does not compile...</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Control.c%20does%20not%20compile...&In-Reply-To=%3C20090130202610.0cd33611%40phineus%3E"
+       TITLE="[hatari-devel] Control.c does not compile...">th.huth at gmx.de
+       </A><BR>
+    <I>Fri Jan 30 20:26:10 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000097.html">[hatari-devel] Control.c does not compile...
+</A></li>
+        <LI>Next message: <A HREF="000099.html">[hatari-devel] Control.c does not compile...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#98">[ date ]</a>
+              <a href="thread.html#98">[ thread ]</a>
+              <a href="subject.html#98">[ subject ]</a>
+              <a href="author.html#98">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 29 Jan 2009 22:49:46 +0100
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt; wrote:
+
+&gt;<i> I'm just thinking to have a usable naming convention.
+</I>&gt;<i> At my job, functionality switches are named similar to this:
+</I>&gt;<i> 
+</I>&gt;<i> SWI_XYZ_AVAILABLE
+</I>&gt;<i> 
+</I>&gt;<i> Maybe we can think about something similar?
+</I>
+I think the standard autoconf naming convention is to use ENABLE_xxx
+for switches, WITH_xxx for optional packages and HAVE_xxx for
+automatically detected header files.
+
+&gt;<i> My proposal would be to exclude detection #if for define or not from
+</I>&gt;<i> the config.h and leave exclusivly #define lines in.
+</I>&gt;<i> The detection can be handled by something external.
+</I>
+Well, that's exactly what the configure script is good for.
+
+&gt;<i> &gt; (At the same time you could try fixing also configure.ac SDL
+</I>&gt;<i> &gt; detection. It doesn't seem to work if sdl.m4 file is missing.)
+</I>&gt;<i> 
+</I>&gt;<i> I never had success with the autoconf scripts. They told me for ages
+</I>&gt;<i> my autoconf/automake would be too old.
+</I>
+Yes, it's a mess. Especially the compatibility between the different
+versions of automake is very bad (that's one of the reasons why Hatari
+only uses autoconf, not automake).
+But I remember the early ages of Hatari when there has not been a
+configure script yet, just the Makefile... People were complaining
+about the missing configure script! Normal users just expect an
+automatic configuration!
+
+&gt;<i> Myself I use the good ole Makefile, Makefile.cnf and config.h combo to
+</I>&gt;<i> build Hatari.
+</I>
+I'd like to try cmake or scons one day, but, you know, spare time is
+always very limited...
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000097.html">[hatari-devel] Control.c does not compile...
+</A></li>
+	<LI>Next message: <A HREF="000099.html">[hatari-devel] Control.c does not compile...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#98">[ date ]</a>
+              <a href="thread.html#98">[ thread ]</a>
+              <a href="subject.html#98">[ subject ]</a>
+              <a href="author.html#98">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

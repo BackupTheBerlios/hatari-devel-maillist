@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005141148470.21780%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002077.html">
+   <LINK REL="Next"  HREF="002151.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005141148470.21780%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri May 14 11:51:20 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002077.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002151.html">[hatari-devel] hatariui not working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2126">[ date ]</a>
+              <a href="thread.html#2126">[ thread ]</a>
+              <a href="subject.html#2126">[ subject ]</a>
+              <a href="author.html#2126">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 12 May 2010, David Savinkoff wrote:
+
+&gt;<i> Hi Nicolas,
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Next time there are a few days of rain I'm going to precisely determine
+</I>&gt;<i> &gt; what the problem is.
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> I guess I'm on the warpath and found something to pillage:
+</I>&gt;<i> I'm looking at &quot;void Audio_EnableAudio(bool bEnable)&quot; in audio.c
+</I>&gt;<i> I think that the sound buffer should be completely played out before
+</I>&gt;<i> pausing. Maybe this will help a little.
+</I>&gt;<i> 
+</I>&gt;<i> David Savinkoff
+</I>&gt;<i>
+</I>
+The problem is we can't know if the sound buffer was completly played, the 
+fact that the callback function was called one last time doesn't mean 
+there isn't another level of buffering at alsa's level.
+
+Maybe some kind of &quot;flush&quot; function could be used when pausing sound, but 
+I don't think this exists in SDL.
+
+
+Nicolas
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002077.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002151.html">[hatari-devel] hatariui not working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2126">[ date ]</a>
+              <a href="thread.html#2126">[ thread ]</a>
+              <a href="subject.html#2126">[ subject ]</a>
+              <a href="author.html#2126">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

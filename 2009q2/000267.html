@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] measuring Hatari performance (was: Very big DSP	optimisations)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20measuring%20Hatari%20performance%20%28was%3A%20Very%20big%20DSP%0A%09optimisations%29&In-Reply-To=%3C200904242328.22273.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000266.html">
+   <LINK REL="Next"  HREF="000269.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] measuring Hatari performance (was: Very big DSP	optimisations)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20measuring%20Hatari%20performance%20%28was%3A%20Very%20big%20DSP%0A%09optimisations%29&In-Reply-To=%3C200904242328.22273.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] measuring Hatari performance (was: Very big DSP	optimisations)">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Apr 24 22:28:22 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000266.html">[hatari-devel] measuring Hatari performance (was: Very big DSP optimisations)
+</A></li>
+        <LI>Next message: <A HREF="000269.html">[hatari-devel] measuring Hatari performance (was: Very big DSP optimisations)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#267">[ date ]</a>
+              <a href="thread.html#267">[ thread ]</a>
+              <a href="subject.html#267">[ subject ]</a>
+              <a href="author.html#267">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 24 April 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> this is similar to something I proposed some times ago to measure the
+</I>&gt;<i> impact of some modifications regarding screen rendering (and it similar
+</I>&gt;<i> to some pc games that run a predefined sequence for 30 sec to see how
+</I>&gt;<i> fast your PC is), but it has some drawbacks under multitasking OS (linux
+</I>&gt;<i> or others) :
+</I>&gt;<i>
+</I>&gt;<i>   - any running program will interfere with hatari, so you need to be
+</I>&gt;<i> sure you close all other apps.
+</I>
+Definitely.
+
+
+&gt;<i>   - sound can be a problem and can generate latency ; hatari should be
+</I>&gt;<i> run with sound off.
+</I>
+Laurent &amp; Thomas got just DSP sound output working and that's also
+something that needs to be optimized later on, but in normal case it
+indeed makes sense to disable sound.
+
+
+&gt;<i> Nevertheless, this could give some first results on whether a
+</I>&gt;<i> modification has some impact ; but if the modif only change cpu
+</I>&gt;<i> ressources a few %, it will be hard to measure because this method has a
+</I>&gt;<i> rather big error margin.
+</I>
+This isn't certainly mean to be the only method.
+
+If it's a question of small piece of code, one could do a separate tester
+program that tests the performance of the new and old algorithm (e.g. runs
+it in loop and is called with &quot;time &lt;test&gt;&quot; enough times to get a stable
+number, that's what I did when I optimized some float operations to use
+integer).
+
+Depending on how localized an optimization is, even
+(e.g. valgrind/kcachegrind) profiler output could be used for verifying
+the optimization.
+
+For a large optimization one could use just &quot;top&quot;.
+
+
+&gt;<i> But one could imagine an option 'run for x VBLs then exit'. This way,
+</I>&gt;<i> you could restore a memory snapshot of the same demo sequence for
+</I>&gt;<i> example, run it full speed for 30*50 VBLs then exit and measure the time
+</I>&gt;<i> it took.
+</I>
+Good idea, I added that to the patch (attached).
+
+
+&gt;<i> Perhaps we could also disable video output in that case, to be sure that
+</I>&gt;<i> no sound/video layer is slowing down hatari and that we're measuring only
+</I>&gt;<i> hatari's routines (this means rendering the st/falcon screen in memory,
+</I>&gt;<i> but not sending it to the user's display).
+</I>
+Doing skipping always with the exit-after-N-VBLs isn't a good idea in case
+somebody wants to measure video output performance.
+
+But the attached updated patch removes the maximum limit (currently 8) for
+the --frameskips option.
+
+Just run Hatari with something like:
+	VBLs=$((30*50))
+	./hatari --fast-forward yes --run-vbls $VBLs --frameskips $VBLs
+
+
+&gt;<i> But the most precise way would certainly be to put some &quot;probes&quot; at
+</I>&gt;<i> specific location when entering/exiting various functions and sum the
+</I>&gt;<i> total time.
+</I>
+In that case it would be better just e.g. output it so that one can
+post-process it and calculate average/median/deviation to see how
+reliable the measurement is statistically.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: vbls.diff
+Type: text/x-diff
+Size: 4063 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090424/8d8f6e94/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090424/8d8f6e94/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000266.html">[hatari-devel] measuring Hatari performance (was: Very big DSP optimisations)
+</A></li>
+	<LI>Next message: <A HREF="000269.html">[hatari-devel] measuring Hatari performance (was: Very big DSP optimisations)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#267">[ date ]</a>
+              <a href="thread.html#267">[ thread ]</a>
+              <a href="subject.html#267">[ subject ]</a>
+              <a href="author.html#267">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

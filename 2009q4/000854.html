@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new support for avi recording
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Calpine.LMD.2.00.0910181953440.31843%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000850.html">
+   <LINK REL="Next"  HREF="000855.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new support for avi recording</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Calpine.LMD.2.00.0910181953440.31843%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] new support for avi recording">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Oct 18 20:03:46 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000850.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000855.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#854">[ date ]</a>
+              <a href="thread.html#854">[ thread ]</a>
+              <a href="subject.html#854">[ subject ]</a>
+              <a href="author.html#854">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 18 Oct 2009, Eero Tamminen wrote:
+
+&gt;&gt;&gt;<i> In this case the warning about refresh rate change would be good so
+</I>&gt;&gt;&gt;<i> that one can better decide which refresh rate would be best to be used
+</I>&gt;&gt;&gt;<i> (after seeing what is used most and when the changes happen).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The result would not be good anyway, such demos should be recorded in as
+</I>&gt;&gt;<i> many parts as we have different frequencies, then grouped/reencoded to a
+</I>&gt;&gt;<i> common fps using mencoder for example (Hatari alone would do a really
+</I>&gt;&gt;<i> poor job)
+</I>&gt;<i>
+</I>&gt;<i> I think trying to manually start and stop Hatari at exactly the correct
+</I>&gt;<i> places would be close to impossible.
+</I>
+This is not so difficult, a demo will usually really starts after a double 
+click to start a .prg or after a loader asking to press &quot;space&quot;, so 
+starting the recording at that time is easy and the should be ok.
+
+&gt;<i> [1] Maybe in this case it would be then better to automatically stop
+</I>&gt;<i> recording and start a new one with a different name?  A bit like screenshots
+</I>&gt;<i> do (maybe the code for that could be generalized for both?).
+</I>
+It's hard to base a change of recording file on the freq value, because :
+  - some programs are sometimes switching freq for no real reason, due to 
+bad programming, but in a unnoticeable way on a real ST (it happens too 
+fast, during only a few VBL)
+  - programs using freq switches to remove borders are sometimes leaving 
+the freq in a &quot;bad&quot; state for a few scanlines. This is not noticeable too, but 
+if we try to analyze the freq at that time to change avi file, we will be 
+wrong.
+
+Really, I think it's quite easy to record a few extra seconds before the 
+real part and then use a video editing tool to finely remove the unwanted 
+extra frames (mencoder can do that too, you can tell it to skip a number 
+of frames).
+
+I would really like to see a practical case that is hard to record, but 
+I'm not sure there're that many demos doing this and that it would be a 
+real problem to record anyway.
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000850.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000855.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#854">[ date ]</a>
+              <a href="thread.html#854">[ thread ]</a>
+              <a href="subject.html#854">[ subject ]</a>
+              <a href="author.html#854">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

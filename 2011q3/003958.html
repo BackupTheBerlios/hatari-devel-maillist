@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] 2 automations disks games that seem not to work with	the old CPU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%202%20automations%20disks%20games%20that%20seem%20not%20to%20work%0A%20with%09the%20old%20CPU&In-Reply-To=%3C4E553E6C.3080304%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003955.html">
+   <LINK REL="Next"  HREF="003964.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] 2 automations disks games that seem not to work with	the old CPU</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%202%20automations%20disks%20games%20that%20seem%20not%20to%20work%0A%20with%09the%20old%20CPU&In-Reply-To=%3C4E553E6C.3080304%40corp.free.fr%3E"
+       TITLE="[hatari-devel] 2 automations disks games that seem not to work with	the old CPU">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Aug 24 20:09:48 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003955.html">[hatari-devel] 2 automations disks games that seem not to work with	the old CPU
+</A></li>
+        <LI>Next message: <A HREF="003964.html">[hatari-devel] Extended VDI screen in Falcon mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3958">[ date ]</a>
+              <a href="thread.html#3958">[ thread ]</a>
+              <a href="subject.html#3958">[ subject ]</a>
+              <a href="author.html#3958">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 24/08/2011 17:54, Laurent Sallafranque a &#233;crit :
+&gt;<i> It seems that Automation cd 14 has also the same key problem for me.
+</I>&gt;<i>
+</I>&gt;<i> Some other automation cds run well (cd 13 for example)
+</I>&gt;<i>
+</I>&gt;<i> Have you got the same problems ?
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>
+auto 14 works fine for me with num keypad and shift+1 (tos 1.02 or 1.04)
+
+as for auto 394, it's certainly an FDC command that's not correctly 
+emulated yet.
+
+Nicolas
+
+
+&gt;<i>
+</I>&gt;<i> Le 24/08/2011 17:51, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;<i> Same keyborad problem with automation disk 141 and disk 018
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> My keypress are not detected
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Le 24/08/2011 17:43, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I've tried automation disk 432 and automation disk 394
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Automation disk 432 : I press 1 to play to the first game, but it
+</I>&gt;&gt;&gt;<i> seems not to detect the key press
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Automation disk 394 : I play the first game &quot;mystical&quot;. When it
+</I>&gt;&gt;&gt;<i> should start, hatari shows :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Inserted disk
+</I>&gt;&gt;&gt;<i> '/media/0470BC8670BC7FCA/Jeux/Atari/DiskDur.ST/Jeux/Atari/Jeux/Automation/A_394.ST'
+</I>&gt;&gt;&gt;<i> to drive A:.
+</I>&gt;&gt;&gt;<i> Invalid 'FDC DMA data read' RAM range 0x390000+512!
+</I>&gt;&gt;&gt;<i> Invalid 'FDC DMA data read' RAM range 0x390000+512!
+</I>&gt;&gt;&gt;<i> Bus error lget at 36423642
+</I>&gt;&gt;&gt;<i> M68000 Bus Error reading at address $36423642.
+</I>&gt;&gt;&gt;<i> Your Atari program just did something terribly stupid:
+</I>&gt;&gt;&gt;<i> BusErrMem_xlate($4fce8db8)
+</I>&gt;&gt;&gt;<i> Your Atari program just did something terribly stupid:
+</I>&gt;&gt;&gt;<i> BusErrMem_xlate($4fceda18)
+</I>&gt;&gt;&gt;<i> ...
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I'm running in STf mode, 8 Mhz, 1 Mo ram, tos 1.04fr for the 2 tests.
+</I>&gt;&gt;&gt;<i> I'm running with the old CPU.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Do you have the same errors ?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Regards
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Laurent
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003955.html">[hatari-devel] 2 automations disks games that seem not to work with	the old CPU
+</A></li>
+	<LI>Next message: <A HREF="003964.html">[hatari-devel] Extended VDI screen in Falcon mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3958">[ date ]</a>
+              <a href="thread.html#3958">[ thread ]</a>
+              <a href="subject.html#3958">[ subject ]</a>
+              <a href="author.html#3958">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

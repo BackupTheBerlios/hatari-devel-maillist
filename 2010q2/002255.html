@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Small bugs (fix before 1.4?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20bugs%20%28fix%20before%201.4%3F%29&In-Reply-To=%3C201006040039.57250.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002254.html">
+   <LINK REL="Next"  HREF="002256.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Small bugs (fix before 1.4?)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20bugs%20%28fix%20before%201.4%3F%29&In-Reply-To=%3C201006040039.57250.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Small bugs (fix before 1.4?)">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Jun  3 23:39:57 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002254.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+        <LI>Next message: <A HREF="002256.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2255">[ date ]</a>
+              <a href="thread.html#2255">[ thread ]</a>
+              <a href="subject.html#2255">[ subject ]</a>
+              <a href="author.html#2255">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 04 June 2010, Thomas H. wrote:
+&gt;<i> I've changed the code now a little bit so that it now takes the screen
+</I>&gt;<i> format as reported by the SDL into account:
+</I>&gt;<i>
+</I>&gt;<i> static inline void PixelConvert_32to24Bits(Uint8 *dst, Uint32 *src, int
+</I>&gt;<i> w, SDL_PixelFormat *fmt) {
+</I>&gt;<i>         int x;
+</I>&gt;<i>         for (x = 0; x &lt; w; x++, src++)
+</I>&gt;<i>         {
+</I>&gt;<i>                 *dst++ = (((*src &amp; fmt-&gt;Rmask) &gt;&gt; fmt-&gt;Rshift) &lt;&lt;
+</I>&gt;<i> fmt-&gt;Rloss); *dst++ = (((*src &amp; fmt-&gt;Gmask) &gt;&gt; fmt-&gt;Gshift) &lt;&lt;
+</I>&gt;<i> fmt-&gt;Gloss); *dst++ = (((*src &amp; fmt-&gt;Bmask) &gt;&gt; fmt-&gt;Bshift) &lt;&lt;
+</I>&gt;<i> fmt-&gt;Bloss); }
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> I hope this solves at least the problem in 32 bpp mode... please update
+</I>&gt;<i> and try again whether the screenshots look better now!
+</I>
+I would also be interested does this affect AVI recording speed
+noticeably... :-)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002254.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+	<LI>Next message: <A HREF="002256.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2255">[ date ]</a>
+              <a href="thread.html#2255">[ thread ]</a>
+              <a href="subject.html#2255">[ subject ]</a>
+              <a href="author.html#2255">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

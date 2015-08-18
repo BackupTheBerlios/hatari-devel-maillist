@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Strange bug when saving desktop preferences
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Strange%20bug%20when%20saving%20desktop%20preferences&In-Reply-To=%3C4E73C338.2010809%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004001.html">
+   <LINK REL="Next"  HREF="004007.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Strange bug when saving desktop preferences</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Strange%20bug%20when%20saving%20desktop%20preferences&In-Reply-To=%3C4E73C338.2010809%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Strange bug when saving desktop preferences">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Sep 16 23:44:24 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004001.html">[hatari-devel] commit messages
+</A></li>
+        <LI>Next message: <A HREF="004007.html">[hatari-devel] Strange bug when saving desktop preferences
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4006">[ date ]</a>
+              <a href="thread.html#4006">[ thread ]</a>
+              <a href="subject.html#4006">[ subject ]</a>
+              <a href="author.html#4006">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello
+
+I just encountered a very strange bug (tested with TOS 1.02 and 1.04)
+
+I boot Hatari with HD emulation + an ST image inserted in disk A (&quot;boot 
+from HD&quot; is not enabled in the Hard Disk option window)
+
+-&gt; Hatari boot on A:
+
+Now, I open A: see some files on this disk (it could be an empty disk 
+with no file) and I choose in the GEM Option / Save Desktop.
+
+This should create a file DESKTOP.INF, but nothing appears on A:
+
+But if I look in the directory used for HD emulation, DESKTOP.INF was 
+created there (in C:) !
+
+Now, If I reset Hatari after disabling HD emulation and choose to save 
+desktop on A:, it's correctly created on A:
+
+So, it seems at some point the fact that the HD is emulated under C: is 
+confusing the TOS when writing files, even if Hatari boots correctly on A:
+
+Can anyone reproduce this ? Any idea on where this comes from ?
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004001.html">[hatari-devel] commit messages
+</A></li>
+	<LI>Next message: <A HREF="004007.html">[hatari-devel] Strange bug when saving desktop preferences
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4006">[ date ]</a>
+              <a href="thread.html#4006">[ thread ]</a>
+              <a href="subject.html#4006">[ subject ]</a>
+              <a href="author.html#4006">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

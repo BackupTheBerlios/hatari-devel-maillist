@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] ACSI/DMA emulation issues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20ACSI/DMA%20emulation%20issues&In-Reply-To=%3C20091129140142.GA8657%40quattro.seimet.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001031.html">
+   <LINK REL="Next"  HREF="001033.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] ACSI/DMA emulation issues</H1>
+    <B>Uwe Seimet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20ACSI/DMA%20emulation%20issues&In-Reply-To=%3C20091129140142.GA8657%40quattro.seimet.de%3E"
+       TITLE="[hatari-devel] ACSI/DMA emulation issues">Uwe.Seimet at seimet.de
+       </A><BR>
+    <I>Sun Nov 29 15:01:42 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001031.html">[hatari-devel] ACSI/DMA emulation issues
+</A></li>
+        <LI>Next message: <A HREF="001033.html">[hatari-devel] ACSI/DMA emulation issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1032">[ date ]</a>
+              <a href="thread.html#1032">[ thread ]</a>
+              <a href="subject.html#1032">[ subject ]</a>
+              <a href="author.html#1032">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+&gt;<i> That's funny. Actually, we had this reset code oncy already in
+</I>&gt;<i> FDC_ResetDMAStatus(), but according to a report from Volker Seebode, this
+</I>&gt;<i> was wrong, see:
+</I>&gt;<i> 
+</I>&gt;<i>  <A HREF="http://sourceforge.net/tracker/?func=detail&amp;aid=2130450&amp;group_id=28326&amp;atid=393019">http://sourceforge.net/tracker/?func=detail&amp;aid=2130450&amp;group_id=28326&amp;atid=393019</A>
+</I>&gt;<i> and:
+</I>&gt;<i>  <A HREF="http://hg.berlios.de/repos/hatari/rev/5d4905926359">http://hg.berlios.de/repos/hatari/rev/5d4905926359</A>
+</I>&gt;<i> 
+</I>&gt;<i> So what's the correct behaviour now???
+</I>
+This may be a misunderstanding. The code in my posting was the code used by
+HDDRIVER to clear the DMA status. It was not meant to be code to be
+included in Hatari. My point was when Hatari &quot;sees&quot; this code sequence
+it should reset its byteCount because this code sequence that a new
+command sequence is going to be started. If Hatari does not recognize
+this sequence it might still get the byteCount wrong, even after your
+code change. If for some reason a hard disk driver decides not to send
+all 6 command bytes but aborts the operation and sends less, Hatari's
+byteCount will be wrong at the start of the next operation.
+
+&gt;<i> I think the right fix is to only increase byteCount when a valid target
+</I>&gt;<i> is accessed. I've fixed this in the source code now, so HDDriver (at
+</I>&gt;<i> least the demo version) seems now to be working. Please test if it's
+</I>&gt;<i> also ok for you now!
+</I>
+It's working better now, the commands received by Hatari no longer seem
+to be garbled and the drive is found. But the drive name returned is
+invalid. I think this has something to do with the Atari's ACSI DMA
+hardware only being able to transfer multiples of 16 bytes. In order to
+be compliant with the SCSI Driver specification, which mandates that an
+aribrary number of bytes can be transferred on any supported bus, HDDRIVER
+has to use a work-around in order to hide this limitation.
+What happens in practice is this: The SCSI driver is called (in this
+case internally by HDDRIVER) and the number of data bytes to be returned
+is set to 8, for instance. As the Atari's ACSI DMA chip can only return
+multiples of 16 HDDRIVER first sends the original command (the one the
+SCSI driver was called with) with the original number of bytes (8) to be
+transferred. After sending this command HDDRIVER will additional send as
+many REQUEST SENSE commands (with a byte count of 4) as required to
+reach the 16 bytes response data required by the DMA chip. Now HDDRIVER
+returns the initial number of bytes (8) to the caller and discards the
+excess bytes. Not discarding them would result in a buffer overflow
+because the caller is not required to reserve a buffer larger than the
+number of bytes the caller actually expected.
+This may sound overly complicated, but the idea behind the SCSI Driver
+specification is to have any bus appear like a real SCSI bus, so that
+the caller is not bothered by the underlying hardware limitations.
+
+BTW, instead of reporting &quot;HDC: Program tries to access illegal drive.&quot;
+it should probably read &quot;HDC: Program tries to access non-existing drive.&quot;
+because it's normal (and not illegal) for a hard disk driver to check
+unused IDs.
+
+Best regards
+
+Uwe
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001031.html">[hatari-devel] ACSI/DMA emulation issues
+</A></li>
+	<LI>Next message: <A HREF="001033.html">[hatari-devel] ACSI/DMA emulation issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1032">[ date ]</a>
+              <a href="thread.html#1032">[ thread ]</a>
+              <a href="subject.html#1032">[ subject ]</a>
+              <a href="author.html#1032">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

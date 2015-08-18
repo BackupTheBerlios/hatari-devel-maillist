@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New FDC emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20FDC%20emulation&In-Reply-To=%3C4E8F67B8.6010306%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004060.html">
+   <LINK REL="Next"  HREF="004064.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New FDC emulation</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20FDC%20emulation&In-Reply-To=%3C4E8F67B8.6010306%40corp.free.fr%3E"
+       TITLE="[hatari-devel] New FDC emulation">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Oct  7 22:57:28 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004060.html">[hatari-devel] New FDC emulation
+</A></li>
+        <LI>Next message: <A HREF="004064.html">[hatari-devel] New FDC emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4062">[ date ]</a>
+              <a href="thread.html#4062">[ thread ]</a>
+              <a href="subject.html#4062">[ subject ]</a>
+              <a href="author.html#4062">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 07/10/2011 21:52, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On perjantai 07 lokakuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;<i> After seeing a lot of bug reports about games not running under Hatari,
+</I>&gt;&gt;<i> due to uncomplete emulation of the WD1772, I committed the result of my
+</I>&gt;&gt;<i> work during the latest weeks.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The fdc.c emulation has been nearly completly rewritten, with accuracy
+</I>&gt;&gt;<i> in mind regarding registers emulation, delays and dma transfers.
+</I>&gt;<i>
+</I>&gt;<i> Wow, that was a large rewrite (lots of commits etc). :-)
+</I>
+Yes, due to a lot of regression while rewritting, I only committed small 
+chunks to my own repository, to be able to go backwrd if needed. It 
+would have created quite a mess if I had committed all this regularly to 
+berlios.
+
+&gt;<i>
+</I>&gt;<i> IMHO things that don't work with &quot;--fastfdc on&quot; should be rare enough
+</I>&gt;<i> that they could even be listed in the compatibility list.   What do you
+</I>&gt;<i> think?
+</I>&gt;<i>
+</I>
+Yes, we could list them, it's just that I don't know them :) I guess we 
+will discover very picky programs as we run them in fast fdc mode and 
+user report them.
+But from some early tests I made, it seems the fastfdc mode create less 
+problem that the previously used method that consisted in clearing IRQ 
+bit in the MFP register, so maybe we won't notice problem in the end.
+
+Nevertheless, I think it's better to not use fastfdc, for accurate 
+results and to get the original feeling of the game/demo.
+
+&gt;<i>
+</I>&gt;<i> Btw. Could you update the Manual &quot;The Floppy Disks Dialog&quot; section
+</I>&gt;<i> text&amp;  image also?
+</I>&gt;<i>
+</I>
+Yes, I will do this. I also need to update the release note.
+
+&gt;<i>
+</I>&gt;<i> Regarding this:
+</I>&gt;<i> -#define VERSION_STRING      &quot;1.5.0&quot;   /* Version number of compatible
+</I>&gt;<i> memory snapshots - Always 6 bytes (inc' NULL) */
+</I>&gt;<i> +#define VERSION_STRING      &quot;devel&quot;   /* Version number of compatible
+</I>&gt;<i> memory snapshots - Always 6 bytes (inc' NULL) */
+</I>&gt;<i>
+</I>&gt;<i> IMHO it might be better just to put there larger number, e.g. &quot;1.5.1&quot; to
+</I>&gt;<i> signify that it's later version.  Just in case it gets forgotten for next
+</I>&gt;<i> release and so that it doesn't match earlier devel releases...
+</I>
+I prefer leaving it this way, it looks nice to have &quot;hatari devel&quot; when 
+doing screenshots, feel like living on the edge :)
+
+More seriously, I don't think it's a problem, replacing VERSION_STRING 
+is part of my &quot;release todo list&quot;, so there's no risk a version goes out 
+with the devel tag.
+Of course people can compile their own version and release it in the 
+wild, which could create confusion to have different &quot;devel&quot; versions, 
+but that would not be our responsability.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004060.html">[hatari-devel] New FDC emulation
+</A></li>
+	<LI>Next message: <A HREF="004064.html">[hatari-devel] New FDC emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4062">[ date ]</a>
+              <a href="thread.html#4062">[ thread ]</a>
+              <a href="subject.html#4062">[ subject ]</a>
+              <a href="author.html#4062">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

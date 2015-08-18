@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] I'm lucky ;) K.prg  is working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3C4B865FDE.3000000%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001549.html">
+   <LINK REL="Next"  HREF="001551.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] I'm lucky ;) K.prg  is working</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3C4B865FDE.3000000%40free.fr%3E"
+       TITLE="[hatari-devel] I'm lucky ;) K.prg  is working">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Feb 25 12:32:46 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001549.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+        <LI>Next message: <A HREF="001551.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1550">[ date ]</a>
+              <a href="thread.html#1550">[ thread ]</a>
+              <a href="subject.html#1550">[ subject ]</a>
+              <a href="author.html#1550">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've retested the case 2 now that DSP seems to run again correctly.
+
+TEST 2 :
+
+If I invert the 2 blocks, it runs well :
+
+   /* Run DSP 56k code if necessary */
+   if (bDspEnabled) {
+       DSP_Run( cycles );
+   }
+
+   if (regs.spcflags) {
+       if (do_specialties ())
+           return;
+   }
+
+This is still true. K.PRG runs only when DSP_run is called before 
+do_specialties ().
+I don't know why for now.
+
+I'll try to get a trace.
+
+Regards,
+
+Laurent
+
+
+Laurent Sallafranque a &#233;crit :
+&gt;<i> OK, I understand my problem ;)
+</I>&gt;<i>
+</I>&gt;<i> I've just uploaded a patch in DSP.C to take into account correctly the 
+</I>&gt;<i> 8 -&gt; 32 Mhz conversion.
+</I>&gt;<i>
+</I>&gt;<i> I've retested the programs with this patch :
+</I>&gt;<i>
+</I>&gt;<i> OK means rework
+</I>&gt;<i> KO means still KO since Nicolas's patch (was working before)
+</I>&gt;<i>
+</I>&gt;<i> OK - HMMM demo stops at startup
+</I>&gt;<i> OK - Bound2 (it has always been a very timing sensitive demo)
+</I>&gt;<i> OK - Solonuminescenz freezes at startup (+ stack overflow, never seen 
+</I>&gt;<i> before)
+</I>&gt;<i> KO - K.prg still freezes at startup
+</I>&gt;<i> OK - Graoumpf tracker reacts like K.prg (it's the same code). It was 
+</I>&gt;<i> running before
+</I>&gt;<i> KO - Audio Fun machine give a continuous noisy sound
+</I>&gt;<i> KO - H2O intro runs the sound but displays only white screen anf is 
+</I>&gt;<i> freezed
+</I>&gt;<i> OK - Untgo (Lazer) freezes at startup
+</I>&gt;<i> OK - Crown of creation freezes at presentation screen. It was running 
+</I>&gt;<i> until the game.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> PS : for Crown of creation, I could play it during hours without 
+</I>&gt;<i> problems a few versions before this last one.
+</I>&gt;<i> There's been a change somewhere, because now, it says there are some 
+</I>&gt;<i> unsynchro beetween CPU and DSP. (This appeared before Nicolas' patch).
+</I>&gt;<i>
+</I>&gt;<i> Perhaps crossbar sound optimisations.
+</I>&gt;<i>
+</I>&gt;<i> I think we can continue to work with this version.
+</I>&gt;<i> Eero, the actual compatibility list may be wrong with some programs 
+</I>&gt;<i> (at least Eko H2O game seems to have a problem now).
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001549.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+	<LI>Next message: <A HREF="001551.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1550">[ date ]</a>
+              <a href="thread.html#1550">[ thread ]</a>
+              <a href="subject.html#1550">[ subject ]</a>
+              <a href="author.html#1550">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

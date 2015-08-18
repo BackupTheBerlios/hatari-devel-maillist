@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari v1.6 features?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20v1.6%20features%3F&In-Reply-To=%3C4E9B34D4.6080108%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004103.html">
+   <LINK REL="Next"  HREF="004106.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari v1.6 features?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20v1.6%20features%3F&In-Reply-To=%3C4E9B34D4.6080108%40free.fr%3E"
+       TITLE="[hatari-devel] Hatari v1.6 features?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Oct 16 21:47:32 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004103.html">[hatari-devel] Hatari v1.6 features?
+</A></li>
+        <LI>Next message: <A HREF="004106.html">[hatari-devel] Hatari v1.6 features?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4105">[ date ]</a>
+              <a href="thread.html#4105">[ thread ]</a>
+              <a href="subject.html#4105">[ subject ]</a>
+              <a href="author.html#4105">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Would the hd6301_cpu.c code I started to write 2 years ago and I still 
+haven't finished would help here ?
+Maybe I could take a few days and improve it.
+
+But as there's already Nicolas's method to emulate this shift, I've 
+never filled urged to finish this piece of code.
+
+Just tell me.
+
+regards
+
+Laurent
+
+
+
+Le 16/10/2011 14:45, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 15/10/2011 15:30, Eero Tamminen a &#233;crit :
+</I>&gt;<i>
+</I>&gt;&gt;<i> Nicolas:
+</I>&gt;&gt;<i> - Move to new hosting service...
+</I>&gt;&gt;<i> - ?
+</I>&gt;<i>
+</I>&gt;<i> Hello
+</I>&gt;<i>
+</I>&gt;<i> Maybe rework the acia/ikbd communication parts, there're still some 
+</I>&gt;<i> problems there, we regularly get reports of programs that gets broken 
+</I>&gt;<i> after we &quot;fix&quot; something in the ikbd. Timings and emulation of the 
+</I>&gt;<i> acia control registers are not right, I would need to write some 68000 
+</I>&gt;<i> test programs to precisely measure several cases on a real ST and 
+</I>&gt;<i> check we get the same behaviour under Hatari (definitly a boring task, 
+</I>&gt;<i> but this has to be done :) )
+</I>&gt;<i>
+</I>&gt;<i> Let's see also if we get better sound options for the analog voices 
+</I>&gt;<i> mixing.
+</I>&gt;<i>
+</I>&gt;<i> IKBD and FDC should give huge improvements for people playing games in 
+</I>&gt;<i> Hatari ; so far my focus was mainly on demos, as they require very 
+</I>&gt;<i> precise emulation and exhibit a lot of video/cpu cases.
+</I>&gt;<i>
+</I>&gt;<i> But IKBD and FDC are 2 of the oldest components that were not really 
+</I>&gt;<i> refactored recently and they still carry some limitations/errors from 
+</I>&gt;<i> the original Winston sources (that's done for FDC now, but IKBD remains)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> [1] Nicolas, recording and replaying mouse events would be
+</I>&gt;&gt;<i>      really nice...  Do you have any thoughts on best way to
+</I>&gt;&gt;<i>       do that?
+</I>&gt;<i>
+</I>&gt;<i> In ikbdc.c, you could try to intercept when we write the byte in 
+</I>&gt;<i> $fffc02. This byte is the result of pressing a key or moving the mouse 
+</I>&gt;<i> on the host computer (through SDL).
+</I>&gt;<i>
+</I>&gt;<i> So, if each time a byte is written to be &quot;sent&quot; to the ST you store 
+</I>&gt;<i> the VBL number, the video cycle number in this number and the byte, 
+</I>&gt;<i> you should be able to record a precise flow of the bytes sents to the ST.
+</I>&gt;<i>
+</I>&gt;<i> But if you do this in IKBD_InterruptHandler_ACIA / 
+</I>&gt;<i> bByteInTransitToACIA==true, you might record also the bytes sent by 
+</I>&gt;<i> the ikbd, which is not what you want, so you better record bytes in 
+</I>&gt;<i> IKBD_SendAutoKeyboardCommands when IKBD_UpdateInternalMousePosition is 
+</I>&gt;<i> called (this would filter mouse only events, but requires quite some 
+</I>&gt;<i> plumbing anyway)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004103.html">[hatari-devel] Hatari v1.6 features?
+</A></li>
+	<LI>Next message: <A HREF="004106.html">[hatari-devel] Hatari v1.6 features?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4105">[ date ]</a>
+              <a href="thread.html#4105">[ thread ]</a>
+              <a href="subject.html#4105">[ subject ]</a>
+              <a href="author.html#4105">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

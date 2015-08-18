@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] FW:  Issue with current directory in file selector
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FW%3A%20%20Issue%20with%20current%20directory%20in%20file%20selector&In-Reply-To=%3C89BA532D8C956043994C773C71153C92A892E77EEE%40GVW1088EXB.americas.hpqcorp.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001457.html">
+   <LINK REL="Next"  HREF="001406.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] FW:  Issue with current directory in file selector</H1>
+    <B>Konador, Cyprian</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FW%3A%20%20Issue%20with%20current%20directory%20in%20file%20selector&In-Reply-To=%3C89BA532D8C956043994C773C71153C92A892E77EEE%40GVW1088EXB.americas.hpqcorp.net%3E"
+       TITLE="[hatari-devel] FW:  Issue with current directory in file selector">cyprian.konador at hp.com
+       </A><BR>
+    <I>Sun Jan 31 23:46:56 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001457.html">[hatari-devel] Whip is working
+</A></li>
+        <LI>Next message: <A HREF="001406.html">[hatari-devel] Issue with current directory in file selector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1405">[ date ]</a>
+              <a href="thread.html#1405">[ thread ]</a>
+              <a href="subject.html#1405">[ subject ]</a>
+              <a href="author.html#1405">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> From: Eero Tamminen [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>] 
+</I>
+&gt;<i> &gt; I found out that function File_SplitPath in file.c returns 
+</I>&gt;<i> wrong path.
+</I>&gt;<i> &gt; E.g. C:\Hatari\Floppy\Nosta.msa is splitted (in function
+</I>&gt;<i> &gt; SDLGui_FileSelect) as follow: path: C:\Hatari\Floppy\
+</I>&gt;<i> &gt; fname: Nosta.msa
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; but should be:
+</I>&gt;<i> &gt; path: C:\Hatari\Floppy
+</I>&gt;<i> &gt; fname: Nosta.msa
+</I> 
+&gt;<i> Thanks for the patch!  Sorry that I didn't have time to check it this
+</I>&gt;<i> weekend.
+</I>
+Welcome
+ 
+&gt;<i> Please test also all the buttons at the top of the file 
+</I>&gt;<i> selector (&quot;..&quot; etc)
+</I>&gt;<i> and whether selecting a disk image from inside a ZIP archive 
+</I>&gt;<i> works also with
+</I>&gt;<i> your patch.
+</I>&gt;<i>
+</I>&gt;<i> (I'll try to do that myself on Linux during next week.)
+</I>
+I've checked and buttons &quot;..&quot; and &quot;/&quot; work fine. I can't see any action after pressing &quot;~&quot;, neither with my patch nor in 1.3.1
+
+ZIP are recognized properly, I'm able to watch demo from zipped .ST file.
+
+
+Thanks
+
+Regards
+Cyprian
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001457.html">[hatari-devel] Whip is working
+</A></li>
+	<LI>Next message: <A HREF="001406.html">[hatari-devel] Issue with current directory in file selector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1405">[ date ]</a>
+              <a href="thread.html#1405">[ thread ]</a>
+              <a href="subject.html#1405">[ subject ]</a>
+              <a href="author.html#1405">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

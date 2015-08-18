@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Troubles compiling latest Hatari with new avi support
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%20support&In-Reply-To=%3C4AD06264.7010202%40wanadoo.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000808.html">
+   <LINK REL="Next"  HREF="000811.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Troubles compiling latest Hatari with new avi support</H1>
+    <B>Jerome Vernet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%20support&In-Reply-To=%3C4AD06264.7010202%40wanadoo.fr%3E"
+       TITLE="[hatari-devel] Troubles compiling latest Hatari with new avi support">vernet.jerome at wanadoo.fr
+       </A><BR>
+    <I>Sat Oct 10 12:31:00 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000808.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+        <LI>Next message: <A HREF="000811.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#810">[ date ]</a>
+              <a href="thread.html#810">[ thread ]</a>
+              <a href="subject.html#810">[ subject ]</a>
+              <a href="author.html#810">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE><A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> do you mean that if you use &quot;#if HAVE_LIBPNG&quot; it wouldn't compile ?
+</I>&gt;<i> In that case, you should not use &quot;-DHAVE_LIBPNG&quot; but &quot;-DHAVE_LIBPNG=1&quot; 
+</I>&gt;<i> (although this is supposed to be the same according to gcc doc).
+</I>&gt;<i>
+</I>Yes. If I add HAVE_LIBPNG=1 to the XCode Preprocessor options, it 
+doesn't take it in account. I rememebr having same trouble with the 
+ENABLE_DSP=1 define.
+As it's clearer (for me) to see a #ifdef...
+
+&gt;<i> Also, I see you modified &quot;include log.h&quot; to &quot;include debug/log.h&quot; ; 
+</I>&gt;<i> this is not required if you add &quot;debug&quot; to the include search path 
+</I>&gt;<i> &quot;-Idebug&quot;
+</I>Yes: I modified later the includes search path.
+&gt;<i>
+</I>&gt;&gt;<i> Hatari launching, starting to record but hang here:
+</I>&gt;&gt;<i> png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, 
+</I>&gt;&gt;<i> NULL);
+</I>&gt;&gt;<i> if the Falcon screen goes black.
+</I>&gt;&gt;<i> More over, the &quot;Stop recording&quot; button in the pref panel doesn't work
+</I>&gt;&gt;<i> for me (hang hatri also).
+</I>&gt;<i>
+</I>&gt;<i> Can't really say, this is certainly a problem with some osx libraries, 
+</I>&gt;<i> but I can't test this myself.
+</I>Wich pnglib version do you use ?
+
+
+Jerome
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000808.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+	<LI>Next message: <A HREF="000811.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#810">[ date ]</a>
+              <a href="thread.html#810">[ thread ]</a>
+              <a href="subject.html#810">[ subject ]</a>
+              <a href="author.html#810">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

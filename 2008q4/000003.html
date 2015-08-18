@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Improving color alignment with pixels
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2008q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Improving%20color%20alignment%20with%20pixels&In-Reply-To=%3CPine.LNX.4.64.0812222358490.12807%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000002.html">
+   <LINK REL="Next"  HREF="000009.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Improving color alignment with pixels</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Improving%20color%20alignment%20with%20pixels&In-Reply-To=%3CPine.LNX.4.64.0812222358490.12807%40localhost%3E"
+       TITLE="[hatari-devel] Improving color alignment with pixels">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Dec 23 00:04:46 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000002.html">[hatari-devel] Improving color alignment with pixels
+</A></li>
+        <LI>Next message: <A HREF="000009.html">[hatari-devel] Improving color alignment with pixels
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3">[ date ]</a>
+              <a href="thread.html#3">[ thread ]</a>
+              <a href="subject.html#3">[ subject ]</a>
+              <a href="author.html#3">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 22 Dec 2008, Jean-Baptiste Berlioz wrote:
+
+&gt;<i>
+</I>&gt;<i> Just before i trashed my Ubuntu installation, i did dome tests with mixed YM 
+</I>&gt;<i> and DMA sounds, i don't know if theses problems are know:
+</I>&gt;<i> - Playing DMA samples make YM sounds very noisy
+</I>&gt;<i> - DMA sounds starts too late
+</I>&gt;<i> - DMA volume is too high (or YM too low)
+</I>&gt;<i>
+</I>&gt;<i> It was tested against an MegaSTE.
+</I>
+Yes, it's clear the DMA sound is not perfect yet. YM/DMA mixing as done by 
+the lmc chip must be improved (it also controls the volume). Current lmc 
+implementation is close to 0 if I recall correctly. One possible way to 
+improve it could be to port some of the code used in sc68.
+
+It's also possible there're some delays or cumulated offsets in dma sound, 
+Evil/DHS reported a problem with 'More or less zero' where dma sound is 
+not synchronised with the gfx under hatari.
+
+&gt;<i> Have a nice christmas :)
+</I>&gt;<i> Jean-Baptiste
+</I>&gt;<i>
+</I>
+Yes, holidays are coming ; I will be off for 2 weeks, so don't expect any 
+code from me :)
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000002.html">[hatari-devel] Improving color alignment with pixels
+</A></li>
+	<LI>Next message: <A HREF="000009.html">[hatari-devel] Improving color alignment with pixels
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3">[ date ]</a>
+              <a href="thread.html#3">[ thread ]</a>
+              <a href="subject.html#3">[ subject ]</a>
+              <a href="author.html#3">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

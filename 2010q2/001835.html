@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari manual updates for release?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20manual%20updates%20for%20release%3F&In-Reply-To=%3C201004080009.07166.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001829.html">
+   <LINK REL="Next"  HREF="001843.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari manual updates for release?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20manual%20updates%20for%20release%3F&In-Reply-To=%3C201004080009.07166.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari manual updates for release?">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Apr  7 23:09:07 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001829.html">[hatari-devel] Hatari manual updates for release?
+</A></li>
+        <LI>Next message: <A HREF="001843.html">[hatari-devel] Hatari manual updates for release?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1835">[ date ]</a>
+              <a href="thread.html#1835">[ thread ]</a>
+              <a href="subject.html#1835">[ subject ]</a>
+              <a href="author.html#1835">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 06 April 2010, Laurent Sallafranque wrote:
+&gt;<i>  From my point of view, hatari is no more experimental for falcon
+</I>&gt;<i> emulation. I would say that hatari is a falcon emulator witch allows
+</I>&gt;<i> 70-80% of programs to work.
+</I>&gt;<i>
+</I>&gt;<i> Dsp let's run many programs and demos.
+</I>&gt;<i> Dsp sound effects are working with winrec and whip.
+</I>&gt;<i> Crossbar let run demos which use the SSI port.
+</I>&gt;<i> There may still be 1 or 2 bugs in the dsp code, but they're harder to
+</I>&gt;<i> detect now.
+</I>&gt;<i> Microphone entry is emulated too.
+</I>
+I decided to leave/add &quot;experimental&quot; for emulated HW features which
+aren't very widely/extensively tested OR weren't in earlier releases.
+
+I.e. the additions are for STE:
+- Experimental Microwire/LMC1992 emulation
+
+And for Falcon additions &amp; changes are:
+- Aspect correction and scaling of small resolutions by an integer
+  scaling factor
+...
+- DSP co-processor emulation
+- Experimental microphone (jack) emulation
+- Experimental Crossbar sound matrix (ADC (mic &amp; PSG), DAC, DMA, DSP)
+  interconnect emulation + support for the additional DMA sound
+  sample rates
+- Experimental IDE master and slave emulation for harddisk support&lt;/li&gt;
+
+TT and midi/rs232/printer emulation have been in several releases, but as
+they still aren't very extensively(?) tested, I left them as experimental.
+
+
+Btw. Hatari www-site front page is pretty much out of date:
+	<A HREF="http://hatari.berlios.de/">http://hatari.berlios.de/</A>
+
+It states:
+--------
+About:
+Hatari is an Atari ST and STE emulator...
+...
+Features:
+...
+Note that Hatari mainly emulates the original ST and STE hardware &#8211; the 
+emulation of the additional hardware of the TT or Falcon machines is 
+currently in development and highly experimental.
+---------
+
+Nicolas, can you update that?
+
+(Use &quot;Hatari is Atari ST/STE/TT/Falcon emulator...&quot; and remove &quot;with its 
+ACSI emulation&quot;.)
+
+
+On the links www-page I would remove this completely outdated link:
+* Marco Herrn's Debian packages : Hatari .deb packages for
+  the  Debian &quot;testing&quot; and &quot;unstable&quot; distributions (packages are
+  currently out of date).
+
+And replace it with link to real Debian packages on Debian:
+	Hatari Debian package: <A HREF="http://packages.debian.org/testing/hatari">http://packages.debian.org/testing/hatari</A>
+
+
+Documentation page could add link to todo.txt file too (I added mention
+about that to manual too).
+
+
+	- Eero
+
+PS. The DHS Hatari page:
+	<A HREF="http://dhs.nu/hatari/">http://dhs.nu/hatari/</A>
+
+Seems to be completely out of date too:
+* CPU freq patch is not safe emulation-wise.
+* Current Hatari has superior debugging capabilities compared
+  to what's there
+* The XBios 255 command which the standard Hatari --bios-intercept option
+  enables, takes Hatari command line as argument
+* There's no point in enabling --debug option (exception catching)
+  by default?
+
+There's no cycle counting API for Hatari though.
+
+
+&gt;<i> The &quot;still to do&quot; list is :
+</I>&gt;<i>
+</I>&gt;<i> - precise Videl emulation
+</I>&gt;<i> - verify dsp cycles
+</I>&gt;<i> - better accuracy between DSP, crossbar and 68030
+</I>&gt;<i> - emulate the non documented ssi transfert which is used in GT2 modules
+</I>&gt;<i> (noring's player).
+</I>&gt;<i> - allow the crossbar to &quot;distribute&quot; sound in handshake mode to the DSP
+</I>&gt;<i> and non handshake mode to the DAC (for example).
+</I>&gt;<i>
+</I>&gt;<i> So, don't hesitate to modify hatari's files and manuals.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Ps : I'll update the TODO list, as I've seen some things are already
+</I>&gt;<i> done.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+</I>&gt;<i> &gt; On Tue, 6 Apr 2010, Eero Tamminen wrote:
+</I>&gt;<i> &gt;&gt; Hi,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; I've been going through the Hatari manual and updated the other dialog
+</I>&gt;<i> &gt;&gt; screenshots &amp; their texts except for the screen one (which needs more
+</I>&gt;<i> &gt;&gt; work).
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; While doing that I noticed that some things are still stated as
+</I>&gt;<i> &gt;&gt; experimental:
+</I>&gt;<i> &gt;&gt; - printer, rs232, midi support
+</I>&gt;<i> &gt;&gt; - STE suport
+</I>&gt;<i> &gt;&gt; - Falcon support
+</I>&gt;<i> &gt;&gt;  - DSP support
+</I>&gt;<i> &gt;&gt;  - IDE support
+</I>&gt;<i> &gt;&gt; - TT support
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Do you think they should be still marked as experimental?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hello,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I can't say about all the items, as I mainly use only STF/STE mode for
+</I>&gt;<i> &gt; watching demos, but regarding STE, I would not say support is
+</I>&gt;<i> &gt; experimental anymore. Video, blitter and dma sound had some big
+</I>&gt;<i> &gt; enhancements since a few releases and in my opinion hatari is 90% or
+</I>&gt;<i> &gt; more close to full completness regarding STE emulation.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; Other updates missing from it are comments about crossbar, mic &amp;
+</I>&gt;<i> &gt;&gt; recording
+</I>&gt;<i> &gt;&gt; and microwire emulation.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Maybe laurent can add a few notes about this ?
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001829.html">[hatari-devel] Hatari manual updates for release?
+</A></li>
+	<LI>Next message: <A HREF="001843.html">[hatari-devel] Hatari manual updates for release?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1835">[ date ]</a>
+              <a href="thread.html#1835">[ thread ]</a>
+              <a href="subject.html#1835">[ subject ]</a>
+              <a href="author.html#1835">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

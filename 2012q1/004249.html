@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger crash changes / zeroing global variables
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2012q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20crash%20changes%20/%20zeroing%20global%20variables&In-Reply-To=%3C201201141753.46641.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="004250.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger crash changes / zeroing global variables</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20crash%20changes%20/%20zeroing%20global%20variables&In-Reply-To=%3C201201141753.46641.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Debugger crash changes / zeroing global variables">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sat Jan 14 16:53:46 CET 2012</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="004250.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4249">[ date ]</a>
+              <a href="thread.html#4249">[ thread ]</a>
+              <a href="subject.html#4249">[ subject ]</a>
+              <a href="author.html#4249">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Nicolas, what are these changes:
+<A HREF="http://hg.tuxfamily.org/mercurialroot/hatari/hatari/rev/5651a4bfdf0e">http://hg.tuxfamily.org/mercurialroot/hatari/hatari/rev/5651a4bfdf0e</A>
+<A HREF="http://hg.tuxfamily.org/mercurialroot/hatari/hatari/rev/b9e92dc09385">http://hg.tuxfamily.org/mercurialroot/hatari/hatari/rev/b9e92dc09385</A>
+?
+
+Uninitialized global variables are already zero.  Or your compiler
+is buggy, as C specification states that:
+---------
+If an object that has static storage duration is not initialized explicitly, 
+then:
+
+if it has pointer type, it is initialized to a null pointer;
+if it has arithmetic type, it is initialized to (positive or unsigned) zero;
+if it is an aggregate, every member is initialized (recursively) according 
+to these rules;
+if it is a union, the first named member is initialized (recursively) 
+according to these rules.
+---------
+
+Explicitly setting global variables to NULL/zero/false, may move the
+variables from (initially zeroed) BSS to DATA section and increase
+the binary size minimally, it doesn't change the values of those
+variables as they already were zero.  See also:
+	<A HREF="http://en.wikipedia.org/wiki/.bss">http://en.wikipedia.org/wiki/.bss</A>
+
+I.e. I think there's some other problem that you just hid.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="004250.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4249">[ date ]</a>
+              <a href="thread.html#4249">[ thread ]</a>
+              <a href="subject.html#4249">[ subject ]</a>
+              <a href="author.html#4249">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

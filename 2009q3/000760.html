@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Can I use portaudio lib ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Can%20I%20use%20portaudio%20lib%20%3F&In-Reply-To=%3C200909292015.38983.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000759.html">
+   <LINK REL="Next"  HREF="000761.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Can I use portaudio lib ?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Can%20I%20use%20portaudio%20lib%20%3F&In-Reply-To=%3C200909292015.38983.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Can I use portaudio lib ?">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Sep 29 19:15:38 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000759.html">[hatari-devel] Can I use portaudio lib ?
+</A></li>
+        <LI>Next message: <A HREF="000761.html">[hatari-devel] Can I use portaudio lib ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#760">[ date ]</a>
+              <a href="thread.html#760">[ thread ]</a>
+              <a href="subject.html#760">[ subject ]</a>
+              <a href="author.html#760">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 29 September 2009, Laurent Sallafranque wrote:
+&gt;<i> I've just added the following lines to Makefile-default.cnf
+</I>&gt;<i> + # PORTAUDIO configuration (for PORTAUDIO embedding)
+</I>&gt;<i> + PORTAUDIO_LIBS := $(shell pkg-config --libs portaudio-2.0)
+</I>&gt;<i> + ifneq ($(PORTAUDIO_LIBS),)
+</I>&gt;<i> + PORTAUDIO_CFLAGS := $(shell pkg-config --cflags portaudio-2.0)
+</I>&gt;<i> + CFLAGS += $(PORTAUDIO_CFLAGS) -DHAVE_PORTAUDIO=1
+</I>&gt;<i> + LIBS += $(PORTAUDIO_LIBS)
+</I>&gt;<i> + endif
+</I>&gt;<i>
+</I>&gt;<i> Is it OK for you all ?
+</I>
+I think so.  (although the comment about embedding could be removed :-))
+
+After all this is working, we can look at the configure.ac update with
+Thomas (anything to do with GNU autotools is painful) and discuss with you
+a bit about whether and how much of portaudio needs to be included in
+Hatari.
+
+Can you do the code so that it builds and Hatari in general works also when
+there's no portaudio and the corresponding Falcon feature is missing from
+Hatari?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000759.html">[hatari-devel] Can I use portaudio lib ?
+</A></li>
+	<LI>Next message: <A HREF="000761.html">[hatari-devel] Can I use portaudio lib ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#760">[ date ]</a>
+              <a href="thread.html#760">[ thread ]</a>
+              <a href="subject.html#760">[ subject ]</a>
+              <a href="author.html#760">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

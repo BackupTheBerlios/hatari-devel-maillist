@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Troubles compiling latest Hatari with new avi support
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%20support&In-Reply-To=%3Calpine.LMD.2.00.0910081923140.17465%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000785.html">
+   <LINK REL="Next"  HREF="000787.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Troubles compiling latest Hatari with new avi support</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%20support&In-Reply-To=%3Calpine.LMD.2.00.0910081923140.17465%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Troubles compiling latest Hatari with new avi support">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Oct  8 19:24:05 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000785.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+        <LI>Next message: <A HREF="000787.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#786">[ date ]</a>
+              <a href="thread.html#786">[ thread ]</a>
+              <a href="subject.html#786">[ subject ]</a>
+              <a href="author.html#786">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 8 Oct 2009, Matthias Arndt wrote:
+
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> I get the following error whiel trying to build the latest snapshot:
+</I>&gt;<i>
+</I>&gt;<i> avi_record.o: In function
+</I>&gt;<i> `AviRecordAudioStream_PCM':/home/marndt/src/hatari/src                          /avi_record.c:609: undefined reference to `SDL_SwapLE16'
+</I>&gt;<i> :/home/marndt/src/hatari/src/avi_record.c:610: undefined reference to
+</I>&gt;<i> `SDL_SwapL                          E16'
+</I>&gt;<i> collect2: ld gab 1 als Ende-Status zur&#252;ck
+</I>&gt;<i> make[2]: *** [hatari] Fehler 1
+</I>&gt;<i> make[2]: Verlasse Verzeichnis '/home/marndt/src/hatari/src'
+</I>&gt;<i> make[1]: *** [all] Fehler 2
+</I>&gt;<i> make[1]: Verlasse Verzeichnis '/home/marndt/src/hatari/src'
+</I>&gt;<i> make: *** [all] Fehler 2
+</I>&gt;<i>
+</I>&gt;<i> Yes I know that my libSDL is out of date - but is it possible to either
+</I>&gt;<i> take care of this? Make avi support optional (i won't need it anyway) or
+</I>&gt;<i> find a workaround to let it compile anyway?
+</I>&gt;<i>
+</I>&gt;<i> I will not upgrade SDL just for Hatari.
+</I>&gt;<i>
+</I>&gt;<i> cheers,
+</I>&gt;<i> Matthias
+</I>
+This is strange, this is the same code used to save png screenshot. Does 
+png screenshot works for you ?
+
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000785.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+	<LI>Next message: <A HREF="000787.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#786">[ date ]</a>
+              <a href="thread.html#786">[ thread ]</a>
+              <a href="subject.html#786">[ subject ]</a>
+              <a href="author.html#786">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

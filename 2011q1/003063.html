@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Chaos AD demo question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Chaos%20AD%20demo%20question&In-Reply-To=%3C4D5AFD8F.5030905%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003047.html">
+   <LINK REL="Next"  HREF="003043.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Chaos AD demo question</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Chaos%20AD%20demo%20question&In-Reply-To=%3C4D5AFD8F.5030905%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Chaos AD demo question">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Feb 15 23:26:23 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003047.html">[hatari-devel] Chaos AD demo question
+</A></li>
+        <LI>Next message: <A HREF="003043.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3063">[ date ]</a>
+              <a href="thread.html#3063">[ thread ]</a>
+              <a href="subject.html#3063">[ subject ]</a>
+              <a href="author.html#3063">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 14/02/2011 23:15, Laurent Sallafranque a &#233;crit :
+&gt;<i> Later, I can read :
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc= 63032 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">56 at 123</A> : 00E032EC 1029 0002 MOVE.B (A1, $0002) ==
+</I>&gt;<i> $fffffc02,D0&lt;---- here
+</I>&gt;<i> cpu video_cyc= 63042 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">66 at 123</A> : 00E032F0 b1fc 0000 0f96 CMPA.L #$00000f96,A0
+</I>&gt;<i> cpu video_cyc= 63048 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">72 at 123</A> : 00E032F6 6600 0622 BNE.W #$0622 ==
+</I>&gt;<i> $00E0391A (F)
+</I>&gt;<i> cpu video_cyc= 63054 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">78 at 123</A> : 00E032FA 4a38 115a TST.B $0000115a
+</I>&gt;<i> cpu video_cyc= 63060 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">84 at 123</A> : 00E032FE 6664 BNE.B #$00000064 ==
+</I>&gt;<i> $00E03364 (F)
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc= 63064 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">88 at 123</A> : 00E03300 0c00 00f6 CMP.B #$f6,D0 &lt;---- here
+</I>&gt;<i> cpu video_cyc= 63070 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">94 at 123</A> : 00E03304 6406 BCC.B #$00000006 ==
+</I>&gt;<i> $00E0330C (T) &lt;---- here
+</I>&gt;<i> cpu video_cyc= 63076 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">100 at 123</A> : 00E0330C 0400 00f6 SUB.B #$f6,D0
+</I>&gt;<i> cpu video_cyc= 63082 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">106 at 123</A> : 00E03310 0280 0000 00ff AND.L #$000000ff,D0
+</I>&gt;<i> cpu video_cyc= 63088 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">112 at 123</A> : 00E03316 47f9 00e0 3350 LEA.L $00e03350,A3
+</I>&gt;<i> cpu video_cyc= 63094 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">118 at 123</A> : 00E0331C 11f3 0000 115a MOVE.B (A3,
+</I>&gt;<i> D0.W*1, $00) == $00e03359,$0000115a
+</I>&gt;<i> cpu video_cyc= 63104 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">128 at 123</A> : 00E03322 47f9 00e0 335a LEA.L $00e0335a,A3
+</I>&gt;<i> cpu video_cyc= 63110 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">134 at 123</A> : 00E03328 11f3 0000 115b MOVE.B (A3,
+</I>&gt;<i> D0.W*1, $00) == $00e03363,$0000115b
+</I>&gt;<i> cpu video_cyc= 63120 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">144 at 123</A> : 00E0332E 0640 00f6 ADD.W #$00f6,D0
+</I>&gt;<i> cpu video_cyc= 63124 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">148 at 123</A> : 00E03332 0c00 00f8 CMP.B #$f8,D0 &lt;----
+</I>&gt;<i> here ...
+</I>&gt;<i> cpu video_cyc= 63130 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">154 at 123</A> : 00E03336 6d0c BLT.B #$0000000c ==
+</I>&gt;<i> $00E03344 (F)
+</I>&gt;<i> cpu video_cyc= 63134 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">158 at 123</A> : 00E03338 0c00 00fb CMP.B #$fb,D0
+</I>&gt;<i> cpu video_cyc= 63140 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">164 at 123</A> : 00E0333C 6e06 BGT.B #$00000006 ==
+</I>&gt;<i> $00E03344 (T)
+</I>&gt;<i> cpu video_cyc= 63146 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">170 at 123</A> : 00E03344 0c00 00fd CMP.B #$fd,D0
+</I>&gt;<i> cpu video_cyc= 63152 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">176 at 123</A> : 00E03348 6d04 BLT.B #$00000004 ==
+</I>&gt;<i> $00E0334E (F)
+</I>&gt;<i> cpu video_cyc= 63156 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">180 at 123</A> : 00E0334A 11c0 1173 MOVE.B D0,$00001173
+</I>&gt;<i> cpu video_cyc= 63162 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">186 at 123</A> : 00E0334E 4e75 RTS.L
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> There are lot of tests with D0 ($F8 (mouse), $FB(mouse), $FD(Joystick)).
+</I>&gt;<i> Is this correct ?
+</I>&gt;<i>
+</I>&gt;<i> Doesn't this code use the Acia 6802 ?
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>
+This is different from the first trace you sent ; here you're in the 
+ROM, not in the demo code.
+
+This code in the ROM is a complete ikbd handler, so it tests all 
+possible special key codes. This code is certainly correct, as I don't 
+think we have any known problem with tos 4 and ikbd.
+
+The demo was running at 02e6f0, not at $Exxxxx. I don't think the above 
+code is related to your problem.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003047.html">[hatari-devel] Chaos AD demo question
+</A></li>
+	<LI>Next message: <A HREF="003043.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3063">[ date ]</a>
+              <a href="thread.html#3063">[ thread ]</a>
+              <a href="subject.html#3063">[ subject ]</a>
+              <a href="author.html#3063">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

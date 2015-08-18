@@ -1,0 +1,231 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20%28bad%29Patch%20but%20sound%20quality%20increased%20a%0A%20lot&In-Reply-To=%3C4D3380D0.5090803%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002812.html">
+   <LINK REL="Next"  HREF="002814.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon (bad)Patch but sound quality increased a lot</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20%28bad%29Patch%20but%20sound%20quality%20increased%20a%0A%20lot&In-Reply-To=%3C4D3380D0.5090803%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Falcon (bad)Patch but sound quality increased a lot">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jan 17 00:35:44 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002812.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+</A></li>
+        <LI>Next message: <A HREF="002814.html">[hatari-devel] DSP optimization?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2818">[ date ]</a>
+              <a href="thread.html#2818">[ thread ]</a>
+              <a href="subject.html#2818">[ subject ]</a>
+              <a href="author.html#2818">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 16/01/2011 13:42, Laurent Sallafranque a &#233;crit :
+&gt;<i> I added the +1 to have the demo &quot;ROT3DBMP.PRG&quot; or &quot;BOUND3.PRG&quot; run.
+</I>&gt;<i> (probably some other programs, but I don't remember).
+</I>&gt;<i>
+</I>&gt;<i> This +1 is really &quot;the limit&quot; to let these programs run correctly or not.
+</I>&gt;<i>
+</I>&gt;<i> I've already tested some things without it, but it seems to be needed to
+</I>&gt;<i> work.
+</I>&gt;<i>
+</I>&gt;<i> I agree it should not be there.
+</I>&gt;<i>
+</I>&gt;<i> Perhaps DSP timings (cycles) are still not perfect, but I've done many
+</I>&gt;<i> tests with them.
+</I>&gt;<i>
+</I>&gt;<i> I know that there can be differences in DSP cycles with interrupts, but
+</I>&gt;<i> to be completely perfect, we should had a 3 instructions pipeline in the
+</I>&gt;<i> DSP.
+</I>&gt;<i> Until now, I haven't had to code this pipeline (I simulate it in DSP
+</I>&gt;<i> interrupts, and I take the extra cycles in account, according to the
+</I>&gt;<i> Motorola DSP documentation).
+</I>&gt;<i>
+</I>&gt;<i> Maybe the problem is not there anyway. (There's still this 32Mhz problem
+</I>&gt;<i> with EKO_System demo that may explain some things).
+</I>&gt;<i>
+</I>&gt;<i> Another try I tested without success : the Host Interface (DSP &lt;--&gt;
+</I>&gt;<i> 68030 exchanges on portB) is running at 8 Mhz, not 32. I've tested this
+</I>&gt;<i> last week, but I didn't noticed any change.
+</I>&gt;<i>
+</I>&gt;<i> Your &quot;new look&quot; on this problem is really welcome.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>
+I spent more time on this, and I found several explanationq to the 
+problems we have now in falcon mode :
+
+  1) DSP_Run doesn't compute the correct number of cycles allowed to the 
+DSP (using the number of cpu cycles)
+
+  2) All intructions timings are those of a 68000, not a 68030
+
+
+More precisely, on the 1st point &quot;cycles = nHostCycles * ( DSP_FREQ / 
+CPU_FREQ ) - save_cycles + 1;&quot; really looks wrong to me, on a real 
+hardware we just have a DSP running twice as fast as the CPU (32 Mhz vs 
+16 Mhz).
+The 1st problem is that DSP_FREQ / CPU_FREQ = 4 (because CPU_FREQ is 8 
+Mhz for a STF), so this give twice too much cycles to the dsp (*4 
+instead of *2) because in the case of the falcon the cpu is at 16 Mhz, 
+not 8.
+The 2nd problem as reported in my previous mail is that save_cycles is 
+&lt;=0, so we should do a &quot;+ save_cycles&quot;, not a &quot;- save_cycles&quot; to 
+compensate the fact that the DSP took a few more cycles that allowed 
+during the previous call to DSP_Run.
+
+In the end, I think a more correct way for DSP_Run should be :
+
+void DSP_Run(int nHostCycles)
+{
+#if ENABLE_DSP_EMU
+         save_cycles += nHostCycles * 2;
+
+         if (dsp_core.running == 0)
+                 return;
+
+         if (save_cycles &lt;= 0)
+                 return;
+
+         if (unlikely(bDspDebugging)) {
+                 while (save_cycles &gt; 0)
+                 {
+                         DebugDsp_Check();
+                         dsp56k_execute_instruction();
+                         save_cycles -= dsp_core.instr_cycle;
+                 }
+         } else {
+                 while (save_cycles &gt; 0)
+                 {
+                         dsp56k_execute_instruction();
+                         save_cycles -= dsp_core.instr_cycle;
+                 }
+         }
+
+#endif
+}
+
+This function calls dsp56k_execute_instruction as long as save_cycles is 
+ &gt;0. When save_cycles becomes &lt;0 (which means the DSP is &quot;ahead&quot; of the 
+CPU), we wait until it becomes &gt;0 again by adding nHostCycles*2
+
+For this the falcon mode should be used with a 16 Mz cpu (not 32 as in 
+Eko System, but see below for others problems related to cpu freq)
+
+I made some tests with this function and eko system is worse than before 
+; I think it's because some others parts of the falcon were adapted to 
+give correct results with the current DSP_Run function (which is wrong). 
+If we correct DSP_Run, we must correct the other parts too.
+
+
+For the 2nd point, regarding 68030 cycles, Hatari uae's core only knows 
+68000 cycles. We can emulate a 16 or 32 Mhz CPU by dividing cycles by 2 
+or 4 (this is not how it's done in a real Atari, but it allows to 
+emulate a faster freq). The problem is that we're emulating a falcon 
+with a 68000 at 16 Mhz ! As long as there's no interaction with strong 
+synchronisation requirement between dsp and cpu, it's ok, we don't 
+really need precise cycles ; but if we want to execute the exact amount 
+of cycles in the DSP for a given 68030 instruction, then it won't work, 
+as seen in more advanced demos.
+
+For example, take a NOP. It's 4 cycles on 68000 and 68030, so the DSP 
+should have 8 cycles to run. But with current DSP_Run you would get 
+(4/2)*4 = 8 cycles at 16 Mhz and (4/4)*4 = 4 cycles at 32 Mhz.
+With the DSP_Run above, you would get (4/2)*2=4 cycles at 16 Mhz and 
+(4/4)*2 = 2 cycles at 32 Mhz ! Only the 1st one is correct, but it's 
+just because we're lucky and the NOP has the same timing on 68000 and 68030.
+
+If we consider a MOVE that takes 20 cycles on 68000, it could take 12 
+cycles on 68030 (depends on size, ...), so DSP cycles would be wrong in 
+all cases.
+Even worse for a MUL : it can be 56 cycles on 68000 but 12 cycles on 
+68030 (it's much faster). As we use 68000 timings for the DSP, this 
+means we will really give too much cycles to the DSP (4 times too much !).
+
+By running eko system with a 32 Mhz CPU, you just use another 
+approximation that says 68030_cycles = 68000_cycles / 4. Depending on 
+the demo code, this approximation can give better results (but there's 
+no rule, 68030 cycles will often be between /2 and /4 when compared to a 
+68000, but could be even different)
+
+As you see, we're now to a point where DSP&lt;-&gt;CPU exact sync can not be 
+improved without proper 68030 timings.
+
+This is similar to the problem I had when I wanted to improve border 
+removal emulation on STF : uae's core was not precise enough to give the 
+correct write cycle. It was possible to remove top/bottom borders that 
+don't require too much precision, but emulating complex hardscroll on 
+STF was impossible.
+
+
+Now, what can we do to improve this :
+
+- I'm not using falcon a lot, so I don't know a lot of demos and whether 
+they use DSP or not ; could some people try their favorite DSP demos 
+with the new DSP_Run function above ? Maybe this will improve some demo, 
+maybe not, but I'm rather confident that is the base to use and we 
+should adapt the rest of the falcon mode to work again with this new 
+DSP_Run.
+
+- We need to improve/use the WinUae's core : it has correct timings for 
+68020+, so we will be able to get the correct number of cycles to be 
+allocated to DSP_Run on each call. With uae's core, we will do 
+approximation that will fix some demos and break some others, but it's 
+unlikely to work everytime in the end.
+
+- We can still fix bugs in the DSP when we see them, we're stuck for now 
+to improve DSP/CPU sync, but we can still optimize the DSP itself for 
+example.
+
+
+Well, I hope it's not too depressing for those that expected a better 
+Falcon mode soon, but at least I think that by better understanding the 
+causes of the current problems we will be able to build a more 
+robust/faithful emulation.
+
+Regards
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002812.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+</A></li>
+	<LI>Next message: <A HREF="002814.html">[hatari-devel] DSP optimization?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2818">[ date ]</a>
+              <a href="thread.html#2818">[ thread ]</a>
+              <a href="subject.html#2818">[ subject ]</a>
+              <a href="author.html#2818">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

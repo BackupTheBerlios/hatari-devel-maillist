@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Midi support broken?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Midi%20support%20broken%3F&In-Reply-To=%3C200901132340.42666.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000025.html">
+   <LINK REL="Next"  HREF="000030.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Midi support broken?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Midi%20support%20broken%3F&In-Reply-To=%3C200901132340.42666.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Midi support broken?">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Jan 13 22:40:42 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000025.html">[hatari-devel] Midi support broken?
+</A></li>
+        <LI>Next message: <A HREF="000030.html">[hatari-devel] Midi support broken?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#26">[ date ]</a>
+              <a href="thread.html#26">[ thread ]</a>
+              <a href="subject.html#26">[ subject ]</a>
+              <a href="author.html#26">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 13 January 2009, Thomas Huth wrote:
+&gt;<i> I made a mistake with the &quot;transmit register empty&quot; bit in the ACIA
+</I>&gt;<i> status register (it was described wrong in the documentation I used...).
+</I>&gt;<i> It's fixed now, MIDI should be working fine again!
+</I>
+I tested also couple of other MIDI programs and MIDI output indeed works
+again fine.  MIDI input seems to work fine although I tested it mostly just
+with the sequencer Midi-through setting.
+
+
+However, I've tried to get the MIDI networking working (using either
+m.o.c. or midimaze) and that fails.  Midimaze says &quot;midi-ring boo boo&quot;
+and moc just freezes when connecting.
+
+
+I've tried this with:
+$ socat -b1 PIPE:hatari1.pipe  PIPE:hatari2.pipe &amp;
+$&#160;hatari --midi hatari1.pipe &amp;
+$&#160;hatari --midi hatari2.pipe &amp;
+
+And with:
+$ socat -b1 -v -x PIPE:hatari1-out.pipe PIPE:hatari2-in.pipe
+$ socat -b1 -v -x PIPE:hatari2-out.pipe PIPE:hatari1-in.pipe
+$&#160;hatari &amp;
+$&#160;hatari &amp;
+(and connecting the midi I/O appropriately.)
+
+Without success.  Any advice?
+
+
+	- Eero
+
+PS. Midi_Init seems to be called only at startup, from main.c, not
+after changing the files from the internal GUI.  And from command line
+one cannot give separate input and output files (needed for making
+a midi ring?).
+
+Midi_Init() has also minor issue that it:
+- doesn't check whether filename is empty before trying to open
+  MIDI in/out
+- it disables midi if either in or out file opening fails
+I.e. both need to have valid filenames or Midi's disabled.  I don't
+think it's so serious that Midi input opening fails.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000025.html">[hatari-devel] Midi support broken?
+</A></li>
+	<LI>Next message: <A HREF="000030.html">[hatari-devel] Midi support broken?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#26">[ date ]</a>
+              <a href="thread.html#26">[ thread ]</a>
+              <a href="subject.html#26">[ subject ]</a>
+              <a href="author.html#26">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

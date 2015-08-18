@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mouse movements limited in Hextracker
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20movements%20limited%20in%20Hextracker&In-Reply-To=%3C201107292352.01299.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003840.html">
+   <LINK REL="Next"  HREF="003851.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mouse movements limited in Hextracker</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20movements%20limited%20in%20Hextracker&In-Reply-To=%3C201107292352.01299.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Mouse movements limited in Hextracker">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Jul 29 22:52:01 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003840.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+        <LI>Next message: <A HREF="003851.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3850">[ date ]</a>
+              <a href="thread.html#3850">[ thread ]</a>
+              <a href="subject.html#3850">[ subject ]</a>
+              <a href="author.html#3850">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+(back from summer vacation)
+
+On sunnuntai 24 hein&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> as reported by Paulo Simoes, there seems to be a problem where the mouse
+</I>&gt;<i> can't go below a certain horizontal line,
+</I>
+Hm.  That could explain the mouse isses with Hextracker I commented
+in an earlier mail...
+
+
+&gt;<i> at least when using Hextracker
+</I>&gt;<i> in Windows 64 built in 1280x800 res.
+</I>&gt;<i> 
+</I>&gt;<i> Mouse move OK in the fileselector, but not in the Hextracker window.
+</I>
+&gt;<i> Paulo posted some video in
+</I>&gt;<i> <A HREF="http://atari-forum.com/viewtopic.php?f=51&amp;t=21375#p190152">http://atari-forum.com/viewtopic.php?f=51&amp;t=21375#p190152</A> that shows the
+</I>&gt;<i> problem.
+</I>&gt;<i>
+</I>
+The page says:
+&quot;You do not have the required permissions to view the files attached to this 
+post.&quot;
+?
+
+
+&gt;<i> Eero, do you have an idea of what could cause this?
+</I>
+Regarding this comment:
+&quot;sets medium resolution and uses a special keyboard/mouse interrupt:&quot;
+
+According to Hatari &quot;--trace ikbd_cmds&quot; trace, Hextracker uses relative
+mouse position reporting mode, like GEM does.
+
+
+As this is the first time I hear from an issue like this, I think the issue
+could be on the Hextracker side.  Maybe Hextracker doesn't handle properly
+larger relative mouse offsets / movements that are possible with a PC mouse,
+mouse acceleration and a windowed Hatari?
+
+There isn't really that much Atari programs that do their own mouse handling
+in medium resolution (i.e. with mouse y-direction scaled), so it's possible
+that there might be some issue in Hatari too though.
+
+The ikbd.c relative mouse mode handler limits max offset to -128 - 127
+and adds keyboard packets in loop until whole mouse movement is processed.
+
+
+&gt;<i> Even with alt+m it doesn't work.
+</I>
+Even if mouse is grabbed before starting Hextracker or Hatari is switched
+to fullscreen before starting Hextracker?  And if one doesn't invoke Hatari
+options dialog (which can cause larger mouse moves after it's closed) while
+using Hextracker?
+
+
+&gt;<i> I never really looked at that part of the code, maybe you
+</I>&gt;<i> know it better than me.
+</I>
+It's been many years[1] since I've looked at that.
+
+The SDL moused events are handled in main.c::Main_HandleMouseMotion()
+which basically just gives the relative mouse pointer offsets to ikbd.c
+code (after dividing them by zoom factor).
+
+
+	- Eero
+
+[1] Then the problem was with touchscreens that reported only absolute
+    co-ordinates, Hatari (or was it SDL?) didn't handle those properly.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003840.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+	<LI>Next message: <A HREF="003851.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3850">[ date ]</a>
+              <a href="thread.html#3850">[ thread ]</a>
+              <a href="subject.html#3850">[ subject ]</a>
+              <a href="author.html#3850">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

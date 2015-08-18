@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari patches for bitplane conversion
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C200907252108.33583.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000518.html">
+   <LINK REL="Next"  HREF="000520.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari patches for bitplane conversion</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C200907252108.33583.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari patches for bitplane conversion">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Jul 25 20:08:33 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000518.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+        <LI>Next message: <A HREF="000520.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#519">[ date ]</a>
+              <a href="thread.html#519">[ thread ]</a>
+              <a href="subject.html#519">[ subject ]</a>
+              <a href="author.html#519">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 25 July 2009, K&#229;re Andersen wrote:
+&gt;<i> Here we go :)
+</I>&gt;<i>
+</I>&gt;<i> I put the 32-bit converters into one file + header- shifter.c /
+</I>&gt;<i> shifter.h - made some inline functions (kicks in at -O3 atleast) in an
+</I>&gt;<i> attempt to refactor a bit and make it maintainable, and I did some
+</I>&gt;<i> testing.
+</I>&gt;<i>
+</I>&gt;<i> So far so good! Not able to find bad cases yet. Please review.
+</I>
+Hm.  The new code needs quite a bit of work to be acceptable.
+
+* The names of the files as Nicolas commented...
+* There are too many variables that are global within the object scope.
+   For p0,p1,p2,p3 it might sense to have them as object global, for others
+   I don't see any reason.
+* It doesn't make sense to have stuff that can be done once in screen.c
+  added to all conversion functions:
+  - the debug &quot;fprintf(stderr,&quot;blitFrom: %d blitTo: %d&quot;, blitFrom, blitTo);&quot;
+  - initConvert().  If there's something that cannot go to screen.c caller,
+    it should be left to convertion function
+* Headers should have function and variable _declarations_ + defines +
+  macros &amp; static inlines (i.e. API) used by multiple *.c files, not actual
+  variables and function bodies like shifter.h has.  I don't see anything
+  in it currently that would actually need to be there instead of directly
+  in the *.c file?
+* As to inline... There's no such thing as a (global) inline, that's
+  a logical impossibility.  Only valid construct is &quot;static inline&quot;.
+  A C99 compiler should've given you a warning or error about that?
+
+
+So... For example this:
+--------------------
+inline void getColMed(Uint32 m)
+{
+	col  = (p0 &amp;m) ? 0x1 : 0;
+	col |= (p1 &amp;m) ? 0x2 : 0;
+	col = STRGBPalette[col];
+}
+--------------------
+
+Should be in the *.c file and look like this:
+--------------------
+static inline Uint32 getColMed(Uint32 m)
+{
+	Uint32 col;
+	col  = (p0 &amp;m) ? 0x1 : 0;
+	col |= (p1 &amp;m) ? 0x2 : 0;
+	return STRGBPalette[col];
+}
+--------------------
+
+Besides the resulting code being more readable that way, in some cases it's
+also more efficient as compiler can optimize (code calling) functions
+without side-effects better[1].
+
+Here you're dealing with object-global static variables so compiler probably
+still optimize them as well, but I think it's better to always code cleanly
+&amp; in a way that will perform better in all circumstances.
+
+Btw. With GCC, &quot;inline&quot; is pretty redundant, GCC does its own decisions
+about whether something's going to be inlined regardless of the inline
+keyword. It's a bit like the obsolete &quot;register&quot; keyword for variables.
+If you just use &quot;static&quot; to indicate correct logical/lexical scope, GCC will
+automatically inline functions where it's appropriate (e.g. they're called
+once or very small) or just jump to them without setting up a function call
+&amp; cleanup.
+
+[1] For non-static functions one can tell GCC that the function doesn't
+have side-effects with attributes like __pure and __const.  See:
+	<A HREF="http://blog.rlove.org/2005/10/with-little-help-from-your-compiler.html">http://blog.rlove.org/2005/10/with-little-help-from-your-compiler.html</A>
+
+
+This part could also be simpliefied &amp; optimized further:
+-------------
+		update = AdjustLinePaletteRemap(y) &amp; PALETTEMASK_UPDATEMASK;
+		lineChanged =  
+			update | pFrameBuffer-&gt;bFullUpdate | 
+				wmemcmp(stplanes, stcopy, no_words);
+		
+ 		bScreenContentsChanged |= lineChanged; 		
+		trackBounds();
+		
+ 		for( x = 0; x &lt; STScreenWidthBytes&gt;&gt;3 &amp;&amp; lineChanged; x++)
+-------------
+
+* It's redundant to have both &quot;update&quot; and &quot;lineChanged&quot;, use only one.
+
+* With &quot;blitFrom&quot; and &quot;blitTo&quot; variables, &quot;bScreenContentsChanged&quot;
+  is redundant. You can check screen changes (in screen.c) with:
+	if (blitFrom &lt; blitTo)
+		bScreenContentsChanged = true;
+  or remove &quot;bScreenContentsChanged&quot; from screen.c too.
+
+* Do like in other functions:
+-		for( x = 0; x &lt; STScreenWidthBytes&gt;&gt;3 &amp;&amp; lineChanged; x++)
++		for( x = 0; lineChanged &amp;&amp; x &lt; STScreenWidthBytes&gt;&gt;3; x++)
+
+Please also verify from the generated code that &quot;lineChanged&quot; isn't checked
+on every round of this loop.  If it is, use instead:
+-----------------
+		if (lineChanged) {
+			continue;
+			/* Offset to next line: */
+			pPCScreenDest = (((Uint8 *)pPCScreenDest)+PCScreenBytesPerLine);
+		}
+		for( x = 0; x &lt; STScreenWidthBytes&gt;&gt;3; x++)
+-----------------
+
+Btw. It's quite ugly that covertion functions change screen.c pPCScreenDest
+variable (like it's done also in current Hatari code).  It would be cleaner
+and faster if this value would be given as argument to the conversion
+functions so that the value goes to a local variable.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000518.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+	<LI>Next message: <A HREF="000520.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#519">[ date ]</a>
+              <a href="thread.html#519">[ thread ]</a>
+              <a href="subject.html#519">[ subject ]</a>
+              <a href="author.html#519">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

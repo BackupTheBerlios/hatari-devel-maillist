@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new version of video.c
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20version%20of%20video.c&In-Reply-To=%3C752526d20906220846rd5cb34fyf0731da708ee967%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000409.html">
+   <LINK REL="Next"  HREF="000413.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new version of video.c</H1>
+    <B>K&#229;re Andersen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20version%20of%20video.c&In-Reply-To=%3C752526d20906220846rd5cb34fyf0731da708ee967%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] new version of video.c">kareandersen at gmail.com
+       </A><BR>
+    <I>Mon Jun 22 17:46:24 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000409.html">[hatari-devel] new version of video.c
+</A></li>
+        <LI>Next message: <A HREF="000413.html">[hatari-devel] new version of video.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#410">[ date ]</a>
+              <a href="thread.html#410">[ thread ]</a>
+              <a href="subject.html#410">[ subject ]</a>
+              <a href="author.html#410">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, Jun 22, 2009 at 1:17 PM, Christer
+Solskogen&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">christer.solskogen at gmail.com</A>&gt; wrote:
+&gt;<i> On 6/22/09 6:44 AM, K&#229;re Andersen wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Christer, can you please test ST High in non-VIDEL mode using TOS
+</I>&gt;&gt;<i> 1.04, 1.62 or 2.06? Also, how did you compile? Xcode or command line,
+</I>&gt;&gt;<i> X or Cocoa?
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Compiled a fresh hatari from mercurial and now i also see the same
+</I>&gt;<i> problem. Very low framerate om hi-res.
+</I>&gt;<i>
+</I>
+I found no difference in using the OS X GUI to the SDL GUI, or from
+starting Hatari in ST High from config to changing monitor type after
+boot...
+
+So, skimming the code, the first thing that strikes me, is that there
+is no 32-bit conversion routine for High res - only 8 bit. This is
+quite likely to kill speed on OS X due to earlier discussed
+compositing display manager (Quartz). I dont know how this will
+register with gprof, and i still have very little experience in using
+it, but the theory is sound enough :) (8 bit converted to 32-bit while
+beeing shipped back and forth to the video hardware due to compositing
+is slower than 32-bit not beeing converted while beeing shipped back
+and forth...)
+
+I guess there is no way around it now - i will implement my conversion
+routines for all ST modes (currently only for ST Low) and send them to
+whoever wants to review them. Hopefully i can get this done some time
+tonight...
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000409.html">[hatari-devel] new version of video.c
+</A></li>
+	<LI>Next message: <A HREF="000413.html">[hatari-devel] new version of video.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#410">[ date ]</a>
+              <a href="thread.html#410">[ thread ]</a>
+              <a href="subject.html#410">[ subject ]</a>
+              <a href="author.html#410">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

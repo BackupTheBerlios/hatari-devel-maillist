@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Demo Don't break the oath (DHS)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Demo%20Don%27t%20break%20the%20oath%20%28DHS%29&In-Reply-To=%3C3F89A495-A841-455B-A420-5EB0FE014942%40sarnau.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003037.html">
+   <LINK REL="Next"  HREF="003026.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Demo Don't break the oath (DHS)</H1>
+    <B>Markus Fritze</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Demo%20Don%27t%20break%20the%20oath%20%28DHS%29&In-Reply-To=%3C3F89A495-A841-455B-A420-5EB0FE014942%40sarnau.com%3E"
+       TITLE="[hatari-devel] Demo Don't break the oath (DHS)">my at sarnau.com
+       </A><BR>
+    <I>Mon Feb 14 21:14:35 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003037.html">[hatari-devel] Demo Don't break the oath (DHS)
+</A></li>
+        <LI>Next message: <A HREF="003026.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3038">[ date ]</a>
+              <a href="thread.html#3038">[ thread ]</a>
+              <a href="subject.html#3038">[ subject ]</a>
+              <a href="author.html#3038">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've looked at the TOS 4.04 code and the source of the Falcon Diagnostic Cartridge. This is what is used:
+
+$FFFF8006.b
+        Bit 0: 
+        Bit 1: 
+        Bit 2: into Bit 7 of the VCO (to select Hz base offset, 0 for ST resolutions (128 cycles), 1 for others (64 cycles))
+        Bit 3: 
+        Bit 4: 
+        Bit 5: 
+        Bit 6-7: 00 = monochrome monitor, 01 = color monitor, 10 = VGA, 11 = TV, copied into Bit 0&amp;1 of the VCO
+
+installed memory = $80000 &lt;&lt; (Bit 1 + (Bit 4/5) * 2)
+if the shift factor is 5, assume 14MB
+
+$FFFF8007.b
+	Bit 0: 0:8 MHz CPU Clock 1:16 MHz CPU Clock
+	Bit 1: 0:default 1:combel hack for quick F-LINES OFF!
+	Bit 2: 0:8 MHz Blitter Clock 1:16 MHz Blitter Clock
+	Bit 3: 0:Blitter off 1:Blitter On
+	Bit 4: 0:MCUG off 1:MCUG On (only if COMBO test pin high)
+	Bit 5: 0:Address Bus Errors Off 1:Address Bus Errors On
+	Bit 6: 0:Powerfail (reset by POR) 1:default value
+	Bit 7: 0:Bus Error Timeout 16us 1:Bus Error Timeout 32us
+
+TOS 4.04 initializes $FFFF8007.w with #$25 on reset (16MHz CPU, 16MHz Blitter, Bus Errors On)
+
+
+On Feb 14, 2011, at 11:33 AM, Thomas Huth wrote:
+
+&gt;<i> Am Mon, 14 Feb 2011 00:06:18 +0100
+</I>&gt;<i> schrieb Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;:
+</I>&gt;<i> 
+</I>&gt;&gt;<i> OK, found : it's because of the patch I added in stMemory.c
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> This mean that all the descriptions of the $ff8006.b register I read 
+</I>&gt;&gt;<i> were wrong.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Anybody here as a complete description of this register ?
+</I>&gt;<i> 
+</I>&gt;<i> This register seems to be different in each register listing that I've
+</I>&gt;<i> got ... one that describes the missing bits in ff8006 (not ff8007) is
+</I>&gt;<i> in a german doc called &quot;FALREG.TXT&quot;:
+</I>&gt;<i> 
+</I>&gt;<i> $FFFF8006 [R/W] B         76543210  Monitor-Type Hi
+</I>&gt;<i>                          ||||||||
+</I>&gt;<i>                          |||||||+- RAM Wait Status
+</I>&gt;<i>                          |||||||   0 =  1 Wait (default)
+</I>&gt;<i>                          |||||||   1 =  0 Wait
+</I>&gt;<i>                          ||||||+-- Video Bus Breite
+</I>&gt;<i>                          ||||||    0 = 16 Bit
+</I>&gt;<i>                          ||||||    1 = 32 Bit (default)
+</I>&gt;<i>                          ||||++--- ROM Wait Status
+</I>&gt;<i>                          ||||      00 = Reserviert
+</I>&gt;<i>                          ||||      01 =  2 Wait (default)
+</I>&gt;<i>                          ||||      10 =  1 Wait
+</I>&gt;<i>                          ||||      11 =  0 Wait
+</I>&gt;<i>                          ||++----- Gr&#246;&#223;e Hauptspeicherkarte
+</I>&gt;<i>                          ||        01 =  4 MB
+</I>&gt;<i>                          ||        10 = 16 MB
+</I>&gt;<i>                          ++------- Monitor-Typ
+</I>&gt;<i>                                    00 Monochrom
+</I>&gt;<i>                                    01 RGB - Farbmonitor
+</I>&gt;<i>                                    10 VGA - Farbmonitor
+</I>&gt;<i>                                    11 Fernseher (&#252;ber Modulator)
+</I>&gt;<i> 
+</I>&gt;<i> Hope that helps,
+</I>&gt;<i>  Thomas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003037.html">[hatari-devel] Demo Don't break the oath (DHS)
+</A></li>
+	<LI>Next message: <A HREF="003026.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3038">[ date ]</a>
+              <a href="thread.html#3038">[ thread ]</a>
+              <a href="subject.html#3038">[ subject ]</a>
+              <a href="author.html#3038">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

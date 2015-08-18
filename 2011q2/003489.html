@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Twelve%20demo%20bombs%20with%20fast-forward%20and%20freezes%0A%20on%20Falcon%3F&In-Reply-To=%3C4DE2A061.507%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003485.html">
+   <LINK REL="Next"  HREF="003493.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Twelve%20demo%20bombs%20with%20fast-forward%20and%20freezes%0A%20on%20Falcon%3F&In-Reply-To=%3C4DE2A061.507%40free.fr%3E"
+       TITLE="[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun May 29 21:37:05 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003485.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes	on Falcon?
+</A></li>
+        <LI>Next message: <A HREF="003493.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes	on Falcon?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3489">[ date ]</a>
+              <a href="thread.html#3489">[ thread ]</a>
+              <a href="subject.html#3489">[ subject ]</a>
+              <a href="author.html#3489">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Also, it's supposed to work on monochrome resolution, but for me it bus
+errors there:
+   M68000 Bus Error reading at address $ff8901.
+   M68000 Bus Error writing at address $ff8901.
+
+
+This is interresting.
+
+I've already told about this problem a few month ago, but for Falcon.
+There are some programs which are giving the same error at exactly the 
+same address $ff8901.
+
+Maybe this problem is not related to monochrom only, as I never test in 
+monochrome.
+
+Regards
+
+Laurent
+
+
+Le 29/05/2011 01:21, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On sunnuntai 29 toukokuu 2011, Eero Tamminen wrote:
+</I>&gt;&gt;<i> I just tried Twelve demo:
+</I>&gt;&gt;<i> 	<A HREF="http://pouet.net/prod.php?which=56966">http://pouet.net/prod.php?which=56966</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ST version sounds fine, but I think with STE emulation the sound
+</I>&gt;&gt;<i> isn't right (or at least it doesn't sound the same as with ST emu).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Additionally, if I use &quot;--fastforward yes&quot;, it crashes at startup to:
+</I>&gt;&gt;<i> Bus error bget at 00400000
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I remember there were problems also with other demos when using
+</I>&gt;&gt;<i> fast-forward with DMA sound.   Any idea yet why?
+</I>&gt;<i> Now I tried also Hextracker:
+</I>&gt;<i> 	<A HREF="http://dhs.nu/news.php?t=single&amp;ID=750">http://dhs.nu/news.php?t=single&amp;ID=750</A>
+</I>&gt;<i>
+</I>&gt;<i> And it suffers from the same STE issue.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Also, it's supposed to work on monochrome resolution, but for me it bus
+</I>&gt;<i> errors there:
+</I>&gt;<i>    M68000 Bus Error reading at address $ff8901.
+</I>&gt;<i>    M68000 Bus Error writing at address $ff8901.
+</I>&gt;<i>
+</I>&gt;<i> I.e. when setting Monochrome monitor, it tries to read DMA registers
+</I>&gt;<i> on STF...  I guess that's a bug in the Hextracker.
+</I>&gt;<i>
+</I>&gt;<i> Twelve has same issue except that after that, I get also:
+</I>&gt;<i> ---
+</I>&gt;<i> Your Atari program just did something terribly stupid:
+</I>&gt;<i> BusErrMem_xlate($99e400fc)
+</I>&gt;<i> Illegal ROMmem bput at 99fa0106
+</I>&gt;<i> M68000 Bus Error writing at address $99fa0106.
+</I>&gt;<i> ---
+</I>&gt;<i>
+</I>&gt;<i> If I use STE+Mono, Hextracker works otherwise fine, but VU-meters&amp;
+</I>&gt;<i> digiscope write all over the screen and sound sounds crap.  Could this be
+</I>&gt;<i> Hatari monochrome emulation issue?
+</I>&gt;<i>
+</I>&gt;<i> (With STE + Mono, Twelve just exits after a long wait.)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> With Falcon (old UAE CPU) emulation, Twelve gets stuck in the beginning
+</I>&gt;&gt;<i> (with or without fast-forward).  &quot;profile&quot; command tells that it's
+</I>&gt;&gt;<i> looping here:
+</I>&gt;<i> ...
+</I>&gt;&gt;<i> I.e. the code loops on testing Microwire data register for a value it
+</I>&gt;&gt;<i> doesn't get.  Is the demo supposed to work on Falcon?
+</I>&gt;<i> Hextracker on Falcon has exactly the same issue.
+</I>&gt;<i>
+</I>&gt;<i> One more thing, the disk A led is ON also while these are stuck in Falcon,
+</I>&gt;<i> I have no idea whether that's relevant though.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003485.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes	on Falcon?
+</A></li>
+	<LI>Next message: <A HREF="003493.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes	on Falcon?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3489">[ date ]</a>
+              <a href="thread.html#3489">[ thread ]</a>
+              <a href="subject.html#3489">[ subject ]</a>
+              <a href="author.html#3489">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

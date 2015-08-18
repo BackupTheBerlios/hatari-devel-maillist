@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari patches for bitplane conversion
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C200907212341.48004.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000499.html">
+   <LINK REL="Next"  HREF="000502.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari patches for bitplane conversion</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C200907212341.48004.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari patches for bitplane conversion">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Jul 21 22:41:47 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000499.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+        <LI>Next message: <A HREF="000502.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#500">[ date ]</a>
+              <a href="thread.html#500">[ thread ]</a>
+              <a href="subject.html#500">[ subject ]</a>
+              <a href="author.html#500">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I noticed that the overlay LED code did still save&amp;restore blits when both
+the statusbar &amp; overlay drive-led were disabled.  I hadn't noticed that
+before because that code isn't used when statusbar is enabled (and
+I run Hatari normally with it enabled because it doesn't slow anything).
+With your mono test-code it was taking 20% of Hatari CPU usage.
+I commited a fix for this.
+
+Were you using Hatari with the Statusbar disabled?  If you did, is there
+now a performance difference for you?
+
+
+On Tuesday 21 July 2009, K&#229;re Andersen wrote:
+&gt;<i> &gt; If you would put them to separate object files, they would need to be
+</I>&gt;<i> &gt; global functions and would have the normal function call overhead. &#160;If
+</I>&gt;<i> &gt; I remember correctly, a more important reason was that then the helper
+</I>&gt;<i> &gt; functions in screen.c (which are called from the convertors) would then
+</I>&gt;<i> &gt; need to be global and have the normal function call overhead too.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (GCC / GAS don't support (yet) inter-object optimizations.)
+</I>&gt;<i>
+</I>&gt;<i> Ah yes, I remember now, that table declaring them static, effectively
+</I>&gt;<i> giving them file scope. But uhm, is this overhead really noticeable?
+</I>
+Well, I was trying to eke out everything from the conversion functions
+I could without completely re-writing them (and removed nearly third of
+the conversion code in the process which I think was earlier fairly
+straight port from the intel ASM in Winston to C)...
+
+But if you get the palette handling to be done more reasonably (especially
+the Spec512 stuff) and still have the conversions with about the same
+performance on Linux (still to be measured), I'd vote for cleaner code. :-)
+
+
+&gt;<i> It seems you know GCC a lot better than me, so I wont argue, I just
+</I>&gt;<i> find it hard to maintain and it leads to all that code duplication. I
+</I>&gt;<i> keep thinking that these things should be dynamically linked and then
+</I>&gt;<i> the functors could be wrestled out from there... I am probably wrong
+</I>
+Current GCC linker is too stupid to do that kind of optimizations.
+For the interested:
+	<A HREF="http://gcc.gnu.org/wiki/LinkTimeOptimization">http://gcc.gnu.org/wiki/LinkTimeOptimization</A>
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000499.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+	<LI>Next message: <A HREF="000502.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#500">[ date ]</a>
+              <a href="thread.html#500">[ thread ]</a>
+              <a href="subject.html#500">[ subject ]</a>
+              <a href="author.html#500">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

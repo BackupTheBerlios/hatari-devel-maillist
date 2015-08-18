@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Higher%20precision%20when%20generating%20samples%20-%3E%20use%0A%20nanosleep&In-Reply-To=%3C4D4018BD.8050505%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002881.html">
+   <LINK REL="Next"  HREF="002894.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Higher precision when generating samples -&gt; use nanosleep</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Higher%20precision%20when%20generating%20samples%20-%3E%20use%0A%20nanosleep&In-Reply-To=%3C4D4018BD.8050505%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Higher precision when generating samples -&gt; use nanosleep">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Jan 26 13:51:09 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002881.html">[hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+</A></li>
+        <LI>Next message: <A HREF="002894.html">[hatari-devel] Higher precision when generating samples -&gt; use	nanosleep
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2883">[ date ]</a>
+              <a href="thread.html#2883">[ thread ]</a>
+              <a href="subject.html#2883">[ subject ]</a>
+              <a href="author.html#2883">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 26/01/2011 13:04, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> For me, the best precision we obtain, the best hatari will work.
+</I>&gt;<i>
+</I>&gt;<i> How are the other atari emulator's working ?
+</I>&gt;<i> Saint ?
+</I>&gt;<i> Steem ?
+</I>&gt;<i>
+</I>&gt;<i> And WinUae ? (they managed to reach a good level of emulation, do they
+</I>&gt;<i> use nanosleep) ?
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>
+It's different, these emulators are only working under Windows, so you 
+can use DirectX or similar API to get precise timers I guess.
+Steem is ported to linux, but we don't have the sources, so can't say.
+
+Our &quot;problem&quot; is that we want our solution to be portable and to work 
+under every supported OS, so we can't really use Steem/Saint/Winuae 
+approach, it's windows only.
+
+Still, I think nanosleep() would be good, but it could be interesting to 
+hear from people coding under OSX/Windows.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002881.html">[hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+</A></li>
+	<LI>Next message: <A HREF="002894.html">[hatari-devel] Higher precision when generating samples -&gt; use	nanosleep
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2883">[ date ]</a>
+              <a href="thread.html#2883">[ thread ]</a>
+              <a href="subject.html#2883">[ subject ]</a>
+              <a href="author.html#2883">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

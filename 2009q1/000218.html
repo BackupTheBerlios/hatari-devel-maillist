@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] IDE in ST/STE mode?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20in%20ST/STE%20mode%3F&In-Reply-To=%3CSNT105-W38D5F394C1C9030D3131E4D08D0%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000217.html">
+   <LINK REL="Next"  HREF="000219.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] IDE in ST/STE mode?</H1>
+    <B>Kenneth Kaufman</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20in%20ST/STE%20mode%3F&In-Reply-To=%3CSNT105-W38D5F394C1C9030D3131E4D08D0%40phx.gbl%3E"
+       TITLE="[hatari-devel] IDE in ST/STE mode?">kvkconsultancy at hotmail.com
+       </A><BR>
+    <I>Tue Mar 31 01:05:59 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000217.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+        <LI>Next message: <A HREF="000219.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#218">[ date ]</a>
+              <a href="thread.html#218">[ thread ]</a>
+              <a href="subject.html#218">[ subject ]</a>
+              <a href="author.html#218">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi Thomas,
+
+ 
+
+I've been experimenting with the AHDI and IDE hard disk support today (trying to make sure the new multiple GEMDOS HDD support plays nice with the IDE and AHDI drives) but i've been experiencing difficulties getting it working. I've managed to get the IDE drive support to allow the AHDI driver to recognise the IDE hard disk but i've not managed to figure out how the system gets the logical hard disk drive representation of the IDE or AHDI drive to show up? Is TOS handling this?
+
+ 
+
+Theres are a few different structures for hard disk support that i've come across whilst investigating:
+
+ 
+
+emudrives  - GEMDOS
+
+hd_table    - IDE
+
+hdinfo       - AHDI
+
+ 
+
+Then theres the:
+
+InternalDTAs - GEM? 
+
+ 
+
+Can you provided any additional guidence/comments as to how these different drives currently co-exist / work together? I have a good understanding of the GEMDOS HDD portion, but I am not fully seeing how the IDE and AHDI drives are receiving drive letters? (though i'm beginning to guess TOS is handiling their mappings).
+
+ 
+
+As far as I can figure so far, GEMDOS HDD is the only drive unit not managed directly by TOS (that is to say, IDE and AHDI drives don't have an obvious connect point to GEM besides via TOS and the raw read/write etc mappings. Is that right?).
+
+
+I'm still figuring out the overall view of things, so forgive me if theres any stupid questions here.
+
+ 
+
+I'll keep looking at this as I have time but if you can fill in some of the blanks that will really help.
+
+ 
+
+Vaughan
+
+ 
+&gt;<i> Date: Mon, 30 Mar 2009 23:12:28 +0200
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">th.huth at gmx.de</A>
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [hatari-devel] IDE in ST/STE mode?
+</I>&gt;<i> 
+</I>&gt;<i> On Mon, 30 Mar 2009 19:48:40 +0200
+</I>&gt;<i> Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt; wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Hello,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; IDE support works ok for me in Falcon mode with Cecile but I cannot
+</I>&gt;<i> &gt; make it run in STE mode (TOS 2.06) and ST-compatible drivers.
+</I>&gt;<i> &gt; (HDDriver, AHDI) Is there still something missing or is the IDE I/O
+</I>&gt;<i> &gt; range not activated yet?
+</I>&gt;<i> 
+</I>&gt;<i> Try AHDI 6.06, that version works in both, ST and Falcon mode (at least
+</I>&gt;<i> for me).
+</I>&gt;<i> 
+</I>&gt;<i> Thomas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+_________________________________________________________________
+The Great New Zealand Salary Survey Find out if you're getting paid enough!
+<A HREF="http://a.ninemsn.com.au/b.aspx?URL=http%3A%2F%2Fsalarysurvey%2Emsn%2Eseek%2Eco%2Enz%2F%3Ftracking%3Dsk%3Atl%3Asknzsal%3Amsnnz%3A0%3Ahottag%3Agreat%5FNZ%5Fsalsurv&amp;_t=757263783&amp;_r=SEEKNZ_tagline&amp;_m=EXT">http://a.ninemsn.com.au/b.aspx?URL=http%3A%2F%2Fsalarysurvey%2Emsn%2Eseek%2Eco%2Enz%2F%3Ftracking%3Dsk%3Atl%3Asknzsal%3Amsnnz%3A0%3Ahottag%3Agreat%5FNZ%5Fsalsurv&amp;_t=757263783&amp;_r=SEEKNZ_tagline&amp;_m=EXT</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090330/8d6e4dac/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090330/8d6e4dac/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000217.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+	<LI>Next message: <A HREF="000219.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#218">[ date ]</a>
+              <a href="thread.html#218">[ thread ]</a>
+              <a href="subject.html#218">[ subject ]</a>
+              <a href="author.html#218">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Cebit93 demo seems to run well too (no more	screen update problems)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Cebit93%20demo%20seems%20to%20run%20well%20too%20%28no%20more%0A%09screen%20update%20problems%29&In-Reply-To=%3C201101270008.12259.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002888.html">
+   <LINK REL="Next"  HREF="002904.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Cebit93 demo seems to run well too (no more	screen update problems)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Cebit93%20demo%20seems%20to%20run%20well%20too%20%28no%20more%0A%09screen%20update%20problems%29&In-Reply-To=%3C201101270008.12259.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Cebit93 demo seems to run well too (no more	screen update problems)">oak at helsinkinet.fi
+       </A><BR>
+    <I>Wed Jan 26 23:08:12 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002888.html">[hatari-devel] Cebit93 demo seems to run well too (no more screen update problems)
+</A></li>
+        <LI>Next message: <A HREF="002904.html">[hatari-devel] Cebit93 demo seems to run well too (no more	screen update problems)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2901">[ date ]</a>
+              <a href="thread.html#2901">[ thread ]</a>
+              <a href="subject.html#2901">[ subject ]</a>
+              <a href="author.html#2901">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Le 26/01/2011 14:43, Laurent Sallafranque a &#233;crit :
+&gt;&gt;<i> Cebit93 demo seems to run well too (no more screen update problems).
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Music is clean too.
+</I>&gt;<i>
+</I>&gt;<i> No, it only works at 32 Mhz, at 16 Mhz, the screen is not correctly
+</I>&gt;<i> updated.
+</I>
+With --cpuclock 32 it works fine with 1.4 release too, not just latest
+Hatari.
+
+ 
+&gt;<i> This demo doesn't involve the DSP at all.
+</I>&gt;<i> 
+</I>&gt;<i> So, the 16/32 Mhz problem seem to be only related to the 68x000 part of
+</I>&gt;<i> the computer.
+</I>
+Right.  It's an interesting case for the Falcon timings as they're so
+clearly visible, but only in what's shown on screen.
+
+
+&gt;<i> I think it may comes from Videl emulation missing (wrong VBL, HBL, ...)
+</I>&gt;<i> Do you agree ?
+</I>
+videl.c emulation doesn't do any HBL (line/palette switching stuff), it just
+shows the whole screen at VBL from a memory position given in registers
+and size given in registers with palette coming from suitable STe/TT/Falcon
+registers.
+
+The HBL stuff is all in video.c and AFAIK completely ST/STE specific.
+All that stuff is quite hairy (full of special cases), I think currently
+only Nicolas understands fully how it works, so I think this will need
+his involvement...  It should be fairly well traceable nowadays though.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002888.html">[hatari-devel] Cebit93 demo seems to run well too (no more screen update problems)
+</A></li>
+	<LI>Next message: <A HREF="002904.html">[hatari-devel] Cebit93 demo seems to run well too (no more	screen update problems)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2901">[ date ]</a>
+              <a href="thread.html#2901">[ thread ]</a>
+              <a href="subject.html#2901">[ subject ]</a>
+              <a href="author.html#2901">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

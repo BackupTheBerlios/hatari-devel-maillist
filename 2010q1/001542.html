@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] I'm lucky ;) K.prg  is working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3Calpine.LMD.2.00.1002240015340.26457%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001535.html">
+   <LINK REL="Next"  HREF="001544.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] I'm lucky ;) K.prg  is working</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3Calpine.LMD.2.00.1002240015340.26457%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] I'm lucky ;) K.prg  is working">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Feb 24 00:30:24 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001535.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+        <LI>Next message: <A HREF="001544.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1542">[ date ]</a>
+              <a href="thread.html#1542">[ thread ]</a>
+              <a href="subject.html#1542">[ subject ]</a>
+              <a href="author.html#1542">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 23 Feb 2010, Laurent Sallafranque wrote:
+
+&gt;<i> I've detected something else too.
+</I>&gt;<i>
+</I>&gt;<i> Instructions &gt; 50 cycles are always the same :
+</I>&gt;<i>
+</I>&gt;<i> Movem.L
+</I>&gt;<i> ADD.L
+</I>&gt;<i> CLR.L
+</I>&gt;<i>
+</I>&gt;<i> Are these instructions's cycles correctly computed ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I've also this line :
+</I>&gt;<i>
+</I>&gt;<i> cpu exception 33 currpc 31262 buspc 31260 newpc fa002a fault_e3 0 op_e3 0 
+</I>&gt;<i> addr_e3 0 
+</I>&gt;<i> I don't know 68000 as much as you do.
+</I>
+exception 33 is a trap #0, it should add 34 cycles to the current 
+instruction.
+
+Nearly all cycles are correctly computed (this is required to run 
+fullscreens demos), but the problem is that they're based on a 68000 cpu. 
+The 68020+ cpu will often execute .l instruction as fast as a .w 
+instruction on a 68000 and many arithmetic instr are also faster.
+
+So this is a problem for falcon : we don't have the correct cpu cycles 
+as used on a 68020+ (and as those cpu had a small cache, cycles can vary 
+even further than the motorola doc). Winuae has a preliminary support for 
+cycle correct 68020+.
+
+What this means is that DSP_Run won't be called as often as it should be 
+(which may not be a problem, it depends on what the dsp is doing).
+
+I'm surprised by your clr.l and add.l cycles :
+clr.l $0000186e should take 28 cycles on a 68000, so I think there's a 
+problem with the value 58 you get. What are the instructions before/after 
+this clr ?
+
+Even your cycle for movem #$7fff is wrong, it should be approx 140 
+cycles, not 266.
+
+
+Nicolas
+
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Some examples :
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc=  2372 324@  4 : 00e08352: 4cdf 38f8 4e5e 4e75 4e56 MVMEL.L 
+</I>&gt;<i> #$38f8,(A7)+
+</I>&gt;<i> cycles &gt; 50 : 154
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc=  2372 324@  4 : 00e08352: 4cdf 38f8 4e5e 4e75 4e56 MVMEL.L 
+</I>&gt;<i> #$38f8,(A7)+
+</I>&gt;<i> cycles &gt; 50 : 154
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc=   332 332@  0 : 00e00d0e: 4cdf 0180 51cf ffec 4eb9 MVMEL.L 
+</I>&gt;<i> #$0180,(A7)+
+</I>&gt;<i> cycles &gt; 50 : 58
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc=   640 128@  1 : 00e00d48: 4cdf 7fff 5279 0000 0452 MVMEL.L 
+</I>&gt;<i> #$7fff,(A7)+
+</I>&gt;<i> cycles &gt; 50 : 266
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc=   774 262@  1 : 00e00dc8: 4cd9 f8f8 4a78 059e 6702 MVMEL.L 
+</I>&gt;<i> #$f8f8,(A1)+
+</I>&gt;<i> cycles &gt; 50 : 186
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc=  1018 506@  1 : 00e00d94: 48e1 1f1f 23c9 0000 04a2 MVMLE.L 
+</I>&gt;<i> #$1f1f,-(A1)
+</I>&gt;<i> cycles &gt; 50 : 178
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc=  2038 502@  3 : 00e0810e: 42b9 0000 186e 0839 0002 CLR.L 
+</I>&gt;<i> $0000186e
+</I>&gt;<i> cycles &gt; 50 : 58
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc=143794 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">434 at 280</A> : 00e356b0: 52b9 0000 9a4e 4ab9 0000 ADD.L 
+</I>&gt;<i> #$00000001,$00009a4e
+</I>&gt;<i> cycles &gt; 50 : 58
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc=   190 190@  0 : 00e00cc4: 52b9 0000 0462 2038 045a ADD.L 
+</I>&gt;<i> #$00000001,$00000462
+</I>&gt;<i> cycles &gt; 50 : 58
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001535.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+	<LI>Next message: <A HREF="001544.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1542">[ date ]</a>
+              <a href="thread.html#1542">[ thread ]</a>
+              <a href="subject.html#1542">[ subject ]</a>
+              <a href="author.html#1542">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

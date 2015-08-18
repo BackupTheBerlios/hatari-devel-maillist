@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari doesn't execute any instructions?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20doesn%27t%20execute%20any%20instructions%3F&In-Reply-To=%3C201005122337.55648.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002145.html">
+   <LINK REL="Next"  HREF="002072.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari doesn't execute any instructions?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20doesn%27t%20execute%20any%20instructions%3F&In-Reply-To=%3C201005122337.55648.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari doesn't execute any instructions?">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed May 12 22:37:55 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002145.html">[hatari-devel] Little question with python
+</A></li>
+        <LI>Next message: <A HREF="002072.html">[hatari-devel] Hatari doesn't execute any instructions?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2069">[ date ]</a>
+              <a href="thread.html#2069">[ thread ]</a>
+              <a href="subject.html#2069">[ subject ]</a>
+              <a href="author.html#2069">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I was debugging a freeze that happens with RG games:
+	<A HREF="http://rg.atari.org/game.htm">http://rg.atari.org/game.htm</A>
+
+With the latest EmuTOS v0.8.5, Reservoir Gods Falcon games Bunion, Skyfall
+and Sworm freeze when a key is pressed.  After this, EmuTOS keeps looping
+on a single instruction:
+	00e00c10: 0000 0380 4ef9 00e0 37cc OR.B #$80,D0
+	00e00c14: 4ef9 00e0 37cc 46fc 2700 JMP.L $00e037cc
+	00e00c1a: 46fc 2700 6000 fffe 0000 MV2SR.W #$2700
+=&gt;	00e00c1e: 6000 fffe 0000 4279 0001 BT .W #$fffe == 00e00c1e (TRUE)
+	00e00c22: 0000 4279 0001 164c 4e75 OR.B #$79,D0
+	00e00c26: 0001 164c 4e75 0000 a0ff OR.B #$4c,D1
+	00e00c2a: 4e75 0000 a0ff 0000 0000 RTS.L
+
+
+Then I decided to check whether earlier, AHCC compiled EmuTOS (for which
+I have symbols) has the same issue and found something very strange...
+	<A HREF="http://members.chello.nl/h.robbers/emutos_ahcc.zip">http://members.chello.nl/h.robbers/emutos_ahcc.zip</A>
+
+With that EmuTOS version, these RG games gets stuck at this instruction:
+CPU=$e00be6, VBL=4788, FrameCycles=68, HBL=0, LineCycles=68, DSP=N/A
+&gt;<i> disasm $e00be0
+</I>	00e00be0: 0dfc 4e72 2700 46fc 2700 ILLEGAL.L
+	00e00be2: 4e72 2700 46fc 2700 60fe STOP.L #$2700
+=&gt;	00e00be6: 46fc 2700 60fe 4279 0000 MV2SR.W #$2700
+	00e00bea: 60fe 4279 0000 530c 4e75 BT .B #$fffffffe == 00e00bea (TRUE)
+	00e00bec: 4279 0000 530c 4e75 0000 CLR.W $0000530c
+	00e00bf2: 4e75 0000 a0ff 0000 0000 RTS.L
+
+Looks nearly the same as above, right?
+
+Then I tried profiling this, but unlike latest EmuTOS, it didn't produce any
+results.  Then I tried getting a cpu_disasm trace and even that didn't
+produce any output...
+
+After attaching Gdb to Hatari and setting some breakpoints, I found out that
+although Hatari was completely responsive (debugger worked etc), it wasn't
+anymore executing any m68k instructions.
+
+Hatari was stuck in newcpu.c::do_specialties () function, in this loop:
+-----------------
+1564        /* Handle the STOP instruction */
+1565        if ( regs.spcflags &amp; SPCFLAG_STOP ) {
+1566            /* We first test if there's a pending interrupt that would 
+*/
+1567            /* allow to immediatly leave the STOP state */
+-----------------
+
+Is it expected that emulation gets stuck like this with the above code?
+
+
+Also, Nicolas, it seems that PC points to next address when entering
+debugger (PC wasn't pointing at STOP)?  Is that right?
+(If yes, I need to change profiler code a bit)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002145.html">[hatari-devel] Little question with python
+</A></li>
+	<LI>Next message: <A HREF="002072.html">[hatari-devel] Hatari doesn't execute any instructions?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2069">[ date ]</a>
+              <a href="thread.html#2069">[ thread ]</a>
+              <a href="subject.html#2069">[ subject ]</a>
+              <a href="author.html#2069">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] MiNT and Hatari drives
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MiNT%20and%20Hatari%20drives&In-Reply-To=%3C200903182314.10421.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000200.html">
+   <LINK REL="Next"  HREF="000204.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] MiNT and Hatari drives</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MiNT%20and%20Hatari%20drives&In-Reply-To=%3C200903182314.10421.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] MiNT and Hatari drives">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Mar 18 22:14:09 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000200.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+        <LI>Next message: <A HREF="000204.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#201">[ date ]</a>
+              <a href="thread.html#201">[ thread ]</a>
+              <a href="subject.html#201">[ subject ]</a>
+              <a href="author.html#201">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 18 March 2009, Thomas Huth wrote:
+&gt;<i> &gt; The problem is that although it seems to initially work for smaller
+</I>&gt;<i> &gt; images with EmuTOS:
+</I>&gt;<i> &gt; - If I remove something from the HD partition within the emulation,
+</I>&gt;<i> &gt;   EmuTOS starts showing bogus disk size (too large)[1]
+</I>&gt;<i>
+</I>&gt;<i> How big was your partition? IIRC cleary, EmuTOS does not support
+</I>&gt;<i> partitions bigger than 256 MB.
+</I>
+EmuTOS would seem to trash[1] the partition only when the image size is 2MB
+or 4MB.  8MB and 16MB partitions seem to work fine on quick testing.
+
+[1] = Removes all directories instead of the one I selected and overwrites
+     the partition name.  Mtools says that the partition doesn't have name
+     or any files.
+
+
+&gt;<i> &gt; - TOS/HDDriver demo recognizes it only in --ide mode, but for
+</I>&gt;<i> &gt;   some reason hddriver.prg triggers Hatari debugger twice
+</I>&gt;<i> &gt;   (even when -D isn't used)
+</I>
+This seems to happen only with earlier TOS versions.
+With TOS4 and EmuTOS the driver just bombs out.
+Machine (st/falcon) doesn't affect it.
+
+
+&gt;<i> Is there an additional error message, e.g. a bus error?
+</I>
+Yes: M68000_BusError at address $ff8781
+
+
+&gt;<i> There is also one call to DebugUI() in ide.c ... maybe that's the
+</I>&gt;<i> culprit. Could you add a printf there to see whether this triggers the
+</I>&gt;<i> debugger?
+</I>
+Yes, it's this one.
+
+
+&gt;<i> I think it save to remove these to lines from ide.c now, I 
+</I>&gt;<i> just needed them for debugging when I adapted the IDE code to Hatari.
+</I>&gt;<i>
+</I>&gt;<i> &gt; - TOS/Cecile bombs with the resulting image
+</I>&gt;<i>
+</I>&gt;<i> Which machine mode did you use? I think Cecile only works on Falcon or
+</I>&gt;<i> at least 68020 mode...
+</I>
+Ah, that was it.  When using Falcon, Cecile doesn't bomb.
+
+However, although it recognizes Hatari/IDE, it doesn't recognize
+the partition created with the script (-&gt; no C:).
+
+
+&gt;<i> &gt; &gt; I've also applied this to zip2st.sh now and it works very well!
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I did some additional changes to it (more user friendliness).
+</I>&gt;<i>
+</I>&gt;<i> With the latest version, I now get the following error message at the
+</I>&gt;<i> end:
+</I>&gt;<i>
+</I>&gt;<i> /home/thomas/devel/hatari/master/tools/zip2st.sh: 1: exit_cleanup: not
+</I>&gt;<i> found
+</I>&gt;<i>
+</I>&gt;<i> I don't understand that, since exit_cleanup is defined as a function
+</I>&gt;<i> there...
+</I>&gt;<i> Maybe dash does not allow functions to be used as trap programs? It
+</I>&gt;<i> works when I change the /bin/sh line at the beginning to /bin/bash ...
+</I>
+It didn't recognize the whole function as I had used the &quot;function&quot; keyword
+(which is optional in the POSIX standard).  I commited a fix.
+
+
+	- Eero
+
+PS. Now I'm getting on commits:
+error: changegroup.notify hook raised an exception: diffstat() got an 
+unexpected keyword argument 'width'
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000200.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+	<LI>Next message: <A HREF="000204.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#201">[ date ]</a>
+              <a href="thread.html#201">[ thread ]</a>
+              <a href="subject.html#201">[ subject ]</a>
+              <a href="author.html#201">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

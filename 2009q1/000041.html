@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Potential bug with MSA disk images
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Potential%20bug%20with%20MSA%20disk%20images&In-Reply-To=%3C1232304155.5601.1.camel%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000037.html">
+   <LINK REL="Next"  HREF="000042.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Potential bug with MSA disk images</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Potential%20bug%20with%20MSA%20disk%20images&In-Reply-To=%3C1232304155.5601.1.camel%40localhost%3E"
+       TITLE="[hatari-devel] Potential bug with MSA disk images">marndt at asmsoftware.de
+       </A><BR>
+    <I>Sun Jan 18 19:42:35 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000037.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+        <LI>Next message: <A HREF="000042.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#41">[ date ]</a>
+              <a href="thread.html#41">[ thread ]</a>
+              <a href="subject.html#41">[ subject ]</a>
+              <a href="author.html#41">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Sonntag, den 18.01.2009, 17:15 +0100 schrieb Thomas Huth:
+&gt;<i> On Sun, 18 Jan 2009 10:46:21 +0100
+</I>
+&gt;<i> That's already the case. Unless there is a bug somewhere ;-)
+</I>&gt;<i> First, increase the log-level in your hatari.cfg file to 5, then the
+</I>&gt;<i> emulator will inform you about floppy disk changes in the console
+</I>&gt;<i> window like this:
+</I>&gt;<i> 
+</I>&gt;<i> Floppy A: has been removed from drive.
+</I>&gt;<i> Inserted disk '/home/thomas/test1.msa' to drive A:.
+</I>
+I'll give it a go!
+
+&gt;<i> When you see the &quot;Floppy ?: has been removed from drive&quot; that means
+</I>&gt;<i> that the current floppy has been saved to the disk. See
+</I>&gt;<i> Floppy_EjectDiskFromDrive() for details.
+</I>
+Let's see what this will do.
+
+&gt;<i> 
+</I>&gt;<i> &gt; Am Sonntag, den 18.01.2009, 10:26 +0100 schrieb Matthias Arndt:
+</I>&gt;<i> &gt; &gt; Hello team,
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; by accident I discovered a potential issue with MSA disk images:
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; a) Booted a utility disk image with a Bootsector writer
+</I>&gt;<i> &gt; &gt; b) Used the utiliy on disk A.MSA (all in drive A:)
+</I>&gt;<i> &gt; &gt; c) pushed &quot;Eject&quot; button in disk image dialogue
+</I>&gt;<i> &gt; &gt; d) inserted disk B.MSA (which was definitly different than A.MSA)
+</I>&gt;<i> &gt; &gt; e) resetted Hatari to get A.MSA loaded with the new bootsector
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; BUT: B.MSA was still inserted and was overwritten with the old A.MSA
+</I>&gt;<i> 
+</I>&gt;<i> Sorry, but I can't reproduce this problem. Can you reproduce it?
+</I>
+Lemme try - if I don't tell anything more, I reproduced the problem...
+
+&gt;<i> 
+</I>&gt;<i> And what exactly did you mean with e) ? Do you mean that you quit the
+</I>&gt;<i> emulator to get A.MSA loaded? Or did you selected &quot;Reset ST&quot;? But
+</I>&gt;<i> then why do you expect A.MSA to be in the drive after you inserted
+</I>&gt;<i> B.MSA?
+</I>
+I choose &quot;Reset ST&quot; and did not quit Hatari at all...
+
+Matthias
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000037.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+	<LI>Next message: <A HREF="000042.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#41">[ date ]</a>
+              <a href="thread.html#41">[ thread ]</a>
+              <a href="subject.html#41">[ subject ]</a>
+              <a href="author.html#41">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

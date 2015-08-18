@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Head cycles : x + op head
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Head%20cycles%20%3A%20x%20%2B%20op%20head&In-Reply-To=%3C1403148230.8725471321871755647.JavaMail.root%40zimbra57-e10.priv.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004204.html">
+   <LINK REL="Next"  HREF="004206.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Head cycles : x + op head</H1>
+    <B>laurent.sallafranque at free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Head%20cycles%20%3A%20x%20%2B%20op%20head&In-Reply-To=%3C1403148230.8725471321871755647.JavaMail.root%40zimbra57-e10.priv.proxad.net%3E"
+       TITLE="[hatari-devel] Head cycles : x + op head">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Nov 21 11:35:55 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004204.html">[hatari-devel] Stereo DC filtering which accounts for DMA sound
+</A></li>
+        <LI>Next message: <A HREF="004206.html">[hatari-devel] Head cycles : x + op head
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4205">[ date ]</a>
+              <a href="thread.html#4205">[ thread ]</a>
+              <a href="subject.html#4205">[ subject ]</a>
+              <a href="author.html#4205">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Mikro,
+
+&gt;<i>From what I understand from the Motorola doc (chapter 11.3.4), I can read :
+</I>
+ADDI.L #$6000FF,D1
+
+fiea #&lt;data&gt;.L,D1 4+op head 0 4
+TOTAL : 6 0 4
+
+ADDI #&lt;data&gt;,Dn 2(op head) 0 2
+
+
+So, for me, I have to add twice the head of the operand when the head mention X + op head.
+That's the way I've done it in the cycles table until now.
+
+I still have 30 % cycles to add to complete the table.
+My main problem now is that some instructions are given with a MAX number of cycles and not an exact number of cycles.
+
+(DIV, MUL, ...).
+
+I've played around with gembench (they do a test with DIVU.W Dx, Dy repeated a lot of time).
+Actually, I get 60% of the speed of a Falcon.
+
+I can use this test to &quot;compute&quot; an average value instead of the max value (which would be closer to reality).
+The best would be to have the exact algo of the instruction to compute exact cycles (as it is done for the 68000), but nobody replied me (I asked in DHS forum).
+
+
+The other problem is about the &quot;full table cycles&quot; instructions.
+I still don't understand well when to use this table.
+
+Maybe my first cycle table will be quite good, but will need to be fixed here and there.
+
+Regards
+
+Laurent
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004204.html">[hatari-devel] Stereo DC filtering which accounts for DMA sound
+</A></li>
+	<LI>Next message: <A HREF="004206.html">[hatari-devel] Head cycles : x + op head
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4205">[ date ]</a>
+              <a href="thread.html#4205">[ thread ]</a>
+              <a href="subject.html#4205">[ subject ]</a>
+              <a href="author.html#4205">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

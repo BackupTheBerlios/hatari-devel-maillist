@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari debugger improvements
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20improvements&In-Reply-To=%3C200912272049.53161.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001139.html">
+   <LINK REL="Next"  HREF="001143.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari debugger improvements</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20improvements&In-Reply-To=%3C200912272049.53161.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari debugger improvements">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Dec 27 19:49:52 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001139.html">[hatari-devel] source level debugging with the Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="001143.html">[hatari-devel] source level debugging with the Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1140">[ date ]</a>
+              <a href="thread.html#1140">[ thread ]</a>
+              <a href="subject.html#1140">[ subject ]</a>
+              <a href="author.html#1140">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 24 December 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> this may be feasible, but is it really useful ?
+</I>&gt;<i>
+</I>&gt;<i> Apart from the complexity to load/parse the different debug symbols
+</I>&gt;<i> formats (for example, if I recall correctly devpac could produce 3
+</I>&gt;<i> different format), what will it be used for ?
+</I>
+According to my DevpacST 2 manual, it supports the DRI debugging symbol
+standard and HiSoft extended version.  It also mentions that about
+everything supports the DRI standard, so I think DRI support could be
+enough.
+
+OS header contains pointer to currently running process basepage and that
+contains pointers to program text and data sections, so if user gives just
+the currently running process filename (could be a copy of the file if one's
+running it from a disk image), symbols can be loaded directly from it and
+mapped based on text &amp; data section addresses.  It doesn't necessarily need
+hooking anything inside emulation.
+
+But if the native debuggers are indeed better, then it doesn't make sense.
+
+
+&gt;<i> In any case, it won't be possible to use this with existing games/demos,
+</I>&gt;<i> so only case would be for programs compiled with debug symbols (I don't
+</I>&gt;<i> think there're a lot of them) or for homemade asm programs that users
+</I>&gt;<i> would compile from their own sources.
+</I>&gt;<i>
+</I>&gt;<i> But in that case, I think that adebog or monst are way more powerful than
+</I>&gt;<i> Hatari debugger,
+</I>
+According to Vincent (sorry, I didn't quote his whole mail previously),
+Monst2 doesn't work with 040 and it supports only ST video modes. 
+What about adebug?
+
+
+&gt;<i> with a built in window system,
+</I>
+Things could even be shown on specific parts of the screen if Hatari
+dependency to ncurses is OK, but that could constrict the area for other
+outputs (help texts etc) and require changing a lot of code, so I'd skip
+that, at least for now.
+
+(I think that kind of stuff would be a better in a separate GUI debugger
+that works over the Hatari control socket.)
+
+
+&gt;<i> register locking,
+</I>
+Hatari debugger already supports showing different kinds of invormation
+when entering the debugger.
+
+And what's shown when entering the debugger could be configurable (regs,
+memdump, disassembly, for CPU and/or DSP).  It could be based on
+the register values too (address in register N).
+
+The hard part isn't in implementing that, but getting a good syntax on how
+to specify it to the debugger...
+
+
+&gt;<i> search  in disasm mode, ...
+</I>
+Byte search could also be implemented.  With an option for using word
+boundary for searching instruction opcodes.
+
+Doing it based on using assembler instructions (instead of opcodes) like is
+possible in Monst would probably be too complicated though, unless somebody
+wants to write the lookup tables needed for this...
+
+
+&gt;<i> I really used a lot of this some years ago and I don't see how adding
+</I>&gt;<i> symbol to hatari debugger would make it much useful than debugging
+</I>&gt;<i> directly under the emulated atari, there so much power in monst that
+</I>&gt;<i> making Hatari at the same level would be a huge task.
+</I>
+After digging my Devpac manual from the attic, I went through it and checked
+what other features Hatari debugger is currently missing in addition to
+above listed ones:
+
+1. Showing PC and breakpoints positions in the disassembly output.
+   -&gt; easy at least for PC and address breakpoints
+2. Counting breakpoints.
+3. Stopping at breakpoint only after it's been passed certain number
+   of times.
+   -&gt; 2) &amp; 3) are trivial to do too, but need to be done separately
+        for CPU, DSP and conditional breakpoints
+4. Breakpoints that act only once (and disappears after a hit?)
+5. Shortcut for telling to run until given (temporary breakpoint)
+    condition is hit.
+   -&gt; Would be trivial to do after 4)
+6. Running until code returns from ROM (exiting from super mode?)
+7. Single stepping that skips Traps, Line-A, Line-F. And one that
+    skips also BSRs and JSRs.
+8. Set breakpoint to next instruction and run (to skip loops)
+9. Set breakpoint on specific OS call
+10. Run slowly
+11. Showing contents of memory pointed by the registers
+12. Saving machine status to history buffer each time debugger is
+      entered (exception or breakpoint is hit) and being able to view
+      this history
+13. SP &amp; SSP as CPU register names (active &amp; supervisor stack)
+13. Fill and copy memory
+
+Although all together these are quite a lot of added code and complexity,
+each individual feature is pretty easy to do.  Which of them you would
+prioritize?
+
+(The hard thing would again be what kind of a syntax one would use for
+specifying them to Hatari...)
+
+
+Btw. Monst manual mentioned couple of things that could be nice in Hatari
+debugger.  For example:
+* Running until code gets out of ROM:
+	SP = A7
+* Running until subroutine ends (RTS=0x4e75):
+	(PC).w = 0x4e75  &amp;&amp;  SP &gt; CURRENT_SP_MINUS_ONE
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001139.html">[hatari-devel] source level debugging with the Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="001143.html">[hatari-devel] source level debugging with the Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1140">[ date ]</a>
+              <a href="thread.html#1140">[ thread ]</a>
+              <a href="subject.html#1140">[ subject ]</a>
+              <a href="author.html#1140">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

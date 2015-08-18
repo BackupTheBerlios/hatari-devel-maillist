@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Ym / Dma mixing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3CPine.LNX.4.64.0902081120330.20838%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000130.html">
+   <LINK REL="Next"  HREF="000135.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Ym / Dma mixing</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3CPine.LNX.4.64.0902081120330.20838%40localhost%3E"
+       TITLE="[hatari-devel] Ym / Dma mixing">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Feb  8 12:01:13 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000130.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+        <LI>Next message: <A HREF="000135.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#133">[ date ]</a>
+              <a href="thread.html#133">[ thread ]</a>
+              <a href="subject.html#133">[ subject ]</a>
+              <a href="author.html#133">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 7 Feb 2009, Jean-Baptiste Berlioz wrote:
+
+&gt;<i> Wow that's a lots of mails :)
+</I>&gt;<i>
+</I>&gt;<i> First point, about performances, remember we are talking about sounds
+</I>&gt;<i> processing. At the best quality, 44100 Hz 16 bits stereo, we only have
+</I>&gt;<i> to process 441000 * 2 * 2 = 176400 bytes per seconds. Sure it needs to
+</I>&gt;<i> be optimized (like everything in a realtime application) but i don't
+</I>&gt;<i> think this is the 'primary target'.
+</I>&gt;<i> I'll dump some profiling informations soon, you can do the same on your
+</I>&gt;<i> side and then we can study the results and know what eats up CPU, and
+</I>&gt;<i> what needs to be optimized for slower platforms.
+</I>&gt;<i>
+</I>
+I personnally don't care too much about hatari requiring cpu, my pc is 
+fast enough, but I know others will disagree as they want to keep on using 
+it on lower end devices where they already need to specify frame skip ; so 
+any lost cycle is already too much for them :)
+
+&gt;<i> Second point, about DMA samples interpolation, as i said before, i'll
+</I>&gt;<i> start to implement this for real in the next step, after fixing wav and
+</I>&gt;<i> ym recording (done). The new implementation is quite lame (the current
+</I>&gt;<i> too :)). Let's talk about this later.
+</I>&gt;<i>
+</I>&gt;<i> Third point, the new implementation vs the current one. Correct me if
+</I>&gt;<i> i'm wrong:
+</I>&gt;<i>
+</I>&gt;<i> In the current implementation:
+</I>&gt;<i> Ym samples are generated when:
+</I>&gt;<i>   - an ym register is written - from the last time a register was
+</I>&gt;<i> written to the current time - then the register is changed.
+</I>&gt;<i>   - at each VBL - from the last time a register was written to the
+</I>&gt;<i> current time.
+</I>&gt;<i>
+</I>&gt;<i> If a SDL audio callback occurs between two ym register write access, or
+</I>&gt;<i> between an ym register write access and a VBL, the samples between the
+</I>&gt;<i> last time and the current time are missing.
+</I>&gt;<i>
+</I>&gt;<i> As far as i know, there's no way to synchronize the SDL audio callback
+</I>&gt;<i> and the VBL, for this we need direct access to the primary buffer.
+</I>&gt;<i>
+</I>&gt;<i> In the new implementation, the last ym register write access is the last
+</I>&gt;<i> history event stored. Samples are generated even after the last event.
+</I>&gt;<i>
+</I>
+I agree we can't synchronize sdl callback and vbl ; the callback will 
+ask for 1024 samples in current implementation, while a vbl is 882 samples
+at 44.1 kHz, which looks not enough.
+So the idea is to always have sample in advance, which is how Sound_Reset 
+is doing by faking the value of nGeneratedSamples on the first run.
+
+         nGeneratedSamples = SoundBufferSize + SAMPLES_PER_FRAME;
+         ActiveSndBufIdx = nGeneratedSamples % MIXBUFFER_SIZE;
+
+This way, mixbuffer is always one buffer ahead (which means sound is 
+played with 1 ST VBL delay, which is not really a problem).
+So sdl and VBL are not synchronized, but it's as if they are, because 
+mixbuffer's pointer will always be ahead of sdl needs (and as the sdl 
+reaply freq is the same as the sound generation freq, it's not possible 
+for sdl to go &quot;faster&quot;, so once sdl has enough samples, this should stay 
+this way all the time)
+
+I think your implementation is an answer to a theorical problem, but not 
+to a practical problem, because if what you suggest was really happening 
+(sdl call between vbl were samples are missing), the sound would be filled 
+with 'click' or other audible problems nearly all the time (enough to be 
+heard at least). And this would happen on fast machine too, but no one 
+reported such cases so far from what I know.
+
+When rewriting the sound emulation last summer, they were some problems 
+where only 1 or 2 bytes were missing every 8000 bytes or so, this was 
+really audible and people immediatly complained about the regression.
+
+
+So, I would say there're 2 solutions to the problem you mention (having 
+enough samples ahead for sdl callback when it happens), which I agree is a 
+real problem :
+
+  - a &quot;complex&quot; one that handles history and generates samples on the fly 
+up to the point where the sdl buffer is filled.
+
+  - a &quot;simple&quot; one that &quot;fakes&quot; the start offset to delay the generated 
+sample from 1 VBL, thus ensuring samples are always ready when the sdl 
+callback happens.
+
+Limiting the VBL delay for sound could seem necessary, but :
+  - no one will notice sound is played 1 or 2 vbl late when pressing a key 
+for example.
+  - real problem is to have video and audio synchronized as they were 
+played on the ST. And today, due to the video implementation and the 
+different steps, video is already rendered on screen 1 or 2 vbl after the 
+ST &quot;displayed&quot; it.
+
+
+&gt;&gt;&gt;<i> There's one copy (SoundRegs) to emulate the Ym, and one copy
+</I>&gt;&gt;&gt;<i> (RecordSoundRegs) for recording .ym files.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Yes, but since they contain the same values, why not considering that the
+</I>&gt;&gt;<i> ym core is providing an array that can be read by other modules without
+</I>&gt;&gt;<i> doing another copy ?
+</I>
+&gt;<i>No they don't.
+</I>&gt;<i>SoundRegs are updated when the history is replayed - when a SDL audio
+</I>&gt;<i>callback occurs.
+</I>&gt;<i>RecordSoundRegs are updated in real-time, and are dumped at each vbl to
+</I>&gt;<i>the .ym file.
+</I>
+&gt;<i>VBL != SDL audio callback.
+</I>
+OK, I didn't see that point in your patch, but that's another difference 
+you're adding compared to the previous implementation.
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000130.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+	<LI>Next message: <A HREF="000135.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#133">[ date ]</a>
+              <a href="thread.html#133">[ thread ]</a>
+              <a href="subject.html#133">[ subject ]</a>
+              <a href="author.html#133">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

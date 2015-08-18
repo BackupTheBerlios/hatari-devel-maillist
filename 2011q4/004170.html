@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Union demo abort with new EmuTOS?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Union%20demo%20abort%20with%20new%20EmuTOS%3F&In-Reply-To=%3C20111110215952.2a2f8f8d%40think43%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004169.html">
+   <LINK REL="Next"  HREF="004171.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Union demo abort with new EmuTOS?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Union%20demo%20abort%20with%20new%20EmuTOS%3F&In-Reply-To=%3C20111110215952.2a2f8f8d%40think43%3E"
+       TITLE="[hatari-devel] Union demo abort with new EmuTOS?">th.huth at gmx.de
+       </A><BR>
+    <I>Thu Nov 10 21:59:52 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004169.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+        <LI>Next message: <A HREF="004171.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4170">[ date ]</a>
+              <a href="thread.html#4170">[ thread ]</a>
+              <a href="subject.html#4170">[ subject ]</a>
+              <a href="author.html#4170">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Thu, 10 Nov 2011 22:13:47 +0200
+schrieb Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">oak at helsinkinet.fi</A>&gt;:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On torstai 10 marraskuu 2011, Thomas Huth wrote:
+</I>...
+&gt;<i> &gt; 
+</I>&gt;<i> &gt; That's POV disk 112, isn't it?
+</I>&gt;<i> 
+</I>&gt;<i> Yes.
+</I>&gt;<i> 
+</I>&gt;<i> Another wierd thing is that if I use normal TOS, I get different
+</I>&gt;<i> demo screen when selecting &quot;Illegal exceptions&quot; than with EmuTOS.
+</I>
+The demo somehow immediately ends up in the reset vector demo part. You
+get the same screen under normal TOS when you execute a warm reset
+(AltGr-r) while the demo is running.
+
+&gt;<i> &gt; &gt; Maybe OpCode_VDI() should call VDI_Complete() only if VDI_OldPC is
+</I>&gt;<i> &gt; &gt; non-zero and zero the variable after completing the VDI call?
+</I>&gt;<i> 
+</I>&gt;<i> I printed from OpCode_VDI() the addresses of CART_VDI_OPCODE_ADDR,
+</I>&gt;<i> PC address when then function is called and VDI_OldPC + the
+</I>&gt;<i> instructions at these addresses:
+</I>&gt;<i> CARTVDI PC: 0xfa0028, instr: 0xc
+</I>&gt;<i> current PC: 0x58112, instr: 0xc
+</I>&gt;<i> VDI Old PC: 0x0, instr: 0x602e
+</I>&gt;<i> 
+</I>&gt;<i> -&gt; This function isn't called because something called VDI trap in UAE
+</I>&gt;<i>    emulation because VDI_OldPC is zero. Current PC doesn't match one
+</I>&gt;<i>    telling Cartridge code that it show jump to VDI now.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Doing this in debugger:
+</I>&gt;<i> &gt; a 0x58112
+</I>&gt;<i> &gt; history on
+</I>&gt;<i> &gt; c
+</I>&gt;<i> 
+</I>&gt;<i> Gives this as track of how it arrives there:
+</I>&gt;<i> &gt; history 26
+</I>&gt;<i> $0580fe : a000                                 linea
+</I>&gt;<i> #0 ; Line-A Initialization
+</I>...
+&gt;<i> 
+</I>&gt;<i> Does the Union demo crap out with EmuTOS because one of the line-A
+</I>&gt;<i> variables has a bogus value?
+</I>
+No, if you dump a little bit more of the history before the a000
+opcode, you'll see that the program is already executing garbage before
+this. It somehow jumps to a region in memory where no valid code has
+been stored (or the code there has been trashed somehow).
+
+&gt;<i> 
+</I>&gt;<i> Hatari can avoid the abort by checking that VDI_OldPC is valid (see
+</I>&gt;<i> attached patch), but how I can make it to raise illegal instruction
+</I>&gt;<i> exception if it isn't?
+</I>
+I'd rather suggest to chech m68k_getpc() being within the cartridge
+memory region when OpCode_VDI has been called.
+When it is called from somewhere else, just run op_illg_1 instead of of
+VDI_Complete.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004169.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+	<LI>Next message: <A HREF="004171.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4170">[ date ]</a>
+              <a href="thread.html#4170">[ thread ]</a>
+              <a href="subject.html#4170">[ subject ]</a>
+              <a href="author.html#4170">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

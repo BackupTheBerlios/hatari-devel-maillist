@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari asserts that should be fixed for the	release
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20asserts%20that%20should%20be%20fixed%20for%20the%0A%09release&In-Reply-To=%3Calpine.LMD.2.00.1004190015100.32627%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001876.html">
+   <LINK REL="Next"  HREF="001929.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari asserts that should be fixed for the	release</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20asserts%20that%20should%20be%20fixed%20for%20the%0A%09release&In-Reply-To=%3Calpine.LMD.2.00.1004190015100.32627%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Hatari asserts that should be fixed for the	release">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Apr 19 00:19:04 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001876.html">[hatari-devel] Hatari asserts that should be fixed for the	release
+</A></li>
+        <LI>Next message: <A HREF="001929.html">[hatari-devel] Hatari asserts that should be fixed for the	release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1877">[ date ]</a>
+              <a href="thread.html#1877">[ thread ]</a>
+              <a href="subject.html#1877">[ subject ]</a>
+              <a href="author.html#1877">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 19 Apr 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Sunday 18 April 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;&gt;&gt;&gt;<i> 1) Run the EPSS STE music demo.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Hello,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> what is the pouet link for this one ?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> <A HREF="http://www.pouet.net/prod.php?which=30912">http://www.pouet.net/prod.php?which=30912</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> (it's in compat list)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> OK, I thought it was another one.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I didn't see an assert, but I got some graphics corruption in the lower
+</I>&gt;&gt;<i> border scrolling (happens if you start the demo and do nothing, no fast
+</I>&gt;&gt;<i> forward). This happened nearly at the beggining or when the bottom
+</I>&gt;&gt;<i> scroller goes in mirror mode (2-3 mins)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> But in fact, this was caused by the dma mixing code and applying david's
+</I>&gt;&gt;<i> latest patch (which I just committed) fixed the problem in my case.
+</I>&gt;<i>
+</I>&gt;<i> Hm.  When I tested Mudflap, it gave some warnings about arrays it cannot
+</I>&gt;<i> track because their sizes aren't declared (in headers).  Was this for one of
+</I>&gt;<i> them?
+</I>
+I don't really know, I haven't looked at all the potential problems the 
+previous version could cause, but seeing the result I had it was clearly 
+overwritting some other variables/array of Hatari's memory.
+
+&gt;&gt;<i> In case assert is still there, can you tell after how many time it happens
+</I>&gt;&gt;<i> (couting at the start of the demo, after depacking) ?
+</I>&gt;<i>
+</I>&gt;<i> I've been able to reproduce it each time (4/4) just by waiting enough.
+</I>&gt;<i>
+</I>&gt;<i> The issue happens once the demo has loaded and you leave it running for
+</I>&gt;<i> maybe 5 minutes. It's after the bottom scroller goes to mirror mode.
+</I>&gt;<i>
+</I>&gt;<i> Unlike the mono issue, this happens without fast-forward.
+</I>&gt;<i>
+</I>&gt;<i> I'm compiling code with -O3 and have borders &amp; sound (44100Hz) enabled,
+</I>&gt;<i> in case that matters.
+</I>&gt;<i>
+</I>
+OK, I can reproduce the problem (my version was unfortunately compiled 
+with assert turned off ... :( ).
+I will look in more details during the week.
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001876.html">[hatari-devel] Hatari asserts that should be fixed for the	release
+</A></li>
+	<LI>Next message: <A HREF="001929.html">[hatari-devel] Hatari asserts that should be fixed for the	release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1877">[ date ]</a>
+              <a href="thread.html#1877">[ thread ]</a>
+              <a href="subject.html#1877">[ subject ]</a>
+              <a href="author.html#1877">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

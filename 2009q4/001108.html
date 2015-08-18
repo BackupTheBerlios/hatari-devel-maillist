@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] latest version compil warnings
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20latest%20version%20compil%20warnings&In-Reply-To=%3C4B255594.2090509%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001127.html">
+   <LINK REL="Next"  HREF="001109.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] latest version compil warnings</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20latest%20version%20compil%20warnings&In-Reply-To=%3C4B255594.2090509%40free.fr%3E"
+       TITLE="[hatari-devel] latest version compil warnings">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Dec 13 21:59:00 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001127.html">[hatari-devel] Falcon Microphone emulation is now running
+</A></li>
+        <LI>Next message: <A HREF="001109.html">[hatari-devel] latest version compil warnings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1108">[ date ]</a>
+              <a href="thread.html#1108">[ thread ]</a>
+              <a href="subject.html#1108">[ subject ]</a>
+              <a href="author.html#1108">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I give you the compilation warnings I get with the latest version (for 
+info).
+
+Regards,
+
+Laurent
+
+
+fpp.c: In function &#8216;fpp_opp&#8217;:
+fpp-unknown.h:43: warning: dereferencing pointer &#8216;p&#8217; does break 
+strict-aliasing rules
+fpp-unknown.h:44: warning: dereferencing pointer &#8216;p&#8217; does break 
+strict-aliasing rules
+fpp-unknown.h:35: note: initialized from here
+fpp-unknown.h:43: warning: dereferencing pointer &#8216;p&#8217; does break 
+strict-aliasing rules
+fpp-unknown.h:44: warning: dereferencing pointer &#8216;p&#8217; does break 
+strict-aliasing rules
+fpp-unknown.h:35: note: initialized from here
+fpp-unknown.h:132: warning: dereferencing pointer &#8216;p&#8217; does break 
+strict-aliasing rules
+fpp-unknown.h:133: warning: dereferencing pointer &#8216;p&#8217; does break 
+strict-aliasing rules
+fpp-unknown.h:127: note: initialized from here
+gcc -g -O -Wall -c -o gencpu.o gencpu.c
+gcc -g -O -Wall -c -o readcpu-host.o readcpu.c
+gcc -g -O -Wall -o build68k build68k.c
+./build68k &lt;table68k &gt;cpudefs.c
+gcc -g -O -Wall -c -o cpudefs-host.o cpudefs.c
+gcc -o gencpu gencpu.o readcpu-host.o cpudefs-host.o
+./gencpu
+
+
+gcc -g -Wmissing-prototypes -Wstrict-prototypes -Wsign-compare 
+-Wbad-function-cast -Wcast-qual -Wpointer-arith -Wall -Wwrite-strings 
+-O2 -I.. -I./includes -Iuae-cpu -I./debug -I./falcon -DCONFDIR=\&quot;/etc\&quot; 
+-I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT -DHAVE_LIBPNG=1 
+-I/usr/include/libpng12 -DHAVE_X11=1 -DENABLE_DSP_EMU=1 -c -o cycInt.o 
+cycInt.c
+cycInt.c: In function &#8216;Int_UpdateInterrupt&#8217;:
+cycInt.c:298: warning: format &#8216;%lld&#8217; expects type &#8216;long long int&#8217;, but 
+argument 5 has type &#8216;Sint64&#8217;
+cycInt.c: In function &#8216;Int_AddAbsoluteInterrupt&#8217;:
+cycInt.c:343: warning: format &#8216;%lld&#8217; expects type &#8216;long long int&#8217;, but 
+argument 5 has type &#8216;Sint64&#8217;
+cycInt.c: In function &#8216;Int_AddRelativeInterruptWithOffset&#8217;:
+cycInt.c:407: warning: format &#8216;%lld&#8217; expects type &#8216;long long int&#8217;, but 
+argument 5 has type &#8216;Sint64&#8217;
+cycInt.c: In function &#8216;Int_RemovePendingInterrupt&#8217;:
+cycInt.c:428: warning: format &#8216;%lld&#8217; expects type &#8216;long long int&#8217;, but 
+argument 5 has type &#8216;Sint64&#8217;
+cycInt.c: In function &#8216;Int_ResumeStoppedInterrupt&#8217;:
+cycInt.c:447: warning: format &#8216;%lld&#8217; expects type &#8216;long long int&#8217;, but 
+argument 5 has type &#8216;Sint64&#8217;
+cycInt.c: In function &#8216;Int_FindCyclesPassed&#8217;:
+cycInt.c:477: warning: format &#8216;%lld&#8217; expects type &#8216;long long int&#8217;, but 
+argument 5 has type &#8216;Sint64&#8217;
+cycInt.c:477: warning: format &#8216;%lld&#8217; expects type &#8216;long long int&#8217;, but 
+argument 6 has type &#8216;Sint64&#8217;
+
+
+gcc -g -Wmissing-prototypes -Wstrict-prototypes -Wsign-compare 
+-Wbad-function-cast -Wcast-qual -Wpointer-arith -Wall -Wwrite-strings 
+-O2 -I../.. -I../includes -I../debug -I../uae-cpu -DHAVE_PORTAUDIO=1 
+-pthread -I/usr/local/include -DENABLE_DSP_EMU=1 -I/usr/include/SDL 
+-D_GNU_SOURCE=1 -D_REENTRANT -c -o microphone.o microphone.c
+microphone.c: In function &#8216;Microphone_Callback&#8217;:
+microphone.c:71: warning: implicit declaration of function 
+&#8216;Crossbar_GetMicrophoneDatas&#8217;
+
+
+gcc -g -Wmissing-prototypes -Wstrict-prototypes -Wsign-compare 
+-Wbad-function-cast -Wcast-qual -Wpointer-arith -Wall -Wwrite-strings 
+-O2 -I.. -I./includes -Iuae-cpu -I./debug -I./falcon -DCONFDIR=\&quot;/etc\&quot; 
+-I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT -DHAVE_LIBPNG=1 
+-I/usr/include/libpng12 -DHAVE_X11=1 -DENABLE_DSP_EMU=1 -c -o video.o 
+video.c
+video.c: In function &#8216;Video_CalculateAddress&#8217;:
+video.c:796: warning: format &#8216;%x&#8217; expects type &#8216;unsigned int&#8217;, but 
+argument 4 has type &#8216;long int&#8217;
+
+
+
+
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001127.html">[hatari-devel] Falcon Microphone emulation is now running
+</A></li>
+	<LI>Next message: <A HREF="001109.html">[hatari-devel] latest version compil warnings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1108">[ date ]</a>
+              <a href="thread.html#1108">[ thread ]</a>
+              <a href="subject.html#1108">[ subject ]</a>
+              <a href="author.html#1108">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

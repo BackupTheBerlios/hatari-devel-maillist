@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crosscompiling Hatari for GP2X Wiz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C1301502936.2982.11.camel%40jll%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003262.html">
+   <LINK REL="Next"  HREF="003270.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crosscompiling Hatari for GP2X Wiz</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C1301502936.2982.11.camel%40jll%3E"
+       TITLE="[hatari-devel] Crosscompiling Hatari for GP2X Wiz">marndt at asmsoftware.de
+       </A><BR>
+    <I>Wed Mar 30 18:35:36 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003262.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+        <LI>Next message: <A HREF="003270.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3267">[ date ]</a>
+              <a href="thread.html#3267">[ thread ]</a>
+              <a href="subject.html#3267">[ subject ]</a>
+              <a href="author.html#3267">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>First I want to apologize! I was certainly overreacting here but my main
+point is still valid that the code should be more optional and backward
+compatible.
+
+Am Dienstag, den 29.03.2011, 23:12 +0300 schrieb Eero Tamminen:
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On tiistai 29 maaliskuu 2011, Matthias Arndt wrote:
+</I>&gt;<i> &gt; It is sad that you fulfill my expectations. Your code is the best and
+</I>&gt;<i> &gt; all other setups are not valid or outdated or whatever excuse you post
+</I>&gt;<i> &gt; here.
+</I>&gt;<i> 
+</I>&gt;<i> Well, it was a bit hard to believe that there's a system that's still being
+</I>&gt;<i> developed for but which has this obsolete version of SDL that nobody's
+</I>&gt;<i> even interested to update.
+</I>&gt;<i> 
+</I>&gt;<i> Even Atari has a newer version:
+</I>&gt;<i> 	<A HREF="http://patrice.mandin.pagesperso-orange.fr/en/port-libs.html">http://patrice.mandin.pagesperso-orange.fr/en/port-libs.html</A>
+</I>&gt;<i> :-)
+</I>&gt;<i> 
+</I>&gt;<i> Are you really sure GP2X doesn't have a newer libsdl?
+</I>
+I have a binary version of what it seems is 1.2.13. The problem is there
+are no header files shipped with it. I will have to ship that libSDL
+with hatari anyway because it fixes a sad tearing problem which the
+official libSDL from GPH has.
+
+There is a source distribution of this patched libSDL but I really don't
+know if I can simply rip the header files and use them with the compiler
+environment. I don't want to mess up the working compiler setup I have.
+
+&gt;<i> &gt; What is so difficult to think about backward compatibility or making
+</I>&gt;<i> &gt; code parts OPTIONAL at compile time?
+</I>&gt;<i> 
+</I>&gt;<i> I checked what SDL versions all Linux distros ship before adding the 
+</I>&gt;<i> functionality needed by Laurent (limiting Hatari window to Desktop size
+</I>&gt;<i> so that it doesn't crash his X server) and Anders (not changing resolution
+</I>&gt;<i> as it messes his OSX virtual desktops).
+</I>&gt;<i> 
+</I>&gt;<i> Only distros where one could still find that old version of SDL is
+</I>&gt;<i> the commercial RedHat Enterprise Linux v4 (+ its commercial Oracle &amp;
+</I>&gt;<i> free CentOS derivatives) that was released on 2005:
+</I>&gt;<i> <A HREF="http://en.wikipedia.org/wiki/Red_Hat_Enterprise_Linux#Life_Cycle_Dates">http://en.wikipedia.org/wiki/Red_Hat_Enterprise_Linux#Life_Cycle_Dates</A>
+</I>&gt;<i> 
+</I>&gt;<i> None of the currently available Fedora, Ubuntu, Debian, SUSE, Mandriva etc
+</I>&gt;<i> distro versions (e.g. Debian oldstable) have it anymore available and of
+</I>&gt;<i> course any RHEL distro where new Hatari version would be included will have
+</I>&gt;<i> new enough SDL version.
+</I>
+It's still a special feature that could be made entirely optional.
+Afterall Hatari had no serious problems before. The whole adaption is a
+nice-to-have thing that benefits users of desktop system but hardly
+other targets such as handheld consoles.
+&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Stop applying the Java &quot;no code has to be optional&quot; approach to portable
+</I>&gt;<i> &gt; C sources!
+</I>&gt;<i> 
+</I>&gt;<i> As I don't have that obsolete SDL version, I cannot test functionality
+</I>&gt;<i> for it.
+</I>
+But adding a whole #ifdef around the code should be no problem. If it
+has been proven the #ifdefs cann still be removed.
+
+&gt;<i> If you want Hatari to have support for SDL versions that nobody else has
+</I>&gt;<i> ready access to, you're the one that needs to support them and test that
+</I>&gt;<i> this support works.  If that support is really needed and can be added
+</I>&gt;<i> cleanly to Hatari, there isn't a problem.
+</I>
+As except for this code piece all compiles we will have to see.
+
+
+&gt;<i> According to your comments the code &amp; documentation part should look
+</I>&gt;<i> something like the attached patch.  SDL seems to have macro for checking
+</I>&gt;<i> for SDL version, so it might be possible that it doesn't need changes to
+</I>&gt;<i> CMake.
+</I>
+I checked those version macros aswell. The problem is, they only work at
+runtime while the problem already occurs at compile time.
+
+
+&gt;<i> PS. The new SDL requirement is not the only thing that had changed in Hatari
+</I>&gt;<i> since v1.4, Thomas for example removed the support for Autotools &amp; plain
+</I>&gt;<i> Makefiles (about which I complained a bit at the time :)).
+</I>
+I would use an older source version if Nicolas's code for ST emulation
+was backward portable. I want ST(e) emulation, not Falcon so using v0.8
+would be ok if I could have all DMA, scroll and overscan patches working
+properly.
+
+But I think the latest version can be brought to action aswell.
+
+Please see my other specific posts.
+
+Sorry again for sounding too rude! :(
+Matthias
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003262.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+	<LI>Next message: <A HREF="003270.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3267">[ date ]</a>
+              <a href="thread.html#3267">[ thread ]</a>
+              <a href="subject.html#3267">[ subject ]</a>
+              <a href="author.html#3267">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

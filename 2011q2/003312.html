@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Unable to compile hatari on Solaris 11
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Unable%20to%20compile%20hatari%20on%20Solaris%2011&In-Reply-To=%3C201104072020.45793.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003310.html">
+   <LINK REL="Next"  HREF="003365.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Unable to compile hatari on Solaris 11</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Unable%20to%20compile%20hatari%20on%20Solaris%2011&In-Reply-To=%3C201104072020.45793.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Unable to compile hatari on Solaris 11">oak at helsinkinet.fi
+       </A><BR>
+    <I>Thu Apr  7 19:20:45 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003310.html">[hatari-devel] Unable to compile hatari on Solaris 11
+</A></li>
+        <LI>Next message: <A HREF="003365.html">[hatari-devel] Unable to compile hatari on Solaris 11
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3312">[ date ]</a>
+              <a href="thread.html#3312">[ thread ]</a>
+              <a href="subject.html#3312">[ subject ]</a>
+              <a href="author.html#3312">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On torstai 07 huhtikuu 2011, Christer Solskogen wrote:
+&gt;<i> This is the preliminary error. Is this a problem with the hatari or
+</I>&gt;<i> the compiler?
+</I>&gt;<i> 
+</I>&gt;<i> gcc-3.4.3
+</I>&gt;<i> 
+</I>...
+&gt;<i> /usr/include/dirent.h:110: error: previous declaration of 'scandir' was
+</I>&gt;<i> here /home/et0640/source/hatari/src/includes/scandir.h:20: error:
+</I>&gt;<i> conflicting types for 'scandir'
+</I>
+if you look into src/includes/scandir.h, you'll see:
+---
+#if defined(__BEOS__) || (defined(__sun) &amp;&amp; defined(__SVR4)) || 
+defined(WIN32) || defined(__CEGCC__)
+extern int alphasort(const void *d1, const void *d2);
+extern int scandir(const char *dirname, struct dirent ***namelist, int 
+(*sdfilter)(struct dirent *), int (*dcomp)(const void *, const void *));
+#endif
+---
+
+Those platforms have at least earlier lacked these definitions.
+
+Which of the above defines your toolchain declares?
+
+And is there some version define that could be used to check whether it's
+new enough to have alphasort &amp; scandir?
+
+Or you could look into adding check for these functions to CMake
+configuration + some define that's used instead of the OS defines...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003310.html">[hatari-devel] Unable to compile hatari on Solaris 11
+</A></li>
+	<LI>Next message: <A HREF="003365.html">[hatari-devel] Unable to compile hatari on Solaris 11
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3312">[ date ]</a>
+              <a href="thread.html#3312">[ thread ]</a>
+              <a href="subject.html#3312">[ subject ]</a>
+              <a href="author.html#3312">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

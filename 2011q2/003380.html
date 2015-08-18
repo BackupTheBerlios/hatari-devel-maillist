@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari crashes with Mental Hangover demo
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20crashes%20with%20Mental%20Hangover%20demo&In-Reply-To=%3C201104302309.07335.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003379.html">
+   <LINK REL="Next"  HREF="003381.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari crashes with Mental Hangover demo</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20crashes%20with%20Mental%20Hangover%20demo&In-Reply-To=%3C201104302309.07335.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari crashes with Mental Hangover demo">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Apr 30 22:09:07 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003379.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+        <LI>Next message: <A HREF="003381.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3380">[ date ]</a>
+              <a href="thread.html#3380">[ thread ]</a>
+              <a href="subject.html#3380">[ subject ]</a>
+              <a href="author.html#3380">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 30 huhtikuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> But in fact I think we should have some kind of &quot;DMA_memcpy&quot; that would
+</I>&gt;<i> be used from FDC / HDC when we want to copy memory from Hatari to the
+</I>&gt;<i> emulated RAM. This function would check each written byte is in ST RAM
+</I>&gt;<i> or I/O space and would mask addresses to 24 bits.
+</I>
+I added stMemory_SafeCopy() function.
+
+
+&gt;<i> This way, we would have a common function to correctly copy data from
+</I>&gt;<i> disk images to the emulated RAM or IO space.
+</I>
+Half of the potentially unsafe operations are fread()s &amp; fwrite()s to STRam,
+not just memcpy()s...  See e.g. gemdos.c which I've fixed earlier or the new
+hdc.c changes.
+
+
+&gt;<i> In that case, ignoring is fine, because it's not the cause of the
+</I>&gt;<i> problem. But as above, it would be more correct to not ignore the
+</I>&gt;<i> request but ensure each destination address is corrrecly handled to stay
+</I>&gt;<i> in the RAM / ROM / IO space of the emulated machine (even if writing in
+</I>&gt;<i> ROM should have no effect, it should not be forbidden)
+</I>
+The check in stMemory.h is:
+-------------
+static inline bool STMemory_ValidArea(Uint32 addr, int size)
+{
+        if (size &gt;= 0 &amp;&amp; addr+size &lt; 0xff0000 &amp;&amp;
+            (addr+size &lt; STRamEnd || addr &gt;= 0xe00000))
+        {
+                return true;
+        }
+        return false;
+}
+-------------
+
+stMemory_SafeCopy() copies only bytes that above states to be valid, it
+ignores bytes going to invalid addresses. (As I don't see what it e.g.
+should do to bytes between STRamEnd and 0xe00000.)
+
+
+&gt;&gt;&gt;&gt;<i> PS. While doing the patches, I noticed:
+</I>...
+&gt;&gt;<i>  From above you can see that &quot;HDCSectorCount&quot; can never get any other
+</I>&gt;&gt;<i>  value
+</I>&gt;&gt;<i> than zero (unlike e.g. FDCSectorCountRegister which seems to be used
+</I>&gt;&gt;<i> for similar purpose).  So what's the point in having that variable?
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> hdc.c code gets the HDC sector count with this macro, it doesn't use
+</I>&gt;&gt;<i> the variable:
+</I>&gt;&gt;<i> #define HD_SECTORCOUNT(a) (a.command[4]&amp;  0xFF)        /* get sector
+</I>&gt;&gt;<i> count */
+</I>
+To me it seems that using HDCSectorCount is fairly obviously wrong. As far
+as I see, the correct value comes from HD_SECTORCOUNT() which isn't
+used by fdc.c...
+
+Thomas?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003379.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+	<LI>Next message: <A HREF="003381.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3380">[ date ]</a>
+              <a href="thread.html#3380">[ thread ]</a>
+              <a href="subject.html#3380">[ subject ]</a>
+              <a href="author.html#3380">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

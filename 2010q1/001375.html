@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Raimbow2 problem : seems to be a big problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Raimbow2%20problem%20%3A%20seems%20to%20be%20a%20big%20problem&In-Reply-To=%3C4B60AB39.7070105%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001394.html">
+   <LINK REL="Next"  HREF="001376.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Raimbow2 problem : seems to be a big problem</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Raimbow2%20problem%20%3A%20seems%20to%20be%20a%20big%20problem&In-Reply-To=%3C4B60AB39.7070105%40free.fr%3E"
+       TITLE="[hatari-devel] Raimbow2 problem : seems to be a big problem">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Jan 27 22:08:09 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001394.html">[hatari-devel] Whip is working
+</A></li>
+        <LI>Next message: <A HREF="001376.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1375">[ date ]</a>
+              <a href="thread.html#1375">[ thread ]</a>
+              <a href="subject.html#1375">[ subject ]</a>
+              <a href="author.html#1375">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've traced and disassembled Raimbow2.
+
+Here is what I get :
+
+Raimbow2 Trace taken from hatari : d $2e74a
+
+0002e74a: 22c0 4e7a 0802 22c0 f011 MOVE.L D0,(A1)+                        
+0002e74c: 4e7a 0802 22c0 f011 0a00 MOVEC2.L #$0802                        
+0002e750: 22c0 f011 0a00 5849 f011 MOVE.L D0,(A1)+                        
+0002e752: f011 0a00 5849 f011 0e00 ILLEGAL.L                              
+0002e754: 0a00 5849 f011 0e00 5849 EOR.B #$49,D0                          
+0002e758: f011 0e00 5849 33f8 0484 ILLEGAL.L
+0002e75a: 0e00 5849 33f8 0484 0008 ILLEGAL.L
+0002e75c: 5849 33f8 0484 0008 1be4 ADDA.W #$00000004,A1
+0002e75e: 33f8 0484 0008 1be4 6100 MOVE.W $00000484,$00081be4
+0002e766: 6100 005e 08b8 0001 0484 BSR.W #$005e == 0002e7c6
+
+Raimbow2 disassembled with Desert Drain :
+
+move.l      D0,(A1)+
+movec.l     SFC,D0
+move.l      D0,(A1)+
+movec.l     DFC,D0
+move.l      D0,(A1)+
+movec.l     CACR,D0
+move.l      D0,(A1)+
+movec.l     CAAR,D0
+move.l      D0,(A1)+
+pmove       tt0,(A1)
+addq.w      #4,A1
+pmove       tt1,(A1)
+addq.w      #4,A1
+move.w      $484.w,B_53A10 ;conterm
+bsr.w       T_5F2
+
+
+It seems something is not well emulated in 68030.
+MMU code ?
+
+Regards
+
+Laurent
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001394.html">[hatari-devel] Whip is working
+</A></li>
+	<LI>Next message: <A HREF="001376.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1375">[ date ]</a>
+              <a href="thread.html#1375">[ thread ]</a>
+              <a href="subject.html#1375">[ subject ]</a>
+              <a href="author.html#1375">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

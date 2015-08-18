@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Merge to latest winuae core
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Merge%20to%20latest%20winuae%20core&In-Reply-To=%3C4E935B0B.5010500%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004075.html">
+   <LINK REL="Next"  HREF="004091.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Merge to latest winuae core</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Merge%20to%20latest%20winuae%20core&In-Reply-To=%3C4E935B0B.5010500%40free.fr%3E"
+       TITLE="[hatari-devel] Merge to latest winuae core">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Oct 10 22:52:27 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004075.html">[hatari-devel] Slow HD boot with the new floppy code
+</A></li>
+        <LI>Next message: <A HREF="004091.html">[hatari-devel] WinUae CpuCore New patch with 3 important changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4090">[ date ]</a>
+              <a href="thread.html#4090">[ thread ]</a>
+              <a href="subject.html#4090">[ subject ]</a>
+              <a href="author.html#4090">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+My first attempt to merge to the latest winuae core is KO.
+The new core is unstable.
+
+I'll do it again, step by step.
+
+Here is my first analysis :
+
+table68k     : no change
+build68k.c   : no change
+read68k.c    : no change
+read68k.h    : no change
+m68k.h       : no change
+compat.h     : no change (added by me to minimize the changes in 
+winuae's code)
+cpummu.h     : no change (but TRY CATCH THROW THROW_AGAIN not ported 
+correctly to c --&gt; doesn't work in actual and new core)
+cpummu.c     : no change (same comment as above)
+
+
+This means that the heart of the new core is the same as the actual one.
+
+
+
+cpu_prefetch.h, gencpu, newcpu --&gt; Many changes
+
+memory.c and memory.h --&gt; the actual code is closer to old core's file, 
+but includes the new core's parameters (I think it's not changed)
+
+custom.c (this file has changed a lot, but it contains a lot of code 
+specific to amiga). I think it would probably be better (for this file 
+only) to only include the cpu's code.
+
+
+I'll give it another try.
+
+Regards
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004075.html">[hatari-devel] Slow HD boot with the new floppy code
+</A></li>
+	<LI>Next message: <A HREF="004091.html">[hatari-devel] WinUae CpuCore New patch with 3 important changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4090">[ date ]</a>
+              <a href="thread.html#4090">[ thread ]</a>
+              <a href="subject.html#4090">[ subject ]</a>
+              <a href="author.html#4090">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

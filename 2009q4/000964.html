@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP sounds and new DSP issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20sounds%20and%20new%20DSP%20issue&In-Reply-To=%3C200911220051.04251.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001035.html">
+   <LINK REL="Next"  HREF="000968.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP sounds and new DSP issue</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20sounds%20and%20new%20DSP%20issue&In-Reply-To=%3C200911220051.04251.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] DSP sounds and new DSP issue">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Nov 21 23:51:04 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001035.html">[hatari-devel] ACSI/DMA emulation issues
+</A></li>
+        <LI>Next message: <A HREF="000968.html">[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#964">[ date ]</a>
+              <a href="thread.html#964">[ thread ]</a>
+              <a href="subject.html#964">[ subject ]</a>
+              <a href="author.html#964">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+While testing New Beats applications:
+<A HREF="http://newbeat.atari.org/main.php?page=productions">http://newbeat.atari.org/main.php?page=productions</A>
+
+I notice that the Ace Tracker and Ace Midi (demo) sound now a bit better and
+they don't anymore complation about CPU overload, but there's now a new DSP
+issue.
+
+FlexTrax doesn't anymore work at all, it gives this when one tries
+to use it (earlier it &quot;just&quot; didn't have sound):
+--
+Dsp: Stack Overflow
+Dsp: 0x5023: 0x0000df unknown instruction
+--
+
+
+As to earlier DSP related sound issues, FalcAMP MP3 playback still
+complains about DSP timeout (i.e. doesn't work) and FlaySID still
+has no sound.
+
+GEMPlay plays now GT2/AON/AM formats which didn't have sound or froze
+earlier.  AM sounds horrible, but that maybe be because my machine is too
+slow.  Can somebody check this?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001035.html">[hatari-devel] ACSI/DMA emulation issues
+</A></li>
+	<LI>Next message: <A HREF="000968.html">[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#964">[ date ]</a>
+              <a href="thread.html#964">[ thread ]</a>
+              <a href="subject.html#964">[ subject ]</a>
+              <a href="author.html#964">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Suggestion about small additions for v1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3C201005172109.18745.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002140.html">
+   <LINK REL="Next"  HREF="002197.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Suggestion about small additions for v1.4</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3C201005172109.18745.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Suggestion about small additions for v1.4">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon May 17 20:09:18 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002140.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002197.html">[hatari-devel] Using GL for Hatari output on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2147">[ date ]</a>
+              <a href="thread.html#2147">[ thread ]</a>
+              <a href="subject.html#2147">[ subject ]</a>
+              <a href="author.html#2147">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 16 May 2010, K&#229;re Andersen wrote:
+&gt;&gt;<i> For scaling I can easily see OpenGL being faster (the 3D HW is
+</I>&gt;&gt;<i> accessing pixels already in dedicated/faster 3D HW memory), but if
+</I>&gt;&gt;<i> there's a &#160;significant performance difference when just blitting data
+</I>&gt;&gt;<i> from &quot;CPU owned&quot; RAM like happens in normal Hatari case, there just
+</I>&gt;&gt;<i> must be something really screwed in OSX SDL graphics pipeline.
+</I>&gt;<i>
+</I>&gt;<i> Something is indeed very much screwed in the OSX SDL 1.2 pipeline...
+</I>&gt;<i> But unfortunately, performance is still lackluster (~40% cpu on 2.4Ghz
+</I>&gt;<i> Core2Quad) with OpenGL blits. Atleast its possible to scale to any
+</I>&gt;<i> arbitrary size with no cpu cost...
+</I>
+Basically 3D HW / OpenGL helps with performance only in the cases where
+you're dealing with lots &amp; complex geometry and where your texture content
+is static.  If all you use it for is pushing constantly updating texture
+content and basically no geometry, it can be even slower than using CPU
+for that.
+
+E.g. in Omap3, doing something like memcpy with the 3D HW gives you maybe
+1/5 of performance of doing it with CPU.  This is because it's running at
+1/5 speed while using the same memory as CPU (and neither that nor AFAIK x86
+provide cache coherency between CPU and GPU i.e. control transfer implies
+a cache flush).  If you can do it asynchronously to the CPU and your CPU is
+otherwise fully occupied, you may still get some performance advantage on
+shared memory systems, but if you have a discrete graphics card, this
+depends on how much slower your HW interface (PCI/AGP/PCI-E) to the graphics
+card is compared to your RAM.
+
+
+&gt;<i> &gt; It's possible that in the OpenGL case it's just a question that then
+</I>&gt;<i> &gt; the program can tell when the display updates should be synched to
+</I>&gt;<i> &gt; Vsync().
+</I>&gt;<i>
+</I>&gt;<i> Well, for the first time I am seeing the same tearing on OS X as i get
+</I>&gt;<i> in linux... OS X forces double buffering (in window mode), but gives
+</I>&gt;<i> the user no way to synchronize to the VBL... OpenGL context windows
+</I>&gt;<i> bypass this buffering.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Btw. When doing anything with OpenGL, please use (ES subset of) the
+</I>&gt;&gt;<i> OpenGL v2 API. &#160;Skip OpenGL v1, stuff it's not really portable to
+</I>&gt;&gt;<i> devices that are soon to be going to be majority of the devices people
+</I>&gt;<i> &gt; have.
+</I>&gt;<i>
+</I>&gt;<i> OpenGL ES is not for desktop systems, and iirc version 2 looses the
+</I>&gt;<i> state machine completely (OpenGL ES 2 != OpenGL 2.x).
+</I>
+No, the difference concerns fixed functions, but that is really a difference
+between focus in OpenGL v1.x and later OpenGL versions, it's nothing
+specific to ES subset of the OpenGL API.
+
+Newer full OpenGL API is actually closer to ES API than v1.x API.
+
+The issue I'm after, is that although the full OpenGL API is backwards
+compatible to earlier OpenGL versions (e.g. through software fallbacks),
+the v2.x ES subset of the OpenGL API drops support for the fixed function
+APIs from v1.x.
+
+<A HREF="http://en.wikipedia.org/wiki/OpenGL_ES">http://en.wikipedia.org/wiki/OpenGL_ES</A>
+
+
+&gt;<i> Sure, its nicer 
+</I>&gt;<i> to program, but not really useful for us OS X users. However, I dont
+</I>&gt;<i> see any reason not to support ES in addition - it would just be an
+</I>&gt;<i> entirely different codepath. The one does not exclude the other...
+</I>
+What I'm suggesting is avoiding v1.x OpenGL specific API and using
+the ES *subset* of OpenGL 2.x API, not the ES extensions.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002140.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002197.html">[hatari-devel] Using GL for Hatari output on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2147">[ date ]</a>
+              <a href="thread.html#2147">[ thread ]</a>
+              <a href="subject.html#2147">[ subject ]</a>
+              <a href="author.html#2147">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

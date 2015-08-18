@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hard disk images and drivers
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hard%20disk%20images%20and%20drivers&In-Reply-To=%3C200903240005.47353.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000206.html">
+   <LINK REL="Next"  HREF="000207.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hard disk images and drivers</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hard%20disk%20images%20and%20drivers&In-Reply-To=%3C200903240005.47353.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hard disk images and drivers">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Mar 23 23:05:46 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000206.html">[hatari-devel] Hard disk images and drivers
+</A></li>
+        <LI>Next message: <A HREF="000207.html">[hatari-devel] DSP emulation and sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#212">[ date ]</a>
+              <a href="thread.html#212">[ thread ]</a>
+              <a href="subject.html#212">[ subject ]</a>
+              <a href="author.html#212">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 22 March 2009, Eero Tamminen wrote:
+&gt;<i> &gt; &gt; However, although it recognizes Hatari/IDE, it doesn't recognize
+</I>&gt;<i> &gt; &gt; the partition created with the script (-&gt; no C:).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; According to the website of Cecile:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  &quot;C&#233;cile acc&#233;de indiff&#233;rement aux partitions TOS que PC type 4 et 6.&quot;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; But your script (parted) creates a partition of type 0x0E. If you
+</I>&gt;<i> &gt; change the type to 4 or 6 (depending on the size), it seems to work
+</I>&gt;<i> &gt; (but I only did a quick testing, so don't rely on that).
+</I>
+It's not enough to change just partition type, it needs to be formatted like
+that too.  :-)  Do you know whether and when mkdosfs uses FAT16&lt;32MB
+(partition type 4) and FAT16 (partition type 6)?  It doesn't tell, its
+manual doesn't tell and it cannot be specified.
+
+As far as I could see from wikipedia, only real difference between them
+seems to be sector count being change from 16-bit to 32-bit:
+	<A HREF="http://en.wikipedia.org/wiki/File_Allocation_Table">http://en.wikipedia.org/wiki/File_Allocation_Table</A>
+
+(Whereas with FAT32 cluster addresses are changed from 16-bit to 32-bit.)
+
+
+&gt;<i> Parted doesn't support these it seems, I can only specify fat16 and that
+</I>&gt;<i> produces whatever it produces.
+</I>&gt;<i>
+</I>&gt;<i> With fdisk exact partition type could be specified but it's interactive
+</I>&gt;<i> (like cfdisk).  I guess I'll look next whether I can get sfdisk working
+</I>&gt;<i> with disk image files after all.
+</I>
+I changed from parted to sfdisk.  Cecile works now fine.
+(will update the manual after I've tested the script a bit more)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000206.html">[hatari-devel] Hard disk images and drivers
+</A></li>
+	<LI>Next message: <A HREF="000207.html">[hatari-devel] DSP emulation and sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#212">[ date ]</a>
+              <a href="thread.html#212">[ thread ]</a>
+              <a href="subject.html#212">[ subject ]</a>
+              <a href="author.html#212">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

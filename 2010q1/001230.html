@@ -1,0 +1,270 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Big problems with bus error on Falcon
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Big%20problems%20with%20bus%20error%20on%20Falcon&In-Reply-To=%3C4B4F92E1.7030000%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001227.html">
+   <LINK REL="Next"  HREF="001232.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Big problems with bus error on Falcon</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Big%20problems%20with%20bus%20error%20on%20Falcon&In-Reply-To=%3C4B4F92E1.7030000%40free.fr%3E"
+       TITLE="[hatari-devel] Big problems with bus error on Falcon">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Jan 14 22:55:45 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001227.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+        <LI>Next message: <A HREF="001232.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1230">[ date ]</a>
+              <a href="thread.html#1230">[ thread ]</a>
+              <a href="subject.html#1230">[ subject ]</a>
+              <a href="author.html#1230">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Very interesting message. I haven't got enough time today.
+I'll work on this next week.
+
+Just a question : when an adress is unasigned in the doc, does it mean 
+that a read or write to this address on the real hardware generates a 
+bus error ?
+In this case, does it stops the falcon ?
+
+
+Best regards,
+
+Laurent
+
+
+
+Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Thursday 14 January 2010, Laurent Sallafranque wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> M68000 Bus Error at address $f00000.
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> I've seen many programs that does Bus error on Hatari Falcon.
+</I>&gt;&gt;<i> I've corrected the Illusion demo yesterday (I added void read/write for
+</I>&gt;&gt;<i> a certain address in IoMemtabFalcon).
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> This is address 0xff800A.  According to docs it's unassigned.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> There was already a similar patch 1 line before the one I've added
+</I>&gt;&gt;<i> yesterday (probably to let run another program).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Another strange thing : the game conquest stops with a bus error at
+</I>&gt;&gt;<i> address $ff8901.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Did it try to read or write a word from an odd address?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> This address is mapped in IoMemTabFalcon and in Crossbar.c
+</I>&gt;&gt;<i> This is really strange.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Many programs are doing Illegal Rom writing. (I haven't verified if they
+</I>&gt;&gt;<i> are not just trying to read the Rom).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I was asking myself if there isn't a problem with memory reading/writing
+</I>&gt;&gt;<i> ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is it possible on the real hardware to read at a N/A address without
+</I>&gt;&gt;<i> receiving bombs ?
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> No idea, I don't have a Falcon.  :-)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> (Perhaps we shouldn't be so strict)
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Btw. I was looking at the current Falcon mappings:
+</I>&gt;<i>
+</I>&gt;<i> For example:
+</I>&gt;<i>         { 0xff8006, SIZE_WORD, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> IoMem_WriteWithoutInterception }, /* Falcon configuration */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> *Byte* at 0xff8006 is monitor type (programs cannot change), but
+</I>&gt;<i> the next byte is Falcon processor control byte:
+</I>&gt;<i> 	bit 0: 030 speed (set 16Mhz, unset 8Mhz)
+</I>&gt;<i> 	bit 2: blitter speed (set 16Mhz, unset 8Mhz)
+</I>&gt;<i> 	bit 5: STE bus emulation (0=on, 1=off)
+</I>&gt;<i>
+</I>&gt;<i> Shouldn't we emulate at least the first two bits?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Then:
+</I>&gt;<i>         { 0xff800A, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i>         { 0xff800C, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i>         { 0xff8060, SIZE_LONG, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i>
+</I>&gt;<i> According to my documentation whole 0xff8008 - 0xff81ff range is unassigned.
+</I>&gt;<i> Why these particular addresses are singled out, why all the (503) addresses
+</I>&gt;<i> in this range aren't the same?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Then to video handling...
+</I>&gt;<i>
+</I>&gt;<i>         { 0xff820e, SIZE_BYTE, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> IoMem_WriteWithoutInterception }, /* Falcon line offset */
+</I>&gt;<i>         { 0xff820f, SIZE_BYTE, Video_LineWidth_ReadByte, 
+</I>&gt;<i> Video_LineWidth_WriteByte },
+</I>&gt;<i>         { 0xff8210, SIZE_WORD, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> IoMem_WriteWithoutInterception }, /* Falcon line width */
+</I>&gt;<i>
+</I>&gt;<i> The Video_LineWidth_WriteByte() callback doc says:
+</I>&gt;<i>  * Write video line width register (0xff820f) - STE only.
+</I>&gt;<i>  * Content of LineWidth is added to the shifter counter when display is
+</I>&gt;<i>  * turned off (start of the right border, usually at cycle 376)
+</I>&gt;<i>
+</I>&gt;<i> Shouldn't we handle that specifically for Falcon?
+</I>&gt;<i> (byte = 256 pixels in HiColor, but on Falcon the width is a word)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> And if I read video.c right, horizontal scrolling isn't taken into account
+</I>&gt;<i> on Falcon?
+</I>&gt;<i>         { 0xff8264, SIZE_BYTE, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> IoMem_WriteWithoutInterception }, /* Falcon horizontal fine scrolling 
+</I>&gt;<i> high ? */
+</I>&gt;<i>         { 0xff8265, SIZE_BYTE, Video_HorScroll_Read, 
+</I>&gt;<i> Video_HorScroll_Write },                /* horizontal fine scrolling */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Code is also missing e.g. horizontal &amp; vertical display &amp; border begin &amp; end 
+</I>&gt;<i> register handling:
+</I>&gt;<i>         { 0xff8280, 68, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> IoMem_WriteWithoutInterception }, /* TODO: Falcon video */
+</I>&gt;<i>
+</I>&gt;<i> So I guess display size can be wrong?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> According to my documentation, 0xff860e - 0xff86ff is unassigned,
+</I>&gt;<i> is this a bug:
+</I>&gt;<i>         { 0xff860e, SIZE_BYTE, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i>         { 0xff860f, SIZE_BYTE, FDC_FloppyMode_ReadByte, 
+</I>&gt;<i> FDC_FloppyMode_WriteByte },             /* Floppy mode (?) register */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 0xff8700 - 0xff878e are SCSI registers with the areas 0xff8716 - 0xff877f - 
+</I>&gt;<i> and 0xff8790 - 0xff879f being unassigned.  ioMemTabFalcon didn't have
+</I>&gt;<i> anything on them.  Would be good to have comment on them.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Microwire registers not implemented:
+</I>&gt;<i>         { 0xff8922, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                                     /* Microwire data */
+</I>&gt;<i>         { 0xff8924, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                                     /* Microwire mask */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> These were not in my document, what the crossbar thing does here?
+</I>&gt;<i>         { 0xff893b, SIZE_BYTE, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> IoMem_WriteWithoutInterception }, /* No bus error here */
+</I>&gt;<i>         { 0xff893c, SIZE_WORD, Crossbar_CodecStatus_ReadWord, 
+</I>&gt;<i> Crossbar_CodecStatus_WriteWord }, /* CODEC status */
+</I>&gt;<i>         { 0xff893e, SIZE_WORD, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> IoMem_WriteWithoutInterception }, /* No bus error here */
+</I>&gt;<i> ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> GPIO data stuff not implemented:
+</I>&gt;<i>         { 0xff8940, SIZE_WORD, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> IoMem_WriteWithoutInterception }, /* GPx direction */
+</I>&gt;<i>         { 0xff8942, SIZE_WORD, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> IoMem_WriteWithoutInterception }, /* GPx port */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> SCC DMA and port registers not implemented:
+</I>&gt;<i>         { 0xff8c80, 8, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_WriteWithoutInterception },                        /* TODO: SCC */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> According to my documentation, these STE/Falcon paddle regs are WORD,
+</I>&gt;<i> not BYTE sized (like they're both in STE &amp; Falcon ioMemTab files):
+</I>&gt;<i>        { 0xff9210, SIZE_BYTE, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i>         { 0xff9211, SIZE_BYTE, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_WriteWithoutInterception },          /* Joypad 0 X position (?) */
+</I>&gt;<i>         { 0xff9212, SIZE_BYTE, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i>         { 0xff9213, SIZE_BYTE, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_WriteWithoutInterception },          /* Joypad 0 Y position (?) */
+</I>&gt;<i>         { 0xff9214, SIZE_BYTE, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i>         { 0xff9215, SIZE_BYTE, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_WriteWithoutInterception },          /* Joypad 1 X position (?) */
+</I>&gt;<i>         { 0xff9216, SIZE_BYTE, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i>         { 0xff9217, SIZE_BYTE, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_WriteWithoutInterception },          /* Joypad 1 Y position (?) */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Light pen isn't implemented either:
+</I>&gt;<i>         { 0xff9220, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_WriteWithoutInterception },              /* Lightpen X position */
+</I>&gt;<i>         { 0xff9222, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_WriteWithoutInterception },              /* Lightpen Y position */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> My documentation says this is unassigned:
+</I>&gt;<i>         { 0xffff82, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                               /* No bus errors here */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> It would be nice if the &quot;No bus errors here&quot;  things added would have
+</I>&gt;<i> comments why they are there...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001227.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+	<LI>Next message: <A HREF="001232.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1230">[ date ]</a>
+              <a href="thread.html#1230">[ thread ]</a>
+              <a href="subject.html#1230">[ subject ]</a>
+              <a href="author.html#1230">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

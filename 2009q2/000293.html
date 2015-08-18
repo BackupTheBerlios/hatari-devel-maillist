@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Wii port
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wii%20port&In-Reply-To=%3C20090523220255.7f367b1e%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000292.html">
+   <LINK REL="Next"  HREF="000294.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Wii port</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wii%20port&In-Reply-To=%3C20090523220255.7f367b1e%40phineus%3E"
+       TITLE="[hatari-devel] Wii port">th.huth at gmx.de
+       </A><BR>
+    <I>Sat May 23 22:02:55 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000292.html">[hatari-devel] Wii port
+</A></li>
+        <LI>Next message: <A HREF="000294.html">[hatari-devel] Last fix.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#293">[ date ]</a>
+              <a href="thread.html#293">[ thread ]</a>
+              <a href="subject.html#293">[ subject ]</a>
+              <a href="author.html#293">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 23 May 2009 18:51:13 +0200
+Jerome Vernet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">vernet.jerome at wanadoo.fr</A>&gt; wrote:
+
+&gt;<i> Thomas Huth a &#233;crit :
+</I>&gt;<i> &gt; On Wed, 20 May 2009 09:43:16 +0200
+</I>&gt;<i> &gt; Jerome Vernet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">vernet.jerome at wanadoo.fr</A>&gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; I made some test with the latest build of Hatari Wii. It's working 
+</I>&gt;<i> &gt;&gt; pretty well, ith demos and some games. Nice job !
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Does the patch are merged in the berlios repository ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Sorry, no, the full patch was rather a hack than a clean solution,
+</I>&gt;<i> &gt; so it has not been applied. We asked the author to clean it up, but
+</I>&gt;<i> &gt; he did not respond anymore.
+</I>&gt;<i> &gt;   
+</I>&gt;<i> I got his sources and is SDL implementation for Wii (not the
+</I>&gt;<i> 'official' wii SDL port, but his own, he work on keyboard and mouse
+</I>&gt;<i> emulation for the wii).
+</I>&gt;<i> I have also installed all the stuff needed to build Wii &quot;GEKKO&quot; apps 
+</I>&gt;<i> (DevKitPro) and can build his version. I will try to incorporate
+</I>&gt;<i> latest sources of Hatari.
+</I>&gt;<i> 
+</I>&gt;<i> But I do not know wha to do &quot;to clean it up&quot;. Some hacks are very
+</I>&gt;<i> very specific to the Wii (no windows, no mouse/keybord API).
+</I>
+Have a look at the discussion back in january:
+
+<A HREF="https://lists.berlios.de/pipermail/hatari-devel/2009q1/thread.html#32">https://lists.berlios.de/pipermail/hatari-devel/2009q1/thread.html#32</A>
+
+There are a lot of unnecessary SDL_Delay()s, a lot of hard coded paths
+that rather should be handled by a proper configuration file and he
+also introduced another implementation of scandir, though the existing
+implementation could be used.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000292.html">[hatari-devel] Wii port
+</A></li>
+	<LI>Next message: <A HREF="000294.html">[hatari-devel] Last fix.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#293">[ date ]</a>
+              <a href="thread.html#293">[ thread ]</a>
+              <a href="subject.html#293">[ subject ]</a>
+              <a href="author.html#293">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

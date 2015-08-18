@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] cmake doesn't find readline
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cmake%20doesn%27t%20find%20readline&In-Reply-To=%3C201002211754.48962.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001502.html">
+   <LINK REL="Next"  HREF="001504.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] cmake doesn't find readline</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cmake%20doesn%27t%20find%20readline&In-Reply-To=%3C201002211754.48962.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] cmake doesn't find readline">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Feb 21 16:54:48 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001502.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+        <LI>Next message: <A HREF="001504.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1503">[ date ]</a>
+              <a href="thread.html#1503">[ thread ]</a>
+              <a href="subject.html#1503">[ subject ]</a>
+              <a href="author.html#1503">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 21 February 2010, Thomas Huth wrote:
+&gt;<i> On Sun, 21 Feb 2010 15:06:37 +0100 (CET)
+</I>&gt;<i> &gt; I don't know if this is the most efficient way to fix this, but it
+</I>&gt;<i> &gt; fixed the problem and readline is working under the debugger.
+</I>&gt;<i>
+</I>&gt;<i> Looks like the right fix to me, please commit it!
+</I>&gt;<i>
+</I>&gt;<i> &gt; Another &quot;problem&quot; : after running cmake, &quot;hg diff&quot; is now reporting
+</I>&gt;<i> &gt; all the Makefile files in the various subdirs as being modified (as
+</I>&gt;<i> &gt; they were replaced by the cmake version). Which means a &quot;hg ci/push&quot;
+</I>&gt;<i> &gt; would overwrite the original Makefile files on berlios, which may not
+</I>&gt;<i> &gt; be what we want.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Is there a way to handle this ?
+</I>&gt;<i>
+</I>&gt;<i> Yes, there are several solutions:
+</I>&gt;<i>
+</I>&gt;<i> 1) Force Eero to also use cmake, than we can remove the old
+</I>&gt;<i>    Makefiles ;-)
+</I>
+I would say there are still quite a few (niche I guess, like Atari :-))
+platforms where Makefiles are better supported than CMake (even CMake
+itself uses make on Linux).  Maybe after v1.4, I'll support Makefiles until
+that.
+
+Btw. I quickly looked into the configure.ac and as the *.in files are
+already removed, configure.ac itself cannot work anymore.   I.e. feel free
+to remove it.
+
+
+&gt;<i> 2) Use &quot;make distclean&quot; before the check-in, this should remove the
+</I>&gt;<i>    generated Makefiles
+</I>&gt;<i> 3) Do an out-of-source build instead, i.e. run the initial &quot;cmake&quot; from
+</I>&gt;<i>    a separate folder that is not part of the source tree.
+</I>
+I think this is the best alternative.  Maybe the &quot;configure&quot; wrapper you've
+added for CMake could automatically cause the build to be done in a separate
+build subdirectory?
+
+
+&gt;<i> 4) Maybe rename the old Makefiles to GNUmakefile, since this file name
+</I>&gt;<i>    is accepted by GNU make, too...  but I doubt that this will work
+</I>&gt;<i>    well since the name &quot;GNUmakefile&quot; seems to have a higher priority for
+</I>&gt;<i>    make than &quot;Makefile&quot;.
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001502.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+	<LI>Next message: <A HREF="001504.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1503">[ date ]</a>
+              <a href="thread.html#1503">[ thread ]</a>
+              <a href="subject.html#1503">[ subject ]</a>
+              <a href="author.html#1503">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

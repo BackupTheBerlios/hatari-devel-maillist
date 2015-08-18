@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Small bugs (fix before 1.4?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20bugs%20%28fix%20before%201.4%3F%29&In-Reply-To=%3C20100604175858.71460%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002263.html">
+   <LINK REL="Next"  HREF="002265.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Small bugs (fix before 1.4?)</H1>
+    <B>Thomas H.</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20bugs%20%28fix%20before%201.4%3F%29&In-Reply-To=%3C20100604175858.71460%40gmx.net%3E"
+       TITLE="[hatari-devel] Small bugs (fix before 1.4?)">th.huth at gmx.de
+       </A><BR>
+    <I>Fri Jun  4 19:58:58 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002263.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+        <LI>Next message: <A HREF="002265.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2264">[ date ]</a>
+              <a href="thread.html#2264">[ thread ]</a>
+              <a href="subject.html#2264">[ subject ]</a>
+              <a href="author.html#2264">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+-------- Original-Nachricht --------
+&gt;<i> Datum: Fri, 4 Jun 2010 20:50:50 +0300
+</I>&gt;<i> Von: Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt;
+</I>&gt;<i> An: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> Betreff: Re: [hatari-devel] Small bugs (fix before 1.4?)
+</I>
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On Friday 04 June 2010, Anders Eriksson wrote:
+</I>&gt;<i> &gt;&gt; I've changed the code now a little bit so that it now takes the screen
+</I>&gt;<i> &gt;&gt; format as reported by the SDL into account: I hope this solves at least
+</I>&gt;<i> &gt;&gt; the problem in 32 bpp mode... please update and try again whether the
+</I>&gt;<i> &gt;&gt; screenshots look better now!
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; yes both screenshots and movie recording now works, thanks!
+</I>&gt;<i> 
+</I>&gt;<i> Now I don't understand how Hatari can work for you.
+</I>&gt;<i> 
+</I>&gt;<i> Hatari's atari -&gt; SDL screen conversion functions already expected a
+</I>&gt;<i> certain byteorder.
+</I>
+How do you come to this conclusion? Hatari's screen rendering functions properly adjust to the host screens pixel layout, see Screen_SetupRGBTable() for details.
+
+&gt;<i>  Either both the screen output &amp; screensaving should have had
+</I>&gt;<i> wrong colors or both should have had right colors...
+</I>
+Well, the problem was that the PNG snapshot code assumed a certain byte order of the host screen ... which was obviously not working when the byte order of the graphics card did not match the byte order of the host CPU, like it seems to be the case on x86 Macs.
+
+ Thomas
+
+-- 
+GRATIS f&#252;r alle GMX-Mitglieder: Die maxdome Movie-FLAT!
+Jetzt freischalten unter <A HREF="http://portal.gmx.net/de/go/maxdome01">http://portal.gmx.net/de/go/maxdome01</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002263.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+	<LI>Next message: <A HREF="002265.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2264">[ date ]</a>
+              <a href="thread.html#2264">[ thread ]</a>
+              <a href="subject.html#2264">[ subject ]</a>
+              <a href="author.html#2264">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Raimbow2 problem : seems to be a big problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Raimbow2%20problem%20%3A%20seems%20to%20be%20a%20big%20problem&In-Reply-To=%3C20100128232525.0ecfde57%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001380.html">
+   <LINK REL="Next"  HREF="001385.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Raimbow2 problem : seems to be a big problem</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Raimbow2%20problem%20%3A%20seems%20to%20be%20a%20big%20problem&In-Reply-To=%3C20100128232525.0ecfde57%40phineus%3E"
+       TITLE="[hatari-devel] Raimbow2 problem : seems to be a big problem">huth at users.berlios.de
+       </A><BR>
+    <I>Thu Jan 28 23:25:25 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001380.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+        <LI>Next message: <A HREF="001385.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1382">[ date ]</a>
+              <a href="thread.html#1382">[ thread ]</a>
+              <a href="subject.html#1382">[ subject ]</a>
+              <a href="author.html#1382">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 28 Jan 2010 21:22:15 +0100
+Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+
+&gt;<i> The program stops with 11 bombs when it reachs this part of code.
+</I>&gt;<i> 
+</I>
+11 bombs means unhandled Line-F exception. Unless you run in 68020 mode
+only and the program needs a FPU (then you should switch to 68030+FPU
+mode), this most likely means that the program needs the MMU which is
+not emulated yet.
+
+ Thomas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001380.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+	<LI>Next message: <A HREF="001385.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1382">[ date ]</a>
+              <a href="thread.html#1382">[ thread ]</a>
+              <a href="subject.html#1382">[ subject ]</a>
+              <a href="author.html#1382">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

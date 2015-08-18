@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Steem debugger features not in Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Steem%20debugger%20features%20not%20in%20Hatari%20debugger&In-Reply-To=%3C4DED5209.70709%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003526.html">
+   <LINK REL="Next"  HREF="003556.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Steem debugger features not in Hatari debugger</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Steem%20debugger%20features%20not%20in%20Hatari%20debugger&In-Reply-To=%3C4DED5209.70709%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Steem debugger features not in Hatari debugger">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Jun  7 00:17:45 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003526.html">[hatari-devel] Steem debugger features not in Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="003556.html">[hatari-devel] Steem debugger features not in Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3554">[ date ]</a>
+              <a href="thread.html#3554">[ thread ]</a>
+              <a href="subject.html#3554">[ subject ]</a>
+              <a href="author.html#3554">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 03/06/2011 08:28, Eero Tamminen a &#233;crit :
+&gt;&gt;&gt;<i>     - Run for N cycles
+</I>&gt;&gt;&gt;<i>       (Hatari continue command accepts only instructions, not cycles)
+</I>&gt;<i>
+</I>&gt;<i> Would the last one be useful?
+</I>
+Depends on the user :) But stopping after &gt;= N cycles elapsed should not 
+be that hard.
+
+&gt;&gt;&gt;<i>     - Monitoring reads&amp;   writes to specific address.  Hatari supports
+</I>&gt;&gt;&gt;<i>       only monitoring changes to values, not having breakpoints
+</I>&gt;&gt;&gt;<i>       of reading values or writing the same value
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Not supported in current Hatari and quite time consuming, because it
+</I>&gt;&gt;<i> requires evaluating &quot;memory access&quot; breakpoints on each read/write to
+</I>&gt;&gt;<i> memory.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have a modified version that does this for my own debugging need, it
+</I>&gt;&gt;<i> could be possible to add some proper hooks in the corresponding memory
+</I>&gt;&gt;<i> handling functions,
+</I>&gt;<i>
+</I>&gt;<i> Could you mail the patch doing this?
+</I>
+I don't have a real patch ; just some hardcoded &quot;if&quot; + specific 
+addresses, so nothing that can be put in production for now.
+We'll see after 1.5 is out :)
+
+
+&gt;&gt;&gt;<i>     - Showing breakpoints in instruction dumps.  Hatari breakpoints
+</I>&gt;&gt;&gt;<i>       are more advanced than the trivial address breakpoints...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> We can show only PC breakpoint in that case, but it's sure Hatari syntax
+</I>&gt;&gt;<i> is more advanced than Steem's ont.
+</I>&gt;<i>
+</I>&gt;<i> To show PC address breakpoints in disassembly, the code would need to
+</I>&gt;<i> separately[1] keep track of address breakpoints.  In that case I guess it
+</I>&gt;<i> would make sense to revert the change where I made them to be just
+</I>&gt;<i> a wrapper for conditional breakpoints.
+</I>&gt;<i>
+</I>&gt;<i> This would require changing also the 68kDisass.c code, as breakpoint
+</I>&gt;<i> indication being on its own line would look horrible.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> [1] One more reason for this is that I assume there could be quit
+</I>&gt;<i> a lot of these breakpoints (especially if they're easy to add from an UI),
+</I>&gt;<i> whereas number of conditional breakpoints is quite limited and they're
+</I>&gt;<i> slower to check.  Address breakpoints can be binary searched from an array.
+</I>
+Yes, there could be 2 categories of breakpoints. Even in current CLI 
+debugger this could be better for performance to have &quot;simple&quot; PC 
+breakpoints in one list, and more complex breakpoint in a 2nd list.
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i>     - Adding new symbol names for arbitrary addresses one at the time.
+</I>&gt;&gt;&gt;<i>       Hatari debugger currently requires new symbols to be added to
+</I>&gt;&gt;&gt;<i>       a file containing all the symbols + reloading that file
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Can't say, I don't use that.
+</I>&gt;<i>
+</I>&gt;<i> I think UI makes that kind of reverse debugging much more convenient as
+</I>&gt;<i> you can easily annotate the disassembly as discover what it does.  To make
+</I>&gt;<i> it really useful, it would require this symbol information to be savable
+</I>&gt;<i> and Hatari to warn if it isn't saved at exit time...
+</I>&gt;<i>
+</I>&gt;<i> (The way how I have used the current symbols functionality is utilizing
+</I>&gt;<i> the symbol information generated by the AHCC compiler/linker.)
+</I>
+Yes, in that way it could indeed be interesting to &quot;comment&quot; the disasm 
+code and have these infos saved in a kind of &quot;debugger snapshot&quot; (I 
+don't think it should be saved in the &quot;memory snapshot&quot;)
+
+&gt;&gt;&gt;<i>     - Stack content display
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Should be in the &quot;easy&quot; section I think, it's just a dump of the memory
+</I>&gt;&gt;<i> before the value pointed by A7.
+</I>&gt;<i>
+</I>&gt;<i> You mean it would be just:
+</I>&gt;<i> 	m &quot;a7&quot;
+</I>&gt;<i> ?
+</I>
+m &quot;a7&quot; will display bytes at a7 and more (incrementing). But when you 
+want to display the stack you must decrement. For example do something 
+like (don't know if this syntax works) :
+
+  m &quot;a7&quot; - $20
+
+Which would display the last 32 bytes before the content of a7
+
+&gt;<i>
+</I>&gt;<i> But with a bit different output; instead of 16x hex values per line,
+</I>&gt;<i> a word as 2x hex, 2x ASCII&amp;  decimal&amp;  binary values.  (I.e. using
+</I>&gt;<i> same output routine as I mentioned above)
+</I>
+It's hard to know if the data in the stack are words or longs, so you 
+have to pick one format to display them, but there're no rule.
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i>     - Shift Atari screen contents by 0/2/4/6 bytes
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Not very useful, only use is when trying to debug overscan's emulation
+</I>&gt;&gt;<i> problems, but Hatari is now fairly robust.
+</I>&gt;<i>
+</I>&gt;<i> I guess it's mean for people debuggign their own code, not the emulator
+</I>&gt;<i> itself.  :-)
+</I>
+Yes, and even so, I think the coded can easily do this in his own code.
+
+&gt;<i>
+</I>&gt;&gt;&gt;<i> (I think rest of the Steem features can be supported by the Hatari
+</I>&gt;&gt;&gt;<i> breakpoints.)
+</I>&gt;<i>
+</I>&gt;<i> Steem actually has one more thing not possible in Hatari:
+</I>&gt;<i>       - Setting a breakpoint on an interrupt
+</I>&gt;<i>
+</I>&gt;<i> Any suggestions how to best check for interrupt?
+</I>&gt;<i> (I mean, how to express it in breakpoints syntax)
+</I>
+Each interrupt in calling Exception() in newcpu.c with and exception 
+number and and exception source (cpu, mfp). Adding a condition on the 
+expception number allows to catch any kind of interrrupt.
+
+&gt;<i> (Only potential small usability downside from working through remote API
+</I>&gt;<i> would be this 0.1s delay per view before it gets refreshed that I mentioned
+</I>&gt;<i> earlier.)
+</I>
+I think this 0.1 delay would be really annoying when trying to fast 
+scroll pressing page down for example in a memory dump window.
+
+That's why I think an infrastructure that would allow to add several UI 
+inside Hatari (depending on the compile time options) would be better, 
+as it would bypass any inter-processes communications and the possible 
+latency introduced (not counting the required formatting needed to 
+exchange data in a parsable way).
+
+&gt;&gt;<i> And a way to search for hexa/text in Hatari's RAM.
+</I>&gt;<i>
+</I>&gt;<i> This needs a new feature in the internal debugger too.
+</I>
+I think it could be added rather easily in the current debugger ? Maybe 
+with some optional start/end addresses (to search in ram or in rom for 
+example).
+With the ability to search for several bytes/words/longs at the same time.
+
+search $0-$3000 $1 $45 $1234
+
+optional range is in the form x-y ; if not present defaut to a search in 
+the whole ram.
+
+values' size is determined when parsing each value. For example the 
+above would look for a byte $1 followed by a byte $45 followed by a word 
+$1234.
+We could even add text string in the search pattern :
+
+search 'tos ' $45 $18 'atari'
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003526.html">[hatari-devel] Steem debugger features not in Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="003556.html">[hatari-devel] Steem debugger features not in Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3554">[ date ]</a>
+              <a href="thread.html#3554">[ thread ]</a>
+              <a href="subject.html#3554">[ subject ]</a>
+              <a href="author.html#3554">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

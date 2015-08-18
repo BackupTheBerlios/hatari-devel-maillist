@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] MegaSTe emulation ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2008q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MegaSTe%20emulation%20%3F&In-Reply-To=%3C20081231100214.52bee6b2%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000015.html">
+   <LINK REL="Next"  HREF="000006.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] MegaSTe emulation ?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MegaSTe%20emulation%20%3F&In-Reply-To=%3C20081231100214.52bee6b2%40phineus%3E"
+       TITLE="[hatari-devel] MegaSTe emulation ?">th.huth at gmx.de
+       </A><BR>
+    <I>Wed Dec 31 10:02:14 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000015.html">[hatari-devel] MegaSTe emulation ?
+</A></li>
+        <LI>Next message: <A HREF="000006.html">[hatari-devel] I'm back
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#17">[ date ]</a>
+              <a href="thread.html#17">[ thread ]</a>
+              <a href="subject.html#17">[ subject ]</a>
+              <a href="author.html#17">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 30 Dec 2008 10:38:12 +0100
+Jean-Baptiste Berlioz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">jb.berlioz at freemind-tobe.com</A>&gt; wrote:
+
+&gt;<i> &gt;&gt; Can you list some examples where this emulation would really be
+</I>&gt;<i> &gt;&gt; necessary?
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt; Absolutely necessary, I don't know. I found some game patched to
+</I>&gt;<i> &gt; run from Hard Disk (kaplausius's pages, for example), where the
+</I>&gt;<i> &gt; patch can detect MegaSte and ask whether to play at 8Mhz or 16Mhz.
+</I>&gt;<i> 
+</I>&gt;<i> Emulating the MegaSTE is a very complex task in my opinion, because
+</I>&gt;<i> only the processor can run at 16 mhz, the bus stay at 8 mhz and the
+</I>&gt;<i> cache does all the optimizations to feed the processor.
+</I>
+Perfect Mega-STE emulation (with cache) is certainly very hard to do.
+But a &quot;simple&quot; emulation that just satisfies these games so that they
+think they run on a Mega STE should be quite easy, I guess.
+
+I was considering to change the machine model already in the past (e.g.
+to remove the &quot;Blitter&quot; option and to introduce a &quot;Mega-ST&quot; type
+instead... then it would only be a logical step to have a Mega-STE
+machine type, too). Maybe the time is ripe now to do these changes...
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000015.html">[hatari-devel] MegaSTe emulation ?
+</A></li>
+	<LI>Next message: <A HREF="000006.html">[hatari-devel] I'm back
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#17">[ date ]</a>
+              <a href="thread.html#17">[ thread ]</a>
+              <a href="subject.html#17">[ subject ]</a>
+              <a href="author.html#17">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

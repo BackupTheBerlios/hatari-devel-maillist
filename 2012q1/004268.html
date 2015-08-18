@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Small test to run on STE
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2012q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20test%20to%20run%20on%20STE&In-Reply-To=%3C5E70557904AE394E9AEEB21424ABFC091D4B8ADF%40G9W0708.americas.hpqcorp.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004267.html">
+   <LINK REL="Next"  HREF="004269.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Small test to run on STE</H1>
+    <B>Konador, Cyprian</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20test%20to%20run%20on%20STE&In-Reply-To=%3C5E70557904AE394E9AEEB21424ABFC091D4B8ADF%40G9W0708.americas.hpqcorp.net%3E"
+       TITLE="[hatari-devel] Small test to run on STE">cyprian.konador at hp.com
+       </A><BR>
+    <I>Mon Feb 13 00:00:25 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004267.html">[hatari-devel] Small test to run on STE
+</A></li>
+        <LI>Next message: <A HREF="004269.html">[hatari-devel] Small test to run on STE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4268">[ date ]</a>
+              <a href="thread.html#4268">[ thread ]</a>
+              <a href="subject.html#4268">[ subject ]</a>
+              <a href="author.html#4268">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>$3F on my 4MB STe
+
+Attached you can find test program and source code
+
+BR
+Cyprian
+
+-----Original Message-----
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel-bounces at lists.berlios.de</A> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel-bounces at lists.berlios.de</A>] On Behalf Of Nicolas Pomar&#232;de
+Sent: Sunday, February 12, 2012 12:11 PM
+To: Mailing list for Hatari developers
+Subject: Re: [hatari-devel] Small test to run on STE
+
+On 14/11/2011 22:55, Nicolas Pomar&#232;de wrote:
+&gt;<i> Hello
+</I>&gt;<i>
+</I>&gt;<i> I'm wondering if the video address on STE is masked depending on the 
+</I>&gt;<i> RAM size ; could someone with an STE runs this small program and tell 
+</I>&gt;<i> me the result of D0 and D1 (you need to be in supervisor mode) :
+</I>&gt;<i>
+</I>&gt;<i> stop $2300
+</I>&gt;<i> stop $2300
+</I>&gt;<i> move.b $ff8205,d0
+</I>&gt;<i> move.b #$ff,$ff8205
+</I>&gt;<i> move.b $ff8205,d1
+</I>&gt;<i> move.b d0,$ff8205
+</I>&gt;<i>
+</I>&gt;<i> This will briefly modify the video address high byte and restore it.
+</I>&gt;<i> But I'm wondering if you will read $ff after writing it to $ff8205, or 
+</I>&gt;<i> if it will be masked depending on the max size of 4 MB (and you would 
+</I>&gt;<i> read $03 for example).
+</I>&gt;<i>
+</I>&gt;<i> Anders maybe ? ;-)
+</I>&gt;<i>
+</I>&gt;<i> Thanks
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>
+Ping :)
+
+Anyone with an STE that would be able to run this small test from devpac or another asm ?
+
+Thanks
+_______________________________________________
+hatari-devel mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: Hatari.ZIP
+Type: application/x-zip-compressed
+Size: 592 bytes
+Desc: Hatari.ZIP
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20120212/72e559b5/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20120212/72e559b5/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004267.html">[hatari-devel] Small test to run on STE
+</A></li>
+	<LI>Next message: <A HREF="004269.html">[hatari-devel] Small test to run on STE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4268">[ date ]</a>
+              <a href="thread.html#4268">[ thread ]</a>
+              <a href="subject.html#4268">[ subject ]</a>
+              <a href="author.html#4268">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

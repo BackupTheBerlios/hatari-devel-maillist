@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari patches for bitplane conversion
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C752526d20907220743v4819b803uc1681ad4355501bd%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000504.html">
+   <LINK REL="Next"  HREF="000506.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari patches for bitplane conversion</H1>
+    <B>K&#229;re Andersen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C752526d20907220743v4819b803uc1681ad4355501bd%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Hatari patches for bitplane conversion">kareandersen at gmail.com
+       </A><BR>
+    <I>Wed Jul 22 16:43:14 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000504.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+        <LI>Next message: <A HREF="000506.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#505">[ date ]</a>
+              <a href="thread.html#505">[ thread ]</a>
+              <a href="subject.html#505">[ subject ]</a>
+              <a href="author.html#505">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Further investigations...
+
+&gt;<i> On 7/22/09, K&#229;re Andersen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">kareandersen at gmail.com</A>&gt; wrote:
+</I>
+&gt;<i> nFrameSkips is somehow never initialised, add a =0 and everything is
+</I>&gt;<i> fine... &#160;How can this be different on different platforms?
+</I>
+So, remembering previous thoughts on the subject, and the sound init
+problems on OS X a while back, I looked up how the ELF and Mach-O
+binary executable formats work.
+
+ELF zeroes out BSS, Mach-O has, as far as I can tell, no such requirement.
+
+Please don't rely on uninitialized values...
+
+It can happen to anyone, and I cant get gcc to warn me about these
+(globals) with -Wuninitialized. Still, I am sure it can be avoided in
+the future... :)
+
+On another note, i have put memcmp() per line into my converter, and
+indeed it does help a bit. Next up is changing the blitted rectangle
+to changed areas only. The compares eat a bit of CPU on their own, but
+the stress on the X server is much reduced in &quot;good&quot; cases, so I will
+keep improving on this code. Trying to come up  with some good
+heuristics as to when to blit, when to compare and so on. Nice and
+fuzzy suggestions are very welcome.. :)
+
+/K&#229;re
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000504.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+	<LI>Next message: <A HREF="000506.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#505">[ date ]</a>
+              <a href="thread.html#505">[ thread ]</a>
+              <a href="subject.html#505">[ subject ]</a>
+              <a href="author.html#505">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

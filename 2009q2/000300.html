@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Merged python-ui from sourceforge
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Merged%20python-ui%20from%20sourceforge&In-Reply-To=%3C200905262253.30882.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000298.html">
+   <LINK REL="Next"  HREF="000301.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Merged python-ui from sourceforge</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Merged%20python-ui%20from%20sourceforge&In-Reply-To=%3C200905262253.30882.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Merged python-ui from sourceforge">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue May 26 21:53:30 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000298.html">[hatari-devel] Merged python-ui from sourceforge
+</A></li>
+        <LI>Next message: <A HREF="000301.html">[hatari-devel] Merged python-ui from sourceforge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#300">[ date ]</a>
+              <a href="thread.html#300">[ thread ]</a>
+              <a href="subject.html#300">[ subject ]</a>
+              <a href="author.html#300">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 25 May 2009, Thomas Huth wrote:
+&gt;<i> &gt; FYI: I merged the remaining python-ui module (its whole history) from
+</I>&gt;<i> &gt; the Hatari Sourceforge CVS repository to BerliOS, in case you were
+</I>&gt;<i> &gt; wondering about the large amount of changes...
+</I>&gt;<i>
+</I>&gt;<i> Hmmm, that messed up the history tree a little bit... &quot;hg view&quot; looked
+</I>&gt;<i> very funny (with two roots).
+</I>
+Well, they were parallel developments, so I didn't think it to be wrong
+although it looked funny.  Actually, to me the more &quot;funny&quot; thing is that
+the python-ui repository history shows at tip instead of according to
+dates...  But I didn't find anything on how to affect that.  I guess it's
+not possible in hg (commits and their IDs cannot be inserted in-between).
+
+
+&gt;<i> I just tried to clean it up a little bit, 
+</I>&gt;<i> using &quot;hg export&quot; and &quot;hg import&quot; to replay the patches at the previous
+</I>&gt;<i> tip instead... looks much better now,
+</I>
+What I did was:
+---------------------
+Get Hatari CVS repo from Sourceforge to a work dir:
+    mkdir repo; cd repo
+    rsync -av hatari.cvs.sourceforge.net::cvsroot/hatari/*
+
+Point CVS to workdir:
+    export CVSROOT=/home/eero/repo
+
+Checkout python-ui module:
+    mkdir checkout; cd checkout
+    cvs checkout python-ui
+
+Convert it and its history to Mercurial repo:
+    hg convert python-ui
+
+Mergeing that to main Hatari repo:
+    hg clone hatari-hg work         # pull from both repos...
+    cd work
+    hg pull -f ../python-ui-hg
+    hg update -C tip                # Now update to python-ui-hg tip...
+    mkdir python-ui                 # And put things to subdir by 
+renaming...
+    hg rename &lt;dirs &amp; files&gt; python-ui
+    hg commit -m &quot;Move everything into python-ui directory.&quot;
+---------------------
+
+Could I have done at my end what you did?  How?
+
+
+&gt;<i> but you might have to clone a fresh version from the server now since
+</I>&gt;<i> I also removed the obsolete revisions there...
+</I>
+Yes, doing &quot;pull&quot; needed me to do merge &amp; commit so I started from
+a fresh clone.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000298.html">[hatari-devel] Merged python-ui from sourceforge
+</A></li>
+	<LI>Next message: <A HREF="000301.html">[hatari-devel] Merged python-ui from sourceforge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#300">[ date ]</a>
+              <a href="thread.html#300">[ thread ]</a>
+              <a href="subject.html#300">[ subject ]</a>
+              <a href="author.html#300">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

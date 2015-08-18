@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crossbar_Reset / Portaudio segfaults Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crossbar_Reset%20/%20Portaudio%20segfaults%20Hatari&In-Reply-To=%3C201003182218.48919.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001696.html">
+   <LINK REL="Next"  HREF="001695.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crossbar_Reset / Portaudio segfaults Hatari</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crossbar_Reset%20/%20Portaudio%20segfaults%20Hatari&In-Reply-To=%3C201003182218.48919.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Crossbar_Reset / Portaudio segfaults Hatari">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Mar 18 21:18:48 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001696.html">[hatari-devel] Crossbar_Reset / Portaudio segfaults Hatari
+</A></li>
+        <LI>Next message: <A HREF="001695.html">[hatari-devel] Some Hatari Bugs ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1711">[ date ]</a>
+              <a href="thread.html#1711">[ thread ]</a>
+              <a href="subject.html#1711">[ subject ]</a>
+              <a href="author.html#1711">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 17 March 2010, Laurent Sallafranque wrote:
+&gt;<i> I have never encountered this problem (but I reset very often the falcon
+</I>&gt;<i> ;)
+</I>&gt;<i>
+</I>&gt;<i> I wanted to avoid to close and reopen sound streams after each reset.
+</I>&gt;<i> (Just try  to open the microphone the very first time, if this fails, no
+</I>&gt;<i> need to try after each reboot, it won't work better).
+</I>
+The problem with the code is that it *does* reopen it every time
+because on reset it always zeros the variable before checking it.
+
+This fixes it:
+	<A HREF="http://hg.berlios.de/repos/hatari/rev/0b6213fafb93">http://hg.berlios.de/repos/hatari/rev/0b6213fafb93</A>
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001696.html">[hatari-devel] Crossbar_Reset / Portaudio segfaults Hatari
+</A></li>
+	<LI>Next message: <A HREF="001695.html">[hatari-devel] Some Hatari Bugs ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1711">[ date ]</a>
+              <a href="thread.html#1711">[ thread ]</a>
+              <a href="subject.html#1711">[ subject ]</a>
+              <a href="author.html#1711">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

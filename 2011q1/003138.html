@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Usign 2 cpu cores for Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Usign%202%20cpu%20cores%20for%20Hatari&In-Reply-To=%3C1299093057.19337.2.camel%40jll%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003136.html">
+   <LINK REL="Next"  HREF="003139.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Usign 2 cpu cores for Hatari</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Usign%202%20cpu%20cores%20for%20Hatari&In-Reply-To=%3C1299093057.19337.2.camel%40jll%3E"
+       TITLE="[hatari-devel] Usign 2 cpu cores for Hatari">marndt at asmsoftware.de
+       </A><BR>
+    <I>Wed Mar  2 20:10:57 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003136.html">[hatari-devel] Usign 2 cpu cores for Hatari
+</A></li>
+        <LI>Next message: <A HREF="003139.html">[hatari-devel] Usign 2 cpu cores for Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3138">[ date ]</a>
+              <a href="thread.html#3138">[ thread ]</a>
+              <a href="subject.html#3138">[ subject ]</a>
+              <a href="author.html#3138">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Mittwoch, den 02.03.2011, 19:30 +0100 schrieb Nicolas Pomar&#232;de:
+&gt;<i> Le 02/03/2011 19:25, Miro Krop&#225;&#269;ek a &#233;crit :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     much too complicated to put both cores in one binary, too much
+</I>&gt;<i> &gt;     conflicting functions/variables, not worth the effort.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Shared libraries (one for WinUAE, one for old UAE) wouldn't solve it? If
+</I>&gt;<i> &gt; not, what about namespaces? No one says Hatari must be pure C, some C++
+</I>&gt;<i> &gt; help wouldn't hurt for sure ;)
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> That's what I say : too much work :)
+</I>&gt;<i> 
+</I>&gt;<i> Also, shared lib wouldn't work directly, because both cpus use different 
+</I>&gt;<i> api/variables.
+</I>&gt;<i> 
+</I>&gt;<i> Anyway, there will be no point in keeping th old uae core once the new 
+</I>&gt;<i> one fully replaces it, except dor debugging purpose, but in that case 
+</I>&gt;<i> it's easy for developers to change cpu at compile time.
+</I>&gt;<i> 
+</I>
+maybe more work for the start but a lot of benefit. Other projects could
+use a well developed CPU core with much less hazzle.
+
+But as I for myself won't be able to invest the time, I can hardly force
+anyone to do the hard job.
+
+But as a fact: it woudl have benefits - and imho the libs should have no
+need for C++. There is nothing missing in C, or the other way around:
+what would be the true benefit of using C++?
+
+Matthias
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003136.html">[hatari-devel] Usign 2 cpu cores for Hatari
+</A></li>
+	<LI>Next message: <A HREF="003139.html">[hatari-devel] Usign 2 cpu cores for Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3138">[ date ]</a>
+              <a href="thread.html#3138">[ thread ]</a>
+              <a href="subject.html#3138">[ subject ]</a>
+              <a href="author.html#3138">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

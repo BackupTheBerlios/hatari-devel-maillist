@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] updates to cmake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20updates%20to%20cmake%20build%20system&In-Reply-To=%3C20100315212910.5c7c5c2a%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001678.html">
+   <LINK REL="Next"  HREF="001681.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] updates to cmake build system</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20updates%20to%20cmake%20build%20system&In-Reply-To=%3C20100315212910.5c7c5c2a%40phineus%3E"
+       TITLE="[hatari-devel] updates to cmake build system">th.huth at gmx.de
+       </A><BR>
+    <I>Mon Mar 15 21:29:10 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001678.html">[hatari-devel] updates to cmake build system
+</A></li>
+        <LI>Next message: <A HREF="001681.html">[hatari-devel] updates to cmake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1679">[ date ]</a>
+              <a href="thread.html#1679">[ thread ]</a>
+              <a href="subject.html#1679">[ subject ]</a>
+              <a href="author.html#1679">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 15 Mar 2010 10:24:45 +0200
+George Nakos &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ggn at hol.gr</A>&gt; wrote:
+
+&gt;<i> Hello Npomarede,
+</I>&gt;<i> 
+</I>&gt;<i> Sunday, March 14, 2010, 2:08:50 PM, you wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; On Sat, 13 Mar 2010, George Nakos wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Hello,
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Do you have &quot;windres&quot; installed with mingw ?
+</I>&gt;<i> 
+</I>&gt;<i> Check.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; If so, could you try to run : cmake -DCMAKE_RC_COMPILER=windres .
+</I>&gt;<i> 
+</I>&gt;<i> &gt; It seems cmake under windows is using some env var based on visual
+</I>&gt;<i> &gt; studio and doesn't default to windres.
+</I>
+Nicolas, in this case, could we set this variable by default like this
+in the top-level CMakeLists.txt file:
+
+if (WIN32 and not CMAKE_RC_COMPILER)
+	set(CMAKE_RC_COMPILER windres)
+endif()
+
+?
+
+&gt;<i> c:/msys/1.0/home/Administrator/hatari/src/cycInt.c: In function
+</I>&gt;<i> 'CycInt_AddAbsoluteInterrupt':
+</I>&gt;<i> c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:325: warning:
+</I>&gt;<i> unknown conversion type character 'l' in format
+</I>&gt;<i> c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:325: warning:
+</I>&gt;<i> format '%d' expects type 'int', but argument 5 has type 'Sint64'
+</I>&gt;<i> c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:325: warning: too
+</I>&gt;<i> many arguments for format
+</I>
+That sounds either like your cycInt.c file is not up-to-date or like
+you're using a very old or broken GCC compiler. Which compiler version
+are you using?
+
+&gt;<i> c:/msys/1.0/home/Administrator/hatari/src/main.c:653: warning:
+</I>&gt;<i> implicit declaration of function 'Win_OpenCon' [ 73%] Building C
+</I>&gt;<i> object src/CMakeFiles/hatari.dir/midi.c.obj ... [snip] ... [ 95%]
+</I>&gt;<i> Building C object src/CMakeFiles/hatari.dir/gui-win/opencon.c.obj
+</I>&gt;<i> Linking C executable hatari.exe
+</I>&gt;<i> c:/mingw/bin/../lib/gcc/mingw32/4.4.1/../../../libmingw32.a(main.o):main.c:(.text+0xd2):
+</I>&gt;<i> undefined reference to `<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">WinMain at 16</A>' collect2: ld returned 1 exit
+</I>&gt;<i> status make[2]: *** [src/hatari.exe] Error 1 make[1]: ***
+</I>&gt;<i> [src/CMakeFiles/hatari.dir/all] Error 2 make: *** [all] Error 2
+</I>&gt;<i> 
+</I>&gt;<i> Now  I'm  pretty  sure  that the <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">winmain at 16</A> and win_opencon() problems
+</I>&gt;<i> were addressed by Thomas, and I had it working fully. Alas, this broke
+</I>&gt;<i> after  a  few updates, and for the life of me, I can't remember how it
+</I>&gt;<i> was fixed in the first place.
+</I>&gt;<i> 
+</I>&gt;<i> I  must  also mention that SDLMAIN_LIBRARY isn't set (because I simply
+</I>&gt;<i> don't  know  the  filename!),  as  well  as PORTAUDIO, MATH, READLINE.
+</I>&gt;<i> Everything else seems to be set.
+</I>
+This sounds like the typical problem that you get on Windows when the
+SDLMain library is not linked right. Please make sure that you point
+SDLMAIN_LIBRARY to SDLmain.lib and these problems should be gone!
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001678.html">[hatari-devel] updates to cmake build system
+</A></li>
+	<LI>Next message: <A HREF="001681.html">[hatari-devel] updates to cmake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1679">[ date ]</a>
+              <a href="thread.html#1679">[ thread ]</a>
+              <a href="subject.html#1679">[ subject ]</a>
+              <a href="author.html#1679">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

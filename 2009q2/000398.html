@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new version of video.c
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20version%20of%20video.c&In-Reply-To=%3Calpine.LMD.2.00.0906192341490.12049%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000396.html">
+   <LINK REL="Next"  HREF="000399.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new version of video.c</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20version%20of%20video.c&In-Reply-To=%3Calpine.LMD.2.00.0906192341490.12049%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] new version of video.c">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Jun 20 00:44:18 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000396.html">[hatari-devel] Alive demo behaves differently than before
+</A></li>
+        <LI>Next message: <A HREF="000399.html">[hatari-devel] new version of video.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#398">[ date ]</a>
+              <a href="thread.html#398">[ thread ]</a>
+              <a href="subject.html#398">[ subject ]</a>
+              <a href="author.html#398">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+Hello,
+
+2 months ago I started a partial rewrite of video.c inner work in order to 
+better support some shifter effects. Due to few spare time, it took me 
+some times to finish and test fully, but I think current version is now OK 
+to be included in the devel tree.
+
+Short description :
+-------------------
+
+This version now supports mixing video lines of different frequencies and 
+resolutions while still being able to correctly compute the video address 
+used to synchronize with the shifter.
+
+This fixes the following demos :
+  - TEX screen in Syntax Terror
+  - D.I. No Shit screen in Mind Bomb by The Lost Boys
+  - TCB fullscreen in Swedish New Year I (one of my favorite, very simple,
+    but &quot;shocking&quot; at its time). Hatari seems to be the only emu to run it.
+  - pompey pirates menu 88
+  - SHFORSTV.EXE by Paulo Simoes (including the fastest syncscroll
+    routines for STF), also an Hatari &quot;exclusive&quot; one.
+
+As well as many changes to timings that should give closer results to what 
+a real shifter is doing when changing freq between 50 and 60 Hz.
+
+I really tested dozens of demos at different stages to avoid all possible 
+regressions, and hopefully I fixed all the ones I found.
+
+But more tests are needed, so don't hesitate to boot your favorite 
+demos/games and to report any changes you could see (although games are 
+less likely to be affected as they rarely used advanced shifter effects).
+
+
+Long description :
+------------------
+
+This is a more detailled technical explanation on what was changed.
+
+The main problem when changing freq between 50 and 60 Hz is that depending 
+on when you change freq, the resulting line will be 512 cycles or 508 
+cycles.
+
+The problem is that to compute video line / position we used :
+  line = cycle_since_vbl / cycle_per_line
+  pos = cycle_since_vbl % cycle_per_line
+
+This requires cycle_per_line to be constant during a whole VBL, but as 
+some demos switch to 60 Hz during 2 or more video lines, you end up with a 
+wrong result because the above formula doesn't keep track of which lines 
+were 512 or 508 cycles.
+
+So, the only solution to handle this is to keep an array of the number of 
+cycles since the vbl for each video line ; this way the video line is 
+determined by looking for the closer entry to the current cycle_since_vbl 
+value, and the position in the line is :
+  pos = cycle_since_vbl - cycle_since_vbl_for_current_line
+
+Each time an HBL int occurs, we update the cycle counter for this HBL, so 
+at the end of a frame, we have the cycle position of each HBL.
+
+I added a global ShifterFrame structure to hold all shifter's related 
+variables. State of each line (including start position of each HBL) is 
+stored in ShifterLines[].
+
+Conversion between Cycles_GetCounter(CYCLES_COUNTER_VIDEO) and video line 
+and pos is done with Video_ConvertPosition.
+
+Another aspect to emulate is to have dynamic position for the HBL and 
+Timer B interrupt. Whenever freq and/or resolution is changed, HBL and 
+Timer B position are now re-computed (Video_HBL_GetPos and 
+Video_TimerB_GetPos). Functions used to change to interrupts' positions 
+have been grouped in Video_AddInterruptTimerB and Video_AddInterruptHBL.
+
+Many border timings were also computed by using nFrameCycles, which was 
+not accurate enough for top/bottom removing, as it didn't give correct 
+result when 50/60 Hz lines were mixed.
+
+Freq/res changes are now tested against a line/position couple that 
+handles lines with different number of cycles.
+Each time freq and/or res are changed, the current position is stored in a 
+SHIFTER_POS variable that keeps the corresponding hbl/cycle for this 
+position.
+
+This way of testing positions using a X/Y representation is quite similar 
+to the way the shifter works and will give better results and should be 
+easier to read/maintain.
+
+Some special cases were improved (mostly for &quot;bad&quot; code that switch to 60 
+Hz for too long) in order to have a behaviour similar to the shifter.
+
+video.c should also handle left+2 line in 50 Hz (512 cycles) ; these lines 
+are very tricky to get on an STF, as most of the time you will get a 60 Hz 
+line with 2 bytes more in the left border, which can distort display.
+Only demo to use this is the hardscroll by Paulo Simoes in 
+atari-forum.com, which requires a 2 cycles precision on STF to work.
+
+Then, quite some code was refactored/grouped to try to use common 
+functions and to avoid duplicating freq/res tests as it was the case 
+before.
+
+This new code is more accurate, but is also less error &quot;tolerant&quot; ; this 
+means that any error when computing DisplayStartCycle and DisplayEndCycle 
+when borders are changed could have serious impact on the emulated image 
+you get. So don't be afraid if some programs show strange regressions :)
+
+
+I also corrected a problem in int.c : Int_AddAbsoluteInterrupt was not 
+calling Int_UpdateInterrupt which could cause the interrupt list to be 
+broken if Int_AddAbsoluteInterrupt was called when PendingInterruptCount 
+was already &lt; 0.
+This problem was never seen before, but with the new timings in video.c 
+the problem can be seen during the loader of Dark Side Of The Spoon by ULM : 
+the demo will freeze and hatari will enter an endless loop, taking 100% 
+CPU.
+
+
+TODO :
+------
+
+- next missing major shifter behaviour is to emulate the fact that 
+switching resolution can skip some displayed pixel (as used in the 
+overscan's stabilizer or also in ST Connexion 4 pixels hardscroll).
+The goal is to have an &quot;automatic&quot; model that compute the correct pixels 
+shifting.
+
+  - clean the code : I left a lot of commented code, ugly #ifdef and things 
+like that. Don't worry, I will remove them and clean everything, but for 
+now I prefer having them here as it's faster to look for regression by 
+just uncommenting the previous version of the code.
+
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000396.html">[hatari-devel] Alive demo behaves differently than before
+</A></li>
+	<LI>Next message: <A HREF="000399.html">[hatari-devel] new version of video.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#398">[ date ]</a>
+              <a href="thread.html#398">[ thread ]</a>
+              <a href="subject.html#398">[ subject ]</a>
+              <a href="author.html#398">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

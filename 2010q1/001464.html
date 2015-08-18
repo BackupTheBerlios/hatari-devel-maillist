@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Invoking Debugger under MacOsX
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Invoking%20Debugger%20under%20MacOsX&In-Reply-To=%3C4B766060.70501%40wanadoo.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001463.html">
+   <LINK REL="Next"  HREF="001465.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Invoking Debugger under MacOsX</H1>
+    <B>Jerome Vernet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Invoking%20Debugger%20under%20MacOsX&In-Reply-To=%3C4B766060.70501%40wanadoo.fr%3E"
+       TITLE="[hatari-devel] Invoking Debugger under MacOsX">vernet.jerome at wanadoo.fr
+       </A><BR>
+    <I>Sat Feb 13 09:18:40 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001463.html">[hatari-devel] Debugger improvements
+</A></li>
+        <LI>Next message: <A HREF="001465.html">[hatari-devel] Invoking Debugger under MacOsX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1464">[ date ]</a>
+              <a href="thread.html#1464">[ thread ]</a>
+              <a href="subject.html#1464">[ subject ]</a>
+              <a href="author.html#1464">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 12/02/10 23:45, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Tuesday 09 February 2010, Jerome Vernet wrote:
+</I>&gt;<i>    
+</I>&gt;&gt;<i> In the OSX build, there is no way to invoke the debuger. I take some
+</I>&gt;&gt;<i> time to look in the sources but cannot find the way to launch it.
+</I>&gt;&gt;<i>      
+</I>&gt;<i> By default debugger is bound to AltGr + Pause keyboard shortcut.
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>Ok, I will look to map it to other thing (no AltGr nor Pause key on a MacBook)
+
+&gt;&gt;<i> Is there a function I can call from the Cocoa SDLmain loop ?
+</I>&gt;&gt;<i>      
+</I>&gt;<i> Yes, DebugUI() can be called to invoke the debugger.  You need to have
+</I>&gt;<i> a terminal where you've run the program to use the debugger.
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>It's working, I added it to a menu. But as Hatari isn't lauched from 
+command line, there is no terminal. At least, the Console in XCode 
+debugger show the debugger.
+
+May be there is a way to add a &quot;Console Windows&quot; to the Cocoa build.
+
+Jerome
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001463.html">[hatari-devel] Debugger improvements
+</A></li>
+	<LI>Next message: <A HREF="001465.html">[hatari-devel] Invoking Debugger under MacOsX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1464">[ date ]</a>
+              <a href="thread.html#1464">[ thread ]</a>
+              <a href="subject.html#1464">[ subject ]</a>
+              <a href="author.html#1464">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

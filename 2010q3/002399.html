@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New FileSelector
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20FileSelector&In-Reply-To=%3C4C8A8E05.8020304%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002397.html">
+   <LINK REL="Next"  HREF="002400.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New FileSelector</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20FileSelector&In-Reply-To=%3C4C8A8E05.8020304%40free.fr%3E"
+       TITLE="[hatari-devel] New FileSelector">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Fri Sep 10 21:59:01 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002397.html">[hatari-devel] New FileSelector
+</A></li>
+        <LI>Next message: <A HREF="002400.html">[hatari-devel] New FileSelector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2399">[ date ]</a>
+              <a href="thread.html#2399">[ thread ]</a>
+              <a href="subject.html#2399">[ subject ]</a>
+              <a href="author.html#2399">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE> &gt; More generally, changing the UI can be nice to propose some new ways 
+to work, but I
+ &gt; think it would be best in that case to provide some code than can be 
+turned on/off using
+ &gt; a &quot;define&quot;.
+
+
+Yes, I agree here, but I had to change code here and there in many 
+places, and it would have been hard to put #defines everywhere.
+
+I'll have a look at the key repeat and I'll finish to add the mouse 
+scrolling.
+OK for keeping the old button.
+
+For the UI, I have plenties of ideas, but the actual UI is usable like 
+this (it wouls be more cosmetic changes).
+But I found the fileSelector was too poor to be useable like this.
+
+Regards
+
+Laurent
+
+
+
+
+Le 10/09/2010 20:07, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+&gt;<i> On Fri, 10 Sep 2010, Laurent Sallafranque wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I was too upset with hatari fileSelector.
+</I>&gt;&gt;<i> So, I've reworked it a little.
+</I>&gt;&gt;<i> I've added
+</I>&gt;&gt;<i> - 1 pixel precision scrollBar,
+</I>&gt;&gt;<i> - Gem look and feel
+</I>&gt;&gt;<i> - 17 lines displayed instead of 16 before
+</I>&gt;&gt;<i> - upper left button for &quot;..&quot; folder
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Still to do :
+</I>&gt;&gt;<i> - allow to scroll the scrollbar with the mouse (for now, it just 
+</I>&gt;&gt;<i> displays the current view of browsed files)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Question :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - Do you like it ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - Can I remove the old &quot;..&quot; button, as now, you can  move to upper 
+</I>&gt;&gt;<i> folder with the upper left corner button ?
+</I>&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> I would not remove it, I don't think all users are aware that gem way 
+</I>&gt;<i> of going one level up was by clicking the upper left corner (and quite 
+</I>&gt;<i> frankly, I don't think the way gem worked was the more intuitive way).
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - some suggestions ?
+</I>&gt;<i>
+</I>&gt;<i> pressing the up/down arrow in the scrollbar is doing a fast scrolling, 
+</I>&gt;<i> which is nice, but holding up/down keyboard key doesn't have 
+</I>&gt;<i> autorepeat. Could you add it ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> More generally, changing the UI can be nice to propose some new ways 
+</I>&gt;<i> to work, but I think it would be best in that case to provide some 
+</I>&gt;<i> code than can be turned on/off using a &quot;define&quot;.
+</I>&gt;<i> Once we agree on a new UI, we can remove the #ifdef and the old code, 
+</I>&gt;<i> but in the meantime, I think it's best to be able to choose old or new 
+</I>&gt;<i> ui at compile time to test it and go back to old ui in case some 
+</I>&gt;<i> regressions are found.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002397.html">[hatari-devel] New FileSelector
+</A></li>
+	<LI>Next message: <A HREF="002400.html">[hatari-devel] New FileSelector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2399">[ date ]</a>
+              <a href="thread.html#2399">[ thread ]</a>
+              <a href="subject.html#2399">[ subject ]</a>
+              <a href="author.html#2399">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

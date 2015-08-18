@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Could you all test this on hatari falcon new	core and real hardware please ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Could%20you%20all%20test%20this%20on%20hatari%20falcon%20new%0A%09core%20and%20real%20hardware%20please%20%3F&In-Reply-To=%3CBLU0-SMTP203A32A0A7C0D17737803E5C4110%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003957.html">
+   <LINK REL="Next"  HREF="003960.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Could you all test this on hatari falcon new	core and real hardware please ?</H1>
+    <B>George Nakos</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Could%20you%20all%20test%20this%20on%20hatari%20falcon%20new%0A%09core%20and%20real%20hardware%20please%20%3F&In-Reply-To=%3CBLU0-SMTP203A32A0A7C0D17737803E5C4110%40phx.gbl%3E"
+       TITLE="[hatari-devel] Could you all test this on hatari falcon new	core and real hardware please ?">ggn at hol.gr
+       </A><BR>
+    <I>Wed Aug 24 20:33:14 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003957.html">[hatari-devel] Could you all test this on hatari falcon new core and real hardware please ?
+</A></li>
+        <LI>Next message: <A HREF="003960.html">[hatari-devel] Could you all test this on hatari falcon new core and real hardware please ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3959">[ date ]</a>
+              <a href="thread.html#3959">[ thread ]</a>
+              <a href="subject.html#3959">[ subject ]</a>
+              <a href="author.html#3959">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Laurent,
+
+Just  tried  it  on  my  Falcon,  TOS 4.04, with only hddriver loaded.
+Resolution is 640x480x2bpp (hey, I like my coding machine to be snappy
+:<i>)). Here are the values:
+</I>
+$c4
+$395
+$726
+$46be
+
+I ran it a 2nd time too:
+
+$c5
+$3a2
+$726
+$4697
+
+The  purist  in  me then struck and decided to try it from floppy with
+not even hddriver loaded. Same resolution.
+
+$cd
+$395
+$6bd
+$45e9
+
+and
+
+$cb
+$39e
+$6bc
+$460e
+
+
+It  seems that results are quite flaky. I've copied the source code to
+my  usb stick and will try to take a look tomorrow at work (I'm really
+too   tired   tonight   to  look  into  it).  Of  course I never coded
+anything DSP wise but it's not a bad opportunity to read up on it.
+
+
+Wednesday, August 24, 2011, 11:12:13 AM, you wrote:
+
+&gt;<i> Hi,
+</I>
+&gt;<i> I'm currently trying to improve 68030-&gt; DSP synchro and 68030 cycles and
+</I>&gt;<i> dsp cycles.
+</I>
+&gt;<i> For this, I wrote a little prg that does some NOP loops in 68030 and add
+</I>&gt;<i> 1 to a register in the DSP.
+</I>&gt;<i> After 100 loops, I get the dsp result of the adds.
+</I>&gt;<i> I do the same with 500 loops, 1000 loops and 10000 loops.
+</I>
+&gt;<i> My goal is to compare the results from hatari with the real hardware 
+</I>&gt;<i> results.
+</I>&gt;<i> I've tried to stop as many timers as possible.
+</I>
+&gt;<i> The hatari results (on my computer) are :
+</I>
+&gt;<i> 100 loops     : $96
+</I>&gt;<i> 500 loops     : $2ac
+</I>&gt;<i> 1000 loops   : $546
+</I>&gt;<i> 10000 loops : $3426
+</I>
+&gt;<i> On my falcon, I get :
+</I>&gt;<i> 100 loops     : $b9
+</I>&gt;<i> 500 loops     : $5df
+</I>&gt;<i> 1000 loops   : $706
+</I>&gt;<i> 10000 loops : $75a4
+</I>
+&gt;<i> I've tried in different resolutions, it doesn't seem (at first glance)
+</I>&gt;<i> to change the results.
+</I>&gt;<i> I've also noticed that my hatari results are constant if I try many 
+</I>&gt;<i> times, but the Falcon results are close but not constants after each try.
+</I>
+&gt;<i>  From me, on the 68030 side :
+</I>&gt;<i>      a 68030 NOP is 4 cycles, so, for 100 NOPs, 400 cycles at 16 Mhz.
+</I>
+&gt;<i> On the DSP side :
+</I>&gt;<i>       p:005a  200050         (02 cyc)  add y0,a
+</I>&gt;<i>       p:005b  0c005a         (04 cyc)  jmp p:$005a
+</I>
+&gt;<i> In theory, the formula for the result of the adds should be : 100 (loop)
+</I>&gt;<i> * 4 (cycles fo NOP) * 2 (32 Mhz) / 6 (DSP cycles for the add+jmp).
+</I>
+&gt;<i> So, I should get :
+</I>
+&gt;<i> 100 NOP      : add = $85
+</I>&gt;<i> 500 NOP      : add = $29a
+</I>&gt;<i> 1 000 NOP   : add = $535
+</I>&gt;<i> 10 000 NOP : add = $3415
+</I>
+&gt;<i> These results are really close to the Hatari results, but far from my 
+</I>&gt;<i> real falcon results.
+</I>
+&gt;<i> Would it be possible for Falcon gurus here to try this little prg on 
+</I>&gt;<i> their hardware and tell me their results ?
+</I>&gt;<i> Also if you detect something wrong with this code, it would help.
+</I>&gt;<i> Maybe I forget some parameters in my formula, ....
+</I>
+&gt;<i> (If you can't get the zip, just send me a mail, and I'll send the zip).
+</I>
+&gt;<i> Best regards,
+</I>
+&gt;<i> Laurent
+</I>
+
+
+
+-- 
+Best regards,
+ George                            mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ggn at hol.gr</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003957.html">[hatari-devel] Could you all test this on hatari falcon new core and real hardware please ?
+</A></li>
+	<LI>Next message: <A HREF="003960.html">[hatari-devel] Could you all test this on hatari falcon new core and real hardware please ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3959">[ date ]</a>
+              <a href="thread.html#3959">[ thread ]</a>
+              <a href="subject.html#3959">[ subject ]</a>
+              <a href="author.html#3959">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

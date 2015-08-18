@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100123182818.71a89a6b%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001313.html">
+   <LINK REL="Next"  HREF="001321.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100123182818.71a89a6b%40phineus%3E"
+       TITLE="[hatari-devel] CMake build system">huth at users.berlios.de
+       </A><BR>
+    <I>Sat Jan 23 18:28:18 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001313.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001321.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1316">[ date ]</a>
+              <a href="thread.html#1316">[ thread ]</a>
+              <a href="subject.html#1316">[ subject ]</a>
+              <a href="author.html#1316">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 23 Jan 2010 16:09:00 +0200
+George Nakos &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ggn at hol.gr</A>&gt; wrote:
+
+&gt;<i> Hello Thomas,
+</I>&gt;<i> 
+</I>&gt;<i> I'm  still  running into some problems with cmake build here. Right at
+</I>&gt;<i> the end of the build process I get these messages.
+</I>&gt;<i> 
+</I>&gt;<i> CMakeFiles/hatari.dir/file.c.obj:file.c:(.text+0x2b4): undefined
+</I>&gt;<i> reference to `<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">select at 20</A>' Linking C executable hatari.exe
+</I>&gt;<i> c:/mingw/bin/../lib/gcc/mingw32/4.4.1/../../../libmingw32.a(main.o):main.c:(.text+0xd2):
+</I>&gt;<i> undefined reference to `<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">WinMain at 16</A>' collect2: ld returned 1 exit
+</I>&gt;<i> status make[2]: *** [src/hatari.exe] Error 1
+</I>&gt;<i> make[1]: *** [src/CMakeFiles/hatari.dir/all] Error 2
+</I>&gt;<i> make: *** [all] Error 2
+</I>&gt;<i> 
+</I>&gt;<i> After  some  digging  I  saw  that  the  first error occurs because of
+</I>&gt;<i> HAVE_SELECT.  To  overcome  that I went to file.c and changed the line
+</I>&gt;<i> that says #if !(HAVE_SELECT) to #if 0 to overcome this.
+</I>
+select() on MinGW... that rings a bell. select is defined in an
+optional library there. Could you please try adding the following code
+somewhere at the end to src/CMakeLists.txt to see whether this helps:
+
+if(WIN32)
+	target_link_libraries(hatari ws2_32)
+endif(WIN32)
+
+&gt;<i> But  the second error has me stumped :/ I haven't seen that one as far
+</I>&gt;<i> as I can remember...
+</I>
+That usually means some problems with libSDLmain.a or SDL_main.h... it
+overrides the main() function to do some additional magic during
+startup.
+I guess it happens because you do not link against libSDLmain.a yet.
+Could you please try these lines in src/CMakeLists.txt :
+
+if(WIN32)
+	target_link_libraries(hatari ${SDLMAIN_LIBRARY})
+endif(WIN32)
+
+Does it work better in that case?
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001313.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001321.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1316">[ date ]</a>
+              <a href="thread.html#1316">[ thread ]</a>
+              <a href="subject.html#1316">[ subject ]</a>
+              <a href="author.html#1316">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

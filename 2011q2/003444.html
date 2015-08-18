@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Regression when restoring desktop.inf
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Regression%20when%20restoring%20desktop.inf&In-Reply-To=%3C201105172238.42783.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003438.html">
+   <LINK REL="Next"  HREF="003445.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Regression when restoring desktop.inf</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Regression%20when%20restoring%20desktop.inf&In-Reply-To=%3C201105172238.42783.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Regression when restoring desktop.inf">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue May 17 21:38:42 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003438.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+        <LI>Next message: <A HREF="003445.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3444">[ date ]</a>
+              <a href="thread.html#3444">[ thread ]</a>
+              <a href="subject.html#3444">[ subject ]</a>
+              <a href="author.html#3444">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 15 toukokuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> I recently noticed that Hatari doesn't correctly restore the resolution
+</I>&gt;<i> when I boot in hd mode only.
+</I>&gt;<i> 
+</I>&gt;<i> my C: drive contains a valid DESKTOP.INF, which is the result of saving
+</I>&gt;<i> the desktop in med res.
+</I>&gt;<i> 
+</I>&gt;<i> If I run hatari 1.4 with tos 1.04 fr, desktop is correctly restored in
+</I>&gt;<i> med res.
+</I>
+Please verify that, as...
+
+&gt;<i> If I run hatari from hg tree with tos 1.04 fr, desktop is restored in
+</I>&gt;<i> low res (but the windows are correctly restored on the desktop).
+</I>&gt;<i> 
+</I>&gt;<i> So, only resolution is not restored (if I use tos 1.62, hatari dev is
+</I>&gt;<i> correctly restoring the resolution)
+</I>&gt;<i> 
+</I>&gt;<i> So, the problem is  with tos 1.02 / 1.04 and  current Hatari dev :
+</I>&gt;<i> resolution is not restored.
+</I>&gt;<i> I wonder if this could have something to do with some recent changes
+</I>&gt;<i> regarding date/hd/gemdos ?
+</I>&gt;<i> 
+</I>&gt;<i> Anyone can reproduce this ?
+</I>
+With TOS 1.02 &amp; 1.04 it happens both with latest *and* v1.4.0 version
+of Hatari, _both_ with floppy images and with Gemdos HD emu.
+
+As with TOS 1.00, 1.62, 2.06, 3.06 KaosTos med-rez is restored fine, are you
+sure it's not a TOS 1.02/1.04 issue instead of Hatari one?
+
+
+	- Eero
+
+PS. Have you already heard of the x86 emulator in JavaScript
+(from the author of Qemu):
+	<A HREF="http://bellard.org/jslinux/">http://bellard.org/jslinux/</A>
+?
+:<i>-)
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003438.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+	<LI>Next message: <A HREF="003445.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3444">[ date ]</a>
+              <a href="thread.html#3444">[ thread ]</a>
+              <a href="subject.html#3444">[ subject ]</a>
+              <a href="author.html#3444">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

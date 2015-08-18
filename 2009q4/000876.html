@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] evaluate.c headers missing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20evaluate.c%20headers%20missing&In-Reply-To=%3C200910222314.16264.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000884.html">
+   <LINK REL="Next"  HREF="000882.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] evaluate.c headers missing</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20evaluate.c%20headers%20missing&In-Reply-To=%3C200910222314.16264.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] evaluate.c headers missing">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Oct 22 22:14:16 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000884.html">[hatari-devel] evaluate.c headers missing
+</A></li>
+        <LI>Next message: <A HREF="000882.html">[hatari-devel] Hatari BeOS/Sun (and Windows) users?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#876">[ date ]</a>
+              <a href="thread.html#876">[ thread ]</a>
+              <a href="subject.html#876">[ subject ]</a>
+              <a href="author.html#876">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 22 October 2009, Matthias Arndt wrote:
+&gt;<i> I toyed a bit and it seems -std=c99 seems to help for evaluate.c which
+</I>&gt;<i> compiels that way.
+</I>
+Yes, the things I used really are ~10 years old C99 standard stuff.
+(But as I commented, unfortunately only enabled when C99 is enabled.)
+
+I just added initial test code for the expression evaluation so that the 
+results of modifications of that code can be verified.
+
+Could you provide some good examples of what results 32-bit crossing
+operations get on m68k?
+
+
+&gt;<i> However I now get another error which does not occur if I compile
+</I>&gt;<i> without the -std=.. directive:
+</I>...
+&gt;<i> dlgFileSelect.c:311: Warnung: implizite Deklaration der Funktion
+</I>&gt;<i> &#187;strdup&#171;
+</I>...
+&gt;<i> dlgFileSelect.c:412: Warnung: implizite Deklaration der Funktion
+</I>&gt;<i> &#187;scandir&#171;
+</I>&gt;<i> dlgFileSelect.c:412: Fehler: &#187;alphasort&#171; nicht deklariert (erste
+</I>&gt;<i> Benutzung in dieser Funktion)
+</I>
+The issue here isn't -std=c99, I think it's some unrelated thing you did
+when compiling the Hatari sources:
+
+&quot;strdup() conforms to SVr4, 4.3BSD, POSIX.1-2001.&quot;
+
+&quot;None of these functions is in POSIX.1-2001, but alphasort()  and  scandir()
+ are under consideration for a future revision to POSIX.1.  The  functions
+scandir() and alphasort() are from 4.3BSD, and have been available under
+Linux since libc4.&quot;
+
+This means that you need somewhere:
+  _SVID_SOURCE || _BSD_SOURCE
+To get latter two and strdup() can be gotten also with:
+  _XOPEN_SOURCE &gt;= 500
+
+when compiling.   I get automatically -D_GNU_SOURCE=1 from somewhere to
+compilation options which enables this (over ten years old) standardish Unix
+stuff.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000884.html">[hatari-devel] evaluate.c headers missing
+</A></li>
+	<LI>Next message: <A HREF="000882.html">[hatari-devel] Hatari BeOS/Sun (and Windows) users?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#876">[ date ]</a>
+              <a href="thread.html#876">[ thread ]</a>
+              <a href="subject.html#876">[ subject ]</a>
+              <a href="author.html#876">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

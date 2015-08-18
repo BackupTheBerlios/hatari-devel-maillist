@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new version of video.c
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20version%20of%20video.c&In-Reply-To=%3Calpine.LMD.2.00.0906211812160.13659%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000403.html">
+   <LINK REL="Next"  HREF="000405.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new version of video.c</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20version%20of%20video.c&In-Reply-To=%3Calpine.LMD.2.00.0906211812160.13659%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] new version of video.c">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jun 21 18:16:51 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000403.html">[hatari-devel] new version of video.c
+</A></li>
+        <LI>Next message: <A HREF="000405.html">[hatari-devel] new version of video.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#404">[ date ]</a>
+              <a href="thread.html#404">[ thread ]</a>
+              <a href="subject.html#404">[ subject ]</a>
+              <a href="author.html#404">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 21 Jun 2009, Anders Eriksson wrote:
+
+&gt;<i> On Sat, 20 Jun 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> 2 months ago I started a partial rewrite of video.c inner work in order to
+</I>&gt;&gt;<i> better support some shifter effects. Due to few spare time, it took me
+</I>&gt;&gt;<i> some times to finish and test fully, but I think current version is now OK
+</I>&gt;&gt;<i> to be included in the devel tree.
+</I>&gt;<i>
+</I>&gt;<i> Hi!
+</I>&gt;<i>
+</I>&gt;<i> I've tested your new code on Mac OS X (thanks Nerve for compiling it).
+</I>&gt;<i>
+</I>&gt;<i> I think there are some issues. First in ST-High resolution Hatari runs
+</I>&gt;<i> like a snail. Like 0.1 fps. Secondly in Falcon mode there's just a black
+</I>&gt;<i> screen.
+</I>&gt;<i>
+</I>&gt;<i> I'm using the same config files as under the earlier v1.2 of Hatari and
+</I>&gt;<i> that works fine.
+</I>
+Hello,
+
+this is strange, under linux both falcon and monochrome are working for 
+me, with no slow down (same cpu usage).
+Perhaps it's specific to os x gui, could someone confirm this too ?
+
+&gt;<i>
+</I>&gt;<i> Oh and btw, any chance of stabilizer-free overscan for STe with your new
+</I>&gt;<i> shifter code? :-)
+</I>
+Not yet, but the new shifter structure was designed to easily add this 
+concept ; so, if current code doesn't show too much regression, I will 
+look to this next (but it will take time, as it's certainly one of the 
+most complex shifter behaviour, with no documentation except the ST 
+Magazine article by Alien / ST Connexion)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000403.html">[hatari-devel] new version of video.c
+</A></li>
+	<LI>Next message: <A HREF="000405.html">[hatari-devel] new version of video.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#404">[ date ]</a>
+              <a href="thread.html#404">[ thread ]</a>
+              <a href="subject.html#404">[ subject ]</a>
+              <a href="author.html#404">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

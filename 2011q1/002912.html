@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issues after restoring a memory snapshot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20after%20restoring%20a%20memory%20snapshot&In-Reply-To=%3C4D40AA1A.2000300%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002911.html">
+   <LINK REL="Next"  HREF="002920.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issues after restoring a memory snapshot</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20after%20restoring%20a%20memory%20snapshot&In-Reply-To=%3C4D40AA1A.2000300%40free.fr%3E"
+       TITLE="[hatari-devel] Issues after restoring a memory snapshot">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Jan 27 00:11:22 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002911.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+        <LI>Next message: <A HREF="002920.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2912">[ date ]</a>
+              <a href="thread.html#2912">[ thread ]</a>
+              <a href="subject.html#2912">[ subject ]</a>
+              <a href="author.html#2912">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've tested with WinUae core (I don't use the old uae core anymore ;)
+
+Laurent
+
+
+Le 27/01/2011 00:09, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On torstai 27 tammikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i> I don't understand Eero, I've tested 2 snapshots :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> First one with the very first screen
+</I>&gt;&gt;<i> Second one after the first screen
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> They both restore perfectly (sound + anim).
+</I>&gt;<i> Was this with WinAUE or AUE core?
+</I>&gt;<i>
+</I>&gt;<i> I guess you've commited&amp;  pushed all your related local fixes?
+</I>&gt;<i>
+</I>&gt;&gt;<i> I've tried to restore them from the gui and from the command line
+</I>&gt;&gt;<i> --memstate xxx
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> (I test with the new CPU, if that helps)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What's wrong with your test ?
+</I>&gt;<i> No idea.  :-/   I'll test tomorrow more.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Le 26/01/2011 20:02, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On keskiviikko 26 tammikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;&gt;&gt;<i> I've just fixed the issue with crossbar saving / restoring memory
+</I>&gt;&gt;&gt;&gt;<i> snapshot. I've tested with Mahab demo, and it runs for me.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Could you just do 1 or 2 tests to confirm there's nothing else missing
+</I>&gt;&gt;&gt;&gt;<i> ?
+</I>&gt;&gt;&gt;<i> Unfortunately it still doesn't work for me properly.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I started Hatari like this:
+</I>&gt;&gt;&gt;<i> 	src/hatari --fast-forward yes --tos tos404.img mahabhar/mahabhar.prg
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> and saved a memory snapshot from the Memory dialog.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Then I tried the snapshot with:
+</I>&gt;&gt;&gt;<i> 	src/hatari --tos tos404.img --memstate maha.sav
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Besides seeing the demo screen contents I only get a continuous &quot;diesel
+</I>&gt;&gt;&gt;<i> engine&quot; sound that comes when the same audio buffer contents get
+</I>&gt;&gt;&gt;<i> re-played and demo is frozen.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> This happens even if I'm already running the Mahab demo and restore
+</I>&gt;&gt;&gt;<i> an Mahab memory snapshot from the UI, so it doesn't seem like HW
+</I>&gt;&gt;&gt;<i> initialization issue.  Some state just seems incorrectly restored.
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002911.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+	<LI>Next message: <A HREF="002920.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2912">[ date ]</a>
+              <a href="thread.html#2912">[ thread ]</a>
+              <a href="subject.html#2912">[ subject ]</a>
+              <a href="author.html#2912">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] STE dmaSnd.c with better sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20dmaSnd.c%20with%20better%20sound&In-Reply-To=%3C4D457F48.7070206%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002952.html">
+   <LINK REL="Next"  HREF="002942.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] STE dmaSnd.c with better sound</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20dmaSnd.c%20with%20better%20sound&In-Reply-To=%3C4D457F48.7070206%40corp.free.fr%3E"
+       TITLE="[hatari-devel] STE dmaSnd.c with better sound">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jan 30 16:10:00 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002952.html">[hatari-devel] STE dmaSnd.c with better sound
+</A></li>
+        <LI>Next message: <A HREF="002942.html">[hatari-devel] Fwd: Re: STE dmaSnd.c with better sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2956">[ date ]</a>
+              <a href="thread.html#2956">[ thread ]</a>
+              <a href="subject.html#2956">[ subject ]</a>
+              <a href="author.html#2956">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 30/01/2011 15:55, Laurent Sallafranque a &#233;crit :
+&gt;<i> - the goto and the return at end of function (I've duplicated the call
+</I>&gt;<i> to filters for Yamaha's sound only)
+</I>
+Hello
+
+regarding the goto / code duplication in that case, I would agree with 
+David that a goto is better.
+
+Duplicating ~20-30 lines is not very good, both for readibility and 
+maintainability.
+Maybe a new function could be created to handle this case if you don't 
+want to use the &quot;goto&quot;.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002952.html">[hatari-devel] STE dmaSnd.c with better sound
+</A></li>
+	<LI>Next message: <A HREF="002942.html">[hatari-devel] Fwd: Re: STE dmaSnd.c with better sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2956">[ date ]</a>
+              <a href="thread.html#2956">[ thread ]</a>
+              <a href="subject.html#2956">[ subject ]</a>
+              <a href="author.html#2956">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

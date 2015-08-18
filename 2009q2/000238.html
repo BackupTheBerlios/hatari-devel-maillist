@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20immediately%20showing%20regs%20%26%0A%20memdump%3F&In-Reply-To=%3CSNT105-W2502B762A28D6C72830E9FD0870%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000234.html">
+   <LINK REL="Next"  HREF="000228.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?</H1>
+    <B>Kenneth Kaufman</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20immediately%20showing%20regs%20%26%0A%20memdump%3F&In-Reply-To=%3CSNT105-W2502B762A28D6C72830E9FD0870%40phx.gbl%3E"
+       TITLE="[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?">kvkconsultancy at hotmail.com
+       </A><BR>
+    <I>Sun Apr  5 13:00:07 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000234.html">[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+</A></li>
+        <LI>Next message: <A HREF="000228.html">[hatari-devel] Hatari debugger immediately showing regs &amp;	memdump?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#238">[ date ]</a>
+              <a href="thread.html#238">[ thread ]</a>
+              <a href="subject.html#238">[ subject ]</a>
+              <a href="author.html#238">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+hehehe, ok. Thats fair :). 
+
+ 
+
+Yes, I've got plenty to finish just with the GEMDOS stuff (new config panels, maybe even some hot swap style code). Then i'll have to check the ToDo's.
+
+ 
+
+Though its iteresting idea to consider if it would be possible to come up with a cross platform plugin system which was compatible at the code level. Though, yes... to the To-Do list :D.
+ 
+&gt;<i> Date: Sun, 5 Apr 2009 10:29:21 +0200
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">huth at users.berlios.de</A>
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+</I>&gt;<i> 
+</I>&gt;<i> On Fri, 3 Apr 2009 17:26:36 +0000
+</I>&gt;<i> Kenneth Kaufman &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">kvkconsultancy at hotmail.com</A>&gt; wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; This brings me to a nice conclusion (for myself). What we could do
+</I>&gt;<i> &gt; with is an HAtari API for third party applications. One of the &quot;plug
+</I>&gt;<i> &gt; in&quot; points could be &quot;on BUS error&quot; or OnDebug. 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; If I was doing this for a Windows project I would have a plug-in
+</I>&gt;<i> &gt; directory from which the application would load any DLL's in the
+</I>&gt;<i> &gt; directory. The DLL's would provide Exports which HAtari would
+</I>&gt;<i> &gt; understand (like HAtari_OnBUSError and HAtari_OnConfigChange or
+</I>&gt;<i> &gt; whatever) and call at the appropriate times. 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; If we provided an API like that for HAtari then people could more
+</I>&gt;<i> &gt; easily make little customisations for themselves (and provided them
+</I>&gt;<i> &gt; for others). Thats as far as i've thought so far. What thoughts
+</I>&gt;<i> &gt; everyone?
+</I>&gt;<i> 
+</I>&gt;<i> That's theoretically a nice idea, but a cross-platform plugin system is
+</I>&gt;<i> not very easy to do, I think (DLLs for Windows, .so for Linux, .dynlib
+</I>&gt;<i> for Mac, ...), and I guess hardly anybody (apart from you) is going to
+</I>&gt;<i> use that, so let's better focus on more important topics (see the TODO
+</I>&gt;<i> list ;-) )
+</I>&gt;<i> 
+</I>&gt;<i> Thomas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+_________________________________________________________________
+Feeling the financial pinch? Check on MSN NZ Money for a hand
+<A HREF="http://money.msn.co.nz">http://money.msn.co.nz</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090405/4ff3385b/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090405/4ff3385b/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000234.html">[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+</A></li>
+	<LI>Next message: <A HREF="000228.html">[hatari-devel] Hatari debugger immediately showing regs &amp;	memdump?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#238">[ date ]</a>
+              <a href="thread.html#238">[ thread ]</a>
+              <a href="subject.html#238">[ subject ]</a>
+              <a href="author.html#238">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Statusbar - additional info
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Statusbar%20-%20additional%20info&In-Reply-To=%3C89BA532D8C956043994C773C71153C92A890013935%40GVW1088EXB.americas.hpqcorp.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001097.html">
+   <LINK REL="Next"  HREF="001099.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Statusbar - additional info</H1>
+    <B>Konador, Cyprian</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Statusbar%20-%20additional%20info&In-Reply-To=%3C89BA532D8C956043994C773C71153C92A890013935%40GVW1088EXB.americas.hpqcorp.net%3E"
+       TITLE="[hatari-devel] Statusbar - additional info">cyprian.konador at hp.com
+       </A><BR>
+    <I>Sat Dec 12 00:08:01 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001097.html">[hatari-devel] Statusbar - additional info
+</A></li>
+        <LI>Next message: <A HREF="001099.html">[hatari-devel] Statusbar - additional info
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1098">[ date ]</a>
+              <a href="thread.html#1098">[ thread ]</a>
+              <a href="subject.html#1098">[ subject ]</a>
+              <a href="author.html#1098">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> From: Eero Tamminen
+</I>&gt;<i> 
+</I>&gt;<i> I commited slightly modifed patch without the above change and without
+</I>&gt;<i> the change that removes statusbar from fullscreen.
+</I>&gt;<i> 
+</I>&gt;<i> (Waiting for a patch to the SDL UI to configure statusbar separately
+</I>&gt;<i> for fullscreen and and windowed mode. :-))
+</I>
+fine
+
+
+&gt;<i> &gt; Without that, statusbar always will shows initial setup 
+</I>&gt;<i> e.g. &quot;8Mhz/4MB
+</I>&gt;<i> &gt; ST, TOS v1.02&quot; although you'll change clock to 16MHz.
+</I>&gt;<i> 
+</I>&gt;<i> I cannot reproduce this issue.  Can you reproduce it with the 
+</I>&gt;<i> integrated
+</I>&gt;<i> patch?  If yes, how exactly?
+</I>
+Unfortunatelly, still see initial setup on statusbar.
+Let me explain, step by step :)
+ - start Hatari in STE mode, &quot;8MHz/2MB STE, TOS v2.06&quot;;
+ - go to Main Menu --&gt; System;
+ - change CPU clock to 32MHz and close Main menu;
+ - after that, still see &quot;8MHz/2MB STE, TOS v2.06&quot; on statusbar;
+
+What you think about moving Statusbar_UpdateInfo to Dialog_DoProperty In Dialog.c? It seems that this is better place for that.
+
+Regards
+Cyprian
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001097.html">[hatari-devel] Statusbar - additional info
+</A></li>
+	<LI>Next message: <A HREF="001099.html">[hatari-devel] Statusbar - additional info
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1098">[ date ]</a>
+              <a href="thread.html#1098">[ thread ]</a>
+              <a href="subject.html#1098">[ subject ]</a>
+              <a href="author.html#1098">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

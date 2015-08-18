@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] HDC/ACSI command sector count &amp; error handling?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20HDC/ACSI%20command%20sector%20count%20%26%20error%20handling%3F&In-Reply-To=%3C201105020014.06914.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003395.html">
+   <LINK REL="Next"  HREF="003402.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] HDC/ACSI command sector count &amp; error handling?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20HDC/ACSI%20command%20sector%20count%20%26%20error%20handling%3F&In-Reply-To=%3C201105020014.06914.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] HDC/ACSI command sector count &amp; error handling?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun May  1 23:14:06 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003395.html">[hatari-devel] 68kDisass.c source indentation/TAB mess
+</A></li>
+        <LI>Next message: <A HREF="003402.html">[hatari-devel] Code-review, unit tests and bug-tracker
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3393">[ date ]</a>
+              <a href="thread.html#3393">[ thread ]</a>
+              <a href="subject.html#3393">[ subject ]</a>
+              <a href="author.html#3393">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Uwe, could you comment on this?
+
+On sunnuntai 01 toukokuu 2011, Thomas Huth wrote:
+&gt;<i> schrieb Nicolas Pomar&#232;de &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt;:
+</I>&gt;<i> &gt; &gt;&gt;&gt; PS. While doing the patches, I noticed:
+</I>&gt;<i> &gt; &gt;&gt;&gt; $ grep HDCSectorCount $(find . -type f)
+</I>&gt;<i> &gt; &gt;&gt;&gt; ./hdc.h:extern short int HDCSectorCount;
+</I>&gt;<i> &gt; &gt;&gt;&gt; ./hdc.c:short int HDCSectorCount;
+</I>&gt;<i> &gt; &gt;&gt;&gt; ./hdc.c:       fprintf(hdlogFile, &quot;HDC sector count: 0x%x\n&quot;,
+</I>&gt;<i> &gt; &gt;&gt;&gt; HDCSectorCount);
+</I>&gt;<i> &gt; &gt;&gt;&gt; ./fdc.c:       HDCSectorCount = 0;
+</I>&gt;<i> &gt; &gt;&gt;&gt; ./fdc.c:               DMAStatus_ff8606rd |=
+</I>&gt;<i> &gt; &gt;&gt;&gt; (HDCSectorCount)?0x2:0; /* HDC */
+</I>&gt;<i> &gt; &gt;&gt;&gt; ./fdc.c:               DiskControllerByte = HDCSectorCount;
+</I>&gt;<i> &gt; &gt;&gt; 
+</I>&gt;<i> &gt; &gt;  From above you can see that &quot;HDCSectorCount&quot; can never get any
+</I>&gt;<i> &gt; &gt; other value than zero (unlike e.g. FDCSectorCountRegister which
+</I>&gt;<i> &gt; &gt; seems to be used for similar purpose).  So what's the point in
+</I>&gt;<i> &gt; &gt; having that variable?
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; hdc.c code gets the HDC sector count with this macro, it doesn't use
+</I>&gt;<i> &gt; &gt; the variable:
+</I>&gt;<i> &gt; &gt; #define HD_SECTORCOUNT(a) (a.command[4]&amp;  0xFF)        /* get
+</I>&gt;<i> &gt; &gt; sector count */
+</I>
+Attached is a cleanup patch for hdc.c which also makes this mismatch 
+clearer.
+
+&gt;<i> hdc.c originally hasn't been written by me but by Sven de Marothy...
+</I>&gt;<i> Dunno why this variable isn't used (anymore)? Maybe it was used in the
+</I>&gt;<i> past,
+</I>
+Looking at the first hdc.c source version from 2002:
+	<A HREF="http://hg.berlios.de/repos/hatari/rev/b518e26c49a6">http://hg.berlios.de/repos/hatari/rev/b518e26c49a6</A>
+
+That code worked similarly already from the beginning.
+
+
+&gt;<i> or it is not necessary since the ACSI commands are executed
+</I>&gt;<i> immediately instead of delayed like the FDC commands?
+</I>
+In fdc.c, that variable (would) affect:
+- Read DMA status byte (DMAStatus_ff8606rd variable)
+- DiskControllerByte (0xff8604 HW register), when:
+        if ((DMAModeControl_ff8606wr &amp; 0x18) == 0x08)     /* HDC status reg 
+selected? */
+
+Should those be affected by HDC command sector count, as the fdc.c code
+seems to expect, or not, as it happens with the current hdc.c code?
+
+If it should affect them, do all HDC commands have a valid sector count at
+command[4], or is the sector count something that's valid only for specific
+HDC commands?
+
+If former is true, the new HDC_GetSectorCount() function can just
+return HDCCommand.command[4], otherwise e.g. the HD_SECTORCOUNT() macro
+could be changed to store the queried sector count to an internal hdc.c
+variable that will be returned by that function.
+
+Or if the sector count isn't actually needed, it can be just removed
+competely...
+
+
+And another thing I noticed is that the DMA status register bit is set only
+floppy read/write errors, not on HDC/ASCI read/write errors...
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: hdc.diff
+Type: text/x-patch
+Size: 9291 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110502/9b7b42ec/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110502/9b7b42ec/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003395.html">[hatari-devel] 68kDisass.c source indentation/TAB mess
+</A></li>
+	<LI>Next message: <A HREF="003402.html">[hatari-devel] Code-review, unit tests and bug-tracker
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3393">[ date ]</a>
+              <a href="thread.html#3393">[ thread ]</a>
+              <a href="subject.html#3393">[ subject ]</a>
+              <a href="author.html#3393">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] A few more issues before v1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20few%20more%20issues%20before%20v1.5&In-Reply-To=%3C4DA61733.6000005%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003341.html">
+   <LINK REL="Next"  HREF="003369.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] A few more issues before v1.5</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20few%20more%20issues%20before%20v1.5&In-Reply-To=%3C4DA61733.6000005%40corp.free.fr%3E"
+       TITLE="[hatari-devel] A few more issues before v1.5">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Apr 13 23:35:47 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003341.html">[hatari-devel] A few more issues before v1.5
+</A></li>
+        <LI>Next message: <A HREF="003369.html">[hatari-devel] A few more issues before v1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3344">[ date ]</a>
+              <a href="thread.html#3344">[ thread ]</a>
+              <a href="subject.html#3344">[ subject ]</a>
+              <a href="author.html#3344">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 13/04/2011 22:23, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Same for me :
+</I>&gt;<i>
+</I>&gt;<i> M68000 Bus Error reading at address $ff8e21.
+</I>&gt;<i> M68000 Bus Error writing at address $ff8e21.
+</I>&gt;<i> Bus error lput at 4e7340e3
+</I>&gt;<i> Bus error wput at 4e7340e1
+</I>&gt;<i> Bus error wput at 4e7340d9
+</I>&gt;<i> Bus error lput at 4e7340db
+</I>&gt;<i> Bus error wput at 4e7340df
+</I>&gt;<i> Bus error lput at 4e7340e3
+</I>&gt;<i> Bus error lput at 4e7340d5
+</I>&gt;<i> Bus error wput at 4e7340d3
+</I>&gt;<i> Bus error wput at 4e7340cb
+</I>&gt;<i> Bus error lput at 4e7340cd
+</I>&gt;<i> Bus error wput at 4e7340d1
+</I>&gt;<i> Detected double bus error at address $4e7340d5, PC=$3e00ca2 =&gt; CPU halted!
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>
+The problem is that this program is trying to save/restore the content 
+of $ff8e21. This register is only available on mega ste and control the 
+mega ste's cpu cache/freq.
+
+MOVE.B $ffff8e21,$000354f8
+
+Reading this address on a non mega ste will return a bus error, which is 
+normal (and is handled by the program). But in the case of Hatari we 
+still write $ff into $ff8e21, but I don't know what is the good behaviour :
+
+  - write nothing into $354f8, since the intruction is interrupted by 
+the bus error (in that case $354f8 remains 0, which is good)
+
+  - write something into $354f8 (as we do now), but this would mean that 
+reading in unused IO region would return something different from $ff 
+(which is usually the case)
+
+I would think the first case need to be applied, motorola docs are 
+saying the current instruction is immediatly stopped, so the write 
+access should not occur (I would need to check this on a real ST, but 
+this is also what Steem is doing).
+
+I will try to fix this with some other things I'm working on, could take 
+1 or 2 weeks as I will be away for a few days.
+
+Nicolas
+
+
+&gt;<i>
+</I>&gt;<i> Le 13/04/2011 21:42, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Does tymewarp work for somebody:
+</I>&gt;&gt;<i> <A HREF="http://www.pouet.net/prod.php?which=15943">http://www.pouet.net/prod.php?which=15943</A>
+</I>&gt;&gt;<i> ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It crashes to double bus error before I get to songs.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - Eero
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003341.html">[hatari-devel] A few more issues before v1.5
+</A></li>
+	<LI>Next message: <A HREF="003369.html">[hatari-devel] A few more issues before v1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3344">[ date ]</a>
+              <a href="thread.html#3344">[ thread ]</a>
+              <a href="subject.html#3344">[ subject ]</a>
+              <a href="author.html#3344">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crossbar code is hard to write ;)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crossbar%20code%20is%20hard%20to%20write%20%3B%29&In-Reply-To=%3C4AD237DF.5030700%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000835.html">
+   <LINK REL="Next"  HREF="000837.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crossbar code is hard to write ;)</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crossbar%20code%20is%20hard%20to%20write%20%3B%29&In-Reply-To=%3C4AD237DF.5030700%40free.fr%3E"
+       TITLE="[hatari-devel] Crossbar code is hard to write ;)">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Oct 11 21:54:07 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000835.html">[hatari-devel] Troubles compiling latest Hatari with new avi	support
+</A></li>
+        <LI>Next message: <A HREF="000837.html">[hatari-devel] Crossbar code is hard to write ;)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#836">[ date ]</a>
+              <a href="thread.html#836">[ thread ]</a>
+              <a href="subject.html#836">[ subject ]</a>
+              <a href="author.html#836">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Thomas,
+
+I still encounter many problems with the crossbar code:
+
+I think the formula you gave me is the good one.
+It works well with &quot;Graoupf tracker is not so damn slow&quot; with every 
+frequencies.
+(from 50Khz to 12Khz)
+
+I've tried to decrease the DacBuffer size to Mixbuffer size *2.
+Sound become horrible, or frequency of the music change (I don't 
+understand why).
+I've also tried to add Sound_Update() when the DAC buffer is half full
+(nDacBufSamples &gt; DACBUFFER_SIZE /2).
+Sound becomes again horrible to hear.
+
+I'm only working on DSP out -&gt; DAC part of the crossbar for now.
+I never manage to have the whole DSP out musics running correctly.
+I do my tests with Graoupf, Willi's adventure and bobTracker.
+
+If I change frequencies, 2 of them work well but not the third one.
+If I reduce my buffer, it's the same problem, ...
+
+
+I've managed to add many things, some of them work well. For example, 
+the Monitor track ($ff8920) let BobTracker play sound, but frequency is 
+wrong.
+
+I never can get something running correctly, which would be a basis for 
+the rest of the crossbar code.
+I'd like to be sure that something runs well before finishing to code 
+the DMA in and out and the ADC.
+
+
+
+Perhaps we could think (and code) together this crossbar to increase 
+hatari's emulation level ?
+
+Regards,
+
+Laurent
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000835.html">[hatari-devel] Troubles compiling latest Hatari with new avi	support
+</A></li>
+	<LI>Next message: <A HREF="000837.html">[hatari-devel] Crossbar code is hard to write ;)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#836">[ date ]</a>
+              <a href="thread.html#836">[ thread ]</a>
+              <a href="subject.html#836">[ subject ]</a>
+              <a href="author.html#836">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

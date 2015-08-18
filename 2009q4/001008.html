@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20emulation%2C%0A%20what%20are%20the%20legal%20ST%20memory%20areas%20to%20write%20to%3F&In-Reply-To=%3C20091125232033.42b64dec%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001007.html">
+   <LINK REL="Next"  HREF="001009.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20emulation%2C%0A%20what%20are%20the%20legal%20ST%20memory%20areas%20to%20write%20to%3F&In-Reply-To=%3C20091125232033.42b64dec%40phineus%3E"
+       TITLE="[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Nov 25 23:20:33 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001007.html">[hatari-devel] GEMDOS emulation,	what are the legal ST memory areas to write to?
+</A></li>
+        <LI>Next message: <A HREF="001009.html">[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1008">[ date ]</a>
+              <a href="thread.html#1008">[ thread ]</a>
+              <a href="subject.html#1008">[ subject ]</a>
+              <a href="author.html#1008">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 26 Nov 2009 00:04:08 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> &gt; Space between STRamEnd and 4 MB is void space on real ST (i.e. no
+</I>&gt;<i> &gt; bus errors),
+</I>&gt;<i> 
+</I>&gt;<i> Could you check from somewhere whether the correct behavior is just
+</I>&gt;<i> discarding the data/operation or also returning a GEMDOS error?
+</I>
+Just write a little test program and run it in Hatari from a floppy
+disk image ... and you'll see what happens.
+
+&gt;<i> I think we should try to emulate at least the GEMDOS error codes
+</I>&gt;<i> accurately, because that's what even clean programs expect.  Is there
+</I>&gt;<i> any better documentation than just list of error codes, on what error
+</I>&gt;<i> codes one gets in specific kind of situations?
+</I>
+Have a look at the EmuTOS sources since they are based on original
+GEMDOS source code?
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001007.html">[hatari-devel] GEMDOS emulation,	what are the legal ST memory areas to write to?
+</A></li>
+	<LI>Next message: <A HREF="001009.html">[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1008">[ date ]</a>
+              <a href="thread.html#1008">[ thread ]</a>
+              <a href="subject.html#1008">[ subject ]</a>
+              <a href="author.html#1008">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Fwd: Falcon memory
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fwd%3A%20Falcon%20memory&In-Reply-To=%3C4D59A708.2000904%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003044.html">
+   <LINK REL="Next"  HREF="003051.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Fwd: Falcon memory</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fwd%3A%20Falcon%20memory&In-Reply-To=%3C4D59A708.2000904%40free.fr%3E"
+       TITLE="[hatari-devel] Fwd: Falcon memory">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Feb 14 23:04:56 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003044.html">[hatari-devel] Fwd: Falcon memory
+</A></li>
+        <LI>Next message: <A HREF="003051.html">[hatari-devel] Fwd: Falcon memory
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3045">[ date ]</a>
+              <a href="thread.html#3045">[ thread ]</a>
+              <a href="subject.html#3045">[ subject ]</a>
+              <a href="author.html#3045">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>It's really no effort, I can do it in 2 minutes.
+
+This only goes against this parameter you sent me :
+
+$FFFF8006 [R/W] B         76543210  Monitor-Type Hi
+                           ||||||+-- Video Bus Breite
+                           ||||||    0 = 16 Bit
+                           ||||||    1 = 32 Bit (default)
+
+
+If I fix 0 instead of 1 (seems to mean video bus Breite 16 bits), I can 
+get the 512Ko, 2Meg or 8 Meg.
+But is it logical to set this bit in a read only register that only 
+seems to be fixed to 1 in the real hardware ?
+(That's why I ask before doing the change).
+
+Does Breite means size ?
+
+Laurent
+
+
+
+Le 14/02/2011 22:58, Thomas Huth a &#233;crit :
+&gt;<i> Am Mon, 14 Feb 2011 21:34:58 +0100
+</I>&gt;<i> schrieb Laurent Sallafranque&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've finished to make some tests with the memory.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It seems that only bits 1, 4 and 5 are used by the TOS on boot to
+</I>&gt;&gt;<i> determine the amount of memory.
+</I>&gt;&gt;<i> Thomas, I'll base the final patch on your doc, as it seems to be the
+</I>&gt;&gt;<i> most complete and the most realistic explanation.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Just before I commit, do you prefer me to only include 1 Meg, 4 megs
+</I>&gt;&gt;<i> and 14 Megs or should I add also 512 Ko, 2 Mo and 8 Mo ? (As it seems
+</I>&gt;&gt;<i> possible with TOS 4.04 to have all these memory size) ?
+</I>&gt;<i> Since there is the possibility in the GUI to set these memory sizes, it
+</I>&gt;<i> would be fine to have support for these sizes in this register, too, I
+</I>&gt;<i> think ... so if it is not too much effort, yes, please implement this,
+</I>&gt;<i> too.
+</I>&gt;<i>
+</I>&gt;<i>   Thomas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003044.html">[hatari-devel] Fwd: Falcon memory
+</A></li>
+	<LI>Next message: <A HREF="003051.html">[hatari-devel] Fwd: Falcon memory
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3045">[ date ]</a>
+              <a href="thread.html#3045">[ thread ]</a>
+              <a href="subject.html#3045">[ subject ]</a>
+              <a href="author.html#3045">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

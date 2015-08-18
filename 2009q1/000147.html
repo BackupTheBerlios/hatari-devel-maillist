@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] VC6 compatibility changes?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20VC6%20compatibility%20changes%3F&In-Reply-To=%3C20090210230539.46650c77%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000148.html">
+   <LINK REL="Next"  HREF="000144.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] VC6 compatibility changes?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20VC6%20compatibility%20changes%3F&In-Reply-To=%3C20090210230539.46650c77%40phineus%3E"
+       TITLE="[hatari-devel] VC6 compatibility changes?">th.huth at gmx.de
+       </A><BR>
+    <I>Tue Feb 10 23:05:39 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000148.html">[hatari-devel] VC6 compatibility changes?
+</A></li>
+        <LI>Next message: <A HREF="000144.html">[hatari-devel] Hatari VIDEL code crash with NVDI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#147">[ date ]</a>
+              <a href="thread.html#147">[ thread ]</a>
+              <a href="subject.html#147">[ subject ]</a>
+              <a href="author.html#147">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 8 Feb 2009 20:07:43 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> On Saturday 07 February 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-tracking at lists.berlios.de</A> wrote:
+</I>&gt;<i> &gt; --- a/config-default.h	Wed Feb 04 23:39:50 2009 +0200
+</I>&gt;<i> &gt; +++ b/config-default.h	Sat Feb 07 08:46:04 2009 +0100
+</I>&gt;<i> &gt; @@ -1,5 +1,11 @@
+</I>&gt;<i> &gt;  /* Default config.h for Hatari */
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; +/* Define to `__inline__' or `__inline' if that's what the C
+</I>&gt;<i> &gt; compiler
+</I>&gt;<i> &gt; +   calls it, or to nothing if 'inline' is not supported under any
+</I>&gt;<i> &gt; name. */
+</I>&gt;<i> &gt; +#if defined(_MSC_VER) 
+</I>&gt;<i> &gt; +# define inline __inline
+</I>&gt;<i> &gt; +#endif
+</I>&gt;<i> &gt; +
+</I>&gt;<i> 
+</I>&gt;<i> This may need to check for a version.  Inline is a standard C99
+</I>&gt;<i> keyword so I would assume future MS C-compilers (VC7? VC8?) to
+</I>&gt;<i> support it.
+</I>
+I don't think that a version it is really required here. Even if they
+support the inline keyword one day, they'll certainly continue to
+support the __inline keyword, too, so this define should continue to
+work.
+
+&gt;<i> &gt; --- a/src/change.c	Wed Feb 04 23:39:50 2009 +0200
+</I>&gt;<i> &gt; +++ b/src/change.c	Sat Feb 07 08:46:04 2009 +0100
+</I>&gt;<i> &gt; @@ -350,7 +350,7 @@
+</I>&gt;<i> &gt;  bool Change_ApplyCommandline(char *cmdline)
+</I>&gt;<i> &gt;  {
+</I>&gt;<i> &gt;  	int i, argc, inarg;
+</I>&gt;<i> &gt; -	const char **argv;
+</I>&gt;<i> &gt; +	char **argv;
+</I>&gt;<i> &gt;  	bool ret;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  	/* count args */
+</I>&gt;<i> &gt; @@ -409,7 +409,7 @@
+</I>&gt;<i> &gt;  	argv[argc] = NULL;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  	/* do args */
+</I>&gt;<i> &gt; -	ret = Change_Options(argc, argv);
+</I>&gt;<i> &gt; +	ret = Change_Options(argc, (const char**)argv);
+</I>&gt;<i> &gt;  	free(argv);
+</I>&gt;<i> &gt;  	return ret;
+</I>&gt;<i> &gt;  }
+</I>&gt;<i> 
+</I>&gt;<i> What's the problem with this?
+</I>&gt;<i> (non-const pointer to const char* pointers?)
+</I>
+The first change (&quot;const char **argv&quot; to &quot;char *argv&quot;) comes from
+Kenneth patch. Kenneth, could you elaborate why this was necessary? Did
+VC6 produce an error or just a warning?
+
+The second change (the cast) has been added by myself, because without
+it, my GCC (4.2.4) spilled out a warning (don't know why, IMHO there is
+no problem when a char** gets passed to a const char** parameter).
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000148.html">[hatari-devel] VC6 compatibility changes?
+</A></li>
+	<LI>Next message: <A HREF="000144.html">[hatari-devel] Hatari VIDEL code crash with NVDI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#147">[ date ]</a>
+              <a href="thread.html#147">[ thread ]</a>
+              <a href="subject.html#147">[ subject ]</a>
+              <a href="author.html#147">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

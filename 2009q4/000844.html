@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new support for avi recording
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Calpine.LMD.2.00.0910181128010.21703%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000843.html">
+   <LINK REL="Next"  HREF="000846.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new support for avi recording</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Calpine.LMD.2.00.0910181128010.21703%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] new support for avi recording">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Oct 18 11:41:11 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000843.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000846.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#844">[ date ]</a>
+              <a href="thread.html#844">[ thread ]</a>
+              <a href="subject.html#844">[ subject ]</a>
+              <a href="author.html#844">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 18 Oct 2009, Eero Tamminen wrote:
+
+&gt;&gt;<i> summary could be : &quot;if your pc is not fast enough to run hatari with
+</I>&gt;&gt;<i> frame skip off, don't even try to record avi&quot; :)
+</I>&gt;<i>
+</I>&gt;<i> In that case the AVI code should disable frameskip when the recording
+</I>&gt;<i> starts and restore it when stopped.  Best would be if it would ask user
+</I>&gt;<i> confirmation for this if frameskip is enabled[1], or at least notify user
+</I>&gt;<i> that frameskip was disabled[2].
+</I>&gt;<i>
+</I>&gt;<i> [1]  if (nFrameSkips) DlgAlert_Query(..);
+</I>&gt;<i> [2] if (..) DlgAlert_Notice(..)
+</I>
+I'm not sure this is really useful, we can keep frameskip to copy data 
+from atari's video memory to the SDL surface, but we must save one video 
+frame on every vbl. So, if you have frame skip resulting in 25 fps, you 
+will get twice each video frame in the avi file if recording at 50 
+fps.
+So, you will get the same thing in your avi file as what was displayed on 
+the screen. And if you play the avi, you will get what you saw on screen 
+while recording (that is same skipping effect).
+
+I'm not sure we should add a dialog for this ; I will mention in the doc 
+that frameskip should be off for best results, but if a user want to 
+record anyway with frameskip to be able to play a game in &quot;real time&quot;, why 
+not ? I don't think we should turn off fskip automatically.
+
+&gt;&gt;<i> If frame skipping is constant (that is 25 fps for example), it is
+</I>&gt;&gt;<i> theorically possible to mix 25 fps video with 50 &quot;fps&quot; audio, but the
+</I>&gt;&gt;<i> use case is not worth the coding complexity.
+</I>&gt;<i>
+</I>&gt;<i> In this case, how &quot;--avi-fps&quot; / &quot;AviRecordDefaultFps&quot; can work?
+</I>&gt;<i>
+</I>&gt;<i> Shouldn't the recording FPS rate be then taken directly from the Hatari
+</I>&gt;<i> internal screen update frequency  (nScreenRefreshRate: 50, 60, 71Hz)?
+</I>&gt;<i>
+</I>
+This is what is done in most cases, but as I wrote in a previous mail, if
+the first frames you're recording are 60 Hz and the rest is 50 Hz, this 
+can help to force the FPS in the avi header. Of course, the 60 Hz frames 
+will look like being played to slow, but then the 50 Hz frames will be 
+fine.
+
+Only use I see for this is when you want to record an Atari after reboot. 
+In that case, the shifter starts at 60 Hz, then goes to 50 Hz latter 
+(depending on your country). But as the booting phase only display a white 
+screen, you won't be able to notice you're playing 60 Hz at 50 Hz.
+If we had used nScreenRefreshRate in that case, the whole video would be 
+marked as 60 Hz and would look bad when played.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000843.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000846.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#844">[ date ]</a>
+              <a href="thread.html#844">[ thread ]</a>
+              <a href="subject.html#844">[ subject ]</a>
+              <a href="author.html#844">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

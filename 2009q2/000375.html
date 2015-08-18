@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Conditional breakpoint code, please comment!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C200906142357.20604.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000374.html">
+   <LINK REL="Next"  HREF="000378.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Conditional breakpoint code, please comment!</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C200906142357.20604.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Conditional breakpoint code, please comment!">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jun 14 22:57:20 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000374.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+        <LI>Next message: <A HREF="000378.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#375">[ date ]</a>
+              <a href="thread.html#375">[ thread ]</a>
+              <a href="subject.html#375">[ subject ]</a>
+              <a href="author.html#375">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+breakcond.c has now everything needed, so by applying the 3 patches I sent
+earlier on top of current repo, you can test the conditional breakpoints
+from the DebugUI.
+
+After patching, in DebugUI_BreakCondDsp() &amp; DebugUI_BreakCondCpu() you
+should also change the return value from DEBUGGER_END to DEBUGGER_CMDDONE,
+otherwise the debugger returns back to emulation after b/db commands.
+
+
+What will work:
+* parsing of conditional breakpoints.  This has IMHO pretty nice error
+  checks &amp; reporting[1]
+
+What seems to work to an extent[2], but is probably buggy:
+* the parsed breakpoints, on CPU
+
+What won't work:
+* the breakpoints on DSP
+  (DSP RAM access and space parsing functionality is missing)
+
+
+	- Eero
+
+[1] Example of user input error:
+--------------------------------
+&gt;<i> b d0.w = $ffff0
+</I>ERROR in tokenized string:
+'d0 . w = $ffff0'
+                ^-number is larger than the address width/mask
+--------------------------------
+
+[2] Example of breakpoint matching:
+===================
+&gt;<i> b d0=0
+</I>&gt;<i> r
+</I>D0: 00000000 D1: 00009124 D2: 00000000 D3: 00000000
+...
+next PC: 00e00cb6
+&gt;<i> r d0=20
+</I>&gt;<i> c
+</I>Returning to emulation...
+------------------------------
+
+Breakpoint 'd0 = 0' matched.
+
+----------------------------------------------------------------------
+You have entered debug mode. Type c to continue emulation, h for help.
+&gt;<i> r
+</I>D0: 00000000 D1: 00009124 D2: 00000000 D3: 00000000
+...
+00e00cce: 6722 0880 0000 670a 3238 BEQ.B #$00000022 == 00e00cf2 (TRUE)
+next PC: 00e00cd0
+===================
+
+
+Other usage and help looks like this:
+--------------------------------
+&gt;<i> b 1=2
+</I>CPU condition breakpoint 1 added.
+&gt;<i> b ($200).w &gt; 200
+</I>CPU condition breakpoint 2 added.
+&gt;<i> b
+</I>Conditional CPU breakpoints:
+  1: 1 = 2
+  2: ( $200 ) . w &gt; 200
+&gt;<i> b 1
+</I>Removed CPU breakpoint 1:
+  1 = 2
+&gt;<i> h b
+</I>'breakpoint' or 'b' - set/remove/list register/RAM condition breakpoints
+Usage:  b [help |&#160;&lt;breakpoint condition&gt; |&#160;&lt;breakpoint index&gt;]
+        Set breakpoint with given condition, remove breakpoint with
+        given index or list all breakpoints when no args are given.
+        'help' outputs breakpoint condition syntax help.
+&gt;<i> b help
+</I>  breakpoint = &lt;expression&gt; [ &amp;&amp; &lt;expression&gt; [ &amp;&amp; &lt;expression&gt; ] ... ]
+  expression = &lt;value&gt;[.width] [&amp; &lt;number&gt;] &lt;condition&gt; &lt;value&gt;[.width]
+
+  where:
+        value = [(] &lt;register-name | number&gt; [)]
+        number = [$]&lt;digits&gt;
+        condition = '&lt;' | '&gt;' | '=' | '!'
+        width = 'b' | 'w' | 'l'
+
+  If the value is in parenthesis like in '($ff820)' or '(a0)', then
+  the used value will be read from the memory address pointed by it.
+  If value is prefixed with '$', it's a hexadecimal, otherwise it's
+  decimal value.
+
+  Example:
+        pc = $64543  &amp;&amp;  ($ff820).w &amp; 3 = (a0)  &amp;&amp;  d0.l = 123
+--------------------
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000374.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+	<LI>Next message: <A HREF="000378.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#375">[ date ]</a>
+              <a href="thread.html#375">[ thread ]</a>
+              <a href="subject.html#375">[ subject ]</a>
+              <a href="author.html#375">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

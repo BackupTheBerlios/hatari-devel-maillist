@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] EmuTOS screen
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EmuTOS%20screen&In-Reply-To=%3C20110813154306.0be100c4%40think43%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003916.html">
+   <LINK REL="Next"  HREF="003918.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] EmuTOS screen</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EmuTOS%20screen&In-Reply-To=%3C20110813154306.0be100c4%40think43%3E"
+       TITLE="[hatari-devel] EmuTOS screen">huth at users.berlios.de
+       </A><BR>
+    <I>Sat Aug 13 15:43:06 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003916.html">[hatari-devel] EmuTOS screen
+</A></li>
+        <LI>Next message: <A HREF="003918.html">[hatari-devel] EmuTOS screen
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3917">[ date ]</a>
+              <a href="thread.html#3917">[ thread ]</a>
+              <a href="subject.html#3917">[ subject ]</a>
+              <a href="author.html#3917">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Sat, 13 Aug 2011 11:07:48 +0200
+schrieb Vincent Rivi&#232;re &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">vincent.riviere at freesbee.fr</A>&gt;:
+
+&gt;<i> Also, I plan to patch EmuTOS to check for additional ST-RAM up to 14
+</I>&gt;<i> MB on cold boot. How will I test that ?
+</I>
+Try to write (and read back) test patterns to the memory range between
+4 and 14 MiB. If the memory is not available, you'll get a bus error
+that you have to catch.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003916.html">[hatari-devel] EmuTOS screen
+</A></li>
+	<LI>Next message: <A HREF="003918.html">[hatari-devel] EmuTOS screen
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3917">[ date ]</a>
+              <a href="thread.html#3917">[ thread ]</a>
+              <a href="subject.html#3917">[ subject ]</a>
+              <a href="author.html#3917">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Perhaps this evocate something to you...
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Perhaps%20this%20evocate%20something%20to%20you...&In-Reply-To=%3C4D376AAE.6040704%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002847.html">
+   <LINK REL="Next"  HREF="002849.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Perhaps this evocate something to you...</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Perhaps%20this%20evocate%20something%20to%20you...&In-Reply-To=%3C4D376AAE.6040704%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Perhaps this evocate something to you...">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Jan 19 23:50:22 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002847.html">[hatari-devel] Perhaps this evocate something to you...
+</A></li>
+        <LI>Next message: <A HREF="002849.html">[hatari-devel] Perhaps this evocate something to you...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2848">[ date ]</a>
+              <a href="thread.html#2848">[ thread ]</a>
+              <a href="subject.html#2848">[ subject ]</a>
+              <a href="author.html#2848">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 19/01/2011 23:37, Laurent Sallafranque a &#233;crit :
+&gt;<i> A good candidate for testing 16Mhz vs 32 Mhz is Watership.
+</I>&gt;<i>
+</I>&gt;<i> It loads quickly and bugs immediately at 16 Mhz (but runs at 32Mhz).
+</I>&gt;<i>
+</I>&gt;<i> I've taken 2 CPU traces : one at 16 Mzh and one at 32 Mhz and I've made
+</I>&gt;<i> a diff of the 2 traces.
+</I>&gt;<i>
+</I>&gt;<i> Here is the result :
+</I>&gt;<i>
+</I>&gt;<i> The 2 programs are running the first 3196 instructions the same way.
+</I>&gt;<i> Here are the latest instructions ran by both tests :
+</I>&gt;<i>
+</I>&gt;<i> ...
+</I>&gt;<i> 0002E226 4298 CLR.L (A0)+
+</I>&gt;<i> 0002E228 51c9 fffc DBF .W D1,#$fffc == $0002E226 (F)
+</I>&gt;<i> 0002E226 4298 CLR.L (A0)+
+</I>&gt;<i> 0002E228 51c9 fffc DBF .W D1,#$fffc == $0002E226 (F)
+</I>&gt;<i> 0002E226 4298 CLR.L (A0)+
+</I>&gt;<i> 0002E228 51c9 fffc DBF .W D1,#$fffc == $0002E226 (F)
+</I>&gt;<i> 0002E226 4298 CLR.L (A0)+
+</I>&gt;<i>
+</I>&gt;<i> At line 3197, the 32 Mhz test continues to run the same 2 instructions
+</I>&gt;<i> as above.
+</I>&gt;<i>
+</I>&gt;<i> But the 16 Mhz test does :
+</I>&gt;<i>
+</I>&gt;<i> 00E03C50 52b9 0000 04ba ADD.L #$00000001,$000004ba
+</I>&gt;<i> 00E03C56 e7f9 0000 11ba ROLW.W $000011ba
+</I>&gt;<i> 00E03C5C 6a48 BPL.B #$00000048 == $00E03CA6 (F)
+</I>&gt;<i> 00E03C5E 48e7 fffe MOVEM.L D0-D7/A0-A6,-(A7)
+</I>&gt;<i> 00E03C62 614a BSR.B #$0000004a == $00E03CAE
+</I>&gt;<i> 00E03CAE 48e7 c080 MOVEM.L D0-D1/A0,-(A7)
+</I>&gt;<i> 00E03CB2 2038 11bc MOVE.L $000011bc,D0
+</I>&gt;<i> 00E03CB6 677a BEQ.B #$0000007a == $00E03D32 (T)
+</I>&gt;<i> 00E03D32 4cdf 0103 MOVEM.L (A7)+,D0-D1/A0
+</I>&gt;<i> 00E03D36 4e75 RTS.L
+</I>&gt;<i> 00E03C64 0838 0001 0484 BTST.B #$0001,$00000484
+</I>&gt;<i> 00E03C6A 672a BEQ.B #$0000002a == $00E03C96 (F)
+</I>&gt;<i> 00E03C6C 4a38 11b1 TST.B $000011b1
+</I>&gt;<i> 00E03C70 6724 BEQ.B #$00000024 == $00E03C96 (T)
+</I>&gt;<i> 00E03C96 3f38 0442 MOVE.W $00000442,-(A7)
+</I>&gt;<i> 00E03C9A 2078 0400 MOVEA.L $00000400,A0
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> At line 4653, the 32 Mhz test does :
+</I>&gt;<i>
+</I>&gt;<i> 0002E228 51c9 fffc DBF .W D1,#$fffc == $0002E226 (F)
+</I>&gt;<i> 00E03C50 52b9 0000 04ba ADD.L #$00000001,$000004ba
+</I>&gt;<i> 00E03C56 e7f9 0000 11ba ROLW.W $000011ba
+</I>&gt;<i> 00E03C5C 6a48 BPL.B #$00000048 == $00E03CA6 (T)
+</I>&gt;<i> 00E03CA6 11fc 00df fa11 MOVE.B #$df,$fffffa11
+</I>&gt;<i> 00E03CAC 4e73 RTE.L
+</I>&gt;<i> 0002E226 4298 CLR.L (A0)+
+</I>&gt;<i> 0002E228 51c9 fffc DBF .W D1,#$fffc == $0002E226 (F)
+</I>&gt;<i> 0002E226 4298 CLR.L (A0)+
+</I>&gt;<i> 0002E228 51c9 fffc DBF .W D1,#$fffc == $0002E226 (F)
+</I>&gt;<i> 0002E226 4298 CLR.L (A0)+
+</I>&gt;<i> 0002E228 51c9 fffc DBF .W D1,#$fffc == $0002E226 (F)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Both tests are jumping to address $E03C50, but not after the same amount
+</I>&gt;<i> of instructions.
+</I>&gt;<i>
+</I>
+Well, the tests are not exactly jumping, they are interrupted by an MFP 
+interrupt, which points in the ROM to e03c50.
+
+$4BA is &quot;Raw 200Hz timer&quot;, so this is just an interrupt that counts 200 
+Hz pulses.
+
+&gt;<i> The test after the first 3 instructions after the &quot;interrupt&quot; is TRUE
+</I>&gt;<i> for the 32 Mzh test, but is false for the 16 Mhz test.
+</I>&gt;<i>
+</I>&gt;<i> The 32 Mhz test continues to CLR / DBF whereas the 16 Mhz test goes into
+</I>&gt;<i> completely different code.
+</I>
+At one point, it's normal 32 and 16 Mhz don't return at the same place, 
+because the 32 Mhz version is running twice more instructions per cycle, 
+so when it's interrupted by the 200 Hz timer, it processed more 
+instruction than when it ran at 16 Mhz.
+
+What do you means by &quot;it bugs&quot; ? Crash ? Bomb ? Bad visual result ?
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002847.html">[hatari-devel] Perhaps this evocate something to you...
+</A></li>
+	<LI>Next message: <A HREF="002849.html">[hatari-devel] Perhaps this evocate something to you...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2848">[ date ]</a>
+              <a href="thread.html#2848">[ thread ]</a>
+              <a href="subject.html#2848">[ subject ]</a>
+              <a href="author.html#2848">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

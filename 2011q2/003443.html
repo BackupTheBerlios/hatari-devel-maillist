@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Filters utilized more effectively
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Filters%20utilized%20more%20effectively&In-Reply-To=%3C21668301.821636.1305497281505.JavaMail.nitido%40priv-edtnes91%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003471.html">
+   <LINK REL="Next"  HREF="003448.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Filters utilized more effectively</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Filters%20utilized%20more%20effectively&In-Reply-To=%3C21668301.821636.1305497281505.JavaMail.nitido%40priv-edtnes91%3E"
+       TITLE="[hatari-devel] Filters utilized more effectively">dsavnkff at telus.net
+       </A><BR>
+    <I>Mon May 16 00:08:01 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003471.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+        <LI>Next message: <A HREF="003448.html">[hatari-devel] Filters utilized more effectively
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3443">[ date ]</a>
+              <a href="thread.html#3443">[ thread ]</a>
+              <a href="subject.html#3443">[ subject ]</a>
+              <a href="author.html#3443">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Nicolas,
+
+On May 15, 2011, Nicolas Pomar&#232;de &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt; wrote: 
+&gt;<i>
+</I>&gt;<i> Hello
+</I>&gt;<i>
+</I>&gt;<i> I just applied your patch to the main source tree. Thanks again for it.
+</I>&gt;<i>
+</I>You're welcome.
+&gt;<i>
+</I>&gt;<i> Just a small question regarding :
+</I>&gt;<i>
+</I>&gt;<i> +	/* Anti-alias filter is not required when nAudioFrequency == 50066 Hz */
+</I>&gt;<i> +	if (nAudioFrequency&gt;50000 &amp;&amp; nAudioFrequency&lt;50100)
+</I>&gt;<i>
+</I>&gt;<i> Why don't you just use 	&quot;if (nAudioFrequency==50066)&quot; ?
+</I>&gt;<i>
+</I> - A real Atari will not be exactly 50066 Hz
+*(50066 is probably only an accepted nominal value).
+ - Someone may wish to experiment with 50000.
+ - 50066 is a prime number multiplied by 2.
+
+BTW, options.c limits the sample frequency from 6000 to 50066 Hz
+The enclosed testing patch references this (minor testing feature).
+
+David
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: options.c.2011may15.patch
+Type: application/octet-stream
+Size: 854 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110515/1fd008df/attachment.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110515/1fd008df/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003471.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+	<LI>Next message: <A HREF="003448.html">[hatari-devel] Filters utilized more effectively
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3443">[ date ]</a>
+              <a href="thread.html#3443">[ thread ]</a>
+              <a href="subject.html#3443">[ subject ]</a>
+              <a href="author.html#3443">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

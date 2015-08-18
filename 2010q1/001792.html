@@ -1,0 +1,257 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issues with CMake/CMakeLists.txt
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20CMake/CMakeLists.txt&In-Reply-To=%3C2142600.481914.1269502097157.JavaMail.nitido%40priv-edtnes91%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001795.html">
+   <LINK REL="Next"  HREF="001796.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issues with CMake/CMakeLists.txt</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20CMake/CMakeLists.txt&In-Reply-To=%3C2142600.481914.1269502097157.JavaMail.nitido%40priv-edtnes91%3E"
+       TITLE="[hatari-devel] Issues with CMake/CMakeLists.txt">dsavnkff at telus.net
+       </A><BR>
+    <I>Thu Mar 25 08:28:17 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001795.html">[hatari-devel] Cream's madness music disk?
+</A></li>
+        <LI>Next message: <A HREF="001796.html">[hatari-devel] pmdoom 0.55
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1792">[ date ]</a>
+              <a href="thread.html#1792">[ thread ]</a>
+              <a href="subject.html#1792">[ subject ]</a>
+              <a href="author.html#1792">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100325/91f73f60/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100325/91f73f60/attachment.html</A>&gt;
+-------------- next part --------------
+
+cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+
+project(Hatari)
+
+set(CMAKE_MODULE_PATH &quot;${CMAKE_SOURCE_DIR}/cmake&quot;)
+
+include(CheckIncludeFiles)
+include(CheckFunctionExists)
+
+include(DistClean)
+
+# Set build type to &quot;Release&quot; if user did not specify any build type yet
+# Other possible values: Debug, Release, RelWithDebInfo and MinSizeRel
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE Release)
+endif(NOT CMAKE_BUILD_TYPE)
+
+# ##########################
+# Conditional build features
+# ##########################
+
+set(ENABLE_DSP_EMU 1
+    CACHE BOOL &quot;Enable DSP 56k emulator for Falcon mode&quot;)
+set(ENABLE_TRACING 1
+    CACHE BOOL &quot;Enable tracing messages for debugging&quot;)
+set(ENABLE_SMALL_MEM 0
+    CACHE BOOL &quot;Enable to use less memory - at the expense of emulation speed&quot;)
+
+if(APPLE)
+	set(ENABLE_OSX_BUNDLE 1
+	    CACHE BOOL &quot;Built Hatari as Mac OS X application bundle&quot;)
+else()
+	set(ENABLE_OSX_BUNDLE 0
+	    CACHE BOOL &quot;Built Hatari as Mac OS X application bundle&quot;)
+endif(APPLE)
+
+# ####################
+# Check for libraries:
+# ####################
+
+find_package(SDL REQUIRED)
+if(NOT SDL_FOUND)
+	message(FATAL_ERROR &quot;SDL library not found!&quot;)
+endif(NOT SDL_FOUND)
+
+find_package(Math)
+
+find_package(NCURSES)
+if(NCURSES_FOUND)
+	set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} &quot;ncurses&quot;)
+endif(NCURSES_FOUND)
+
+find_package(Readline)
+if(READLINE_FOUND)
+	set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} &quot;readline&quot;)
+	check_function_exists(rl_filename_completion_function HAVE_RL_COMPLETION_FUNCTION)
+	if(HAVE_RL_COMPLETION_FUNCTION)
+		set(HAVE_LIBREADLINE 1)
+	endif(HAVE_RL_COMPLETION_FUNCTION)
+	if(NCURSES_FOUND)
+		link_libraries(readline ncurses)
+	endif(NCURSES_FOUND)
+endif(READLINE_FOUND)
+
+find_package(ZLIB)
+if(ZLIB_FOUND)
+	set(HAVE_LIBZ 1)
+	set(HAVE_ZLIB_H 1)
+endif(ZLIB_FOUND)
+
+find_package(PNG)
+if(PNG_FOUND)
+	set(HAVE_LIBPNG 1)
+endif(PNG_FOUND)
+
+find_package(X11)
+if(X11_FOUND)
+	set(HAVE_X11 1)
+endif(X11_FOUND)
+
+find_package(PortAudio)
+if(PORTAUDIO_FOUND)
+	set(HAVE_PORTAUDIO 1)
+endif(PORTAUDIO_FOUND)
+
+# ###########################
+# Check for optional headers:
+# ###########################
+
+check_include_files(termios.h HAVE_TERMIOS_H)
+check_include_files(strings.h HAVE_STRINGS_H)
+check_include_files(malloc.h HAVE_MALLOC_H)
+check_include_files(SDL/SDL_config.h HAVE_SDL_SDL_CONFIG_H)
+check_include_files(sys/times.h HAVE_SYS_TIMES_H)
+check_include_files(&quot;sys/socket.h;sys/un.h&quot; HAVE_UNIX_DOMAIN_SOCKETS)
+
+# #############################
+# Check for optional functions:
+# #############################
+
+check_function_exists(cfmakeraw HAVE_CFMAKERAW)
+check_function_exists(setenv HAVE_SETENV)
+check_function_exists(select HAVE_SELECT)
+check_function_exists(posix_memalign HAVE_POSIX_MEMALIGN)
+check_function_exists(memalign HAVE_MEMALIGN)
+
+# ################
+# CPP Definitions:
+# ################
+
+add_definitions(-DCONFDIR=\&quot;/etc\&quot;)
+
+# Test for large file support
+execute_process(COMMAND getconf LFS_CFLAGS
+                OUTPUT_VARIABLE DETECTED_LFS_CFLAGS
+                ERROR_QUIET)
+if(DETECTED_LFS_CFLAGS)
+	add_definitions(${DETECTED_LFS_CFLAGS})
+endif(DETECTED_LFS_CFLAGS)
+
+# #############
+# Other CFLAGS:
+# #############
+
+# Warning flags:
+if(CMAKE_COMPILER_IS_GNUCC)
+	set(CMAKE_C_FLAGS &quot;-Wcast-qual -Wbad-function-cast -Wpointer-arith ${CMAKE_C_FLAGS}&quot;)
+	set(CMAKE_C_FLAGS &quot;-Wmissing-prototypes -Wstrict-prototypes ${CMAKE_C_FLAGS}&quot;)
+	set(CMAKE_C_FLAGS &quot;-Wall -Wwrite-strings -Wsign-compare ${CMAKE_C_FLAGS}&quot;)
+	# set(CMAKE_C_FLAGS &quot;-Wshadow -Werror ${CMAKE_C_FLAGS}&quot;)
+endif(CMAKE_COMPILER_IS_GNUCC)
+
+# Building Hatari w/o optimization is no fun...
+IF (CMAKE_BUILD_TYPE STREQUAL &quot;Debug&quot;)
+	set(CMAKE_C_FLAGS &quot;-O ${CMAKE_C_FLAGS}&quot;)
+ENDIF (CMAKE_BUILD_TYPE STREQUAL &quot;Debug&quot;)
+
+# ####################
+# Paths configuration:
+# ####################
+
+if(NOT BINDIR)
+	set(BINDIR bin)
+endif()
+
+if(NOT DATADIR)
+	set(DATADIR share/hatari)
+endif()
+
+if(NOT BIN2DATADIR)
+	if(WIN32)
+		set(BIN2DATADIR &quot;.&quot;
+		    CACHE STRING &quot;Relative path from bindir to datadir&quot;)
+	elseif(ENABLE_OSX_BUNDLE)
+		set(BIN2DATADIR &quot;../Resources&quot;
+		    CACHE STRING &quot;Relative path from bindir to datadir&quot;)
+	else()
+		set(BIN2DATADIR &quot;../share/hatari&quot;
+		    CACHE STRING &quot;Relative path from bindir to datadir&quot;)
+	endif(WIN32)
+	mark_as_advanced(BIN2DATADIR)
+endif()
+
+if(NOT MANDIR)
+	set(MANDIR share/man/man1)
+endif()
+
+if(NOT DOCDIR)
+	set(DOCDIR share/doc/hatari)
+endif()
+
+# #########################################
+# Create config.h and recurse into subdirs:
+# #########################################
+
+configure_file(${CMAKE_SOURCE_DIR}/cmake/config-cmake.h
+		${CMAKE_BINARY_DIR}/config.h)
+
+add_subdirectory(src)
+add_subdirectory(doc)
+add_subdirectory(tools)
+
+include(FindPythonInterp)
+if(PYTHONINTERP_FOUND)
+	add_subdirectory(python-ui)
+endif(PYTHONINTERP_FOUND)
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: FindNCURSES.cmake
+Type: application/octet-stream
+Size: 424 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100325/91f73f60/attachment.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100325/91f73f60/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001795.html">[hatari-devel] Cream's madness music disk?
+</A></li>
+	<LI>Next message: <A HREF="001796.html">[hatari-devel] pmdoom 0.55
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1792">[ date ]</a>
+              <a href="thread.html#1792">[ thread ]</a>
+              <a href="subject.html#1792">[ subject ]</a>
+              <a href="author.html#1792">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

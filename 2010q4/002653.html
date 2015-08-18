@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] A new disassembler in Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20new%20disassembler%20in%20Hatari&In-Reply-To=%3C201011210138.01315.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002660.html">
+   <LINK REL="Next"  HREF="002659.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] A new disassembler in Hatari</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20new%20disassembler%20in%20Hatari&In-Reply-To=%3C201011210138.01315.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] A new disassembler in Hatari">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Nov 21 00:38:00 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002660.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+        <LI>Next message: <A HREF="002659.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2653">[ date ]</a>
+              <a href="thread.html#2653">[ thread ]</a>
+              <a href="subject.html#2653">[ subject ]</a>
+              <a href="author.html#2653">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 20 November 2010, Nicolas Pomar&#232;de wrote:
+&gt;<i> &gt; thanks a lot for your work, this looks really nice !
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I will add this to Hatari, along with an option to choose between
+</I>&gt;<i> &gt; current uae's disassembler and your new one.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I have a few errors when compiling with current Hatari gcc's flags, but
+</I>&gt;<i> &gt; this should be easy to fix.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I will commit the resulting files once they compile so anyone can try
+</I>&gt;<i>
+</I>&gt;<i> I committed the required changes to integrate your work in Hatari.
+</I>&gt;<i>
+</I>&gt;<i> As you can see, I had to change a few lines to avoid errors/warnings
+</I>&gt;<i> when compiling with our flags (this may depend on th egcc version used
+</I>&gt;<i> too). Maybe you can backport them to your code in case you plan to use
+</I>&gt;<i> it in some other project.
+</I>
+I did some additional fixes.  E.g. protos for global functions don't belong
+into *.c files (those functions were local i.e. they should be static).
+
+
+&gt;<i> Remaining harmless warnings are :
+</I>&gt;<i>
+</I>&gt;<i> 68kDisass.c: In function 'Disass68kEA':
+</I>&gt;<i>
+</I>&gt;<i> 68kDisass.c:821:6: attention : suggest explicit braces to avoid
+</I>&gt;<i> ambiguous 'else'
+</I>&gt;<i> 68kDisass.c: In function 'Disass68k_loop':
+</I>&gt;<i> 68kDisass.c:2381:15: attention : array subscript is above array bounds
+</I>&gt;<i>
+</I>&gt;<i> At line 23811, I see your &quot;extending&quot; the string, which is ok since the
+</I>&gt;<i> buffer is 1024 bytes, but gcc is detecting the index was computed from
+</I>&gt;<i> strlen and gives a warning ; maybe there's a way to write this in a
+</I>&gt;<i> different way ?
+</I>
+I'm not getting that warning with my compiler (GCC 4.3.2).
+What happens if you declare all the optionPos* variables as const?
+
+
+&gt;<i> Regarding the integration, I replaced calls to m68k_disasm by Disasm
+</I>&gt;<i> with a new parameter DISASM_ENGINE_UAE or DISASM_ENGINE_EXT.
+</I>
+Uh, that's now set in multiple places in code.
+
+
+&gt;<i> This parameter (as well as the other options available in your code)
+</I>&gt;<i> could of course be stored using some settings in hatari.cfg (Eero, if
+</I>&gt;<i> you fell like doing it ?)
+</I>
+Would somebody still want to use the UAE disassembler?
+
+If yes, the option could be either a define set by CMake or be a Hatari
+[Debugger] section configuration option.  How likely people would be
+to change that?
+
+
+&gt;<i> While doing this, I saw breakcond.c is using stderr instead of
+</I>&gt;<i> debugOutput ; Eero, is this normal ?
+</I>
+I think the purpose of the debugOutput is just to get output of (specific)
+debugger commands.  What do you think?
+
+ (it's currently used by Hatari UI debugger to get disassembly, registers or
+memory hexdump and it's nice not to need to filter the other stuff out
+of that...)
+
+
+&gt;<i> Regarding the asm output, I really prefer this new presentation, &quot;moveq&quot;
+</I>&gt;<i> or &quot;movem&quot; are really easier to read for example.
+</I>&gt;<i>
+</I>&gt;<i> There're 2 cases I'm less used to :
+</I>&gt;<i>
+</I>&gt;<i> 1) adding paranthesises aroung absolute addr
+</I>&gt;<i> 	lea       ($ffff8907).w,a0
+</I>&gt;<i> 	move.l    d0,($2134e).l
+</I>&gt;<i>
+</I>&gt;<i> I think it's more common to just have :
+</I>&gt;<i> 	lea       $ffff8907.w,a0
+</I>&gt;<i> 	move.l    d0,$2134e.l
+</I>&gt;<i>
+</I>&gt;<i> I checked that devpac handled both notations, but could it be possible
+</I>&gt;<i> to not add paranthesises around absolute addresses ?
+</I>
+The parenthesis notion is one used by the debugger itself for
+breakpoints, so I guess it would be more consistent. :-)
+
+
+&gt;<i> 2) adding .l suffix after address
+</I>&gt;<i> 	jsr       ($1ec50).l
+</I>&gt;<i> 	move.w    d1,($212ec).l
+</I>&gt;<i>
+</I>&gt;<i> As most common case is to have 32 bit addr, could you remove the .l when
+</I>&gt;<i> the address is 32 bit, and just add a .w when the address is a short 16
+</I>&gt;<i> bit one ?
+</I>
+IMHO clearer to have those always.  Things align then similarly etc.
+
+
+&gt;<i> 08b8 0001 820a         bclr      #1,$ffff820a.w  -&gt; short addr mode
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> What do you think ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> PS : I didn't modify winuae's newcpu.c in cpu/ for now, we can change
+</I>&gt;<i> this cosmetic points later.
+</I>
+The new disassembler code's broken indenting needs to be fixed also...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002660.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+	<LI>Next message: <A HREF="002659.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2653">[ date ]</a>
+              <a href="thread.html#2653">[ thread ]</a>
+              <a href="subject.html#2653">[ subject ]</a>
+              <a href="author.html#2653">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

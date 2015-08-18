@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Executing program with Hatari (was: [Bug #17567]	...)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Executing%20program%20with%20Hatari%20%28was%3A%20%5BBug%20%2317567%5D%0A%09...%29&In-Reply-To=%3C201010062201.27197.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002449.html">
+   <LINK REL="Next"  HREF="002456.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Executing program with Hatari (was: [Bug #17567]	...)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Executing%20program%20with%20Hatari%20%28was%3A%20%5BBug%20%2317567%5D%0A%09...%29&In-Reply-To=%3C201010062201.27197.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Executing program with Hatari (was: [Bug #17567]	...)">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Oct  6 21:01:26 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002449.html">[hatari-devel] Executing program with Hatari (was: [Bug #17567]	...)
+</A></li>
+        <LI>Next message: <A HREF="002456.html">[hatari-devel] Redirecting CON: to console
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2450">[ date ]</a>
+              <a href="thread.html#2450">[ thread ]</a>
+              <a href="subject.html#2450">[ subject ]</a>
+              <a href="author.html#2450">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 05 October 2010, Miro Kropacek wrote:
+&gt;&gt;<i> I was thinking that if Hatari could create the INF file virtually, then
+</I>&gt;&gt;<i> the program could be in a read-only directory, e.g. on CD.
+</I>&gt;<i>
+</I>&gt;<i> Yes, this respects my wish of not bothering user with some crappy
+</I>&gt;<i> DESKTOP.INF file, as it's created virtually. With this feature, I mark
+</I>&gt;<i> this feature request as perfectly done ;) You can do it as following:
+</I>&gt;<i> take current emulated GEMDOS HDD, look for desktop.inf/newdesk.inf, if
+</I>&gt;<i> present, do nothing (or make it optional, what to do). If not present,
+</I>&gt;<i> look for command line argument if there isn't something to run, if so,
+</I>&gt;<i> create virtual inf file and slide it to GEMDOS HDD. Shouldn't be so hard
+</I>&gt;<i> or?
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hatari package for Linux distros could then even register a Linux
+</I>&gt;&gt;<i> binfmt_misc handler that invokes Hatari automatically
+</I>
+Here's documentation on binfmt_misc:
+<A HREF="http://git.kernel.org/gitweb.cgi?p=linux/kernel/git/torvalds/linux-2.6.git;a=blob;f=Documentation/binfmt_misc.txt;hb=HEAD">http://git.kernel.org/gitweb.cgi?p=linux/kernel/git/torvalds/linux-2.6.git;a=blob;f=Documentation/binfmt_misc.txt;hb=HEAD</A>
+
+The annoying thing about it is that user needs to have it enabled in
+kernel and to have this setting persistent, it needs to be registered in
+boot (Debian has binfmt-support package to help in that, but then
+user needs that package to be installed).
+
+Attached is a script to do that.  You need to run it as root or add it
+to your distro's init scripts.
+
+Good thing is that then you can then run the Atari programs directly,
+hatari-tosrun.sh will be invoked directly.
+
+
+&gt;&gt;<i> when one clicks on an Atari binary.
+</I>
+But to have it working just on Desktop and its file manager, Hatari package
+done by distro maintainers could just register the hatari-tosrun script as
+mime-type handler for *.TOS/TTP/PRG/GTP files.
+
+You could file a bug about that to your favorite Linux distro once I've
+added something like described below to Hatari...
+
+
+&gt;&gt;<i> (Like some people have done with Wine and Window 
+</I>&gt;<i> &gt; programs or Java VM and Java programs.)
+</I>&gt;<i>
+</I>&gt;<i> Holy crap, this would be awesome !!!
+</I>
+And easy to do.  :-)
+
+Only problem is that it needs the program directory to be writable...
+
+
+One possibility would be to in Hatari start:
+* Check if the given file is a GEMDOS program (starts with 0x601a)
+  instead of disk image.  If it is:
+  - enable GEMDOS HDD emulation for directory where this program resides
+  - write a suitably modified desktop file contents e.g. into  ~/.hatari/
+    directory.  Contents will be different depending on whether
+    normal TOS or EmuTOS is used
+  - set a flag that DESKTOP.INF/EMUDESK.INF file opens should be
+    redirected in GEMDOS emulation to this file (maybe only first one
+    after boot?)
+
+Thomas, Nicolas, how does that sound?  Acceptable? :-)
+
+
+&gt;<i> &gt; This isn't that critical. Can be added later, if needed at all.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; It might be nice for the cases when the messages disappear too fast to
+</I>&gt;<i> &gt; read them.  Unfortunately it seems that e.g. EmuTOS messages cannot be
+</I>&gt;<i> &gt; catched this way[1].
+</I>&gt;<i>
+</I>&gt;<i> I meant, this particular feature of re-interpreting escape codes isn't
+</I>&gt;<i> that critical, the feature as whole is something I miss badly ;-) I don't
+</I>&gt;<i> care about OS stuff (one can use much better techniques provided by
+</I>&gt;<i> excellent Hatari debugger), this is about application level, it's so
+</I>&gt;<i> boring to implement &quot;press a key to exit&quot; for TOS programs, prey text
+</I>&gt;<i> will fit into console size and wont scroll away etc... (esp. for demos
+</I>&gt;<i> where graphics, i.e. non-console screen is used I have no other options
+</I>&gt;<i> for logs than postponed screen output of files, what is quite
+</I>&gt;<i> inconvenient).
+</I>
+Ok, sounds useful.  I'll start looking into that...
+
+I think for starters it's enough to have just a command line debug option
+(that's valid only when HD emulation is in use as otherwise GEMDOS
+isn't redirected[1]), appropriate GEMDOS function redirection and
+internal flag about this[1].
+
+[1]&#160;As this is a debug flag, I don't think it needs to be something that's
+stored into Hatari config file.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: tos-register.sh
+Type: application/x-shellscript
+Size: 1261 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20101006/c05cdf2f/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20101006/c05cdf2f/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002449.html">[hatari-devel] Executing program with Hatari (was: [Bug #17567]	...)
+</A></li>
+	<LI>Next message: <A HREF="002456.html">[hatari-devel] Redirecting CON: to console
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2450">[ date ]</a>
+              <a href="thread.html#2450">[ thread ]</a>
+              <a href="subject.html#2450">[ subject ]</a>
+              <a href="author.html#2450">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

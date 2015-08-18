@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mercurial &amp; Diffs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mercurial%20%26%20Diffs&In-Reply-To=%3CBAY121-W8F93A1218FFDDB2426974D0C10%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000131.html">
+   <LINK REL="Next"  HREF="000113.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mercurial &amp; Diffs</H1>
+    <B>Kenneth Kaufman</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mercurial%20%26%20Diffs&In-Reply-To=%3CBAY121-W8F93A1218FFDDB2426974D0C10%40phx.gbl%3E"
+       TITLE="[hatari-devel] Mercurial &amp; Diffs">kvkconsultancy at hotmail.com
+       </A><BR>
+    <I>Fri Feb  6 06:55:35 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000131.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+        <LI>Next message: <A HREF="000113.html">[hatari-devel] Mercurial &amp; Diffs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#112">[ date ]</a>
+              <a href="thread.html#112">[ thread ]</a>
+              <a href="subject.html#112">[ subject ]</a>
+              <a href="author.html#112">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+I just wanted to have a spot check with people that the way i'm creating my diffs is the best for everyone.
+ 
+I've used:
+ 
+hg diff -u 5
+ 
+(from my local repositry) this though seems not to have the -N option. So for my current update (VC compatibility) i'm using:
+ 
+diff hatari_base hatari -E -b -w -B -p -r -N  -d -U 5 &gt; difffile.txt
+Where 'hatari_base' is the original clone before updates where made and 'hatari' is the modified source.
+ 
+----
+ 
+I am thinking, that I would use the first syntax when I have no additional files and the second for the situation where I need to add files.
+ 
+Hope thats right :).
+ 
+Looking forward / keen to get the code VC compatible so I can get to work on the more exiting GEM DOS HDD stuff.
+ 
+Thanks everyone.
+_________________________________________________________________
+Got a 2008 financial hangover? Find a cure at MSN NZ Money 
+<A HREF="http://money.msn.co.nz">http://money.msn.co.nz</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090206/7bf35690/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090206/7bf35690/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000131.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+	<LI>Next message: <A HREF="000113.html">[hatari-devel] Mercurial &amp; Diffs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#112">[ date ]</a>
+              <a href="thread.html#112">[ thread ]</a>
+              <a href="subject.html#112">[ subject ]</a>
+              <a href="author.html#112">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

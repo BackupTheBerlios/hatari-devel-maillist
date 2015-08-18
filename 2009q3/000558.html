@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger address base
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20address%20base&In-Reply-To=%3Calpine.LMD.2.00.0908091513580.18853%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000556.html">
+   <LINK REL="Next"  HREF="000559.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger address base</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20address%20base&In-Reply-To=%3Calpine.LMD.2.00.0908091513580.18853%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Debugger address base">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Aug  9 15:18:08 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000556.html">[hatari-devel] Debugger address base
+</A></li>
+        <LI>Next message: <A HREF="000559.html">[hatari-devel] Handling signed values in the Debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#558">[ date ]</a>
+              <a href="thread.html#558">[ thread ]</a>
+              <a href="subject.html#558">[ subject ]</a>
+              <a href="author.html#558">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 9 Aug 2009, Eero Tamminen wrote:
+
+&gt;<i> Conditional breakpoints and lots of other debugging code use Uint32 for
+</I>&gt;<i> values, the &quot;+&quot; character got me started on thinking what should be done
+</I>&gt;<i> with negative values.  Currently breakcond.c doesn't even accept them:
+</I>&gt;<i> -------------
+</I>&gt;&gt;<i> v -2
+</I>&gt;<i> Value '-2' is in the supported number bases:
+</I>&gt;<i> - bin: %11111111111111111111111111111110
+</I>&gt;<i> - dec: 4294967294
+</I>&gt;<i> - hex: $fffffffe
+</I>&gt;&gt;<i> b $fffffffe = -2
+</I>&gt;<i> ERROR in parsed string:
+</I>&gt;<i> '$fffffffe = -2'
+</I>&gt;<i>             ^-invalid character
+</I>&gt;<i> -------------
+</I>&gt;<i>
+</I>&gt;<i> And even if it would accept them, comparisons like &quot;LineCycles &lt; 0&quot; don't
+</I>&gt;<i> work as the variables code uses are unsigned.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Any suggestions on how that should be handled?
+</I>&gt;<i>
+</I>&gt;<i> Maybe have &quot;s&quot; (signed) appended to the &lt; or &gt; comparison characters to
+</I>&gt;<i> indicate that the comparison should be signed (both sides cast), like this:
+</I>&gt;<i> 	&quot;LineCycles &lt;s 0&quot;   and  &quot;0 &gt;s LineCycles&quot;
+</I>&gt;<i> ?
+</I>&gt;<i> (And parser could warn if one does comparison against zero without this)
+</I>
+Well, from the cpu point of view signed number are in fact represented on 
+32 bits anyway, it's just a matter of interpretation, so I think that one 
+possible way to handle this is to write for example :
+
+  (a0) = $fffffffe
+
+which is equivalent to (a0)= -2
+
+I'm really not sure negative number would have a real use for now, I would 
+say to let it as it is, and see later if people request them
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000556.html">[hatari-devel] Debugger address base
+</A></li>
+	<LI>Next message: <A HREF="000559.html">[hatari-devel] Handling signed values in the Debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#558">[ date ]</a>
+              <a href="thread.html#558">[ thread ]</a>
+              <a href="subject.html#558">[ subject ]</a>
+              <a href="author.html#558">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

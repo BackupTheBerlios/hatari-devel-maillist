@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Ishar3 cd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ishar3%20cd&In-Reply-To=%3C20090624214517.24997e73%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000415.html">
+   <LINK REL="Next"  HREF="000417.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Ishar3 cd</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ishar3%20cd&In-Reply-To=%3C20090624214517.24997e73%40phineus%3E"
+       TITLE="[hatari-devel] Ishar3 cd">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Jun 24 21:45:17 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000415.html">[hatari-devel] Ishar3 cd
+</A></li>
+        <LI>Next message: <A HREF="000417.html">[hatari-devel] Ishar3 cd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#416">[ date ]</a>
+              <a href="thread.html#416">[ thread ]</a>
+              <a href="subject.html#416">[ subject ]</a>
+              <a href="author.html#416">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 24 Jun 2009 16:17:32 +0200
+Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+
+&gt;<i> I've added a little trace to know the value of the 2 parameters of
+</I>&gt;<i> the fopen:
+</I>&gt;<i> 
+</I>&gt;<i> Gemdos.c: szactualFilename = '/media/Jeux/Jeux/Atari/NEWDESK.INF'     
+</I>&gt;<i> OpenMode = 00562880
+</I>
+What does the OpenMode exactly mean? I.e. how does your printf
+statement look like? Is it the Mode value or the open_mode pointer?
+These values look really strange to me...
+
+Please run hatari with the &quot;--trace gemdos&quot; option, that should print
+the values in a usable way...
+
+&gt;<i> &gt; When I start Ishar3 CD, I get the following error (catched under
+</I>&gt;<i> &gt; GDB):
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; #0  0x00007fb48b29d800 in _IO_file_fopen () from /lib/libc.so.6
+</I>&gt;<i> &gt; #1  0x00007fb48b2917f4 in ?? () from /lib/libc.so.6
+</I>&gt;<i> &gt; #2  0x0000000000414063 in GemDOS_Open (Params=&lt;value optimized
+</I>&gt;<i> &gt; out&gt;) at gemdos.c:1512
+</I>&gt;<i> &gt; #3  0x0000000000415538 in GemDOS_OpCode () at gemdos.c:2326
+</I>&gt;<i> &gt; #4  0x0000000000437399 in OpCode_GemDos (opcode=42129248) at 
+</I>&gt;<i> &gt; hatari-glue.c:160
+</I>&gt;<i> &gt; #5  0x000000000043b983 in m68k_go (may_quit=&lt;value optimized out&gt;)
+</I>&gt;<i> &gt; at newcpu.c:1709
+</I>&gt;<i> &gt; #6  0x0000000000420681 in main (argc=4, argv=0x7fff94196488) at 
+</I>&gt;<i> &gt; main.c:712
+</I>
+I can't see anything unusual in that line 1512 in gemdos.c ... how
+could this crash happen?
+You could also try to recompile gemdos.c without optimization flags to
+see whether this changes the backtrace output a little bit.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000415.html">[hatari-devel] Ishar3 cd
+</A></li>
+	<LI>Next message: <A HREF="000417.html">[hatari-devel] Ishar3 cd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#416">[ date ]</a>
+              <a href="thread.html#416">[ thread ]</a>
+              <a href="subject.html#416">[ subject ]</a>
+              <a href="author.html#416">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

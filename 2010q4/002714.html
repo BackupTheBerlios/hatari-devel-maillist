@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Fire button freezes Hatari in the Downfall game
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fire%20button%20freezes%20Hatari%20in%20the%20Downfall%20game&In-Reply-To=%3C20101223091009.5253d06b%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002713.html">
+   <LINK REL="Next"  HREF="002715.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Fire button freezes Hatari in the Downfall game</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fire%20button%20freezes%20Hatari%20in%20the%20Downfall%20game&In-Reply-To=%3C20101223091009.5253d06b%40phineus%3E"
+       TITLE="[hatari-devel] Fire button freezes Hatari in the Downfall game">huth at users.berlios.de
+       </A><BR>
+    <I>Thu Dec 23 09:10:09 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002713.html">[hatari-devel] Fire button freezes Hatari in the Downfall game
+</A></li>
+        <LI>Next message: <A HREF="002715.html">[hatari-devel] Fire button freezes Hatari in the Downfall game
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2714">[ date ]</a>
+              <a href="thread.html#2714">[ thread ]</a>
+              <a href="subject.html#2714">[ subject ]</a>
+              <a href="author.html#2714">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 22 Dec 2010 23:41:25 +0100
+Nicolas Pomar&#232;de &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt; wrote:
+
+&gt;<i> Le 22/12/2010 22:28, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On tiistai 21 joulukuu 2010, David Savinkoff wrote:
+</I>&gt;<i> &gt;&gt; I noticed a bug with Hatari's fire button while reading some
+</I>&gt;<i> &gt;&gt; atari-forum posts. The Downfall game requires the fire button to
+</I>&gt;<i> &gt;&gt; be pressed to start the game. If the button is pressed for more
+</I>&gt;<i> &gt;&gt; than one frame the game will freeze,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; So it seems.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I'm pretty sure this worked with 2005 version of Hatari (way before
+</I>&gt;<i> &gt; v1.0)...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> Hello,
+</I>&gt;<i> 
+</I>&gt;<i> the program is looping on the following code :
+</I>&gt;<i> 
+</I>&gt;<i> $013352 : 0838 0001 fc00                       btst
+</I>&gt;<i> #1,$fffffc00.w $013358 : 67f8
+</I>&gt;<i> beq.s     $13352 $01335a : 11fc 0016 fc02
+</I>&gt;<i> move.b    #$16,$fffffc02.w $013360 : 4a79 0001
+</I>&gt;<i> 7612                       tst.w     $17612 $013366 : 6600
+</I>&gt;<i> ffea                            bne       $13352 $01336a : 4a79 0001
+</I>&gt;<i> 7614                       tst.w     $17614 $013370 : 6600
+</I>&gt;<i> ffe0                            bne       $13352 $013374 :
+</I>&gt;<i> 4e75                                 rts
+</I>&gt;<i> 
+</I>&gt;<i> Which calls IKBD_Cmd_ReturnJoystick() and seems to never return the 
+</I>&gt;<i> expected values.
+</I>&gt;<i> 
+</I>&gt;<i> I think the problem could come from a bad delay in :
+</I>&gt;<i> 
+</I>&gt;<i>          IKBD_AddKeyToKeyboardBufferWithDelay(0xFD, 35000);
+</I>&gt;<i> 
+</I>&gt;<i> I will try to give it a look later (unless Thomas got an idea on
+</I>&gt;<i> this ?)
+</I>
+IIRC I once measured most IKBD timings on my real ST, so the problem
+might be something slightly different. But I also don't have a good
+clue what might be wrong right now...
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002713.html">[hatari-devel] Fire button freezes Hatari in the Downfall game
+</A></li>
+	<LI>Next message: <A HREF="002715.html">[hatari-devel] Fire button freezes Hatari in the Downfall game
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2714">[ date ]</a>
+              <a href="thread.html#2714">[ thread ]</a>
+              <a href="subject.html#2714">[ subject ]</a>
+              <a href="author.html#2714">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

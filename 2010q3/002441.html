@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Pasti support and other things
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Pasti%20support%20and%20other%20things&In-Reply-To=%3C201009242234.45861.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002436.html">
+   <LINK REL="Next"  HREF="002442.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Pasti support and other things</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Pasti%20support%20and%20other%20things&In-Reply-To=%3C201009242234.45861.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Pasti support and other things">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Sep 24 21:34:45 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002436.html">[hatari-devel] Pasti support and other things
+</A></li>
+        <LI>Next message: <A HREF="002442.html">[hatari-devel] Pasti support and other things
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2441">[ date ]</a>
+              <a href="thread.html#2441">[ thread ]</a>
+              <a href="subject.html#2441">[ subject ]</a>
+              <a href="author.html#2441">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 24 September 2010, Markus Fritze wrote:
+&gt;<i> On Sep 23, 2010, at 12:31 PM, Thomas Huth wrote:
+</I>&gt;<i> &gt; The floppy subsystem needs a major rewrite anyway, I think, so it's ok
+</I>&gt;<i> &gt; to mess around in all files there, I guess. When you're ready, please
+</I>&gt;<i> &gt; send your patches to this mailing list so we can review them.
+</I>&gt;<i>
+</I>&gt;<i> It was ported vom WinSTon, right?
+</I>
+Yes.
+
+This documents where different things came from:
+	<A HREF="http://hg.berlios.de/repos/hatari/raw-file/tip/doc/authors.txt">http://hg.berlios.de/repos/hatari/raw-file/tip/doc/authors.txt</A>
+
+
+&gt;<i> I started writing on a state machine for the FDC, which handles thinks
+</I>&gt;<i> like different data rates, spin-up time, settle time for head movements,
+</I>&gt;<i> etc. and all the standard FDC commands. I also plan to support fuzzy
+</I>&gt;<i> sectors (sectors with wrong timing, that creates unstable bits). For
+</I>&gt;<i> simple disk formats it should still work with read track (it just puts
+</I>&gt;<i> the sectors into a &quot;formatted&quot; track), for Pasti files it hopefully does
+</I>&gt;<i> better :-) This will take a bit time (strangely I have a full-time job,
+</I>&gt;<i> too :-), I'll keep you updated.
+</I>
+I'm sure everybody's interested on that! :-)
+
+* Pasti allows testing things that we couldn't have tested earlier
+* There are also couple of non-Pasti things that won't work with the current
+  FDC emulation:
+  <A HREF="http://hg.berlios.de/repos/hatari/raw-file/tip/doc/compatibility.html">http://hg.berlios.de/repos/hatari/raw-file/tip/doc/compatibility.html</A>
+
+But please keep the &quot;fast&quot; FCD access feature as most of the things
+work without accurate timings i.e. slow FDC emulation.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002436.html">[hatari-devel] Pasti support and other things
+</A></li>
+	<LI>Next message: <A HREF="002442.html">[hatari-devel] Pasti support and other things
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2441">[ date ]</a>
+              <a href="thread.html#2441">[ thread ]</a>
+              <a href="subject.html#2441">[ subject ]</a>
+              <a href="author.html#2441">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

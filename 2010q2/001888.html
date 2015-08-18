@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Problem in falcon mode ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%20falcon%20mode%20%3F&In-Reply-To=%3C201004212124.55040.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001889.html">
+   <LINK REL="Next"  HREF="001890.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Problem in falcon mode ?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%20falcon%20mode%20%3F&In-Reply-To=%3C201004212124.55040.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Problem in falcon mode ?">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Apr 21 20:24:54 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001889.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+        <LI>Next message: <A HREF="001890.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1888">[ date ]</a>
+              <a href="thread.html#1888">[ thread ]</a>
+              <a href="subject.html#1888">[ subject ]</a>
+              <a href="author.html#1888">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 21 April 2010, Laurent Sallafranque wrote:
+&gt;<i> I've tried hatari's latest release today, and when I launch in falcon
+</I>&gt;<i> mode, I often have no sound.
+</I>
+When I press key down in Falcon desktop, I get key repeat sound, BUT
+it's volume is very very low.  In STE mode the sound is many times louder.
+
+With EmuTOS the difference is smaller.  So I guess it depends a bit on how
+TOS plays the sound.
+
+
+&gt;<i> Worse, when I click on the &quot;close window&quot; cross (upper right of the
+</I>&gt;<i> window screen), hatari doesn't close.
+</I>
+I have no problems closing Hatari.
+
+
+&gt;<i> Does anybody have the same behaviour ?
+</I>&gt;<i> (sometimes, I get sound, but many times, no sound at startup).
+</I>&gt;<i>
+</I>&gt;<i> Another strange thing : when I start hatari, at boot,  it sometimes
+</I>&gt;<i> displays about non accurate delays. (that's not all the time).
+</I>
+Neither with this.
+
+If many processes are using CPU while Hatari does this check, I guess
+it could get a result which it assumes to mean that all delays are
+inaccurate:
+------- main.c ---------
+        /* Force a task switch now, so we have a longer timeslice afterwards 
+*/
+        SDL_Delay(10);
+
+        nStartTicks = SDL_GetTicks();
+        SDL_Delay(1);
+        nEndTicks = SDL_GetTicks();
+
+        /* If the delay took longer than 10ms, we are on an inaccurate 
+system! */
+-------------------------
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001889.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+	<LI>Next message: <A HREF="001890.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1888">[ date ]</a>
+              <a href="thread.html#1888">[ thread ]</a>
+              <a href="subject.html#1888">[ subject ]</a>
+              <a href="author.html#1888">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] IDE &amp; gemdos HD emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20%26%20gemdos%20HD%20emulation&In-Reply-To=%3C201001190109.31395.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001273.html">
+   <LINK REL="Next"  HREF="001282.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] IDE &amp; gemdos HD emulation</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20%26%20gemdos%20HD%20emulation&In-Reply-To=%3C201001190109.31395.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] IDE &amp; gemdos HD emulation">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Jan 19 00:09:31 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001273.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+        <LI>Next message: <A HREF="001282.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1281">[ date ]</a>
+              <a href="thread.html#1281">[ thread ]</a>
+              <a href="subject.html#1281">[ subject ]</a>
+              <a href="author.html#1281">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 18 January 2010, Thomas Huth wrote:
+&gt;<i> &gt; E.g. with Cecile booting from IDE drive works, but not when having
+</I>&gt;<i> &gt; GEMDOS D &amp; E drives.
+</I>&gt;<i>
+</I>&gt;<i> I just tried it again, and yes, it works for me. TOS 2.06, IDE
+</I>&gt;<i> hard disk image with two partitions and AHDI 6 installed, and one
+</I>&gt;<i> GEMDOS hard disk folder &quot;E&quot;. Hatari successfully boots from the IDE
+</I>&gt;<i> drive and all partitions, C, D and E show up correctly.
+</I>
+Hm.  I got this when trying to format an image with AHDI 6:
+	HDC: Unsupported MODE SENSE command
+
+And when AHDI told that it couldn't format the disk image, I got an assert:
+hatari: int.c:394: Int_AddRelativeInterruptWithOffset: Assertion `CycleTime 
+&gt;<i>= 0' failed.
+</I>
+
+AHDI 5 can format &amp; partition the disk image fine (dd bs=512 count=16384), 
+but only as ACSI.  If I try using --ide-master, ahdi.prg finds the Hatari
+IDE, but formatting says &quot;Cannot format unit 0&quot;.
+
+If I try to use the ACSI format disk image, everything works fine with that.
+If I try same image with --ide-master, HDX or HINSTALL don't even find C:
+(after running ahdi.prg, v5 or v6).  And Hatari doesn't boot from HD when
+--ide-master is used (when it has AHDI installed on it in --acsi mode).
+
+
+&gt;<i> &gt; Might be related to ide.c not updating nNumDrives nor nPartitions:
+</I>&gt;<i>
+</I>&gt;<i> As you can see in gemdos.c, this code is only for old, single-partition
+</I>&gt;<i> GEMDOS HD mode (&quot;if (!bMultiPartitions) ....&quot;). For multi-GEMDOS-drive
+</I>&gt;<i> mode, this does not apply.
+</I>
+This part applies also to multi partition support:
+                         /* If the GemDos Drive letter is free then */
+                        if (i &gt;= nPartitions)
+
+And anyway it's strange why IDE should work differently in this respect
+from the ASCI HDD?
+
+
+&gt;<i> &gt; Then I also noticed another thing in ide.c while testing Cecile and
+</I>&gt;<i> &gt; getting a lot of ICE bdrv_read() errors (from too short IDE image?):
+</I>&gt;<i>
+</I>&gt;<i> Is maybe your IDE hard disk image corrupted?
+</I>
+Tried making new one with AHDI as detailed above...
+
+
+&gt;<i> &gt; ------
+</I>&gt;<i> &gt; static void ide_sector_read(IDEState *s)
+</I>&gt;<i> &gt; ...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;                 ret = bdrv_read(s-&gt;bs, sector_num, s-&gt;io_buffer, n);
+</I>&gt;<i> &gt;                 ide_transfer_start(s, s-&gt;io_buffer, 512 * n,
+</I>&gt;<i> &gt; ide_sector_read);
+</I>&gt;<i> &gt;                 ide_set_irq(s);
+</I>&gt;<i> &gt;                 ide_set_sector(s, sector_num + n);
+</I>&gt;<i> &gt;                 s-&gt;nsector -= n;
+</I>&gt;<i> &gt;         }
+</I>&gt;<i> &gt; }
+</I>&gt;<i> &gt; -------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; bdrv_read() return value errors (ret &lt; 0) aren't handled?
+</I>&gt;<i>
+</I>&gt;<i> Looks like bad error handling. Feel free to fix it!
+</I>
+Problem is that not being familar with IDE, I'm not sure how it
+should be handled. :-)
+
+
+	- Eero
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001273.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+	<LI>Next message: <A HREF="001282.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1281">[ date ]</a>
+              <a href="thread.html#1281">[ thread ]</a>
+              <a href="subject.html#1281">[ subject ]</a>
+              <a href="author.html#1281">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

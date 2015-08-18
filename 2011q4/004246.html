@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Circuit Analysed YM2149 Sound is Here
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Circuit%20Analysed%20YM2149%20Sound%20is%20Here&In-Reply-To=%3C4EF27466.8000103%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004244.html">
+   <LINK REL="Next"  HREF="004247.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Circuit Analysed YM2149 Sound is Here</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Circuit%20Analysed%20YM2149%20Sound%20is%20Here&In-Reply-To=%3C4EF27466.8000103%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Circuit Analysed YM2149 Sound is Here">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Dec 22 01:05:58 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004244.html">[hatari-devel] Circuit Analysed YM2149 Sound is Here
+</A></li>
+        <LI>Next message: <A HREF="004247.html">[hatari-devel] Circuit Analysed YM2149 Sound is Here
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4246">[ date ]</a>
+              <a href="thread.html#4246">[ thread ]</a>
+              <a href="subject.html#4246">[ subject ]</a>
+              <a href="author.html#4246">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 18/12/2011 10:29, David Savinkoff wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> This patch allows you to use the SDL Menu to select and compare:
+</I>&gt;<i> - Circuit analysed YM2149 in the ST/STE/TT/Falcon (best sound)
+</I>&gt;<i> - Volume Table method (second best sound)
+</I>&gt;<i> - Linear method - renamed to ZX 128 (best for Spectrum ZX 128)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Listen to the sh11inv demo!
+</I>&gt;<i> Please include in Hatari.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> David
+</I>
+Hello
+
+thanks for this patch, I applied it after changing a few things :
+
+  - I prefer keeping &quot;linear&quot; instead of ZX 128, as we're in Atari's 
+emulation, I'm not sure it would make sense to many users
+
+  - I replaced the YM_YM2149_MIXING with YM_MODEL_MIXING to better 
+emphasize the fact that this is a mathematical model of the YM2149
+
+  - I also had to make the sound dialog a little bit larger to put all 
+the texts in it.
+
+Hope that's fine with you ; result sound nice with YM50K (a little less 
+noise sound than with &quot;table&quot; mixing).
+
+Regarding low pass filters, musics from Count Zero often give 
+interesting results to hear the filter. Some of his sounds are really 
+high freq, for example the Decade Demo boot intro and then the main 
+intro (after the countdown) ; after a while, there're some really sharp 
+sound that take advantage of the filters.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004244.html">[hatari-devel] Circuit Analysed YM2149 Sound is Here
+</A></li>
+	<LI>Next message: <A HREF="004247.html">[hatari-devel] Circuit Analysed YM2149 Sound is Here
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4246">[ date ]</a>
+              <a href="thread.html#4246">[ thread ]</a>
+              <a href="subject.html#4246">[ subject ]</a>
+              <a href="author.html#4246">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

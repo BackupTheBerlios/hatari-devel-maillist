@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issues with DMA sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20DMA%20sound&In-Reply-To=%3C000701ca1d94%2427287a90%246600a8c0%40peranburk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000606.html">
+   <LINK REL="Next"  HREF="000608.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issues with DMA sound</H1>
+    <B>Per Almered</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20DMA%20sound&In-Reply-To=%3C000701ca1d94%2427287a90%246600a8c0%40peranburk%3E"
+       TITLE="[hatari-devel] Issues with DMA sound">per at brainfish.net
+       </A><BR>
+    <I>Sat Aug 15 12:35:46 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000606.html">[hatari-devel] Issues with DMA sound
+</A></li>
+        <LI>Next message: <A HREF="000608.html">[hatari-devel] Issues with DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#607">[ date ]</a>
+              <a href="thread.html#607">[ thread ]</a>
+              <a href="subject.html#607">[ subject ]</a>
+              <a href="author.html#607">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here are the votes from the Swedish jury: 8-)
+
+Ok, so what I did to test this: I made a 110Hz square sample in Sound
+Forge
+and loaded it as an instrument in maxYMiser, along with 110Hz (approx)
+notes
+played on the YM chip at volumes $f, $e, $d etc all the way down to $0.
+
+For the real STE, I had to make the machine play the notes several
+times,
+and at a low tempo, because the YM chip sometimes took some time to
+regain
+correct volume and other problems. The STE was sampled using a semi-pro
+soundcard (M-Audio Delta 44, surprisingly good for its time and price)
+at 44.1KHz, 24 bits.
+
+AAAAAAAnyway. The final data collected from the real STE, Hatari 1.2,
+Hatari
+1.3 and STeem 3.2 was then normalized so that the note at volume $f from
+the
+YM chip was at -6dB.
+
+The results:
+
+(S = STE DMA sample, F-1 = YM volumes)
+Errors of 0.2dB can be considered neglectable, but as we shall soon
+see... 8-)
+
+REAL STE
+---------
+S: -5,5
+F: -6,0
+E: -9,6
+D: -13,9
+C: -16,8
+B: -20,3
+A: -23,1
+9: -26,3
+8: -29,1
+7: -32,0
+6: -34,6
+5: -37,6
+4: -39,4
+3: -43,4
+2: -44,9
+1: -48,7
+
+HATARI 1.2
+-----------
+S: -2,5
+F: -6,0
+E: -9,0
+D: -12,0
+C: -15,0
+B: -18,0
+A: -21,0
+9: -24,1
+8: -27,1
+7: -30,1
+6: -33,1
+5: -36,1
+4: -39,1
+3: -42,1
+2: -45,1
+1: -49,7
+
+HATARI 1.3
+-----------
+S: -14,6
+F: -6,0
+E: -9,0
+D: -12,0
+C: -15,0
+B: -18,0
+A: -21,0
+9: -24,0
+8: -27,0
+7: -30,1
+6: -33,1
+5: -36,1
+4: -39,1
+3: -42,1
+2: -45,1
+1: -49,7
+
+STEEM 3.2 (just as an interesting comparison)
+----------
+S: -5,5
+F: -6,0
+E: -9,0
+D: -11,8
+C: -15,0
+B: -18,0
+A: -21,0
+9: -24,0
+8: -26,0
+7: -27,9
+6: -29,7
+5: -32,0
+4: -40,0
+3: -52,1
+2: -60,2
+1: -Inf. (that's right, no signal. ZERO!)
+
+Conclusion: PLEASE don't release Hatari v1.3 with this HUGE error in
+mixing,
+it's more than twice as bad (6dB = half the amplitude) as the error in
+v1.2.
+
+All this obviously with the reservation that I've done something wrong
+when
+scaling the values (blame Sound Forge), I seriously doubt I would have
+done
+something wrong when creating the sample, sampling and editing the whole
+thing.
+All data files are available on request, of course.
+
+
+Per.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000606.html">[hatari-devel] Issues with DMA sound
+</A></li>
+	<LI>Next message: <A HREF="000608.html">[hatari-devel] Issues with DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#607">[ date ]</a>
+              <a href="thread.html#607">[ thread ]</a>
+              <a href="subject.html#607">[ subject ]</a>
+              <a href="author.html#607">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

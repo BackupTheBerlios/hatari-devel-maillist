@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] setting unused bits to 1 when reading hardware regs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2008q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20setting%20unused%20bits%20to%201%20when%20reading%20hardware%0A%20regs&In-Reply-To=%3CPine.LNX.4.64.0812262246270.28922%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000005.html">
+   <LINK REL="Next"  HREF="000008.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] setting unused bits to 1 when reading hardware regs</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20setting%20unused%20bits%20to%201%20when%20reading%20hardware%0A%20regs&In-Reply-To=%3CPine.LNX.4.64.0812262246270.28922%40localhost%3E"
+       TITLE="[hatari-devel] setting unused bits to 1 when reading hardware regs">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Dec 26 22:52:33 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000005.html">[hatari-devel] setting unused bits to 1 when reading hardware	regs
+</A></li>
+        <LI>Next message: <A HREF="000008.html">[hatari-devel] MegaSTe emulation ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7">[ date ]</a>
+              <a href="thread.html#7">[ thread ]</a>
+              <a href="subject.html#7">[ subject ]</a>
+              <a href="author.html#7">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 26 Dec 2008, Thomas Huth wrote:
+
+&gt;&gt;<i> For ff8240-5c, it's more complex. I know some programs are writing bits
+</I>&gt;&gt;<i> here to detect between STF/STE, so we should be cautious.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Another small problem I saw with colors regs : they can only be accessed
+</I>&gt;&gt;<i> with .W acces, but on ST you can do a 'move.b #7,$ff8241' and it works. On
+</I>&gt;&gt;<i> Hatari this will give some wrong colors because we don't &quot;mix&quot; the result
+</I>&gt;&gt;<i> with the content of $ff8240.
+</I>&gt;<i>
+</I>&gt;<i> Are you sure? If I look at the code in video.c
+</I>&gt;<i> (Video_ColorReg_WriteWord ff.) it looks like the code can handle both,
+</I>&gt;<i> word and byte accesses (it always uses IoMemReadWord to get the
+</I>&gt;<i> value). Do you have a sample program which fails here?
+</I>&gt;<i>
+</I>&gt;<i> Thomas
+</I>
+I found an example, it was not just related to .b access ; in fact when 
+writing .b at address $ff8240, this writes the same value at $ff8241 !
+
+so, $ff8240.b=4 implies $ff8240.w=$404
+
+Here's a little program, with results tested on a STF :
+
+         lea     $ff8240,a0
+         lea     res,a1
+
+         move.w  #$777,(a0)
+
+         move.b  #0,(a0)
+         move.w  (a0),(a1)+      ; f888
+         move.b  #1,(a0)		; -&gt; $101
+         move.w  (a0),(a1)+      ; f898
+         move.b  #2,(a0)
+         move.w  (a0),(a1)+      ; 0202 / fa8a
+         move.b  #3,(a0)
+         move.w  (a0),(a1)+      ; 6303 / 0b03
+         move.b  #4,(a0)
+         move.w  (a0),(a1)+      ; fd8c
+         move.b  #5,(a0)
+         move.w  (a0),(a1)+      ; fd8d
+         move.b  #6,(a0)
+         move.w  (a0),(a1)+      ; fe8e
+         move.b  #7,(a0)
+         move.w  (a0),(a1)+      ; 7707 / ff8f
+
+         move.w  #$377,(a0)
+         move.w  (a0),(a1)+      ; 1bff / fbff
+         move.b  #7,(a0)         ; -&gt; $707
+         move.w  (a0),(a1)+      ; 1f07 / 1f0f
+
+         move.b  #7,1(a0)        ; -&gt; $707
+         move.w  #$707,(a0)      ; -&gt; $707
+
+         move.b  #$77,1(a0)      ; -&gt; $777 white
+
+res
+         dcb.l   20,0
+
+
+I'm not sure some program are making use of this feature, but it could be 
+good to implement it anyway. Also, we can see that what we read from the 
+color register is not always constant. Unused bits are mostly filled with 
+1, but not always.
+
+I recall it could have something to do with the fact that these bits are 
+reflecting what is happening on the bus or something like that (same as 
+when you make the video address points outside of the RAM on a real ST, 
+you see a lot of &quot;activity&quot;), so they would be quite random in fact.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000005.html">[hatari-devel] setting unused bits to 1 when reading hardware	regs
+</A></li>
+	<LI>Next message: <A HREF="000008.html">[hatari-devel] MegaSTe emulation ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7">[ date ]</a>
+              <a href="thread.html#7">[ thread ]</a>
+              <a href="subject.html#7">[ subject ]</a>
+              <a href="author.html#7">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

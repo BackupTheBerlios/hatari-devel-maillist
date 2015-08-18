@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Small bugs (fix before 1.4?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20bugs%20%28fix%20before%201.4%3F%29&In-Reply-To=%3C1053972.61044.1275651106394.JavaMail.www%40wwinf1j22%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002257.html">
+   <LINK REL="Next"  HREF="002260.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Small bugs (fix before 1.4?)</H1>
+    <B>J&#233;r&#244;me VERNET</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20bugs%20%28fix%20before%201.4%3F%29&In-Reply-To=%3C1053972.61044.1275651106394.JavaMail.www%40wwinf1j22%3E"
+       TITLE="[hatari-devel] Small bugs (fix before 1.4?)">vernet.jerome at wanadoo.fr
+       </A><BR>
+    <I>Fri Jun  4 13:31:46 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002257.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+        <LI>Next message: <A HREF="002260.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2258">[ date ]</a>
+              <a href="thread.html#2258">[ thread ]</a>
+              <a href="subject.html#2258">[ subject ]</a>
+              <a href="author.html#2258">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Wich Mac/OS are you using ? There is a mismatch between Hatari Build (i386) and your librairies.
+
+Jerome
+
+--------------
+
+
+
+
+
+&gt;<i> Message du 04/06/10 10:29
+</I>&gt;<i> De : &quot;Christer Solskogen&quot; 
+</I>&gt;<i> A : &quot;Mailing list for Hatari developers&quot; 
+</I>&gt;<i> Copie &#224; : 
+</I>&gt;<i> Objet : Re: [hatari-devel] Small bugs (fix before 1.4?)
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> On Fri, Jun 4, 2010 at 9:01 AM, Anders Eriksson wrote:
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Hey, Anders. You are making hatari not work on my Mac-system ;-)
+</I>&gt;<i> 
+</I>&gt;<i> tenderheart:hatari solskogen$ ../../source/hatari/configure --disable-osx-bundle
+</I>&gt;<i> &lt;.....&gt;
+</I>&gt;<i> [ 93%] Building C object src/CMakeFiles/hatari.dir/ymFormat.c.o
+</I>&gt;<i> Linking C executable hatari
+</I>&gt;<i> ld: warning: in /opt/local/lib/libSDLmain.a, file was built for
+</I>&gt;<i> unsupported file format which is not the architecture being linked
+</I>&gt;<i> (i386)
+</I>&gt;<i> ld: warning: in /opt/local/lib/libSDL.dylib, file was built for
+</I>&gt;<i> unsupported file format which is not the architecture being linked
+</I>&gt;<i> (i386)
+</I>&gt;<i> ld: warning: in /opt/local/lib/libpng.dylib, file was built for
+</I>&gt;<i> unsupported file format which is not the architecture being linked
+</I>&gt;<i> (i386)
+</I>&gt;<i> ld: warning: in /opt/local/lib/libX11.dylib, file was built for
+</I>&gt;<i> unsupported file format which is not the architecture being linked
+</I>&gt;<i> (i386)
+</I>&gt;<i> ld: warning: in /opt/local/lib/libSDL.dylib, file was built for
+</I>&gt;<i> unsupported file format which is not the architecture being linked
+</I>&gt;<i> (i386)
+</I>&gt;<i> ld: warning: in /opt/local/lib/libpng.dylib, file was built for
+</I>&gt;<i> unsupported file format which is not the architecture being linked
+</I>&gt;<i> (i386)
+</I>&gt;<i> ld: warning: in /opt/local/lib/libX11.dylib, file was built for
+</I>&gt;<i> unsupported file format which is not the architecture being linked
+</I>&gt;<i> (i386)
+</I>&gt;<i> Undefined symbols:
+</I>&gt;<i> &quot;_SDL_SaveBMP_RW&quot;, referenced from:
+</I>&gt;<i> _ScreenSnapShot_SaveScreen in screenSnapShot.c.o
+</I>&gt;<i> &quot;_SDL_WM_IconifyWindow&quot;, referenced from:
+</I>&gt;<i> _ShortCut_ActKey in shortcut.c.o
+</I>&gt;<i> &quot;_png_write_row&quot;, referenced from:
+</I>&gt;<i> &lt;...&gt;
+</I>&gt;<i> tenderheart:hatari solskogen$ file /opt/local/lib/libX11.dylib
+</I>&gt;<i> /opt/local/lib/libX11.dylib: symbolic link to libX11.6.3.0.dylib
+</I>&gt;<i> tenderheart:hatari solskogen$ file /opt/local/lib/libX11.6.3.0.dylib
+</I>&gt;<i> /opt/local/lib/libX11.6.3.0.dylib: Mach-O 64-bit dynamically linked
+</I>&gt;<i> shared library x86_64
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> -- 
+</I>&gt;<i> chs,
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i> ---------------------------------------------------------------------------------------
+</I>&gt;<i> Orange vous informe que cet e-mail a ete controle par l'anti-virus mail. 
+</I>&gt;<i> Aucun virus connu a ce jour par nos services n'a ete detecte.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100604/39223690/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100604/39223690/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002257.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+	<LI>Next message: <A HREF="002260.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2258">[ date ]</a>
+              <a href="thread.html#2258">[ thread ]</a>
+              <a href="subject.html#2258">[ subject ]</a>
+              <a href="author.html#2258">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

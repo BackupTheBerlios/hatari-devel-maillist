@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling Hatari code with Valgrind
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind&In-Reply-To=%3C4D278B61.7020002%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002756.html">
+   <LINK REL="Next"  HREF="002759.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling Hatari code with Valgrind</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind&In-Reply-To=%3C4D278B61.7020002%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Profiling Hatari code with Valgrind">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Jan  7 22:53:37 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002756.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+        <LI>Next message: <A HREF="002759.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2758">[ date ]</a>
+              <a href="thread.html#2758">[ thread ]</a>
+              <a href="subject.html#2758">[ subject ]</a>
+              <a href="author.html#2758">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 07/01/2011 22:28, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On perjantai 07 tammikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i> I don't agree with you here.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Update_e_u_n_z is called for nearly every other instruction in the DSP
+</I>&gt;&gt;<i> (each instructions that are decoded in the else of the main DSP
+</I>&gt;&gt;<i> instruction decoder).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This mean mac, mpy, add, sub, test, cmp, ...
+</I>&gt;&gt;<i> Nearly all DSP programs use these instructions a lot (and use them
+</I>&gt;&gt;<i> millions of time).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've done a quick Vallgrind tonight to see the difference before this
+</I>&gt;&gt;<i> update and after it.
+</I>&gt;&gt;<i> The difference is not negligeable (compared to the png you sent last
+</I>&gt;&gt;<i> time).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'm running a vallgrind of hatari without this optimization. I'll send
+</I>&gt;&gt;<i> you the 2 pngs tonight.
+</I>&gt;<i>
+</I>&gt;<i> In general, while profiler output can indicate performance changes, it's
+</I>&gt;<i> better to have something that actually measures it[1], like I suggested in
+</I>&gt;<i> previous mail (memory snapshot, --run-vbls&amp;  --frame-skips etc).
+</I>&gt;<i> Especially if the change isn't localized within single function, but it
+</I>&gt;<i> affects also how functions are called.
+</I>&gt;<i>
+</I>&gt;<i> [1] Performance measuring and profiling/analysing are two different things
+</I>&gt;<i> (I've done that kind of stuff at work for years), you typically need to use
+</I>&gt;<i> different means for each.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Looking at the diff for your changes, they seem to be localized though, so
+</I>&gt;<i> in this case profiler (especially one like Valgrind) could be reliable.
+</I>&gt;<i>
+</I>&gt;<i> Note though that while the boxed view gives nice overall picture,
+</I>&gt;<i> if you want to know total individual percentage of given function, look
+</I>&gt;<i> into callgraph or inclusive % column in the table at left.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+I didn't try the new falcon code, but from the graphs it seems to be 
+faster. Nevertheless, I also agree with Eero that another precise way to 
+measure improvment is to run a snapshot for a number of VBL and see if 
+it takes more or less time.
+
+In the case of &quot;simpler&quot; functions, another could indicator could be to 
+just build a small test program that would do 1000000 calls of 
+Update_e_u_n_z old/new versions and see which one is faster (this way 
+you can get a real percentage of the speedup).
+
+It's not always possible, but removing &quot;if&quot; is sometimes possible by 
+doing binary and/or or things like that. Sometimes 2 instructions that 
+are always executed can be faster that 1 conditional &quot;if&quot;.
+Code where you handle bits is often a good candidate for this kind of 
+optimisation (I remember greatly optimizing some popular depacking 
+routines on 68000 this way years ago).
+
+But there's no general rule, it's really up to your imagination.
+
+&gt;<i>
+</I>&gt;<i> It might be possible that my i3 CPU scales its speed according to
+</I>&gt;<i> the load[2] though and that's why I don't see the differences.  I hadn't
+</I>&gt;<i> thought of that earlier. If it does scaling, then &quot;top&quot; isn't valid way
+</I>&gt;<i> to measure anything.
+</I>
+It certainly does ; check &quot;cat /proc/cpuinfo&quot; to see if the &quot;cpu MHZ&quot; is 
+changing depending on the overall load. In that case, using top is not a 
+good option.
+
+The best option is a profiler that would completly emulate an i5x6 cpu 
+with cycle precise value for each instruction. The program will usually 
+run very slowly, but in the end you get an exact cycle count of what 
+happened. If I recall correctly, there're such profiler under linux, but 
+I don't remember their names.
+
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002756.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+	<LI>Next message: <A HREF="002759.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2758">[ date ]</a>
+              <a href="thread.html#2758">[ thread ]</a>
+              <a href="subject.html#2758">[ subject ]</a>
+              <a href="author.html#2758">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issue with switching - fullscreen/windowed mode
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issue%20with%20switching%20-%20fullscreen/windowed%20mode&In-Reply-To=%3Calpine.DEB.1.10.1002062148520.6048%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001415.html">
+   <LINK REL="Next"  HREF="001423.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issue with switching - fullscreen/windowed mode</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issue%20with%20switching%20-%20fullscreen/windowed%20mode&In-Reply-To=%3Calpine.DEB.1.10.1002062148520.6048%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Issue with switching - fullscreen/windowed mode">ae at dhs.nu
+       </A><BR>
+    <I>Sat Feb  6 22:02:48 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001415.html">[hatari-devel] Issue with switching - fullscreen/windowed mode
+</A></li>
+        <LI>Next message: <A HREF="001423.html">[hatari-devel] Issue with switching - fullscreen/windowed mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1420">[ date ]</a>
+              <a href="thread.html#1420">[ thread ]</a>
+              <a href="subject.html#1420">[ subject ]</a>
+              <a href="author.html#1420">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 4 Feb 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Thursday 04 February 2010, Konador, Cyprian wrote:
+</I>&gt;&gt;<i> I've faced another issue.
+</I>&gt;<i>
+</I>&gt;<i> Is this with latest Hatari version control version?
+</I>&gt;<i> Is it reproducible?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Attached you can find two screens. The fist - before I went into
+</I>&gt;&gt;<i> fullscreen - that is ok, and the second one - after fullscreen
+</I>&gt;<i>
+</I>&gt;<i> Did you do anything (run some program, change Hatari setting other
+</I>&gt;<i> than fullscreen) while on fullscreen?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> - that is wider by 64px than first screen
+</I>&gt;<i>
+</I>&gt;<i> Never seen anything like that. :-)
+</I>
+Hello,
+
+I can confirm strange behaviour when jumping in/out of fullscreen mode, at 
+least in Falcon hicolour mode.
+
+1. Screenshot when first starting up Hagtari in Hicolour:
+<A HREF="http://ae.dhs.nu/pics/hatari_hc1.png">http://ae.dhs.nu/pics/hatari_hc1.png</A>
+
+Everything is fine then.
+
+
+2. Then when entering fullscreen, Hatari looks like this:
+<A HREF="http://ae.dhs.nu/pics/hatari_hc2.png">http://ae.dhs.nu/pics/hatari_hc2.png</A>
+
+The blue part is the useable workspace, the rest is inactive. But as you 
+can see the pixels get the wrong colour in fullscreen.
+
+
+3. And last when returning to window mode, the window has changed size 
+and have graphics garbage in the unused parts.
+<A HREF="http://ae.dhs.nu/pics/hatari_hc3.png">http://ae.dhs.nu/pics/hatari_hc3.png</A>
+
+All screenshots are taken with Hataris internal screenshot function with 
+version 1.3.1 under OS X 10.6. It had the same behaviour under 10.5 before 
+as well.
+
+
+I'd also like to point out that Hatari changes resolution when going to 
+fullscreen. This is very irritating in my opinion, some points why;
+
+  a) it takes the LCD screen some time to resync for the new resolution
+
+  b) it sets the resolution so low that it won't fit the ST/Falcon resolutions properly
+
+  c) some apps which are running beside Hatari can get quite fucked up by this resolution change, Photoshop in particular, it's annoying to have to restart Photoshop becuase you ran Hatari fullscreen
+
+  d) the LCD performs interpolated scaling so pixels won't be as sharp as they would with decent doubling/tripling etc of pixels to the native resolution
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001415.html">[hatari-devel] Issue with switching - fullscreen/windowed mode
+</A></li>
+	<LI>Next message: <A HREF="001423.html">[hatari-devel] Issue with switching - fullscreen/windowed mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1420">[ date ]</a>
+              <a href="thread.html#1420">[ thread ]</a>
+              <a href="subject.html#1420">[ subject ]</a>
+              <a href="author.html#1420">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

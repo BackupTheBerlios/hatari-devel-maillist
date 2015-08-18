@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] spec512 using blitter on STE
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20spec512%20using%20blitter%20on%20STE&In-Reply-To=%3Calpine.LMD.2.00.1001100018050.25445%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001186.html">
+   <LINK REL="Next"  HREF="001204.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] spec512 using blitter on STE</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20spec512%20using%20blitter%20on%20STE&In-Reply-To=%3Calpine.LMD.2.00.1001100018050.25445%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] spec512 using blitter on STE">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jan 10 00:28:44 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001186.html">[hatari-devel] spec512 using blitter on STE
+</A></li>
+        <LI>Next message: <A HREF="001204.html">[hatari-devel] spec512 using blitter on STE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1190">[ date ]</a>
+              <a href="thread.html#1190">[ thread ]</a>
+              <a href="subject.html#1190">[ subject ]</a>
+              <a href="author.html#1190">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 9 Jan 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+
+&gt;<i> On Sat, 9 Jan 2010, Jean-Baptiste Berlioz wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Yes i'm still around, and ready to fix blitter timings.
+</I>&gt;&gt;<i> 16 cycles, that's huge, i'd like to see the source code, just before the
+</I>&gt;&gt;<i> blitter was started.
+</I>&gt;<i>
+</I>&gt;<i> Maybe those 16 cycles are the results of 4 * 4 cycles ? I don't see any
+</I>&gt;<i> io accesses with wait state. Or maybe Hatari is synchronising with ff8209
+</I>&gt;<i> 16 cycles too late (but this would be a rare case).
+</I>&gt;<i>
+</I>&gt;<i> I will try to compare with Steem's timing to see at which point we don't
+</I>&gt;<i> get the same result, to be sure the problem is really blitter's related.
+</I>
+Well, it turns out that the problem was not related to blitter's timing, 
+but to a wrong calculation of $ff8209 (used to synchronise with the 
+shifter) when STE's left border is extended by 16 pixels.
+
+This is now fixed (see 'intro' and 'direct color zoomer' in Atari STe 20 
+year megademo)
+
+
+Thomas wrote :
+
+&gt;<i> Could that be related to the problem in the EPSS demo? That demo fails
+</I>&gt;<i> to open the right border because there is also a blitter access between
+</I>&gt;<i> the left and right border. The offset between wrong and right access
+</I>&gt;<i> also seems to be 16 cycles if I got that right...
+</I>
+Not directly, because they don't use the same 16 pixels trick (the screen 
+is 160 bytes per line), but by comparing with Steem I can see that 
+Video_CalculateAddress doesn't seem to be correct and return a value that 
+is 8 bytes too low (which gives a 16 cycles shift).
+I will try to look at this too, as this doesn't seem to be a blitter 
+problem in fact.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001186.html">[hatari-devel] spec512 using blitter on STE
+</A></li>
+	<LI>Next message: <A HREF="001204.html">[hatari-devel] spec512 using blitter on STE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1190">[ date ]</a>
+              <a href="thread.html#1190">[ thread ]</a>
+              <a href="subject.html#1190">[ subject ]</a>
+              <a href="author.html#1190">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

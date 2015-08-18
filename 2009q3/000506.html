@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari patches for bitplane conversion
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C200907222222.46403.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000505.html">
+   <LINK REL="Next"  HREF="000511.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari patches for bitplane conversion</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C200907222222.46403.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari patches for bitplane conversion">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Jul 22 21:22:46 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000505.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+        <LI>Next message: <A HREF="000511.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#506">[ date ]</a>
+              <a href="thread.html#506">[ thread ]</a>
+              <a href="subject.html#506">[ subject ]</a>
+              <a href="author.html#506">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 22 July 2009, K&#229;re Andersen wrote:
+&gt;<i> Further investigations...
+</I>&gt;<i>
+</I>&gt;<i> &gt; On 7/22/09, K&#229;re Andersen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">kareandersen at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt; nFrameSkips is somehow never initialised, add a =0 and everything is
+</I>&gt;<i> &gt; fine... &#160;How can this be different on different platforms?
+</I>&gt;<i>
+</I>&gt;<i> So, remembering previous thoughts on the subject, and the sound init
+</I>&gt;<i> problems on OS X a while back, I looked up how the ELF and Mach-O
+</I>&gt;<i> binary executable formats work.
+</I>&gt;<i>
+</I>&gt;<i> ELF zeroes out BSS, Mach-O has, as far as I can tell, no such
+</I>&gt;<i> requirement.
+</I>
+Apple's own documentation:
+<A HREF="http://developer.apple.com/documentation/Performance/Conceptual/CodeFootprint/Articles/MachOOverview.html">http://developer.apple.com/documentation/Performance/Conceptual/CodeFootprint/Articles/MachOOverview.html</A>
+
+States this:
+&quot;Uninitialized static data is in the __bss section of the __DATA segment.&quot;
+...
+&quot;The ANSI C and C++ standards specify that the system must set uninitialized
+static variables to zero.&quot;
+
+
+&gt;<i> Please don't rely on uninitialized values...
+</I>
+It's not an uninitialized value.
+
+Both static local and _all_ global variables are guaranteed to be
+initialized, to zero if nothing else is specified.  Otherwise the compiler
+doesn't conform to ANSI-C standard.
+
+(I tried to Google for an ANSI-C standard reference, but found only
+some mails where it's stated.  You can check it from the Kernighan &amp;
+Richie &quot;The C program language&quot; (*The* C book, for c89), section
+4.9, Initialization.)
+
+
+&gt;<i> It can happen to anyone, and I cant get gcc to warn me about these
+</I>&gt;<i> (globals) with -Wuninitialized.
+</I>
+No, you cannot.  -Wuninitialized warns about unitialized automatic
+(non-static local) variables and that option is already enabled by -Wall
+used by Hatari.  As I stated above, global variables are initialized by
+definition.
+
+
+&gt;<i> Still, I am sure it can be avoided in the future... :)
+</I>&gt;<i>
+</I>&gt;<i> On another note, i have put memcmp() per line into my converter, and
+</I>&gt;<i> indeed it does help a bit. Next up is changing the blitted rectangle
+</I>&gt;<i> to changed areas only. The compares eat a bit of CPU on their own, but
+</I>&gt;<i> the stress on the X server is much reduced in &quot;good&quot; cases, so I will
+</I>&gt;<i> keep improving on this code. Trying to come up  with some good
+</I>&gt;<i> heuristics as to when to blit, when to compare and so on. Nice and
+</I>&gt;<i> fuzzy suggestions are very welcome.. :)
+</I>
+int ChangedLines[MAX_SCREEN_LINES];
+
+Before entering the converter, do:
+	memset(changed, 0, sizeof(changed));
+
+In the converter, if memcmp() detects line to be changed, set a value
+for corresponding offset in ChangedLines.
+
+The on blit do something like this:
+---------
+	line = 0;
+	while (line &lt; MAX_SCREEN_LINES) {
+		while (!ChangedLines[line] &amp;&amp; line &lt; MAX_SCREEN_LINES) {
+			line++;
+		}
+		startline = line;
+		while (ChangedLines[line] &amp;&amp; line &lt; MAX_SCREEN_LINES) {
+			line++;
+		}
+		if (line &gt; startline) {
+			Screen_BlitLinesBetween(startline, line);
+		}
+	}
+--------
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000505.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+	<LI>Next message: <A HREF="000511.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#506">[ date ]</a>
+              <a href="thread.html#506">[ thread ]</a>
+              <a href="subject.html#506">[ subject ]</a>
+              <a href="author.html#506">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Getting OS call opcode from stack?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Getting%20OS%20call%20opcode%20from%20stack%3F&In-Reply-To=%3C201006250021.55979.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002325.html">
+   <LINK REL="Next"  HREF="002331.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Getting OS call opcode from stack?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Getting%20OS%20call%20opcode%20from%20stack%3F&In-Reply-To=%3C201006250021.55979.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Getting OS call opcode from stack?">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Jun 24 23:21:55 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002325.html">[hatari-devel] Getting OS call opcode from stack?
+</A></li>
+        <LI>Next message: <A HREF="002331.html">[hatari-devel] Getting OS call opcode from stack?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2330">[ date ]</a>
+              <a href="thread.html#2330">[ thread ]</a>
+              <a href="subject.html#2330">[ subject ]</a>
+              <a href="author.html#2330">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 15 June 2010, Gerhard Stoll wrote:
+&gt;<i> ET&gt; My old GEM programmer's reference book seems to mention only 0xC8 as
+</I>&gt;<i> ET&gt; signature for AES calls, what the 0xC9 (201) is for?
+</I>&gt;<i>
+</I>&gt;<i> It is like appl_yield() in PC-GEM 2.0.
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://toshyp.atari.org/en/008003.html">http://toshyp.atari.org/en/008003.html</A>
+</I>
+Does the 201 version have also a Control array like the rest of the AES 
+calls, with some opcode in it?  Or should I just map anything having 201
+in D0 (when trap(2) is called) to appl_yield() opcode (17)?
+
+
+On Thursday 17 June 2010, Gerhard Stoll wrote:
+&gt;<i> &gt; I commited the BIOS/XBIOS/GEMDOS/VDI/AES/Line-A/Line-F opcode
+</I>&gt;<i>
+</I>&gt;<i> I don&#180;t know if it necessary but there is also
+</I>&gt;<i>   move.w #-2, do
+</I>&gt;<i>   trap 2
+</I>&gt;<i> in the VDI.
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://toshyp.atari.org/en/VDI_fundamentals.html#About_20the_20GDOS">http://toshyp.atari.org/en/VDI_fundamentals.html#About_20the_20GDOS</A>
+</I>
+And does this one have a control stucture with some opcode like rest
+of the VDI calls?  Or should I just map it to -2 ($FFFD as I'm handling the
+opcodes as shorts)?
+
+Thanks!
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002325.html">[hatari-devel] Getting OS call opcode from stack?
+</A></li>
+	<LI>Next message: <A HREF="002331.html">[hatari-devel] Getting OS call opcode from stack?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2330">[ date ]</a>
+              <a href="thread.html#2330">[ thread ]</a>
+              <a href="subject.html#2330">[ subject ]</a>
+              <a href="author.html#2330">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

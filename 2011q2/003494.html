@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Twelve%20demo%20bombs%20with%20fast-forward%20and%20freezes%0A%20on%20Falcon%3F&In-Reply-To=%3C4DE55733.8090407%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003493.html">
+   <LINK REL="Next"  HREF="003497.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Twelve%20demo%20bombs%20with%20fast-forward%20and%20freezes%0A%20on%20Falcon%3F&In-Reply-To=%3C4DE55733.8090407%40free.fr%3E"
+       TITLE="[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue May 31 23:01:39 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003493.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes	on Falcon?
+</A></li>
+        <LI>Next message: <A HREF="003497.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes	on Falcon?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3494">[ date ]</a>
+              <a href="thread.html#3494">[ thread ]</a>
+              <a href="subject.html#3494">[ subject ]</a>
+              <a href="author.html#3494">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here are some examples taken from old threads :
+
+<A HREF="https://lists.berlios.de/pipermail/hatari-devel/2010q3/002307.html">https://lists.berlios.de/pipermail/hatari-devel/2010q3/002307.html</A>
+
+<A HREF="https://lists.berlios.de/pipermail/hatari-devel/2010q1/001232.html">https://lists.berlios.de/pipermail/hatari-devel/2010q1/001232.html</A>
+
+There's also voice.prg
+   --&gt; M68000 Bus Error writing at address $ff8901.
+
+I remember there were 2 or 3 more programs with the same problem, but I 
+can't find them.
+
+Regards
+
+Laurent
+
+
+
+
+Le 31/05/2011 21:23, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On sunnuntai 29 toukokuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i> Also, it's supposed to work on monochrome resolution, but for me it bus
+</I>&gt;&gt;<i> errors there:
+</I>&gt;&gt;<i>     M68000 Bus Error reading at address $ff8901.
+</I>&gt;&gt;<i>     M68000 Bus Error writing at address $ff8901.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This is interresting.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've already told about this problem a few month ago, but for Falcon.
+</I>&gt;&gt;<i> There are some programs which are giving the same error at exactly the
+</I>&gt;&gt;<i> same address $ff8901.
+</I>&gt;<i> STF doesn't have sound DMA so I understand why it bombs there, but Falcon
+</I>&gt;<i> has sound DMA...
+</I>&gt;<i>
+</I>&gt;<i> And looking at ioMemTabFalcon.c:
+</I>&gt;<i>          { 0xff8900, SIZE_BYTE, IoMem_ReadWithoutInterception,
+</I>&gt;<i> Crossbar_BufferInter_WriteByte },       /* Crossbar Buffer interrupts */
+</I>&gt;<i>          { 0xff8901, SIZE_BYTE, IoMem_ReadWithoutInterception,
+</I>&gt;<i> Crossbar_DmaCtrlReg_WriteByte },        /* Crossbar control register */
+</I>&gt;<i>          { 0xff8902, SIZE_BYTE, IoMem_VoidRead, IoMem_VoidWrite },
+</I>&gt;<i> /* No bus error here */
+</I>&gt;<i>
+</I>&gt;<i> How it can bus error there on Falcon emulation?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Maybe this problem is not related to monochrom only, as I never test in
+</I>&gt;&gt;<i> monochrome.
+</I>&gt;<i> In Twelve demo case this particular issue is monochrome specific.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;&gt;<i> Regards
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Le 29/05/2011 01:21, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On sunnuntai 29 toukokuu 2011, Eero Tamminen wrote:
+</I>&gt;&gt;&gt;&gt;<i> I just tried Twelve demo:
+</I>&gt;&gt;&gt;&gt;<i> 	<A HREF="http://pouet.net/prod.php?which=56966">http://pouet.net/prod.php?which=56966</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> ST version sounds fine, but I think with STE emulation the sound
+</I>&gt;&gt;&gt;&gt;<i> isn't right (or at least it doesn't sound the same as with ST emu).
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Additionally, if I use &quot;--fastforward yes&quot;, it crashes at startup to:
+</I>&gt;&gt;&gt;&gt;<i> Bus error bget at 00400000
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I remember there were problems also with other demos when using
+</I>&gt;&gt;&gt;&gt;<i> fast-forward with DMA sound.   Any idea yet why?
+</I>&gt;&gt;&gt;<i> Now I tried also Hextracker:
+</I>&gt;&gt;&gt;<i> 	<A HREF="http://dhs.nu/news.php?t=single&amp;ID=750">http://dhs.nu/news.php?t=single&amp;ID=750</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> And it suffers from the same STE issue.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Also, it's supposed to work on monochrome resolution, but for me it bus
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> errors there:
+</I>&gt;&gt;&gt;<i>     M68000 Bus Error reading at address $ff8901.
+</I>&gt;&gt;&gt;<i>     M68000 Bus Error writing at address $ff8901.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I.e. when setting Monochrome monitor, it tries to read DMA registers
+</I>&gt;&gt;&gt;<i> on STF...  I guess that's a bug in the Hextracker.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Twelve has same issue except that after that, I get also:
+</I>&gt;&gt;&gt;<i> ---
+</I>&gt;&gt;&gt;<i> Your Atari program just did something terribly stupid:
+</I>&gt;&gt;&gt;<i> BusErrMem_xlate($99e400fc)
+</I>&gt;&gt;&gt;<i> Illegal ROMmem bput at 99fa0106
+</I>&gt;&gt;&gt;<i> M68000 Bus Error writing at address $99fa0106.
+</I>&gt;&gt;&gt;<i> ---
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> If I use STE+Mono, Hextracker works otherwise fine, but VU-meters&amp;
+</I>&gt;&gt;&gt;<i> digiscope write all over the screen and sound sounds crap.  Could this
+</I>&gt;&gt;&gt;<i> be Hatari monochrome emulation issue?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> (With STE + Mono, Twelve just exits after a long wait.)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> With Falcon (old UAE CPU) emulation, Twelve gets stuck in the
+</I>&gt;&gt;&gt;&gt;<i> beginning (with or without fast-forward).  &quot;profile&quot; command tells
+</I>&gt;&gt;&gt;&gt;<i> that it's
+</I>&gt;&gt;&gt;&gt;<i> looping here:
+</I>&gt;&gt;&gt;<i> ...
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I.e. the code loops on testing Microwire data register for a value it
+</I>&gt;&gt;&gt;&gt;<i> doesn't get.  Is the demo supposed to work on Falcon?
+</I>&gt;&gt;&gt;<i> Hextracker on Falcon has exactly the same issue.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> One more thing, the disk A led is ON also while these are stuck in
+</I>&gt;&gt;&gt;<i> Falcon, I have no idea whether that's relevant though.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> 	- Eero
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003493.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes	on Falcon?
+</A></li>
+	<LI>Next message: <A HREF="003497.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes	on Falcon?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3494">[ date ]</a>
+              <a href="thread.html#3494">[ thread ]</a>
+              <a href="subject.html#3494">[ subject ]</a>
+              <a href="author.html#3494">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

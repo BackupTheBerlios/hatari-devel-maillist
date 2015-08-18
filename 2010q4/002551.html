@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Proposal for a new disassembler in Hatari (2nd try)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Proposal%20for%20a%20new%20disassembler%20in%20Hatari%20%282nd%0A%20try%29&In-Reply-To=%3C4CBF1819.2050304%40defence-force.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002550.html">
+   <LINK REL="Next"  HREF="002641.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Proposal for a new disassembler in Hatari (2nd try)</H1>
+    <B>Mickael Pointier</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Proposal%20for%20a%20new%20disassembler%20in%20Hatari%20%282nd%0A%20try%29&In-Reply-To=%3C4CBF1819.2050304%40defence-force.org%3E"
+       TITLE="[hatari-devel] Proposal for a new disassembler in Hatari (2nd try)">mike at defence-force.org
+       </A><BR>
+    <I>Wed Oct 20 18:26:01 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002550.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)
+</A></li>
+        <LI>Next message: <A HREF="002641.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2551">[ date ]</a>
+              <a href="thread.html#2551">[ thread ]</a>
+              <a href="subject.html#2551">[ subject ]</a>
+              <a href="author.html#2551">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Le 16/10/2010 02:56, Markus Fritze a &#233;crit :
+&gt;<i> *Hi,*
+</I>&gt;<i> *
+</I>&gt;<i> *
+</I>&gt;<i> *I still don't like the weird disassembly output in Hatari, so I wrote 
+</I>&gt;<i> my own (68000..68060/CPU32/PMMU/FPU) disassembler under my own GPL 
+</I>&gt;<i> compatible license :-) I've tested the output against other 
+</I>&gt;<i> disassemblers, noticed they have a bunch of bugs. And tuned it a bit...*
+</I>&gt;<i> *
+</I>&gt;<i> *
+</I>&gt;<i> *Feedback, please :-)*
+</I>&gt;<i> *
+</I>&gt;<i> *
+</I>Mostly I don't like it, in the same way I don't like what EasyRider or 
+most disassemblers are showing :)
+
+Call me weird, but I like everything to be in lowercase (except the 
+function calls that I use in MixeCased and my debugging macros in 
+UPPER_CASE_WITH_UNDERSCORES), without any tabs to align everything.
+
+I also almost never write the parenthesis, and tend to not put the .w 
+after instructions where it's the default size (admittedly I'm not 
+consistent on that one...).
+
+My point is mostly that if you stick to one single way of presenting 
+stuff, there's always going to have somebody who would prefer a 
+different way. So possibly a kind of parametrized pretty printer would 
+be nice to have, if only as to make it possible to reassemble the code 
+(as pointed out by Nicolas).
+
+Parameters I can think of:
+- Reassemble on/off (defines if the address and hex dump on the left 
+side is shown or not)
+- Tabulate/align on/off (defines if there's fixed spacing or just one 
+space to separate the instruction from the parameters
+- Something to define if you get &quot;($1234).w&quot; or &quot;$1234.w&quot;
+- Something to define the case of opcodes/registers
+
+Feel free to ignore me totally :)
+
+     Dbug
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20101020/7b48bfb4/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20101020/7b48bfb4/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002550.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)
+</A></li>
+	<LI>Next message: <A HREF="002641.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2551">[ date ]</a>
+              <a href="thread.html#2551">[ thread ]</a>
+              <a href="subject.html#2551">[ subject ]</a>
+              <a href="author.html#2551">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

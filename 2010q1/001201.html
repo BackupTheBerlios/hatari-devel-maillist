@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari asserts on video interrupts when running	under monochrome
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20asserts%20on%20video%20interrupts%20when%20running%0A%09under%20monochrome&In-Reply-To=%3C201001101949.05595.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001202.html">
+   <LINK REL="Next"  HREF="001333.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari asserts on video interrupts when running	under monochrome</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20asserts%20on%20video%20interrupts%20when%20running%0A%09under%20monochrome&In-Reply-To=%3C201001101949.05595.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Hatari asserts on video interrupts when running	under monochrome">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Jan 10 18:49:05 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001202.html">[hatari-devel] GEMDOS emu new file name lower casing?
+</A></li>
+        <LI>Next message: <A HREF="001333.html">[hatari-devel] Hatari asserts on video interrupts when running	under monochrome
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1201">[ date ]</a>
+              <a href="thread.html#1201">[ thread ]</a>
+              <a href="subject.html#1201">[ subject ]</a>
+              <a href="author.html#1201">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+While testing GEMDOS changes with latest Hatari on TOS 1.4 and monochrome
+screen, I'm seeing frequently asserts from interrupt handling while TOS is
+idling in GEM (usually some time after showing a dialog if that's
+important):
+
+hatari: cycInt.c:377: CycInt_AddRelativeInterruptWithOffset: Assertion 
+`CycleTime &gt;= 0' failed.
+
+Program received signal SIGABRT, Aborted.
+[Switching to Thread 0xb79ad6b0 (LWP 3913)]
+0xb7f7e424 in __kernel_vsyscall ()
+(gdb) bt
+#0  0xb7f7e424 in __kernel_vsyscall ()
+#1  0xb7c26640 in raise () from /lib/i686/cmov/libc.so.6
+#2  0xb7c28018 in abort () from /lib/i686/cmov/libc.so.6
+#3  0xb7c1f5be in __assert_fail () from /lib/i686/cmov/libc.so.6
+#4  0x08053fe6 in CycInt_AddRelativeInterruptWithOffset (CycleTime=-24,
+    CycleType=1, Handler=INTERRUPT_VIDEO_ENDLINE, CycleOffset=0)
+    at cycInt.c:377
+#5  0x08054017 in CycInt_AddRelativeInterrupt (CycleTime=-24, CycleType=1,
+    Handler=INTERRUPT_VIDEO_ENDLINE) at cycInt.c:337
+#6  0x0807e16c in Video_InterruptHandler_EndLine () at video.c:1609
+#7  0x08087179 in m68k_go (may_quit=1) at newcpu.c:1751
+#8  0x0806b444 in M68000_Start () at m68000.c:228
+...
+(gdb) up
+#6  0x0807e16c in Video_InterruptHandler_EndLine () at video.c:1609
+1609                    CycInt_AddRelativeInterrupt ( LineTimerBCycle - 
+LineCycles + nCyclesPerLine,
+(gdb) print LineTimerBCycle
+$1 = 188
+(gdb) print LineCycles
+$2 = 436
+(gdb) print nCyclesPerLine
+$3 = 224
+(gdb) print LineTimerBCycle - LineCycles + nCyclesPerLine
+$4 = -24
+     ^^^
+
+Other video state:
+(gdb) info locals
+FrameCycles = 436
+HblCounterVideo = 1
+LineCycles = 436
+PendingCycles = 24
+(gdb) print nHBL
+$6 = 0
+(gdb) print nScanlinesPerFrame
+$7 = 501
+(gdb) print STRam[0xfffa03]
+$10 = 4 '\004'
+(gdb) print STRam[0xfffa03] &amp; ( 1 &lt;&lt; 3 )
+$11 = 0
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001202.html">[hatari-devel] GEMDOS emu new file name lower casing?
+</A></li>
+	<LI>Next message: <A HREF="001333.html">[hatari-devel] Hatari asserts on video interrupts when running	under monochrome
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1201">[ date ]</a>
+              <a href="thread.html#1201">[ thread ]</a>
+              <a href="subject.html#1201">[ subject ]</a>
+              <a href="author.html#1201">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

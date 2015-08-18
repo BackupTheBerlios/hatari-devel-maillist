@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] evaluate.c headers missing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20evaluate.c%20headers%20missing&In-Reply-To=%3C1256238656.14513.13.camel%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000872.html">
+   <LINK REL="Next"  HREF="000874.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] evaluate.c headers missing</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20evaluate.c%20headers%20missing&In-Reply-To=%3C1256238656.14513.13.camel%40localhost%3E"
+       TITLE="[hatari-devel] evaluate.c headers missing">marndt at asmsoftware.de
+       </A><BR>
+    <I>Thu Oct 22 21:10:56 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000872.html">[hatari-devel] evaluate.c headers missing
+</A></li>
+        <LI>Next message: <A HREF="000874.html">[hatari-devel] evaluate.c headers missing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#873">[ date ]</a>
+              <a href="thread.html#873">[ thread ]</a>
+              <a href="subject.html#873">[ subject ]</a>
+              <a href="author.html#873">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Donnerstag, den 22.10.2009, 21:49 +0300 schrieb Eero Tamminen:
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On Thursday 22 October 2009, Matthias Arndt wrote:
+</I>&gt;<i> &gt; As a quick fix, I replaced your &quot;long long&quot; with a int64_t from stdint.h
+</I>&gt;<i> &gt; and LLONG etc with INT64_MAX and INT64_MIN respectivly.
+</I>&gt;<i> 
+</I>&gt;<i> LLONG_MAX &amp; LLONG_MIN are the reported return values of the standard
+</I>&gt;<i> C99 strtoll() function, documented in its manual page:
+</I>&gt;<i>   <A HREF="http://www.kernel.org/doc/man-pages/online/pages/man3/strtol.3.html">http://www.kernel.org/doc/man-pages/online/pages/man3/strtol.3.html</A>
+</I>&gt;<i> 
+</I>&gt;<i> If you want that to be changed, this tells what to do:
+</I>&gt;<i>   <A HREF="http://www.kernel.org/doc/man-pages/reporting_bugs.html">http://www.kernel.org/doc/man-pages/reporting_bugs.html</A>
+</I>
+Your defines are entirely OS independant and a feature of the platform
+an C compiler in use.
+&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; I hereby propose to officially switch to the standard for Hatari. The
+</I>&gt;<i> &gt; stdint.h which is part of the C99 standard, defines datatypes with
+</I>&gt;<i> &gt; *known* bit sizes and *known* macro names for such constants.
+</I>&gt;<i> 
+</I>&gt;<i> I don't know from which mushrooms you get your standards information :-),
+</I>
+I will try to ignore this insult!
+
+&gt;<i> but long long and LLONG_MAX &amp; LLONG_MIN are most definitely part of C99.
+</I>&gt;<i> 
+</I>&gt;<i> These C99 standard parts have been supported in GCC at least since v. 3.0:
+</I>&gt;<i> 	<A HREF="http://gcc.gnu.org/gcc-3.0/c99status.html">http://gcc.gnu.org/gcc-3.0/c99status.html</A>
+</I>
+
+Yes but they don't seem to be enabled by default. That's why i asked to
+enable them in the Makefile. I tried with the -D__USE_ISOC99 in my
+CFLAGS but it didn't help.
+
+MY /usr/include/limits encapsulates your defines this way.
+
+&gt;<i> I.e. from around year 2000.  I'm pretty sure I remember GCC supporting
+</I>&gt;<i> &quot;long long&quot; in 2.x version too (before C99, as GCC extension).
+</I>
+long long is not the problem but your constants.
+All I ask for is either find a clean and compiler version independant
+way to enable them or replace it with a defined standard that is known
+to work.
+
+stdint.h is one - even if you deny it is. Just google around a bit and
+it is clear.
+
+&gt;<i> Admittedly, the defines can be a bit annoying though as they don't seem to
+</I>&gt;<i> be defined unless you're compiling your code as C99 code.
+</I>
+Then for gods sake tell us how to enable this if it is not done by
+default already....and for the future do not assume such to be enabled
+by default.
+
+Just because something compiles for you, it does not necessarily work
+everywhere with all gcc setups by default.
+
+&gt;<i> I could consider using &quot;long&quot; or &quot;unsigned long&quot; to represent the values
+</I>&gt;<i> (and using strtol() instead of strtoll()), but first there needs to be test
+</I>&gt;<i> code for the evaluation code and some test-cases (expressions) with
+</I>&gt;<i> which I can verify that the calculation results are correct.
+</I>&gt;<i> 
+</I>&gt;<i> I can write the test code tomorrow, please provide example calculations
+</I>&gt;<i> that test doing combined shift, OR, AND, XOR etc operations on values 
+</I>&gt;<i> crossing the 32-bit limit, *and* what results one would get from those on
+</I>&gt;<i> m68k.
+</I>&gt;<i> 
+</I>&gt;<i> (If I'll use 32-bit calculations instead of wider ones, I want the results
+</I>&gt;<i> to correspond to what m68k would give as a result so that it's more useful
+</I>&gt;<i> for debugging / demo coding.)
+</I>
+Obviously that would be the best solution for the whole case.
+
+Matthias
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000872.html">[hatari-devel] evaluate.c headers missing
+</A></li>
+	<LI>Next message: <A HREF="000874.html">[hatari-devel] evaluate.c headers missing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#873">[ date ]</a>
+              <a href="thread.html#873">[ thread ]</a>
+              <a href="subject.html#873">[ subject ]</a>
+              <a href="author.html#873">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

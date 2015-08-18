@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling support to Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3C201005252250.48827.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002000.html">
+   <LINK REL="Next"  HREF="002290.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling support to Hatari debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3C201005252250.48827.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Profiling support to Hatari debugger">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue May 25 21:50:48 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002000.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="002290.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2179">[ date ]</a>
+              <a href="thread.html#2179">[ thread ]</a>
+              <a href="subject.html#2179">[ subject ]</a>
+              <a href="author.html#2179">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 07 May 2010, Eero Tamminen wrote:
+&gt;<i> Next I'll refactor DSP profiling code to work similarly to the CPU code
+</I>&gt;<i> (one can view until one continues emulation),
+</I>
+Attached version does that and shows in addition to counts &amp; cycles
+how many percentages these are of the totals.
+
+Functionality-wise profiling itself is now feature complete.
+
+
+&gt;<i> then I'll add the cycles/count information to disassembly output.
+</I>&gt;<i>
+</I>&gt;<i> (Due to limitation on how that is output, the information is not
+</I>&gt;<i> on disassembly lines, but on lines between them along with
+</I>&gt;<i> the symbol names.)
+</I>
+This is still to be done as is correcting the PC-gives-next-instruction
+issue, but they are minor things.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: profile6.diff
+Type: text/x-diff
+Size: 8859 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100525/e0159041/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100525/e0159041/attachment.diff</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: profile.c
+Type: text/x-csrc
+Size: 22130 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100525/e0159041/attachment.c">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100525/e0159041/attachment.c</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: profile.h
+Type: text/x-chdr
+Size: 1090 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100525/e0159041/attachment.h">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100525/e0159041/attachment.h</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002000.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="002290.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2179">[ date ]</a>
+              <a href="thread.html#2179">[ thread ]</a>
+              <a href="subject.html#2179">[ subject ]</a>
+              <a href="author.html#2179">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

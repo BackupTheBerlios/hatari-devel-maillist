@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100120223125.22d20603%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001288.html">
+   <LINK REL="Next"  HREF="001299.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100120223125.22d20603%40phineus%3E"
+       TITLE="[hatari-devel] CMake build system">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Jan 20 22:31:25 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001288.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001299.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1296">[ date ]</a>
+              <a href="thread.html#1296">[ thread ]</a>
+              <a href="subject.html#1296">[ subject ]</a>
+              <a href="author.html#1296">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 20 Jan 2010 00:57:04 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> On Sunday 10 January 2010, Thomas Huth wrote:
+</I>&gt;<i> &gt; As you might have already seen in the repository, I recently
+</I>&gt;<i> &gt; started to add CMake build files to Hatari. Now I think it's stable
+</I>&gt;<i> &gt; enough so that everybody could have a try.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; First of all, why a new build system? Wasn't the old Makefile-based
+</I>&gt;<i> &gt; built system working well enough? Well, it was most of the time,
+</I>&gt;<i> &gt; but it also had a lot of problems:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; - The autoconf/configure way vs. Makefile-default.cnf:
+</I>&gt;<i> &gt;   I think most developers simply used the Makefile-default.cnf setup
+</I>&gt;<i> &gt;   without taking care of configure.ac - quite understandable, since
+</I>&gt;<i> &gt;   editing configure.ac requires knowledge about the autoconf
+</I>&gt;<i> &gt; &quot;madness&quot;, you have to struggle with M4 and portable shell script
+</I>&gt;<i> &gt; programming, and that's no fun at all.
+</I>&gt;<i> 
+</I>&gt;<i> I think configure &amp; proprietary IDEs are about the only reason to use
+</I>&gt;<i> CMake.
+</I>
+Don't forget the automatic header file dependencies... the current
+setup in Hatari works in most cases, but it's far from being bullet
+proof. With CMake, we would get much better dependency generation, I
+think.
+
+&gt;<i> As long as we don't need to add new additional deps, configure stuff
+</I>&gt;<i> doesn't need to be touched.
+</I>
+Well, portaudio is still missing in configure.ac. Someone should add it
+there before the next release...
+
+&gt;<i> IDE support could be added by people using IDEs, there are so many
+</I>&gt;<i> IDEs out there (Eclipse, KDevelop, Anjuta...).
+</I>
+The problem is here, that you need somebody who actively maintains the
+project files for these IDEs - or you'll end up with something like the
+Xcode project in our repository that always lacks behind.
+With CMake you would get this support for free - considering that the
+project files would really work ;-)
+
+&gt;<i> I think distclean issue is there also with CMake?
+</I>
+The Makefiles from cmake do not have a distclean target by default. But
+I think you can define one on your own.
+
+&gt;<i> &gt; - Our Makefiles only worked with GNU-Make, other derivates like
+</I>&gt;<i> &gt;   BSD-make did not work.
+</I>&gt;<i> 
+</I>&gt;<i> Is this really an issue?  GNU make is so old and standard that it's
+</I>&gt;<i> about universal (maybe not under name make but gmake on some
+</I>&gt;<i> proprietary platforms).
+</I>
+It's not really a big problem, but from time to time there are always
+people who are trying to build Hatari with a non-GNU make... that's why
+the configure script spills out this message about &quot;gmake&quot; at the end.
+
+&gt;<i> &gt; - Our build system did not support out-of-source builds (i.e.
+</I>&gt;<i> &gt;   generating the object files out of the source tree), which is
+</I>&gt;<i> &gt; helpful for cross-compiling and distributors.
+</I>&gt;<i> 
+</I>&gt;<i> This could be added if needed I think.  But first it would need
+</I>&gt;<i> some description how that should work.  Just obj files elsewhere
+</I>&gt;<i> or everything?
+</I>
+I suggest to do it just like the standard &quot;automake&quot; way, since this
+is what people suggest: the object file tree is placed to the folder
+from wherever you call the &quot;configure&quot; script from.
+But I guess the Makefiles would become more complicated and less
+maintainable by this, so I doubt that you want to add and maintain this
+feature &quot;manually&quot;.
+
+&gt;<i> &gt; - The Mac OS X build system is a separate build system. It
+</I>&gt;<i> &gt;   does not get updated automatically when we add or remove a a
+</I>&gt;<i> &gt;   .c file in the main Makefiles. So OS X users often complain
+</I>&gt;<i> &gt;   about the non-working Xcode files.
+</I>&gt;<i> 
+</I>&gt;<i> IMHO for things like that it would be better to use the socket
+</I>&gt;<i> interface instead of building things directly to Hatari.
+</I>
+Building Hatari for Mac OS X is not just about adding the GUI. The
+build system has to take care of the special libraries formats on Mac
+OS X (.dylibs versus Frameworks) and it has to bundle the application
+into a certain folder structure with some additional meta information
+files. It might be possible to do this manually from within a Makefile,
+too, but it is much easier to do with Xcode.
+
+&gt;<i> They people should really complain to their IDE vendors that those
+</I>&gt;<i> IDEs don't support building the huge amount of autoconf + GNU Make
+</I>&gt;<i> projects out there...
+</I>
+autoconf is IMHO a big pain. Supporting this in an IDE would be a huge
+discrepance to the idea that an IDE should ease development...
+
+&gt;<i> &gt; After being quite frustrated of this situation for quite a while, I
+</I>&gt;<i> &gt; recently came across CMake: <A HREF="http://www.cmake.org/">http://www.cmake.org/</A>
+</I>&gt;<i> &gt; CMake is a build system configuration environment, somewhat similar
+</I>&gt;<i> &gt; to what autoconf provides, but with multiple backends and much
+</I>&gt;<i> &gt; easier to use than autoconf:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; - It can generate Makefiles for make, project files for Visual
+</I>&gt;<i> &gt; Studio, Code::Blocks and XCode.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; - It supports library and header file detection (similar to
+</I>&gt;<i> &gt; autoconf)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; - The Makefiles that CMake generates are really cool, they use
+</I>&gt;<i> &gt; colored output, percentage indicator, proper header &lt;-&gt; .c file
+</I>&gt;<i> &gt;   dependencies, out-of-source builds, etc.
+</I>&gt;<i> 
+</I>&gt;<i> You can get colored output for any gcc compilation by installing
+</I>&gt;<i> &quot;colorgcc&quot;.
+</I>&gt;<i> 
+</I>&gt;<i> Percentage indicator of what?
+</I>
+Oh, come on, Eero, just give it a try. Simply do an &quot;apt-get install
+cmake &amp;&amp; cmake . &amp;&amp; make&quot; and you'll see.
+
+&gt;<i> &gt;From what I've read, the language is uglyish and changes from time
+</I>&gt;<i> &gt;to time
+</I>&gt;<i> (needed changes to support KDE if I remember right).  If it would use
+</I>&gt;<i> some real languge (e.g. Lua what they've considered) instead of their
+</I>&gt;<i> own hack, and it mature a bit more, I could try it out.   Maybe in a
+</I>&gt;<i> year or two..
+</I>
+Well, I think the language is quite easy to use. At least it is _much_
+better than the M4 + shell script mix that you have to use for autoconf!
+
+And by the way, normal Makefile syntax is also very crappy and error
+prone - it's just that we are used enough to it to not notice this
+anymore... just try to remember your first steps with Makefiles...
+&quot;What, I have to use TABs here? Why can't I use spaces? ... etc.&quot;
+
+&gt;<i> &gt; Then please have a look at the CMakeLists.txt files to see whether
+</I>&gt;<i> &gt; you like the CMake syntax or not (and compare it to
+</I>&gt;<i> &gt; configure.ac ;-) )
+</I>&gt;<i> 
+</I>&gt;<i> I prefer using just pkg-config in Makefile now that pkg-config is
+</I>&gt;<i> actually used by nearly everything (including X) on Linux...
+</I>
+pkg-config is ok... as long as you _only_ support Linux. As soon as you
+try to support other Unix-like operating systems as well, you need
+something like a configure script, sooner or later.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001288.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001299.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1296">[ date ]</a>
+              <a href="thread.html#1296">[ thread ]</a>
+              <a href="subject.html#1296">[ subject ]</a>
+              <a href="author.html#1296">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

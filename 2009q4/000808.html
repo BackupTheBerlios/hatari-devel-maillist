@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Troubles compiling latest Hatari with new avi support
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%20support&In-Reply-To=%3Calpine.LMD.2.00.0910101205070.32352%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000805.html">
+   <LINK REL="Next"  HREF="000810.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Troubles compiling latest Hatari with new avi support</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%20support&In-Reply-To=%3Calpine.LMD.2.00.0910101205070.32352%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Troubles compiling latest Hatari with new avi support">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Oct 10 12:12:08 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000805.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+        <LI>Next message: <A HREF="000810.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#808">[ date ]</a>
+              <a href="thread.html#808">[ thread ]</a>
+              <a href="subject.html#808">[ subject ]</a>
+              <a href="author.html#808">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 10 Oct 2009, Jerome Vernet wrote:
+
+&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+</I>&gt;&gt;<i> On Fri, 9 Oct 2009, Jerome Vernet wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I've also some trouble to build under OSX (from the XCode Project): I
+</I>&gt;&gt;&gt;<i> get this message:
+</I>&gt;&gt;&gt;<i> Undefined symbols:
+</I>&gt;&gt;&gt;<i>  &quot;_ScreenSnapShot_SavePNG_ToFile&quot;, referenced from:
+</I>&gt;&gt;&gt;<i>      _AviRecordVideoStream in avi_record.o
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> and cannot find any sources for this.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Jerome
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ScreenSnapShot_SavePNG_ToFile is defined in screenSnapShot.c, so be sure
+</I>&gt;&gt;<i> to have all files updated.
+</I>&gt;&gt;<i>
+</I>&gt;<i> Ok. I needed to add preprocessor def HAVE_LIBPNG to the project, and
+</I>&gt;<i> path to libpng. I also changed #if HAVE_LIBPNG to #ifdef HAVE_LIBPNG ;).
+</I>
+Hello,
+
+do you mean that if you use &quot;#if HAVE_LIBPNG&quot; it wouldn't compile ?
+In that case, you should not use &quot;-DHAVE_LIBPNG&quot; but &quot;-DHAVE_LIBPNG=1&quot; 
+(although this is supposed to be the same according to gcc doc).
+
+Also, I see you modified &quot;include log.h&quot; to &quot;include debug/log.h&quot; ; this 
+is not required if you add &quot;debug&quot; to the include search path &quot;-Idebug&quot;
+
+&gt;<i> Hatari launching, starting to record but hang here:
+</I>&gt;<i> png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+</I>&gt;<i> if the Falcon screen goes black.
+</I>&gt;<i> More over, the &quot;Stop recording&quot; button in the pref panel doesn't work
+</I>&gt;<i> for me (hang hatri also).
+</I>
+Can't really say, this is certainly a problem with some osx libraries, but 
+I can't test this myself.
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> As for the XCode project, I think someone with osx knowledge should update
+</I>&gt;&gt;<i> the hg version as it's clearly outdated and lacks some files.
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I have an updated XCode project than curently build, but how can I send
+</I>&gt;<i> it to you ?
+</I>
+Thanks for the diff ; Thomas, could you have a look at it to see if this 
+can be included in hg ? Or should I push it, since current xcodeproj is 
+outdated anyway ?
+
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000805.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+	<LI>Next message: <A HREF="000810.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#808">[ date ]</a>
+              <a href="thread.html#808">[ thread ]</a>
+              <a href="subject.html#808">[ subject ]</a>
+              <a href="author.html#808">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

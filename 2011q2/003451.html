@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Regression when restoring desktop.inf
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Regression%20when%20restoring%20desktop.inf&In-Reply-To=%3C201105182246.15178.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003447.html">
+   <LINK REL="Next"  HREF="003452.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Regression when restoring desktop.inf</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Regression%20when%20restoring%20desktop.inf&In-Reply-To=%3C201105182246.15178.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Regression when restoring desktop.inf">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed May 18 21:46:15 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003447.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+        <LI>Next message: <A HREF="003452.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3451">[ date ]</a>
+              <a href="thread.html#3451">[ thread ]</a>
+              <a href="subject.html#3451">[ subject ]</a>
+              <a href="author.html#3451">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 18 toukokuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Yes, desktop.inf is correctly read in all case for me, because all
+</I>&gt;<i> windows are correctly restored at their right place. The only problem is
+</I>&gt;<i> that the resolution is not restored.
+</I>&gt;<i> 
+</I>&gt;<i> I wonder if the tos tests some file attribute/date on desktop.inf to
+</I>&gt;<i> decide the resolution should be restored or not, and this could be the
+</I>&gt;<i> cause of the problem.
+</I>
+If you check the full GEMDOS trace, you see that it isn't doing any file
+attribute/date checks.
+
+The get trace just of the Desktop parsing and its effects, you can set up
+breakpoint &amp; tracing for it like this:
+----
+# run debugger commands from fopen.ini when Fopen() is called
+echo &quot;b GemdosOpcode = 0x3D :trace :file fopen.ini&quot; &gt; break.ini
+# trace all kinds of things after that
+echo &quot;--bios-intercept --trace gemdos,xbios,fdc,io_all&quot; &gt; fopen.ini
+# and exit Hatari after 4 VBLs
+echo &quot;setopt --run-vbls 4&quot; &gt;&gt; fopen.ini
+----
+
+Then just do:
+	hatari --tos tos162de.img --parse break.ini -d . 2&gt;&amp;1 trace.txt
+
+To get trace of Gemdos &amp; XBios and IO register reads &amp; writes that start
+from opening the desktop.inf and ending a bit after resolution would be
+changed.  (FDC shows VBLs which helps in getting suitable --run-vbls value)
+
+I didn't see anything suspicious there.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003447.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+	<LI>Next message: <A HREF="003452.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3451">[ date ]</a>
+              <a href="thread.html#3451">[ thread ]</a>
+              <a href="subject.html#3451">[ subject ]</a>
+              <a href="author.html#3451">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

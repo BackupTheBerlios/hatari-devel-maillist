@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] cmake doesn't find readline
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cmake%20doesn%27t%20find%20readline&In-Reply-To=%3Calpine.LMD.2.00.1002211436390.12959%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001499.html">
+   <LINK REL="Next"  HREF="001501.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] cmake doesn't find readline</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cmake%20doesn%27t%20find%20readline&In-Reply-To=%3Calpine.LMD.2.00.1002211436390.12959%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] cmake doesn't find readline">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Feb 21 14:43:07 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001499.html">[hatari-devel] Aniplayer DSP issues?
+</A></li>
+        <LI>Next message: <A HREF="001501.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1500">[ date ]</a>
+              <a href="thread.html#1500">[ thread ]</a>
+              <a href="subject.html#1500">[ subject ]</a>
+              <a href="author.html#1500">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hello,
+
+as I never tried cmake before, I gave it a try today. It works fine, 
+except it doesn't correctly detect readline in my case.
+The library is detected (and it works, as I used it before with make), but 
+the rl_filename_completion_function detection doesn't work :
+
+-- Found READLINE: /lib/libreadline.so
+-- Looking for rl_filename_completion_function
+-- Looking for rl_filename_completion_function - not found
+
+in CMakeError.log :
+
+Determining if the function rl_filename_completion_function exists failed 
+with the following output:
+Change Dir: /home/npomarede/src/hatari-work/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/gmake &quot;cmTryCompileExec/fast&quot;
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make 
+CMakeFiles/cmTryCompileExec.dir/build
+gmake[1]: entrant dans le r&#233;pertoire &#171; 
+/home/npomarede/src/hatari-work/CMakeFiles/CMakeTmp &#187;
+/usr/bin/cmake -E cmake_progress_report 
+/home/npomarede/src/hatari-work/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
+/usr/bin/gcc   -DCHECK_FUNCTION_EXISTS=rl_filename_completion_function 
+-o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c 
+/usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec
+/usr/bin/cmake -E cmake_link_script 
+CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
+/usr/bin/gcc     -DCHECK_FUNCTION_EXISTS=rl_filename_completion_function 
+CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o 
+cmTryCompileExec -rdynamic
+CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o: In function 
+`main':
+CheckFunctionExists.c:(.text+0x7): undefined reference to 
+`rl_filename_completion_function'
+collect2: ld a retourn&#233; 1 code d'&#233;tat d'ex&#233;cution
+gmake[1]: quittant le r&#233;pertoire &#171; 
+/home/npomarede/src/hatari-work/CMakeFiles/CMakeTmp &#187;
+gmake[1]: *** [cmTryCompileExec] Erreur 1
+gmake: *** [cmTryCompileExec/fast] Erreur 2
+
+
+I have the feeling that unless with X11 for example where -lX11 is added, 
+here we don't have -lreadline added to gcc, which would explain why ldd is 
+exiting with an error.
+
+In the end HAVE_READLINE is not defined in config.h
+
+Thomas, do you have an idea (or maybe others encountered this too) ?
+
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001499.html">[hatari-devel] Aniplayer DSP issues?
+</A></li>
+	<LI>Next message: <A HREF="001501.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1500">[ date ]</a>
+              <a href="thread.html#1500">[ thread ]</a>
+              <a href="subject.html#1500">[ subject ]</a>
+              <a href="author.html#1500">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

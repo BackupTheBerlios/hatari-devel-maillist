@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Steem is now open source
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Steem%20is%20now%20open%20source&In-Reply-To=%3C4E0EF9B8.3070800%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003626.html">
+   <LINK REL="Next"  HREF="003632.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Steem is now open source</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Steem%20is%20now%20open%20source&In-Reply-To=%3C4E0EF9B8.3070800%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Steem is now open source">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Jul  2 12:58:00 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003626.html">[hatari-devel] Steem is now open source
+</A></li>
+        <LI>Next message: <A HREF="003632.html">[hatari-devel] Steem is now open source
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3631">[ date ]</a>
+              <a href="thread.html#3631">[ thread ]</a>
+              <a href="subject.html#3631">[ subject ]</a>
+              <a href="author.html#3631">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 02/07/2011 09:13, Christer Solskogen a &#233;crit :
+&gt;<i> But I've guess you already know:)
+</I>
+Well, no, I didn't :)  Thanks for reporting it.
+
+I just had a quick look at the code (which is rather &quot;compact&quot; not 
+always easy to read :) ) and the interesting part is that documentation 
+for pasti.dll is included, as well as the header file with the structure 
+of the different data.
+This could be really helpful to write our own pasti implementation as 
+this help understanding the disk format (sarnau also wrote a very good 
+reverse engineering doc on pasti to complement this).
+
+Regarding Hatari's emulation, I'm not sure it can help improving 
+accuracy in Hatari. IMO, we already reached a far better overall 
+compatibility level than Steem.
+
+But in some cases where Steem has better support for a particular 
+game/demo, it could be helpful to see how they handled it (although I 
+prefer figuring it out myself, much more fun :) )
+
+
+So, if you know some program that work correctly under Steem and not 
+Hatari, just let us know.
+
+Another good news with the source release is that I will be able to 
+compile an up to date linux binary that use the most recent alsa/audio 
+driver, as the latest release steem binary really has problem when alsa 
+or pulseaudio are used instead of OSS driver (no sound output).
+
+
+And good move from Steem's authors, I don't know if some coders will 
+work on this sources to add new functionnalities, but at least it will 
+help ensuring it can be built on more recent OS versions (windows or linux).
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003626.html">[hatari-devel] Steem is now open source
+</A></li>
+	<LI>Next message: <A HREF="003632.html">[hatari-devel] Steem is now open source
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3631">[ date ]</a>
+              <a href="thread.html#3631">[ thread ]</a>
+              <a href="subject.html#3631">[ subject ]</a>
+              <a href="author.html#3631">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

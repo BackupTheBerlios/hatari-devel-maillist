@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Big problems with bus error on Falcon
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Big%20problems%20with%20bus%20error%20on%20Falcon&In-Reply-To=%3C20100116101046.83570%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001232.html">
+   <LINK REL="Next"  HREF="001253.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Big problems with bus error on Falcon</H1>
+    <B>Thomas H.</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Big%20problems%20with%20bus%20error%20on%20Falcon&In-Reply-To=%3C20100116101046.83570%40gmx.net%3E"
+       TITLE="[hatari-devel] Big problems with bus error on Falcon">th.huth at gmx.de
+       </A><BR>
+    <I>Sat Jan 16 11:10:46 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001232.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+        <LI>Next message: <A HREF="001253.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1234">[ date ]</a>
+              <a href="thread.html#1234">[ thread ]</a>
+              <a href="subject.html#1234">[ subject ]</a>
+              <a href="author.html#1234">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Datum: Thu, 14 Jan 2010 23:28:52 +0100
+</I>&gt;<i> Von: Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;
+</I>
+&gt;<i> It's too interesting, I take 5 minutes to answear ;)
+</I>&gt;<i> 
+</I>&gt;<i> &gt; This is address 0xff800A.  According to docs it's unassigned.
+</I>&gt;<i> 
+</I>&gt;<i> That's why I'm asking myself that on the real computer, reading (or 
+</I>&gt;<i> writing to) an unasigned area does not generate a bus error as it does 
+</I>&gt;<i> on hatari. (it's just a guess, I have no clue).
+</I>
+Most unassigned adresses cause an bus error on real hardware, however certain memory regions do not and simply &quot;ignore&quot; the access. I think this depends on the address decoder of the corresponding hardware area.
+
+&gt;<i> 
+</I>&gt;<i> &gt; Another strange thing : the game conquest stops with a bus error at
+</I>&gt;<i> &gt; address $ff8901.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Did it try to read or write a word from an odd address?
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> I don't know, I'll have to look at the code.
+</I>
+In that case you would get an adress error instead of an bus error. But only with 68000 CPU since the 68030 can access odd addresses with word access, too.
+
+
+Are you sure about the address? FF8901 seems to be mapped right in ioMemTabFalcon.c...
+Could you maybe do a cpu_disasm trace run and paste the last dozend instructions before the crash here?
+
+&gt;<i> Which docs do you use ?
+</I>&gt;<i> I use the compendium and the hardware.txt docs.
+</I>
+Docs are often wrong, especially the Falcon docs. I suggest to always think twice before blindly following a documentation text and test it with real hardware if possible... (maybe you could get/borrow a used Falcon somewhere, Laurent?)
+
+&gt;<i> &gt; Btw. I was looking at the current Falcon mappings:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; For example:
+</I>&gt;<i> &gt;         { 0xff8006, SIZE_WORD, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> &gt; IoMem_WriteWithoutInterception }, /* Falcon configuration */
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; *Byte* at 0xff8006 is monitor type (programs cannot change), but
+</I>&gt;<i> &gt; the next byte is Falcon processor control byte:
+</I>&gt;<i> &gt; 	bit 0: 030 speed (set 16Mhz, unset 8Mhz)
+</I>&gt;<i> &gt; 	bit 2: blitter speed (set 16Mhz, unset 8Mhz)
+</I>&gt;<i> &gt; 	bit 5: STE bus emulation (0=on, 1=off)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Shouldn't we emulate at least the first two bits?
+</I>&gt;<i> &gt;   
+</I>&gt;<i> 
+</I>&gt;<i> Yes, probably. If it's not too hard to emulate ;)
+</I>
+Monitor bits already emulated, search for ff8006 in stMem.c.
+However, you might want to add a real handler function for this register since it is currently possible that a Falcon program overwrites these monitor bits in this register, which might not be possible on real hardware.
+
+
+&gt;<i> &gt; Then:
+</I>&gt;<i> &gt;         { 0xff800A, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> &gt; IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i> &gt;         { 0xff800C, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> &gt; IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i> &gt;         { 0xff8060, SIZE_LONG, IoMem_VoidRead, 
+</I>&gt;<i> &gt; IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; According to my documentation whole 0xff8008 - 0xff81ff range is
+</I>&gt;<i> unassigned.
+</I>&gt;<i> &gt; Why these particular addresses are singled out, why all the (503)
+</I>&gt;<i> addresses
+</I>&gt;<i> &gt; in this range aren't the same?
+</I>&gt;<i> &gt;   
+</I>&gt;<i> Perhaps because Thomas added them one by one when he discovered and 
+</I>&gt;<i> corrected bus error for specifics programs (the same way I did it for 
+</I>&gt;<i> illusion). Thomas ?
+</I>
+I once wrote a little test program that steps through all IO memory addresses and tests which addresses cause a bus error and which do not. I then run this program on both, real hardware and the emulator and changed the ioMemTab according to the real hardware behaviour. So I am pretty sure that the IO bus error regions are already accurate in Hatari.
+
+I can supply you with this test program next week (I am currently not at home), so you can compare yourself. (Just remind me again if I forget ;-) )
+
+&gt;<i> &gt; Then to video handling...
+</I>&gt;<i> &gt; ...
+</I>&gt;<i> &gt; So I guess display size can be wrong?
+</I>&gt;<i> &gt;   
+</I>&gt;<i> 
+</I>&gt;<i> Yes, I think so too, but Videl Emulation is quite incomplete for now.
+</I>&gt;<i> I think I'll give it a try one of these days (but I don't feel as 
+</I>&gt;<i> comfortable with video than I was with crossbar).
+</I>&gt;<i> &gt; According to my documentation, 0xff860e - 0xff86ff is unassigned,
+</I>&gt;<i> &gt; is this a bug:
+</I>&gt;<i> &gt;         { 0xff860e, SIZE_BYTE, IoMem_VoidRead, 
+</I>&gt;<i> &gt; IoMem_VoidWrite },                               /* No bus error here */
+</I>
+All lines that are marked with &quot;No bus error here&quot; have been verified by myself with my test program. I don't think that you have to change anything here.
+
+&gt;<i> &gt;         { 0xff860f, SIZE_BYTE, FDC_FloppyMode_ReadByte, 
+</I>&gt;<i> &gt; FDC_FloppyMode_WriteByte },             /* Floppy mode (?) register */
+</I>&gt;<i> &gt;   
+</I>&gt;<i> Again, some patchs added one by one to let the falcon run ?
+</I>
+IIRC this is a real (ie. working) register on the Falcon which has something to do with the Ajax floppy disk controller. It's just _very_ hard to find documentation about this regiser. See bottom of fdc.c.
+
+&gt;<i> Perhaps the good way would be to put all unasigned areas as 
+</I>&gt;<i> readvoid/writevoid ?
+</I>
+I think most of the unassigned regs that don't generate bus errors already use the ReadVoid and WriteVoid functions. I don't think that you've got to change much here, it should be pretty accurate already.
+
+&gt;<i> &gt; 0xff8700 - 0xff878e are SCSI registers with the areas 0xff8716 -
+</I>&gt;<i> 0xff877f - 
+</I>&gt;<i> &gt; and 0xff8790 - 0xff879f being unassigned.  ioMemTabFalcon didn't have
+</I>&gt;<i> &gt; anything on them.  Would be good to have comment on them.
+</I>&gt;<i> &gt;   
+</I>&gt;<i> I don't know here.
+</I>
+A comment in the source code would be certainly good. Though the most docs only talk about TT SCSI registers... not sure whether they are the same on Falcon.
+
+&gt;<i> &gt; Microwire registers not implemented:
+</I>&gt;<i> &gt;         { 0xff8922, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> &gt; IoMem_VoidWrite },                                     /* Microwire data
+</I>&gt;<i> */
+</I>&gt;<i> &gt;         { 0xff8924, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> &gt; IoMem_VoidWrite },                                     /* Microwire mask
+</I>&gt;<i> */
+</I>&gt;<i> &gt;   
+</I>&gt;<i> Microwire doesn't exist on Falcon. I've left the 2 registers here just 
+</I>&gt;<i> in case.
+</I>&gt;<i> Perhaps they should be removed. (except if as I suppose, all N/A areas 
+</I>&gt;<i> should be void read / write).
+</I>
+Someone should verify these registers on real Falcon, but I am sure that they do not generate a bus error there (or a lot of STE programs would simply crash on Falcon).
+
+&gt;<i> &gt; These were not in my document, what the crossbar thing does here?
+</I>&gt;<i> &gt;         { 0xff893b, SIZE_BYTE, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> &gt; IoMem_WriteWithoutInterception }, /* No bus error here */
+</I>&gt;<i> &gt;         { 0xff893c, SIZE_WORD, Crossbar_CodecStatus_ReadWord, 
+</I>&gt;<i> &gt; Crossbar_CodecStatus_WriteWord }, /* CODEC status */
+</I>&gt;<i> &gt;         { 0xff893e, SIZE_WORD, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> &gt; IoMem_WriteWithoutInterception }, /* No bus error here */
+</I>&gt;<i> &gt; ?
+</I>&gt;<i> &gt;   
+</I>&gt;<i> 0xff893b : N/A ? I don't know here (it's just here in case of a program 
+</I>&gt;<i> access to address 3a with a word.
+</I>
+No, that case would already be handled by the code in ioMem.c.
+On real hardware when you've got a register of one byte size followed by an address that generates an bus error when accessed with &quot;move.b&quot;, you also do not get a bus error when you access both addresses at a time with &quot;move.w&quot;. So this case is already handled in ioMem.c (see the nBusErrorAccesses variable there).
+
+I think this 0xff893b line is there because my bus error test program did not report an bus error at that address when it tried to access it in byte mode, so this address never generates a bus error on real hardware.
+
+ 
+&gt;<i> &gt; SCC DMA and port registers not implemented:
+</I>&gt;<i> &gt;         { 0xff8c80, 8, IoMem_VoidRead, 
+</I>&gt;<i> &gt; IoMem_WriteWithoutInterception },                        /* TODO: SCC */
+</I>&gt;<i> &gt;   
+</I>&gt;<i> 
+</I>&gt;<i> I Don't know what is SCC.
+</I>
+IIRC that's the serial port of the Falcon.
+
+ Thomas
+
+-- 
+Jetzt kostenlos herunterladen: Internet Explorer 8 und Mozilla Firefox 3.5 -
+sicherer, schneller und einfacher! <A HREF="http://portal.gmx.net/de/go/atbrowser">http://portal.gmx.net/de/go/atbrowser</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001232.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+	<LI>Next message: <A HREF="001253.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1234">[ date ]</a>
+              <a href="thread.html#1234">[ thread ]</a>
+              <a href="subject.html#1234">[ subject ]</a>
+              <a href="author.html#1234">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

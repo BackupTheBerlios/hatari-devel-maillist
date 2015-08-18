@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Midi support broken?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Midi%20support%20broken%3F&In-Reply-To=%3C200901170109.51246.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000030.html">
+   <LINK REL="Next"  HREF="000047.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Midi support broken?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Midi%20support%20broken%3F&In-Reply-To=%3C200901170109.51246.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Midi support broken?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Jan 17 00:09:51 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000030.html">[hatari-devel] Midi support broken?
+</A></li>
+        <LI>Next message: <A HREF="000047.html">[hatari-devel] Midi works fine (was: Midi support broken?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#31">[ date ]</a>
+              <a href="thread.html#31">[ thread ]</a>
+              <a href="subject.html#31">[ subject ]</a>
+              <a href="author.html#31">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 17 January 2009, Thomas Huth wrote:
+&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;<i> &gt; However, I've tried to get the MIDI networking working (using either
+</I>&gt;<i> &gt; m.o.c. or midimaze) and that fails.  Midimaze says &quot;midi-ring boo boo&quot;
+</I>&gt;<i> &gt; and moc just freezes when connecting.
+</I>&gt;<i>
+</I>&gt;<i> ACIA GPIP emulation was still missing... please update and try again.
+</I>&gt;<i> I've successfully tested MIDIMaze and Oxyd 2 so far...
+</I>
+Will do next week...
+
+
+&gt;<i> &gt; I've tried this with:
+</I>&gt;<i> &gt; $ socat -b1 PIPE:hatari1.pipe  PIPE:hatari2.pipe &amp;
+</I>&gt;<i> &gt; $&#160;hatari --midi hatari1.pipe &amp;
+</I>&gt;<i> &gt; $&#160;hatari --midi hatari2.pipe &amp;
+</I>&gt;<i>
+</I>&gt;<i> That does not seem to work because socat seems to echo the characters
+</I>&gt;<i> in PIPE-mode when one end is opened in both, read and write mode.
+</I>&gt;<i>
+</I>&gt;<i> But you can do the following - it works for me:
+</I>&gt;<i>
+</I>&gt;<i> socat PTY,raw,echo=0,link=/tmp/midi1 PTY,raw,echo=0,link=/tmp/midi2
+</I>&gt;<i> hatari --midi /tmp/midi1 &amp;
+</I>&gt;<i> hatari --midi /tmp/midi2 &amp;
+</I>
+Great, thanks, I'll add this to the alsa-midi.txt networking section.
+
+
+&gt;<i> &gt; And with:
+</I>&gt;<i> &gt; $ socat -b1 -v -x PIPE:hatari1-out.pipe PIPE:hatari2-in.pipe
+</I>&gt;<i> &gt; $ socat -b1 -v -x PIPE:hatari2-out.pipe PIPE:hatari1-in.pipe
+</I>&gt;<i> &gt; $&#160;hatari &amp;
+</I>&gt;<i> &gt; $&#160;hatari &amp;
+</I>&gt;<i> &gt; (and connecting the midi I/O appropriately.)
+</I>&gt;<i>
+</I>&gt;<i> That could work, but you then could also use two normal named pipes
+</I>&gt;<i> instead, which you can create with the &quot;mkfifo&quot; command. 
+</I>
+It's not quite the same.
+
+From &quot;fifo&quot; manual:
+	The FIFO must be opened on both ends (reading and writing) before data
+	can be  passed.   Normally, opening the FIFO blocks until the other end is
+	opened also.
+
+I.e. The Hatari instances should open the fifos in same order, but because
+both open the output one first, I think they would deadlock.
+
+
+&gt;<i> &gt; PS. Midi_Init seems to be called only at startup, from main.c, not
+</I>&gt;<i> &gt; after changing the files from the internal GUI.
+</I>&gt;<i>
+</I>&gt;<i> Ok, thanks for the hint, that's fixed now.
+</I>&gt;<i>
+</I>&gt;<i> &gt; And from command line one cannot give separate input and output
+</I>&gt;<i> &gt; files (needed for making a midi ring?).
+</I>&gt;<i>
+</I>&gt;<i> That could be useful, can you add such options?
+</I>&gt;<i> Shall the normal --midi option then be removed?
+</I>
+Well, we could leave --midi work like now for convenience and add
+--midi-in for setting the input file name if it needs to be separate
+(i.e. it would need to be given after --midi is set). 
+
+I guess same should them be done for RS232, --rs232 would set both
+input and output files and --rs232-in would overide just the input side.
+
+Would that make sense?
+
+
+&gt;<i> &gt; Midi_Init() has also minor issue that it:
+</I>&gt;<i> &gt; - doesn't check whether filename is empty before trying to open
+</I>&gt;<i> &gt;   MIDI in/out
+</I>&gt;<i>
+</I>&gt;<i> Shouldn't that rather be handled by File_Open instead (which then
+</I>&gt;<i> should return a NULL pointer)?
+</I>
+In the case midi file name is empty, it shouldn't be tried to be opened.
+
+If there's an error (NULL) returned by Midi I/O file open, user should
+be notified with a dialog. I can add that.
+
+(&quot;/dev/snd/midiC1D0&quot; being used for default midi file names isn't a problem
+because MIDI is disabled by default.  If user enables MIDI, he should
+correct the file names too.)
+
+
+&gt;<i> &gt; - it disables midi if either in or out file opening fails
+</I>&gt;<i> &gt; I.e. both need to have valid filenames or Midi's disabled.  I don't
+</I>&gt;<i> &gt; think it's so serious that Midi input opening fails.
+</I>&gt;<i>
+</I>&gt;<i> Ok, right, you might have a MIDI device which is output only, too.
+</I>&gt;<i> I've changed the code now so that failures here are not considered as
+</I>&gt;<i> fatal anymore.
+</I>
+Thanks!
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000030.html">[hatari-devel] Midi support broken?
+</A></li>
+	<LI>Next message: <A HREF="000047.html">[hatari-devel] Midi works fine (was: Midi support broken?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#31">[ date ]</a>
+              <a href="thread.html#31">[ thread ]</a>
+              <a href="subject.html#31">[ subject ]</a>
+              <a href="author.html#31">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

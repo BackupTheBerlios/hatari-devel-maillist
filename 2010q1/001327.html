@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Wotanoid problem : final fix before commit ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wotanoid%20problem%20%3A%20final%20fix%20before%20commit%20%3F&In-Reply-To=%3C4B5C2A07.2040009%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001326.html">
+   <LINK REL="Next"  HREF="001329.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Wotanoid problem : final fix before commit ?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wotanoid%20problem%20%3A%20final%20fix%20before%20commit%20%3F&In-Reply-To=%3C4B5C2A07.2040009%40free.fr%3E"
+       TITLE="[hatari-devel] Wotanoid problem : final fix before commit ?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Jan 24 12:07:51 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001326.html">[hatari-devel] Wotanoid problem : Fixed for me ;)
+</A></li>
+        <LI>Next message: <A HREF="001329.html">[hatari-devel] Wotanoid problem : final fix before commit ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1327">[ date ]</a>
+              <a href="thread.html#1327">[ thread ]</a>
+              <a href="subject.html#1327">[ subject ]</a>
+              <a href="author.html#1327">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've changed the Size type from Sint32 to Uint32.
+
+If you're OK with this, I can commit tonight.
+
+RQ : compendium says that if Size ==0, it  generates a system crach on 
+GEMDOS version lower than 0.15.
+Should this be emulated ?
+
+Regards
+
+Laurent
+
+
+
+diff -r ebc4d432fc2e src/gemdos.c
+--- a/src/gemdos.c    Fri Jan 22 00:44:43 2010 +0100
++++ b/src/gemdos.c    Sun Jan 24 12:03:32 2010 +0100
+@@ -1718,7 +1718,7 @@
+     char *pBuffer;
+     long CurrentPos, FileSize, nBytesRead, nBytesLeft;
+     Uint32 Addr;
+-    Sint32 Size;
++    Uint32 Size;
+     int Handle;
+ 
+     /* Read details from stack */
+@@ -1746,9 +1746,9 @@
+     fseek(FileHandles[Handle].FileHandle, CurrentPos, SEEK_SET);
+ 
+     nBytesLeft = FileSize-CurrentPos;
+-   
++
+     /* Check for bad size and End Of File */
+-    if (Size &lt;= 0 || nBytesLeft &lt;= 0)
++    if (Size == 0 || nBytesLeft &lt;= 0)
+     {
+         /* return zero (bytes read) as original GEMDOS/EmuTOS */
+         Regs[REG_D0] = 0;
+diff -r ebc4d432fc2e src/ioMemTabFalcon.c
+--- a/src/ioMemTabFalcon.c    Fri Jan 22 00:44:43 2010 +0100
++++ b/src/ioMemTabFalcon.c    Sun Jan 24 12:03:32 2010 +0100
+@@ -236,6 +236,7 @@
+ 
+     { 0xff9200, SIZE_WORD, Joy_StePadButtons_ReadWord, 
+IoMem_WriteWithoutInterception },    /* Joypad fire buttons */
+     { 0xff9202, SIZE_WORD, Joy_StePadMulti_ReadWord, 
+Joy_StePadMulti_WriteWord },     /* Joypad directions/buttons/selection */
++    { 0xff9206, SIZE_BYTE, IoMem_VoidRead, IoMem_VoidWrite 
+},                               /* No bus error here ; fix Wotanoid*/
+     { 0xff9210, SIZE_BYTE, IoMem_VoidRead, IoMem_VoidWrite 
+},                               /* No bus error here */
+     { 0xff9211, SIZE_BYTE, IoMem_VoidRead, 
+IoMem_WriteWithoutInterception },          /* Joypad 0 X position (?) */
+     { 0xff9212, SIZE_BYTE, IoMem_VoidRead, IoMem_VoidWrite 
+},                               /* No bus error here */
+
+
+
+
+Laurent Sallafranque a &#233;crit :
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> I was really tired yesterday.
+</I>&gt;<i>
+</I>&gt;<i> The corect code is of course :
+</I>&gt;<i>
+</I>&gt;<i>     if (Size == -1)
+</I>&gt;<i>         Size = FileSize;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> But I think Size should be declared as unsigned instead of signed.
+</I>&gt;<i>
+</I>&gt;<i> Do you agree ?
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> George Nakos a &#233;crit :
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hello Laurent,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Sunday, January 24, 2010, 1:21:17 AM, you wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Sorry, little mistake, the problem is in Fread, not Fopen.
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> I've looked at the compendium.
+</I>&gt;&gt;&gt;<i> I haven't found anything about this -1 length call.
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> My  memory  is  a bit hazy, but I think this just tells gemdos to read
+</I>&gt;&gt;<i> $ffffffff  bytes  from the file. Of course gemdos will read as much as
+</I>&gt;&gt;<i> the  file  size  and then return an error in d0.l. It's the lazy man's
+</I>&gt;&gt;<i> approach  to  doing  things  the  Right Way(tm) (i.e. getting the file
+</I>&gt;&gt;<i> length  -or knowing it beforehand- and calling fread() with the proper
+</I>&gt;&gt;<i> amount of bytes)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001326.html">[hatari-devel] Wotanoid problem : Fixed for me ;)
+</A></li>
+	<LI>Next message: <A HREF="001329.html">[hatari-devel] Wotanoid problem : final fix before commit ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1327">[ date ]</a>
+              <a href="thread.html#1327">[ thread ]</a>
+              <a href="subject.html#1327">[ subject ]</a>
+              <a href="author.html#1327">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

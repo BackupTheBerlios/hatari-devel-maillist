@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Catching trap exit?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Catching%20trap%20exit%3F&In-Reply-To=%3C201010182250.06856.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002541.html">
+   <LINK REL="Next"  HREF="002544.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Catching trap exit?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Catching%20trap%20exit%3F&In-Reply-To=%3C201010182250.06856.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Catching trap exit?">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Oct 18 21:50:06 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002541.html">[hatari-devel] Catching trap exit?
+</A></li>
+        <LI>Next message: <A HREF="002544.html">[hatari-devel] Catching trap exit?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2543">[ date ]</a>
+              <a href="thread.html#2543">[ thread ]</a>
+              <a href="subject.html#2543">[ subject ]</a>
+              <a href="author.html#2543">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 18 October 2010, Nicolas Pomar&#232;de wrote:
+&gt;<i> &gt; EmuTOS has bug in regards to setting colors with VDI on TT&amp;  Falcon and
+</I>&gt;<i> &gt; I'd like to debug this.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The problem is that current breakpoints break when trap is being
+</I>&gt;<i> &gt; entered, but the information given to the function is processed after
+</I>&gt;<i> &gt; the instruction is handled and the effects of the trap function
+</I>&gt;<i> &gt; (changed HW registers etc) are visible only when the function
+</I>&gt;<i> &gt; completes...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; So, I'd like to catch trap exit.  Any advice how?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (Once I have this, I can chain the breakpoints so that specific trap
+</I>&gt;<i> &gt; function sets up the exit trap and showing the information + changing
+</I>&gt;<i> &gt; back to the trap function breakpoint. )
+</I>&gt;<i>
+</I>&gt;<i> One solution could be to add a breakpoint when pc=current_pc + length of
+</I>&gt;<i> current opcode. This breakpoint would be automatically added when
+</I>&gt;<i> detecting a breakpoint for a trap for example.
+</I>
+Sounds good.  I could setup an automatic variable which is zero when not in
+trap and otherwise contains the trap exit PC value.
+
+
+&gt;<i> This way, you can add a breakpoint that triggers after a jsr, a bsr or a
+</I>&gt;<i> trap. This would work whether the routines returns with a rts or a rte.
+</I>&gt;<i>
+</I>&gt;<i> This requires to compute the number of bytes of current opcode ; I
+</I>&gt;<i> haven't looked into it, but I think it could be determined by calling
+</I>&gt;<i> the disassembler routine and see how many bytes were used.
+</I>
+Yes, that provides it.  Hopefully there's a function for that also with
+Markus' disassembler. :-)
+
+(If not, there's still the option of using breakpoint like:
+	pc &gt; &quot;pc + &lt;min opcode size&gt;&quot;   &amp;&amp;  pc &lt; &quot;pc + &lt;max opcode size&gt;&quot;
+
+Parts of the breakpoint expressions in &quot;&quot; are evaluated immediately.)
+
+
+&gt;<i> Only false positive could be if the 68000 code decides to change the
+</I>&gt;<i> stack to change the return address.
+</I>&gt;<i>
+</I>&gt;<i> example that wouldn't work :
+</I>&gt;<i>
+</I>&gt;<i> start:
+</I>&gt;<i> 	bsr	routine
+</I>&gt;<i> 	...
+</I>&gt;<i> 	...
+</I>&gt;<i> direct:
+</I>&gt;<i> 	nop
+</I>&gt;<i> 	...
+</I>&gt;<i>
+</I>&gt;<i> routine:
+</I>&gt;<i> 	...
+</I>&gt;<i> 	move.l	#direct,(a7)
+</I>&gt;<i> 	rts
+</I>&gt;<i>
+</I>&gt;<i> In that case, return would not be correctly detected, as PC would not be
+</I>&gt;<i> set to start+4 after reaching the rts.
+</I>&gt;<i>
+</I>&gt;<i> But I think this use case is rare, and in 99% this approach would work
+</I>&gt;<i> as expected (and it doesn't require to modify the cpu core)
+</I>
+Thanks!
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002541.html">[hatari-devel] Catching trap exit?
+</A></li>
+	<LI>Next message: <A HREF="002544.html">[hatari-devel] Catching trap exit?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2543">[ date ]</a>
+              <a href="thread.html#2543">[ thread ]</a>
+              <a href="subject.html#2543">[ subject ]</a>
+              <a href="author.html#2543">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

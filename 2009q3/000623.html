@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari v1.3 release issues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20v1.3%20release%20issues&In-Reply-To=%3C200908152213.31089.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000622.html">
+   <LINK REL="Next"  HREF="000624.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari v1.3 release issues</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20v1.3%20release%20issues&In-Reply-To=%3C200908152213.31089.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari v1.3 release issues">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Aug 15 21:13:30 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000622.html">[hatari-devel] Hatari v1.3 release issues
+</A></li>
+        <LI>Next message: <A HREF="000624.html">[hatari-devel] Hatari v1.3 release issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#623">[ date ]</a>
+              <a href="thread.html#623">[ thread ]</a>
+              <a href="subject.html#623">[ subject ]</a>
+              <a href="author.html#623">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 15 August 2009, Eero Tamminen wrote:
+&gt;<i> &gt; &gt; I was also thinking that when catching of exceptions isn't enabled,
+</I>&gt;<i> &gt; &gt; the double bus-error thingy should instead of halting the emulation
+</I>&gt;<i> &gt; &gt; and making Hatari use 100% CPU, present user a dialog:
+</I>...
+&gt;<i> &gt; Sounds good, but maybe better postpone this until the new release has
+</I>&gt;<i> &gt; been done (since it requires changing the most internal CPU code a
+</I>&gt;<i> &gt; little bit - I don't want to have any regression bugs here right before
+</I>&gt;<i> &gt; a new release).
+</I>&gt;<i>
+</I>&gt;<i> Hm.  I thought this would be pretty easy.  Or is reseting the emulator
+</I>&gt;<i> deep in the emulation what's risky?   (maybe you could then do it after
+</I>&gt;<i> the release? :-))
+</I>
+I added a dialog notifying user about the halting (when DebugUI isn't
+called) which seems to work fine.  Reseting emulation after that can be
+done after the release.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000622.html">[hatari-devel] Hatari v1.3 release issues
+</A></li>
+	<LI>Next message: <A HREF="000624.html">[hatari-devel] Hatari v1.3 release issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#623">[ date ]</a>
+              <a href="thread.html#623">[ thread ]</a>
+              <a href="subject.html#623">[ subject ]</a>
+              <a href="author.html#623">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

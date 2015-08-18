@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] &quot;Chaos: Pandemonium&quot; ST demo doesn't work anymore?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%22Chaos%3A%20Pandemonium%22%20ST%20demo%20doesn%27t%20work%0A%20anymore%3F&In-Reply-To=%3Calpine.LMD.2.00.0911151827200.15780%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000908.html">
+   <LINK REL="Next"  HREF="000898.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] &quot;Chaos: Pandemonium&quot; ST demo doesn't work anymore?</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%22Chaos%3A%20Pandemonium%22%20ST%20demo%20doesn%27t%20work%0A%20anymore%3F&In-Reply-To=%3Calpine.LMD.2.00.0911151827200.15780%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] &quot;Chaos: Pandemonium&quot; ST demo doesn't work anymore?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Nov 15 18:32:47 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000908.html">[hatari-devel] &quot;Chaos: Pandemonium&quot; ST demo doesn't	work	anymore?
+</A></li>
+        <LI>Next message: <A HREF="000898.html">[hatari-devel] [hatari-users] Note on hard disk images and	GEMDOS drives
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#911">[ date ]</a>
+              <a href="thread.html#911">[ thread ]</a>
+              <a href="subject.html#911">[ subject ]</a>
+              <a href="author.html#911">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 15 Nov 2009, Laurent Sallafranque wrote:
+
+&gt;<i> Wouldn't it worth a try to finish to implement the 6301 emulation I
+</I>&gt;<i> started a few month ago to have a correct keyboard emulation ?
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>
+Yes, it would, but for this specific issue, I think there's a 
+timing/behaviour that is not correct in the handling of $fffc00, and 
+whether we use real 6301 emulation of the current ikbd.c, the problem 
+would remain.
+
+It seems there're some very precise timing when reading/writing to the 
+acia register (and interface it to the 6301) and for the moment we use 
+&quot;rules of thumb&quot; values. Someone with time could try to precisely measure 
+the number of cycles involved when reading/writing.
+
+(note that Pandemonium worked before, so I guess it's a regression that 
+could be handled in the current code)
+
+Nicolas
+
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+</I>&gt;&gt;<i> On Sun, 15 Nov 2009, Eero Tamminen wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I just tried the &quot;Chaos: Pandemonium&quot; from the compatibility list.  For me
+</I>&gt;&gt;&gt;<i> it stops after the intro &quot;laughter&quot; thing.  Screen is blank and the floppy
+</I>&gt;&gt;&gt;<i> led is lit, nothing else happens.  Switching timer-D patching off didn't
+</I>&gt;&gt;&gt;<i> help.  Reset screen works though.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Any ideas?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Since I saw this some days ago too, I just had a look now and the culprit
+</I>&gt;&gt;<i> seems to be the ikbd cmd 0x08 :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> cpu video_cyc=110884 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">292 at 216</A> : 0008223a: 1018 11c0 fc02 0838 0001 MOVE.B (A0)+,D0
+</I>&gt;&gt;<i> cpu video_cyc=110892 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">300 at 216</A> : 0008223c: 11c0 fc02 0838 0001 fc00 MOVE.B D0,$fffffc02
+</I>&gt;&gt;<i> IO write.b $fffc02 = $08
+</I>&gt;&gt;<i> ikbd write fffc02 data=0x8 video_cyc=110892 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">300 at 216</A> pc=82240 instr_cycle 12
+</I>&gt;&gt;<i> IKBD_Cmd_RelMouseMode
+</I>&gt;&gt;<i> cpu video_cyc=110912 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">320 at 216</A> : 00082240: 0838 0001 fc00 67f4 1018 BTST.B #$0001,$fffffc00
+</I>&gt;&gt;<i> ikbd read fffc00 ctrl=0x0 video_cyc=110912 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">320 at 216</A> pc=82240 instr_cycle 16
+</I>&gt;&gt;<i> IO read.b $fffc00 = $00
+</I>&gt;&gt;<i> cpu video_cyc=110936 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">344 at 216</A> : 00082246: 67f4 1018 b03c 00fb 66ec BEQ.B #$fffffff4 == 0008223c (TRUE)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> [ ... repeat forever ... ]
+</I>&gt;&gt;<i> cpu video_cyc=110948 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">356 at 216</A> : 0008223c: 11c0 fc02 0838 0001 fc00 MOVE.B D0,$fffffc02
+</I>&gt;&gt;<i> IO write.b $fffc02 = $08
+</I>&gt;&gt;<i> ikbd write fffc02 data=0x8 video_cyc=110948 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">356 at 216</A> pc=82240 instr_cycle 12
+</I>&gt;&gt;<i> IKBD_Cmd_RelMouseMode
+</I>&gt;&gt;<i> cpu video_cyc=110968 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">376 at 216</A> : 00082240: 0838 0001 fc00 67f4 1018 BTST.B #$0001,$fffffc00
+</I>&gt;&gt;<i> ikbd read fffc00 ctrl=0x0 video_cyc=110968 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">376 at 216</A> pc=82240 instr_cycle 16IO read.b $fffc00 = $00
+</I>&gt;&gt;<i> cpu video_cyc=110992 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">400 at 216</A> : 00082246: 67f4 1018 b03c 00fb 66ec BEQ.B #$fffffff4 == 0008223c (TRUE)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The problem is that after the demo sends 0x08 to $fffc02, it waits for bit
+</I>&gt;&gt;<i> 1 to be set (tx data reg empty) but this never happens and the code loops
+</I>&gt;&gt;<i> forever sending 0x08.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thomas, any idea on this ? Perhaps a special case is needed only for
+</I>&gt;&gt;<i> IKBD_Cmd_RelMouseMode ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Nicolas
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I></PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000908.html">[hatari-devel] &quot;Chaos: Pandemonium&quot; ST demo doesn't	work	anymore?
+</A></li>
+	<LI>Next message: <A HREF="000898.html">[hatari-devel] [hatari-users] Note on hard disk images and	GEMDOS drives
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#911">[ date ]</a>
+              <a href="thread.html#911">[ thread ]</a>
+              <a href="subject.html#911">[ subject ]</a>
+              <a href="author.html#911">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

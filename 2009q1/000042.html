@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Potential bug with MSA disk images
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Potential%20bug%20with%20MSA%20disk%20images&In-Reply-To=%3C1232304699.5601.4.camel%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000041.html">
+   <LINK REL="Next"  HREF="000044.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Potential bug with MSA disk images</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Potential%20bug%20with%20MSA%20disk%20images&In-Reply-To=%3C1232304699.5601.4.camel%40localhost%3E"
+       TITLE="[hatari-devel] Potential bug with MSA disk images">marndt at asmsoftware.de
+       </A><BR>
+    <I>Sun Jan 18 19:51:39 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000041.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+        <LI>Next message: <A HREF="000044.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#42">[ date ]</a>
+              <a href="thread.html#42">[ thread ]</a>
+              <a href="subject.html#42">[ subject ]</a>
+              <a href="author.html#42">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Sonntag, den 18.01.2009, 19:42 +0100 schrieb Matthias Arndt:
+
+&gt;<i> Lemme try - if I don't tell anything more, I reproduced the problem...
+</I>
+Allright, I reproduced the problem :P
+
+Here is the run log with LogLevel 5 enabled in the config:
+
+$ hatari -c ./hatari.cfg utility.msa
+Configuration file /etc/hatari.cfg not found.
+Hatari devel (Jan 18 2009), compiled on:  Jan 18 2009, 10:27:19
+Inserted disk 'utility.msa' to drive A:.
+Building CPU table for configuration: 68000 (compatible mode)
+1874 CPU functions
+Building CPU function table (0 1 1).
+Keymap_LoadRemapFile: '/home/marndt/' not a file
+bdrv_get_geometry=0
+Loaded TOS version 1.62, starting at $e00000, country code = 1, PAL
+Applying TOS patch 'boot from DMA bus'.
+Applied 1 TOS patches, 0 patches failed.
+NVRAM loaded from '/home/marndt/.hatari/hatari.nvram'
+Joystick 0: MOSIC      SPEED-LINK Competition Pro
+Host system has accurate delays. (3)
+Floppy A: has been removed from drive.
+Inserted disk '/mnt/win_d/AtariST/tmp/a.msa' to drive A:.
+Inserted disk '/mnt/win_d/AtariST/tmp/b.msa' to drive B:.
+Detected scancode offset = 8 (key: 't' with scancode $1c)
+Floppy A: has been removed from drive.
+Inserted disk '/mnt/win_d/AtariST/tmp/b.msa' to drive A:.
+Floppy B: has been removed from drive.
+Loaded TOS version 1.62, starting at $e00000, country code = 1, PAL
+Applying TOS patch 'boot from DMA bus'.
+Applied 1 TOS patches, 0 patches failed.
+Floppy A: has been removed from drive.
+
+I'll later try Eero's fix...
+
+Matthias
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000041.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+	<LI>Next message: <A HREF="000044.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#42">[ date ]</a>
+              <a href="thread.html#42">[ thread ]</a>
+              <a href="subject.html#42">[ subject ]</a>
+              <a href="author.html#42">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

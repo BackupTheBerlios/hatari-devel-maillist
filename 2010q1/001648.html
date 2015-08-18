@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CC/HOSTCC
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CC/HOSTCC&In-Reply-To=%3Calpine.LMD.2.00.1003092300500.14357%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001647.html">
+   <LINK REL="Next"  HREF="001653.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CC/HOSTCC</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CC/HOSTCC&In-Reply-To=%3Calpine.LMD.2.00.1003092300500.14357%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] CC/HOSTCC">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Mar  9 23:04:05 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001647.html">[hatari-devel] CC/HOSTCC
+</A></li>
+        <LI>Next message: <A HREF="001653.html">[hatari-devel] CC/HOSTCC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1648">[ date ]</a>
+              <a href="thread.html#1648">[ thread ]</a>
+              <a href="subject.html#1648">[ subject ]</a>
+              <a href="author.html#1648">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 9 Mar 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Nicolas:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://hg.berlios.de/repos/hatari/rev/c784976559db">http://hg.berlios.de/repos/hatari/rev/c784976559db</A>
+</I>&gt;<i> -HOSTCC = $(CC)
+</I>&gt;<i> +HOSTCC = gcc
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> However, in Makefile-default.cnf this is done like this:
+</I>&gt;<i> CC = gcc
+</I>&gt;<i> HOSTCC ?= $(CC)
+</I>&gt;<i>
+</I>&gt;<i> This way it's still overridable from command line.
+</I>
+Hello, I agree with the ?= syntax, I committed a change for this.
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Btw. I don't understand this change/comment from Thomas:
+</I>&gt;<i> 	<A HREF="http://hg.berlios.de/repos/hatari/rev/58a6b35826e5">http://hg.berlios.de/repos/hatari/rev/58a6b35826e5</A>
+</I>
+It's true that using ?= shouldn't be a problem ; thomas, any reason for 
+this ?
+
+Nicolas
+
+&gt;<i>
+</I>&gt;<i> Of cource CC is predefined by Make.  The point of using &quot;?=&quot; is that then
+</I>&gt;<i> it can be overridden by user (as still document at the top of Makefile)
+</I>&gt;<i> with:
+</I>&gt;<i> 	CC=my-own-cc make
+</I>&gt;<i> Or:
+</I>&gt;<i> 	export CC=my-own-cc
+</I>&gt;<i> 	make
+</I>&gt;<i> ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001647.html">[hatari-devel] CC/HOSTCC
+</A></li>
+	<LI>Next message: <A HREF="001653.html">[hatari-devel] CC/HOSTCC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1648">[ date ]</a>
+              <a href="thread.html#1648">[ thread ]</a>
+              <a href="subject.html#1648">[ subject ]</a>
+              <a href="author.html#1648">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

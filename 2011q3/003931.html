@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] EmuTOS LMC1992 initialization
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EmuTOS%20LMC1992%20initialization&In-Reply-To=%3C201108172103.25082.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003929.html">
+   <LINK REL="Next"  HREF="003923.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] EmuTOS LMC1992 initialization</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EmuTOS%20LMC1992%20initialization&In-Reply-To=%3C201108172103.25082.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] EmuTOS LMC1992 initialization">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Aug 17 20:03:25 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003929.html">[hatari-devel] EmuTOS LMC1992 initialization
+</A></li>
+        <LI>Next message: <A HREF="003923.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3931">[ date ]</a>
+              <a href="thread.html#3931">[ thread ]</a>
+              <a href="subject.html#3931">[ subject ]</a>
+              <a href="author.html#3931">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 17 elokuu 2011, Vincent Rivi&#232;re wrote:
+&gt;<i> Vincent Rivi&#232;re wrote:
+</I>&gt;<i> &gt; I have just fixed that in the EmuTOS CVS.
+</I>&gt;<i> 
+</I>&gt;<i> I have just noticed one strange thing.
+</I>&gt;<i> 
+</I>&gt;<i> EmuTOS detects the Microwire interface by reading a byte at 0xffff8922.
+</I>&gt;<i> This does not cause a bus error on Hatari with Falcon mode. Is this the
+</I>&gt;<i> expected behavior? I understood that the Falcon has no Microwire
+</I>&gt;<i> interface and LMC1992.
+</I>
+If memory isn't present, trying to access that address area of course
+creates an exception.
+
+However, whether some HW is present and whether the corresponding
+control register address in RAM generates an exception are different
+things.
+
+Thomas has a test program and results from runs on different Atari
+machines in different modes in the Hatari's tests/buserror/results/
+-directory.
+
+According to that data, in none of the modes (byte/word access,
+STE compatible mode on/off) address 0xffff8922 will give a bus
+error.
+
+
+	- Eero
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003929.html">[hatari-devel] EmuTOS LMC1992 initialization
+</A></li>
+	<LI>Next message: <A HREF="003923.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3931">[ date ]</a>
+              <a href="thread.html#3931">[ thread ]</a>
+              <a href="subject.html#3931">[ subject ]</a>
+              <a href="author.html#3931">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

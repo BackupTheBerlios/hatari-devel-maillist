@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Suggestion about small additions for v1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3C20100525221902.4eefbc0f%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002177.html">
+   <LINK REL="Next"  HREF="002182.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Suggestion about small additions for v1.4</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3C20100525221902.4eefbc0f%40phineus%3E"
+       TITLE="[hatari-devel] Suggestion about small additions for v1.4">huth at users.berlios.de
+       </A><BR>
+    <I>Tue May 25 22:19:02 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002177.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002182.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2180">[ date ]</a>
+              <a href="thread.html#2180">[ thread ]</a>
+              <a href="subject.html#2180">[ subject ]</a>
+              <a href="author.html#2180">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 25 May 2010 09:21:19 +0200 (CEST)
+Anders Eriksson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>&gt; wrote:
+
+&gt;<i> 
+</I>&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> I am unable to compile Hatari. When I pulled updates I got merge
+</I>&gt;<i> errors. So I did a clean checkout, created the Xcode project with
+</I>&gt;<i> cmake and then tried to build.
+</I>&gt;<i> 
+</I>&gt;<i> 12 errors, see log below.
+</I>&gt;<i> 
+</I>&gt;<i> --
+</I>&gt;<i> 
+</I>&gt;<i> Build build68k of project Hatari with configuration Release
+</I>&gt;<i> 
+</I>&gt;<i> CreateUniversalBinary src/uae-cpu/Release/build68k normal &quot;i386 ppc&quot;
+</I>&gt;<i> cd /Users/ae/hatari
+</I>&gt;<i> /usr/bin/lipo
+</I>&gt;<i> -create /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/build68k.build/Objects-normal/i386/build68k /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/build68k.build/Objects-normal/ppc/build68k
+</I>&gt;<i> -output /Users/ae/hatari/src/uae-cpu/Release/build68k
+</I>&gt;<i> 
+</I>&gt;<i> /usr/bin/lipo: can't open input
+</I>&gt;<i> file: /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/build68k.build/Objects-normal/i386/build68k
+</I>&gt;<i> (No such file or directory) Command /usr/bin/lipo failed with exit
+</I>&gt;<i> code 1
+</I>
+Looks like there is a problem with creating an universal binary for the
+intermediate build68k program on your system... could you please
+comment out the following line in the top-most CMakeLists.txt and try
+if it works then:
+
+ set(CMAKE_OSX_ARCHITECTURES &quot;i386;ppc&quot; CACHE STRING &quot;Target
+ architectures&quot; FORCE)
+
+?
+
+Thanks,
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002177.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002182.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2180">[ date ]</a>
+              <a href="thread.html#2180">[ thread ]</a>
+              <a href="subject.html#2180">[ subject ]</a>
+              <a href="author.html#2180">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

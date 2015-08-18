@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Using more GCC warnings?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Using%20more%20GCC%20warnings%3F&In-Reply-To=%3C4CAF8D6C.8010506%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002491.html">
+   <LINK REL="Next"  HREF="002513.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Using more GCC warnings?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Using%20more%20GCC%20warnings%3F&In-Reply-To=%3C4CAF8D6C.8010506%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Using more GCC warnings?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Oct  8 23:30:20 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002491.html">[hatari-devel] Using more GCC warnings?
+</A></li>
+        <LI>Next message: <A HREF="002513.html">[hatari-devel] Using more GCC warnings?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2492">[ date ]</a>
+              <a href="thread.html#2492">[ thread ]</a>
+              <a href="subject.html#2492">[ subject ]</a>
+              <a href="author.html#2492">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 08/10/2010 22:31, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Sunday 19 September 2010, Eero Tamminen wrote:
+</I>&gt;&gt;<i> That comes from warning -Wempty-body included into -Wextra.
+</I>&gt;&gt;<i> I'm not completely sure from what kind of coding errors would
+</I>&gt;&gt;<i> be indicated by an empty body which occurs in an if, else or do while
+</I>&gt;&gt;<i> statement...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If you don't think it's important, that can be disabled too:
+</I>&gt;&gt;<i> 	-Wextra -Wno-unused-parameter -Wno-empty-body
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> After that the current code doesn't generate extra warnings.
+</I>&gt;<i>
+</I>&gt;<i> I added extra warning options, they don't cause extra warnings
+</I>&gt;<i> for me.  (Tell if they give undue trouble for you and I'll remove then
+</I>&gt;<i> again.)
+</I>&gt;<i>
+</I>
+Hello,
+I see some new warnings now (using gcc 4.5.1) :
+
+[ 15%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/fpp.c.o 
+ 
+
+In file included from 
+/home/npomarede/src/hatari-work/src/uae-cpu/fpp.c:28:0: 
+
+/home/npomarede/src/hatari-work/src/uae-cpu/fpp-unknown.h: In function 
+'from_single':
+/home/npomarede/src/hatari-work/src/uae-cpu/fpp-unknown.h:59:10: 
+attention : comparer des nombres flottants &#224; l'aide de == ou != n'est 
+pas s&#251;r
+/home/npomarede/src/hatari-work/src/uae-cpu/fpp-unknown.h: In function 
+'from_exten':
+/home/npomarede/src/hatari-work/src/uae-cpu/fpp-unknown.h:100:13: 
+attention : comparer des nombres flottants &#224; l'aide de == ou != n'est 
+pas s&#251;r
+/home/npomarede/src/hatari-work/src/uae-cpu/fpp.c: In function 'get_fpsr':
+/home/npomarede/src/hatari-work/src/uae-cpu/fpp.c:74:21: attention : 
+comparer des nombres flottants &#224; l'aide de == ou != n'est pas s&#251;r
+/home/npomarede/src/hatari-work/src/uae-cpu/fpp.c: In function 'fpp_cond':
+/home/npomarede/src/hatari-work/src/uae-cpu/fpp.c:515:28: attention : 
+comparer des nombres flottants &#224; l'aide de == ou != n'est pas s&#251;r
+
+[ 25%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgAlert.c.o 
+ 
+
+/home/npomarede/src/hatari-work/src/gui-sdl/dlgAlert.c: In function 
+'DlgAlert_Notice': 
+
+/home/npomarede/src/hatari-work/src/gui-sdl/dlgAlert.c:186:30: attention 
+:<i> operation on 'alertdlg[6].w' may be undefined
+</I>
+[ 38%] Building C object src/debug/CMakeFiles/Debug.dir/debugui.c.o 
+ 
+
+/home/npomarede/src/hatari-work/src/debug/debugui.c: In function 
+'DebugUI_SetOptions': 
+
+/home/npomarede/src/hatari-work/src/debug/debugui.c:347:2: attention : 
+new qualifiers in middle of multi-level non-const cast are unsafe
+
+[ 41%] Building C object src/debug/CMakeFiles/Debug.dir/debugInfo.c.o 
+ 
+
+/home/npomarede/src/hatari-work/src/debug/debugInfo.c: In function 
+'DebugInfo_Crossbar': 
+
+/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:21: attention 
+:<i> 'matrixDAC[0]' may be used uninitialized in this function
+</I>/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:21: attention 
+:<i> 'matrixDAC[1]' may be used uninitialized in this function
+</I>/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:21: attention 
+:<i> 'matrixDAC[2]' may be used uninitialized in this function
+</I>/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:21: attention 
+:<i> 'matrixDAC[3]' may be used uninitialized in this function
+</I>/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:7: attention : 
+'matrixDMA[0]' may be used uninitialized in this function
+/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:7: attention : 
+'matrixDMA[1]' may be used uninitialized in this function
+/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:7: attention : 
+'matrixDMA[2]' may be used uninitialized in this function
+/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:7: attention : 
+'matrixDMA[3]' may be used uninitialized in this function
+/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:35: attention 
+:<i> 'matrixDSP[0]' may be used uninitialized in this function
+</I>/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:35: attention 
+:<i> 'matrixDSP[1]' may be used uninitialized in this function
+</I>/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:35: attention 
+:<i> 'matrixDSP[2]' may be used uninitialized in this function
+</I>/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:35: attention 
+:<i> 'matrixDSP[3]' may be used uninitialized in this function
+</I>/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:49: attention 
+:<i> 'matrixEXT[0]' may be used uninitialized in this function
+</I>/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:49: attention 
+:<i> 'matrixEXT[1]' may be used uninitialized in this function
+</I>/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:49: attention 
+:<i> 'matrixEXT[2]' may be used uninitialized in this function
+</I>/home/npomarede/src/hatari-work/src/debug/debugInfo.c:255:49: attention 
+:<i> 'matrixEXT[3]' may be used uninitialized in this function
+</I>
+[ 70%] Building C object src/CMakeFiles/hatari.dir/main.c.o 
+ 
+
+/home/npomarede/src/hatari-work/src/main.c: In function 'main': 
+ 
+
+/home/npomarede/src/hatari-work/src/main.c:650:2: attention : new 
+qualifiers in middle of multi-level non-const cast are unsafe
+
+
+If some of these warnings are OK (I think it's the case for fpp.c for 
+example), maybe we should turn them off.
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002491.html">[hatari-devel] Using more GCC warnings?
+</A></li>
+	<LI>Next message: <A HREF="002513.html">[hatari-devel] Using more GCC warnings?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2492">[ date ]</a>
+              <a href="thread.html#2492">[ thread ]</a>
+              <a href="subject.html#2492">[ subject ]</a>
+              <a href="author.html#2492">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

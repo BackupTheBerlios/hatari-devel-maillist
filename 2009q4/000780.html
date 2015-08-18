@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] debugger evaluate command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20debugger%20evaluate%20command&In-Reply-To=%3C20091006221037.1af8bd24%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000779.html">
+   <LINK REL="Next"  HREF="000782.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] debugger evaluate command</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20debugger%20evaluate%20command&In-Reply-To=%3C20091006221037.1af8bd24%40phineus%3E"
+       TITLE="[hatari-devel] debugger evaluate command">th.huth at gmx.de
+       </A><BR>
+    <I>Tue Oct  6 22:10:37 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000779.html">[hatari-devel] debugger evaluate command
+</A></li>
+        <LI>Next message: <A HREF="000782.html">[hatari-devel] debugger evaluate command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#780">[ date ]</a>
+              <a href="thread.html#780">[ thread ]</a>
+              <a href="subject.html#780">[ subject ]</a>
+              <a href="author.html#780">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 6 Oct 2009 12:26:52 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> &gt; &gt;&gt; * It doesn't support debugger number-base setting.  When I fix
+</I>&gt;<i> &gt; &gt;&gt; that, I'll probably remove support for octal and &quot;ASCII&quot; numbers
+</I>&gt;<i> &gt; &gt;&gt; as DebugUI doesn't support those.  Octal numbers can be useful
+</I>&gt;<i> &gt; &gt;&gt; only for BCD / nibble number calculations, but I couldn't come
+</I>&gt;<i> &gt; &gt;&gt; up with reasonable prefix for them. ;-)
+</I>&gt;<i> 
+</I>&gt;<i> Any suggestion for octal prefix?  What's used by Atari debuggers /
+</I>&gt;<i> assemblers for that?
+</I>
+Who really really needs octal numbers??? Even for BCD, you don't need
+them (BCD uses digits up to 9). ==&gt; Keep the code simple, don't
+implement octal support.
+
+&gt;<i> &gt; &gt;&gt; * Calculations are done as doubles and signed longs.  Former
+</I>&gt;<i> &gt; &gt;&gt; means that divisions can have funny results when printed (due to
+</I>&gt;<i> &gt; &gt;&gt; conversion accuracy) and that shift and logical OR &amp; AND
+</I>&gt;<i> &gt; &gt;&gt; operations support values only up to 0x7fffffff.  If floating
+</I>&gt;<i> &gt; &gt;&gt; point calculations aren't needed, I could change everything to
+</I>&gt;<i> &gt; &gt;&gt; use (signed) long longs?
+</I>
+I rather wonder whether we need negative numbers in the debugger? I
+mean, most stuff is about address calculation, so unsigned long would
+be fine, too?
+
+&gt;<i> &gt; I'm not sure we should put too much extra evaluate commands in
+</I>&gt;<i> &gt; hatari ; of course it's your time, so you're free to do it, but in
+</I>&gt;<i> &gt; the end I think they're some much more complete calculators
+</I>&gt;<i> &gt; solutions that the user can run from another terminal if he really
+</I>&gt;<i> &gt; wants to (adding that to the fact that debugger mode is used by a
+</I>&gt;<i> &gt; very low percentage of users I guess)
+</I>
+I second that.
+
+&gt;<i> Is there any free calculator that supports both binary &amp; shift
+</I>&gt;<i> operations and oct/dec/hex modes conveniently?  I haven't found any.
+</I>
+Both, gcalctool and galculator support binary, oct and hex modes, too.
+None of them is perfect, but using both, I always got finally the
+result of my calculations.
+
+ Thomas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000779.html">[hatari-devel] debugger evaluate command
+</A></li>
+	<LI>Next message: <A HREF="000782.html">[hatari-devel] debugger evaluate command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#780">[ date ]</a>
+              <a href="thread.html#780">[ thread ]</a>
+              <a href="subject.html#780">[ subject ]</a>
+              <a href="author.html#780">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

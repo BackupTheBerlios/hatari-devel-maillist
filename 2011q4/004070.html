@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] No sound on tos100, tos102 and tos104 with current hg version
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20No%20sound%20on%20tos100%2C%0A%20tos102%20and%20tos104%20with%20current%20hg%20version&In-Reply-To=%3C4E901A85.5020801%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004068.html">
+   <LINK REL="Next"  HREF="004079.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] No sound on tos100, tos102 and tos104 with current hg version</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20No%20sound%20on%20tos100%2C%0A%20tos102%20and%20tos104%20with%20current%20hg%20version&In-Reply-To=%3C4E901A85.5020801%40corp.free.fr%3E"
+       TITLE="[hatari-devel] No sound on tos100, tos102 and tos104 with current hg version">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Oct  8 11:40:21 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004068.html">[hatari-devel] No sound on tos100, tos102 and tos104 with current hg version
+</A></li>
+        <LI>Next message: <A HREF="004079.html">[hatari-devel] No sound on tos100, tos102 and tos104 with current hg version
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4070">[ date ]</a>
+              <a href="thread.html#4070">[ thread ]</a>
+              <a href="subject.html#4070">[ subject ]</a>
+              <a href="author.html#4070">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 08/10/2011 10:03, Thomas Huth a &#233;crit :
+&gt;<i> Am Fri, 07 Oct 2011 11:16:27 +0200
+</I>&gt;<i> schrieb Nicolas Pomar&#232;de&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt;:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Le 07/10/2011 10:53, Christer Solskogen a &#233;crit :
+</I>&gt;&gt;&gt;<i> On Fri, Oct 7, 2011 at 10:28 AM, Nicolas Pomar&#232;de
+</I>&gt;&gt;&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt;   wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Are you sure you're not running in STE mode ? This is not
+</I>&gt;&gt;&gt;&gt;<i> compatible with those TOS, as they don't configure the STE's LMC
+</I>&gt;&gt;&gt;&gt;<i> chip at boot, which means you get a 0 volume from the mixer.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Ah, that explained it. I was thinking it would switch back as when
+</I>&gt;&gt;&gt;<i> you try to run 1.62 on a ST system (TOS version 1.06 and 1.62 are
+</I>&gt;&gt;&gt;<i> for Atari STE only. Switching to STE mode now)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Yes maybe we could print a warning when using STE mode with those
+</I>&gt;&gt;<i> TOS, but without forcing the mode to STF (in all case, when Hatari
+</I>&gt;&gt;<i> switches to another machine due to the TOS, you will get a warning on
+</I>&gt;&gt;<i> the screen ; if not, then machine stayed in STE mode for example)
+</I>&gt;<i>
+</I>&gt;<i> Is it necessary that the LMC starts with 0 volume after reset? We could
+</I>&gt;<i> also change it to have a hearable default volume...?
+</I>&gt;<i>
+</I>
+Yes, we could, but from a hardware point of view, volume is really 0 
+when the LMC is reset (or more precisely when it switched on, the LMC is 
+not connected to the reset pin in fact).
+
+So from a compatibility point of view, I think we should not change 
+volume. Setting the volume to non 0 could also have side effect if the 
+STE boots and some ym regs are not cleared, we could now have parasite 
+sound, which we didn't hear before because the LMC was at volume 0.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004068.html">[hatari-devel] No sound on tos100, tos102 and tos104 with current hg version
+</A></li>
+	<LI>Next message: <A HREF="004079.html">[hatari-devel] No sound on tos100, tos102 and tos104 with current hg version
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4070">[ date ]</a>
+              <a href="thread.html#4070">[ thread ]</a>
+              <a href="subject.html#4070">[ subject ]</a>
+              <a href="author.html#4070">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

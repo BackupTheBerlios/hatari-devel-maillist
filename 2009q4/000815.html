@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new support for avi recording
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Cc1a0d1560910100654w24dd2adbn7d45e9bed42abdc3%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000813.html">
+   <LINK REL="Next"  HREF="000817.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new support for avi recording</H1>
+    <B>Christer Solskogen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Cc1a0d1560910100654w24dd2adbn7d45e9bed42abdc3%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] new support for avi recording">christer.solskogen at gmail.com
+       </A><BR>
+    <I>Sat Oct 10 15:54:27 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000813.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000817.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#815">[ date ]</a>
+              <a href="thread.html#815">[ thread ]</a>
+              <a href="subject.html#815">[ subject ]</a>
+              <a href="author.html#815">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, Oct 10, 2009 at 2:58 PM, Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Christer, do you have libpng development files (libpng*.pc etc) installed?
+</I>&gt;<i>
+</I>
+Yes. I use macports for stuff like png and sdl, and macports (which
+installs everything in /opt/local) always include development files.
+
+tenderheart:hatari solskogen$ find /opt/local | grep libpng.pc
+/opt/local/lib/pkgconfig/libpng.pc
+
+This is what I see after &quot;make distclean&quot;:
+make -C src/ distclean
+gcc -M  -I.. -I./includes -Iuae-cpu -I./debug -I./falcon
+-DCONFDIR=\&quot;/etc\&quot; -I/opt/local/include/SDL -D_GNU_SOURCE=1
+-D_THREAD_SAFE -DENABLE_DSP_EMU=1 audio.c avi_record.c bios.c
+blitter.c cart.c cfgopts.c configuration.c options.c
+createBlankImage.c change.c control.c cycles.c dialog.c dim.c dmaSnd.c
+fdc.c file.c floppy.c gemdos.c hd6301_cpu.c hdc.c ide.c ikbd.c int.c
+ioMem.c ioMemTabST.c ioMemTabSTE.c ioMemTabTT.c ioMemTabFalcon.c joy.c
+keymap.c m68000.c main.c midi.c memorySnapShot.c mfp.c msa.c paths.c
+psg.c printer.c rs232.c reset.c rtc.c scandir.c st.c stMemory.c
+screen.c screenSnapShot.c shortcut.c sound.c spec512.c statusbar.c
+str.c tos.c unzip.c utils.c vdi.c video.c wavFormat.c xbios.c
+ymFormat.c zip.c &gt; Makefile.dep
+avi_record.c:62:17: error: png.h: No such file or directory
+&lt;more output&gt;
+
+-- 
+chs,
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000813.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000817.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#815">[ date ]</a>
+              <a href="thread.html#815">[ thread ]</a>
+              <a href="subject.html#815">[ subject ]</a>
+              <a href="author.html#815">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

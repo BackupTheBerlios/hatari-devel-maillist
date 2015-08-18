@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Higher precision when generating samples
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Higher%20precision%20when%20generating%20samples&In-Reply-To=%3C4D3F2DA7.9030700%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002877.html">
+   <LINK REL="Next"  HREF="002880.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Higher precision when generating samples</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Higher%20precision%20when%20generating%20samples&In-Reply-To=%3C4D3F2DA7.9030700%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Higher precision when generating samples">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Jan 25 21:08:07 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002877.html">[hatari-devel] Changeset 4b5f4b81ab6f breaks YM sound
+</A></li>
+        <LI>Next message: <A HREF="002880.html">[hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2878">[ date ]</a>
+              <a href="thread.html#2878">[ thread ]</a>
+              <a href="subject.html#2878">[ subject ]</a>
+              <a href="author.html#2878">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 24/01/2011 05:03, David Savinkoff a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> With tos206uk.img (50Hz) I do not notice problems with delay or otherwise
+</I>&gt;<i> at 44100 Hz or 11025 Hz sampling rates.
+</I>&gt;<i>
+</I>&gt;<i> The rounding is probably working.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> With tos206us.img (60Hz) the delay increases with at both 44100 Hz and
+</I>&gt;<i> 11025 Hz sampling rates. I patched Audio_CallBack() in audio.c to see
+</I>&gt;<i> what was going on.
+</I>&gt;<i>
+</I>&gt;<i> /* display excess samples count (+/-) */
+</I>&gt;<i> fprintf ( stderr, &quot;%d\n&quot;, nGeneratedSamples-len);
+</I>&gt;<i>
+</I>&gt;<i> This patch displays numbers that are usually in the 1000 to 2000 range.
+</I>&gt;<i> If sound samples are being made too fast, the number gets bigger until
+</I>&gt;<i> MIXBUFFER_SIZE is reached. Something causes a buffer overflow!
+</I>&gt;<i> I get numbers that eventually exceed 16384. The sound gets bad at this
+</I>&gt;<i> point also.
+</I>&gt;<i>
+</I>&gt;<i> My best guess is that maybe the buffer doesn't wrap completely to the
+</I>&gt;<i> start, and spirals upward when too many samples are made.
+</I>&gt;<i>
+</I>&gt;<i> David
+</I>
+Hello,
+
+the sync problem you have can come from 2 causes :
+  - either you sound card doesn't output sound at the requested rate 
+(although it says it does)
+
+  - Main_WaitOnVbl doesn't (in your case) correctly emulates a 50Hz or 
+60 Hz VBL
+
+Either way, one of those 2 components would generate/play samples at a 
+wrong rate, which explain the drift problem you have.
+
+It would seem quite surprising that the sound card/driver can't output 
+at the correct rate. One possible way to test this could to build a 
+samples file with all 0 and a few ~100 consecutive 0xff bytes at the 
+end. Build a 110250 bytes file and play this as 8 bit mono 11025 Hz.
+
+If things go well, you should heard nothing, except a brief sound after 
+exactly 10 seconds. If that's not the case, then the driver/card would 
+be at fault.
+
+
+Regarding Main_WaitOnVbl and the use of SDL_Delay / SDL_GetTicks, it's 
+quite possible your kernel is built with a value of HZ set to 100, which 
+means a maximum precision of 10 ms.
+
+Can you run &quot;hatari --log-level debug&quot; and see if you have a line like :
+
+Host system has accurate delays (1)
+
+
+Is the delay always constant ? In my case, I sometimes get a delay at 60 
+Hz, but it evolves with time (takes approx 20 sec) : at first there's no 
+delay, then delay grows to ~1 sec, then it goes down again. Is this the 
+same for you ?
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002877.html">[hatari-devel] Changeset 4b5f4b81ab6f breaks YM sound
+</A></li>
+	<LI>Next message: <A HREF="002880.html">[hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2878">[ date ]</a>
+              <a href="thread.html#2878">[ thread ]</a>
+              <a href="subject.html#2878">[ subject ]</a>
+              <a href="author.html#2878">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CEAD639.3010007%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002650.html">
+   <LINK REL="Next"  HREF="002662.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CEAD639.3010007%40free.fr%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Nov 22 21:44:41 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002650.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002662.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2661">[ date ]</a>
+              <a href="thread.html#2661">[ thread ]</a>
+              <a href="subject.html#2661">[ subject ]</a>
+              <a href="author.html#2661">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+Some news :
+
+I've added a new system panel in the sdl_gui dialog part.
+I've &quot;copied&quot; WinUae's one a lot.
+
+I've modified the save and  restore of the news variables.
+I've added new options for hatari's launching.
+
+It'll be soon possible to parameter the CPU, MMU, ... from the panel and 
+saving and restoring the prefs.
+This will help for debugging the 6 CPUs.
+
+
+
+One question, in option.c, there's the following instruction :
+bLoadAutoSave = false;
+
+As I don't know what it's supposed to do, I haven't included it.
+May someone tell me what to do with this ?
+(it has just to be added 6 times max, everywhere I've included the #if 
+ENABLE_DSP_EMU)
+
+
+
+Still todo :
+
+- separate cpu_level and cpu_model:
+
+I've included the following line in compat.h (#define cpu_level cpu_model).
+But it is wrong. I'll create 2 different variables and fill them correctly.
+
+- verify the FPU variables:
+
+I may have chosen wrong variables for FPU between 
+Configuration.system.... and currcpu.fpu....
+I'll check this.
+
+- continue to improve the new CPU.
+
+Regards
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002650.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002662.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2661">[ date ]</a>
+              <a href="thread.html#2661">[ thread ]</a>
+              <a href="subject.html#2661">[ subject ]</a>
+              <a href="author.html#2661">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

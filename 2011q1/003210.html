@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] FYI: new --desktop option
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C201103240007.12712.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003209.html">
+   <LINK REL="Next"  HREF="003212.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] FYI: new --desktop option</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C201103240007.12712.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] FYI: new --desktop option">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Mar 23 23:07:12 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003209.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+        <LI>Next message: <A HREF="003212.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3210">[ date ]</a>
+              <a href="thread.html#3210">[ thread ]</a>
+              <a href="subject.html#3210">[ subject ]</a>
+              <a href="author.html#3210">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 23 maaliskuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 23/03/2011 21:59, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; PS. Attached is a screenshot of how I thought to change the Hatari
+</I>&gt;<i> &gt; screen dialog.
+</I>&gt;<i> 
+</I>&gt;<i> Looking at the screenshot, I think it gives the feeling that &quot;keep
+</I>&gt;<i> desktop resolution&quot; and &quot;max zoomed win&quot; are in the same column and only
+</I>&gt;<i> apply to Falcon/TT.
+</I>
+That's on purpose as they (mainly) apply only to Falcon/TT.
+
+&quot;Max zoomed&quot; enables the ST low-rez doubling if the selected resolution
+is large enough, but that's all the effect it has for that.  For VDI mode
+it doesn't have any effect.  It's already explained in the manual.
+
+
+The problem is that Hatari has 3 different video output systems,
+ST/STE, VDI and Videl which is used for Falcon &amp; TT.  If the Videl code
+would be doing updates only if something changes (currently it always
+updates everything which makes it much slower for GEM apps), then it
+would be IMHO best to move at least the VDI code to that too...
+
+
+&gt;<i> Maybe you could split this screen in several horizontal parts :
+</I>&gt;<i>   - common options (frame skip, indicator, fullscreen, zoom)
+</I>&gt;<i>   - an STF/STE part (in case we have sthg  specific now ? But I'm not
+</I>&gt;<i> sure)
+</I>&gt;<i> - a Falcon/TT part with &quot;keep desktop res&quot;.
+</I>
+As there's no STF/STE part, that's how the proposed layout actually is...
+
+
+&gt;<i> In case we don't have enough room, maybe we could move the &quot;screen
+</I>&gt;<i> capture&quot; part to another more general &quot;recording&quot; panel (we could also
+</I>&gt;<i> move ym/wav recording there too) ?
+</I>
+Anyway, if you want another layout, I'd like first an ASCII template for all
+the dialogs that need to be changed.  The SDL dialogs are *really* painful
+to modify with a one where you can calculate the offsets etc.
+
+Attached is the ASCII layout I did for current dialog + diff.
+
+
+	- Eero
+-------------- next part --------------
+
+  Hatari screen options        Falcon/TT only:
+
+  [] Fullscreen   Frame skip:  [] Keep desktop
+   		   o Off          resolution
+  Indicators:	   o 1
+   o Statusbar	   o 2         Max zoomed win:
+   o Drive led 	   o 4           &lt;- xxx -&gt;
+   o None	   o Auto      x &lt;- xxx -&gt;
+
+
+    Screen capture        [  Screenshot  ]
+
+     [] Crop statusbar    [  Record AVI  ]
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: diff
+Type: text/x-patch
+Size: 7979 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110324/4666b74d/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110324/4666b74d/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003209.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+	<LI>Next message: <A HREF="003212.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3210">[ date ]</a>
+              <a href="thread.html#3210">[ thread ]</a>
+              <a href="subject.html#3210">[ subject ]</a>
+              <a href="author.html#3210">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

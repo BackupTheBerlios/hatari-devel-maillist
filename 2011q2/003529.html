@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Execution history debugger command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3CBANLkTi%3DSraaj9dMSsH9VEVv%3D6kd49GW27g%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003528.html">
+   <LINK REL="Next"  HREF="003534.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Execution history debugger command</H1>
+    <B>Deniz Turkoglu</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3CBANLkTi%3DSraaj9dMSsH9VEVv%3D6kd49GW27g%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Execution history debugger command">turkoglu.deniz at gmail.com
+       </A><BR>
+    <I>Fri Jun  3 22:10:28 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003528.html">[hatari-devel] Execution history debugger command
+</A></li>
+        <LI>Next message: <A HREF="003534.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3529">[ date ]</a>
+              <a href="thread.html#3529">[ thread ]</a>
+              <a href="subject.html#3529">[ subject ]</a>
+              <a href="author.html#3529">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, Jun 3, 2011 at 8:39 AM, Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On torstai 02 kes&#228;kuu 2011, Deniz Turkoglu wrote:
+</I>&gt;&gt;<i> For the UI, there are also other alternatives. Qt is one, and I think
+</I>&gt;&gt;<i> they are quite popular, but other one is wxWidgets that I know of. Of
+</I>&gt;&gt;<i> course both has pros and cons, and of course SO has a discussion on
+</I>&gt;&gt;<i> this:
+</I>&gt;&gt;<i> <A HREF="http://stackoverflow.com/questions/2886258/wxwidgets-vs-qt">http://stackoverflow.com/questions/2886258/wxwidgets-vs-qt</A>
+</I>&gt;<i>
+</I>&gt;<i> Ok, that doesn't give very positive view on wxWidgets compared to Qt.
+</I>&gt;<i> Main advantage of wxWidgets (and several other toolkits) is that they're
+</I>&gt;<i> smaller (=have less features) and therefore programs using them start
+</I>&gt;<i> faster.
+</I>
+Depends. The most rated comment is negative about wxwidgets while some
+of the rest are quite positive. I haven't done much UI so I can't
+comment on the frameworks, but Qt has a long history and will probably
+support most of the thing needed, even more, out of the box.
+
+&gt;<i>
+</I>&gt;&gt;<i> I haven't used many Qt backed programs but some famous ones --binary
+</I>&gt;&gt;<i> blobs, are Skype and Google Earth on linux (afaik), KeepassX is open
+</I>&gt;&gt;<i> source and is also built using Qt, and those would be ideal to have a
+</I>&gt;&gt;<i> look at how Qt looks like.
+</I>&gt;<i>
+</I>&gt;<i> Well, I know Qt fairly well although I've never written any real programs
+</I>&gt;<i> with it. &#160;I think Qt is actually one of the best widget sets, it's
+</I>&gt;<i> the C++ that I don't like.
+</I>
+Having seen countless language wars I would say this also depends. I
+am not a big fan of C++ either but the 'industry' seems to have
+embraced it. To be honest I would also like to see hatari continue in
+mainly C.
+
+&gt;<i>
+</I>&gt;<i> Qt has two separate bindings for Python (PySide is by Nokia), but I guess
+</I>&gt;<i> people would have the same problem with them as with PyGtk...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> For debugging I have another idea, may it be radical or not feasible.
+</I>&gt;&gt;<i> Browsers have been working on remote debugging for sometime, almost
+</I>&gt;&gt;<i> all has an option; Chrome/Webkit : Remote Inspector, Firefox : Firebug
+</I>&gt;&gt;<i> + Crossfire, Opera : Scope.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> <A HREF="http://www.webkit.org/blog/1620/webkit-remote-debugging/">http://www.webkit.org/blog/1620/webkit-remote-debugging/</A>
+</I>&gt;&gt;<i> <A HREF="http://getfirebug.com/wiki/index.php/Crossfire">http://getfirebug.com/wiki/index.php/Crossfire</A>
+</I>&gt;&gt;<i> <A HREF="http://dragonfly.opera.com/app/scope-interface/">http://dragonfly.opera.com/app/scope-interface/</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I think a wire protocol would benefit Hatari as well, esp. for
+</I>&gt;&gt;<i> debugging on devices, for instance N900.
+</I>&gt;<i>
+</I>&gt;<i> Hatari and the PyGtk Hatari UI, including its debugger GUI, worked on
+</I>&gt;<i> the N900 phone just fine when I last tested them. &#160;But the debugger UI
+</I>&gt;<i> indeed has trouble fitting to the screen even in it's current form.
+</I>&gt;<i>
+</I>&gt;<i> You should be using Hatari's CLI console from SSH login, that way you
+</I>&gt;<i> can use any terminal size you want to.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> I have been checking the
+</I>&gt;&gt;<i> options and couldn't decide on the protocol, mainly the serializer.
+</I>&gt;<i>
+</I>&gt;<i> The current protocol is ASCII strings terminated with newlines, sent over
+</I>&gt;<i> a socket. &#160;With ASCII there's no need for serialization, structure/member
+</I>&gt;<i> padding/alignment and byte swapping which makes the API easier to use
+</I>&gt;<i> &amp; debug:
+</I>&gt;<i> - from higher level / script languages
+</I>&gt;<i> - by Atari programs utilizing XBios(255) when --bios-intercept is enabled
+</I>&gt;<i>
+</I>&gt;<i> Currently only information coming back through that socket is Hatari window
+</I>&gt;<i> size changes (needed for window embedding), and even that comes only if
+</I>&gt;<i> it was requested.
+</I>&gt;<i>
+</I>&gt;<i> When adding support for breakpoints to the remote UI, there needs also to be
+</I>&gt;<i> information sent through remote API when the internal debugger is invoked,
+</I>&gt;<i> with something identifying why (user, breakpoint, exception....) the
+</I>&gt;<i> debugger was invoked.
+</I>&gt;<i>
+</I>&gt;<i> The actual debugger data comes back through a separate, one-way fifo.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> I
+</I>&gt;&gt;<i> am interested in using thrift (<A HREF="http://wiki.apache.org/thrift/Tutorial">http://wiki.apache.org/thrift/Tutorial</A>)
+</I>&gt;&gt;<i> to remotely debug/control/test hatari but it doesnt support events out
+</I>&gt;&gt;<i> of the box, which makes it a plain RPC and not fit for debugging. JSON
+</I>&gt;&gt;<i> is of course an option but I really like google-protobuff or thrift,
+</I>&gt;&gt;<i> mainly due to code generation and overall cleaner API that can be
+</I>&gt;&gt;<i> built with them.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Having a clean protocol also means the UI can be done in any language,
+</I>&gt;&gt;<i> thrift has bindings for almost every language and it would be easy to
+</I>&gt;&gt;<i> build an UI that supports both local and remote debugging.
+</I>&gt;<i>
+</I>&gt;<i> Would that add an extra dependency to build process &amp; run-time?
+</I>
+I haven't done thrift(facebook) but I have done protobuf (google),
+they are similar and both needs a lib. I also was skeptical to this
+idea first but once I wrote the code-generation for the services I
+noticed how clean it made the overall API. Especially when we need to
+expose a complicated interface like a debugger and want to extend the
+functionality easily, I believe these protocols would work nicely.
+
+On the other hand, there is always string based JSON, which is also
+something I like. I said thrift because it comes with a network impl.
+whereas in protobuf I had to write the RPC implementation.
+
+-deniz
+
+&gt;<i> &#160; &#160; &#160; &#160;- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003528.html">[hatari-devel] Execution history debugger command
+</A></li>
+	<LI>Next message: <A HREF="003534.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3529">[ date ]</a>
+              <a href="thread.html#3529">[ thread ]</a>
+              <a href="subject.html#3529">[ subject ]</a>
+              <a href="author.html#3529">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

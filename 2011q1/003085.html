@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20emu%20and%20STE%20compatibility%20%28D-Bug%20games%29&In-Reply-To=%3C4D602F9B.2080004%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003084.html">
+   <LINK REL="Next"  HREF="003086.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon emu and STE compatibility (D-Bug games)</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20emu%20and%20STE%20compatibility%20%28D-Bug%20games%29&In-Reply-To=%3C4D602F9B.2080004%40free.fr%3E"
+       TITLE="[hatari-devel] Falcon emu and STE compatibility (D-Bug games)">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Feb 19 22:01:15 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003084.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+        <LI>Next message: <A HREF="003086.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3085">[ date ]</a>
+              <a href="thread.html#3085">[ thread ]</a>
+              <a href="subject.html#3085">[ subject ]</a>
+              <a href="author.html#3085">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've chosen the second choice.
+Is it better for you this way ?
+
+This time, I can fell the difference between 8 and 16 Mhz.
+It seems to work well.
+
+I think there's no way to have the 68030 in 16 Mhz and the blitter at 8 
+Mhz with the actual Hatari code ?
+
+Regards
+
+Laurent
+
+
+Le 19/02/2011 21:35, Laurent Sallafranque a &#233;crit :
+&gt;<i> I did create this new function to know if I'm in Falcon mode or in STe 
+</I>&gt;<i> mode.
+</I>&gt;<i> I didn't want to add a parameter to io_mem_Init() and change the code 
+</I>&gt;<i> everywhere.
+</I>&gt;<i>
+</I>&gt;<i> Maybe I should ?
+</I>&gt;<i>
+</I>&gt;<i> Or should I call IoMem_Init_FalconInSTEcompatibilityMode to set a 
+</I>&gt;<i> &quot;private&quot; data in IoMem and then, use this date in ioMem_Init ?
+</I>&gt;<i>
+</I>&gt;<i> (I prefer the second one)
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Le 19/02/2011 15:10, Thomas Huth a &#233;crit :
+</I>&gt;&gt;<i> Am Sat, 19 Feb 2011 14:44:30 +0100
+</I>&gt;&gt;<i> schrieb Laurent Sallafranque&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I've uploaded source for full Ste bus compatibility mode (Falcon mode
+</I>&gt;&gt;&gt;<i> only).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I didn't want to create a new ioMemTabFalconSteMode table (no need to
+</I>&gt;&gt;&gt;<i> maintain 2 tables with the same parameters), so I've done it this way.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Don't hesitate to tell me if you would have preferred another way.
+</I>&gt;&gt;<i> I think it is ok to do it this way, but ... the two IoMem_Init*()
+</I>&gt;&gt;<i> functions are pretty much the same, except for the &quot;Initialize STe
+</I>&gt;&gt;<i> bus specific registers for Falcon&quot; for-loop block.
+</I>&gt;&gt;<i> Could you maybe merge that code block in the original IoMem_Init()
+</I>&gt;&gt;<i> function instead, so that we do not have so much duplicated code?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Concerning the PSG shadow registers, I think they are not working on
+</I>&gt;&gt;<i> the Falcon in STE bus mode ... they just don't generate a bus error
+</I>&gt;&gt;<i> anymore when you try to access them in compatible bus mode.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   Thomas
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003084.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+	<LI>Next message: <A HREF="003086.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3085">[ date ]</a>
+              <a href="thread.html#3085">[ thread ]</a>
+              <a href="subject.html#3085">[ subject ]</a>
+              <a href="author.html#3085">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

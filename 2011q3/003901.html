@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] m68k instruction decoder
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20m68k%20instruction%20decoder&In-Reply-To=%3C201108122241.00395.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003898.html">
+   <LINK REL="Next"  HREF="003902.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] m68k instruction decoder</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20m68k%20instruction%20decoder&In-Reply-To=%3C201108122241.00395.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] m68k instruction decoder">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Aug 12 21:41:00 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003898.html">[hatari-devel] m68k instruction decoder
+</A></li>
+        <LI>Next message: <A HREF="003902.html">[hatari-devel] m68k instruction decoder
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3901">[ date ]</a>
+              <a href="thread.html#3901">[ thread ]</a>
+              <a href="subject.html#3901">[ subject ]</a>
+              <a href="author.html#3901">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On torstai 11 elokuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> I can see the purpose of this as a test to manipulate opcodes, but this
+</I>&gt;<i> seems over complicated to me to set breakpoint.
+</I>
+Err, it started from my unhappiness with Markus' code for disassembling
+and a thought that I could try out what writing a table based instruction
+decoder would need.  Adding command line and breakpoint output to
+the table generation python code was kind of an afterthough.
+
+
+&gt;<i> Also, it looks like &quot;code&quot; duplication, in the sense that all those
+</I>&gt;<i> opcodes are already defined in uae/winuae with more informations
+</I>&gt;<i> regarding possible address mode and size.
+</I>&gt;<i>
+</I>&gt;<i> For example, it would be much too generic with &quot;move&quot; if you just break
+</I>&gt;<i> on &quot;move&quot; without being able to specify source/dest.
+</I>&gt;<i> 
+</I>&gt;<i> I think there're 2 cases when you want to add a breakpoint on an
+</I>&gt;<i> instruction :
+</I>&gt;<i>   - you have an example so you can set (pc).w =xxxx
+</I>
+Most of the instructions have different kinds parameters encoded to them,
+so unless the instruction doesn't have any (like RTD/RTE/RTR/RTS), or you
+want just that specific version of the instruction, you need to know also
+the generic form.
+
+
+&gt;<i>   - you don't know the opcode, in that case I think it would be better
+</I>&gt;<i> to do it the other way : go from the text to the opcode
+</I>&gt;<i> 
+</I>&gt;<i> I mean, it would be interesting if the user could say &quot;break when you
+</I>&gt;<i> encounter 'move.w d0,(a0)' at the disassembled address&quot;.
+</I>&gt;<i> 
+</I>&gt;<i> So, the user would enter some text to check &quot;str1&quot;.
+</I>&gt;<i> On each instruction (when breakpoints are checked), internally call the
+</I>&gt;<i> disasm function to an internal char buffer &quot;str2&quot; (not stdin). And now
+</I>&gt;<i> the hard part : try to do a fuzzy match of &quot;str1 = str2&quot; (standardize
+</I>&gt;<i> space/tab, independant case matching, ...). If both strings match, then
+</I>&gt;<i> breakpoint is reached.
+</I>
+Monst's instruction search uses a substring match on the disassembler
+output.  User just needs to give the substring in the current
+disassembly format.
+
+For example, one could search for &quot;$14(A7&quot; and match:
+	move.l D0,$14(A7)
+
+(I would have already added this to Hatari debugger if I were able to
+touch Markus' code without an overwhelming urge to fix its indentation.)
+
+
+&gt;<i> Of course, the user would need to enter the instruction by respecting
+</I>&gt;<i> the disassembler usual output convention, especially regarding how to
+</I>&gt;<i> express register, address mode and things like that (for simple
+</I>&gt;<i> instruction like rts, rol, jmp, ... that don't have a variety of
+</I>&gt;<i> parameters, matching should be rather easy to achieve).
+</I>
+If you sometimes would need to match e.g. all of .b, .w and .l formats,
+I could add to the python code a helper for telling you how to mask given
+parameters from the given instruction, e.g. with syntax like this:
+	&lt;instruction&gt; ?=&lt;parameter type letters&gt;
+
+In the move case, it would look like this:
+------
+m68k-instructions: move
+
+Instruction:
+  move - 00ssyyymmmmmmxxx
+Bits:
+  - s: size (byte/word/long)
+  - y: destination register
+  - m: effective address mode
+  - x: source register
+
+m68k-instructions: move ?=s
+    $cfff
+------
+
+-&gt; would give you value to mask the move instruction size out.
+    $cfff
+
+You could then use:
+	b (pc).w &amp; $cfff = &quot;$3080 &amp; $cfff&quot;
+
+
+Btw. Any suggestions for which letters to use to have separate ones for
+source &amp; destination register op-modes and effective address modes?
+
+These are the letters I currently use:
+    's': &quot;size (byte/word/long)&quot;,
+    'i': &quot;dynamic, not immediate data&quot;,
+    'x': &quot;source register&quot;,
+    'y': &quot;destination register&quot;,
+    'r': &quot;data / address register&quot;,
+    'v': &quot;data value&quot;,
+    'o': &quot;op-mode&quot;,
+    'm': &quot;effective address mode&quot;,
+    'a': &quot;effective address register&quot;,
+    't': &quot;instruction type / direction&quot;,
+    'c': &quot;condition / count&quot;,
+    'p': &quot;displacement&quot;,
+    'b': &quot;breakpoint / trap vector&quot;,
+
+
+&gt;<i> So breakpoint on complex opcodes would just be a matter of entering the
+</I>&gt;<i> text in a compatible way with the usual disasm output. Then all the
+</I>&gt;<i> disasm work would be done as it's already done today, if new opcodes
+</I>&gt;<i> (68030,...) are added, it's automatically available.
+</I>
+How many new instructions 680[2346]0 have compared to 680[01]0?
+Does coldfire have new instructions?
+
+
+&gt;<i> You can also adapt this to the dsp case, once you have a flexible enough
+</I>&gt;<i> fuzzy matching function, you don't need to know what cpu you're
+</I>&gt;<i> handling, it's just strings comparison and it would work also for dsp
+</I>&gt;<i> breakpoints.
+</I>
+Sure.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003898.html">[hatari-devel] m68k instruction decoder
+</A></li>
+	<LI>Next message: <A HREF="003902.html">[hatari-devel] m68k instruction decoder
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3901">[ date ]</a>
+              <a href="thread.html#3901">[ thread ]</a>
+              <a href="subject.html#3901">[ subject ]</a>
+              <a href="author.html#3901">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

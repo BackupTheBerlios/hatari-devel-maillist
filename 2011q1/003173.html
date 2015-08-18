@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] FYI: new --desktop option
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C201103180116.13435.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003172.html">
+   <LINK REL="Next"  HREF="003199.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] FYI: new --desktop option</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C201103180116.13435.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] FYI: new --desktop option">oak at helsinkinet.fi
+       </A><BR>
+    <I>Fri Mar 18 00:16:13 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003172.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+        <LI>Next message: <A HREF="003199.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3173">[ date ]</a>
+              <a href="thread.html#3173">[ thread ]</a>
+              <a href="subject.html#3173">[ subject ]</a>
+              <a href="author.html#3173">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 18 maaliskuu 2011, Thomas Huth wrote:
+&gt;<i> Ok, looking at your screenshots, this seems like an little vs. big
+</I>&gt;<i> endian problem to me. Could it be that Mac OS X uses different
+</I>&gt;<i> endianess modes in windowed and fullscreen mode?
+</I>&gt;<i> Assuming that one mode is AARRGGBB and the other is BBGGRRAA, and
+</I>&gt;<i> Hatari tries to write 0x00ffffff for white, you will get yellow in the
+</I>&gt;<i> other mode instead.
+</I>&gt;<i> 
+</I>&gt;<i> Could you maybe try to add a call to VIDEL_updateColors() somewhere at
+</I>&gt;<i> the end of HostScreen_setWindowSize() to see whether this changes
+</I>&gt;<i> anything?
+</I>
+As the colors being set are saved by hostscreen.c, I was thinking that
+it could be enough to remap them at that place.  See the attached patch.
+
+Hm.  I replaced HostScreen_updatePalette() with palette remapping, but now
+I started to wonder should that sill be called too?
+
+
+(The patch also tries to speed up videl updates a bit by removing one
+intermediate hostscreen function call per pixel.)
+
+
+&gt;<i> It would also be interesting if you could enable the VIDEL_DEBUG in the
+</I>&gt;<i> hostscreen.c file to see if the Dprintf((&quot;Pixel format: ...&quot;)) call
+</I>&gt;<i> prints something different when you switch to fullscreen mode.
+</I>
+Yes, the shift counts would tell did the format change between fullscreen
+&amp; windowed mode.
+
+
+Btw: at least on Linux, SDL seems to use a separate window for fullscreen
+and window mode even if the window resolution &amp; bitdepth is same.  Same
+may be the case with OSX.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: hostscreen.diff
+Type: text/x-patch
+Size: 5409 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110318/0ddbf025/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110318/0ddbf025/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003172.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+	<LI>Next message: <A HREF="003199.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3173">[ date ]</a>
+              <a href="thread.html#3173">[ thread ]</a>
+              <a href="subject.html#3173">[ subject ]</a>
+              <a href="author.html#3173">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

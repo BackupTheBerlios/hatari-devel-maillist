@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling Hatari code with Valgrind
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind&In-Reply-To=%3C201101080030.26447.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002758.html">
+   <LINK REL="Next"  HREF="002743.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling Hatari code with Valgrind</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind&In-Reply-To=%3C201101080030.26447.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Profiling Hatari code with Valgrind">oak at helsinkinet.fi
+       </A><BR>
+    <I>Fri Jan  7 23:30:26 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002758.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+        <LI>Next message: <A HREF="002743.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2759">[ date ]</a>
+              <a href="thread.html#2759">[ thread ]</a>
+              <a href="subject.html#2759">[ subject ]</a>
+              <a href="author.html#2759">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 07 tammikuu 2011, Nicolas Pomar&#232;de wrote:
+...
+&gt;<i> In the case of &quot;simpler&quot; functions, another could indicator could be to
+</I>&gt;<i> just build a small test program that would do 1000000 calls of
+</I>&gt;<i> Update_e_u_n_z old/new versions and see which one is faster (this way
+</I>&gt;<i> you can get a real percentage of the speedup).
+</I>...
+&gt;&gt;<i> It might be possible that my i3 CPU scales its speed according to
+</I>&gt;&gt;<i> the load[2] though and that's why I don't see the differences.  I
+</I>&gt;&gt;<i> hadn't thought of that earlier. If it does scaling, then &quot;top&quot; isn't
+</I>&gt;&gt;<i> valid way to measure anything.
+</I>&gt;<i> 
+</I>&gt;<i> It certainly does ; check &quot;cat /proc/cpuinfo&quot; to see if the &quot;cpu MHZ&quot; is
+</I>&gt;<i> changing depending on the overall load. In that case, using top is not a
+</I>&gt;<i> good option.
+</I>
+I noticed that I can get that info also from:
+	cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq
+In addition to:
+	grep -i mhz /proc/cpuinfo
+
+Polling those with e.g. &quot;cat&quot; isn't enough though, I think the frequency
+can be changed quite fast (several times per second).  And according to:
+cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies
+
+There are quite a few frequencies at which (each of these virtual cores[1])
+can be running.
+
+[1] i3 has two cores which both simulate an extra core with hyperthreading.
+
+I would guess that if something uses all CPU constantly (hatari with
+--fast-forward), the cpu governor would keep it at highest frequency.
+Then one needs timing though (--run-vbls with Hatari) as I mentioned
+in earlier mail, as CPU usage will/should be then constantly at 100%...
+
+ 
+&gt;<i> The best option is a profiler that would completly emulate an i5x6 cpu
+</I>&gt;<i> with cycle precise value for each instruction. The program will usually
+</I>&gt;<i> run very slowly, but in the end you get an exact cycle count of what
+</I>&gt;<i> happened. If I recall correctly, there're such profiler under linux, but
+</I>&gt;<i> I don't remember their names.
+</I>
+It's called Valgrind. :-)
+
+Its callgrind plugin gives callgraphs, but simulates just instructions,
+the cachegrind plugin can simulate also cache misses etc (but lacks
+callgraph info).
+
+
+	- Eero
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002758.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+	<LI>Next message: <A HREF="002743.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2759">[ date ]</a>
+              <a href="thread.html#2759">[ thread ]</a>
+              <a href="subject.html#2759">[ subject ]</a>
+              <a href="author.html#2759">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

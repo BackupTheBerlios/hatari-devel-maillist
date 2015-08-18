@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20%28bad%29Patch%20but%20sound%20quality%20increased%20a%0A%20lot&In-Reply-To=%3C4D2F7C85.7040008%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002785.html">
+   <LINK REL="Next"  HREF="002774.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon (bad)Patch but sound quality increased a lot</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20%28bad%29Patch%20but%20sound%20quality%20increased%20a%0A%20lot&In-Reply-To=%3C4D2F7C85.7040008%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Falcon (bad)Patch but sound quality increased a lot">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Jan 13 23:28:21 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002785.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+</A></li>
+        <LI>Next message: <A HREF="002774.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2786">[ date ]</a>
+              <a href="thread.html#2786">[ thread ]</a>
+              <a href="subject.html#2786">[ subject ]</a>
+              <a href="author.html#2786">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 13/01/2011 22:54, Laurent Sallafranque a &#233;crit :
+&gt;<i> Nicolas, Do you plane to upload my DSP patch or do you want me to do it ?
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+Hello
+
+I would like to try EKO, I don't understand why moving the last DSP_Run 
+inside &quot;if (regs.spcflags)&quot; at the end of m68k_run is causing an error, 
+this should not be the case if the 680xx cpu count was not increased above.
+
+If you leave it outside of this &quot;if&quot; (as it is now), there will be some 
+cases where Cycles_GetCounter(CYCLES_COUNTER_CPU) = 0, so DSP_Run will 
+be called with 0, which is useless (we will have 0 because DSP_Run will 
+be already called by the 2 patches you proposed to add above)
+
+I will try to have a look this week end.
+
+Nicolas
+
+
+&gt;<i> Le 11/01/2011 23:07, Nicolas Pomar&#232;de a &#233;crit :
+</I>&gt;&gt;<i> Le 11/01/2011 22:16, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;&gt;<i> Hello,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I've generated a bad patch for Falcon DSP.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> With this patch, sound quality is really so much better with some demos.
+</I>&gt;&gt;&gt;<i> I've tested with EKO_System, Illusion demo, R U Experienced.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> It's what I thought. I need a precise 60 cycles clock for the SSI
+</I>&gt;&gt;&gt;<i> tranfers (DSP &lt;-&gt; Crossbar).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I've called DSP_Run inbetween each 68030 instruction cycles computing.
+</I>&gt;&gt;&gt;<i> With this, instead of having a 100 cycles instruction (1 big call to
+</I>&gt;&gt;&gt;<i> crossbar and DSP), it generates more intermediate calls.
+</I>&gt;&gt;&gt;<i> My timers keep OK and sound is nice.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I'm still sure that the 68030 as a clock for the Falcon is not good
+</I>&gt;&gt;&gt;<i> enough (cycles are too long).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Cycles ARE important in falcon emulation too (look at my previous patch,
+</I>&gt;&gt;&gt;<i> DSP timings change let some demos run).
+</I>&gt;&gt;&gt;<i> FalcAmp and Crown of creation complain about &quot;bad timings&quot;, ...
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Any suggestion here ?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Regards
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Laurent
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> yes, it's sure that you should call DSP_Run as frequently as possible,
+</I>&gt;&gt;<i> each time M68000_AddCycles (or equivalent) is called, else you will
+</I>&gt;&gt;<i> miss more cycles when calling the DSP emulation.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In the current m68k_run, the main cause of possible &quot;error&quot; is that
+</I>&gt;&gt;<i> DSP_Run is not called each time we process an interrupt.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In the 3 patches you propose, I think the 1st one is not necessary. In
+</I>&gt;&gt;<i> case SPCFLAG_EXTRA_CYCLES is set, we will add most of the time 4
+</I>&gt;&gt;<i> cyles, so calling DSP_Run again just after 4 cycles might be counter
+</I>&gt;&gt;<i> productive.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I think the 2 patches before &quot;#if 0&quot; can be kept and the original last
+</I>&gt;&gt;<i> call to DSP_Run should be changed from :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> if (regs.spcflags) {
+</I>&gt;&gt;<i> if (do_specialties ())
+</I>&gt;&gt;<i> return;
+</I>&gt;&gt;<i> }
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> /* Run DSP 56k code if necessary */
+</I>&gt;&gt;<i> if (bDspEnabled) {
+</I>&gt;&gt;<i> DSP_Run( Cycles_GetCounter(CYCLES_COUNTER_CPU) );
+</I>&gt;&gt;<i> }
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> to
+</I>&gt;&gt;<i> if (regs.spcflags) {
+</I>&gt;&gt;<i> if (do_specialties ())
+</I>&gt;&gt;<i> return;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> /* Run DSP 56k code if necessary */
+</I>&gt;&gt;<i> if (bDspEnabled) {
+</I>&gt;&gt;<i> DSP_Run( Cycles_GetCounter(CYCLES_COUNTER_CPU) );
+</I>&gt;&gt;<i> }
+</I>&gt;&gt;<i> }
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -&gt; No need to call DSP_Run again if M68000_AddCycles was not called by
+</I>&gt;&gt;<i> do_specialties, because the cpu cycle counter would be the same since
+</I>&gt;&gt;<i> the latest call to DSP_Run.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In the end, there would be 3 calls to DSP_Run : 1 would be made every
+</I>&gt;&gt;<i> time, the 2 others only when there's an exception.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Could you try this ? If that's OK I can commit a patch to do this
+</I>&gt;&gt;<i> (this would not really impact emulator's performance)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Of course, the final stage of this to get perfect emulation is to do
+</I>&gt;&gt;<i> the same as WinUae in its most precise mode : each cpu instruction is
+</I>&gt;&gt;<i> split into 4 cycles and all components (blitter, copper, dma sound,
+</I>&gt;&gt;<i> ...) are called every 4 cycles to see if they need &quot;to work&quot; -&gt; really
+</I>&gt;&gt;<i> more cpu intensive.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Nicolas
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> diff -r 1ea504dede73 src/uae-cpu/newcpu.c
+</I>&gt;&gt;&gt;<i> --- a/src/uae-cpu/newcpu.c Tue Jan 11 21:08:35 2011 +0100
+</I>&gt;&gt;&gt;<i> +++ b/src/uae-cpu/newcpu.c Tue Jan 11 22:09:16 2011 +0100
+</I>&gt;&gt;&gt;<i> @@ -1737,6 +1737,13 @@
+</I>&gt;&gt;&gt;<i> Cycles_SetCounter(CYCLES_COUNTER_CPU, 0); /* to measure the total number
+</I>&gt;&gt;&gt;<i> of cycles spent in the cpu */
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> M68000_AddCyclesWithPairing(cycles);
+</I>&gt;&gt;&gt;<i> +
+</I>&gt;&gt;&gt;<i> + /* Run DSP 56k code if necessary */
+</I>&gt;&gt;&gt;<i> + if (bDspEnabled) {
+</I>&gt;&gt;&gt;<i> + DSP_Run( Cycles_GetCounter(CYCLES_COUNTER_CPU) );
+</I>&gt;&gt;&gt;<i> + Cycles_SetCounter(CYCLES_COUNTER_CPU, 0); /* to measure the total
+</I>&gt;&gt;&gt;<i> number of cycles spent in the cpu */
+</I>&gt;&gt;&gt;<i> + }
+</I>&gt;&gt;&gt;<i> +
+</I>&gt;&gt;&gt;<i> if (regs.spcflags &amp; SPCFLAG_EXTRA_CYCLES) {
+</I>&gt;&gt;&gt;<i> /* Add some extra cycles to simulate a wait state */
+</I>&gt;&gt;&gt;<i> unset_special(SPCFLAG_EXTRA_CYCLES);
+</I>&gt;&gt;&gt;<i> @@ -1744,6 +1751,12 @@
+</I>&gt;&gt;&gt;<i> nWaitStateCycles = 0;
+</I>&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> + /* Run DSP 56k code if necessary */
+</I>&gt;&gt;&gt;<i> + if (bDspEnabled) {
+</I>&gt;&gt;&gt;<i> + DSP_Run( Cycles_GetCounter(CYCLES_COUNTER_CPU) );
+</I>&gt;&gt;&gt;<i> + Cycles_SetCounter(CYCLES_COUNTER_CPU, 0); /* to measure the total
+</I>&gt;&gt;&gt;<i> number of cycles spent in the cpu */
+</I>&gt;&gt;&gt;<i> + }
+</I>&gt;&gt;&gt;<i> +
+</I>&gt;&gt;&gt;<i> #if 0
+</I>&gt;&gt;&gt;<i> while (PendingInterruptCount &lt;= 0 &amp;&amp; PendingInterruptFunction)
+</I>&gt;&gt;&gt;<i> CALL_VAR(PendingInterruptFunction);
+</I>&gt;&gt;&gt;<i> @@ -1757,6 +1770,12 @@
+</I>&gt;&gt;&gt;<i> {
+</I>&gt;&gt;&gt;<i> CALL_VAR(PendingInterruptFunction); /* call the interrupt handler */
+</I>&gt;&gt;&gt;<i> do_specialties_interrupt(false); /* test if there's an mfp/video
+</I>&gt;&gt;&gt;<i> interrupt and add non pending jitter */
+</I>&gt;&gt;&gt;<i> +
+</I>&gt;&gt;&gt;<i> + /* Run DSP 56k code if necessary */
+</I>&gt;&gt;&gt;<i> + if (bDspEnabled) {
+</I>&gt;&gt;&gt;<i> + DSP_Run( Cycles_GetCounter(CYCLES_COUNTER_CPU) );
+</I>&gt;&gt;&gt;<i> + Cycles_SetCounter(CYCLES_COUNTER_CPU, 0); /* to measure the total
+</I>&gt;&gt;&gt;<i> number of cycles spent in the cpu */
+</I>&gt;&gt;&gt;<i> + }
+</I>&gt;&gt;&gt;<i> #if 0
+</I>&gt;&gt;&gt;<i> if ( regs.spcflags &amp; ( SPCFLAG_MFP | SPCFLAG_INT ) ) { /* only check
+</I>&gt;&gt;&gt;<i> mfp/video interrupts */
+</I>&gt;&gt;&gt;<i> if (do_specialties ()) /* check if this latest int has higher
+</I>&gt;&gt;&gt;<i> priority */
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002785.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+</A></li>
+	<LI>Next message: <A HREF="002774.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2786">[ date ]</a>
+              <a href="thread.html#2786">[ thread ]</a>
+              <a href="subject.html#2786">[ subject ]</a>
+              <a href="author.html#2786">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

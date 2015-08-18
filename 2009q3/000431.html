@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Conditional breakpoint code, please comment!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3Calpine.LMD.2.00.0907030012250.29558%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000430.html">
+   <LINK REL="Next"  HREF="000432.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Conditional breakpoint code, please comment!</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3Calpine.LMD.2.00.0907030012250.29558%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Conditional breakpoint code, please comment!">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Jul  3 00:17:28 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000430.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+        <LI>Next message: <A HREF="000432.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#431">[ date ]</a>
+              <a href="thread.html#431">[ thread ]</a>
+              <a href="subject.html#431">[ subject ]</a>
+              <a href="author.html#431">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 2 Jul 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Thursday 02 July 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;&gt;<i> Anyway, have you had time to test the conditional breakpoints and do
+</I>&gt;&gt;&gt;<i> they work fine for you or do I need to fix something?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I was a bit suprised to have no complaints about it after two weeks.
+</I>&gt;&gt;&gt;<i> :-)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Well, I tried it and there's a limitation at the moment : when checking
+</I>&gt;&gt;<i> for address indirect, your test function doesn't allow to put a
+</I>&gt;&gt;<i> breakpoint on addresses between ff8000 and ffffff (all the iomem range).
+</I>&gt;<i>
+</I>&gt;<i> This check:
+</I>&gt;<i>        if ((addr &gt; STRamEnd &amp;&amp; addr &lt; 0xe00000) || addr &gt; 0xff0000) {
+</I>&gt;<i>
+</I>&gt;<i> Was copied from Thomas' address breakpoint code in debugui.c, but I hadn't
+</I>&gt;<i> though that in indirect addressing some other addresses might be valid too.
+</I>&gt;<i>
+</I>
+I committed a change to handle addresses between 0xff8000 and 0xffffff.
+
+In the case of indirect addresses, I also added a mask to only keep the 24 
+lower bits of the address (when checking value and reading memory). This 
+way $ffff820a is also recognized as io mem $ff820a (which is the same 
+in the 68000).
+
+Something similar should be made for DSP 16 bit address space I guess, but 
+I don't know what.
+
+By the way, why do I have this warning, it doesn't seem useful ?
+
+&gt;<i> b ( $ff820a).b = 0
+</I>WARNING: mask ffffffff doesn't fit into 8 address/register bits
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000430.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+	<LI>Next message: <A HREF="000432.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#431">[ date ]</a>
+              <a href="thread.html#431">[ thread ]</a>
+              <a href="subject.html#431">[ subject ]</a>
+              <a href="author.html#431">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

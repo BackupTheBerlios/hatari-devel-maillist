@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C4B562F2B.2010903%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001285.html">
+   <LINK REL="Next"  HREF="001292.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C4B562F2B.2010903%40free.fr%3E"
+       TITLE="[hatari-devel] CMake build system">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Jan 19 23:16:11 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001285.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001292.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1286">[ date ]</a>
+              <a href="thread.html#1286">[ thread ]</a>
+              <a href="subject.html#1286">[ subject ]</a>
+              <a href="author.html#1286">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Thomas,
+
+I've tested it under Linux, it works for me.
+I prefer the cmake way to compile (it's easier to read).
+
+I've got a segfault in microphone call with cmake.
+I'd like to have a look at it (just to be sure that there's nothing 
+missing in my code) before you eventually remove it.
+
+I think we could keep the old and new way of compiling the project, it 
+can make differences useful for us.
+
+regards,
+
+Laurent
+
+
+Thomas Huth a &#233;crit :
+&gt;<i> On Mon, 18 Jan 2010 06:36:56 +0100
+</I>&gt;<i> Christer Solskogen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">christer.solskogen at gmail.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> On Sun, Jan 17, 2010 at 10:35 PM, Thomas Huth &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">huth at users.berlios.de</A>&gt;
+</I>&gt;&gt;<i> wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> You can run &quot;make VERBOSE=1&quot; to see a full output of what is going
+</I>&gt;&gt;&gt;<i> on. The default should be to do a &quot;Release&quot; build with -O3 and w/o
+</I>&gt;&gt;&gt;<i> -g. You can also run &quot;cmake -LA&quot; to see a list of the cmake
+</I>&gt;&gt;&gt;<i> variables.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> Thanks! :)
+</I>&gt;&gt;<i> The only thing that I miss out is that hatari is able to build on Mac
+</I>&gt;&gt;<i> OS with CMake :)
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> I've now also spent some time to try out cmake on Mac OS X
+</I>&gt;<i> on my old PowerMac... I tried to create a native Xcode project with
+</I>&gt;<i> cmake, but that failed completely. First thing was, that I had to run
+</I>&gt;<i> cmake twice for some strange reason, or it would not create all
+</I>&gt;<i> necessary project files. Then, the Xcode project also does not work at
+</I>&gt;<i> all. It completely fails to build the UAE CPU core, and other parts
+</I>&gt;<i> showed me strange linker problems.
+</I>&gt;<i> Honestly, I am quite a bit disappointed now. I thought it would be
+</I>&gt;<i> easier with cmake. And considering the problems that Christer and George
+</I>&gt;<i> faced, and considering that the other main developers do not seem to be
+</I>&gt;<i> interested in this topic, I think we should maybe better stick with the
+</I>&gt;<i> old build system. CMake is certainly very nice for projects with simple
+</I>&gt;<i> build rules, but when it comes to more complex build rules like the
+</I>&gt;<i> ones for our CPU core, the portability and simplicity of cmake fades
+</I>&gt;<i> away.
+</I>&gt;<i> So I think I'll remove the CMakeLists.txt files from our repository
+</I>&gt;<i> again unless somebody comes up with a good reason to keep them.
+</I>&gt;<i>
+</I>&gt;<i>  Regards,
+</I>&gt;<i>   Thomas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001285.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001292.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1286">[ date ]</a>
+              <a href="thread.html#1286">[ thread ]</a>
+              <a href="subject.html#1286">[ subject ]</a>
+              <a href="author.html#1286">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

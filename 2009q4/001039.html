@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Gemdos date/time confusion/problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Gemdos%20date/time%20confusion/problems&In-Reply-To=%3C200911292101.30179.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001029.html">
+   <LINK REL="Next"  HREF="001042.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Gemdos date/time confusion/problems</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Gemdos%20date/time%20confusion/problems&In-Reply-To=%3C200911292101.30179.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Gemdos date/time confusion/problems">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Nov 29 20:01:30 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001029.html">[hatari-devel] Gemdos date/time confusion/problems
+</A></li>
+        <LI>Next message: <A HREF="001042.html">[hatari-devel] Gemdos date/time confusion/problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1039">[ date ]</a>
+              <a href="thread.html#1039">[ thread ]</a>
+              <a href="subject.html#1039">[ subject ]</a>
+              <a href="author.html#1039">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 29 November 2009, Eero Tamminen wrote:
+&gt;<i> &gt; the GEMDOS time in seconds has a range of only 5 bits. The value in
+</I>&gt;<i> &gt; these bits has to be doubled in order to get the actual number of
+</I>&gt;<i> &gt; seconds.
+</I>&gt;<i> &gt; I wonder if in gemdos.c GemDOS_GetFileInformation handles this
+</I>&gt;<i> &gt; correctly. Instead of
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;         DateTime-&gt;word2 |= (x-&gt;tm_sec &amp; 0x1F);          /* 5 bits */
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Should't it be
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;         DateTime-&gt;word2 |= ((x-&gt;tm_sec/2) &amp; 0x1F);          /* 5 bits
+</I>&gt;<i> &gt; */
+</I>&gt;<i> ...
+</I>&gt;<i> &gt; the month field of struct tm has a range of 0-11 (January to
+</I>&gt;<i> &gt; December) while GEMDOS uses 1-12. I don't think this difference is
+</I>&gt;<i> &gt; accounted for in GemDOS_GetFileInformation, but I might miss something.
+</I>&gt;<i>
+</I>&gt;<i> I agree.  The GemDOS_Time2dos() and GemDOS_Date2dos() functions
+</I>&gt;<i> already seem to do that right.
+</I>&gt;<i> -&gt; GetFileInformation() should use them.
+</I>&gt;<i>
+</I>&gt;<i> (with &quot;dos&quot; changed to &quot;Tos&quot; in their function names...)
+</I>&gt;<i>
+</I>&gt;<i> &gt; I'm still confused about the GEMDOS date/time handling. Let me suggest
+</I>&gt;<i> &gt; to rename the fields in DATETIME as follows:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; typedef struct {
+</I>&gt;<i> &gt;   Uint16 date;
+</I>&gt;<i> &gt;   Uint16 time;
+</I>&gt;<i> &gt; } DATETIME;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; This makes it easier to understand the meaning of these fields.
+</I>&gt;<i>
+</I>&gt;<i> Agree.  Feel free to send patch for this and above. :-)
+</I>
+Does the attached patch look / work OK?
+
+(Hard to say for me because Hatari doesn't yet have support for
+modifying the file date &amp; time, just reading it...)
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: datetime.diff
+Type: text/x-diff
+Size: 3565 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20091129/bf420a19/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20091129/bf420a19/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001029.html">[hatari-devel] Gemdos date/time confusion/problems
+</A></li>
+	<LI>Next message: <A HREF="001042.html">[hatari-devel] Gemdos date/time confusion/problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1039">[ date ]</a>
+              <a href="thread.html#1039">[ thread ]</a>
+              <a href="subject.html#1039">[ subject ]</a>
+              <a href="author.html#1039">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

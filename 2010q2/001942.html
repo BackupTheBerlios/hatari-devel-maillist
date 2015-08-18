@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Current HG version won't compile - DebugUI_Completion
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Current%20HG%20version%20won%27t%20compile%20-%20DebugUI_Completion&In-Reply-To=%3Cr2wc1a0d1561004271342g92e9ef1cl5b4f863998e9cfa5%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001937.html">
+   <LINK REL="Next"  HREF="001943.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Current HG version won't compile - DebugUI_Completion</H1>
+    <B>Christer Solskogen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Current%20HG%20version%20won%27t%20compile%20-%20DebugUI_Completion&In-Reply-To=%3Cr2wc1a0d1561004271342g92e9ef1cl5b4f863998e9cfa5%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Current HG version won't compile - DebugUI_Completion">christer.solskogen at gmail.com
+       </A><BR>
+    <I>Tue Apr 27 22:42:02 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001937.html">[hatari-devel] Linking with readline
+</A></li>
+        <LI>Next message: <A HREF="001943.html">[hatari-devel] Current HG version won't compile - DebugUI_Completion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1942">[ date ]</a>
+              <a href="thread.html#1942">[ thread ]</a>
+              <a href="subject.html#1942">[ subject ]</a>
+              <a href="author.html#1942">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>make VERBOSE=1
+/usr/bin/gcc  -Wall -Wwrite-strings -Wsign-compare
+-Wmissing-prototypes -Wstrict-prototypes -Wcast-qual
+-Wbad-function-cast -Wpointer-arith  -O3 -DNDEBUG
+CMakeFiles/hatari.dir/audio.c.o CMakeFiles/hatari.dir/avi_record.c.o
+CMakeFiles/hatari.dir/bios.c.o CMakeFiles/hatari.dir/blitter.c.o
+CMakeFiles/hatari.dir/cart.c.o CMakeFiles/hatari.dir/cfgopts.c.o
+CMakeFiles/hatari.dir/configuration.c.o
+CMakeFiles/hatari.dir/options.c.o
+CMakeFiles/hatari.dir/createBlankImage.c.o
+CMakeFiles/hatari.dir/change.c.o CMakeFiles/hatari.dir/control.c.o
+CMakeFiles/hatari.dir/cycInt.c.o CMakeFiles/hatari.dir/cycles.c.o
+CMakeFiles/hatari.dir/dialog.c.o CMakeFiles/hatari.dir/dmaSnd.c.o
+CMakeFiles/hatari.dir/fdc.c.o CMakeFiles/hatari.dir/file.c.o
+CMakeFiles/hatari.dir/floppy.c.o CMakeFiles/hatari.dir/gemdos.c.o
+CMakeFiles/hatari.dir/hd6301_cpu.c.o CMakeFiles/hatari.dir/hdc.c.o
+CMakeFiles/hatari.dir/ide.c.o CMakeFiles/hatari.dir/ikbd.c.o
+CMakeFiles/hatari.dir/ioMem.c.o CMakeFiles/hatari.dir/ioMemTabST.c.o
+CMakeFiles/hatari.dir/ioMemTabSTE.c.o
+CMakeFiles/hatari.dir/ioMemTabTT.c.o
+CMakeFiles/hatari.dir/ioMemTabFalcon.c.o CMakeFiles/hatari.dir/joy.c.o
+CMakeFiles/hatari.dir/keymap.c.o CMakeFiles/hatari.dir/m68000.c.o
+CMakeFiles/hatari.dir/main.c.o CMakeFiles/hatari.dir/midi.c.o
+CMakeFiles/hatari.dir/memorySnapShot.c.o CMakeFiles/hatari.dir/mfp.c.o
+CMakeFiles/hatari.dir/paths.c.o CMakeFiles/hatari.dir/psg.c.o
+CMakeFiles/hatari.dir/printer.c.o CMakeFiles/hatari.dir/resolution.c.o
+CMakeFiles/hatari.dir/rs232.c.o CMakeFiles/hatari.dir/reset.c.o
+CMakeFiles/hatari.dir/rtc.c.o CMakeFiles/hatari.dir/scandir.c.o
+CMakeFiles/hatari.dir/stMemory.c.o CMakeFiles/hatari.dir/screen.c.o
+CMakeFiles/hatari.dir/screenSnapShot.c.o
+CMakeFiles/hatari.dir/shortcut.c.o CMakeFiles/hatari.dir/sound.c.o
+CMakeFiles/hatari.dir/spec512.c.o CMakeFiles/hatari.dir/statusbar.c.o
+CMakeFiles/hatari.dir/str.c.o CMakeFiles/hatari.dir/tos.c.o
+CMakeFiles/hatari.dir/unzip.c.o CMakeFiles/hatari.dir/utils.c.o
+CMakeFiles/hatari.dir/vdi.c.o CMakeFiles/hatari.dir/video.c.o
+CMakeFiles/hatari.dir/wavFormat.c.o CMakeFiles/hatari.dir/xbios.c.o
+CMakeFiles/hatari.dir/ymFormat.c.o  -o hatari -rdynamic -Ldebug
+-Lfalcon -Lgui-sdl -Luae-cpu libFloppy.a debug/libDebug.a
+falcon/libFalcon.a gui-sdl/libGuiSdl.a uae-cpu/libUaeCpu.a
+-Wl,-Bstatic -lSDLmain -Wl,-Bdynamic -lSDL -lpthread -lm -Wl,-Bstatic
+-lSDLmain -Wl,-Bdynamic -lz -lpng -lX11 -lSDL -lpthread -lm -lz -lpng
+-lX11 -Wl,-rpath,debug:falcon:gui-sdl:uae-cpu:
+debug/libDebug.a(debugui.c.o): In function `DebugUI_Completion':
+debugui.c:(.text+0x1b1): undefined reference to `rl_point'
+debugui.c:(.text+0x1c5): undefined reference to `rl_line_buffer'
+debugui.c:(.text+0x2cd): undefined reference to `rl_completion_matches'
+debugui.c:(.text+0x2e9): undefined reference to `rl_completion_matches'
+debugui.c:(.text+0x358): undefined reference to `rl_attempted_completion_over'
+debugui.c:(.text+0x37b): undefined reference to
+`rl_filename_completion_function'
+debugui.c:(.text+0x383): undefined reference to `rl_completion_matches'
+debugui.c:(.text+0x3b9): undefined reference to `rl_completion_matches'
+debugui.c:(.text+0x3cb): undefined reference to `rl_completion_matches'
+debug/libDebug.a(debugui.c.o): In function `DebugUI':
+debugui.c:(.text+0x11cf): undefined reference to `rl_readline_name'
+debugui.c:(.text+0x11da): undefined reference to
+`rl_attempted_completion_function'
+debugui.c:(.text+0x11e3): undefined reference to `readline'
+debugui.c:(.text+0x1259): undefined reference to `add_history'
+collect2: ld returned 1 exit status
+make[2]: *** [src/hatari] Error 1
+make[2]: Leaving directory `/home/solskogen/hatari'
+make[1]: *** [src/CMakeFiles/hatari.dir/all] Error 2
+make[1]: Leaving directory `/home/solskogen/hatari'
+make: *** [all] Error 2
+
+gcc version 4.5.0 (GCC)
+cmake version 2.8.1
+
+(it won't compile on Mac OS X either)
+-- 
+chs
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001937.html">[hatari-devel] Linking with readline
+</A></li>
+	<LI>Next message: <A HREF="001943.html">[hatari-devel] Current HG version won't compile - DebugUI_Completion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1942">[ date ]</a>
+              <a href="thread.html#1942">[ thread ]</a>
+              <a href="subject.html#1942">[ subject ]</a>
+              <a href="author.html#1942">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

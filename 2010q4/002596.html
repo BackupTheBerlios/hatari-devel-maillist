@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Bug report: USB joypad axis
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Bug%20report%3A%20USB%20joypad%20axis&In-Reply-To=%3C1288975288.2632.5.camel%40jll%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002574.html">
+   <LINK REL="Next"  HREF="002624.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Bug report: USB joypad axis</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Bug%20report%3A%20USB%20joypad%20axis&In-Reply-To=%3C1288975288.2632.5.camel%40jll%3E"
+       TITLE="[hatari-devel] Bug report: USB joypad axis">marndt at asmsoftware.de
+       </A><BR>
+    <I>Fri Nov  5 17:41:28 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002574.html">[hatari-devel] Bug report: USB joypad axis
+</A></li>
+        <LI>Next message: <A HREF="002624.html">[hatari-devel] Bug report: USB joypad axis
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2596">[ date ]</a>
+              <a href="thread.html#2596">[ thread ]</a>
+              <a href="subject.html#2596">[ subject ]</a>
+              <a href="author.html#2596">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello together,
+
+I took a look at the sources and I think I can add a solution to this
+problem.
+
+The main culprit is in joy.c:
+
+static bool Joy_ReadJoystick(int nSdlJoyID, JOYREADING *pJoyReading)
+{
+	/* Joystick is OK, read position */
+	pJoyReading-&gt;XPos = SDL_JoystickGetAxis(sdlJoystick[nSdlJoyID], 0);
+	pJoyReading-&gt;YPos = SDL_JoystickGetAxis(sdlJoystick[nSdlJoyID], 1);
+
+The axis IDs to be read are hard coded by now. My idea is the following:
+
+a) Add two more variables to the JOYREADING structure for the IDs and
+use them:
+
+pJoyReading-&gt;XPos = SDL_JoystickGetAxis(sdlJoystick[nSdlJoyID],
+pJoyReading-&gt;x_Axis_ID)
+
+Those will be hardcoded for a start for compatibility.
+
+b) Later add configuration options from the ini file to set those
+correctly. They would be initialized and safeguarded so by default they
+become 0 and 1 if they are not defined or both show the same value.
+
+At least one could patch the values in the ini files by hand and later
+on, we can add GUI options to make this more easily configurable.
+
+I think I only have to touch joy.c joy.h configuration.c and
+configuration.h for this.
+
+If noone objects, I will develop my patch if time permits and commit it.
+
+cheers,
+Matthias
+
+
+Am Dienstag, den 02.11.2010, 17:41 +0100 schrieb Matthias Arndt:
+&gt;<i> Hello together,
+</I>&gt;<i> 
+</I>&gt;<i> with my old gamepad it worked but it seems not all USB gamepads are
+</I>&gt;<i> created equal.
+</I>&gt;<i> 
+</I>&gt;<i> I bought a simple cheap Speedlink Hornet USB gamepad and the axis do not
+</I>&gt;<i> work correctly with the current Hatari  (build from yesterday).
+</I>&gt;<i> 
+</I>&gt;<i> The test program jstest shows me axis events, but on axis 3 and 4, not 0
+</I>&gt;<i> and 1 as usual. Hatari seems not to cope with them yet but there should
+</I>&gt;<i> be some solution, maybe simply make the axis in use configurable or
+</I>&gt;<i> allow a sort of autodetect.
+</I>&gt;<i> 
+</I>&gt;<i> With MAME the problem is SIMILAR but MAME already offers configurability
+</I>&gt;<i> of the axis so the problem can be bypassed.
+</I>&gt;<i> 
+</I>&gt;<i> In the mean time, is there a kernel side patch to make the axis events
+</I>&gt;<i> show up on axis 0 and 1 instead?
+</I>&gt;<i> 
+</I>&gt;<i> Seems to be related on how exactly the HID driver maps the inputs :(
+</I>&gt;<i> 
+</I>&gt;<i> Matthias
+</I>
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002574.html">[hatari-devel] Bug report: USB joypad axis
+</A></li>
+	<LI>Next message: <A HREF="002624.html">[hatari-devel] Bug report: USB joypad axis
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2596">[ date ]</a>
+              <a href="thread.html#2596">[ thread ]</a>
+              <a href="subject.html#2596">[ subject ]</a>
+              <a href="author.html#2596">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

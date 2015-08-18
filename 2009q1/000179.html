@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] MiNT and Hatari drives
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MiNT%20and%20Hatari%20drives&In-Reply-To=%3C20090221005900.2d92f435%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000172.html">
+   <LINK REL="Next"  HREF="000185.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] MiNT and Hatari drives</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MiNT%20and%20Hatari%20drives&In-Reply-To=%3C20090221005900.2d92f435%40phineus%3E"
+       TITLE="[hatari-devel] MiNT and Hatari drives">huth at users.berlios.de
+       </A><BR>
+    <I>Sat Feb 21 00:59:00 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000172.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+        <LI>Next message: <A HREF="000185.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#179">[ date ]</a>
+              <a href="thread.html#179">[ thread ]</a>
+              <a href="subject.html#179">[ subject ]</a>
+              <a href="author.html#179">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 19 Feb 2009 01:52:27 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> On Thursday 12 February 2009, Eero Tamminen wrote:
+</I>&gt;<i> &gt; I added something like this to my ~/.mtoolsrc file:
+</I>&gt;<i> &gt; 	e: file=&quot;/home/eerot/hd.img&quot; partition=1
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; And then tried following:
+</I>&gt;<i> &gt; 	dd if=/dev/zero of=~/hd.img bs=1M count=8
+</I>&gt;<i> &gt; 	mpartition -Ica -t 8 e:
+</I>&gt;<i> &gt; 	mformat e:
+</I>&gt;<i> &gt; 	mcopy &lt;stuff&gt; e:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If I do:
+</I>&gt;<i> &gt; 	hatari --machine falcon -s 4 --ide hd.img cecile.st
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; where cecile.st has cecile.prg driver in its auto/ folder, the
+</I>&gt;<i> &gt; mtools formatted partition shows up as C: in TOS and I can see &amp;
+</I>&gt;<i> &gt; browse anything I had copied to the HD image with Mtools.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Same happens also without any HD driver when using EmuTOS:
+</I>&gt;<i> &gt; 	hatari --machine falcon --tos etos512.img -s 4 --acsi hd.img
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; However, in both cases the drive free and used information is bogus
+</I>&gt;<i> &gt; and e.g. trying to delete directories from C: gives errors about
+</I>&gt;<i> &gt; bogus files that cannot be removed.  When using EmuTOS, these bogus
+</I>&gt;<i> &gt; files actually show up in the file system (every directory has at
+</I>&gt;<i> &gt; least a file called &quot;At&quot;).  For EmuTOS/--acsi this happens at least
+</I>&gt;<i> &gt; also with Hatari v1.0.1.
+</I>
+I guess you've run into the same problem I had when I wrote the initial
+version of zip2st.sh: mcopy uses the so called VFAT filenames on disk
+images as soon as a file uses a lowercase letter or more than 8+3
+characters. TOS &lt; 2.00 and EmuTOS can not deal at all with these file
+names, and also later TOS versions have a lot of problems (I remember
+having these problems with TOS 4.04, too, ten years agon, when I tried
+the VFAT extension of FreeMiNT for the first time).
+
+Try to rename all files to UPPERCASE and make sure they meet the 8+3
+file name limitation before you use mcopy to transfer them to the disk
+image. I think this should cure this problem.
+
+&gt;<i> First prepare disk image of suitable size (below, 8MB) and its mount
+</I>&gt;<i> point: $&#160;mkdir hd
+</I>&gt;<i> $ dd if=/dev/zero of=hd.img bs=1M count=8
+</I>&gt;<i> $&#160;/sbin/fdisk -C 8 -H 16 -S 63 hd.img
+</I>[...]
+&gt;<i> Then make a loopback device of the just created disk first partition,
+</I>&gt;<i> create an Atari variation of DOS filesystem on it and and mount the
+</I>&gt;<i> new loop device into a directory. For this you need root rights:
+</I>[...]
+&gt;<i> After you've copied the relevant files to the &quot;hd&quot; directory, you can
+</I>&gt;<i> unmount it:
+</I>&gt;<i> # umount hd
+</I>&gt;<i> # losetup -d $loop
+</I>
+Nice description... maybe you could add it to the manual?
+
+&gt;<i> With above stuff EmuTOS also shows correct disk size, but EmuTOS
+</I>&gt;<i> recognizes these disk only as ACSI, not as IDE:
+</I>&gt;<i>   hatari --machine falcon --tos etos512.img -s 4 --acsi hd.img
+</I>
+IIRC, EmuTOS does not have IDE support at all.
+Additionally, the IDE images are byte-swapped compared to the ASCII
+images, so you can not simply exchange them (unless the hard disk
+driver has some built-in magic to handle this).
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000172.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+	<LI>Next message: <A HREF="000185.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#179">[ date ]</a>
+              <a href="thread.html#179">[ thread ]</a>
+              <a href="subject.html#179">[ subject ]</a>
+              <a href="author.html#179">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

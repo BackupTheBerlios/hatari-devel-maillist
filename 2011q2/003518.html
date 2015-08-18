@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Execution history debugger command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C4DE6BB25.4090001%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003515.html">
+   <LINK REL="Next"  HREF="003520.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Execution history debugger command</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C4DE6BB25.4090001%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Execution history debugger command">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Jun  2 00:20:21 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003515.html">[hatari-devel] Execution history debugger command
+</A></li>
+        <LI>Next message: <A HREF="003520.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3518">[ date ]</a>
+              <a href="thread.html#3518">[ thread ]</a>
+              <a href="subject.html#3518">[ subject ]</a>
+              <a href="author.html#3518">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 01/06/2011 23:40, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On keskiviikko 01 kes&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;<i> Le 31/05/2011 23:11, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;&gt;&gt;<i> PS : for those who haven't tried it, just download Steem debug from
+</I>&gt;&gt;&gt;&gt;<i> Steem website and simply run it with Wine if you use Linux or OSX.
+</I>&gt;<i>
+</I>&gt;<i> Is there any documentation or manual for it?
+</I>
+hi
+
+documentation for what ? For Steem ? I don't know, honestly I don't see 
+how someone used to emulation would not understand how it works in less 
+than a few minutes.
+
+&gt;<i>
+</I>&gt;&gt;&gt;<i> I don't like binary blobs, could you mail a screenshot of it and tell
+</I>&gt;&gt;&gt;<i> what exactly in it is nice?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> No, seriously, not again, you already asked me for this :)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Honestly, there's no blobs in Steem,
+</I>&gt;<i>
+</I>&gt;<i> I searched the whole Steem site, but didn't find sources for it.
+</I>&gt;<i> Where they are?
+</I>
+At the time of using my Atari/Amiga, I knew a lot of useful programs 
+freeware/shareware and the lack of sources never bothered me, I don't 
+see why I would change my mind now. I prefer a useful program that costs 
+nothing than no program at all just because I don't have the source.
+
+
+&gt;&gt;<i> just a zip archive with some
+</I>&gt;&gt;<i> predefined directories ; unzip, run &quot;wine Steem.exe&quot;, can't be much
+</I>&gt;&gt;<i> easier.
+</I>&gt;<i>
+</I>&gt;<i> As a principle, I don't run/use things at home or work for which I cannot
+</I>&gt;<i> get source code for (like Flashplayer), except in (open source) emulators.
+</I>&gt;<i>
+</I>&gt;<i> (Wine isn't an emulator.  It provides Win32 API and emulates some things,
+</I>&gt;<i> but the x86 code it runs directly.)
+</I>
+Well, then as a principle, I'm afraid I can't help you there. I'm not 
+asking you to install some commercial program, we're just talking about 
+a very good ST emulator that many people still consider superior to 
+Hatari because of its nice UI.
+It won't install viruses, just test it for one hour and remove if after 
+that if you prefer.
+
+
+&gt;<i>
+</I>&gt;&gt;<i> Doing screenshots won't help, there's too many functionalities to
+</I>&gt;&gt;<i> describe ; you need to use it to get an idea of what it does, I think
+</I>&gt;&gt;<i> the real strength is that everything can be done with the UI in a self
+</I>&gt;&gt;<i> explanatory way (I don't have anything against CLI, but Monst or Steem
+</I>&gt;&gt;<i> UI are really much easir to use ; combining Hatari's debuger with such
+</I>&gt;&gt;<i> UI would be a great match)
+</I>&gt;<i>
+</I>&gt;<i> So Monst UI is fine as is?
+</I>&gt;<i>
+</I>&gt;<i> (that I'm somewhat familiar with and I still have the Monst manual.)
+</I>
+Monst UI is fine when using Monst, which was designed at a time where 
+screen resolution allowed only 80x25 text. With nowadays standard, it's 
+clearly inferior to what is provided by Steem, but still I think it has 
+some advantages over CLI only debugger.
+
+
+&gt;<i>
+</I>&gt;&gt;<i> Regarding the UI toolkit, I don't think QT would be such a bad choice ;
+</I>&gt;&gt;<i> at least it's really supported on Windows/Linux/OS X
+</I>&gt;<i>
+</I>&gt;<i> Supported significantly better than Gtk that's used by the current (remote)
+</I>&gt;<i> GUI?
+</I>
+Clearly, yes. Trolltech/Nokia put a lot of work to ensure good 
+experience on all those 3 OSes.
+
+
+&gt;<i>
+</I>&gt;<i> As the Qt OSX instructions mention Python:
+</I>&gt;<i>    <A HREF="http://doc.qt.nokia.com/4.7-snapshot/install-mac.html">http://doc.qt.nokia.com/4.7-snapshot/install-mac.html</A>
+</I>&gt;<i>
+</I>&gt;<i> Why getting that&amp;  Qt installed would be noticeably easier than getting
+</I>&gt;<i> PyGtk installed?  There's already an experimental all-in-one installer for
+</I>&gt;<i> it:
+</I>&gt;<i> 	<A HREF="http://sourceforge.net/projects/zero-install/files/PyGTK/2.22.0/">http://sourceforge.net/projects/zero-install/files/PyGTK/2.22.0/</A>
+</I>&gt;<i>
+</I>&gt;<i> For Windows there's already stable all-in-one PyGtk installer:
+</I>&gt;<i> 	<A HREF="http://www.pygtk.org/downloads.html">http://www.pygtk.org/downloads.html</A>
+</I>&gt;<i>
+</I>&gt;<i> (If the used Windows compiler doesn't support standard sockets, then
+</I>&gt;<i> somebody needs to add support for some Windows specific socket functions to
+</I>&gt;<i> Hatari for remote API code, but that's not an UI issue.)
+</I>
+Well, I think it's obviously easier to install QT than to install 
+QT+python. Less dependencies for the user, he doesn't necessarily needs 
+python, if the debugger's UI is built in &quot;gui-qt/&quot; then it's up to the 
+user to choose to build this UI or not in addition to the usual &quot;gui-sdl/&quot;
+
+
+&gt;<i>
+</I>&gt;&gt;<i> and features all the functionnalities of modern toolkit and can be themed
+</I>&gt;&gt;<i> to integrate with the user's computer.
+</I>&gt;<i>
+</I>&gt;<i> Well, if the debugger &quot;UI&quot; is modeled after Monst, it's supposed to look
+</I>&gt;<i> like an ST program, not Windows/OSX.  :-)
+</I>
+I didn't say the UI needed to be modeled like MonST. I meant Monst was a 
+good approach some 20 years ago, but it would be limited to write today 
+a debugger without having the possibility to have as many hex/asm 
+windows (in any size) as the user want (as Steem does)
+
+&gt;<i> If it's built into Hatari, I think it should be done with SDL[1].  This
+</I>&gt;<i> limits the &quot;UI&quot; to the size of the Hatari screen (SDL provides just one
+</I>&gt;<i> &quot;framebuffer&quot; as far as I know) which would complicate things because
+</I>&gt;<i> Hatari window size changes often on Falcon emulation.
+</I>&gt;<i>
+</I>&gt;<i> [1] While embedding Hatari SDL stuff to OSX UI is already working I think
+</I>&gt;<i>      adding Qt to that mix would be a bad idea.
+</I>
+Having SDL for the UI has the advantage of always being able to have all 
+the settings on screen, even in fullscreen mode.
+
+But doing a debugger limited to the size of the SDL screen is too limited.
+Today, it's already complicated to add some options to the UI by taking 
+care of the SDL window's size. At best we would have the same number of 
+characters as in Monst, which is really limited considering most 
+monitors go beyond 1280x1024.
+
+I think we could have the usual SDL UI for running Hatari and for 
+example a QT UI with external/resizable/movable windows for the debugger.
+
+
+&gt;<i>
+</I>&gt;<i> As a separate program the UI could be any size and the size could be fixed
+</I>&gt;<i> at startup.  Instead of separate windows, it could have e.g. separate
+</I>&gt;<i> screens which are switched using e.g. function keys.
+</I>
+I prefer having separate windows than many screens, because it implies 
+you can have only one screen at a time, which is often a limitation if 
+you want to have several hexa/asm dump visible at the same time to 
+compare them.
+
+&gt;<i>
+</I>&gt;<i> Another problem of building it into Hatari is how you then use the debugger
+</I>&gt;<i> command line to do things that the UI doesn't support?  The command line
+</I>&gt;<i> has e.g, full debug symbol name TAB-completion.
+</I>
+Well, that up to the user. Use the CLI debugger for full access to all 
+functionnalities, or use the UI if it features all the needed function 
+for what the user has to do (with an option when running hatari such as 
+debug=ui or debug=cli for example)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003515.html">[hatari-devel] Execution history debugger command
+</A></li>
+	<LI>Next message: <A HREF="003520.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3518">[ date ]</a>
+              <a href="thread.html#3518">[ thread ]</a>
+              <a href="subject.html#3518">[ subject ]</a>
+              <a href="author.html#3518">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

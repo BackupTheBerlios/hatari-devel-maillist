@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issue with switching - fullscreen/windowed mode
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issue%20with%20switching%20-%20fullscreen/windowed%20mode&In-Reply-To=%3Calpine.DEB.1.10.1002100812130.6048%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001441.html">
+   <LINK REL="Next"  HREF="001447.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issue with switching - fullscreen/windowed mode</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issue%20with%20switching%20-%20fullscreen/windowed%20mode&In-Reply-To=%3Calpine.DEB.1.10.1002100812130.6048%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Issue with switching - fullscreen/windowed mode">ae at dhs.nu
+       </A><BR>
+    <I>Wed Feb 10 08:57:41 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001441.html">[hatari-devel] Issue with switching - fullscreen/windowed mode
+</A></li>
+        <LI>Next message: <A HREF="001447.html">[hatari-devel] Issue with switching - fullscreen/windowed mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1440">[ date ]</a>
+              <a href="thread.html#1440">[ thread ]</a>
+              <a href="subject.html#1440">[ subject ]</a>
+              <a href="author.html#1440">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 9 Feb 2010, Eero Tamminen wrote:
+
+&gt;<i> Is the resolution same as it was initially?  Others using Hatari on OSX
+</I>&gt;<i> don't seem to be having the same problem as you.
+</I>
+Yes the resolution comes back to what it was initially. A wild guess is 
+that perhaps not that many uses Photoshop and Hatari side-by-side.
+
+
+
+&gt;<i> I still don't understand.  How do you expect Hatari to be able to do
+</I>&gt;<i> the scaling better?
+</I>
+By doing a scaling without interpolation.
+
+Here's an image that compares nearest neighbour and bilinear filtering of 
+the ST desktop. I hope you can tell the difference now.
+
+<A HREF="http://ae.dhs.nu/pics/scaling.png">http://ae.dhs.nu/pics/scaling.png</A>
+
+A modern screen will apply filtering, which looks fine for images and 
+movies, but for lowres oldskool graphics, not.
+
+
+
+&gt;<i> Hatari has many things that could be better, but if nobody else can
+</I>&gt;<i> reproduce the issue you have, even on OSX, that at least indicates that
+</I>&gt;<i> the issue is in your environment (besides meaning that it's impossible to
+</I>&gt;<i> fix the issue without help from you).
+</I>
+I have four machines with OS X, and all behave the same.
+
+Macbook Pro C2D 2.2, GF8600, 1440x900, OSX 10.6
+Macbook Pro C2D 2.4, GF9600, 1920x1200, OSX 10.6
+Mac Mini C2D 1.83, GMA950, 1920x1080, OSX 10.6
+Macbook CD 2.0, GMA950, 1280x800, OSX 10.5
+
+As you can see, two CPU types, four differnt resolutions with both 16:10 
+and 16:9 aspect ratios, two OS versions and three different GPU's.
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001441.html">[hatari-devel] Issue with switching - fullscreen/windowed mode
+</A></li>
+	<LI>Next message: <A HREF="001447.html">[hatari-devel] Issue with switching - fullscreen/windowed mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1440">[ date ]</a>
+              <a href="thread.html#1440">[ thread ]</a>
+              <a href="subject.html#1440">[ subject ]</a>
+              <a href="author.html#1440">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

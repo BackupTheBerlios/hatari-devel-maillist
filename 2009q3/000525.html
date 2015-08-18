@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari patches for bitplane conversion
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C200907261132.52526.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000524.html">
+   <LINK REL="Next"  HREF="000529.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari patches for bitplane conversion</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C200907261132.52526.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari patches for bitplane conversion">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jul 26 10:32:52 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000524.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+        <LI>Next message: <A HREF="000529.html">[hatari-devel] better color alignment in spec512 mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#525">[ date ]</a>
+              <a href="thread.html#525">[ thread ]</a>
+              <a href="subject.html#525">[ subject ]</a>
+              <a href="author.html#525">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+(Seems we're leaving for vacation later than I though, so there might still
+be some mails from me today.  :-))
+
+On Sunday 26 July 2009, K&#229;re Andersen wrote:
+&gt;<i> I changed the calling in screen.s to
+</I>&gt;<i>
+</I>&gt;<i> if (pDrawFunction)
+</I>&gt;<i> {
+</I>&gt;<i> 	blitFrom = BLITFROM_INIT;
+</I>&gt;<i> 	blitTo = BLITTO_INIT;
+</I>&gt;<i>
+</I>&gt;<i> 	if(!bUseHighRes)
+</I>&gt;<i> 		Convert_StartFrame();            /* Start frame, track palettes */
+</I>&gt;<i>
+</I>&gt;<i> 	CALL_VAR(pDrawFunction);
+</I>&gt;<i> 	bScreenContentsChanged = (blitTo &gt; blitFrom);
+</I>&gt;<i> }
+</I>
+As bScreenContentsChanged doesn't currently seem to be used anywhere
+else than in the ST/e mode convertors and screen.c Screen_DrawFrame()
+function, please remove it completely / change it to a local variable.
+
+It seems that you can also remove pFrameBuffer-&gt;bFullUpdate check from
+the convertors.  Screen_DrawFrame() does:
+        /* Is need full-update, tag as such */
+        if (pFrameBuffer-&gt;bFullUpdate)
+                Screen_SetFullUpdateMask();
+
+And as that already causes your code to update the whole screen through
+AdjustLinePaletteRemap() call, the check for this flag in convertor is
+redundant.  AFAIK it's also not set that often.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000524.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+	<LI>Next message: <A HREF="000529.html">[hatari-devel] better color alignment in spec512 mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#525">[ date ]</a>
+              <a href="thread.html#525">[ thread ]</a>
+              <a href="subject.html#525">[ subject ]</a>
+              <a href="author.html#525">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

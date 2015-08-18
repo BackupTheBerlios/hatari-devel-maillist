@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Enabling Mudflap in CMake (was: Makefile	removal?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Enabling%20Mudflap%20in%20CMake%20%28was%3A%20Makefile%0A%09removal%3F%29&In-Reply-To=%3C201006161725.57170.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002320.html">
+   <LINK REL="Next"  HREF="002324.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Enabling Mudflap in CMake (was: Makefile	removal?)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Enabling%20Mudflap%20in%20CMake%20%28was%3A%20Makefile%0A%09removal%3F%29&In-Reply-To=%3C201006161725.57170.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Enabling Mudflap in CMake (was: Makefile	removal?)">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Jun 16 16:25:56 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002320.html">[hatari-devel] Enabling Mudflap in CMake (was: Makefile	removal?)
+</A></li>
+        <LI>Next message: <A HREF="002324.html">[hatari-devel] Enabling Mudflap in CMake (was: Makefile removal?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2321">[ date ]</a>
+              <a href="thread.html#2321">[ thread ]</a>
+              <a href="subject.html#2321">[ subject ]</a>
+              <a href="author.html#2321">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 16 June 2010, Thomas Huth wrote:
+&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;&gt;<i> Hm.  DSP and other things are just options.  changing them should also
+</I>&gt;&gt;<i> trigger at least some rebuilding...
+</I>&gt;<i>
+</I>&gt;<i> Changing them should trigger some recompile ... because the
+</I>&gt;<i> corresponding define is now passed via the config.h file and not via
+</I>&gt;<i> the CFLAGS anymore. And when config.h is changed, the files that
+</I>&gt;<i> include this file should be rebuilt, too. Doesn't this work for you?
+</I>
+Ah, you're right.  It works for the DSP etc stuff because relevant files
+include the config.h file, but it's not enough for Mudflap because there are
+files which don't include it (and therefore don't get recompiled).
+
+Use of these includes also gets config.h:
+$&#160;find -name '*.h'|xargs grep config.h
+./debug/log.h:#include &quot;config.h&quot;
+./includes/str.h:#include &lt;config.h&gt;
+./includes/main.h:#include &quot;config.h&quot;
+./includes/ioMem.h:#include &quot;config.h&quot;
+
+And although there are fewer files not depending on config.h directly or 
+indirectly than I originally thought, there still are some:
+$ for i in $(find -name '*.c'); do \
+egrep -q '(config.h|log.h|str.h|main.h|ioMem.h)' $i; \
+if [ $? == 1 ]; then echo $i; fi; \
+done|grep -v -e gui-win -e /convert/
+./ide-qmu.c
+./uae-cpu/gencpu.c
+./uae-cpu/cpustbl.c
+./uae-cpu/fpp.c
+./uae-cpu/readcpu.c
+./uae-cpu/cpudefs.c
+./uae-cpu/cpuemu.c
+./cartData.c
+./utils.c
+
+Most likely these haven't got any issues, but uae-cpu core data still needs
+to be protected.  I.e. it's better to do make clean before rebuilding with
+Mudflap.
+
+
+On Wednesday 16 June 2010, Eero Tamminen wrote:
+&gt;<i> On Wednesday 16 June 2010, Thomas Huth wrote:
+</I>&gt;<i> NOTE: I'm off net for a while (could be even couple of weeks).
+</I>
+After today that is...
+
+
+&gt;<i> &gt; set(CMAKE_REQUIRED_LIBRARIES &quot;mudflap&quot;)
+</I>&gt;<i> &gt; CHECK_C_COMPILER_FLAG(&quot;-fmudflapth&quot; MUDFLAP_AVAILABLE)
+</I>&gt;<i> &gt; set(CMAKE_REQUIRED_LIBRARIES &quot;&quot;)
+</I>
+I noticed that later in the file readline check does something similar:
+------------
+if(READLINE_FOUND)
+        set(CMAKE_REQUIRED_LIBRARIES &quot;readline&quot;)
+        check_function_exists(rl_filename_completion_function HAVE_RL_...
+        if(HAVE_RL_COMPLETION_FUNCTION)
+                set(HAVE_LIBREADLINE 1)
+        else()
+                unset(READLINE_FOUND)
+        endif(HAVE_RL_COMPLETION_FUNCTION)
+        set(CMAKE_REQUIRED_LIBRARIES &quot;&quot;)
+endif(READLINE_FOUND)
+------------
+
+But shouldn't the CMAKE_REQUIRED_LIBRARIES be restored to the previous
+value instead of an empty one?  Or is it used only for doing tests like
+this, not building the software[1]?
+
+(CMake manual doesn't tell.)
+
+
+&gt;<i> &gt; &gt; &gt; Also, I had the documentation on the Mudflap usage in
+</I>&gt;<i> &gt; &gt; &gt; Makefile-default.cnf (as it was developers only and I couldn't
+</I>&gt;<i> &gt; &gt; &gt; think of a better place), I guess something similar to this can now
+</I>&gt;<i> &gt; &gt; &gt; be put to the main CMakefile?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; The attached patch does also this.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Ok, looks good, please commit if the CMAKE_REQUIRED_LIBRARIES fix is
+</I>&gt;<i> &gt; working for you, too!
+</I>&gt;<i>
+</I>&gt;<i> However, this didn't seem to work:
+</I>&gt;<i>         set(LINK_FLAGS &quot;${LINK_FLAGS} -fmudflapth -lmudflap&quot;)
+</I>&gt;<i>
+</I>&gt;<i> According CMake manual, it's supposed to:
+</I>&gt;<i>        LINK_FLAGS
+</I>&gt;<i>               Additional flags to use when linking this target.
+</I>&gt;<i>
+</I>&gt;<i> But this didn't show up in linker line and I didn't find any other CMake
+</I>&gt;<i> option for giving both linker flags and extra libraries.
+</I>
+Ok, found one: CMAKE_EXE_LINKER_FLAGS
+
+I commited the support now.
+
+
+[1] CMAKE_REQUIRED_LIBRARIES didn't seem to have any effect for Hatari
+linking.
+
+
+&gt;<i> &gt; &gt; Is there some easier way to get builds with both optimization and
+</I>&gt;<i> &gt; &gt; debug symbols than this:
+</I>&gt;<i> &gt; &gt; 	cmake -D CMAKE_BUILD_TYPE:string=RelWithDebInfo ..
+</I>
+Btw. because Mudflap is about useless without debug info, I added &quot;-g&quot;
+to CFLAGS whenever it's enabled, regardless of build type.
+
+Building with mudflap is now:
+	cd build; make clean; cmake -D ENABLE_MUDFLAP:BOOL=1 ..
+instead of:
+	make clean; make MUDFLAP=1
+
+(documented in the main CMakeLists.txt.)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002320.html">[hatari-devel] Enabling Mudflap in CMake (was: Makefile	removal?)
+</A></li>
+	<LI>Next message: <A HREF="002324.html">[hatari-devel] Enabling Mudflap in CMake (was: Makefile removal?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2321">[ date ]</a>
+              <a href="thread.html#2321">[ thread ]</a>
+              <a href="subject.html#2321">[ subject ]</a>
+              <a href="author.html#2321">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari patches for bitplane conversion
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3Calpine.LMD.2.00.0907260012100.1325%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000521.html">
+   <LINK REL="Next"  HREF="000523.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari patches for bitplane conversion</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3Calpine.LMD.2.00.0907260012100.1325%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Hatari patches for bitplane conversion">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jul 26 00:19:53 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000521.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+        <LI>Next message: <A HREF="000523.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#522">[ date ]</a>
+              <a href="thread.html#522">[ thread ]</a>
+              <a href="subject.html#522">[ subject ]</a>
+              <a href="author.html#522">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 25 Jul 2009, Eero Tamminen wrote:
+
+&gt;&gt;<i> Regarding the names shifter.[ch], in real STs and TTs, the SHIFTER is
+</I>&gt;&gt;<i> the decoder from bitplanes to analog RGB data, while the MMU and GLUE
+</I>&gt;&gt;<i> are handling the register stuff. So i dont think its that far off...
+</I>&gt;<i>
+</I>&gt;<i> Fair enough, but Hatari Shifter handling is in video.c.
+</I>&gt;<i>
+</I>&gt;<i> Also, as the files handle only certain (target) bit-depth, that should be
+</I>&gt;<i> in the file name too.  Maybe convert/32bit.c?
+</I>&gt;<i>
+</I>
+The shifter is decoding bitplane to RGB, but what the conversion functions 
+are doing is to adapt these RGB value to a given bit depth / screen 
+resolution, but all the &quot;hard&quot; work required to determine overscan for 
+example was really made in video.c. In some way, video.c is generating RGB 
+values, it's just that the info is splitted between the bitplanes and the 
+hbl palette / spec512 palette. Nitpicking again :)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000521.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+	<LI>Next message: <A HREF="000523.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#522">[ date ]</a>
+              <a href="thread.html#522">[ thread ]</a>
+              <a href="subject.html#522">[ subject ]</a>
+              <a href="author.html#522">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

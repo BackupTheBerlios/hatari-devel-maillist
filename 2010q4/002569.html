@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CCF4073.9010604%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002560.html">
+   <LINK REL="Next"  HREF="002571.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CCF4073.9010604%40free.fr%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Nov  1 23:34:27 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002560.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002571.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2569">[ date ]</a>
+              <a href="thread.html#2569">[ thread ]</a>
+              <a href="subject.html#2569">[ subject ]</a>
+              <a href="author.html#2569">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've uploaded some files.
+This just let newcpu.c to compile.
+Next step is fpp.c to compile.
+
+
+The main changes I had to implement until now :
+
+- add of compat.h
+- rewrite TRY / CATCH in cpummu and newcpu
+- I've added a new define : AMIGA_ONLY ( to avoid compilation of amiga 
+only parts).
+   Tell me if this is ok for you or if I should to it in another way
+- I've also added some comments with Laurent as a tag. At these place, 
+I've added a comment because I don't know what to do.
+- I've kept the oldUAE memory.c and memory.h files instead of the new 
+ones from winuae.
+I don't know yet if this can have an impact on the new Winuae core we're 
+trying to implement. (Eero : This explain why there are spaces instead 
+of tabs in the hg diff of this file)
+
+
+I think there'll be soon 2 problems :
+
+1) We'll need to adapt all these files to our own needs.
+So compatibility with original files will decrease (I think at newcpu.c 
+file for example).
+
+2) We'll need to change some parts of hatari's code that won't allow 
+compatibility between oldcpu and newcpu (except if we include lot's of 
+ifdefs but code may become too heavy and horrible to read).
+
+I think at old variable &quot;cpu_level&quot; used in hatari's GUI for example.
+It seems that this variable doesn't exist anymore and is replaced by : 
+cpu_model
+So, we'll have to modify the GUI to allow new cpus, mmus, ..., or create 
+a new directory for new parameters, or stop the old branch, ...
+
+There'll be soon a decision to take.
+
+Regards,
+
+Laurent
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002560.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002571.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2569">[ date ]</a>
+              <a href="thread.html#2569">[ thread ]</a>
+              <a href="subject.html#2569">[ subject ]</a>
+              <a href="author.html#2569">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

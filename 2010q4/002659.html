@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] A new disassembler in Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20new%20disassembler%20in%20Hatari&In-Reply-To=%3C4CE95901.7030009%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002653.html">
+   <LINK REL="Next"  HREF="002648.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] A new disassembler in Hatari</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20new%20disassembler%20in%20Hatari&In-Reply-To=%3C4CE95901.7030009%40corp.free.fr%3E"
+       TITLE="[hatari-devel] A new disassembler in Hatari">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Nov 21 18:38:09 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002653.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+        <LI>Next message: <A HREF="002648.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2659">[ date ]</a>
+              <a href="thread.html#2659">[ thread ]</a>
+              <a href="subject.html#2659">[ subject ]</a>
+              <a href="author.html#2659">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 21/11/2010 00:38, Eero Tamminen a &#233;crit :
+
+&gt;&gt;<i> At line 23811, I see your &quot;extending&quot; the string, which is ok since the
+</I>&gt;&gt;<i> buffer is 1024 bytes, but gcc is detecting the index was computed from
+</I>&gt;&gt;<i> strlen and gives a warning ; maybe there's a way to write this in a
+</I>&gt;&gt;<i> different way ?
+</I>&gt;<i>
+</I>&gt;<i> I'm not getting that warning with my compiler (GCC 4.3.2).
+</I>&gt;<i> What happens if you declare all the optionPos* variables as const?
+</I>&gt;<i>
+</I>
+Hello,
+I'm using a recent 4.5.1 gcc version, there might be some more advanced 
+warnings than in previous version, but I don't see your point of 
+declaring optionPos* as const, there's no reference to them in :
+
+         int             len = strlen(dbuf);
+         while(len &lt; position) {
+                 dbuf[len++] = ' ';
+
+&gt;&gt;<i> This parameter (as well as the other options available in your code)
+</I>&gt;&gt;<i> could of course be stored using some settings in hatari.cfg (Eero, if
+</I>&gt;&gt;<i> you fell like doing it ?)
+</I>&gt;<i>
+</I>&gt;<i> Would somebody still want to use the UAE disassembler?
+</I>&gt;<i>
+</I>&gt;<i> If yes, the option could be either a define set by CMake or be a Hatari
+</I>&gt;<i> [Debugger] section configuration option.  How likely people would be
+</I>&gt;<i> to change that?
+</I>
+I think a Debugger section could be useful. We should keep a way to go 
+back to the built in UAE's debugger, in case we want to compare some 
+difference of behaviour (bugs ?) between both disassembler.
+
+&gt;&gt;<i> I checked that devpac handled both notations, but could it be possible
+</I>&gt;&gt;<i> to not add paranthesises around absolute addresses ?
+</I>&gt;<i>
+</I>&gt;<i> The parenthesis notion is one used by the debugger itself for
+</I>&gt;<i> breakpoints, so I guess it would be more consistent. :-)
+</I>&gt;<i>
+</I>
+ From all the asm sources I saw during years of coding on both ST and 
+Amiga, I never saw anyone using this notation, so I will add 
+doptNoBrackets to Diss68kOptions, I think it's less confusing for the 
+people/coders coming from devpac/monst interested in using the debugger.
+
+
+&gt;&gt;<i> 2) adding .l suffix after address
+</I>&gt;&gt;<i> 	jsr       ($1ec50).l
+</I>&gt;&gt;<i> 	move.w    d1,($212ec).l
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> As most common case is to have 32 bit addr, could you remove the .l when
+</I>&gt;&gt;<i> the address is 32 bit, and just add a .w when the address is a short 16
+</I>&gt;&gt;<i> bit one ?
+</I>&gt;<i>
+</I>&gt;<i> IMHO clearer to have those always.  Things align then similarly etc.
+</I>
+How do they align better ? In the following case, putting .l after 
+$212ec wouldn't make things better to me for example :
+	move.w d1,$212ec
+	move.w d2,$ffff8240.w
+
+But that's all a matter of taste anyway, and setting doptNoBrackets 
+remove the .l also, so that's nice.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002653.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+	<LI>Next message: <A HREF="002648.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2659">[ date ]</a>
+              <a href="thread.html#2659">[ thread ]</a>
+              <a href="subject.html#2659">[ subject ]</a>
+              <a href="author.html#2659">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] ACSI/DMA emulation issues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20ACSI/DMA%20emulation%20issues&In-Reply-To=%3C20091129174018.63e6c555%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001044.html">
+   <LINK REL="Next"  HREF="001035.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] ACSI/DMA emulation issues</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20ACSI/DMA%20emulation%20issues&In-Reply-To=%3C20091129174018.63e6c555%40phineus%3E"
+       TITLE="[hatari-devel] ACSI/DMA emulation issues">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Nov 29 17:40:18 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001044.html">[hatari-devel] ACSI/DMA emulation issues
+</A></li>
+        <LI>Next message: <A HREF="001035.html">[hatari-devel] ACSI/DMA emulation issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1034">[ date ]</a>
+              <a href="thread.html#1034">[ thread ]</a>
+              <a href="subject.html#1034">[ subject ]</a>
+              <a href="author.html#1034">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 29 Nov 2009 15:01:42 +0100
+Uwe Seimet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">Uwe.Seimet at seimet.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> &gt; That's funny. Actually, we had this reset code oncy already in
+</I>&gt;<i> &gt; FDC_ResetDMAStatus(), but according to a report from Volker
+</I>&gt;<i> &gt; Seebode, this was wrong, see:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;  <A HREF="http://sourceforge.net/tracker/?func=detail&amp;aid=2130450&amp;group_id=28326&amp;atid=393019">http://sourceforge.net/tracker/?func=detail&amp;aid=2130450&amp;group_id=28326&amp;atid=393019</A>
+</I>&gt;<i> &gt; and:
+</I>&gt;<i> &gt;  <A HREF="http://hg.berlios.de/repos/hatari/rev/5d4905926359">http://hg.berlios.de/repos/hatari/rev/5d4905926359</A>
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; So what's the correct behaviour now???
+</I>&gt;<i> 
+</I>&gt;<i> This may be a misunderstanding. The code in my posting was the code
+</I>&gt;<i> used by HDDRIVER to clear the DMA status. It was not meant to be code
+</I>&gt;<i> to be included in Hatari. My point was when Hatari &quot;sees&quot; this code
+</I>&gt;<i> sequence it should reset its byteCount because this code sequence
+</I>&gt;<i> that a new command sequence is going to be started.
+</I>
+There was no misunderstanding, that's exactly what I was talking about.
+FDC_ResetDMAStatus is the function that is being called when this bit
+toggling is detected by the emulator.
+If you have a look at that function, you'll see this line here:
+
+	/*HDCCommand.byteCount = 0;*/
+
+It's currently disabled because of the above bug report.
+
+&gt;<i> If Hatari does
+</I>&gt;<i> not recognize this sequence it might still get the byteCount wrong,
+</I>&gt;<i> even after your code change. If for some reason a hard disk driver
+</I>&gt;<i> decides not to send all 6 command bytes but aborts the operation and
+</I>&gt;<i> sends less, Hatari's byteCount will be wrong at the start of the next
+</I>&gt;<i> operation.
+</I>
+Sure, but according to Volker Seebode, this is also the behaviour of a
+real ST !?
+
+&gt;<i> &gt; I think the right fix is to only increase byteCount when a valid
+</I>&gt;<i> &gt; target is accessed. I've fixed this in the source code now, so
+</I>&gt;<i> &gt; HDDriver (at least the demo version) seems now to be working.
+</I>&gt;<i> &gt; Please test if it's also ok for you now!
+</I>&gt;<i> 
+</I>&gt;<i> It's working better now, the commands received by Hatari no longer
+</I>&gt;<i> seem to be garbled and the drive is found. But the drive name
+</I>&gt;<i> returned is invalid. I think this has something to do with the
+</I>&gt;<i> Atari's ACSI DMA hardware only being able to transfer multiples of 16
+</I>&gt;<i> bytes.
+</I>
+Ok, I'll have a look into this later...
+
+&gt;<i> BTW, instead of reporting &quot;HDC: Program tries to access illegal
+</I>&gt;<i> drive.&quot; it should probably read &quot;HDC: Program tries to access
+</I>&gt;<i> non-existing drive.&quot; because it's normal (and not illegal) for a hard
+</I>&gt;<i> disk driver to check unused IDs.
+</I>
+Sounds reasonable, I'll change it.
+
+
+ Thanks for your debugging help,
+   Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001044.html">[hatari-devel] ACSI/DMA emulation issues
+</A></li>
+	<LI>Next message: <A HREF="001035.html">[hatari-devel] ACSI/DMA emulation issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1034">[ date ]</a>
+              <a href="thread.html#1034">[ thread ]</a>
+              <a href="subject.html#1034">[ subject ]</a>
+              <a href="author.html#1034">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

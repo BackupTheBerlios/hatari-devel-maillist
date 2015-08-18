@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Twelve%20demo%20bombs%20with%20fast-forward%20and%20freezes%0A%20on%20Falcon%3F&In-Reply-To=%3C4DE56EAE.2070409%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003500.html">
+   <LINK REL="Next"  HREF="003505.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Twelve%20demo%20bombs%20with%20fast-forward%20and%20freezes%0A%20on%20Falcon%3F&In-Reply-To=%3C4DE56EAE.2070409%40free.fr%3E"
+       TITLE="[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Jun  1 00:41:50 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003500.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes	on Falcon?
+</A></li>
+        <LI>Next message: <A HREF="003505.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3504">[ date ]</a>
+              <a href="thread.html#3504">[ thread ]</a>
+              <a href="subject.html#3504">[ subject ]</a>
+              <a href="author.html#3504">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've found something, but I need your advice :
+
+in crossbar.c, (function Crossbar_Process_DMAPlay_Transfer), there's the 
+following code :
+
+     /* Check if end-of-frame has been reached and raise interrupts if 
+needed. */
+     if (dmaPlay.frameCounter &gt;= dmaPlay.frameLen)
+     {
+         /* Update sound */
+         //Sound_Update(false);
+
+         /* Send a MFP15_Int (I7) at end of replay buffer if enabled */
+         if (dmaPlay.mfp15_int) {
+             MFP_InputOnChannel(MFP_TIMER_GPIP7_BIT, MFP_IERA, &amp;MFP_IPRA);
+             LOG_TRACE(TRACE_CROSSBAR, &quot;Crossbar : MFP15 (IT7) interrupt 
+from DMA play\n&quot;);
+         }
+
+         /* Send a TimerA_Int at end of replay buffer if enabled */
+         if (dmaPlay.timerA_int) {
+             if (MFP_TACR == 0x08) {       /* Is timer A in Event Count 
+mode? */
+                 MFP_TimerA_EventCount_Interrupt();
+                 LOG_TRACE(TRACE_CROSSBAR, &quot;Crossbar : MFP Timer A 
+interrupt from DMA play\n&quot;);
+             }
+         }
+
+         if (dmaPlay.loopMode) {
+             Crossbar_setDmaPlay_Settings();
+         }
+         else {
+             dmaCtrlReg = IoMem_ReadByte(0xff8901) &amp; 0xfe;
+             //IoMem_bput(0xff8901, dmaCtrlReg);
+         }
+     }
+}
+
+
+I've commented the IoMem_bput line, and I don't get anymore the M68000 
+Bus Error writing at address $ff8901.
+(tested with voice.prg). Of course, without this line, it doesn't work 
+well, as sound continues to play.
+
+
+Should I use something else than IoMem_bput here (IoMem_WriteByte for 
+example) ?
+
+What's the difference between these to memory acces ?
+
+Regards
+
+Laurent
+
+
+
+
+Le 31/05/2011 23:36, Laurent Sallafranque a &#233;crit :
+&gt;<i> I'd enjoy to reply, but I don't know how to break when the 68030 reads 
+</I>&gt;<i> or write from/to $ff8901
+</I>&gt;<i>
+</I>&gt;<i> Any tips would be appreciate
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Le 31/05/2011 23:14, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On keskiviikko 01 kes&#228;kuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;&gt;<i> Here are some examples taken from old threads :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/pipermail/hatari-devel/2010q3/002307.html">https://lists.berlios.de/pipermail/hatari-devel/2010q3/002307.html</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/pipermail/hatari-devel/2010q1/001232.html">https://lists.berlios.de/pipermail/hatari-devel/2010q1/001232.html</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> There's also voice.prg
+</I>&gt;&gt;&gt;<i>     --&gt;  M68000 Bus Error writing at address $ff8901.
+</I>&gt;&gt;<i> Are they doing byte, word or long access?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I remember there were 2 or 3 more programs with the same problem, but I
+</I>&gt;&gt;&gt;<i> can't find them.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     - Eero
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003500.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes	on Falcon?
+</A></li>
+	<LI>Next message: <A HREF="003505.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3504">[ date ]</a>
+              <a href="thread.html#3504">[ thread ]</a>
+              <a href="subject.html#3504">[ subject ]</a>
+              <a href="author.html#3504">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

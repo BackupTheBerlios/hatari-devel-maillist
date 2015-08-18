@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger crash changes / zeroing global variables
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2012q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20crash%20changes%20/%20zeroing%20global%20variables&In-Reply-To=%3C201201150013.06793.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004252.html">
+   <LINK REL="Next"  HREF="004254.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger crash changes / zeroing global variables</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20crash%20changes%20/%20zeroing%20global%20variables&In-Reply-To=%3C201201150013.06793.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Debugger crash changes / zeroing global variables">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sat Jan 14 23:13:06 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004252.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+        <LI>Next message: <A HREF="004254.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4253">[ date ]</a>
+              <a href="thread.html#4253">[ thread ]</a>
+              <a href="subject.html#4253">[ subject ]</a>
+              <a href="author.html#4253">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 14 tammikuu 2012, Nicolas Pomar&#232;de wrote:
+&gt;<i> On 14/01/2012 22:08, Eero Tamminen wrote:
+</I>&gt;<i> &gt; If the variable values were zero when entering &quot;main&quot;, set Gdb
+</I>&gt;<i> &gt; watchpoint on them.
+</I>&gt;<i> 
+</I>&gt;<i> The value are 0 when entering main, so that's ok. But later it breaks on
+</I>&gt;<i> 
+</I>&gt;<i> 0x080c9af4 in Video_StoreResolution (y=279) at
+</I>&gt;<i> /home/npomarede/src/hatari-work/src/video.c:1876
+</I>&gt;<i> 1876                    HBLPaletteMasks[y] |=
+</I>&gt;<i> PALETTEMASK_RESOLUTION|((Uint32)res)&lt;&lt;16;
+</I>&gt;<i> 
+</I>&gt;<i> and overwrites bExceptionDebugging
+</I>&gt;<i> Old value = 0
+</I>&gt;<i> New value = 393216
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> y=279 in that case, which is more than NUM_VISIBLE_LINES+1 in screen.h
+</I>&gt;<i> I need to look at this, it seems some palette arrays are 2 lines too
+</I>&gt;<i> short in screen.h regarding the maximum number of possible visible lines.
+</I>
+Or more?  Maybe these variables aren't the first thing to be overwritten.
+
+GCC mudflap option might be able to tell that.  To have CMake ENABLE_MUDFLAP
+option available, you need to install libmudflap development package.  And
+then after full recompile, run the test again.
+
+
+&gt;<i> So, there's a very longstanding bug in Hatari with this, but it's
+</I>&gt;<i> possible it's only triggered in the protection code used in the
+</I>&gt;<i> Transbeauce Demo 2, which changes video res at very precise time.
+</I>&gt;<i> 
+</I>&gt;<i> Initializing the variables in debugui.c move them from bss to data,
+</I>&gt;<i> which means they don't get overwritten now because the data block's
+</I>&gt;<i> order is changed by these 2 variables. But this also means some other
+</I>&gt;<i> variables are now being overwritten instead of those from debugui.c :(
+</I>&gt;<i> 
+</I>&gt;<i> I will look into this and remove the unnessary init in debugui.c after
+</I>&gt;<i> it's fixed.
+</I>
+Would fix for that and WinUAE core freeze be Hatari v1.6.2?
+
+(With possible max zoomed window size preference default reverted to what
+it was in Hatari v1.4, if that's what people prefer.)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004252.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+	<LI>Next message: <A HREF="004254.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4253">[ date ]</a>
+              <a href="thread.html#4253">[ thread ]</a>
+              <a href="subject.html#4253">[ subject ]</a>
+              <a href="author.html#4253">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

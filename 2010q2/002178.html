@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari performance issue on OSX
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20performance%20issue%20on%20OSX&In-Reply-To=%3C201005252237.11347.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002175.html">
+   <LINK REL="Next"  HREF="002181.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari performance issue on OSX</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20performance%20issue%20on%20OSX&In-Reply-To=%3C201005252237.11347.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari performance issue on OSX">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue May 25 21:37:11 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002175.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+        <LI>Next message: <A HREF="002181.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2178">[ date ]</a>
+              <a href="thread.html#2178">[ thread ]</a>
+              <a href="subject.html#2178">[ subject ]</a>
+              <a href="author.html#2178">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 25 May 2010, Anders Eriksson wrote:
+&gt;<i> &gt;&gt; What the percentage is?  Whole system CPU usage?  Hatari CPU usage?
+</I>&gt;<i> &gt;&gt; I guess these numbers are with the slowed down Hatari?
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; What are the numbers when you set frame skip to 1?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Anders, could you check how that affects the numbers?
+</I>&gt;<i>
+</I>&gt;<i> Hi, I spent a couple of hours doing that testing, and I've not been
+</I>&gt;<i> willing to make it once again (I even installed Ubuntu just for it).
+</I>&gt;<i>
+</I>&gt;<i> The only thing I checked was the Hatari process, nothing else.
+</I>
+So the numbers were CPU usage of Hatari process, not the system
+overhead of screen updates (like on my case).
+
+
+&gt;<i> So what 
+</I>&gt;<i> WindowServer in OS X or X11 in Ubuntu did I don't know. But from the
+</I>&gt;<i> numbers it's quite clear that the scaling from 1x zoom to 2x zoom is
+</I>&gt;<i> marginal on the Hatari process in Ubuntu, both virtual and on actual
+</I>&gt;<i> hardware while on OS X it's killing the machine.
+</I>&gt;<i>
+</I>&gt;<i> So I will try it again on my Macbook Pro only (I can't spend forever
+</I>&gt;<i> convincing you that something is very slow on blitting graphics).
+</I>
+I'm not doubting that, but to be able to do _anything_ about the issue,
+we need to know *why* your Hatari &amp; SDL &amp; OSX combo performs so crappily.
+
+
+&gt;<i> Here are the results with frameskip 1:
+</I>&gt;<i>
+</I>&gt;<i> First of all, the HUD doesn't slow down the emulation as before.
+</I>&gt;<i>
+</I>&gt;<i> w1x  25%
+</I>&gt;<i> w2x  34%
+</I>&gt;<i> fs1x 22%
+</I>&gt;<i> fs2x 24%
+</I>&gt;<i>
+</I>&gt;<i> Less graphics to blit, less extra overhead in window mode comapred to
+</I>&gt;<i> fullscreen. Like I've said all the time.
+</I>&gt;<i>
+</I>&gt;<i> &gt;&gt; Try enable compositing on Linux and see whether you get the same
+</I>&gt;<i> &gt;&gt; effect as what happens on OSX.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; My HW is too old to work with compositing and I'm not sure whether
+</I>&gt;<i> &gt; WMware (nowadays) support OpenGL either, but you could test it on your
+</I>&gt;<i> &gt; U9200. Or did you already have compositing (Desktop GL effects) enabled
+</I>&gt;<i> &gt; on it or your WMware Ubuntu installation?
+</I>&gt;<i>
+</I>&gt;<i> I think this is on by default, I have not changed any setup. OpenGL is
+</I>&gt;<i> available in VMware since a long time. The U9200 I borrowed from work
+</I>&gt;<i> just for doing this test and I don't have it available any longer.
+</I>
+Hm.   If the issue doesn't happen with compositing on Linux, but happens
+on OSX, and the CPU usage is in the Hatari process, then there are
+a couple possibilities:
+- Your SDL does something funny
+- You compiler does something funny
+
+Next step would be profiling where the CPU goes in Hatari.  Does it go
+to Hatari binary i.e. Atari screen conversion to SDL surface, which I think
+indicates compiling issue, or does it go to SDL library which indicates
+the issue is in SDL.  Former could be something you can fix, latter could
+be something that we could work around, if you can find out what it is.
+
+Do you have e.g. Apple's Shark profiler?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002175.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+	<LI>Next message: <A HREF="002181.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2178">[ date ]</a>
+              <a href="thread.html#2178">[ thread ]</a>
+              <a href="subject.html#2178">[ subject ]</a>
+              <a href="author.html#2178">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

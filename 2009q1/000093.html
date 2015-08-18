@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Control.c does not compile...
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Control.c%20does%20not%20compile...&In-Reply-To=%3C200901292046.30772.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000090.html">
+   <LINK REL="Next"  HREF="000094.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Control.c does not compile...</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Control.c%20does%20not%20compile...&In-Reply-To=%3C200901292046.30772.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Control.c does not compile...">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Jan 29 19:46:30 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000090.html">[hatari-devel] Control.c does not compile...
+</A></li>
+        <LI>Next message: <A HREF="000094.html">[hatari-devel] Control.c does not compile...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#93">[ date ]</a>
+              <a href="thread.html#93">[ thread ]</a>
+              <a href="subject.html#93">[ subject ]</a>
+              <a href="author.html#93">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 28 January 2009, Matthias Arndt wrote:
+&gt;&gt;<i> control.c:454:24: Fehler: SDL_config.h: No such file or directory
+</I>
+This was added because OSX can have an X development environment, but
+have an SDL version that doesn't have X support compiled in.  It should be
+easy to work around your issue, but first I need to know:
+
+* What version of SDL you have?
+  (Is SDL_config.h a new SDL header or is your SDL package broken?)
+
+* What this shows:
+	grep _X11 /usr/include/SDL/*.h
+  ?
+
+
+&gt;<i> I did #undef HAVE_UNIX_DOMAIN_SOCKETS in config.h
+</I>&gt;<i> and presto it works again.
+</I>&gt;<i>
+</I>&gt;<i> I hereby want to opt to allow for user configurable optional switches
+</I>&gt;<i> which will enable to enable/disable functionality (and/or complete
+</I>&gt;<i> modules) at compile time. This may default to enable everything but
+</I>&gt;<i> users can disable certain things if they want to.
+</I>&gt;<i>
+</I>&gt;<i> Some options are simply not needed by everyone...
+</I>
+If config.h isn't enough, propose a patch that does what you want.
+
+(At the same time you could try fixing also configure.ac SDL detection.
+It doesn't seem to work if sdl.m4 file is missing.)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000090.html">[hatari-devel] Control.c does not compile...
+</A></li>
+	<LI>Next message: <A HREF="000094.html">[hatari-devel] Control.c does not compile...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#93">[ date ]</a>
+              <a href="thread.html#93">[ thread ]</a>
+              <a href="subject.html#93">[ subject ]</a>
+              <a href="author.html#93">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

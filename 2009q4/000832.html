@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Troubles compiling latest Hatari with new avi	support
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%09support&In-Reply-To=%3C200910112105.00079.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000831.html">
+   <LINK REL="Next"  HREF="000833.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Troubles compiling latest Hatari with new avi	support</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%09support&In-Reply-To=%3C200910112105.00079.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Troubles compiling latest Hatari with new avi	support">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Oct 11 20:04:59 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000831.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+        <LI>Next message: <A HREF="000833.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#832">[ date ]</a>
+              <a href="thread.html#832">[ thread ]</a>
+              <a href="subject.html#832">[ subject ]</a>
+              <a href="author.html#832">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 11 October 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> &gt;&gt; Btw. I just noticed that adding an index to the AVI when the recording
+</I>&gt;<i> &gt;&gt; is stopped, can take quite a while (my recording wasn't that long in
+</I>&gt;<i> &gt;&gt; time, but the file size was already several hundred MB).
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; I was thinking that there could be some DlgAlert_Show / _Hide function
+</I>&gt;<i> &gt;&gt; that would allow code to do something while the dialog is on screen.
+</I>&gt;<i> &gt;&gt; I'll look into that.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Any comments on the attached patch?
+</I>&gt;<i>
+</I>&gt;<i> didn't had time to compile it and try it :( could you explain what it
+</I>&gt;<i> does visually ?
+</I>&gt;<i>
+</I>&gt;<i> If it's a window that opens once we click on &quot;stop&quot; and automatically
+</I>&gt;<i> disappear once the index is created, that's ok for me.
+</I>
+That's how it works.
+
+However, there are two gotchas with it:
+
+* If the AVI file is small (not hundreds of MBs), the dialog flickers too
+  quickly on screen for user to see anything.  Because of second item,
+  this can seem a bit strange.
+
+* Because I refactored only AlertDialog stuff to have separate showing
+  and hiding functions, but didn't refactor the DoDialog() (in another SDL
+  GUI *.c file) into separate background saving and restoring functions,
+  once the notice dialog (automatically) closes, it's left still visible
+  behind the other dialogs.  All other dialogs can use doDialog() so they
+  don't have this isssue.  It will disappear once the options dialog is
+  closed completely though.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000831.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+	<LI>Next message: <A HREF="000833.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#832">[ date ]</a>
+              <a href="thread.html#832">[ thread ]</a>
+              <a href="subject.html#832">[ subject ]</a>
+              <a href="author.html#832">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

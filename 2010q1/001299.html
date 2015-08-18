@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C201001202355.20688.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001296.html">
+   <LINK REL="Next"  HREF="001197.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C201001202355.20688.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] CMake build system">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Jan 20 22:55:20 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001296.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001197.html">[hatari-devel] GEMDOS emu new file name lower casing?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1299">[ date ]</a>
+              <a href="thread.html#1299">[ thread ]</a>
+              <a href="subject.html#1299">[ subject ]</a>
+              <a href="author.html#1299">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 20 January 2010, Thomas Huth wrote:
+&gt;<i> &gt; &gt; - Our build system did not support out-of-source builds (i.e.
+</I>&gt;<i> &gt; &gt;   generating the object files out of the source tree), which is
+</I>&gt;<i> &gt; &gt; helpful for cross-compiling and distributors.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; This could be added if needed I think.  But first it would need
+</I>&gt;<i> &gt; some description how that should work.  Just obj files elsewhere
+</I>&gt;<i> &gt; or everything?
+</I>&gt;<i>
+</I>&gt;<i> I suggest to do it just like the standard &quot;automake&quot; way, since this
+</I>&gt;<i> is what people suggest: the object file tree is placed to the folder
+</I>&gt;<i> from wherever you call the &quot;configure&quot; script from.
+</I>&gt;<i> But I guess the Makefiles would become more complicated and less
+</I>&gt;<i> maintainable by this, so I doubt that you want to add and maintain this
+</I>&gt;<i> feature &quot;manually&quot;.
+</I>
+I think it could be added quite easily with something like:
+
+-- makefile --
+OBJS = $(SRCS:.c=$(BUILDDIR)/.o)
+&lt;same for subdirlibs&gt;
+$(BUILDDIR)/hatari: $(ALLOBJS)
+---------
+
+Configure or user would then put suitable BUILDDIR value to Makefile.cnf.
+Default value should of course be overridable from the environment
+&amp; command line:
+	BUILDDIR ?= .
+
+BUILDDIR=$PWD make -C &lt;where Hatari is&gt;
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001296.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001197.html">[hatari-devel] GEMDOS emu new file name lower casing?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1299">[ date ]</a>
+              <a href="thread.html#1299">[ thread ]</a>
+              <a href="subject.html#1299">[ subject ]</a>
+              <a href="author.html#1299">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

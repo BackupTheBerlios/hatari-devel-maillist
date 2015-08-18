@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005131121230.6570%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002078.html">
+   <LINK REL="Next"  HREF="002084.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005131121230.6570%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu May 13 11:25:24 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002078.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002084.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2082">[ date ]</a>
+              <a href="thread.html#2082">[ thread ]</a>
+              <a href="subject.html#2082">[ subject ]</a>
+              <a href="author.html#2082">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 13 May 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Thursday 13 May 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;<i> A new variable SdlAudioBufferSize was added to the [Sound] section in
+</I>&gt;&gt;<i> hatari.cfg (it will be created if you press &quot;save configuration&quot;).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Integers should be prefixed with &quot;n&quot; in the configuration file:
+</I>&gt;<i> 	<A HREF="http://hg.berlios.de/repos/hatari/rev/2e758ee7de3e">http://hg.berlios.de/repos/hatari/rev/2e758ee7de3e</A>
+</I>
+Hi,
+
+this is ugly :)
+
+Really, what does it add for someone reading the config file to have 'b', 
+'sz', 'n' prefixed to all names ? I really don't like this notation, I 
+know it's a legacy from the original winston project, but as we once 
+discussed I think we should not enforce this coding style for new 
+variables (and all keys shortcuts doesn't respect it for a long time :) )
+
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> From the command line, you can use --sound-buffer-size
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If SdlAudioBufferSize is set to 0, nothing changes when compared to
+</I>&gt;&gt;<i> previous Hatari version : we use a &quot;samples&quot; value of 1024. In that case
+</I>&gt;&gt;<i> ALSA (or the audio system used by SDL) will compute the best fitting
+</I>&gt;&gt;<i> value for &quot;samples&quot; if needed.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If you want to force &quot;samples&quot; instead of using 1024, you can specify a
+</I>&gt;&gt;<i> value between 10 and 100 ms. A value of 20 ms should be good enough I
+</I>&gt;&gt;<i> think (lower value will add more interrupts and could give more rounding
+</I>&gt;&gt;<i> errors in Hatari's sound emulation).
+</I>&gt;<i>
+</I>&gt;<i> And command line options need to be documented in the manpage and manual.
+</I>
+That's planned.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002078.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002084.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2082">[ date ]</a>
+              <a href="thread.html#2082">[ thread ]</a>
+              <a href="subject.html#2082">[ subject ]</a>
+              <a href="author.html#2082">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

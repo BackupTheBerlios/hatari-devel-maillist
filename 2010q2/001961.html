@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling support to Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3C201005021317.08111.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001960.html">
+   <LINK REL="Next"  HREF="001963.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling support to Hatari debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3C201005021317.08111.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Profiling support to Hatari debugger">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun May  2 12:17:07 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001960.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="001963.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1961">[ date ]</a>
+              <a href="thread.html#1961">[ thread ]</a>
+              <a href="subject.html#1961">[ subject ]</a>
+              <a href="author.html#1961">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've given this more thought.
+
+On Saturday 01 May 2010, Jean-Baptiste Berlioz wrote:
+&gt;&gt;<i> I was thinking of adding profiling support to the Hatari debugger:
+</I>&gt;&gt;<i> --------
+</I>&gt;&gt;<i> 'profile' - profile which part of the code is most used
+</I>&gt;&gt;<i> Usage:  profile &lt;instruction count&gt; [show count]
+</I>&gt;&gt;<i>         Runs the emulation a given number of instructions and shows
+</I>&gt;&gt;<i>         which addresses were most used.
+</I>&gt;&gt;<i> --------
+</I>
+I've decided it's best if this just marks profiling to be enabled.
+Continuing would be done separately by the user, i.e. instruction
+count won't be given here.
+
+Profiling results would be output when user gets back to debugger
+again.
+
+This way user can enable both CPU and DSP profiling at the same time.
+
+
+&gt;&gt;<i> I was thinking of implementing most of this functionality outside of
+</I>&gt;&gt;<i> Hatari.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On the Hatari side this would enable SPCFLAG_DEBUGGER flag to catch
+</I>&gt;&gt;<i> every instruction and pass their PC address outside of Hatari.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> An external program would then process the PC address information,
+</I>&gt;&gt;<i> count how many times each address is executed and at the end print
+</I>&gt;&gt;<i> out the most used addresses.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I was thinking that Hatari could directly invoke the external program
+</I>&gt;&gt;<i> and feed the data to it through its stdin to avoid huge intermediate
+</I>&gt;&gt;<i> files and to get the information immediately.
+</I>
+I'm doing everything on the Hatari side after all.  It will just be pretty
+brute-force.
+
+I've thought to use a huge array like this:
+struct {
+	Uint32 addr;
+	Uint32 count;
+	/* Uint32 cycles;	// later */
+} profdata[STRamSize];
+
+While the execution is traced, only count is updated (+cycles later).
+
+Afterwards this array is scanned for addresses which were updated. Addresses
+are added (addr=index) from lowest updated item to the highest and then
+they're just qsort()ed based on the counts.
+
+First topmost sorted addresses are shown.  Then they're scanned for
+addresses that match function addresses and topmost N of those are shown.
+
+After cycles support is added, the topmost addresses (in cycles) and topmost
+functions (in call counts) need to be sorted separately.
+
+
+For DSP side it works exactly like this, for the CPU side I need to handle
+TOS area accesses separately as TOS are is mapped to separate address.
+
+-&gt; I've thought to start with DSP after 1.4 is released.
+
+...
+&gt;<i> &gt; Comments?
+</I>&gt;<i>
+</I>&gt;<i> This would be a fantastic feature :)
+</I>
+I thought so too, especially as this doesn't seem very complicated to
+implement.  ;-)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001960.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="001963.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1961">[ date ]</a>
+              <a href="thread.html#1961">[ thread ]</a>
+              <a href="subject.html#1961">[ subject ]</a>
+              <a href="author.html#1961">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

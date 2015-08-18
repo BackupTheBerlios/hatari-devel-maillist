@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] LMC1992 and Microwire emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4B96DB99.7010405%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001649.html">
+   <LINK REL="Next"  HREF="001658.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] LMC1992 and Microwire emulation</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4B96DB99.7010405%40free.fr%3E"
+       TITLE="[hatari-devel] LMC1992 and Microwire emulation">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Mar 10 00:36:57 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001649.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+        <LI>Next message: <A HREF="001658.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1650">[ date ]</a>
+              <a href="thread.html#1650">[ thread ]</a>
+              <a href="subject.html#1650">[ subject ]</a>
+              <a href="author.html#1650">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi David,
+
+ &gt; - The LMC1992 is present on the STE and TT.
+ &gt; - The LMC1992 is not present on the Falcon.
+
+That's already mapped into hatari. (via the iomem...c code)
+
+ &gt; - The LMC1992 controls the overall volume, bass
+ &gt;  and treble as the last stage before the sound
+ &gt; ...
+
+I've implemented a very preview of volume emulation.
+Everything should be rewritten as you describe, but I'm really not a 
+specialist of filters, mathematics formulas, ...
+
+Perhaps you could write something that would emulate this, and if it 
+takes too much CPU, we could add this as an option in the parameters.
+
+Best regards
+
+Laurent
+
+
+
+David Savinkoff a &#233;crit :
+&gt;<i> Hi Laurent,
+</I>&gt;<i>
+</I>&gt;<i> I did some digging and discovered the following:
+</I>&gt;<i> - The LMC1992 is present on the STE and TT.
+</I>&gt;<i> - The LMC1992 is not present on the Falcon.
+</I>&gt;<i> - The LMC1992 controls the overall volume, bass
+</I>&gt;<i>   and treble as the last stage before the sound
+</I>&gt;<i>   is output, thus, if Hatari can communicate
+</I>&gt;<i>   volume and tone settings to the computer or an
+</I>&gt;<i>   External Application, extra processing can be
+</I>&gt;<i>   avoided.
+</I>&gt;<i> - The LMC1992 uses first order analog filters
+</I>&gt;<i>   where the first order bass filter can be combined
+</I>&gt;<i>   with the first order treble filter to make a
+</I>&gt;<i>   single second order IIR shelving filter, thus
+</I>&gt;<i>   saving a multiply. It should be possible to make
+</I>&gt;<i>   an exact stereo emulation of the filter with
+</I>&gt;<i>   5 floating point multiplies per channel per sample
+</I>&gt;<i>   (441000 multiplies per second at 44100Hz).
+</I>&gt;<i>   A small look up table will hold pre-calculated
+</I>&gt;<i>   filter coefficients. An extra multiply is needed
+</I>&gt;<i>   to control the final volume.
+</I>&gt;<i> - A moving average filter uses integer math with
+</I>&gt;<i>   no multiplies, will sound different and will have
+</I>&gt;<i>   at best +6/-12 dB boost/cut (LMC1992 has +/- 12dB).
+</I>&gt;<i>   However 3 multiplies are needed to control bass,
+</I>&gt;<i>   treble and volume.
+</I>&gt;<i>
+</I>&gt;<i> I'm thinking that an external application that uses
+</I>&gt;<i> an IIR filter is the way to go.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Mar 8, 2010 11:48:27 PM, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A> 
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>     Hello David,
+</I>&gt;<i>
+</I>&gt;<i>     First, thanks for the help.
+</I>&gt;<i>
+</I>&gt;<i>     Filters and sound theory are not really what I understand the best.
+</I>&gt;<i>     I'm a bit lost with this.
+</I>&gt;<i>
+</I>&gt;<i>     Would you enjoy to help us and give it a try by yourself ?
+</I>&gt;<i>     You could add the Falcon and Ste filters for volume and
+</I>&gt;<i>     Bass/Treble (Ste).
+</I>&gt;<i>     All the componet emulation is coded, there's just the filters to add.
+</I>&gt;<i>
+</I>&gt;<i>     This would help and would be done much better than if I do it myself.
+</I>&gt;<i>
+</I>&gt;<i>     At least, if you can't, would you describe me the algorithm to
+</I>&gt;<i>     implement ?
+</I>&gt;<i>     (I would translate it to C language).
+</I>&gt;<i>
+</I>&gt;<i>     Best regards,
+</I>&gt;<i>
+</I>&gt;<i>     Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     David Savinkoff a &#233;crit :
+</I>&gt;<i>     &gt; Hi laurent,
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; I'm reasonably sure that the Falcon codec would use a second order,
+</I>&gt;<i>     &gt; infinite impulse response ( IIR ) shelving filter because that
+</I>&gt;<i>     is what is
+</I>&gt;<i>     &gt; used on other codecs with tone controls. What I wrote earlier
+</I>&gt;<i>     implied
+</I>&gt;<i>     &gt; that the moving average filter is what the codec uses. The moving
+</I>&gt;<i>     &gt; average filter is a simplified finite impulse response ( FIR )
+</I>&gt;<i>     filter.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Volume is usually done after filtering so that you can cut and boost
+</I>&gt;<i>     &gt; the bass and treble and mix in unfiltered sound.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; By the way, as a first approximation for the number of samples to
+</I>&gt;<i>     &gt; use in the filter try:
+</I>&gt;<i>     &gt; Sampling frequency / Cutoff frequency = Averaging length
+</I>&gt;<i>     &gt; eg.
+</I>&gt;<i>     &gt; 44100Hz / 630Hz = 71 averaged samples (or 65 for 2^n)
+</I>&gt;<i>     &gt; It is Imperative that an Odd number of samples be used.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Mar 8, 2010 02:33:59 PM, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;
+</I>&gt;<i>     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;&gt; wrote:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Another question :
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Is there an order for effects computing ?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Should I compute volume before and IIR after, or IIr before and
+</I>&gt;<i>     sound
+</I>&gt;<i>     &gt; after ?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Regards
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Laurent
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; David Savinkoff a &#233;crit :
+</I>&gt;<i>     &gt; &gt; Hi,
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; A FFT is not the solution, an IIR filter is required. See:
+</I>&gt;<i>     &gt; &gt; <A HREF="http://www.dspguide.com/">http://www.dspguide.com/</A>
+</I>&gt;<i>     &gt; &gt; for a freely downloadable book.
+</I>&gt;<i>     &gt; &gt; My recommendation is to use a running average filter.
+</I>&gt;<i>     &gt; &gt; This is similar to a FIFO, but where you add samples into
+</I>&gt;<i>     &gt; &gt; a variable and subtract an old sample out every time you
+</I>&gt;<i>     &gt; &gt; add a new one in. How many samples are averaged depends
+</I>&gt;<i>     &gt; &gt; on the cut off frequency desired (this is a low pass filter) and
+</I>&gt;<i>     &gt; &gt; the sampling frequency. To make a treble filter, subtract an
+</I>&gt;<i>     &gt; &gt; averaged value from an input value. Note that the delay of
+</I>&gt;<i>     &gt; &gt; the filter is considered to be half of the averaging length.
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; Mar 7, 2010 09:18:03 AM, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;
+</I>&gt;<i>     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;&gt;
+</I>&gt;<i>     &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;
+</I>&gt;<i>     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;&gt;&gt; wrote:
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; Hello,
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; I've added LMC1992 and Microwire emulation to hatari.
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; For now, Master volume, left volume and right volume are emulated.
+</I>&gt;<i>     &gt; &gt; Still to do : Bass and Treble.
+</I>&gt;<i>     &gt; &gt; Does it need a FFT and FFT -1 transformation or are there
+</I>&gt;<i>     specifics
+</I>&gt;<i>     &gt; &gt; algorythms for bass and treble ?
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; I've done my tests with protracker Ste.
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; I think there's a problem anyway for both falcon volume table
+</I>&gt;<i>     &gt; and ste
+</I>&gt;<i>     &gt; &gt; volume table :
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; I've used a linear volume table to calculate values from the min
+</I>&gt;<i>     &gt; &gt; to the max.
+</I>&gt;<i>     &gt; &gt; I think values should be calculated with a logarythmic algo.
+</I>&gt;<i>     &gt; &gt; (There's only values in the volume_table to change, nothing else)
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; Do you agree ?
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; Could somebody compare volume in protracker in hatari and on a
+</I>&gt;<i>     &gt; &gt; real ste ?
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; Regards
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; Laurent
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; _______________________________________________
+</I>&gt;<i>     &gt; &gt; hatari-devel mailing list
+</I>&gt;<i>     &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>&gt;&gt;
+</I>&gt;<i>     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>&gt;
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>&gt;&gt;&gt;
+</I>&gt;<i>     &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001649.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+	<LI>Next message: <A HREF="001658.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1650">[ date ]</a>
+              <a href="thread.html#1650">[ thread ]</a>
+              <a href="subject.html#1650">[ subject ]</a>
+              <a href="author.html#1650">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

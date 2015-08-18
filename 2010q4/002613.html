@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari 1.4 emulation bugs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%201.4%20emulation%20bugs&In-Reply-To=%3C4CD6F26C.1060306%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002594.html">
+   <LINK REL="Next"  HREF="002619.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari 1.4 emulation bugs</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%201.4%20emulation%20bugs&In-Reply-To=%3C4CD6F26C.1060306%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Hatari 1.4 emulation bugs">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Nov  7 19:39:40 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002594.html">[hatari-devel] Hatari 1.4 emulation bugs
+</A></li>
+        <LI>Next message: <A HREF="002619.html">[hatari-devel] Hatari 1.4 emulation bugs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2613">[ date ]</a>
+              <a href="thread.html#2613">[ thread ]</a>
+              <a href="subject.html#2613">[ subject ]</a>
+              <a href="author.html#2613">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 05/11/2010 14:01, Anders Eriksson a &#233;crit :
+&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> while doing some testing, I found some bugs in Hatari 1.4 emulation for
+</I>&gt;<i> some demos (I'm sure there are more, but these are the ones I've seen so
+</I>&gt;<i> far).
+</I>&gt;<i>
+</I>&gt;<i> All tested on Mac OS X 1.6 with Hatari 1.4. I'm aware that Monsieur
+</I>&gt;<i> Styckx have made some fixes regarding STe overscan since v1.4, but I've
+</I>&gt;<i> not been able to test that yet, so maybe the errors for More Or Less
+</I>&gt;<i> Zero described below are already fixed.
+</I>&gt;<i>
+</I>
+Hello,
+
+thanks for all these reports, always useful to track some remaining/less 
+common issues.
+
+Here's what I found :
+
+&gt;<i> Anyway, here's the list:
+</I>&gt;<i>
+</I>&gt;<i> %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+</I>&gt;<i>
+</I>&gt;<i> 1.
+</I>&gt;<i> Wave of the future / ICE
+</I>&gt;<i> <A HREF="http://files.dhs.nu/files_demo/wavefut.zip">http://files.dhs.nu/files_demo/wavefut.zip</A>
+</I>&gt;<i>
+</I>&gt;<i> a) Top border flickers
+</I>
+Hatari seems to trigger VBL 4 cycles too soon, which in the case of this 
+demo prevents top border from being removed (too strict timing in the 
+demo). I will try to make more tests to measure the exact starting 
+timing of the VBL.
+
+&gt;<i> b) Sound crackles a bit
+</I>
+Yes, quality is not great. I haven't checked, maybe due to some LMC 
+commands not correctly emulated.
+
+
+&gt;<i> %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+</I>&gt;<i>
+</I>&gt;<i> 2.
+</I>&gt;<i> More Or Less Zero / DHS
+</I>&gt;<i> <A HREF="http://files.dhs.nu/demos/molz_hdd.zip">http://files.dhs.nu/demos/molz_hdd.zip</A>
+</I>&gt;<i>
+</I>&gt;<i> a) Fullscreens are shifted too much to the right (8px approx) - also
+</I>&gt;<i> seen in Cernit Trandafir and Tuttugandi (the 20 years STe megademo
+</I>&gt;<i> screen by DHS)
+</I>
+As you said, I corrected this 2 weeks ago based on the results of my 
+test program you sent me. Screen is now 8 pixels to the left.
+
+&gt;<i> b) When using hardware scroller in fullscreen, there is graphic garbage
+</I>&gt;<i> in the right border (Firehorn pic and interference circles), also seen
+</I>&gt;<i> in Tuttugandi
+</I>
+I was not able to see how it looks on a real STE. Would it be possible 
+for you to send me a video of the right border in such case (the best 
+would be if you could change the horizontal position of your STE's 
+monitor to fully display the extreme right part of the screen) ?
+
+&gt;<i> c) Music and effects get unsynchronised after the plasma. In Hatari the
+</I>&gt;<i> sample loop that plays during the end of the plasma repeats four times,
+</I>&gt;<i> but on a real STe it repeats three times. The counter is on VBL and the
+</I>&gt;<i> soundchip is 25033 Hz. As far as I can tell either the VBL or soundchip
+</I>&gt;<i> frequency (or both) runs a little bit wrong speed (see video links below)
+</I>&gt;<i>
+</I>&gt;<i> Videos to illustrate the audio sync problem
+</I>&gt;<i>
+</I>&gt;<i> Real STe: <A HREF="http://ae.dhs.nu/tmp/molz_stesync.mp4">http://ae.dhs.nu/tmp/molz_stesync.mp4</A>
+</I>&gt;<i> Hatari 1.4: <A HREF="http://ae.dhs.nu/tmp/molz_hatarsynci.mp4">http://ae.dhs.nu/tmp/molz_hatarsynci.mp4</A>
+</I>&gt;<i>
+</I>&gt;<i> If you listen carefully you can hear that the audio loop at the end of
+</I>&gt;<i> the plasma goes on four times on Hatari and three times on the real STe.
+</I>&gt;<i> It is easy to spot the wrong sync after the spectrum 4096 image were the
+</I>&gt;<i> colours flash in sync to the drum when the chunky fullscreen effect begins.
+</I>
+Never looked at this, but dma sound is certainly not fully complete yet. 
+Maybe some wrong clock emulation for DMA, I will try to give it a look.
+
+
+&gt;<i> %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+</I>&gt;<i>
+</I>&gt;<i> 3.
+</I>&gt;<i> Space Tale / ICE
+</I>&gt;<i> <A HREF="http://files.dhs.nu/files_demo/spactale.zip">http://files.dhs.nu/files_demo/spactale.zip</A>
+</I>&gt;<i>
+</I>&gt;<i> a) Lower border in the intro with the two big sprites is not opened
+</I>
+Bottom border's removal code is run just after some blitter stuffs and 
+unfortunately Hatari sometimes still has a few cycles wrong (especially 
+when blitter and cpu run in parallel when cpu doesn't need to access the 
+bus). It doesn't work under Steem either (which is not an excuse :) )
+
+
+&gt;<i> %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+</I>&gt;<i>
+</I>&gt;<i> 4. The Saw / Offbase
+</I>&gt;<i> <A HREF="http://pacidemo.planet-d.net/archives/THESAW.ZIP">http://pacidemo.planet-d.net/archives/THESAW.ZIP</A>
+</I>&gt;<i>
+</I>&gt;<i> a) Audio is garbage
+</I>
+Sorry, can't reproduce. Under STF or STE I have an audible sountrack.
+
+
+&gt;<i>
+</I>&gt;<i> %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+</I>&gt;<i>
+</I>&gt;<i> 5.
+</I>&gt;<i> STNICCC 2000 / Oxygene
+</I>&gt;<i> <A HREF="http://files.dhs.nu/party/stniccc2000/oxygen.zip">http://files.dhs.nu/party/stniccc2000/oxygen.zip</A>
+</I>&gt;<i>
+</I>&gt;<i> a) Vector animation ends after a while, music continues
+</I>
+Yes, I saw this one some times ago, but forgot to add it to the 
+compatibility list. We have some wrong timings for the FDC that make 
+this demo crashes while it tries to stream data from the floppy.
+We would need a more accurate FDC emulation (hint : pasti support 
+needed, maybe Sarnau will be able to provide a fix for these FDC problems).
+
+
+&gt;<i> %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+</I>&gt;<i>
+</I>&gt;<i> 6.
+</I>&gt;<i> Fullparts by Hemoroids
+</I>&gt;<i> <A HREF="http://stknights.free.fr/uploads/fullparts.zip">http://stknights.free.fr/uploads/fullparts.zip</A>
+</I>&gt;<i>
+</I>&gt;<i> a) The overscan flickers when a new line begins in the text displayer
+</I>
+Fixed, a pairing between LSL and JMP was needed, else we had a 4 cycles 
+error that altered right border's removal.
+
+
+&gt;<i> %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+</I>&gt;<i>
+</I>&gt;<i> 7.
+</I>&gt;<i> Brace by Diamond Design
+</I>&gt;<i> <A HREF="http://pacidemo.atarizone.com/archives/BRACE.ZIP">http://pacidemo.atarizone.com/archives/BRACE.ZIP</A>
+</I>&gt;<i>
+</I>&gt;<i> a) In the scrolltext screen with split low/med-res parts, the rasters
+</I>&gt;<i> flicker
+</I>
+Unfortunately, Hatari doesn't support cycle precise colors changes in 
+med res (same problem in Best part of the creation by Delta Force or 
+Highres mode by Equinox on STE). I will try to look at this someday, but 
+this part of the code (planar &lt;-&gt; 8/16/32 bpp is really ugly and not 
+modular)
+
+
+Thanks for your reports, don't hesitate to send more :)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002594.html">[hatari-devel] Hatari 1.4 emulation bugs
+</A></li>
+	<LI>Next message: <A HREF="002619.html">[hatari-devel] Hatari 1.4 emulation bugs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2613">[ date ]</a>
+              <a href="thread.html#2613">[ thread ]</a>
+              <a href="subject.html#2613">[ subject ]</a>
+              <a href="author.html#2613">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [hatari-tracking] [Bug #17567] Execution of	given path
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Bhatari-tracking%5D%20%5BBug%20%2317567%5D%20Execution%20of%0A%09given%20path&In-Reply-To=%3CAANLkTinYrbiNF-MurcVHYdx6QuQMzJegNSTSw7N_ff%2BB%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002446.html">
+   <LINK REL="Next"  HREF="002448.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [hatari-tracking] [Bug #17567] Execution of	given path</H1>
+    <B>Miro Kropacek</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Bhatari-tracking%5D%20%5BBug%20%2317567%5D%20Execution%20of%0A%09given%20path&In-Reply-To=%3CAANLkTinYrbiNF-MurcVHYdx6QuQMzJegNSTSw7N_ff%2BB%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] [hatari-tracking] [Bug #17567] Execution of	given path">miro.kropacek at gmail.com
+       </A><BR>
+    <I>Tue Oct  5 21:03:11 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002446.html">[hatari-devel] [hatari-tracking] [Bug #17567] Execution of	given path
+</A></li>
+        <LI>Next message: <A HREF="002448.html">[hatari-devel] Executing program with Hatari (was: [Bug #17567]	...)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2447">[ date ]</a>
+              <a href="thread.html#2447">[ thread ]</a>
+              <a href="subject.html#2447">[ subject ]</a>
+              <a href="author.html#2447">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I think for features it's better to discuss them on the developer
+&gt;<i> mailing list and leave bug tracker for bugs.
+</I>&gt;<i>
+</I>OK, I hope it wont produce much noise from other threads in my mailbox.
+
+&gt;<i> hatari --exec $HOME/atari/projects/something/file.prg
+</I>&gt;<i>
+</I>&gt;<i> As that's not an image, it needs GEMDOS hard disk emulation &amp; the program
+</I>&gt;<i> work with that (i.e. it cannot e.g. be a MiNT program).
+</I>&gt;<i>
+</I>&gt;<i> No necessarily, see below.
+</I>
+
+&gt;<i> What this would use as a hard disk emulation directory, the last part of
+</I>&gt;<i> the
+</I>&gt;<i> path and current dir if no path is given?
+</I>&gt;<i>
+</I>This is one way, but it's possible to do it even simpler.
+
+Does Atari800 have an OS and multiple versions of it? :-)
+&gt;<i>
+</I>Actually, it does. It's even worse, it has plethora of 3rd party DOSes as
+disk support is not built-in. So, how it works you ask? Pretty simple, as
+every OS has support for bootstrapping from some device. So you essentially
+create such device media (diskette or hard disk) and *bootstrap* from it
+(everything done in memory of course, no physical file is created). So, the
+simplest solution for this task is to create MSA in memory, copy needed
+file(s) there and install bootstrap code (bootloader) for execution. Simple
+and efficient. Decision, what to use for let's say 10 MB files, custom MSA
+size or harddisk image, I leave up to you as you've got far better knowledge
+what's possible :)
+
+As Hatari is a low level emulator, the problem is delaying the execution
+&gt;<i> until the OS is ready for the program to run and inserting stuff inside
+</I>&gt;<i> the emulation.
+</I>&gt;<i>
+</I>Nope, you just make cold-boot everytime ;) This is how its done on Atari800
+-- it's bootstrapping after all.
+
+Thomas, do you see any feasible way to do that from inside Hatari?
+&gt;<i>
+</I>What about my proposal?
+
+I think it's much easier to do/kludge from outside.  Attached is a shell
+&gt;<i> script for that and desktop.inf file that it uses as a template.  Before
+</I>&gt;<i> using the script, modify it to point where you saved the INF file.
+</I>&gt;<i>
+</I>This is a neat idea!  It's nearly perfect (I can use it immediately) but
+requires additional handling (existing directory structure, access rights
+for write, ...) but on the other hand let user to freely use any additional
+input files (my solution would require to manually select file structure on
+our MSA/HDD image, making it even worse in case of subdirectories).
+
+Maybe Hatari installation should include a script like that?
+&gt;<i>
+</I>Yes, any mention about this possibility is certainly useful!
+
+Hatari emulates printer and serial at hardware level and its the HW stuff
+&gt;<i> that's being redirected.  PRN, AUX &amp; CON are higher level OS concepts.
+</I>&gt;<i> There's no separe CON hardware, screen is handled as pixels.  I.e. this
+</I>&gt;<i> will
+</I>&gt;<i> require OS level interception.
+</I>&gt;<i>
+</I>Ah, sure.
+
+Hatari already has support for VDI, GEMDOS, BIOS and XBIOS interception, but
+&gt;<i> all of them require user to use additional options as each will have some
+</I>&gt;<i> drawback.  Which actual OS functions you're interested to redirect?
+</I>&gt;<i>
+</I>&gt;<i> GEMDOS Cconout() &amp; Cconws(), BIOS Bconout()?
+</I>&gt;<i>
+</I>GEMDOS is perfectly fine, it's about text being printed by normal programs,
+I doubt any printf-like code will use something from BIOS.
+
+Note that this may have funny effects because also many other things could
+&gt;<i> be using these and your host terminal's escape sequences and control
+</I>&gt;<i> characters most likely differ from Atari ones.  Filtering escape &amp; control
+</I>&gt;<i> characters would probably be a good idea with something like that.
+</I>&gt;<i>
+</I>This isn't that critical. Can be added later, if needed at all.
+
+-- 
+MiKRO / Mystic Bytes
+<A HREF="http://mikro.atari.org">http://mikro.atari.org</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20101005/27b84988/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20101005/27b84988/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002446.html">[hatari-devel] [hatari-tracking] [Bug #17567] Execution of	given path
+</A></li>
+	<LI>Next message: <A HREF="002448.html">[hatari-devel] Executing program with Hatari (was: [Bug #17567]	...)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2447">[ date ]</a>
+              <a href="thread.html#2447">[ thread ]</a>
+              <a href="subject.html#2447">[ subject ]</a>
+              <a href="author.html#2447">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

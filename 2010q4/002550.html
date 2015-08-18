@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Proposal%20for%20a%20new%20disassembler%20in%20Hatari%20%282nd%0A%09try%29&In-Reply-To=%3C37729865-2BCA-4A7F-9E29-7A7083E7A656%40sarnau.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002549.html">
+   <LINK REL="Next"  HREF="002551.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)</H1>
+    <B>Markus Fritze</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Proposal%20for%20a%20new%20disassembler%20in%20Hatari%20%282nd%0A%09try%29&In-Reply-To=%3C37729865-2BCA-4A7F-9E29-7A7083E7A656%40sarnau.com%3E"
+       TITLE="[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)">my at sarnau.com
+       </A><BR>
+    <I>Wed Oct 20 18:16:06 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002549.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd try)
+</A></li>
+        <LI>Next message: <A HREF="002551.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd try)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2550">[ date ]</a>
+              <a href="thread.html#2550">[ thread ]</a>
+              <a href="subject.html#2550">[ subject ]</a>
+              <a href="author.html#2550">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Oct 20, 2010, at 3:06 AM, Nicolas Pomar&#232;de wrote:
+
+&gt;<i> the output looks nice (I really prefer the movem syntax you use (the one from uae is really hard to read)).
+</I>
+Yes, I don't know who hacked that together.
+
+
+&gt;<i> Is it possible to assemble the produced output with devpac for example ?
+</I>
+I could add an option to switch to labels, instead of addresses, etc. Good idea.
+
+
+&gt;<i> I haven't tested, but are the following lines recognized by devpac :
+</I>&gt;<i> 	CMP.L ($100c).w,D0
+</I>&gt;<i> 	LEA ($e01024).l,A0
+</I>&gt;<i> Are the parenthesis OK with devpac ? (I personnaly never use them)
+</I>
+Yes, I don't know. I tried to get the syntax to match the Motorola documentation to 100% (&quot;tried&quot;, because there are a few cases where the documentation is not clear, mainly some special PMMU and FPU opcodes). When I wrote the TurboAss we did so to, but that was before the 68020, etc and the spec at that point didn't had the brackets either. I can remove them (and the &quot;.l&quot;) with an option, that is easy.
+
+
+&gt;<i> Do you plan to add a cpu_type option (68000, 68020, ...) when calling the dissasembler ? This could be handy if you're for example in 68000 mode to have some possible 68020 opcodes displayed as dc.w or ILLEGAL and not as a real 68020 instructions.
+</I>
+It is already in the core: you can provide a bitmask of supported CPU types, so a 68020 without PMMU is possible. It also makes it easier to read, because if you work with TOS 1 or 2 you probably won't have any anyway.
+
+I've added TOS specific symbols and comments (hey, TOS is pretty stable by now :-). So a standard disassembly of a TOS 4.04 now looks like this:
+
+
+$e00000 : 602e                     osroml: os_entry: BRA.S $e00030 ; osromreset
+$e00002 : 0404                     DC.W $0404           ; os_version 
+$e00004 : 00e0 0030                DC.L osromreset      ; reseth 
+$e00008 : 00e0 0000                DC.L osroml          ; os_beg 
+$e0000c : 0000 8f9a                DC.L $008f9a         ; os_end 
+$e00010 : 00e0 0030                DC.L osromreset      ; os_rsvl 
+$e00014 : 00e4 9424                DC.L gem_magic       ; os_magic 
+$e00018 : 0308 1993                DC.L $03081993       ; os_date 
+$e0001c : 00ff                     DC.W $00ff           ; os_conf 
+$e0001e : 1a68                     DC.W $1a68           ; os_dosdate 
+$e00020 : 0000 56ba                DC.L $0056ba         ; p_root 
+$e00024 : 0000 1187                DC.L kb_shift        ; pkbshift 
+$e00028 : 0000 6ee4                DC.L $006ee4         ; p_run 
+$e0002c : 0000 0000                DC.L $000000         ; p_rsv2 
+$e00030 : 46fc 2700                osromreset: MOVE #$2700,SR
+$e00034 : 3038 8006                MOVE.W     (SPConfig).w,D0
+$e00038 : 4e70                     RESET      
+$e0003a : 3038 8006                MOVE.W     (SPConfig).w,D0
+$e0003e : 31fc 0007 8940           MOVE.W     #7,(cbargpxdatadir).w
+$e00044 : 0cb9 fa52 235f 00fa 0000 CMPI.L     #$fa52235f,(cartridge).l ; Diagnostic module installed? 
+$e0004e : 660a                     BNE.S      $e0005a
+$e00050 : 4dfa 0008                LEA        $e0005a(PC),A6
+$e00054 : 4ef9 00fa 0004           JMP        (cartridge[$1]).l ; Jump into the diagnostic module 
+
+$e0005a : 203c 0000 0808           MOVE.L     #$808,D0
+$e00060 : 4e7b 0002                MOVEC      D0,CACR
+$e00064 : 7000                     MOVEQ      #0,D0
+$e00066 : 4e7b 0801                MOVEC      D0,VBR
+$e0006a : f039 4000 00e4 9430      PMOVE      ($e49430).l,TC
+$e00072 : f039 0800 00e4 9430      PMOVE      ($e49430).l,TT0
+$e0007a : f039 0c00 00e4 9430      PMOVE      ($e49430).l,TT1
+$e00082 : 31fc 0020 828c           MOVE.W     #$20,(v_HSS).w
+$e00088 : 31fc 0010 8282           MOVE.W     #$10,(v_HHT).w
+$e0008e : 0038 0025 8007           ORI.B      #$25,(SPConfig+1).w
+$e00094 : 0838 0006 8007           BTST       #6,(SPConfig+1).w
+$e0009a : 672c                     BEQ.S      $e000c8
+$e0009c : 4dfa 0006                LEA        $e000a4(PC),A6
+$e000a0 : 6000 0b7a                BRA        $e00c1c   ; Check if memory configuration is valid memvalidTest
+$e000a4 : 6622                     BNE.S      $e000c8
+$e000a6 : 11f8 0424 8001           MOVE.B     (memctrl).w,(memconf).w
+$e000ac : 0cb8 3141 5926 0426      CMPI.L     #$31415926,(resvalid).w ; Reset vector valid? 
+$e000b4 : 6612                     BNE.S      $e000c8
+$e000b6 : 2038 042a                MOVE.L     (resvector).w,D0
+$e000ba : 0800 0000                BTST       #0,D0
+$e000be : 6608                     BNE.S      $e000c8
+$e000c0 : 2040                     MOVEA.L    D0,A0
+$e000c2 : 4dfa ffe8                LEA        $e000ac(PC),A6
+$e000c6 : 4ed0                     JMP        (A0)
+
+...
+
+Because the symbols can contain structures, this line:
+
+0xe09410,FONT_HDR,1,font8x16
+
+generates this:
+
+$e09410 : 0001                     DC.W $0001           ; font8x16: font_id 
+$e09412 : 000a                     DC.W $000a           ; point 
+$e09414 : 3878 3136 2073 7973 ...  DC.B '8x16 system font                ' ; name 
+$e09434 : 0000                     DC.W $0000           ; first_ade 
+$e09436 : 00ff                     DC.W $00ff           ; last_ade 
+$e09438 : 000d                     DC.W $000d           ; top 
+$e0943a : 000b                     DC.W $000b           ; ascent 
+$e0943c : 0008                     DC.W $0008           ; half 
+$e0943e : 0002                     DC.W $0002           ; descent 
+$e09440 : 0002                     DC.W $0002           ; bottom 
+$e09442 : 0007                     DC.W $0007           ; max_char_width 
+$e09444 : 0008                     DC.W $0008           ; max_cell_width 
+$e09446 : 0001                     DC.W $0001           ; left_offset 
+$e09448 : 0007                     DC.W $0007           ; right_offset 
+$e0944a : 0001                     DC.W $0001           ; thicken 
+$e0944c : 0001                     DC.W $0001           ; ul_size 
+$e0944e : 5555                     DC.W $5555           ; lighten 
+$e09450 : 5555                     DC.W $5555           ; skew 
+$e09452 : 000c                     DC.W $000c           ; flags 
+$e09454 : 0000 0000                DC.L $000000         ; hor_table 
+$e09458 : 00e4 b722                DC.L $e4b722         ; off_table 
+$e0945c : 00e4 c124                DC.L $e4c124         ; dat_table 
+$e09460 : 0100                     DC.W $0100           ; form_width 
+$e09462 : 0010                     DC.W $0010           ; form_height 
+$e09464 : 0000 0000                DC.L $000000         ; next_font 
+$e09468 : 0000                     DC.W $0000
+
+
+
+Markus
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002549.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd try)
+</A></li>
+	<LI>Next message: <A HREF="002551.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd try)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2550">[ date ]</a>
+              <a href="thread.html#2550">[ thread ]</a>
+              <a href="subject.html#2550">[ subject ]</a>
+              <a href="author.html#2550">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

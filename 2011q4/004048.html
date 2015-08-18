@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Some news
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20news&In-Reply-To=%3C4E8D9744.3060803%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004047.html">
+   <LINK REL="Next"  HREF="004044.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Some news</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20news&In-Reply-To=%3C4E8D9744.3060803%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Some news">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Oct  6 13:55:48 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004047.html">[hatari-devel] Some news
+</A></li>
+        <LI>Next message: <A HREF="004044.html">[hatari-devel] Some news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4048">[ date ]</a>
+              <a href="thread.html#4048">[ thread ]</a>
+              <a href="subject.html#4048">[ subject ]</a>
+              <a href="author.html#4048">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 06/10/2011 12:23, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A> a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;&gt;<i> how are you doing your merge ? Are you trying to replace all files in
+</I>&gt;&gt;<i> cpu/ with the new one from WinUae and repatch them ?
+</I>&gt;<i>
+</I>&gt;<i> No.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> If so, I think that's the wrong method. You should do a diff between the
+</I>&gt;&gt;<i> original WinUAE files (that are currently used in Hatari 1.5) and the
+</I>&gt;&gt;<i> files from the latest WinUAE release.
+</I>&gt;<i>
+</I>&gt;<i> That's the way I do it.
+</I>&gt;<i> It does less work and I'm more sure it will compile at the end.
+</I>&gt;<i> But they've done some changes in do_interrupts and exceptions that I have to integrate.
+</I>&gt;<i>
+</I>&gt;<i> I've solved my problem this morning.
+</I>&gt;<i>
+</I>&gt;<i> I still have 5 errors I'll try to fix tomorrow.
+</I>&gt;<i> Then, I'll test everything and commit.
+</I>&gt;<i>
+</I>&gt;<i> Then, the hard work will start.
+</I>&gt;<i> Sometimes, I'd like to clean all their code and just keep the nessessary code for Hatari.
+</I>&gt;<i> (I think there won't be major changes in the main core of winuae).
+</I>&gt;<i> Would you agree with that ?
+</I>&gt;<i> (The actual code is full of Winuae specific code)
+</I>&gt;<i>
+</I>&gt;<i> We could then fork and maintain our own ATARI core (and patch only specific changes if there are).
+</I>
+I'm not sure there won't be major changes in WinUAE one day (on the 
+contrary to UAE which will certainly not evolve anymore), so I think it 
+would be a better idea to try to keep all the WinUAE code to be able to 
+have more undertsandable diffs when you go from one version to another.
+
+Instead of removing code, I think it would be better to add some
+#ifdef HATARI_CPU to add specific part for Hatari and #ifndef HATARI_CPU 
+to keep Amiga's specific part.
+
+If you remove code, I think we could discover in some months that some 
+parts that were not correctly understood today were in fact necessary, 
+and adding them back could be a problem if the structure of the code was 
+changed too much in Hatari.
+
+Also, WinUAE's cpu core is the only maintaned 680xx core today, forking 
+it doesn't seem wise to me, it would be better to stay as close to it as 
+possible, and even to contribute patches in case we see some emulation 
+error/imprecisions (I know I found a lot of error in UAE's 68000 core, 
+and some of them were still in WinUAE (that was some times ago, maybe 
+it's fixed now)).
+(for example, if the FPU cycles are not correct now, it's possible a new 
+version of WinUAE will handle that ; it could also handle 68060 in the 
+future and we would benefit from it)
+
+
+
+Nicolas
+
+
+
+&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>&gt;<i> ----- Mail Original -----
+</I>&gt;<i> De: &quot;Nicolas Pomar&#232;de&quot;&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt;
+</I>&gt;<i> &#192;: &quot;Mailing list for Hatari developers&quot;&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>&gt;
+</I>&gt;<i> Cc: &quot;Laurent Sallafranque&quot;&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;
+</I>&gt;<i> Envoy&#233;: Jeudi 6 Octobre 2011 10h09:00 GMT +01:00 Amsterdam / Berlin / Berne / Rome / Stockholm / Vienne
+</I>&gt;<i> Objet: Re: [hatari-devel] Some news
+</I>&gt;<i>
+</I>&gt;<i> Le 05/10/2011 23:14, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I give you some news of my current work : I'm merging the latest winuae
+</I>&gt;&gt;<i> core to hatari.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I encounter a problem with newcpu.c
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> While compiling, I get the following error (the same kind of error
+</I>&gt;&gt;<i> occurs in many places in the code) :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> /home/laurent/Atari/Compare/hatari-2011-09-28/src/cpu/newcpu.c:3563:30:
+</I>&gt;&gt;<i> error: expected expression before &#8216;)&#8217; token
+</I>&gt;&gt;<i> /home/laurent/Atari/Compare/hatari-2011-09-28/src/cpu/newcpu.c:3563:30:
+</I>&gt;&gt;<i> error: too many arguments to function &#8216;do_interrupt&#8217;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If I look at the code near the 3563 line, it's an area of comments,
+</I>&gt;&gt;<i> there's no instruction.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I guess I've got a problem with a .h file ( a missing ; for example).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Have you got another idea I should investigate to solve this problem ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i> Hello
+</I>&gt;<i>
+</I>&gt;<i> how are you doing your merge ? Are you trying to replace all files in
+</I>&gt;<i> cpu/ with the new one from WinUae and repatch them ?
+</I>&gt;<i>
+</I>&gt;<i> If so, I think that's the wrong method. You should do a diff between the
+</I>&gt;<i> original WinUAE files (that are currently used in Hatari 1.5) and the
+</I>&gt;<i> files from the latest WinUAE release.
+</I>&gt;<i>
+</I>&gt;<i> This will create a patch file that you can now apply to the files in
+</I>&gt;<i> cpu/. As the files in cpu/ were already modified to compile, it's quite
+</I>&gt;<i> likely that the new set of files will also compile (WinUAE often does
+</I>&gt;<i> only small changes in the cpu part between different releases).
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004047.html">[hatari-devel] Some news
+</A></li>
+	<LI>Next message: <A HREF="004044.html">[hatari-devel] Some news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4048">[ date ]</a>
+              <a href="thread.html#4048">[ thread ]</a>
+              <a href="subject.html#4048">[ subject ]</a>
+              <a href="author.html#4048">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

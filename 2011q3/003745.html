@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Updated video recording frame rate
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Updated%20video%20recording%20frame%20rate&In-Reply-To=%3C4E208E16.8090001%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003735.html">
+   <LINK REL="Next"  HREF="003746.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Updated video recording frame rate</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Updated%20video%20recording%20frame%20rate&In-Reply-To=%3C4E208E16.8090001%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Updated video recording frame rate">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Jul 15 20:59:34 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003735.html">[hatari-devel] Froggies over the fence
+</A></li>
+        <LI>Next message: <A HREF="003746.html">[hatari-devel] Updated video recording frame rate
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3745">[ date ]</a>
+              <a href="thread.html#3745">[ thread ]</a>
+              <a href="subject.html#3745">[ subject ]</a>
+              <a href="author.html#3745">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello
+
+I just updated the avi video recording to be able to support non integer 
+frame rate, as produced by a real ST (and as we emulate them now)
+
+For example, video produced by an STE in PAL should give 50.053 frames 
+per sec, instead of the commonly used 50 fps. The difference is small, 
+less than 0.1%, but it will be more accurate.
+
+Avi header supports non integer fps, so the avi files produced by Hatari 
+are following the specs and should not give playback problems (assuming 
+you use a capable video player).
+
+I tested it with &quot;More Or Less Zero&quot; by DHS, video and audio stay 
+synchronised as intended during the whole demo, so I think this new avi 
+version should be OK.
+
+This required a change in the functions' parameters, please test it 
+still compiles under OS X.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003735.html">[hatari-devel] Froggies over the fence
+</A></li>
+	<LI>Next message: <A HREF="003746.html">[hatari-devel] Updated video recording frame rate
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3745">[ date ]</a>
+              <a href="thread.html#3745">[ thread ]</a>
+              <a href="subject.html#3745">[ subject ]</a>
+              <a href="author.html#3745">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

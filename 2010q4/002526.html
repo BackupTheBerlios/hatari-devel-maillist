@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Tracing AES calls with the existing VDI code?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Tracing%20AES%20calls%20with%20the%20existing%20VDI%20code%3F&In-Reply-To=%3C201010122113.55935.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002539.html">
+   <LINK REL="Next"  HREF="002528.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Tracing AES calls with the existing VDI code?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Tracing%20AES%20calls%20with%20the%20existing%20VDI%20code%3F&In-Reply-To=%3C201010122113.55935.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Tracing AES calls with the existing VDI code?">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Oct 12 20:13:55 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002539.html">[hatari-devel] Unable to latest hg on Mac OS X again...
+</A></li>
+        <LI>Next message: <A HREF="002528.html">[hatari-devel] Tracing AES calls with the existing VDI code?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2526">[ date ]</a>
+              <a href="thread.html#2526">[ thread ]</a>
+              <a href="subject.html#2526">[ subject ]</a>
+              <a href="author.html#2526">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I was thinking of adding AES call tracing functionality to vdi.c
+and modify newcpu.c from this:
+----------
+    /* Intercept VDI exception (Trap #2 with D0 = 0x73) */
+    if (ExceptionSource == M68000_EXC_SRC_CPU)
+      {
+        if(bUseVDIRes &amp;&amp; nr == 0x22 &amp;&amp; regs.regs[0] == 0x73)
+        {
+          if(!VDI())
+----------
+
+To either this:
+----------
+    /* Intercept VDI (D0 = 0x73) &amp; AES (D0 = 0xC8) exceptions (Trap #2) */
+    if (ExceptionSource == M68000_EXC_SRC_CPU)
+      {
+        if(bUseVDIRes &amp;&amp; nr == 0x22 &amp;&amp;
+           (regs.regs[0] == 0x73 || regs.regs[0] == 0xC8))
+        {
+          if(!VDI_AES_Entry())
+          {
+----------
+
+Or do the D0 checking in the renamed VDI_AES_Entry() function as I anyway
+need to do it there.   Exceptions (for trap#2) should be so rare that few
+possible extra calls to that function should be a problem (which are done
+only when extended VDI resultion is used) and the AES stuff will be used
+only if tracing is enabled (at build &amp; run-time).
+
+Aditionally I thought to do these renamings:
+* VDI() -&gt; VDI_AES_Entry()
+* VDI_Complete() -&gt; VDI_AES_Complete()
+* VDI_OldPC -&gt; VID_AES_OldPC
+* CART_VDI_OPCODE_ADDR -&gt; CART_VDI_AES_OPCODE_ADDR
+
+And of course add the stuff needed for tracing the AES calls with
+the right names.
+
+Any objections for this?
+
+
+Also, what this commented out code in VDI() is/was for:
+----------
+        /*
+        OpCode = STMemory_ReadWord(Control);
+        // Check OpCode
+        // 8 - Text Font
+        if (OpCode==9)
+        {
+                return true;
+        }
+        */
+----------
+
+Can it be removed?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002539.html">[hatari-devel] Unable to latest hg on Mac OS X again...
+</A></li>
+	<LI>Next message: <A HREF="002528.html">[hatari-devel] Tracing AES calls with the existing VDI code?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2526">[ date ]</a>
+              <a href="thread.html#2526">[ thread ]</a>
+              <a href="subject.html#2526">[ subject ]</a>
+              <a href="author.html#2526">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

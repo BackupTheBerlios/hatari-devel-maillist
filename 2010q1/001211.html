@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Symbol name/address support added to Hatari	debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Symbol%20name/address%20support%20added%20to%20Hatari%0A%09debugger&In-Reply-To=%3C4B4CFF9D.8070101%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001210.html">
+   <LINK REL="Next"  HREF="001217.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Symbol name/address support added to Hatari	debugger</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Symbol%20name/address%20support%20added%20to%20Hatari%0A%09debugger&In-Reply-To=%3C4B4CFF9D.8070101%40free.fr%3E"
+       TITLE="[hatari-devel] Symbol name/address support added to Hatari	debugger">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Jan 13 00:02:53 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001210.html">[hatari-devel] Symbol name/address support added to Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="001217.html">[hatari-devel] Symbol name/address support added to Hatari	debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1211">[ date ]</a>
+              <a href="thread.html#1211">[ thread ]</a>
+              <a href="subject.html#1211">[ subject ]</a>
+              <a href="author.html#1211">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Next I will look into the &quot;info&quot; stuff for Laurent (at the end of week),
+</I>&gt;<i> adding active program basebage information showing (for getting program
+</I>&gt;<i> text &amp; bss section addresses) and testing how to get also normal programs
+</I>&gt;<i> to work with the symbol/address support.
+</I>
+I've uploaded the new debugInfo file.
+
+Don't hesitate to change it for your convenience.
+
+&gt;<i> Laurent, would you be interested about similar support for DSP? :-)
+</I>
+Yes I would if it doesn't annoy you ;)
+
+Regards,
+
+Laurent
+
+
+
+Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I just commited the symbol name/address support to the Hatari debugger.
+</I>&gt;<i>
+</I>&gt;<i> &quot;symbols&quot; command can be used to load and list symbols and &quot;address&quot; command
+</I>&gt;<i> has TAB completion for the loaded symbol names.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On quick testing this seems to work fine with EmuTOS.  To test it yourself,
+</I>&gt;<i> first get the AHCC compiled EmuTOS package from here:
+</I>&gt;<i> 	<A HREF="http://members.chello.nl/h.robbers/">http://members.chello.nl/h.robbers/</A>
+</I>&gt;<i>
+</I>&gt;<i> After extracting the package, use new Hatari tools/ahcc-symbols-convert.sh
+</I>&gt;<i> script to convert the etos512.map from the EmuTOS package to &quot;nm&quot; format
+</I>&gt;<i> understood by the Hatari debugger:
+</I>&gt;<i> 	ahcc-symbols-convert.sh etos512.map &gt; etos512.sym
+</I>&gt;<i>
+</I>&gt;<i> Then start Hatari with the EmuTOS from this package:
+</I>&gt;<i> 	hatari --tos etos512.img -d &lt;some dir&gt;
+</I>&gt;<i>
+</I>&gt;<i> Use AltGr+Pause to go to debugger, and load the symbol/address file with:
+</I>&gt;<i> 	sym&lt;TAB&gt; etos512.sym
+</I>&gt;<i> (the filenames have also TAB completion)
+</I>&gt;<i>
+</I>&gt;<i> Then type e.g.:
+</I>&gt;<i> 	add&lt;TAB&gt; _dos_mk&lt;TAB&gt;
+</I>&gt;<i> which completes to:
+</I>&gt;<i> 	address _dos_mkdir
+</I>&gt;<i>
+</I>&gt;<i> After the breakpoint is set, type 'c' to continue emulation and create
+</I>&gt;<i> a folder from the EmuTOS GEM.  Hatari will then drop you to debugger
+</I>&gt;<i> as EmuTOS mkdir breakpoint was hit.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Next I will look into the &quot;info&quot; stuff for Laurent (at the end of week),
+</I>&gt;<i> adding active program basebage information showing (for getting program
+</I>&gt;<i> text &amp; bss section addresses) and testing how to get also normal programs
+</I>&gt;<i> to work with the symbol/address support.
+</I>&gt;<i>
+</I>&gt;<i> Once it works, I'll document it to the manual and maybe start looking into
+</I>&gt;<i> breakpoint counting support + some possible usability improvements for
+</I>&gt;<i> the symbol support.
+</I>&gt;<i>
+</I>&gt;<i> Laurent, would you be interested about similar support for DSP? :-)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001210.html">[hatari-devel] Symbol name/address support added to Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="001217.html">[hatari-devel] Symbol name/address support added to Hatari	debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1211">[ date ]</a>
+              <a href="thread.html#1211">[ thread ]</a>
+              <a href="subject.html#1211">[ subject ]</a>
+              <a href="author.html#1211">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

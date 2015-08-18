@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Problem in 20 years STe megademo (DHS	fullscreen) ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%2020%20years%20STe%20megademo%20%28DHS%0A%09fullscreen%29%20%3F&In-Reply-To=%3CAANLkTimAVah4Ji%2BLgOkXBf86k99HjzBFZ6iXPRZcOHZ3%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="002734.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Problem in 20 years STe megademo (DHS	fullscreen) ?</H1>
+    <B>Deniz Turkoglu</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%2020%20years%20STe%20megademo%20%28DHS%0A%09fullscreen%29%20%3F&In-Reply-To=%3CAANLkTimAVah4Ji%2BLgOkXBf86k99HjzBFZ6iXPRZcOHZ3%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Problem in 20 years STe megademo (DHS	fullscreen) ?">turkoglu.deniz at gmail.com
+       </A><BR>
+    <I>Sat Jan  1 22:43:49 CET 2011</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="002734.html">[hatari-devel] Problem in 20 years STe megademo (DHS	fullscreen) ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2733">[ date ]</a>
+              <a href="thread.html#2733">[ thread ]</a>
+              <a href="subject.html#2733">[ subject ]</a>
+              <a href="author.html#2733">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, Dec 21, 2010 at 11:35 PM, Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">oak at helsinkinet.fi</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On tiistai 21 joulukuu 2010, Anders Eriksson wrote:
+</I>&gt;&gt;<i> hg clone <A HREF="http://hg.berlios.de/repos/hatari">http://hg.berlios.de/repos/hatari</A>
+</I>&gt;&gt;<i> cd hatari
+</I>&gt;&gt;<i> cmake -G Xcode .
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Opening the Xcode project, select release / i386, hit build.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> /Users/ae/hatari/src/gui-osx/PrefsController.m:614:0
+</I>&gt;&gt;<i> /Users/ae/hatari/src/gui-osx/PrefsController.m:614: error: 'CNF_SCREEN'
+</I>&gt;&gt;<i> has no member named 'bCaptureChange'
+</I>&gt;&gt;<i> /Users/ae/hatari/src/gui-osx/PrefsController.m:825:0
+</I>&gt;&gt;<i> /Users/ae/hatari/src/gui-osx/PrefsController.m:825: error: 'CNF_SCREEN'
+</I>&gt;&gt;<i> has no member named 'bCaptureChange'
+</I>&gt;<i>
+</I>&gt;<i> I removed that variable when I added the AVI GUI stuff as it's not used
+</I>&gt;<i> (hasn't been since Nicolas added the AVI recording).
+</I>&gt;<i>
+</I>&gt;<i> Patches to fix this in OSX code are welcome.
+</I>
+Hi all,
+
+I had contacted Thomas some time ago and he had recommended me to the
+join the list. I finally had the time to quickly go through the
+sources and I made a patch for this, available at
+<A HREF="http://www.mediafire.com/?oagy83g58m2piik">http://www.mediafire.com/?oagy83g58m2piik</A>
+
+I had to edit the nib file so the patch looks rather bigger than what
+it really is. I fixed the compilation problem, updated the string in
+dialog and made the menu item (record / stop record) work as record
+sound does, with a save dialog. I tried to clean up the code a bit as
+well but I am sure there is still some space for improvement :)
+
+-deniz
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="002734.html">[hatari-devel] Problem in 20 years STe megademo (DHS	fullscreen) ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2733">[ date ]</a>
+              <a href="thread.html#2733">[ thread ]</a>
+              <a href="subject.html#2733">[ subject ]</a>
+              <a href="author.html#2733">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

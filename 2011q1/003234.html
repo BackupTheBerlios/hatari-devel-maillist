@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crosscompiling Hatari for GP2X Wiz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C201103271850.18574.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003233.html">
+   <LINK REL="Next"  HREF="003235.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crosscompiling Hatari for GP2X Wiz</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C201103271850.18574.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Crosscompiling Hatari for GP2X Wiz">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Mar 27 17:50:18 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003233.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+        <LI>Next message: <A HREF="003235.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3234">[ date ]</a>
+              <a href="thread.html#3234">[ thread ]</a>
+              <a href="subject.html#3234">[ subject ]</a>
+              <a href="author.html#3234">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 27 maaliskuu 2011, Matthias Arndt wrote:
+&gt;<i> I'm interested in crosscompiling Hatari for a different target platform,
+</I>&gt;<i> notably GP2X Wiz.
+</I>&gt;<i> 
+</I>&gt;<i> How can I control which actuall gcc compiler is used?
+</I>&gt;<i> I basically need to tweak a few compile settings:
+</I>&gt;<i> - use a different GNU Toolchain (for the main compile)
+</I>&gt;<i> - disable a lot of PC specific libs (AVI, audio recording, etc.)
+</I>&gt;<i> - inject my own defines into the build to de/activate functionalities
+</I>
+Just edit the CMake configuration variables with ccmake (ncurses UI).
+
+Or edit it (CMakeCache.txt I think) directly with text editor.
+
+
+&gt;<i> _ still use host gcc for the (old) UAE core
+</I>
+For the code generator?  src/uae-cpu/CMakeLists.txt always uses &quot;cc&quot;
+for that.
+
+Thomas, I think this is a regression from the old Makefiles, with those
+there was a config value for host gcc, wasn't there?
+
+
+&gt;<i> I esp. have to supply a new SDL joystick handler that will inject
+</I>&gt;<i> keyboard events so I can use the basic event handling infrastructure for
+</I>&gt;<i> lack of proper keyboard.
+</I>
+No need for that, just configure the keys in the Hatari configuration file.
+
+
+&gt;<i> Any useful ideas on this topic? I think it is possible with a slightly
+</I>&gt;<i> tweaked codebased.
+</I>&gt;<i> 
+</I>&gt;<i> Ofcourse any patches will be made available later if I get a working
+</I>&gt;<i> result.
+</I>
+A suitable &quot;etc/gp2x.cfg&quot; config file should be enough.  The etc/ subdir
+already has example configs for Windows WinCE phones and Nokia's
+Linux N8x0 tablets.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003233.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+	<LI>Next message: <A HREF="003235.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3234">[ date ]</a>
+              <a href="thread.html#3234">[ thread ]</a>
+              <a href="subject.html#3234">[ subject ]</a>
+              <a href="author.html#3234">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

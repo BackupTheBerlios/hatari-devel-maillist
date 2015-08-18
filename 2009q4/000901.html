@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] install-sh missing in checked out sources
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20install-sh%20missing%20in%20checked%20out%20sources&In-Reply-To=%3C200911151535.50988.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000900.html">
+   <LINK REL="Next"  HREF="000902.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] install-sh missing in checked out sources</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20install-sh%20missing%20in%20checked%20out%20sources&In-Reply-To=%3C200911151535.50988.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] install-sh missing in checked out sources">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Nov 15 14:35:50 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000900.html">[hatari-devel] install-sh missing in checked out sources
+</A></li>
+        <LI>Next message: <A HREF="000902.html">[hatari-devel] Issues with IDE/ACSI emulation and HD Driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#901">[ date ]</a>
+              <a href="thread.html#901">[ thread ]</a>
+              <a href="subject.html#901">[ subject ]</a>
+              <a href="author.html#901">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 15 November 2009, Uwe Seimet wrote:
+&gt;<i> I checked out the hatari sources but I cannot run the configure script
+</I>&gt;<i>
+</I>&gt;<i> after running autoconf (on Linux):
+</I>&gt;<i> &gt;configure
+</I>&gt;<i>
+</I>&gt;<i> configure: error: cannot find install-sh or install.sh in &quot;.&quot; &quot;./..&quot;
+</I>&gt;<i> &quot;./../..&quot;
+</I>&gt;<i>
+</I>&gt;<i> Could you add the missing file or provide another solution? Thanks!
+</I>
+Instructions can be found from the top of the configure.ac file:
+# To create all necessary files for configure, use:
+#   aclocal &amp;&amp; autoheader &amp;&amp; automake --add-missing --copy &amp;&amp; autoconf
+# Later on you can use &quot;autoreconf -i&quot; after updating this file.
+
+(I look that up from there too :-))
+
+
+Another option is just to use the Makefile-default.cnf config-default.h
+as templates and edit them manually.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000900.html">[hatari-devel] install-sh missing in checked out sources
+</A></li>
+	<LI>Next message: <A HREF="000902.html">[hatari-devel] Issues with IDE/ACSI emulation and HD Driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#901">[ date ]</a>
+              <a href="thread.html#901">[ thread ]</a>
+              <a href="subject.html#901">[ subject ]</a>
+              <a href="author.html#901">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

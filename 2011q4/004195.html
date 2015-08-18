@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] 68000 cycles, read and write cycles
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068000%20cycles%2C%20read%20and%20write%20cycles&In-Reply-To=%3C4EC59167.8070906%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004194.html">
+   <LINK REL="Next"  HREF="004196.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] 68000 cycles, read and write cycles</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068000%20cycles%2C%20read%20and%20write%20cycles&In-Reply-To=%3C4EC59167.8070906%40free.fr%3E"
+       TITLE="[hatari-devel] 68000 cycles, read and write cycles">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Nov 17 23:57:43 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004194.html">[hatari-devel] 68000 cycles, read and write cycles
+</A></li>
+        <LI>Next message: <A HREF="004196.html">[hatari-devel] 68000 cycles, read and write cycles
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4195">[ date ]</a>
+              <a href="thread.html#4195">[ thread ]</a>
+              <a href="subject.html#4195">[ subject ]</a>
+              <a href="author.html#4195">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>For my example with clr, I looked at the 8 bits table instead of the 16 
+bits table.
+
+CLR cycles would be :
+
+CLR (byte) (register) : 4(1/0)
+CLR (word) (register) : 4(1/0)
+CLR (long) (register) : 6(1/0)
+
+CLR (byte) (memory) : 8(1/1) +
+CLR (word) (memory) : 8(1/1)+
+CLR (long) (memory) : 12(1/2)+
+
+Maybe some cycles values are different from the 68000 doc and the cycles 
+of a real atari, but it's really easy to change this in a table that 
+contains all the instructions.
+Correct values could be pick up in the old gencpu code.
+
+Regards
+
+Laurent
+
+
+Le 17/11/2011 23:53, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi Nicolas,
+</I>&gt;<i>
+</I>&gt;<i> I was watching your last patch in cycles.c
+</I>&gt;<i>
+</I>&gt;<i> The aim seems to compute precise cycles for the read and the write of 
+</I>&gt;<i> an instruction in the 2 following functions :
+</I>&gt;<i>
+</I>&gt;<i> int Cycles_GetCounterOnReadAccess(int nId)
+</I>&gt;<i>
+</I>&gt;<i> int Cycles_GetCounterOnWriteAccess(int nId)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Is this related to the cycles tables of the 68000 processor ?
+</I>&gt;<i>
+</I>&gt;<i> I mean when I look at the M68000UM doc, for CLR, I can read (maybe my 
+</I>&gt;<i> document is not the good one, but it gives the idea) :
+</I>&gt;<i>
+</I>&gt;<i> CLR (byte) (register) : 8(2/0)
+</I>&gt;<i> CLR (word) (register) : 8(2/0)
+</I>&gt;<i> CLR (long) (register) : 10(2/0)
+</I>&gt;<i>
+</I>&gt;<i> CLR (byte) (memory) : 12(2/1) +
+</I>&gt;<i> CLR (word) (memory) : 16(2/2)+
+</I>&gt;<i> CLR (long) (memory) : 24(2/4)+
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> In parenthesis are given the number of read and write access to the 
+</I>&gt;<i> memory.
+</I>&gt;<i>
+</I>&gt;<i> Would having these values for each instruction could let us compute 
+</I>&gt;<i> precise values for GetCounterOnReadAccess and GetCounterOnWriteAccess ?
+</I>&gt;<i>
+</I>&gt;<i> I'm currently filling a table for each 68030 instructions with all 
+</I>&gt;<i> these datas.
+</I>&gt;<i> If having all these values for the 68000 is the good answear, I can 
+</I>&gt;<i> also fill a table for the Atari_St(e) processor with cycles + read + 
+</I>&gt;<i> write access.
+</I>&gt;<i>
+</I>&gt;<i> If yes, we could also speed up hatari a little by removing the return 
+</I>&gt;<i> in each instruction code and transform all instruction functions to 
+</I>&gt;<i> void and read the amount of cycles directly from the table.
+</I>&gt;<i> (we can also leave the gencpu.c code unchanged, it's no problem)
+</I>&gt;<i>
+</I>&gt;<i> Are you interrested in such a table ?
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004194.html">[hatari-devel] 68000 cycles, read and write cycles
+</A></li>
+	<LI>Next message: <A HREF="004196.html">[hatari-devel] 68000 cycles, read and write cycles
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4195">[ date ]</a>
+              <a href="thread.html#4195">[ thread ]</a>
+              <a href="subject.html#4195">[ subject ]</a>
+              <a href="author.html#4195">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

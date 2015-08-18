@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Problem with NVDI and latest hatari sources
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20with%20NVDI%20and%20latest%20hatari%20sources&In-Reply-To=%3C201102062305.02301.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002990.html">
+   <LINK REL="Next"  HREF="002871.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Problem with NVDI and latest hatari sources</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20with%20NVDI%20and%20latest%20hatari%20sources&In-Reply-To=%3C201102062305.02301.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Problem with NVDI and latest hatari sources">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Feb  6 22:05:02 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002990.html">[hatari-devel] Problem with NVDI and latest hatari sources
+</A></li>
+        <LI>Next message: <A HREF="002871.html">[hatari-devel] Compile error with ENABLE_WINUAE_CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2995">[ date ]</a>
+              <a href="thread.html#2995">[ thread ]</a>
+              <a href="subject.html#2995">[ subject ]</a>
+              <a href="author.html#2995">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 06 helmikuu 2011, Uwe Seimet wrote:
+&gt;&gt;<i> To keep mouse cursor in sync, you need to enable mouse grabbing.  To
+</I>&gt;&gt;<i> have it in sync from the beginning, you need to have mouse grab
+</I>&gt;&gt;<i> enabled from the beginning. There's a &quot;--grab&quot; command line option for
+</I>&gt;&gt;<i> latter and keyboard shortcut just for former.
+</I>&gt;<i> 
+</I>&gt;<i> But why is the Hatari windows placed at a different screen location when
+</I>&gt;<i> starting Hatari with bUseExtVdiResolutions set to FALSE instead of TRUE?
+</I>
+Hatari doesn't have any control over window placement and I don't think SDL 
+which creates the windows for Hatari sets any such things  (like window
+gravity) differently for different windows.
+
+Window placement is decided by your window manager, it decides the position
+based on where all other windows are, size of the new window, some optional
+hints from the application and by possible other its policies.
+
+To check for differences between windows on Linux/X11, you can use
+&quot;xwininfo&quot; to check the size and some window attributes and &quot;xprop&quot; to check
+what window properties are set for the window manager.
+
+
+&gt;<i> &gt; When you earlier said that:
+</I>&gt;<i> &gt; 	the print preview (as well as the actualprintout) do not correctly
+</I>&gt;<i> &gt; 	recognize the paper size (A4) anymore. The output is clipped, so that
+</I>&gt;<i> &gt; 	only the upper left corner is visible.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; to what size it's clipped?   E.g. size of ST-low or ST-high screen
+</I>&gt;<i> &gt; size?
+</I>&gt;<i> 
+</I>&gt;<i> I think it's even less. I have added a screenshot to this posting. The
+</I>&gt;<i> screen region in white is the area the Tarkus software, most likely
+</I>&gt;<i> based on VDI information, clips the DIN A4 page size to. With
+</I>&gt;<i> bUseExtVdiResolutions set to FALSE the complete page is white, and when
+</I>&gt;<i> actually printing the complete sheet of paper is printed to.
+</I>
+So both x &amp; y are wrong, just not h &amp; w.
+
+
+&gt;<i> With
+</I>&gt;<i> bUseExtVdiResolutions set to TRUE only the white area is printed to,
+</I>&gt;<i> i.e. the printout is incomplete (clipped), just as the print preview
+</I>&gt;<i> indicates.
+</I>&gt;<i> Please note that with older versions of Hatari even with
+</I>&gt;<i> bUseExtVdiResolutions set to TRUE there was no clipping and the
+</I>&gt;<i> printouts were complete.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Do similar issues happen with any other software?
+</I>&gt;<i> 
+</I>&gt;<i> I don't know because I do not use any other software which so
+</I>&gt;<i> extensively uses the VDI, i.e. I have not observed similar problems with
+</I>&gt;<i> other pieces of software.
+</I>
+OK.  I've gone through the VDI code changes several times and I don't
+really see anything that could affect it...
+
+
+&gt;<i> &gt; I need some way to reproduce the issue, otherwise I cannot debug it.
+</I>&gt;<i> &gt; Is this software available somewhere?
+</I>&gt;<i> 
+</I>&gt;<i> No, I'm afraid it isn't.
+</I>
+...and without being able to debug the problem myself, there's not
+really anything I can do. :-/
+
+
+&gt;<i> &gt; With your config I could reproduce the crash and it happened also with
+</I>&gt;<i> &gt; v1.4 release.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I've commited a fix to the crash and to another issue revealed by the
+</I>&gt;<i> &gt; fix.
+</I>&gt;<i> 
+</I>&gt;<i> Thank you, there is no crash anymore.
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002990.html">[hatari-devel] Problem with NVDI and latest hatari sources
+</A></li>
+	<LI>Next message: <A HREF="002871.html">[hatari-devel] Compile error with ENABLE_WINUAE_CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2995">[ date ]</a>
+              <a href="thread.html#2995">[ thread ]</a>
+              <a href="subject.html#2995">[ subject ]</a>
+              <a href="author.html#2995">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

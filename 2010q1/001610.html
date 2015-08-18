@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari windows binary (test needed)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20windows%20binary%20%28test%20needed%29&In-Reply-To=%3Calpine.LMD.2.00.1002282051420.3816%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001600.html">
+   <LINK REL="Next"  HREF="001603.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari windows binary (test needed)</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20windows%20binary%20%28test%20needed%29&In-Reply-To=%3Calpine.LMD.2.00.1002282051420.3816%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Hatari windows binary (test needed)">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Feb 28 20:55:15 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001600.html">[hatari-devel] Hatari windows binary (test needed)
+</A></li>
+        <LI>Next message: <A HREF="001603.html">[hatari-devel] Compiler warnings / system call
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1610">[ date ]</a>
+              <a href="thread.html#1610">[ thread ]</a>
+              <a href="subject.html#1610">[ subject ]</a>
+              <a href="author.html#1610">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 28 Feb 2010, Thomas Huth wrote:
+
+&gt;<i> On Sun, 28 Feb 2010 13:26:10 +0100 (CET)
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Thomas, for the built you made :
+</I>&gt;&gt;<i>   - did you enable --trace option ?
+</I>&gt;<i>
+</I>&gt;<i> Tracing is enabled by default in the toplevel CMakeLists.txt:
+</I>&gt;<i>
+</I>&gt;<i> set(ENABLE_TRACING 1
+</I>&gt;<i>    CACHE BOOL &quot;Enable tracing messages for debugging&quot;)
+</I>&gt;<i>
+</I>&gt;&gt;<i>   - pressing alt+pause doesn't enter the debug mode but just pause
+</I>&gt;&gt;<i> hatari. do we need a console or something else to enable it ?
+</I>&gt;<i>
+</I>&gt;<i> There is some special code in src/gui-win/opencon.c for opening a new
+</I>&gt;<i> console window. It's not compiled into the Hatari executable on windows
+</I>&gt;<i> yet, someone got to translate the Makefile there into a CMakeLists.txt
+</I>&gt;<i> first (I could do this &quot;blindly&quot;, but I do not have any possibility for
+</I>&gt;<i> testing this anymore, so I'd prefer if someone else could do this step).
+</I>&gt;<i>
+</I>
+I added a variable BUILD_HOST in Makefile-MinGW.cnf to cross compile the 
+windows binary under linux too with the standard Makefile-MinGW.cnf.
+
+I will try to add also a toolchain file to do the same under cmake (for 
+now, I compiled the windows version using the standard Makefiles)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001600.html">[hatari-devel] Hatari windows binary (test needed)
+</A></li>
+	<LI>Next message: <A HREF="001603.html">[hatari-devel] Compiler warnings / system call
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1610">[ date ]</a>
+              <a href="thread.html#1610">[ thread ]</a>
+              <a href="subject.html#1610">[ subject ]</a>
+              <a href="author.html#1610">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

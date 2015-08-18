@@ -1,0 +1,280 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CDD8CF4.90005%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002622.html">
+   <LINK REL="Next"  HREF="002636.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CDD8CF4.90005%40free.fr%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Fri Nov 12 19:52:36 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002622.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002636.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2633">[ date ]</a>
+              <a href="thread.html#2633">[ thread ]</a>
+              <a href="subject.html#2633">[ subject ]</a>
+              <a href="author.html#2633">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Some news :
+
+I've reintroduced MFP in newcpu.c
+
+Hatari boots, but crash with 20 bombs (yes, 20 ;)
+
+I've attached the blabla if this evokes something to somebody.
+
+I start hatari with --compatible 0 to run the CPU_0 core.
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent at OrdiLolo</A>:~/Atari/hatari/build/src$ ./hatari --compatible 0
+Configuration file /etc/hatari.cfg not found.
+Configuration file /home/laurent/.hatari/hatari.cfg not found.
+Hatari devel (Nov 12 2010), compiled on:  Nov 12 2010, 19:42:30
+Building CPU table for configuration: 0 24-bit
+1879 CPU functions
+Building CPU, 44316 opcodes (0 0 1)
+CPU=68000, FPU=0, MMU=0, JIT=0.
+Can not load TOS file:
+'/home/laurent/Atari/hatari/build/share/hatari/tos.img'
+Building CPU, 44316 opcodes (0 0 1)
+CPU=68000, FPU=0, MMU=0, JIT=0.
+M68000 Bus Error reading at address $ff8a00.
+Exception 2 (0) at fc0f38 -&gt; fc0f3a!
+M68000 Bus Error reading at address $fffff9.
+M68000 Bus Error reading at address $fffffc.
+Exception 3 (ffffffff) at fc0458 -&gt; 3fc0b50!
+Exception 2 (0) at 3fc0b54 -&gt; 2fc0b50!
+Exception 3 (1) at 21fc0ba2 -&gt; 3fc0b50!
+Exception 3 (1) at 3fc0ba2 -&gt; 3fc0b50!
+Exception 3 (1) at 3fc0ba2 -&gt; 3fc0b50!
+Exception 3 (1) at 3fc0ba2 -&gt; 3fc0b50!
+M68000 Bus Error writing at address $6.
+Exception 3 (1) at 3fc0ba2 -&gt; 61022404!
+M68000 Bus Error writing at address $fffff8.
+M68000 Bus Error writing at address $fffffa.
+M68000 Bus Error writing at address $fffffe.
+M68000 Bus Error writing at address $0.
+M68000 Bus Error writing at address $2.
+Exception 2 (0) at 61022404 -&gt; 1!
+M68000 Bus Error writing at address $ffffea.
+M68000 Bus Error writing at address $ffffec.
+M68000 Bus Error writing at address $fffff0.
+M68000 Bus Error writing at address $fffff2.
+M68000 Bus Error writing at address $fffff4.
+Exception 2 (0) at 61022408 -&gt; 1!
+M68000 Bus Error writing at address $ffffdc.
+M68000 Bus Error writing at address $ffffde.
+M68000 Bus Error writing at address $ffffe2.
+M68000 Bus Error writing at address $ffffe4.
+M68000 Bus Error writing at address $ffffe6.
+Exception 2 (0) at 6102240c -&gt; 1!
+M68000 Bus Error writing at address $ffffce.
+M68000 Bus Error writing at address $ffffd0.
+M68000 Bus Error writing at address $ffffd4.
+M68000 Bus Error writing at address $ffffd6.
+M68000 Bus Error writing at address $ffffd8.
+Exception 2 (0) at 61022410 -&gt; 1!
+M68000 Bus Error writing at address $ffffc0.
+M68000 Bus Error writing at address $ffffc2.
+M68000 Bus Error writing at address $ffffc6.
+M68000 Bus Error writing at address $ffffc8.
+M68000 Bus Error writing at address $ffffca.
+Exception 2 (0) at 61022414 -&gt; 1!
+M68000 Bus Error writing at address $ffffb2.
+M68000 Bus Error writing at address $ffffb4.
+M68000 Bus Error writing at address $ffffb8.
+M68000 Bus Error writing at address $ffffba.
+M68000 Bus Error writing at address $ffffbc.
+Exception 2 (0) at 61022418 -&gt; 1!
+M68000 Bus Error writing at address $ffffa4.
+M68000 Bus Error writing at address $ffffa6.
+M68000 Bus Error writing at address $ffffaa.
+M68000 Bus Error writing at address $ffffac.
+M68000 Bus Error writing at address $ffffae.
+Exception 2 (0) at 6102241c -&gt; 1!
+M68000 Bus Error writing at address $ffff96.
+M68000 Bus Error writing at address $ffff98.
+M68000 Bus Error writing at address $ffff9c.
+M68000 Bus Error writing at address $ffff9e.
+M68000 Bus Error writing at address $ffffa0.
+Exception 2 (0) at 61022420 -&gt; 1!
+M68000 Bus Error writing at address $ffff88.
+M68000 Bus Error writing at address $ffff8a.
+M68000 Bus Error writing at address $ffff8e.
+M68000 Bus Error writing at address $ffff90.
+M68000 Bus Error writing at address $ffff92.
+Exception 2 (0) at 61022424 -&gt; 1!
+M68000 Bus Error writing at address $ffff7a.
+M68000 Bus Error writing at address $ffff7c.
+M68000 Bus Error writing at address $ffff80.
+M68000 Bus Error writing at address $ffff82.
+M68000 Bus Error writing at address $ffff84.
+Exception 2 (0) at 61022428 -&gt; 1!
+M68000 Bus Error writing at address $ffff6c.
+M68000 Bus Error writing at address $ffff6e.
+M68000 Bus Error writing at address $ffff72.
+M68000 Bus Error writing at address $ffff74.
+M68000 Bus Error writing at address $ffff76.
+Exception 2 (0) at 6102242c -&gt; 1!
+M68000 Bus Error writing at address $ffff5e.
+M68000 Bus Error writing at address $ffff60.
+M68000 Bus Error writing at address $ffff64.
+M68000 Bus Error writing at address $ffff66.
+M68000 Bus Error writing at address $ffff68.
+Exception 2 (0) at 61022430 -&gt; 1!
+M68000 Bus Error writing at address $ffff50.
+M68000 Bus Error writing at address $ffff52.
+M68000 Bus Error writing at address $ffff56.
+M68000 Bus Error writing at address $ffff58.
+M68000 Bus Error writing at address $ffff5a.
+Exception 2 (0) at 61022434 -&gt; 1!
+M68000 Bus Error writing at address $ffff42.
+M68000 Bus Error writing at address $ffff44.
+M68000 Bus Error writing at address $ffff48.
+M68000 Bus Error writing at address $ffff4a.
+M68000 Bus Error writing at address $ffff4c.
+Exception 2 (0) at 61022438 -&gt; 1!
+M68000 Bus Error writing at address $ffff34.
+M68000 Bus Error writing at address $ffff36.
+M68000 Bus Error writing at address $ffff3a.
+M68000 Bus Error writing at address $ffff3c.
+M68000 Bus Error writing at address $ffff3e.
+Exception 2 (0) at 6102243c -&gt; 1!
+M68000 Bus Error writing at address $ffff26.
+M68000 Bus Error writing at address $ffff28.
+M68000 Bus Error writing at address $ffff2c.
+M68000 Bus Error writing at address $ffff2e.
+M68000 Bus Error writing at address $ffff30.
+Exception 2 (0) at 61022440 -&gt; 1!
+M68000 Bus Error writing at address $ffff18.
+M68000 Bus Error writing at address $ffff1a.
+M68000 Bus Error writing at address $ffff1e.
+M68000 Bus Error writing at address $ffff20.
+M68000 Bus Error writing at address $ffff22.
+Exception 2 (0) at 61022444 -&gt; 1!
+M68000 Bus Error writing at address $ffff0a.
+M68000 Bus Error writing at address $ffff0c.
+M68000 Bus Error writing at address $ffff10.
+M68000 Bus Error writing at address $ffff12.
+M68000 Bus Error writing at address $ffff14.
+Exception 2 (0) at 61022448 -&gt; 1!
+M68000 Bus Error writing at address $fffefc.
+M68000 Bus Error writing at address $fffefe.
+M68000 Bus Error writing at address $ffff02.
+M68000 Bus Error writing at address $ffff04.
+M68000 Bus Error writing at address $ffff06.
+Exception 2 (0) at 6102244c -&gt; 1!
+M68000 Bus Error writing at address $fffeee.
+M68000 Bus Error writing at address $fffef0.
+M68000 Bus Error writing at address $fffef4.
+M68000 Bus Error writing at address $fffef6.
+M68000 Bus Error writing at address $fffef8.
+Exception 2 (0) at 61022450 -&gt; 1!
+M68000 Bus Error writing at address $fffee0.
+M68000 Bus Error writing at address $fffee2.
+M68000 Bus Error writing at address $fffee6.
+M68000 Bus Error writing at address $fffee8.
+M68000 Bus Error writing at address $fffeea.
+Exception 2 (0) at 61022454 -&gt; 1!
+M68000 Bus Error writing at address $fffed2.
+M68000 Bus Error writing at address $fffed4.
+M68000 Bus Error writing at address $fffed8.
+M68000 Bus Error writing at address $fffeda.
+M68000 Bus Error writing at address $fffedc.
+Exception 2 (0) at 61022458 -&gt; 1!
+M68000 Bus Error writing at address $fffec4.
+M68000 Bus Error writing at address $fffec6.
+M68000 Bus Error writing at address $fffeca.
+M68000 Bus Error writing at address $fffecc.
+M68000 Bus Error writing at address $fffece.
+Exception 2 (0) at 6102245c -&gt; 1!
+M68000 Bus Error writing at address $fffeb6.
+M68000 Bus Error writing at address $fffeb8.
+M68000 Bus Error writing at address $fffebc.
+M68000 Bus Error writing at address $fffebe.
+M68000 Bus Error writing at address $fffec0.
+Exception 2 (0) at 61022460 -&gt; 1!
+M68000 Bus Error writing at address $fffea8.
+M68000 Bus Error writing at address $fffeaa.
+M68000 Bus Error writing at address $fffeae.
+M68000 Bus Error writing at address $fffeb0.
+M68000 Bus Error writing at address $fffeb2.
+Exception 2 (0) at 61022464 -&gt; 1!
+M68000 Bus Error writing at address $fffe9a.
+M68000 Bus Error writing at address $fffe9c.
+M68000 Bus Error writing at address $fffea0.
+M68000 Bus Error writing at address $fffea2.
+M68000 Bus Error writing at address $fffea4.
+Exception 2 (0) at 61022468 -&gt; 1!
+M68000 Bus Error writing at address $fffe8c.
+M68000 Bus Error writing at address $fffe8e.
+M68000 Bus Error writing at address $fffe92.
+M68000 Bus Error writing at address $fffe94.
+M68000 Bus Error writing at address $fffe96.
+Exception 2 (0) at 6102246c -&gt; 1!
+M68000 Bus Error writing at address $fffe7e.
+M68000 Bus Error writing at address $fffe80.
+M68000 Bus Error writing at address $fffe84.
+M68000 Bus Error writing at address $fffe86.
+M68000 Bus Error writing at address $fffe88.
+Exception 2 (0) at 61022470 -&gt; 1!
+M68000 Bus Error writing at address $fffe70.
+M68000 Bus Error writing at address $fffe72.
+M68000 Bus Error writing at address $fffe76.
+M68000 Bus Error writing at address $fffe78.
+M68000 Bus Error writing at address $fffe7a.
+Exception 2 (0) at 61022474 -&gt; 1!
+M68000 Bus Error writing at address $fffe62.
+M68000 Bus Error writing at address $fffe64.
+M68000 Bus Error writing at address $fffe68.
+M68000 Bus Error writing at address $fffe6a.
+M68000 Bus Error writing at address $fffe6c.
+Exception 2 (0) at 61022478 -&gt; 1!
+M68000 Bus Error writing at address $fffe54.
+M68000 Bus Error writing at address $fffe56.
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002622.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002636.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2633">[ date ]</a>
+              <a href="thread.html#2633">[ thread ]</a>
+              <a href="subject.html#2633">[ subject ]</a>
+              <a href="author.html#2633">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

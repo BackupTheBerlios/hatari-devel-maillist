@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari --sound option update?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20--sound%20option%20update%3F&In-Reply-To=%3C200906070003.35949.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000327.html">
+   <LINK REL="Next"  HREF="000297.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari --sound option update?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20--sound%20option%20update%3F&In-Reply-To=%3C200906070003.35949.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari --sound option update?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Jun  6 23:03:35 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000327.html">[hatari-devel] Hatari --sound option update?
+</A></li>
+        <LI>Next message: <A HREF="000297.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#328">[ date ]</a>
+              <a href="thread.html#328">[ thread ]</a>
+              <a href="subject.html#328">[ subject ]</a>
+              <a href="author.html#328">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 06 June 2009, Thomas Huth wrote:
+&gt;<i> &gt; &gt; &gt; Any comments on how these alternatives should be changed now
+</I>&gt;<i> &gt; &gt; &gt; that we have internally more sound HZ values to select from?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Use --sound &lt;hz&gt; to specify the sample value directly?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; You probably already notice that I updated this.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I left the &quot;off&quot; option there too as I think that was the most used of
+</I>&gt;<i> &gt; the sound options.  I wasn't sure what HZ range should be accepted,
+</I>&gt;<i> &gt; for now I allow 3000-96000:
+</I>&gt;<i> &gt;   &#8722;&#8722;sound &lt;x&gt;
+</I>&gt;<i> &gt;        Sound frequency (off/3000-96000, off=faster)
+</I>&gt;<i>
+</I>&gt;<i> What soundcards/devices are there that only allow a frequency of 3 kHz?
+</I>&gt;<i> Even the lowest frequency of the STE was already 6.25 kHz, and this was
+</I>&gt;<i> 20 years ago! Since 3kHz also really sounds awful,
+</I>
+The 3kHz lowest limit I used came from what Wolf3D uses on ST. :-)
+
+Now that I tested it, it might be OK for Wolf3D output, but for generic 
+sound output not as higher frequencies are cut out with 3kHz which makes
+some sounds completely unrecognizable.  6.25kHz sounds OK.
+
+
+&gt;<i> I suggest to increase the lowest frequency to 6 kHz.
+</I>&gt;<i>
+</I>&gt;<i> I'm also not sure about the 96000 Hz ... the sound buffers that Hatari
+</I>&gt;<i> uses are only tested with 44.1 kHz so far, so they might be too small
+</I>&gt;<i> for using such high frequencies. Does anybody have a soundcard that can
+</I>&gt;<i> do 96 kHz to test whether this works fine with Hatari?
+</I>
+I tested this also.  With 96kHz Hatari took all CPU and sound skipped even
+with ST emulation, so it's definitely not OK.  With 50kHz Hatari took &lt;3% of
+CPU.
+
+So, maybe the limits should come from the HW that Hatari emulates:
+- low: 6250 Hz
+- hi: 50000 Hz
+?
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000327.html">[hatari-devel] Hatari --sound option update?
+</A></li>
+	<LI>Next message: <A HREF="000297.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#328">[ date ]</a>
+              <a href="thread.html#328">[ thread ]</a>
+              <a href="subject.html#328">[ subject ]</a>
+              <a href="author.html#328">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

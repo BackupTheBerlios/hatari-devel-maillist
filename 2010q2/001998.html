@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari vs Steem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20vs%20Steem&In-Reply-To=%3C201005062156.16288.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001997.html">
+   <LINK REL="Next"  HREF="001999.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari vs Steem</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20vs%20Steem&In-Reply-To=%3C201005062156.16288.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari vs Steem">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu May  6 20:56:15 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001997.html">[hatari-devel] Hatari vs Steem
+</A></li>
+        <LI>Next message: <A HREF="001999.html">[hatari-devel] Hatari vs Steem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1998">[ date ]</a>
+              <a href="thread.html#1998">[ thread ]</a>
+              <a href="subject.html#1998">[ subject ]</a>
+              <a href="author.html#1998">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 06 May 2010, K&#229;re Andersen wrote:
+&gt;<i> On Thu, May 6, 2010 at 12:07 PM, Anders Eriksson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>&gt; wrote:
+</I>&gt;<i> &gt; On Thu, 6 May 2010, Per Almered wrote:
+</I>&gt;&gt;&gt;<i> When I do that here, Hatari just goes to a preset multiplier,
+</I>&gt;&gt;&gt;<i> not &quot;as fast as the current machine is capable of&quot;
+</I>&gt;&gt;&gt;<i> (Alt Gr+X on swedish/finnish Windows keyboard, btw).
+</I>&gt;&gt;&gt;<i> Important difference 8-) 
+</I>
+All Hatari keyboard shortcuts are configurable from its configuration file.
+
+Attached is source for a program which shows on console the SDL keycode for
+the key you press.  You can use it to get a keycode you need to put to
+the Hatari configuration file.
+
+The program is from the SDL sources and can (on Linux) compiled like this:
+	gcc -O -o checkkeys $(pkg-config --cflags sdl --libs sdl) checkkeys.c
+
+Would it make sense to add this to Hatari sources tests/ directory too?
+
+I could maybe at some later state add support for configuring Hatari 
+keyboard shortcuts to the Hatari (PyGtk) UI.
+
+
+I attached also a trivial Atari program for seeing what Atari keycodes you
+get when pressing some key in Hatari. :-)
+
+
+&gt;<i> &gt; On OS X it maximses to VBL speed in window-mode (so practicly going to
+</I>&gt;<i> &gt; 60Hz instead of 50Hz.. just 20% speedup).
+</I>
+This is done by OSX version of SDL I think, it definitely isn't done
+by Hatari.  If it's done by SDL, maybe there's some environment
+variable with which it could be disabled?
+
+
+&gt;<i> On OS X again, if you set frameskip to auto, you get a 5x ffwd (max
+</I>&gt;<i> frameskip). Or so it appears.
+</I>
+Max. frameskip can also be configured from the Hatari configuration file.
+
+The current default 5 frames max skip is selected as maximum still barely
+usable value when NOT using fast-forward (AltGr-X shortcut).
+
+-&gt; Larger frameskip values don't help with performance, if the host computer
+is so slow that it doesn't keep up with Hatari even when using frameskip.
+
+(One could be running Hatari on a mobile device, or using Falcon+DSP 
+emulation on something like my own 7 years old computer.)
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: checkkeys.c
+Type: text/x-csrc
+Size: 3091 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100506/456530a2/attachment.c">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100506/456530a2/attachment.c</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: keytest.prg
+Type: application/octet-stream
+Size: 3463 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100506/456530a2/attachment.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100506/456530a2/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001997.html">[hatari-devel] Hatari vs Steem
+</A></li>
+	<LI>Next message: <A HREF="001999.html">[hatari-devel] Hatari vs Steem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1998">[ date ]</a>
+              <a href="thread.html#1998">[ thread ]</a>
+              <a href="subject.html#1998">[ subject ]</a>
+              <a href="author.html#1998">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

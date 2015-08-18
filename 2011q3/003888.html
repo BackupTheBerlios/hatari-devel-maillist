@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Golden YM Digi Sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Golden%20YM%20Digi%20Sound&In-Reply-To=%3C24640090.2639634.1312652320110.JavaMail.nitido%40priv-edmwes94%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003886.html">
+   <LINK REL="Next"  HREF="003889.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Golden YM Digi Sound</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Golden%20YM%20Digi%20Sound&In-Reply-To=%3C24640090.2639634.1312652320110.JavaMail.nitido%40priv-edmwes94%3E"
+       TITLE="[hatari-devel] Golden YM Digi Sound">dsavnkff at telus.net
+       </A><BR>
+    <I>Sat Aug  6 19:38:40 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003886.html">[hatari-devel] usage of C datatypes
+</A></li>
+        <LI>Next message: <A HREF="003889.html">[hatari-devel] Golden YM Digi Sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3888">[ date ]</a>
+              <a href="thread.html#3888">[ thread ]</a>
+              <a href="subject.html#3888">[ subject ]</a>
+              <a href="author.html#3888">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Anders,
+
+One must call hatari with:
+hatari  --ym-mixing linear
+
+or select:
+YM Mixing as &quot;Linear&quot; in the menu.
+
+I've been tweaking the code to generate slightly better numbers and
+have been working on the &quot;Quartet Mode&quot; table. The patch I
+submitted has a divide by zero error that I'll fix (somehow it didn't
+create a problem).
+
+Now I'll listen to the mp3's.
+
+Thanks,
+David
+********************************************************************************
+
+
+
+Aug 6, 2011 04:21:19 AM, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A> wrote:
+
+On Fri, 5 Aug 2011, David Savinkoff wrote:
+
+&gt;<i> This patch is for those with a discerning ear for perfection of sound.
+</I>&gt;<i> Listen to you favorite demo as it has never before been heard, except
+</I>&gt;<i> on a real Atari.
+</I>
+Salut David,
+
+I tried your patch, but I'm not sure one can hear any difference. I used 
+our intro (<A HREF="http://pouet.net/prod.php?which=56713">http://pouet.net/prod.php?which=56713</A>) from march to compare 
+(as it's the one I know best).
+
+Here are comparisons:
+<A HREF="http://ae.dhs.nu/tmp/sh11inv_ste.mp3">http://ae.dhs.nu/tmp/sh11inv_ste.mp3</A>  (real STe)
+<A HREF="http://ae.dhs.nu/tmp/sh11inv_hatari150.mp3">http://ae.dhs.nu/tmp/sh11inv_hatari150.mp3</A>  (Hatari 1.5.0)
+<A HREF="http://ae.dhs.nu/tmp/sh11inv_hataripatch.mp3">http://ae.dhs.nu/tmp/sh11inv_hataripatch.mp3</A>  (Latest HG with your patch)
+
+I applied the patch as;
+
+ae$ patch 
+(Stripping trailing CRs from patch.)
+patching file sound.c
+
+Looks to have gone OK?
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+_______________________________________________
+hatari-devel mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003886.html">[hatari-devel] usage of C datatypes
+</A></li>
+	<LI>Next message: <A HREF="003889.html">[hatari-devel] Golden YM Digi Sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3888">[ date ]</a>
+              <a href="thread.html#3888">[ thread ]</a>
+              <a href="subject.html#3888">[ subject ]</a>
+              <a href="author.html#3888">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

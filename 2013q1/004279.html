@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUAE and 030 cache hits/misses?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2013q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUAE%20and%20030%20cache%20hits/misses%3F&In-Reply-To=%3C2006692476.265235851.1358761979162.JavaMail.root%40zimbra82-e14.priv.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004278.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUAE and 030 cache hits/misses?</H1>
+    <B>laurent.sallafranque at free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUAE%20and%20030%20cache%20hits/misses%3F&In-Reply-To=%3C2006692476.265235851.1358761979162.JavaMail.root%40zimbra82-e14.priv.proxad.net%3E"
+       TITLE="[hatari-devel] WinUAE and 030 cache hits/misses?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Jan 21 10:52:59 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004278.html">[hatari-devel] WinUAE and 030 cache hits/misses?
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4279">[ date ]</a>
+              <a href="thread.html#4279">[ thread ]</a>
+              <a href="subject.html#4279">[ subject ]</a>
+              <a href="author.html#4279">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+&gt;<i> Is WinUAE CPU core able to detect cache hits/misses?
+</I>
+According to the work I did last year on the 68030 cycles, I would say yes and no ;)
+
+According to the new core code, it seems that the 68030 cache is taken into account.
+See newcpu.c (fill_icache030, update_cache030, getcache030 and the same functions for d cache)
+
+So it seems that the 68030 cache management is implemented. I don't know if it is used actually, but I think it is (we should have a look at the memory access in the 030 prefetch instruction to be sure of that).
+
+But the cycles are certainly not taken into account correctly.
+
+I wrote a static cycles timings (falcon_cycles030.h) which gives the corrected cycles timings for a falcon with 4 cycles bus access (the standard).
+This gives quite a good approximation for non cache timings, but doesn't take into account the cached ones.
+
+Have a look at my comments in m68k_run_2ce
+
+If I detect the cache is ON and not frozen I count the cycles as if all instructions were in the cache, which is wrong.
+Everything is in the code to be able to use the cycles values (cache or non cache values) + head and tail values.
+
+But I think the static approach is not the good one : cycles should be set in gencpu.c for the static part (head, tail and cache / non cache values) and in the instructions in newcpu.c for the dynamic part.
+Like this, we could better take into account the cycles in general and better manage the cache/non cache instruction timings.
+
+
+Another point : the new CPU implemented for the PMMU does not use my static timings table, which means that all the cycles are taking 2 cycles (d&#233;fault for the new cpu).
+
+It would be good to have only one 68030 CPU (the one with the PMMU is good) and implement the cycles into it.
+
+Regards, 
+
+Laurent
+
+
+----- Mail original -----
+De: &quot;Eero Tamminen&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">oak at helsinkinet.fi</A>&gt;
+&#192;: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+Envoy&#233;: Lundi 21 Janvier 2013 01:05:43
+Objet: [hatari-devel] WinUAE and 030 cache hits/misses?
+
+Hi,
+
+Is WinUAE CPU core able to detect cache hits/misses?
+
+Doug is asking about that on Atari forum, to help
+optimize Bad Mood for Falcon:
+<A HREF="http://www.atari-forum.com/viewtopic.php?f=26&amp;t=6857&amp;start=125">http://www.atari-forum.com/viewtopic.php?f=26&amp;t=6857&amp;start=125</A>
+
+-----
+I have one more, perhaps more difficult 'request', but I believe it would be 
+very worthwhile 
+
+that is... to count cache misses on instruction addresses (and ideally, on 
+data addresses too but i-cache is more interesting most of the time). I 
+realize this means the cache behaviour should be quite close to a real 68030 
+but it doesn't rely on timing accuracy so it seems like it might be 
+practical without much margin for error.
+
+Being able to view cache misses on the code would be fantastic for larger 
+areas of code. We are normally blind to this information and it's difficult 
+to test non-loop code offline except to measure the size - and that doesn't 
+work well if the code has complex program flow (it's always doable but it 
+gets impractically difficult on bigger programs).
+
+So this would be a 'magical' feature for me I think.
+-----
+
+If it has support for that, I could add to profiler
+counting of them, per instruction.
+
+
+	- Eero
+_______________________________________________
+hatari-devel mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004278.html">[hatari-devel] WinUAE and 030 cache hits/misses?
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4279">[ date ]</a>
+              <a href="thread.html#4279">[ thread ]</a>
+              <a href="subject.html#4279">[ subject ]</a>
+              <a href="author.html#4279">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

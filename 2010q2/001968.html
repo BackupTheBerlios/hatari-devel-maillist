@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling support to Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3C201005040042.21858.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001967.html">
+   <LINK REL="Next"  HREF="001969.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling support to Hatari debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3C201005040042.21858.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Profiling support to Hatari debugger">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon May  3 23:42:21 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001967.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="001969.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1968">[ date ]</a>
+              <a href="thread.html#1968">[ thread ]</a>
+              <a href="subject.html#1968">[ subject ]</a>
+              <a href="author.html#1968">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 04 May 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> On Mon, 3 May 2010, Eero Tamminen wrote:
+</I>&gt;<i> &gt; What kind of post-processing you were thinking for the information
+</I>&gt;<i> &gt; coming out of Hatari?
+</I>&gt;<i>
+</I>&gt;<i> I was thinking about something that would take all the addr/count
+</I>&gt;<i> statistics and build some graphs or things like that. Certainly some
+</I>&gt;<i> input format should be followed to get interesting results.
+</I>
+For call graphs you need either the whole instruction flow (which is already
+provided by CPU disassembly), not a profile, or somehow taking the backtrace
+now and then (maybe by tracking instruction branches and returns).
+
+Both are pretty huge things wheas what I did is pretty simple/small
+(only complication comes from optimizing memory usage &amp; speed for CPU side).
+
+
+Btw. Profile may sometimes be nice in debugging things too, because trace
+gives too much information.  Just add symbols for the functions you're
+interested about and check whether they get hits in profile.
+
+Think e.g. about debugging programs running in EmuTOS/TeraDesk/XaAES/MiNT 
+environment.  Hatari provides an environment which has better HW emulation
+than Aranym (except for MMU emulation...), so it could be better for
+debugging certain category of issues with those.  Might be useful e.g.
+for the ColdFire stuff development.
+
+
+&gt;<i> &gt;&gt; (and with what users would like to do with these).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; GCC users have also gprof (I assume it works also on Atari), so this
+</I>&gt;<i> &gt; profile stuff is more interesting for people using less advanced
+</I>&gt;<i> &gt; C-compilers or writing direct assembly.  After profile has cycle
+</I>&gt;<i> &gt; information, demo writers should be more interested in it. :-)
+</I>&gt;<i>
+</I>&gt;<i> This could be useful to profile some complex routines, but I'm not that
+</I>&gt;<i> sure for demos ; demos coders already use motorola cycles tables and as
+</I>&gt;<i> many demos are using overscan, profiling is not the real problem, it's
+</I>&gt;<i> more about combining instructions in the right order to optimise the
+</I>&gt;<i> range of available cycles between some fixed positions.
+</I>
+I was thinking more of demos with subroutines for e.g. handling 3d.
+You could e.g. compare routines when viewing different objects, or
+using different view angles.
+
+You get really accurate results when using breakpoints to stop the 
+profiling.
+
+Tob&#233;, did you have some particular use-case in mind for profiling?
+
+
+&gt;<i> &gt; While on cycle accuracy, how do I get the information about how many
+</I>&gt;<i> &gt; cycles the previous instruction used?  For CPU?  For DSP?
+</I>&gt;<i>
+</I>&gt;<i> In m68k_run_1(), &quot;cycles&quot; contains the result for the last opcode. In
+</I>&gt;<i> case some special processing should be made, there's already the code
+</I>&gt;<i> block :
+</I>&gt;<i>
+</I>&gt;<i>          if (regs.spcflags) {
+</I>&gt;<i>              if (do_specialties ())
+</I>&gt;<i>                  return;
+</I>&gt;<i>          }
+</I>&gt;<i>
+</I>&gt;<i> In that case, we could modify do_specialties() to take &quot;int cycles&quot; as an
+</I>&gt;<i> argument, and put some redirection to profiling code in do_specialties().
+</I>
+What about the global CurrentInstrCycles variable value?
+
+Couldn't I just compare its value?
+
+Or maybe use Cycles_GetCounter(CYCLES_COUNTER_CPU)?
+
+
+Laurent, what about DSP cycles, can those be gotten from somewhere?
+
+
+&gt;<i> &gt; Also, I'm currently assuming (to save memory) that CPU and DSP
+</I>&gt;<i> &gt; instructions can never be on odd addresses.  Is that correct?
+</I>
+Preliminary code for profiling both DSP and CPU code is attached.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: profile.diff
+Type: text/x-diff
+Size: 12901 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100504/7a709c78/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100504/7a709c78/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001967.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="001969.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1968">[ date ]</a>
+              <a href="thread.html#1968">[ thread ]</a>
+              <a href="subject.html#1968">[ subject ]</a>
+              <a href="author.html#1968">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

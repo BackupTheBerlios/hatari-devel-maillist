@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CC1C863.1090600%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002557.html">
+   <LINK REL="Next"  HREF="002559.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CC1C863.1090600%40free.fr%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Fri Oct 22 19:22:43 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002557.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002559.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2558">[ date ]</a>
+              <a href="thread.html#2558">[ thread ]</a>
+              <a href="subject.html#2558">[ subject ]</a>
+              <a href="author.html#2558">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+&gt;<i>  I took a quick look at the changes.  Some comments:
+</I>
+
+Thanks a lot for the feedback.
+
+&gt;<i> * Is WinUAE CPU actually using C++ exceptions (it had try, throw&amp;  catch)
+</I>&gt;<i>    (which would need to be emulated with variables)?
+</I>&gt;<i>    
+</I>I think I've changed the ones in cpummu.
+What do you mean here ?
+
+&gt;<i> * There are a lot of &quot;char*&quot; -&gt;  &quot;const char*&quot; fixes, those should be pushed
+</I>&gt;<i>     to upstream...
+</I>&gt;<i>    
+</I>
+Yes, I will change this.
+
+&gt;<i> * What's the problem with the large number of &quot;L&quot; changes, couldn't they be
+</I>&gt;<i>    handled with some single define (&quot;#define L&quot;) in compat header?
+</I>&gt;<i> -      D(bug(L&quot;MMU: map transparent mapping of %08x\n&quot;, *ttr));
+</I>&gt;<i> +      //D(bug(L&quot;MMU: map transparent mapping of %08x\n&quot;, *ttr));
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>No, I think this would generate problems with lines of code like this one :
+
+readcpu.c:    { i_ASL, &quot;ASL&quot;  , &quot;&quot;},
+
+&quot;ASL&quot; would become &quot;AS&quot;
+
+Correct me if I'm wrong.
+
+&gt;<i> * cpu/cpummu.c - why remove &quot;static&quot;?
+</I>&gt;<i> -static struct mmu_atc_line atc_l2[2][ATC_L2_SIZE];
+</I>&gt;<i> +struct mmu_atc_line atc_l2[2][ATC_L2_SIZE];
+</I>&gt;<i>    
+</I>
+I don't know. I've done so many changes and tries before arriving here.
+I'll check this tonight.
+
+&gt;<i> * cpu/events.h - STATIC_INLINE is already defined by compat.h...
+</I>&gt;<i> -STATIC_INLINE int current_hpos (void)
+</I>&gt;<i> +static inline int current_hpos (void)
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>Right.
+
+&gt;<i> * cpu/memory.c - has redundant white space changes
+</I>&gt;<i>    (It's better if you check for differences with diff -ub)
+</I>&gt;<i>    
+</I>I'll look here too
+
+&gt;<i> * cpu/custom.h - does that contain anything that would really be needed
+</I>&gt;<i>     by CPU emulation code?  If not, I guess it could be replaced just with
+</I>&gt;<i>    an empty file with comment saying that it's there just to reduce
+</I>&gt;<i>    changes to WinAUE sources.
+</I>&gt;<i>    
+</I>
+OK for this, but I think in this case that I should also include the 
+whole .h (empty) files from uae that are needed for compiling (I've 
+commented some of them).
+
+At opposite, if you don't mind, I can just comment the lines that 
+contains .h includes we don't need.
+I don't think it would be a huge work to comment  them again after a 
+major update.
+
+This push another question : do you think that WinUae Cpu code will 
+evoluate that much in the next years. Maybe after this work, it will be 
+easier to just include their diffs ?
+
+&gt;<i> * If you take some file directly from uae-cpu/, it would be preferably if
+</I>&gt;<i>    it could be a separate commit from other winuae code modifications.
+</I>&gt;<i>    Such file could, at least eventually, be in some directory common to both
+</I>&gt;<i>    AUE&amp;  WinUAE code (at least maccess.h changes looked like this)
+</I>&gt;<i>    
+</I>
+You both have answered to this.
+So, should I keep the actual way of doing it or should I apply your 
+above suggestion ?
+
+&gt;<i> * for these kind of changes:
+</I>&gt;<i> ---
+</I>&gt;<i> +      int i;
+</I>&gt;<i>         uae_u32 pc = m68k_getpc () + o;
+</I>&gt;<i>
+</I>&gt;<i>         for (;;) {
+</I>&gt;<i> -              for (int i = 0; i&lt;  2; i++) {
+</I>&gt;<i> +              for (i = 0; i&lt;  2; i++) {
+</I>&gt;<i> ---
+</I>&gt;<i>    it's actually enough to do more local change of:
+</I>&gt;<i> ---
+</I>&gt;<i>         for (;;) {
+</I>&gt;<i> -              for (int i = 0; i&lt;  2; i++) {
+</I>&gt;<i> +              int i;
+</I>&gt;<i> +              for (i = 0; i&lt;  2; i++) {
+</I>&gt;<i> ---
+</I>&gt;<i>   (it's enough for declaration to be at the start of a block.)
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>
+&gt;<i> * cpu/sysconfig.h:
+</I>&gt;<i>    - AUE configuration things are OK
+</I>&gt;<i>    - system configuration defines (like STDC_HEADERS) shouldn't be
+</I>&gt;<i>      WinAUE specific, but be created by CMake, otherwise they will be wrong
+</I>&gt;<i>    
+</I>
+Eero, could you take some time to help me on this special file.
+I'm not the best one for system configuration defines.
+If you could make the necessary changes in sysconfig.h file, this would 
+be great.
+
+
+I return to the coding,
+
+Regards
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002557.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002559.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2558">[ date ]</a>
+              <a href="thread.html#2558">[ thread ]</a>
+              <a href="subject.html#2558">[ subject ]</a>
+              <a href="author.html#2558">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

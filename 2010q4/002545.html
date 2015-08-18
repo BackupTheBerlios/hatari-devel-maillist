@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Proposal%20for%20a%20new%20disassembler%20in%20Hatari%20%282nd%0A%09try%29&In-Reply-To=%3CA5BCFEAD-B92C-41A9-85D2-F54758BE60E6%40sarnau.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002535.html">
+   <LINK REL="Next"  HREF="002546.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)</H1>
+    <B>Markus Fritze</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Proposal%20for%20a%20new%20disassembler%20in%20Hatari%20%282nd%0A%09try%29&In-Reply-To=%3CA5BCFEAD-B92C-41A9-85D2-F54758BE60E6%40sarnau.com%3E"
+       TITLE="[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)">my at sarnau.com
+       </A><BR>
+    <I>Tue Oct 19 00:26:43 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002535.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)
+</A></li>
+        <LI>Next message: <A HREF="002546.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2545">[ date ]</a>
+              <a href="thread.html#2545">[ thread ]</a>
+              <a href="subject.html#2545">[ subject ]</a>
+              <a href="author.html#2545">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Oct 16, 2010, at 1:30 AM, Eero Tamminen wrote:
+
+&gt;<i> Hatari already has support for symbol definition files, please use that
+</I>&gt;<i> (if you aren't already).  The format is same as used by NM and documented
+</I>&gt;<i> in the Hatari manual debugger section.  Both GCC binutils and AHCC can
+</I>&gt;<i> output this format.
+</I>
+I've looked at it: it doesn't really work, because it has very limited information. But we could use them as additional information, if available.
+
+0xe00000,OSHEADER,1,osroml
+0xe00030,C,1,osromreset
+0xe0025e,0x0306,W,8,mwsetuptable
+0xe005f2,0x0306,C,1,_flush_cache
+0xe0060a,0x0306,C,1,_privexception
+0xe00810,0x0306,A,1,romCRCErrorStr
+0xe0082E,0x0306,A,1,dotCRLFStr
+0xe00966,0x0306,A,1,pathStr
+
+with
+
+{GEM_MUPB
+#L gm_magic
+#p gm_end
+#f gm_init
+}
+
+{OSHEADER
+#C os_entry
+#W os_version
+#f reseth
+#f os_beg
+#p os_end
+#p os_rsvl
+#p os_magic
+#L os_date
+#W os_conf
+#W os_dosdate
+#p p_root
+#p pkbshift
+#p p_run
+#p p_rsv2
+}
+
+with results in:
+
+$e00000 : 602e                     os_entry: BRA.S $e00030 ; osromreset
+$e00002 : 0404                     DC.W $0404           ; os_version
+$e00004 : 00e0 0030                DC.L osromreset      ; reseth
+$e00008 : 00e0 0000                DC.L osroml          ; os_beg
+$e0000c : 0000 8f9a                DC.L $008f9a         ; os_end
+$e00010 : 00e0 0030                DC.L osromreset      ; os_rsvl
+$e00014 : 00e4 9424                DC.L $e49424         ; os_magic
+$e00018 : 0308 1993                DC.L $03081993       ; os_date
+$e0001c : 00ff                     DC.W $00ff           ; os_conf
+$e0001e : 1a68                     DC.W $1a68           ; os_dosdate
+$e00020 : 0000 56ba                DC.L $0056ba         ; p_root
+$e00024 : 0000 1187                DC.L $001187         ; pkbshift
+$e00028 : 0000 6ee4                DC.L $006ee4         ; p_run
+$e0002c : 0000 0000                DC.L $000000         ; p_rsv2
+$e00030 : 46fc 2700                osromreset: MOVE #$2700,SR
+$e00034 : 3038 8006                MOVE.W     (SPConfig).w,D0
+$e00038 : 4e70                     RESET      
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002535.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)
+</A></li>
+	<LI>Next message: <A HREF="002546.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2545">[ date ]</a>
+              <a href="thread.html#2545">[ thread ]</a>
+              <a href="subject.html#2545">[ subject ]</a>
+              <a href="author.html#2545">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

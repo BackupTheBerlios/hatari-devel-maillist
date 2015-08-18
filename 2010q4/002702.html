@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Problem in 20 years STe megademo (DHS fullscreen) ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%2020%20years%20STe%20megademo%20%28DHS%0A%20fullscreen%29%20%3F&In-Reply-To=%3Calpine.DEB.1.10.1012210827120.21650%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002698.html">
+   <LINK REL="Next"  HREF="002703.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Problem in 20 years STe megademo (DHS fullscreen) ?</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%2020%20years%20STe%20megademo%20%28DHS%0A%20fullscreen%29%20%3F&In-Reply-To=%3Calpine.DEB.1.10.1012210827120.21650%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Problem in 20 years STe megademo (DHS fullscreen) ?">ae at dhs.nu
+       </A><BR>
+    <I>Tue Dec 21 08:41:12 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002698.html">[hatari-devel] Problem in 20 years STe megademo (DHS fullscreen) ?
+</A></li>
+        <LI>Next message: <A HREF="002703.html">[hatari-devel] Problem in 20 years STe megademo (DHS	fullscreen) ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2702">[ date ]</a>
+              <a href="thread.html#2702">[ thread ]</a>
+              <a href="subject.html#2702">[ subject ]</a>
+              <a href="author.html#2702">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 20 Dec 2010, Nicolas Pomar&#232;de wrote:
+
+&gt;<i> In fact I ran the demo again, and what you see is not garbage, it's the 
+</I>&gt;<i> background color 0 being changed on each scanline.
+</I>&gt;<i>
+</I>&gt;<i> On a real STE, you would not see the colors on the left, because left border 
+</I>&gt;<i> is removed with a switch to hi res (this display real back pixels) ; this is 
+</I>&gt;<i> not emulated in Hatari, this a very complex things to emulate accurately.
+</I>&gt;<i>
+</I>&gt;<i> On the right border, there're 8 pixels with background colors, this is 
+</I>&gt;<i> specific to Hatari and shouldn't be visible. I already had plans to fix this, 
+</I>&gt;<i> but this requires some rewrite of the screen conversion routines.
+</I>
+Hi,
+
+I think this might be a bug in Hataris emulation. As our tests on a real 
+STe shows, there are 8 black pixels at the left, but the right border is 
+fully filled.
+
+Example (* indicates border or garbage):
+
+ST-LOW
+  --------------
+|<i>**************|
+</I>|<i>**************|
+</I>|<i>**          **| 2
+</I>|<i>**          **| 0
+</I>|<i>**          **| 0
+</I>|<i>**************|
+</I>|<i>**************|
+</I>  --------------
+       320
+
+
+230 byte fullscreen
+  --------------
+|<i>             *|
+</I>|<i>             *|
+</I>|<i>             *| 2
+</I>|<i>             *| 7
+</I>|<i>             *| 4
+</I>|<i>             *|
+</I>|<i>             *|
+</I>  --------------
+       410
+(last approx 6 pixels to the right are garbage due to frequency switches)
+
+
+224 byte fullscreen
+  --------------
+|<i>*             |
+</I>|<i>*             |
+</I>|<i>*             | 2
+</I>|<i>*             | 7
+</I>|<i>*             | 4
+</I>|<i>*             |
+</I>|<i>*             |
+</I>  --------------
+       408
+
+The image starts 8 pixels later into the screen, not by cropping the left, 
+but by moving it. The right border is fully filled without the garbage as 
+seen in the 230 byte overscan.
+
+That's my impression how the layout is, so Hatari should not crop anything 
+to the right on 224byte overscan. However on 230 byte overscan, approx 6 
+pixels should be cropped away or simulate the graphics garbage.
+
+
+The best way though might be to have a generic crop at 8px in the left 
+and 8px in the right - this will give a borderfree and garbage-free 
+fullscreen in all cases. Of course, allowing to see the full 416 px could 
+be a configuration setting. I think this is how Leonards Saint does it by 
+the way.
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002698.html">[hatari-devel] Problem in 20 years STe megademo (DHS fullscreen) ?
+</A></li>
+	<LI>Next message: <A HREF="002703.html">[hatari-devel] Problem in 20 years STe megademo (DHS	fullscreen) ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2702">[ date ]</a>
+              <a href="thread.html#2702">[ thread ]</a>
+              <a href="subject.html#2702">[ subject ]</a>
+              <a href="author.html#2702">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

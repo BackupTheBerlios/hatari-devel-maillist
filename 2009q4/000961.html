@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Help with sound interpolation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Help%20with%20sound%20interpolation&In-Reply-To=%3Calpine.LMD.2.00.0911211901240.18895%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000946.html">
+   <LINK REL="Next"  HREF="000947.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Help with sound interpolation</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Help%20with%20sound%20interpolation&In-Reply-To=%3Calpine.LMD.2.00.0911211901240.18895%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Help with sound interpolation">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Nov 21 19:08:51 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000946.html">[hatari-devel] Help with sound interpolation
+</A></li>
+        <LI>Next message: <A HREF="000947.html">[hatari-devel] Moai demo (96K) runs perfectly for me
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#961">[ date ]</a>
+              <a href="thread.html#961">[ thread ]</a>
+              <a href="subject.html#961">[ subject ]</a>
+              <a href="author.html#961">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 21 Nov 2009, Laurent Sallafranque wrote:
+
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> In order to improve the crossbar (and Falcon) sound, I think the actual
+</I>&gt;<i> sound interpolation code we use in Crossbar_generate_sound is not really
+</I>&gt;<i> good.
+</I>&gt;<i>
+</I>&gt;<i> Does anybody here have a good sound interpoler (linear or other) to
+</I>&gt;<i> improve the sound quality that could be implemented fastly ?
+</I>&gt;<i>
+</I>&gt;<i> There's just to change the code in Crossbar_generate_sound function.
+</I>&gt;<i> We already have the source buffer, the source frequency, the dest buffer
+</I>&gt;<i> and the dest frequency.
+</I>&gt;<i> I think this is all we need.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>
+I don't have any direct code here, but I think you could have a look a 
+&quot;sox&quot; source code, as it can convert sound to/from different frequencies, 
+using different methods to suppress aliasing and thing like that.
+
+But as a first change, note that in Crossbar_GenerateSamples, using
+(int)fDacBufRdPos to convert the float position is not good, because it 
+will truncate fDacBufRdPos, not round it to the nearest integer, so you 
+won't get a good &quot;transition&quot;.
+To do so, you should use &quot;(int)(fDacBufRdPos+.5)&quot;
+
+Also note that this code could be rewritten without using float, but only 
+integer with &lt;&lt; and &gt;&gt; to &quot;simulate&quot; extra decimal precision (it would 
+take less cpu, but it would not be to noticeable in the end I guess)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000946.html">[hatari-devel] Help with sound interpolation
+</A></li>
+	<LI>Next message: <A HREF="000947.html">[hatari-devel] Moai demo (96K) runs perfectly for me
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#961">[ date ]</a>
+              <a href="thread.html#961">[ thread ]</a>
+              <a href="subject.html#961">[ subject ]</a>
+              <a href="author.html#961">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

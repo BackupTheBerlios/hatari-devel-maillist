@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Big problems with bus error on Falcon
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Big%20problems%20with%20bus%20error%20on%20Falcon&In-Reply-To=%3C201001142231.50333.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001220.html">
+   <LINK REL="Next"  HREF="001228.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Big problems with bus error on Falcon</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Big%20problems%20with%20bus%20error%20on%20Falcon&In-Reply-To=%3C201001142231.50333.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Big problems with bus error on Falcon">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Jan 14 21:31:50 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001220.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+        <LI>Next message: <A HREF="001228.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1224">[ date ]</a>
+              <a href="thread.html#1224">[ thread ]</a>
+              <a href="subject.html#1224">[ subject ]</a>
+              <a href="author.html#1224">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 14 January 2010, Thomas Huth wrote:
+&gt;<i> Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+</I>&gt;<i> &gt; In complement, for Tron 2001, we have the following message.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; M68000 Bus Error at address $f00000.
+</I>...
+&gt;<i> &gt; I've added (just to see) the following line into IoMemtabFalcon :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     { 0xf00000, SIZE_BYTE, IoMem_VoidRead, IoMem_VoidWrite
+</I>&gt;<i> &gt; },                               /* No bus error here */
+</I>&gt;<i>
+</I>&gt;<i> IO memory starts at 0xf80000, at 0xf00000 there is the IDE memory space
+</I>&gt;<i> (see uae-cpu/memory.c).
+</I>&gt;<i>
+</I>&gt;<i> ==&gt; Simply enable an IDE hard disk image an the bus error should be
+</I>&gt;<i> gone!
+</I>
+It does go away and the program starts, it doesn't even need DSP.
+
+It's &quot;Tron2001 demo.  Game by ICE&quot; from Umich:
+<A HREF="http://www.umich.edu/%7Earchive/atari/Falcon/Games/tron2001.lzh">http://www.umich.edu/%7Earchive/atari/Falcon/Games/tron2001.lzh</A>
+
+Seems to non-interactive demo, I'll move it to demos in compatibility list
+and note that it needs IDE image attached and starts in wrong resolution
+so graphics are wrong.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001220.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+	<LI>Next message: <A HREF="001228.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1224">[ date ]</a>
+              <a href="thread.html#1224">[ thread ]</a>
+              <a href="subject.html#1224">[ subject ]</a>
+              <a href="author.html#1224">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] SIGSEGV error with MMU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20SIGSEGV%20error%20with%20MMU&In-Reply-To=%3C201102232322.38127.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003121.html">
+   <LINK REL="Next"  HREF="003123.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] SIGSEGV error with MMU</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20SIGSEGV%20error%20with%20MMU&In-Reply-To=%3C201102232322.38127.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] SIGSEGV error with MMU">oak at helsinkinet.fi
+       </A><BR>
+    <I>Wed Feb 23 22:22:38 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003121.html">[hatari-devel] SIGSEGV error with MMU
+</A></li>
+        <LI>Next message: <A HREF="003123.html">[hatari-devel] SIGSEGV error with MMU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3122">[ date ]</a>
+              <a href="thread.html#3122">[ thread ]</a>
+              <a href="subject.html#3122">[ subject ]</a>
+              <a href="author.html#3122">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 23 helmikuu 2011, Laurent Sallafranque wrote:
+&gt;<i> (gdb) p regs
+</I>&gt;<i> $1 = {regs = {47, 65535, 0, 0, 65535, 14680064, 0, 0, 14680064, 2368, 0,
+</I>&gt;<i> 14683474, 14683140, 512, 0, 34924}, pc = 14685088, pc_p = 0x0,
+</I>
+pc_p is zero so it's no wonder you get segfault.
+
+It's supposed to correspond to the Atari PC instruction address in Hatari's
+own memory:
+-----
+static inline uae_u8 *get_real_address(uaecptr addr)
+{
+    return get_mem_bank(addr).xlateaddr(addr);
+}
+...
+STATIC_INLINE void m68k_setpc (uaecptr newpc)
+{
+        regs.pc_p = regs.pc_oldp = get_real_address (newpc);
+        regs.fault_pc = regs.pc = newpc;
+}
+
+STATIC_INLINE uaecptr m68k_getpc (void)
+{
+        return (uaecptr)(regs.pc + ((uae_u8*)regs.pc_p - 
+(uae_u8*)regs.pc_oldp));
+}
+-----
+
+
+However, apparently it can be sometimes set zero:
+------
+STATIC_INLINE void m68k_setpc_mmu (uaecptr newpc)
+{
+        regs.fault_pc = regs.pc = newpc;
+        regs.pc_p = regs.pc_oldp = 0;
+}
+...
+$ grep m68k_setpc_mmu $(find -type f)
+./cpu/newcpu.h:STATIC_INLINE void m68k_setpc_mmu (uaecptr newpc)
+./cpu/gencpu.c:         printf (&quot;\tm68k_setpc_mmu (%s);\n&quot;, buffer);
+------
+
+
+Or not be updated or used with PC register:
+------
+STATIC_INLINE void m68k_setpci (uaecptr newpc)
+{
+        regs.fault_pc = regs.pc = newpc;
+}
+
+STATIC_INLINE uaecptr m68k_getpci (void)
+{
+        return regs.pc;
+}
+...
+STATIC_INLINE void m68k_do_rtsi (void)
+{
+        m68k_setpci (get_long (m68k_areg (regs, 7)));
+        m68k_areg (regs, 7) += 4;
+}
+$ grep m68k_setpci $(find -type f)
+./cpu/newcpu.h:STATIC_INLINE void m68k_setpci (uaecptr newpc)
+./cpu/newcpu.h: m68k_setpci (get_long (m68k_areg (regs, 7)));
+$ grep m68k_do_rtsi $(find -type f)
+./cpu/newcpu.h:STATIC_INLINE void m68k_do_rtsi (void)
+./cpu/gencpu.c:                 printf (&quot;\tm68k_do_rtsi ();\n&quot;);
+------
+
+As you can see from above, these special cases (pc_p zeroing or not updating
+or using it with PC) don't happen with the old AUE core, only with the new
+one.
+
+
+The WinAUE gencpu.c has this code generation function:
+--------
+static void setpc (const char *format, ...)
+{
+...
+        if (using_mmu)
+                printf (&quot;\tm68k_setpc_mmu (%s);\n&quot;, buffer);
+        else
+                printf (&quot;\tm68k_setpc (%s);\n&quot;, buffer);
+}
+--------
+This is called for RTS, RTE etc instructions, which means that with MMU,
+regs.pc_p get regularly zeroed with m68k_setpc_mmu() call.
+
+
+According to your previous backtrace, next_iword() is called from:
+#2  0x00000000006fe8d4 in op_11b0_31_ff (opcode=5040) at 
+/home/laurent/Atari/hatari/build/src/cpu/cpuemu_31.c:7548
+
+Can you paste here several lines before and after that line?
+
+
+My wild guess is that with the settings you've selected, next_iwordi()
+function should be called instead of the next_iword() function.
+
+I'd suggest discussing this issue with upstream.
+
+
+&gt;<i> pc_oldp = 0x0, irc = 65535, ir = 0, spcflags = 0, usp = 0, isp = 0, msp
+</I>&gt;<i> = 0,
+</I>&gt;<i> sr = 9984, t1 = 0 '\000', t0 = 0 '\000', s = 1 '\001', m = 0 '\000',
+</I>&gt;<i> x = 0 '\000', stopped = 0 '\000', intmask = 7, ipl = 0, ipl_pin = 0,
+</I>&gt;<i> vbr = 0, sfc = 0, dfc = 0, fp = {0, 0, 0, 0, 0, 0, 0, 0}, fp_result = 1,
+</I>&gt;<i> fpcr = 0, fpsr = 0, fpiar = 0, fpsr_highbyte = 0, cacr = 0, caar = 0,
+</I>&gt;<i> itt0 = 0, itt1 = 0, dtt0 = 0, dtt1 = 0, tcr = 0, mmusr = 0, urp = 0,
+</I>&gt;<i> srp = 0, buscr = 0, mmu_fslw = 0, mmu_fault_addr = 0, mmu_ssw = 0,
+</I>&gt;<i> wb3_data = 0, wb3_status = 0, mmu_enabled = 0, mmu_pagesize_8k = 0,
+</I>
+mmu_enabled = 0???
+
+
+&gt;<i> fault_pc = 14681008, pcr = 0, address_space_mask = 0, panic = 0 '\000',
+</I>&gt;<i> panic_pc = 0, panic_addr = 0, prefetch020data = {0, 0}, prefetch020addr =
+</I>&gt;<i> { 4294967295, 4294967295}, ce020memcycles = 0}
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> (gdb) p STRam
+</I>
+Sorry, I meant the address of STRam array, not its contents.
+But if pc_p is zero, STRam address isn't relevant. :)
+
+
+Btw. maccess.h &amp; newcpu.h functions are supposed to be used only when
+accessing emulated Atari memory through host (Hatari x86) pointers i.e.
+addresses that are already converted from Atari to Hatari process addresses.
+
+All emulated Atari memory accesses should go through the memory bank
+functions define in memory.h.  If Hatari code needs to access memory for
+which it got Atari addresses, it can use functions in stMemory.h.
+
+
+
+&gt;<i> PS. I started reading cpu/memory.[ch]&amp;  newcpu.h, but got confused with
+</I>&gt;<i> the large amount of functions, struct members[1] and functions that
+</I>&gt;<i> aren't used anywhere.  Is WinAUE code missing large pieces?
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i>  From now, I've just tried to change as little as possible the original
+</I>&gt;<i> code, but removing only what avoid compilation.
+</I>
+I was mainly wondering is some WinAUE code missing e.g. related to
+the baseaddr.
+
+I cannot quite get my head around what the JIT code defines are supposed
+to do as it JIT code is using a &quot;baseaddr&quot; variable that's not set anywere,
+it's just a member in memory bank structure...?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003121.html">[hatari-devel] SIGSEGV error with MMU
+</A></li>
+	<LI>Next message: <A HREF="003123.html">[hatari-devel] SIGSEGV error with MMU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3122">[ date ]</a>
+              <a href="thread.html#3122">[ thread ]</a>
+              <a href="subject.html#3122">[ subject ]</a>
+              <a href="author.html#3122">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

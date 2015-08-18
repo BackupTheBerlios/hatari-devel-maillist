@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Potential bug with MSA disk images
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Potential%20bug%20with%20MSA%20disk%20images&In-Reply-To=%3C200901232256.22951.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000074.html">
+   <LINK REL="Next"  HREF="000036.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Potential bug with MSA disk images</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Potential%20bug%20with%20MSA%20disk%20images&In-Reply-To=%3C200901232256.22951.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Potential bug with MSA disk images">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Jan 23 21:56:22 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000074.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+        <LI>Next message: <A HREF="000036.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#75">[ date ]</a>
+              <a href="thread.html#75">[ thread ]</a>
+              <a href="subject.html#75">[ subject ]</a>
+              <a href="author.html#75">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 22 January 2009, Thomas Huth wrote:
+&gt;<i> &gt; I noticed that the the floppy buffers are saved to memory snapshots.
+</I>&gt;<i> &gt; Loading such a snapshot and then ejecting the disk would also corrupt
+</I>&gt;<i> &gt; the disk if its contents were changed in the meanwhile.
+</I>
+Now that I looked in to the code, I noticed that Hatari actually overwrites
+the whole disk image, not just the changed parts.  So the worst result
+wouldn't be a corrupted disk image, just one with different contents.
+
+
+&gt;<i> &gt; Couldn't the disk contents be flushed to the image when memory
+</I>&gt;<i> &gt; snapshot is saved and the buffer be loaded from the disk image after
+</I>&gt;<i> &gt; memory snapshot is loaded?
+</I>&gt;<i>
+</I>&gt;<i> No, that could only work worse, I think. Image that somebody changes
+</I>&gt;<i> the disk image completely or even deletes or renames the file - the the
+</I>&gt;<i> memory snapshot would become useless!
+</I>
+Well, whether that would be better or worse depends which one values more,
+the floppy images or memory snapshots, but I guess snapshots are more
+valuable.  (one could have sweated a lot e.g. for a game snapshot :-))
+
+
+&gt;<i> Well, I is this feature almost continuesly. Half of my disk image
+</I>&gt;<i> collection is ZIPped. I guess most other people also use this since
+</I>&gt;<i> most disk images that can be found on the internet are ZIPped.
+</I>&gt;<i> So there is certainly no point in removing this feature!
+</I>
+OK.
+
+(I myself use exclusively gzipped disk images as they're smaller, but
+I guess e.g. on Windows gzip is almost unknown compared to ZIP.)
+
+
+&gt;<i> &gt; &gt; Yes, I think we urgently should publish a new version with that fix,
+</I>&gt;<i> &gt; &gt; since this can really cause ugly data losses... let's target next
+</I>&gt;<i> &gt; &gt; weekend, would that be OK for everybody?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Would one week more be too much?  Have all the changes done so far
+</I>&gt;<i> &gt; already been tested properly &amp; stabilized?
+</I>&gt;<i>
+</I>&gt;<i> Since that disk image bug is really critical (you can loose data!), I
+</I>&gt;<i> think we should publish a new version as soon as possible. If there are
+</I>&gt;<i> then any problems left, we still can do a patch-level release (1.2.1)
+</I>&gt;<i> later.
+</I>
+Sounds fine, I've finished with doc updates.
+
+Btw. should the local-hatari-midi-ring.sh be under tools/ instead doc/
+(although I refer to it from doc/alsa-midi.txt)?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000074.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+	<LI>Next message: <A HREF="000036.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#75">[ date ]</a>
+              <a href="thread.html#75">[ thread ]</a>
+              <a href="subject.html#75">[ subject ]</a>
+              <a href="author.html#75">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

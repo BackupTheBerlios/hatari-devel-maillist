@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] I'm lucky ;) K.prg  is working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3C4B83DFD7.1040703%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001524.html">
+   <LINK REL="Next"  HREF="001526.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] I'm lucky ;) K.prg  is working</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3C4B83DFD7.1040703%40free.fr%3E"
+       TITLE="[hatari-devel] I'm lucky ;) K.prg  is working">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Feb 23 15:01:59 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001524.html">[hatari-devel] Strange CPU cycles
+</A></li>
+        <LI>Next message: <A HREF="001526.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1525">[ date ]</a>
+              <a href="thread.html#1525">[ thread ]</a>
+              <a href="subject.html#1525">[ subject ]</a>
+              <a href="author.html#1525">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've had a lot of chance today.
+I was investigating about 68030 Cycles, and I saw in newcpu.c that DSP 
+call was after a potential return.
+
+I've inverted the DSP call and the potential return and I've tested K.prg
+It's working.
+
+Returning to previous state freezes K.prg
+
+I've been really lucky, because I've tested all the non compatible 
+programs and demos and they're not concerned by this patch.
+
+Here is the patch.
+
+diff -r 4a0c21b49fb4 src/uae-cpu/newcpu.c
+--- a/src/uae-cpu/newcpu.c      Sun Feb 21 23:00:19 2010 +0200
++++ b/src/uae-cpu/newcpu.c      Tue Feb 23 13:41:23 2010 +0100
+@@ -1759,15 +1759,15 @@
+          }
+ #endif
+
++       /* Run DSP 56k code if necessary */
++       if (bDspEnabled) {
++           DSP_Run(cycles);
++       }
++
+        if (regs.spcflags) {
+            if (do_specialties ())
+                return;
+        }
+-
+-       /* Run DSP 56k code if necessary */
+-       if (bDspEnabled) {
+-           DSP_Run(cycles);
+-       }
+     }
+ }
+
+@@ -1812,15 +1812,15 @@
+        while (PendingInterruptCount &lt;= 0 &amp;&amp; PendingInterruptFunction)
+          CALL_VAR(PendingInterruptFunction);
+
++       /* Run DSP 56k code if necessary */
++       if (bDspEnabled) {
++           DSP_Run(cycles);
++       }
++
+        if (regs.spcflags) {
+            if (do_specialties ())
+                return;
+        }
+-
+-       /* Run DSP 56k code if necessary */
+-       if (bDspEnabled) {
+-           DSP_Run(cycles);
+-       }
+     }
+ }
+
+
+Do you think there's no risk to apply it ?
+
+It doesn't seem to break the working programs.
+
+regards
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001524.html">[hatari-devel] Strange CPU cycles
+</A></li>
+	<LI>Next message: <A HREF="001526.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1525">[ date ]</a>
+              <a href="thread.html#1525">[ thread ]</a>
+              <a href="subject.html#1525">[ subject ]</a>
+              <a href="author.html#1525">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

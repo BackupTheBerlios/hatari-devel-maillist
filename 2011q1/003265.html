@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New DSP trace functions added
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20DSP%20trace%20functions%20added&In-Reply-To=%3C201103292357.04595.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003263.html">
+   <LINK REL="Next"  HREF="003266.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New DSP trace functions added</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20DSP%20trace%20functions%20added&In-Reply-To=%3C201103292357.04595.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] New DSP trace functions added">oak at helsinkinet.fi
+       </A><BR>
+    <I>Tue Mar 29 22:57:04 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003263.html">[hatari-devel] New DSP trace functions added
+</A></li>
+        <LI>Next message: <A HREF="003266.html">[hatari-devel] New DSP trace functions added
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3265">[ date ]</a>
+              <a href="thread.html#3265">[ thread ]</a>
+              <a href="subject.html#3265">[ subject ]</a>
+              <a href="author.html#3265">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On tiistai 29 maaliskuu 2011, Laurent Sallafranque wrote:
+&gt;<i> I've added 2 new functions to dsp_disasm :
+</I>&gt;<i> 
+</I>&gt;<i> dsp_disasm_reg : this shows the state of the concerned register before
+</I>&gt;<i> and after the execution of the instruction
+</I>&gt;<i> dsp_disasm_mem : this shows the state of the concerned memory address
+</I>&gt;<i> before and after the execution of the instruction
+</I>&gt;<i> 
+</I>&gt;<i> Both of them are working only with dsp_disasm.
+</I>&gt;<i> 
+</I>&gt;<i> (It would make no sense to display a register or memory change without
+</I>&gt;<i> knowing which instruction was executed).
+</I>&gt;<i> 
+</I>&gt;<i> I've tried to optimize it to have no slowness with the 3 dsp_disasm_xxx
+</I>&gt;<i> functions activated when DSP doesn't do anything.
+</I>
+It looks otherwise good, but instead of these:
+	if (LogTraceFlags &amp; (TRACE_DSP_DISASM))
+
+You could use the log.h macro for that:
+	if (LOG_TRACE_LEVEL(TRACE_DSP_DISASM))
+
+That uses (now) the &quot;unlikely&quot; stuff from main.h which utilizes GCC feature
+to tell that this branch is unlikely to be true.
+
+The new write_memory() function could be set inline I think, it has
+only couple of lines.
+
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003263.html">[hatari-devel] New DSP trace functions added
+</A></li>
+	<LI>Next message: <A HREF="003266.html">[hatari-devel] New DSP trace functions added
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3265">[ date ]</a>
+              <a href="thread.html#3265">[ thread ]</a>
+              <a href="subject.html#3265">[ subject ]</a>
+              <a href="author.html#3265">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

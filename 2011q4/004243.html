@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] YM2149 + C10 lowpass filter	mapping
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20YM2149%20%2B%20C10%20lowpass%20filter%09mapping&In-Reply-To=%3C30815224.1282899.1324072093678.JavaMail.nitido%40priv-edtnes97%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004242.html">
+   <LINK REL="Next"  HREF="004245.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] YM2149 + C10 lowpass filter	mapping</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20YM2149%20%2B%20C10%20lowpass%20filter%09mapping&In-Reply-To=%3C30815224.1282899.1324072093678.JavaMail.nitido%40priv-edtnes97%3E"
+       TITLE="[hatari-devel] YM2149 + C10 lowpass filter	mapping">dsavnkff at telus.net
+       </A><BR>
+    <I>Fri Dec 16 22:48:13 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004242.html">[hatari-devel] YM2149 + C10 lowpass filter	mapping
+</A></li>
+        <LI>Next message: <A HREF="004245.html">[hatari-devel] YM2149 + C10 lowpass filter	mapping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4243">[ date ]</a>
+              <a href="thread.html#4243">[ thread ]</a>
+              <a href="subject.html#4243">[ subject ]</a>
+              <a href="author.html#4243">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Friday 16 December 2011 05:21, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 16/12/2011 12:21, David Savinkoff a crit :
+</I>&gt;<i> &gt; Hi Nicolas,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I've pondered over these patches for a couple of days and and
+</I>&gt;<i> &gt; believe the C10 capacitor filter is ready for inclusion in Hatari.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The audio.c patch is the same as before, and the sound.c
+</I>&gt;<i> &gt; patch has prettier comments.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; This filter is better than the previous (unused) filter, so at least
+</I>&gt;<i> &gt; sound.c should be patched (if the filter selecting method in
+</I>&gt;<i> &gt; audio.c is unacceptable).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I've listened to the mad_plus demo, sh11inv demo, blubber demo
+</I>&gt;<i> &gt; and key clicks to hear the theoretical sound difference between
+</I>&gt;<i> &gt; the ST and the STe (I don't have an STe). I think the demos
+</I>&gt;<i> &gt; sound better with some of the dry harmonics filtered.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; A two-channel bank-switched IIR filter is now used to model the
+</I>&gt;<i> &gt; YM2149 + C10 components. This is faster and way better than before.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The YM2149 is filtered at 7.7 KHz when it charges capacitor C10,
+</I>&gt;<i> &gt; and filtered at 2.1 KHz when R8 discharges C10. This is exactly
+</I>&gt;<i> &gt; what happens on a real ST.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; David
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i>
+</I>&gt;<i> I will try to test it and apply it this week end.
+</I>&gt;<i>
+</I>&gt;<i> Just one question : on STF, why do you turn the filter only for 44100
+</I>&gt;<i> and 48000 Hz, but not for higher or lower freq ? Is 50066 good enough,
+</I>&gt;<i> it doesn't require a filter ? Are freqs below 44.1 kHz too &quot;noisy&quot;, so
+</I>&gt;<i> the filter won't improve result anyway ?
+</I>&gt;<i>
+</I>I chose 44.1 and 48KHz sampling rates for testing, and because
+these are standard frequencies that represent the STf. More code
+can be added for different frequencies, minimally impacting speed.
+
+C10's tolerance is probably +/- 10% so 48KHz is within the range
+of the 44.1Khz filter (50066 KHz is ok too).
+
+A filter for 22.05 KHz sampling rate is not unreasonable.
+
+Thanks,
+David
+&gt;<i>
+</I>&gt;<i> Just wondering, what is the &quot;mathematical&quot; reason for this ?
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004242.html">[hatari-devel] YM2149 + C10 lowpass filter	mapping
+</A></li>
+	<LI>Next message: <A HREF="004245.html">[hatari-devel] YM2149 + C10 lowpass filter	mapping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4243">[ date ]</a>
+              <a href="thread.html#4243">[ thread ]</a>
+              <a href="subject.html#4243">[ subject ]</a>
+              <a href="author.html#4243">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

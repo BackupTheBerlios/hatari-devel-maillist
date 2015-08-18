@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Compatibility list update?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compatibility%20list%20update%3F&In-Reply-To=%3C4E10E87D.7050000%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003633.html">
+   <LINK REL="Next"  HREF="003638.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Compatibility list update?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compatibility%20list%20update%3F&In-Reply-To=%3C4E10E87D.7050000%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Compatibility list update?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jul  4 00:09:01 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003633.html">[hatari-devel] Compatibility list update?
+</A></li>
+        <LI>Next message: <A HREF="003638.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3635">[ date ]</a>
+              <a href="thread.html#3635">[ thread ]</a>
+              <a href="subject.html#3635">[ subject ]</a>
+              <a href="author.html#3635">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 03/07/2011 23:31, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> While testing things from the compatibility list for
+</I>&gt;<i> the new sound updates, I noticed that it still mentioned
+</I>&gt;<i> e.g. the screen offset issues for DHS STE demos.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I remember that Nicolas had added some for the &quot;hi/low stabilizer&quot;
+</I>&gt;<i> and when I tested the DHS demos, the offset issue was indeed gone,
+</I>&gt;<i> so the compatibility list could be updated.  (the &quot;Save The Earth&quot;
+</I>&gt;<i> STE demo by Defence Force still has screen offset issues though)
+</I>
+The problem when using 224 bytes overscan on STE with horizontal 
+scrolling was fixed. This also corrects &quot;Save the earth&quot;, but this demo 
+also changes palettes while the display is ON, which gives some bad 
+pixels (especially in start of left border) ; but that's not a bug in 
+Hatari, it will do the same on a real STE.
+
+I updated those demos to 1.5 in compat list.
+
+
+&gt;<i>
+</I>&gt;<i> Comments for some ST demos (&quot;Syntax Terror&quot;, &quot;Omega&quot;) mention also
+</I>&gt;<i> the stabilizer, are those now OK too?
+</I>
+No, those are different issues, the lack of stabilizer on STF really 
+needs a more low level emulation of the shifter as it will shift the 
+bitplanes, while on the STE it will give a stable 224 bytes overscan.
+
+&gt;<i>
+</I>&gt;<i> Btw. what Hatari version the &quot;devel&quot; for &quot;Delta Force: Punish Your
+</I>&gt;<i> Machine&quot; demo entry means, v1.5?
+</I>
+1.5, since spec512 in med res was not working before.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003633.html">[hatari-devel] Compatibility list update?
+</A></li>
+	<LI>Next message: <A HREF="003638.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3635">[ date ]</a>
+              <a href="thread.html#3635">[ thread ]</a>
+              <a href="subject.html#3635">[ subject ]</a>
+              <a href="author.html#3635">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

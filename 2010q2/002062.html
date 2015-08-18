@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005121015320.17160%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002059.html">
+   <LINK REL="Next"  HREF="002063.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005121015320.17160%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed May 12 10:24:27 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002059.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002063.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2062">[ date ]</a>
+              <a href="thread.html#2062">[ thread ]</a>
+              <a href="subject.html#2062">[ subject ]</a>
+              <a href="author.html#2062">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 11 May 2010, David Savinkoff wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> Sound_Reset SoundBufferSize 111 SAMPLES_PER_FRAME 184 nGeneratedSamples 295 , ActiveSndBufIdx 295
+</I>&gt;<i> Sound_Reset SoundBufferSize 111 SAMPLES_PER_FRAME 184 nGeneratedSamples 295 , ActiveSndBufIdx 295
+</I>&gt;<i> Sound_ResetBufferIndex SoundBufferSize 111 SAMPLES_PER_FRAME 882 nGeneratedSamples 993 , ActiveSndBufIdx 4755
+</I>&gt;<i> Sound_ResetBufferIndex SoundBufferSize 111 SAMPLES_PER_FRAME 221 nGeneratedSamples 332 , ActiveSndBufIdx 11503
+</I>&gt;<i> Sound_ResetBufferIndex SoundBufferSize 111 SAMPLES_PER_FRAME 882 nGeneratedSamples 993 , ActiveSndBufIdx 260
+</I>&gt;<i> 
+</I>&gt;<i> Sound_Reset SoundBufferSize 221 SAMPLES_PER_FRAME 184 nGeneratedSamples 405 , ActiveSndBufIdx 405
+</I>&gt;<i> Sound_Reset SoundBufferSize 221 SAMPLES_PER_FRAME 184 nGeneratedSamples 405 , ActiveSndBufIdx 405
+</I>&gt;<i> Sound_ResetBufferIndex SoundBufferSize 221 SAMPLES_PER_FRAME 221 nGeneratedSamples 442 , ActiveSndBufIdx 7225
+</I>&gt;<i> Sound_ResetBufferIndex SoundBufferSize 221 SAMPLES_PER_FRAME 882 nGeneratedSamples 1103 , ActiveSndBufIdx 7103
+</I>&gt;<i> Sound_ResetBufferIndex SoundBufferSize 221 SAMPLES_PER_FRAME 221 nGeneratedSamples 442 , ActiveSndBufIdx 7878
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> I find SoundBufferSize=221 works best, it even seems to work at
+</I>&gt;<i> 44100 Hz also (sound is reasonable, but I think I can subtly hear
+</I>&gt;<i> missing samples at 44100 Hz). No delay at 11025 and 44100 Hz.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> SoundBufferSize=111 works well at 11025 Hz and I can't hear any
+</I>&gt;<i> difference as compared to 221 at 11025 Hz.
+</I>&gt;<i> However, SoundBufferSize=111 is weird at 44100 Hz. I get a delay
+</I>&gt;<i> and double-triggered-sounding key presses. Also the key-repeat
+</I>&gt;<i> continues after I release the space-bar. I think the buffer goes
+</I>&gt;<i> out of synchronization.
+</I>&gt;<i> 
+</I>&gt;<i> Someone needs to see if we are making a difference on MSFT(tm)
+</I>&gt;<i> 
+</I>&gt;<i> I'll try to see, what I can try to get done, as regards SDL-1.2.14 and my email
+</I>&gt;<i> 
+</I>&gt;<i> David Savinkoff
+</I>&gt;<i>
+</I>
+Hi,
+
+So, this means that at 11 kHz, your setup works better with a 20 ms or a 
+10 ms than with 46 ms.
+
+It's &quot;normal&quot; that you get problem with SoundBufferSize=111 at 44 kHz ; at 
+that rate you need 882 bytes per VBL, so triggering the callback several 
+times per vbl will likely accumulate some more rounding errors and skip 
+some bytes.
+
+As the ST runs at 50/60 Hz, this means approx 20 ms per VBL, so using 
+lower value than 20 might not be a good idea.
+
+Anyway, I think I will add an option to Hatari to specify SoundBufferSize 
+as a &quot;ms&quot; (with a default to 46-50 as it is today). This way people with 
+sound problem on their setup can finetune this and choose what fit their 
+need best.
+This &quot;ms&quot; delay will be converted in the corresponding SoundBufferSize by 
+taking into account current replay freq.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002059.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002063.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2062">[ date ]</a>
+              <a href="thread.html#2062">[ thread ]</a>
+              <a href="subject.html#2062">[ subject ]</a>
+              <a href="author.html#2062">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

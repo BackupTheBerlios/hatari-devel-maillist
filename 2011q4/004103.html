@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari v1.6 features?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20v1.6%20features%3F&In-Reply-To=%3C4E9AD1E4.1040402%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004102.html">
+   <LINK REL="Next"  HREF="004105.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari v1.6 features?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20v1.6%20features%3F&In-Reply-To=%3C4E9AD1E4.1040402%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Hatari v1.6 features?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Oct 16 14:45:24 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004102.html">[hatari-devel] Hatari v1.6 features?
+</A></li>
+        <LI>Next message: <A HREF="004105.html">[hatari-devel] Hatari v1.6 features?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4103">[ date ]</a>
+              <a href="thread.html#4103">[ thread ]</a>
+              <a href="subject.html#4103">[ subject ]</a>
+              <a href="author.html#4103">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 15/10/2011 15:30, Eero Tamminen a &#233;crit :
+
+&gt;<i> Nicolas:
+</I>&gt;<i> - Move to new hosting service...
+</I>&gt;<i> - ?
+</I>
+Hello
+
+Maybe rework the acia/ikbd communication parts, there're still some 
+problems there, we regularly get reports of programs that gets broken 
+after we &quot;fix&quot; something in the ikbd. Timings and emulation of the acia 
+control registers are not right, I would need to write some 68000 test 
+programs to precisely measure several cases on a real ST and check we 
+get the same behaviour under Hatari (definitly a boring task, but this 
+has to be done :) )
+
+Let's see also if we get better sound options for the analog voices mixing.
+
+IKBD and FDC should give huge improvements for people playing games in 
+Hatari ; so far my focus was mainly on demos, as they require very 
+precise emulation and exhibit a lot of video/cpu cases.
+
+But IKBD and FDC are 2 of the oldest components that were not really 
+refactored recently and they still carry some limitations/errors from 
+the original Winston sources (that's done for FDC now, but IKBD remains)
+
+
+&gt;<i> [1] Nicolas, recording and replaying mouse events would be
+</I>&gt;<i>      really nice...  Do you have any thoughts on best way to
+</I>&gt;<i>       do that?
+</I>
+In ikbdc.c, you could try to intercept when we write the byte in 
+$fffc02. This byte is the result of pressing a key or moving the mouse 
+on the host computer (through SDL).
+
+So, if each time a byte is written to be &quot;sent&quot; to the ST you store the 
+VBL number, the video cycle number in this number and the byte, you 
+should be able to record a precise flow of the bytes sents to the ST.
+
+But if you do this in IKBD_InterruptHandler_ACIA / 
+bByteInTransitToACIA==true, you might record also the bytes sent by the 
+ikbd, which is not what you want, so you better record bytes in 
+IKBD_SendAutoKeyboardCommands when IKBD_UpdateInternalMousePosition is 
+called (this would filter mouse only events, but requires quite some 
+plumbing anyway)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004102.html">[hatari-devel] Hatari v1.6 features?
+</A></li>
+	<LI>Next message: <A HREF="004105.html">[hatari-devel] Hatari v1.6 features?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4103">[ date ]</a>
+              <a href="thread.html#4103">[ thread ]</a>
+              <a href="subject.html#4103">[ subject ]</a>
+              <a href="author.html#4103">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

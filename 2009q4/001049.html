@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] ACSI/DMA emulation issues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20ACSI/DMA%20emulation%20issues&In-Reply-To=%3C20091202212409.GA6058%40quattro.seimet.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001047.html">
+   <LINK REL="Next"  HREF="001056.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] ACSI/DMA emulation issues</H1>
+    <B>Uwe Seimet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20ACSI/DMA%20emulation%20issues&In-Reply-To=%3C20091202212409.GA6058%40quattro.seimet.de%3E"
+       TITLE="[hatari-devel] ACSI/DMA emulation issues">Uwe.Seimet at seimet.de
+       </A><BR>
+    <I>Wed Dec  2 22:24:09 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001047.html">[hatari-devel] ACSI/DMA emulation issues
+</A></li>
+        <LI>Next message: <A HREF="001056.html">[hatari-devel] ACSI/DMA emulation issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1049">[ date ]</a>
+              <a href="thread.html#1049">[ thread ]</a>
+              <a href="subject.html#1049">[ subject ]</a>
+              <a href="author.html#1049">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+&gt;<i> I don't think that we should generally update the DMA counter ... we
+</I>&gt;<i> should only update it in case we've really transfered bytes to the
+</I>&gt;<i> memory. So I've committed a change now that update the DMA only in
+</I>&gt;<i> these cases. Together with your TEST UNIT READY patch, HDDriver now
+</I>&gt;<i> seems to work :-)
+</I>
+Almost ;-). I have some issues regarding ACSI, but they might be general
+ones, i.e. not related to HDDRIVER.
+
+1. TOS 3.06 cannot boot from an ACSI drive. TOS reads the root sector and
+then does not continue with reading the executable boot sector. Booting
+from an IDE drive with TOS 4.0 works.
+2. Eject all drives except the ACSI drive, reboot. Now press F12 and
+re-add the GEMDOS drives. Reboot. The system will not boot, as if the
+GEMDOS drives are not present.
+3. When copying many files to a partition of an ACSI drive GEMDOS
+reports a write error. This does not happen when only copying a few
+files, and it does not happen when copying the same files to an IDE
+drive. My guess is that this is not a bug related to the DMA counter but
+that there is still a bug in the emulation of ACSI commands as such.
+
+Best regards
+
+Uwe
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001047.html">[hatari-devel] ACSI/DMA emulation issues
+</A></li>
+	<LI>Next message: <A HREF="001056.html">[hatari-devel] ACSI/DMA emulation issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1049">[ date ]</a>
+              <a href="thread.html#1049">[ thread ]</a>
+              <a href="subject.html#1049">[ subject ]</a>
+              <a href="author.html#1049">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

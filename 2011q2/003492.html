@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Execution history debugger command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201105312056.51226.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003525.html">
+   <LINK REL="Next"  HREF="003502.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Execution history debugger command</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201105312056.51226.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Execution history debugger command">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue May 31 19:56:51 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003525.html">[hatari-devel] Execution history debugger command
+</A></li>
+        <LI>Next message: <A HREF="003502.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3492">[ date ]</a>
+              <a href="thread.html#3492">[ thread ]</a>
+              <a href="subject.html#3492">[ subject ]</a>
+              <a href="author.html#3492">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 29 toukokuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> in my long experiment of asm coding, I must admit I rarely missed a
+</I>&gt;<i> history. The problem is that if you only store registers (pc, ...) you
+</I>&gt;<i> will have an incomplete view of what happened, because you won't know
+</I>&gt;<i> what values were in memory at the time it was accessed. And debugging
+</I>&gt;<i> code without having the associated ram values is more or less just like
+</I>&gt;<i> reading the source code without really executing it, which is something
+</I>&gt;<i> you can already do.
+</I>
+It's not that hard to add that.  Instead of saving a fixed set of history
+data to in memory ring-buffer, history functionality could run a debugger
+script given by the user and direct its output to a file.  A set of suitable
+named set of files could then work as the history &quot;ring-buffer&quot;.
+
+This isn't something that I would do on every instruction, so then
+the history should probably be changed to work more like Monst which
+saves the state only on breakpoints and exceptions.
+
+
+Only problem is that currently some of the debugger commands output is
+hard coded to stderr instead of it using the debugger log file handle, but
+that's also fixable.
+
+
+&gt;<i> There, you have the registers and a history of what value were in PC,
+</I>&gt;<i> but I'm not sure it's enough to do something that really add extra
+</I>&gt;<i> values. Breakpoints are much more useful, and in the current state we
+</I>&gt;<i> have some rather good syntax to handle them.
+</I>
+Would it be more useful to have the history saved on breakpoints instead
+of what I proposed?
+
+To get information on branches with those, I would need a new kind of 
+breakpoint that is triggered only on branches which offset is larger than
+&lt;limit&gt;.  Would that kind of breakpoint facility be useful for you too?
+
+I guess best way to do that would be to have an internal debugger variable
+which value = abs(previous_pc - current_pc).  Any suggestions for its name?
+:<i>-)
+</I>
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003525.html">[hatari-devel] Execution history debugger command
+</A></li>
+	<LI>Next message: <A HREF="003502.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3492">[ date ]</a>
+              <a href="thread.html#3492">[ thread ]</a>
+              <a href="subject.html#3492">[ subject ]</a>
+              <a href="author.html#3492">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [Crossbar emulation] : new infos, + some help needed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5BCrossbar%20emulation%5D%20%3A%20new%20infos%2C%0A%20%2B%20some%20help%20needed&In-Reply-To=%3C4AC11C5F.5060100%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000752.html">
+   <LINK REL="Next"  HREF="000756.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [Crossbar emulation] : new infos, + some help needed</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5BCrossbar%20emulation%5D%20%3A%20new%20infos%2C%0A%20%2B%20some%20help%20needed&In-Reply-To=%3C4AC11C5F.5060100%40free.fr%3E"
+       TITLE="[hatari-devel] [Crossbar emulation] : new infos, + some help needed">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Sep 28 22:28:15 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000752.html">[hatari-devel] [Crossbar emulation] : new infos, + some help needed
+</A></li>
+        <LI>Next message: <A HREF="000756.html">[hatari-devel] [Crossbar emulation] : new infos, + some help needed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#754">[ date ]</a>
+              <a href="thread.html#754">[ thread ]</a>
+              <a href="subject.html#754">[ subject ]</a>
+              <a href="author.html#754">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+DMA part is still a bit confuzing.
+I'll try to include ADC to crossbar first, then, link ADC to DSP and DAC.
+
+At the end, I'll connect the DMAs.
+Like this, I'll have working examples to use as tests.
+
+&gt;<i> Sorry, I lost a little bit track about all your other mails... Do your
+</I>&gt;<i> problem still persist here, or is this fixed already?
+</I>
+I've solved some of them. some are remaining. But I'll continue to 
+explore all of this during the next weeks. I need to understand it 
+better to code it well :)
+
+&gt;<i> I saw that you're using a DACBUFFER_SIZE of MIXBUFFER_SIZE*2*64*2 Bytes
+</I>&gt;<i> there, ... but that's a buffer of 4 Megabytes! Isn't that a little bit
+</I>&gt;<i> too much for a sound buffer? It doesn't sound right to me to use such
+</I>&gt;<i> big buffers for sound...
+</I>
+Yes it is !
+I see that you used a Sound_Update() function in STe DMA.
+I'll try to do the same to reduce the Sound buffer.
+
+Regards
+
+Laurent
+
+
+
+Thomas Huth a &#233;crit :
+&gt;<i>  Hi Laurent,
+</I>&gt;<i>
+</I>&gt;<i> sorry for the late reply, I'm quite busy with real life work atm...
+</I>&gt;<i> (and as it currently looks like, this won't change in the upcoming
+</I>&gt;<i> weeks...)
+</I>&gt;<i>
+</I>&gt;<i> On Wed, 23 Sep 2009 16:23:32 +0200
+</I>&gt;<i> Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Yes, it seems that there are 2 sets of DMA devices in the Falcon (one 
+</I>&gt;&gt;<i> for sound and one into the crossbar).
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> You mean one for playing (memory to crossbar) and one for recording
+</I>&gt;<i> (crossbar to memory), don't you?
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> My first problem was to understand which parameters are for each DMA,
+</I>&gt;&gt;<i> as in the compendium, they're both names &quot;DMA&quot;.
+</I>&gt;&gt;<i> (In page B-28 of the compendium, you can read : (DMA OUT) is linked
+</I>&gt;&gt;<i> to (DMA IN) for example).
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Well, I guess DMA OUT = DMA playing and DMA IN = DMA recording ?
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> For the DAC part :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've taken the DAC code from DmaSound.c
+</I>&gt;&gt;<i> I've seen that DAC merges it's datas in a buffer coming from the PSG.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I think that my frequency problem comes from this function, but I'm
+</I>&gt;&gt;<i> not sure.
+</I>&gt;&gt;<i> Thomas, Would you please have a look at Crossbar_GenerateSamples() ?
+</I>&gt;&gt;<i> Can I use it the same as you did in DmaSound.c ?
+</I>&gt;&gt;<i> (You were reading the whole buffer at one time, I'm sending datas in 
+</I>&gt;&gt;<i> interrupted mode (at a certain frequency).
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Sorry, I lost a little bit track about all your other mails... Do your
+</I>&gt;<i> problem still persist here, or is this fixed already?
+</I>&gt;<i>
+</I>&gt;<i> I saw that you're using a DACBUFFER_SIZE of MIXBUFFER_SIZE*2*64*2 Bytes
+</I>&gt;<i> there, ... but that's a buffer of 4 Megabytes! Isn't that a little bit
+</I>&gt;<i> too much for a sound buffer? It doesn't sound right to me to use such
+</I>&gt;<i> big buffers for sound...
+</I>&gt;<i>
+</I>&gt;<i>  Thomas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000752.html">[hatari-devel] [Crossbar emulation] : new infos, + some help needed
+</A></li>
+	<LI>Next message: <A HREF="000756.html">[hatari-devel] [Crossbar emulation] : new infos, + some help needed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#754">[ date ]</a>
+              <a href="thread.html#754">[ thread ]</a>
+              <a href="subject.html#754">[ subject ]</a>
+              <a href="author.html#754">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

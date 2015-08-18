@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New STE DMA audio emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C201107040034.14332.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003630.html">
+   <LINK REL="Next"  HREF="003636.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New STE DMA audio emulation</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C201107040034.14332.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] New STE DMA audio emulation">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jul  3 23:34:14 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003630.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+        <LI>Next message: <A HREF="003636.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3634">[ date ]</a>
+              <a href="thread.html#3634">[ thread ]</a>
+              <a href="subject.html#3634">[ subject ]</a>
+              <a href="author.html#3634">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 01 hein&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Please test this new version with all your favorite STE programs. For 
+</I>&gt;<i> great results, don't forget to run Hextracker which gives really clear
+</I>&gt;<i> output even with 7 voices or more.
+</I>
+Sounds is much better now.
+
+Btw.  Have you noticed that Hextracker mouse doesn't track host mouse
+properly in windowed mode?  After using Hextracker for a while, I cannot
+anymore move mouse cursor to a place where I could click on &quot;Play&quot;...
+
+
+Some other notes about sound:
+* R0x doesn't anymore give messages mentioned in compat list:
+  &quot;DMA snd: Illegal buffer size (from 0x0 to 0x0)&quot;
+* Paradox Xmas-2004 scroller music has strange skips
+* In many demos and some games STE sound has much less volume
+  than ST sound (e.g. PowerUp game supports both &quot;ST&quot; and &quot;STE&quot;
+  sounds and STE one has maybe half the volume of ST one)
+
+
+&gt;<i> In order to fix this, I added a new file clocks_timings.c ; the purpose
+</I>&gt;<i> of this file is to put all the hardware's clocks informations for all
+</I>&gt;<i> emulated Atari machines in a single file. This file then provides some
+</I>&gt;<i> functions to compute the exact values of VBL per sec, length of a VBL in
+</I>&gt;<i> micro sec, ...
+</I>
+Some comments on the changes (from newer to older):
+
+
+* Is the ifdeffed &quot;old_code&quot; &amp; &quot;olddma&quot; &amp; &quot;nofifo&quot; stuff still needed?
+
+  There were also couple of compiler warnings:
+---
+[ 56%] Building C object src/CMakeFiles/hatari.dir/dmaSnd.c.o                                                                                                        
+src/dmaSnd.c:354: warning: &#8216;DmaSnd_FIFO_ReadByte&#8217; defined but not used                                                                        
+src/dmaSnd.c:372: warning: &#8216;DmaSnd_FIFO_ReadWord&#8217; defined but not used
+---
+
+
+* <A HREF="http://hg.berlios.de/repos/hatari/rev/df8c0a09d846">http://hg.berlios.de/repos/hatari/rev/df8c0a09d846</A>
+
+-&gt; It's a bit ugly to do init on uninit phase, but I think it's also best
+   to do the re-init if machine needs reset (not just when machine type
+   changes), because that takes into account also changing e.g. TV to mono
+   monitor (HZ change).
+
+-&gt; ClocksTimings_InitMachine() call doesn't belong to dlgSystem.c,
+   it should be done where the changes are applied (why calling
+   it in change.c wouldn't be enough?)
+
+
+* <A HREF="http://hg.berlios.de/repos/hatari/rev/065cb494bb3f">http://hg.berlios.de/repos/hatari/rev/065cb494bb3f</A>
+
+-&gt; &quot;the number of cpu cycles per second is not a multiple of the number
+   of cpu cycles per second.&quot;
+   - did you mean instructions?
+
+-&gt; There are several functions like this:
+----
+Uint32  ClocksTimings_GetVBLPerSec ( MACHINETYPE MachineType , int 
+ScreenRefreshRate )
+{
+        Uint32  VBLPerSec;                                                      
+/* Upper 8 bits are for int part, 24 lower bits for float part */
+
+
+        VBLPerSec = ScreenRefreshRate &lt;&lt; 24;                                    
+/* default rounded value */
+
+        if ( RoundVBLPerSec == false )
+        {
+                /* STF and STE have the same numbers of cycles per VBL */
+                if ( ( MachineType == MACHINE_ST ) || ( MachineType == 
+MACHINE_STE ) )
+                        VBLPerSec = ( (Sint64)MachineClocks.CPU_Freq &lt;&lt; 24 ) 
+/ ClocksTimings_GetCyclesPerVBL ( MachineType , ScreenRefreshRate );
+
+                /* For machines where cpu freq can be changed, we don't know 
+the number of cycles per VBL */
+                /* -&gt; comment code to keep the default value from above */
+                //else if ( ( MachineType == MACHINE_MEGA_STE ) || ( 
+MachineType == MACHINE_TT ) || ( MachineType == MACHINE_FALCON ) )
+                //      VBLPerSec = ScreenRefreshRate &lt;&lt; 24;
+        }
+
+
+        return VBLPerSec;
+}
+----
+
+Why not just do something like this:
+----
+Uint32  ClocksTimings_GetVBLPerSec ( MACHINETYPE MachineType , int 
+ScreenRefreshRate )
+{
+        if ( RoundVBLPerSec == false )
+        {
+                /* STF and STE have the same numbers of cycles per VBL */
+                if ( ( MachineType == MACHINE_ST ) || ( MachineType == 
+MACHINE_STE ) )
+                        return ( (Sint64)MachineClocks.CPU_Freq &lt;&lt; 24 ) / 
+ClocksTimings_GetCyclesPerVBL ( MachineType , ScreenRefreshRate );
+        }
+
+        /* Upper 8 bits are for int part, 24 lower bits for float part */
+        return ScreenRefreshRate &lt;&lt; 24;
+
+}
+----
+?
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003630.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+	<LI>Next message: <A HREF="003636.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3634">[ date ]</a>
+              <a href="thread.html#3634">[ thread ]</a>
+              <a href="subject.html#3634">[ subject ]</a>
+              <a href="author.html#3634">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

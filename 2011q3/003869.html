@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] TOS crash when using gemdos pterm and HD	emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20TOS%20crash%20when%20using%20gemdos%20pterm%20and%20HD%0A%09emulation&In-Reply-To=%3C201108032150.16469.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003846.html">
+   <LINK REL="Next"  HREF="003871.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] TOS crash when using gemdos pterm and HD	emulation</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20TOS%20crash%20when%20using%20gemdos%20pterm%20and%20HD%0A%09emulation&In-Reply-To=%3C201108032150.16469.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] TOS crash when using gemdos pterm and HD	emulation">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Aug  3 20:50:16 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003846.html">[hatari-devel] TOS crash when using gemdos pterm and HD emulation
+</A></li>
+        <LI>Next message: <A HREF="003871.html">[hatari-devel] TOS crash when using gemdos pterm and HD emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3869">[ date ]</a>
+              <a href="thread.html#3869">[ thread ]</a>
+              <a href="subject.html#3869">[ subject ]</a>
+              <a href="author.html#3869">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On torstai 28 hein&#228;kuu 2011, Thomas Huth wrote:
+&gt;<i> Possible solutions:
+</I>&gt;<i> - It might be possible to patch the OSHEADER-&gt;p_run variable to point
+</I>&gt;<i>   to the new basepage before executing the Pexec(4) call already, maybe
+</I>&gt;<i>   that helps to assign the memory to the new program instead, so that
+</I>&gt;<i>   it gets freed during its Pterm call. However, I am not sure whether
+</I>&gt;<i>   this will really work or whether there might be any ugly side-effects
+</I>&gt;<i>   instead.
+</I>&gt;<i> - Maybe we could hook into the Pterm call, too, and when the program
+</I>&gt;<i>   terminates, we call Mfree() instead. However, as soon as the program
+</I>&gt;<i>   tries to run other programs with Pexec() again (i.e. nested Pexec and
+</I>&gt;<i>   Pterm calls), this gets very ugly...
+</I>
+Sounds too fragile.
+
+
+&gt;<i> - Simply disallow GEMDOS HD with TOS 1.00 and 1.02 or at least warn the
+</I>&gt;<i>   user with an annoying alert box.
+</I>
+Does the attached patch look fine?
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: gemdos-disable.diff
+Type: text/x-patch
+Size: 1307 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110803/914997d8/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110803/914997d8/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003846.html">[hatari-devel] TOS crash when using gemdos pterm and HD emulation
+</A></li>
+	<LI>Next message: <A HREF="003871.html">[hatari-devel] TOS crash when using gemdos pterm and HD emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3869">[ date ]</a>
+              <a href="thread.html#3869">[ thread ]</a>
+              <a href="subject.html#3869">[ subject ]</a>
+              <a href="author.html#3869">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

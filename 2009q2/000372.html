@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Conditional breakpoint code, please comment!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C200906141301.21643.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000371.html">
+   <LINK REL="Next"  HREF="000373.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Conditional breakpoint code, please comment!</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C200906141301.21643.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Conditional breakpoint code, please comment!">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jun 14 12:01:21 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000371.html">[hatari-devel] Conditional breakpoint code
+</A></li>
+        <LI>Next message: <A HREF="000373.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#372">[ date ]</a>
+              <a href="thread.html#372">[ thread ]</a>
+              <a href="subject.html#372">[ subject ]</a>
+              <a href="author.html#372">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Thomas, Laurent &amp; Nicholas, could you comment on this stuff?
+
+(I'm leaving for vacation on Thursday and I would like to have the stuff
+fixed and also commited before that if the approach is OK for you.)
+
+
+On Saturday 13 June 2009, Eero Tamminen wrote:
+&gt;&gt;<i> Things still to do:
+</I>&gt;&gt;<i> 1. debug &amp; fix bugs so that it passes the (fairly extensive) parsing
+</I>&gt;&gt;<i> tests
+</I>
+Parser works fine after some extra fixes I'll commit later today.
+
+Matching the breakpoints is still to be tested, but the code for that is
+much simpler and hopefully Nicolas can help in that after breakcond.c
+is integrated with the rest of the Hatari...
+
+
+&gt;&gt;<i> 2. add register name parsing code 
+</I>
+See attached register-cpu.diff and register-dsp.diff patch files on proposal
+how I thought this could be done.
+
+In both cases I've separated the code from register setting functions
+(in debugui.c and dsp.c respectively) to a globally visible function that
+returns address for given register.  This function is then used by DebugUI
+register setting functions and will be used by breakcond (I'll commit the
+support for this after some extra breakcond.c testing).
+
+This doesn't yet provide all registers for breakcond.c (see [1]), but
+the change is completely transparent to current debugger register setting
+functionality.
+
+The CPU register code could be minimized by using index instead of switch
+case for data &amp; address registers like (original) DSP code did.  m68000.h
+could provide a macro or inline for this.  I use array &amp; bisecting for
+finding the DSP register as there are so many of them.
+
+Laurent &amp; Thomas, any comments on these?  Does the approach seem OK?
+
+
+&gt;<i> &gt; 3. integrate it with DebugUI etc.
+</I>
+breakcond-integrate.diff shows how I've thought to integrate breakcond.c
+into debugui.c:
+
+* similarly to address breakpoints and single stepping, there are two
+  additional variables for condition breakpoint DSP &amp; CPU counts which
+   values are checked and requested from breakcond.c at appropriate place.
+
+* DebugUI_BreakCondCpu()/Dsp() are debugui.c wrappers for breakcond.c
+  BreakCond_Command() function (not yet commited to breakcond.c).
+  Commands list has entries for these.
+
+* Because I don't want to join again the arguments from debugui.c for the
+  breakpoint condition code's own tokenizing, I added support to debugui.c
+  for specifying that the arguments for certain options shouldn't be
+  separated. There's a new bNoParsing flag to command structure to signify
+  this and the DebugUI command parsing function code was suffled around
+  a bit to support this.
+
+* Address breakpoint names are now &quot;address&quot;/&quot;a&quot; and condition breakpoints
+  are &quot;breakpoint&quot;/&quot;b&quot;.  Address breakpoints are still needed[1].
+
+I'll commit the functions needed in breakcond.c for above after some extra
+testing.
+
+Thomas, any comments on this?
+
+
+&gt;&gt;<i> I was thinking that for 2), I would generalize both the current DSP and
+</I>&gt;&gt;<i> CPU code for checking the register values for DebugUI so that there
+</I>&gt;&gt;<i> would be for both of them functions that take register name and return
+</I>&gt;&gt;<i> it's address and size, or an error if there was no match.
+</I>
+[1] Register address functions (and therefore condition breakpoints) don't
+currently support all registers because I couldn't yet come up with a nice
+way how to get register information nicely to the register setting DebugUI
+functions for things that need extra processing when they're set
+(PC &amp; SR for m68k; SR, SP, OMR, SSH, SSL for DSP).
+
+Maybe the register name -&gt; address functions could return also register
+ID and based on this the the register set functions would do these extra
+things?
+
+Handling of the register width is also something that needs extra thought as
+some DSP registers width differs from mask that needs to be used with them.
+For example:
+-------------
+        if (arg[0]=='S' || arg[0]=='s') {
+                if (arg[1]=='R' || arg[1]=='r') {
+                        dsp_core.registers[DSP_REG_SR] = value &amp; 0xefff;
+                        return;
+                }
+                if (arg[1]=='P' || arg[1]=='p') {
+                        dsp_core.registers[DSP_REG_SP] = value &amp; BITMASK(6);
+-------------
+
+0xefff = 1110111111111111 i.e. there's a hole in the middle.
+
+Laurent, is this mask needed also in the debugger when reading
+a register value (I guess it's 16-bit register as mask is 16-bit)?
+
+(IMHO improvements in these can be done later.)
+
+
+&gt;<i> Also, any objections if I:
+</I>&gt;<i> - add tests/-directory to Hatari top level
+</I>&gt;<i> - put the breakpoint condition testing code there + Makefile that
+</I>&gt;<i>   automatically validates that breakpoint condition parsing works fine?
+</I>
+?
+
+&gt;<i> I could extend the test code later also to test automatically that
+</I>&gt;<i> breakpoints get also triggered (not just parsed) fine.  This only needs
+</I>&gt;<i> &quot;emulating&quot; Hatari registers and their changes from the test code.
+</I>
+I also noticed that many headers (e.g. DSP ones) missed &quot;extern&quot;s
+for functions.  Any objections on adding those?
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: breakcond-integrate.diff
+Type: text/x-diff
+Size: 11483 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090614/5836ca00/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090614/5836ca00/attachment.diff</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: register-cpu.diff
+Type: text/x-diff
+Size: 4052 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090614/5836ca00/attachment-0001.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090614/5836ca00/attachment-0001.diff</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: register-dsp.diff
+Type: text/x-diff
+Size: 6416 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090614/5836ca00/attachment-0002.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090614/5836ca00/attachment-0002.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000371.html">[hatari-devel] Conditional breakpoint code
+</A></li>
+	<LI>Next message: <A HREF="000373.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#372">[ date ]</a>
+              <a href="thread.html#372">[ thread ]</a>
+              <a href="subject.html#372">[ subject ]</a>
+              <a href="author.html#372">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Portaudio making trouble (at least on mac)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Portaudio%20making%20trouble%20%28at%20least%20on%20mac%29&In-Reply-To=%3Cc1a0d1560909301109o6c1d5b08j7a20fb498f9bae3c%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000763.html">
+   <LINK REL="Next"  HREF="000765.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Portaudio making trouble (at least on mac)</H1>
+    <B>Christer Solskogen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Portaudio%20making%20trouble%20%28at%20least%20on%20mac%29&In-Reply-To=%3Cc1a0d1560909301109o6c1d5b08j7a20fb498f9bae3c%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Portaudio making trouble (at least on mac)">christer.solskogen at gmail.com
+       </A><BR>
+    <I>Wed Sep 30 20:09:50 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000763.html">[hatari-devel] Hatari Macport
+</A></li>
+        <LI>Next message: <A HREF="000765.html">[hatari-devel] Portaudio making trouble (at least on mac)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#764">[ date ]</a>
+              <a href="thread.html#764">[ thread ]</a>
+              <a href="subject.html#764">[ subject ]</a>
+              <a href="author.html#764">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>tenderheart:hatari solskogen$ make depend
+make -C src/ depend
+make cleandeps
+rm -f Makefile.dep */Makefile.dep
+make Makefile.dep
+ccache gcc -M  -I.. -I./includes -Iuae-cpu -I./debug -I./falcon
+-DCONFDIR=\&quot;/etc\&quot; -I/opt/local/include/SDL -D_GNU_SOURCE=1
+-D_THREAD_SAFE -DENABLE_DSP_EMU=1 audio.c bios.c blitter.c cart.c
+cfgopts.c configuration.c options.c  createBlankImage.c change.c
+control.c crossbar.c cycles.c dialog.c dim.c dmaSnd.c fdc.c file.c
+floppy.c gemdos.c hd6301_cpu.c hdc.c ide.c ikbd.c int.c ioMem.c
+ioMemTabST.c ioMemTabSTE.c ioMemTabTT.c ioMemTabFalcon.c joy.c
+keymap.c m68000.c main.c midi.c memorySnapShot.c mfp.c msa.c paths.c
+psg.c printer.c rs232.c reset.c rtc.c scandir.c st.c stMemory.c
+screen.c screenSnapShot.c shortcut.c sound.c spec512.c statusbar.c
+str.c tos.c unzip.c utils.c vdi.c video.c wavFormat.c xbios.c
+ymFormat.c zip.c microphone.c &gt; Makefile.dep
+i686-apple-darwin10-gcc-4.2.1: microphone.c: No such file or directory
+crossbar.c:69:24: error: microphone.h: No such file or directory
+make[2]: *** No rule to make target `Makefile.dep'.  Stop.
+make[1]: *** [depend] Error 2
+make: *** [depend] Error 2
+
+(Source is fresh from mercurial)
+
+-- 
+chs
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000763.html">[hatari-devel] Hatari Macport
+</A></li>
+	<LI>Next message: <A HREF="000765.html">[hatari-devel] Portaudio making trouble (at least on mac)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#764">[ date ]</a>
+              <a href="thread.html#764">[ thread ]</a>
+              <a href="subject.html#764">[ subject ]</a>
+              <a href="author.html#764">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

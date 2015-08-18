@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mahabharata demo problem ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mahabharata%20demo%20problem%20%3F&In-Reply-To=%3C201101161131.38796.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002808.html">
+   <LINK REL="Next"  HREF="002919.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mahabharata demo problem ?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mahabharata%20demo%20problem%20%3F&In-Reply-To=%3C201101161131.38796.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Mahabharata demo problem ?">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Jan 16 10:31:38 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002808.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+        <LI>Next message: <A HREF="002919.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2809">[ date ]</a>
+              <a href="thread.html#2809">[ thread ]</a>
+              <a href="subject.html#2809">[ subject ]</a>
+              <a href="author.html#2809">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 16 tammikuu 2011, Miro Krop&#225;&#269;ek wrote:
+&gt;<i> &gt; If scanline register value is 320, and bpp gets set to 1 instead of 16:
+</I>&gt;<i> &gt; -&gt; width = 5120
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; And indeed when I traced changes in all of these registers:
+</I>&gt;<i> &gt; b (0xff8210).w ! (0xff8210).w :trace
+</I>&gt;<i> &gt; b (0xff8266).w ! (0xff8266).w :trace
+</I>&gt;<i> &gt; b (0xff8260).b ! (0xff8260).b :trace
+</I>
+In case somebody's unfamiliar with Hatari debugger, here's an explanation 
+for above:
+* When the expression on both sides of the inequality comparison (&quot;!&quot;) are
+   exactly the same, the breakpoint happens when the result of that
+   expression changes.
+* &quot;:trace&quot; means that it's a &quot;tracing&quot; breakpoint which just prints that
+   breakpoint was hit, it doesn't stop the execution.
+
+In second breakpoint the expression is value of word at address $0xff8266.
+
+(This is explained in the Hatari manual.)
+
+Btw. A new thing in latest Hatari (after v1.4 release) is that you can even
+script what happens on breakpoints.   Set an &quot;:info&quot; breakpoint and use
+the &quot;lock&quot; command to cause info to be a debugger script executed from
+a given file.
+
+(&quot;info&quot; command can show different kind of informations, &quot;lock&quot; command
+causes that information to be shown whenever you enter the debugger,
+like happens on breakpoints.)
+
+Debugger scripts can do anything that one can do in the debugger otherwise,
+get disassembly, set and remove breakpoints etc.
+
+
+&gt;<i> &gt; Whenever the window goes too wide, I see:
+</I>&gt;<i> &gt;  $ff8266 = $400
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 2. CPU breakpoint condition(s) matched 1 times.
+</I>&gt;<i> &gt; WARNING: too large screen size 5120x240 -&gt; divided by 4x1!
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;  $ff8266 = $100
+</I>&gt;<i> 
+</I>&gt;<i> If you can post real disassembly, I can help you with that, I understand
+</I>&gt;<i> Videl registers quite well. I'm too stupid to get the idea from this
+</I>&gt;<i> trace outputs :)
+</I>
+Well, it only says that $ff8266 was set to $400, after that the resolution
+was too wide and after that $ff8266 was set back to $100.  It doesn't
+even tell how much time there was between these instructions.
+
+
+&gt;<i> I'm personally very interested, what / why they do
+</I>&gt;<i> here, they are/were beginners in Falcon coding, so I'm really surprised
+</I>&gt;<i> they didn't use Evil's demosequencer or something similar for Videl
+</I>&gt;<i> init. Maybe they found some neat trick!
+</I>
+Toons Yepyha has also similar strange resolution changes.
+
+Here's disassembly around the point when 2-color resolution is set:
+
+$01cc3e : 4e75                                 rts       
+$01cc40 : 4a39 0002 0633                       tst.b     $20633
+$01cc46 : 6708                                 beq.s     $1cc50
+$01cc48 : 41e8 0024                            lea       $24(a0),a0
+$01cc4c : 2010                                 move.l    (a0),d0
+$01cc4e : 6756                                 beq.s     $1cca6
+$01cc50 : 23c8 0002 061a                       move.l    a0,$2061a
+$01cc56 : 2018                                 move.l    (a0)+,d0
+$01cc58 : 31d8 8210                            move.w    (a0)+,$ffff8210.w
+$01cc5c : 5448                                 addq.w    #2,a0
+$01cc5e : 7400                                 moveq     #0,d2
+$01cc60 : 43f8 8200                            lea       $ffff8200.w,a1
+$01cc64 : 3358 0082                            move.w    (a0)+,$82(a1)
+$01cc68 : 3358 0084                            move.w    (a0)+,$84(a1)
+$01cc6c : 3358 0086                            move.w    (a0)+,$86(a1)
+$01cc70 : 3358 0088                            move.w    (a0)+,$88(a1)
+$01cc74 : 3358 008a                            move.w    (a0)+,$8a(a1)
+$01cc78 : 3358 008c                            move.w    (a0)+,$8c(a1)
+$01cc7c : 3342 008e                            move.w    d2,$8e(a1)
+$01cc80 : 3342 0090                            move.w    d2,$90(a1)
+$01cc84 : 3358 00a2                            move.w    (a0)+,$a2(a1)
+$01cc88 : 3358 00a4                            move.w    (a0)+,$a4(a1)
+$01cc8c : 3358 00a6                            move.w    (a0)+,$a6(a1)
+$01cc90 : 3358 00a8                            move.w    (a0)+,$a8(a1)
+$01cc94 : 3358 00aa                            move.w    (a0)+,$aa(a1)
+$01cc98 : 3358 00ac                            move.w    (a0)+,$ac(a1)
+$01cc9c : 3358 00c0                            move.w    (a0)+,$c0(a1)
+$01cca0 : 3358 00c2                            move.w    (a0)+,$c2(a1)
+$01cca4 : 4e75                                 rts       
+$01cca6 : 50f9 0002 063d                       st        $2063d
+$01ccac : 41f9 0002 0676                       lea       $20676,a0
+$01ccb2 : 23c8 0002 0636                       move.l    a0,$20636
+$01ccb8 : 588f                                 addq.l    #4,sp
+$01ccba : 6000 0e08                            bra       $1dac4
+$01ccbe : 21fc 0000 0000 9800                  move.l    #0,$ffff9800.w
+$01ccc6 : 21fc 0000 0000 9804                  move.l    #0,$ffff9804.w
+$01ccce : 31fc 0400 8266                       move.w    #$400,$ffff8266.w
+$01ccd4 : 4e75                                 rts       
+$01ccd6 : 31fc 0100 8266                       move.w    #$100,$ffff8266.w
+$01ccdc : 4e75                                 rts       
+
+2-color mode is set at $01ccce and a jump there is at $01cc4e.
+
+
+Here's what's done where the code branched:
+
+&gt;<i> disasm $1dac4
+</I>$01dac4 : 46fc 2700                            move      #$2700,sr
+$01dac8 : 4a39 0002 0632                       tst.b     $20632
+$01dace : 671e                                 beq.s     $1daee
+$01dad0 : 3039 0002 0634                       move.w    $20634,d0
+$01dad6 : 6606                                 bne.s     $1dade
+$01dad8 : 6100 fd16                            bsr       $1d7f0
+$01dadc : 6010                                 bra.s     $1daee
+$01dade : 0c40 0002                            cmpi.w    #2,d0
+$01dae2 : 6706                                 beq.s     $1daea
+$01dae4 : 6100 fcf0                            bsr       $1d7d6
+$01dae8 : 6004                                 bra.s     $1daee
+$01daea : 6100 fcd0                            bsr       $1d7bc
+$01daee : 6100 fe6c                            bsr       $1d95c
+$01daf2 : 4a39 0014 cdfb                       tst.b     $14cdfb
+$01daf8 : 6704                                 beq.s     $1dafe
+$01dafa : 6100 0198                            bsr       $1dc94
+$01dafe : 103c 0008                            move.b    #8,d0
+$01db02 : 6100 f8ba                            bsr       $1d3be
+$01db06 : 6100 f8a6                            bsr       $1d3ae
+$01db0a : 46fc 2300                            move      #$2300,sr
+$01db0e : 4a39 0002 063d                       tst.b     $2063d
+$01db14 : 671a                                 beq.s     $1db30
+$01db16 : 2f39 0002 0636                       move.l    $20636,-(sp)
+$01db1c : 3f3c 0009                            move.w    #9,-(sp)
+$01db20 : 4e41                                 trap      #1
+$01db22 : 5c8f                                 addq.l    #6,sp
+$01db24 : 3f3c 0007                            move.w    #7,-(sp)
+$01db28 : 4e41                                 trap      #1
+$01db2a : 548f                                 addq.l    #2,sp
+$01db2c : 4a80                                 tst.l     d0
+$01db2e : 67f4                                 beq.s     $1db24
+$01db30 : 2039 0001 db3e                       move.l    $1db3e,d0
+$01db36 : 6100 f0e4                            bsr       $1cc1c
+$01db3a : 4267                                 clr.w     -(sp)
+$01db3c : 4e41                                 trap      #1
+$01db3e : 0000 8870                            ori.b     #$70,d0
+$01db42 : 4a10                                 tst.b     (a0)
+$01db44 : 6b48                                 bmi.s     $1db8e
+$01db46 : 613e                                 bsr.s     $1db86
+$01db48 : 0838 0001 a202                       btst      #1,$ffffa202.w
+$01db4e : 67f8                                 beq.s     $1db48
+$01db50 : 21c0 a204                            move.l    d0,$ffffa204.w
+$01db54 : 6130                                 bsr.s     $1db86
+$01db56 : 0838 0001 a202                       btst      #1,$ffffa202.w
+$01db5c : 67f8                                 beq.s     $1db56
+$01db5e : 21c0 a204                            move.l    d0,$ffffa204.w
+$01db62 : 6122                                 bsr.s     $1db86
+$01db64 : 0838 0001 a202                       btst      #1,$ffffa202.w
+$01db6a : 67f8                                 beq.s     $1db64
+$01db6c : 21c0 a204                            move.l    d0,$ffffa204.w
+$01db70 : 2200                                 move.l    d0,d1
+$01db72 : 6112                                 bsr.s     $1db86
+$01db74 : 0838 0001 a202                       btst      #1,$ffffa202.w
+$01db7a : 67f8                                 beq.s     $1db74
+$01db7c : 21c0 a204                            move.l    d0,$ffffa204.w
+$01db80 : 5381                                 subq.l    #1,d1
+$01db82 : 66ee                                 bne.s     $1db72
+$01db84 : 60bc                                 bra.s     $1db42
+$01db86 : 7000                                 moveq     #0,d0
+$01db88 : 1018                                 move.b    (a0)+,d0
+$01db8a : 4840                                 swap      d0
+$01db8c : 3018                                 move.w    (a0)+,d0
+$01db8e : 4e75                                 rts
+
+
+Getting a trace of the whole instruction flow so that we would know
+exactly what happens before this register is set isn't so easy because
+setting of the 2-color mode happens very rarely so the trace would
+be monstrous in size.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002808.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+	<LI>Next message: <A HREF="002919.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2809">[ date ]</a>
+              <a href="thread.html#2809">[ thread ]</a>
+              <a href="subject.html#2809">[ subject ]</a>
+              <a href="author.html#2809">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

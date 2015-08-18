@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Conditional breakpoint code, please comment!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C200907030947.56414.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000431.html">
+   <LINK REL="Next"  HREF="000435.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Conditional breakpoint code, please comment!</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C200907030947.56414.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Conditional breakpoint code, please comment!">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Jul  3 08:47:56 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000431.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+        <LI>Next message: <A HREF="000435.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#432">[ date ]</a>
+              <a href="thread.html#432">[ thread ]</a>
+              <a href="subject.html#432">[ subject ]</a>
+              <a href="author.html#432">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 03 July 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> I committed a change to handle addresses between 0xff8000 and 0xffffff.
+</I>&gt;<i>
+</I>&gt;<i> In the case of indirect addresses, I also added a mask to only keep the
+</I>&gt;<i> 24 lower bits of the address (when checking value and reading memory).
+</I>&gt;<i> This way $ffff820a is also recognized as io mem $ff820a (which is the
+</I>&gt;<i> same in the 68000).
+</I>
+Thanks!  (I'll add a comment about latter to code)
+
+
+&gt;<i> Something similar should be made for DSP 16 bit address space I guess,
+</I>&gt;<i> but I don't know what.
+</I>
+Laurent?
+
+
+&gt;<i> By the way, why do I have this warning, it doesn't seem useful ?
+</I>
+Currently 68k mask/bits default to 32-bits.  For now you can ignore it.
+
+
+&gt;<i> &gt; b ( $ff820a).b = 0
+</I>&gt;<i>
+</I>&gt;<i> WARNING: mask ffffffff doesn't fit into 8 address/register bits
+</I>
+After the DSP memory support, I'll check how to best inherit the mask from
+the other value, but only when it hasn't been explicitly set by the user.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000431.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+	<LI>Next message: <A HREF="000435.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#432">[ date ]</a>
+              <a href="thread.html#432">[ thread ]</a>
+              <a href="subject.html#432">[ subject ]</a>
+              <a href="author.html#432">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

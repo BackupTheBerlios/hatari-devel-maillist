@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] A few more issues before v1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20few%20more%20issues%20before%20v1.5&In-Reply-To=%3C4DCB0FAA.50106%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003417.html">
+   <LINK REL="Next"  HREF="003422.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] A few more issues before v1.5</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20few%20more%20issues%20before%20v1.5&In-Reply-To=%3C4DCB0FAA.50106%40corp.free.fr%3E"
+       TITLE="[hatari-devel] A few more issues before v1.5">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu May 12 00:37:30 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003417.html">[hatari-devel] A few more issues before v1.5
+</A></li>
+        <LI>Next message: <A HREF="003422.html">[hatari-devel] A few more issues before v1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3420">[ date ]</a>
+              <a href="thread.html#3420">[ thread ]</a>
+              <a href="subject.html#3420">[ subject ]</a>
+              <a href="author.html#3420">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 11/05/2011 22:15, Eero Tamminen a &#233;crit :
+
+&gt;<i>
+</I>&gt;<i> Btw. Is the &quot;Songs of the unexpected&quot; sound still supposed to be &quot;sometimes
+</I>&gt;<i> distorted&quot; like said in the compatibility list?  My ears are low-fi, but
+</I>&gt;<i> anyway, I didn't hear anything &quot;unexpected&quot;. :-)
+</I>
+This was added by thomas in rev 1205, as well as &quot;systematic error&quot; in 
+rev 1443 (haven't tested this one).
+Sound should be ok now since latest dma changes, I didn't hear any 
+distortion in songs of the unexpected.
+Thomas, can you confirm ?
+
+
+&gt;<i>
+</I>&gt;<i> However, after the first (very nice) &quot;Ice&quot; song had reached &quot;5:33&quot; mark,
+</I>&gt;<i> the demo got double bus error...
+</I>&gt;<i> Bus error lput at 4e7340e3
+</I>&gt;<i> Bus error wput at 4e7340e1
+</I>&gt;<i> Bus error wput at 4e7340d9
+</I>&gt;<i> Bus error lput at 4e7340db
+</I>&gt;<i> Bus error wput at 4e7340df
+</I>&gt;<i> Bus error lput at 4e7340e3
+</I>&gt;<i> Bus error lput at 4e7340d5
+</I>&gt;<i> Bus error wput at 4e7340d3
+</I>&gt;<i> Bus error wput at 4e7340cb
+</I>&gt;<i> Bus error lput at 4e7340cd
+</I>&gt;<i> Bus error wput at 4e7340d1
+</I>&gt;<i> Detected double bus error at address $4e7340d5, PC=$3e00ca2 =&gt;  CPU halted!
+</I>&gt;<i>
+</I>&gt;<i> If I do cold boot and use fast-forward, it seems to happen in the song
+</I>&gt;<i> beginning.
+</I>
+Yes, I also get this (before 5:33) when I do fast-forward ; maybe a 
+problem similar to the one in Music Dream II, althogh I don't think they 
+use the same replay. I need to check.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003417.html">[hatari-devel] A few more issues before v1.5
+</A></li>
+	<LI>Next message: <A HREF="003422.html">[hatari-devel] A few more issues before v1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3420">[ date ]</a>
+              <a href="thread.html#3420">[ thread ]</a>
+              <a href="subject.html#3420">[ subject ]</a>
+              <a href="author.html#3420">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

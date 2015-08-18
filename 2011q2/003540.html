@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] start and break question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20start%20and%20break%20question&In-Reply-To=%3C201106060111.15398.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003535.html">
+   <LINK REL="Next"  HREF="003541.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] start and break question</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20start%20and%20break%20question&In-Reply-To=%3C201106060111.15398.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] start and break question">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jun  6 00:11:15 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003535.html">[hatari-devel] start and break question
+</A></li>
+        <LI>Next message: <A HREF="003541.html">[hatari-devel] start and break question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3540">[ date ]</a>
+              <a href="thread.html#3540">[ thread ]</a>
+              <a href="subject.html#3540">[ subject ]</a>
+              <a href="author.html#3540">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On maanantai 06 kes&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> &gt; I think catching the first program instruction would need a new virtual
+</I>&gt;<i> &gt; debugger variable that tracks the OS program basepage and the text
+</I>&gt;<i> &gt; segment address in that.  It would be then possible to set a
+</I>&gt;<i> &gt; breakpoint on it and its changes.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; How does that sound and how should I name that variable?
+</I>&gt;<i> 
+</I>&gt;<i> What code would you use to get the basepage on any TOS version ?
+</I>
+Info command should already have all the necessary checks for getting 
+sysbase/basepage on different TOS version.  With the attached patch,
+you can use just:
+	b BasepageTextSegment &gt; 0 &amp;&amp; pc = BasepageTextSegment
+
+To break on normal program startup.
+
+Currently the variable shows a value althought there's no program running,
+so I was wondering should it return zero until the text segment _size_ is
+also non-zero?
+
+
+On maanantai 06 kes&#228;kuu 2011, Laurent Sallafranque wrote:
+&gt;<i> You may call it something like debug_startAndBreakProgram or
+</I>&gt;<i> debug_basepagePrg, ...
+</I>&gt;<i> 
+</I>&gt;<i> (debug to know it's a debugging variable)
+</I>
+I think the &quot;debug&quot; prefix is redundant.  All breakpoint variables in
+the debugger are &quot;debugging&quot; variables. :-)
+
+
+
+&gt;<i> PS : this variable could also be used in a graphical debugger : we could
+</I>&gt;<i> launch a program, and if the check button &quot;break on start&quot; is activated,
+</I>&gt;<i> the debugger would break on the first instruction.
+</I>&gt;<i> This would be nice, no ?
+</I>
+Definitely. :-)
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: text-segment.diff
+Type: text/x-patch
+Size: 2015 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110606/43909648/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110606/43909648/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003535.html">[hatari-devel] start and break question
+</A></li>
+	<LI>Next message: <A HREF="003541.html">[hatari-devel] start and break question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3540">[ date ]</a>
+              <a href="thread.html#3540">[ thread ]</a>
+              <a href="subject.html#3540">[ subject ]</a>
+              <a href="author.html#3540">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

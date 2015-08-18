@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Proposal%20for%20a%20new%20disassembler%20in%20Hatari%20%282nd%0A%09try%29&In-Reply-To=%3C201010161130.48627.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002648.html">
+   <LINK REL="Next"  HREF="002545.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Proposal%20for%20a%20new%20disassembler%20in%20Hatari%20%282nd%0A%09try%29&In-Reply-To=%3C201010161130.48627.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Oct 16 10:30:48 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002648.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+        <LI>Next message: <A HREF="002545.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2535">[ date ]</a>
+              <a href="thread.html#2535">[ thread ]</a>
+              <a href="subject.html#2535">[ subject ]</a>
+              <a href="author.html#2535">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+&gt;<i> I still don't like the weird disassembly output in Hatari, so I wrote my
+</I>&gt;<i> own (68000..68060/CPU32/PMMU/FPU) disassembler under my own GPL
+</I>&gt;<i> compatible license :-) I've tested the output against other
+</I>&gt;<i> disassemblers, noticed they have a bunch of bugs. And tuned it a bit...
+</I>&gt;<i> 
+</I>&gt;<i> Feedback, please :-)
+</I>&gt;<i>
+</I>&gt;<i> Here is the first 8k of TOS 3.06 with _NO_ additional info from the
+</I>&gt;<i> user, just a plain: disassemble from $e0000 to $e02000. All symbols,
+</I>&gt;<i> formatting, etc. is done by the disassembler. The way it's done is by
+</I>&gt;<i> text files that define hardware addresses, but also - optional - OS
+</I>&gt;<i> specific symbols (i've added a few for test purposes).
+</I>
+Hatari already has support for symbol definition files, please use that
+(if you aren't already).  The format is same as used by NM and documented
+in the Hatari manual debugger section.  Both GCC binutils and AHCC can
+output this format.
+
+For an example:
+- on how to access these symbols from code, see ../src/debug/symbols.h
+  (and how those functions are called elsewhere in debugger code)
+- of this data, see  the *.sym files under tests/ dir
+- on how to use that data while in debugger, see tests/debugui/debugger.ini.
+
+When the commands are used interactively in the debugger, you have full
+dir- &amp; filename completion in the &quot;dsp/symbols&quot; commands which load the
+data.
+
+And if you're working longer on some code, you can put all these debugger 
+commands into a file and ask Hatari to load them on startup with
+the &quot;--parse &lt;file&gt;&quot; option.
+
+
+&gt;<i> The beginning for example is just:
+</I>&gt;<i> 
+</I>&gt;<i>  0xe00000,OSHEADER,1,osroml
+</I>&gt;<i>
+</I>&gt;<i> which results in:
+</I>--------------------------------
+$e00000 : 602e                     os_entry: BRA.S $e00030
+$e00002 : 0306                     DC.W $0306           ; os_version
+$e00004 : 00e0 0030                DC.L osromreset      ; reseth
+$e00008 : 00e0 0000                DC.L osroml          ; os_beg
+$e0000c : 0000 8316                DC.L $008316         ; os_end
+$e00010 : 00e0 0030                DC.L osromreset      ; os_rsvl
+$e00014 : 00e3 5fd8                DC.L $e35fd8         ; os_magic
+$e00018 : 0924 1991                DC.L $09241991       ; os_date
+$e0001c : 0000                     DC.W $0000           ; os_conf
+$e0001e : 1738                     DC.W $1738           ; os_dosdate
+$e00020 : 0000 5766                DC.L $005766         ; p_root
+$e00024 : 0000 10bb                DC.L $0010bb         ; pkbshift
+$e00028 : 0000 771e                DC.L $00771e         ; p_run
+$e0002c : 0000 0000                DC.L $000000         ; p_rsv2
+$e00030 : 46fc 2700                osromreset: MOVE #$2700,SR
+$e00034 : 31fc 0100 8606           MOVE.W     #$100,(fifo).w
+$e0003a : 31fc 0000 8606           MOVE.W     #0,(fifo).w
+...
+-----------------------------
+
+The symbols usage looks great to me!
+
+How you've though to include function names and profiler data to that
+output?
+
+
+The current Hatari disassembly output with function/code address symbol
+names looks like this:
+---
+00e0f5fa: 60a2 4e56 0000 342e 0008 BT .B #$ffffffa2 == 00e0f59e (TRUE)
+_vdi2ste:
+00e0f5fc: 4e56 0000 342e 0008 7003 LINK.W A6,#$0000
+00e0f600: 342e 0008 7003 c1c2 48c0 MOVE.W (A6,$0008) == $00010fea,D2
+---
+(Data symbol addresses aren't currently included into disassembler output
+but the way you do it is indeed nice looking.)
+
+This is similar to how the profiler data is added to the output:
+---
+1065/17040 times/cycles:
+00e0f5f6: 4e90 584f 60a2 4e56 0000 JSR.L (A0)
+1054/8432 times/cycles:
+00e0f5f8: 584f 60a2 4e56 0000 342e ADDA.W #$00000004,A7
+1178/11780 times/cycles:
+00e0f5fa: 60a2 4e56 0000 342e 0008 BT .B #$ffffffa2 == 00e0f59e (TRUE)
+---
+
+(It disrupts the code flow but with current disassembler I couldn't
+add it anywhere else than on its own line.)
+
+
+	- Eero
+
+PS. This is how you use the profiler:
+-----------------------
+&gt;<i> profile on
+</I>Profiling enabled.
+&gt;<i> c
+</I>Returning to emulation...
+&lt;here I return to debugger again&gt;
+Allocated CPU profile buffer (18 MB).
+Allocated CPU profile address buffer (4 KB).
+Normal RAM (0-0x400000):
+- no activity
+Cartridge ROM (0xFA0000-0xFC0000):
+- no activity
+ROM TOS (0xE00000-0xE80000):
+- active address range:
+  0xe0014c-0xe23f02
+- active instruction addresses:
+  707 (100.00% of all)
+- executed instructions:
+  629144 (100.00% of all)
+- used cycles:
+  9408503 (100.00% of all)
+- address with most cycles:
+  0xe0dcca, 402628 cycles (4.28% of all in area)
+- address with most hits:
+  0xe004a4, 4900 hits (0.78% of all in area)
+
+CPU=$e176fc, VBL=887, FrameCycles=64, HBL=0, LineCycles=64, DSP=N/A
+&gt;<i> profile counts
+</I>addr:           count:
+0xe004a4        0.78%   4900
+0xe004b6        0.78%   4896
+0xe0dcbc        0.55%   3448
+0xe0dcc6        0.55%   3448
+0xe0f59e        0.55%   3446
+0xe0dcce        0.55%   3445
+0xe0dcd6        0.55%   3445
+0xe1657a        0.55%   3445
+0xe1af98        0.55%   3445
+0xe0f564        0.54%   3390
+0xe0f56c        0.54%   3390
+0xe0f574        0.54%   3390
+0xe0dcb6        0.54%   3389
+0xe0dcae        0.54%   3388
+0xe0f57e        0.54%   3388
+0xe0f584        0.54%   3388
+16 CPU addresses listed.
+-----------------------
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002648.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+	<LI>Next message: <A HREF="002545.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2535">[ date ]</a>
+              <a href="thread.html#2535">[ thread ]</a>
+              <a href="subject.html#2535">[ subject ]</a>
+              <a href="author.html#2535">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

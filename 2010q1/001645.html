@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Extended video mode
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Extended%20video%20mode&In-Reply-To=%3C20100309211836.44a90d75%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001643.html">
+   <LINK REL="Next"  HREF="001646.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Extended video mode</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Extended%20video%20mode&In-Reply-To=%3C20100309211836.44a90d75%40phineus%3E"
+       TITLE="[hatari-devel] Extended video mode">huth at users.berlios.de
+       </A><BR>
+    <I>Tue Mar  9 21:18:36 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001643.html">[hatari-devel] Extended video mode
+</A></li>
+        <LI>Next message: <A HREF="001646.html">[hatari-devel] Extended video mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1645">[ date ]</a>
+              <a href="thread.html#1645">[ thread ]</a>
+              <a href="subject.html#1645">[ subject ]</a>
+              <a href="author.html#1645">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue,  9 Mar 2010 15:08:30 +0100
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ghst at ghstwlf.com</A> wrote:
+
+&gt;<i> Hello,
+</I>&gt;<i> I am looking in to extending the resolution of my atari st to
+</I>&gt;<i> someting like, 1280x1024 or even bigger. I want to do this by a small
+</I>&gt;<i> mod to the cardrige port by adding WE in some way. Now I am curios
+</I>&gt;<i> how Hatari does its extended grafics mode. I have tried to read the
+</I>&gt;<i> code but I can't make any sens of it. Please tell me. //P&#228;r
+</I>
+ Hi!
+
+IIRC we basically hook into the TRAP 2 vector to intercept the
+v_openvwk() VDI call. When this call is made, we patch the new
+resolution into the right entries of the intout array, and also
+update some line-a variables. See vdi.c in the Hatari source code.
+
+ Regards,
+  Thomas
+
+
+PS: I also got a small program (with source code!) called SCREENPLUS-2
+on my harddisk, that extends the low GEM resolution of every real ST
+from 320x200 to 320x240. If you like I can send that to you.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001643.html">[hatari-devel] Extended video mode
+</A></li>
+	<LI>Next message: <A HREF="001646.html">[hatari-devel] Extended video mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1645">[ date ]</a>
+              <a href="thread.html#1645">[ thread ]</a>
+              <a href="subject.html#1645">[ subject ]</a>
+              <a href="author.html#1645">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

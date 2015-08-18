@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Gemdos date/time confusion/problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Gemdos%20date/time%20confusion/problems&In-Reply-To=%3C200911290030.26109.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001028.html">
+   <LINK REL="Next"  HREF="001039.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Gemdos date/time confusion/problems</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Gemdos%20date/time%20confusion/problems&In-Reply-To=%3C200911290030.26109.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Gemdos date/time confusion/problems">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Nov 28 23:30:25 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001028.html">[hatari-devel] Gemdos date/time confusion/problems
+</A></li>
+        <LI>Next message: <A HREF="001039.html">[hatari-devel] Gemdos date/time confusion/problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1029">[ date ]</a>
+              <a href="thread.html#1029">[ thread ]</a>
+              <a href="subject.html#1029">[ subject ]</a>
+              <a href="author.html#1029">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 29 November 2009, Uwe Seimet wrote:
+&gt;<i> the GEMDOS time in seconds has a range of only 5 bits. The value in
+</I>&gt;<i> these bits has to be doubled in order to get the actual number of
+</I>&gt;<i> seconds.
+</I>&gt;<i> I wonder if in gemdos.c GemDOS_GetFileInformation handles this
+</I>&gt;<i> correctly. Instead of
+</I>&gt;<i>
+</I>&gt;<i>         DateTime-&gt;word2 |= (x-&gt;tm_sec &amp; 0x1F);          /* 5 bits */
+</I>&gt;<i>
+</I>&gt;<i> Should't it be
+</I>&gt;<i>
+</I>&gt;<i>         DateTime-&gt;word2 |= ((x-&gt;tm_sec/2) &amp; 0x1F);          /* 5 bits */
+</I>...
+&gt;<i> the month field of struct tm has a range of 0-11 (January to
+</I>&gt;<i> December) while GEMDOS uses 1-12. I don't think this difference is
+</I>&gt;<i> accounted for in GemDOS_GetFileInformation, but I might miss something.
+</I>
+I agree.  The GemDOS_Time2dos() and GemDOS_Date2dos() functions
+already seem to do that right.
+-&gt; GetFileInformation() should use them.
+
+(with &quot;dos&quot; changed to &quot;Tos&quot; in their function names...)
+
+
+&gt;<i> I'm still confused about the GEMDOS date/time handling. Let me suggest
+</I>&gt;<i> to rename the fields in DATETIME as follows:
+</I>&gt;<i>
+</I>&gt;<i> typedef struct {
+</I>&gt;<i>   Uint16 date;
+</I>&gt;<i>   Uint16 time;
+</I>&gt;<i> } DATETIME;
+</I>&gt;<i>
+</I>&gt;<i> This makes it easier to understand the meaning of these fields.
+</I>
+Agree.  Feel free to send patch for this and above. :-)
+
+
+&gt;<i> When looking at GemDOS_GSDToF I wonder if this is correct:
+</I>&gt;<i>
+</I>&gt;<i> 	pBuffer = STMemory_ReadLong(Params+SIZE_WORD);
+</I>&gt;<i>
+</I>&gt;<i> The value on the stack is not the date/time value but a pointer to this
+</I>&gt;<i> value. Does the code above actually read the date/time value from ST
+</I>&gt;<i> memory correctly?
+</I>
+It doesn't read the date/time value, setting that for file isn't implemented 
+currently (could be done with utime() syscall).  It reads the address of
+the value.
+
+I think it's correct:
+* the SIZE_WORD is to skip the GEMDOS opcode (which IMHO should be done
+  by GemDOS_OpCode(), it's confusing to have this skipping in all the GEMDOS
+  functions, I may change it...).
+* And STMemory_WriteWord() needs an ST address, not a pointer.
+
+
+&gt;<i> I also wonder why I cannot copy certain files on my GEMDOS drive. In the
+</I>&gt;<i> same folder some files can be copied, for others copying fails without
+</I>&gt;<i> an error message being logged. The copy is simply not created. The file
+</I>&gt;<i> permissions are the same for all these files, so my guess is that this
+</I>&gt;<i> also has something to do with the timestamps.
+</I>
+Please take a GEMDOS trace of this (AltGr+Pause to get debugger,
+t&lt;TAB&gt; g&lt;TAB&gt; to enable gemdos tracing and 'c' to continue).
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001028.html">[hatari-devel] Gemdos date/time confusion/problems
+</A></li>
+	<LI>Next message: <A HREF="001039.html">[hatari-devel] Gemdos date/time confusion/problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1029">[ date ]</a>
+              <a href="thread.html#1029">[ thread ]</a>
+              <a href="subject.html#1029">[ subject ]</a>
+              <a href="author.html#1029">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

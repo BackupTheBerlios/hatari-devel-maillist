@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Catching return from an exception?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Catching%20return%20from%20an%20exception%3F&In-Reply-To=%3Calpine.LMD.2.00.0911232142150.29378%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000986.html">
+   <LINK REL="Next"  HREF="000989.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Catching return from an exception?</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Catching%20return%20from%20an%20exception%3F&In-Reply-To=%3Calpine.LMD.2.00.0911232142150.29378%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Catching return from an exception?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Nov 23 21:56:25 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000986.html">[hatari-devel] Catching return from an exception?
+</A></li>
+        <LI>Next message: <A HREF="000989.html">[hatari-devel] Catching return from an exception?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#988">[ date ]</a>
+              <a href="thread.html#988">[ thread ]</a>
+              <a href="subject.html#988">[ subject ]</a>
+              <a href="author.html#988">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 23 Nov 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I was thinking of adding some special support to the Hatari internal
+</I>&gt;<i> debugger for GEMDOS (and other exception) error handling.
+</I>&gt;<i>
+</I>&gt;<i> If I want to breakpoint on GEMDOS exception when it *returns* so that I can
+</I>&gt;<i> break on failed GEMDOS calls (i.e. D0 &lt; 0), what I should be checking
+</I>&gt;<i> to know that the code is returning from an exception?
+</I>&gt;<i>
+</I>
+
+Hello,
+
+I think it should be nearly doable with the current breakpoints code.
+
+gemdos, bios and xbios are using trap 1,14 and 15, and the corresponding 
+opcodes are $4e41, $4e4e and $4e4f.
+
+So, you should check that the previous instruction was one of these 
+opcodes and that d0 is &lt; 0.
+
+Sthg like :
+
+(pc-2).w = $4e41 &amp;&amp; d0&lt;0
+
+Only limitation is that current breakpoint code doesn't handle add/sub on 
+register name. But if you add such possibilities, I think it would work.
+
+You could get &quot;false positives&quot; with this method, because if you have a 
+68000 instruction that does &quot;move.w #$4e41,d5&quot; for example, then the 
+corresponding opcode will be $3a3c4e41 and the breakpoint will trigger, 
+although no trap was executed, but most of the time it will be good.
+
+Other solution would be of course to modify newcpu.c to set a particular 
+flag/variable that would be exported in the debugger, but I'm not sure 
+it's a good idea to add specific codes on some opcodes (if we keep in mind 
+the idea to replace cpu core with winuae's one, the less peculiarities we 
+have, the better/easier it will be)
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000986.html">[hatari-devel] Catching return from an exception?
+</A></li>
+	<LI>Next message: <A HREF="000989.html">[hatari-devel] Catching return from an exception?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#988">[ date ]</a>
+              <a href="thread.html#988">[ thread ]</a>
+              <a href="subject.html#988">[ subject ]</a>
+              <a href="author.html#988">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

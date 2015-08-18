@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20emu%20and%20STE%20compatibility%20%28D-Bug%20games%29&In-Reply-To=%3C4D616559.8040300%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003087.html">
+   <LINK REL="Next"  HREF="003091.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon emu and STE compatibility (D-Bug games)</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20emu%20and%20STE%20compatibility%20%28D-Bug%20games%29&In-Reply-To=%3C4D616559.8040300%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Falcon emu and STE compatibility (D-Bug games)">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Feb 20 20:02:49 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003087.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+        <LI>Next message: <A HREF="003091.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3088">[ date ]</a>
+              <a href="thread.html#3088">[ thread ]</a>
+              <a href="subject.html#3088">[ subject ]</a>
+              <a href="author.html#3088">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 20/02/2011 19:51, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Ok for the renaiming, but I think everything's done now.
+</I>&gt;<i>
+</I>&gt;<i>  &gt; But maybe &quot;isFalconInSteMode&quot; could be renamed &quot;isFalconInSteBusMode&quot;
+</I>&gt;<i> ? Full STE mode means bus + cpu speed + blitter speed + dma sound
+</I>&gt;<i>
+</I>&gt;<i> Nearly OK here.
+</I>&gt;<i>
+</I>&gt;<i> Full STe mode means STE mode bus + ( cpu speed + blitter speed) at 8 Mhz.
+</I>&gt;<i> That's what we have.
+</I>&gt;<i>
+</I>&gt;<i> Only thing to finish is to use all functions of $ff8007.b (having a CPU
+</I>&gt;<i> at 16 Mhz and a blitter at 8 for example).
+</I>&gt;<i> Or disable the blitter is another one.
+</I>&gt;<i> (I don't think many programs use this anyway, so what we have actually
+</I>&gt;<i> seems suffisant for our needs).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> DMA sound is another part taken into account into the crossbar.
+</I>&gt;<i> Everything is already implemented for Ste emulation sound.
+</I>&gt;<i>
+</I>
+Hello
+
+Of course, I didn't mean STE mode was not nearly ready in falcon's 
+emulation, it was more about the meaning of the variable. If 
+isFalconInSteMode means setting blitter+cpu at 8 MHz, bus errors, 
+shifter and dma sound, then I'm OK with keeping it named this way.
+
+But if we want to split each bit of $ff8207 in a separate case, I think 
+it's better to have one variable for each bit ; in this case, 
+isFalconInSteMode was only used for the bus, that's why I thought it 
+would be better to add &quot;Bus&quot; in its name.
+We could then have a higher level &quot;isFalconInSteMode&quot; variable that 
+would imply isFalconInSteBusMode=1 + dmasound + 8 MHz + shifter.
+
+
+
+Regards
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003087.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+	<LI>Next message: <A HREF="003091.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3088">[ date ]</a>
+              <a href="thread.html#3088">[ thread ]</a>
+              <a href="subject.html#3088">[ subject ]</a>
+              <a href="author.html#3088">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

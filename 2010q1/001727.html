@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issues with CMake/CMakeLists.txt
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20CMake/CMakeLists.txt&In-Reply-To=%3Calpine.LMD.2.00.1003192137250.18020%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001725.html">
+   <LINK REL="Next"  HREF="001729.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issues with CMake/CMakeLists.txt</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20CMake/CMakeLists.txt&In-Reply-To=%3Calpine.LMD.2.00.1003192137250.18020%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Issues with CMake/CMakeLists.txt">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Mar 19 21:41:13 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001725.html">[hatari-devel] Issues with CMake/CMakeLists.txt
+</A></li>
+        <LI>Next message: <A HREF="001729.html">[hatari-devel] Issues with CMake/CMakeLists.txt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1727">[ date ]</a>
+              <a href="thread.html#1727">[ thread ]</a>
+              <a href="subject.html#1727">[ subject ]</a>
+              <a href="author.html#1727">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 19 Mar 2010, Eero Tamminen wrote:
+
+&gt;<i> Hm.  Maybe in that case it's better to leave it as it is.
+</I>&gt;<i>
+</I>&gt;<i> All major Linux distros include Python in their base system
+</I>&gt;<i> (in Ubuntu it's even declared essential), so Linux packagers
+</I>&gt;<i> should always get python UI stuff.
+</I>
+Considering hatari is supposed to build on more exotic platform than jsut 
+linux (wii, ...) assuming python is present can be wrong in the end
+
+&gt;<i> Btw. How do I enabled showing of compiler options &amp; flags with CMake?
+</I>
+I use : VERBOSE=1 make
+but there might be other ways
+
+&gt;&gt;&gt;<i> CMake defines SDL_LIBRARY
+</I>&gt;&gt;&gt;<i> as: /usr/lib/libSDLmain.a;/usr/lib/libSDL.so;-lpt
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This is done by the standard FindSDL.cmake package that is shipped with
+</I>&gt;&gt;<i> CMake. I think they now what they're doing. If not, they would probably
+</I>&gt;&gt;<i> get a lot of complaints on their mailing lists... ;-)
+</I>&gt;<i>
+</I>&gt;<i> Well, it seems that CMake doesn't use sdl-config and therefore doesn't
+</I>&gt;<i> use _GNU_SOURCE, so it craps out my build.
+</I>
+&gt;<i>From what I see, /usr/share/cmake/Modules/FindSDL.cmake is looking in a 
+</I>set of predefined dirs, but doesn't use sdl-config, so this may break on 
+setup where sdl is not in one of this dir (you can set SDLDIR in that 
+case, I had to do this for crosscompiling hatari under linux)
+
+&gt;<i> $ cmake --version
+</I>&gt;<i> cmake version 2.6-patch 0
+</I>
+I'm using 2.8
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001725.html">[hatari-devel] Issues with CMake/CMakeLists.txt
+</A></li>
+	<LI>Next message: <A HREF="001729.html">[hatari-devel] Issues with CMake/CMakeLists.txt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1727">[ date ]</a>
+              <a href="thread.html#1727">[ thread ]</a>
+              <a href="subject.html#1727">[ subject ]</a>
+              <a href="author.html#1727">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

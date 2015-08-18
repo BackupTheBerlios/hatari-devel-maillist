@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issues with CMake/CMakeLists.txt
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20CMake/CMakeLists.txt&In-Reply-To=%3C20100319205827.49ea4afe%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001693.html">
+   <LINK REL="Next"  HREF="001725.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issues with CMake/CMakeLists.txt</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20CMake/CMakeLists.txt&In-Reply-To=%3C20100319205827.49ea4afe%40phineus%3E"
+       TITLE="[hatari-devel] Issues with CMake/CMakeLists.txt">huth at users.berlios.de
+       </A><BR>
+    <I>Fri Mar 19 20:58:27 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001693.html">[hatari-devel] Issues with CMake/CMakeLists.txt
+</A></li>
+        <LI>Next message: <A HREF="001725.html">[hatari-devel] Issues with CMake/CMakeLists.txt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1722">[ date ]</a>
+              <a href="thread.html#1722">[ thread ]</a>
+              <a href="subject.html#1722">[ subject ]</a>
+              <a href="author.html#1722">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 16 Mar 2010 23:08:42 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Python is needed only when running the python scripts.  When creating
+</I>&gt;<i> Hatari packages, requiring Python to get e.g. hatariui installed is
+</I>&gt;<i> IMHO even wrong thing to do (packages may be built on different
+</I>&gt;<i> machine than where they're installed).
+</I>&gt;<i> 
+</I>&gt;<i> I think just this should be enough:
+</I>&gt;<i> add_subdirectory(python-ui)
+</I>
+Ok, that sounds reasonable.
+
+&gt;<i> And maybe something like this:
+</I>&gt;<i> include(FindPythonInterp)
+</I>&gt;<i> if(PYTHONINTERP_FOUND)
+</I>&gt;<i>         message(STATUS &quot;WARNING: Python not present, hatariui cannot
+</I>&gt;<i> be run in the build environment!&quot;)
+</I>&gt;<i> endif(PYTHONINTERP_FOUND)
+</I>
+Well, I think that could also be annoying for people who do not need
+the the python-ui and don't have python installed (e.g. on Windows).
+So let's keep it simple, without warning message.
+
+&gt;<i> /hatari/src/file.c: In function &#8216;File_Read&#8217;:
+</I>&gt;<i> /hatari/src/file.c:193: warning: implicit declaration of function
+</I>&gt;<i> &#8216;gzopen64&#8217;
+</I>&gt;<i> /hatari/src/file.c:193: warning: assignment makes pointer
+</I>&gt;<i> from integer without a cast
+</I>&gt;<i> /hatari/src/file.c:200: warning: implicit declaration of function
+</I>&gt;<i> &#8216;gzseek64&#8217;
+</I>&gt;<i> /hatari/src/file.c:203: warning: implicit declaration of
+</I>&gt;<i> function &#8216;gztell64&#8217;
+</I>&gt;<i> /hatari/src/file.c: In function &#8216;File_Save&#8217;:
+</I>&gt;<i> /hatari/src/file.c:268: warning: assignment makes pointer from
+</I>&gt;<i> integer without a cast
+</I>
+This is certainly caused by the fact that the CMakeLists.txt in the
+topmost directory turns on large filesystem support via &quot;getconf
+LFS_CFLAGS&quot; - which is not done by the old Makefiles.
+But you should not get warning messages because of this - unless your
+zlib.h is broken. My zlib.h looks like this here:
+
+#if defined(_LARGEFILE64_SOURCE) || _FILE_OFFSET_BITS == 64
+   ZEXTERN gzFile ZEXPORT gzopen64 OF((const char *, const char *));
+   ZEXTERN z_off64_t ZEXPORT gzseek64 OF((gzFile, z_off64_t, int));
+   ZEXTERN z_off64_t ZEXPORT gztell64 OF((gzFile));
+   ZEXTERN uLong ZEXPORT adler32_combine64 OF((uLong, uLong, z_off64_t));
+   ZEXTERN uLong ZEXPORT crc32_combine64 OF((uLong, uLong, z_off64_t));
+#endif
+
+#if _FILE_OFFSET_BITS == 64
+#  define gzopen gzopen64
+#  define gzseek gzseek64
+#  define gztell gztell64
+#  define adler32_combine adler32_combine64
+#  define crc32_combine crc32_combine64
+#else
+...
+#endif
+
+That means it does both, declaring the right prototypes and then
+re-defining the functions to the 64-bit versions.
+What is your zlib.h doing?
+
+&gt;<i> For example isblank() manual page says:
+</I>&gt;<i>    Feature Test Macro Requirements for glibc (see
+</I>&gt;<i> feature_test_macros(7)): isascii(): _BSD_SOURCE || _SVID_SOURCE ||
+</I>&gt;<i> _XOPEN_SOURCE isblank(): _XOPEN_SOURCE &gt;= 600 || _ISOC99_SOURCE; or
+</I>&gt;<i> cc -std=c99
+</I>
+That's interesting... but I can't see how CMake could cause that
+warning. Could you check the corresponding header file in which case
+it defines isblank() and in which case is does not?
+
+
+&gt;<i> When I ran ccmake (cmake ncurses UI) and switched it to advanced mode,
+</I>&gt;<i> I noticed that it at least turns assert()s off by default.
+</I>
+You've got to tell CMake to generate a debug build (set
+CMAKE_BUILD_TYPE to Debug), then it will keep the asserts enabled.
+When you specify nothing, it will create a Release build - which has
+asserts turned off.
+
+&gt;<i> CMake defines SDL_LIBRARY
+</I>&gt;<i> as: /usr/lib/libSDLmain.a;/usr/lib/libSDL.so;-lpt
+</I>
+This is done by the standard FindSDL.cmake package that is shipped with
+CMake. I think they now what they're doing. If not, they would probably
+get a lot of complaints on their mailing lists... ;-)
+
+&gt;<i> Eventually build with CMake fails with:
+</I>&gt;<i> make[2]: *** No rule to make target `../doc/hatari.1.gz', needed by 
+</I>&gt;<i> `doc/CMakeFiles/manpages'.  Stop.
+</I>&gt;<i> make[1]: *** [doc/CMakeFiles/manpages.dir/all] Error 2
+</I>&gt;<i> make: *** [all] Error 2
+</I>
+Huh? Strange, this works for me, and I can't see any obvious problem in
+doc/CMakeLists.txt ... which version of CMake are you using?
+
+&gt;<i> PS. In general CMake seems nice and it seems to have pretty extensive
+</I>&gt;<i> documentation in its the Debian package.
+</I>
+Yes, documentation is really good and also looks much better to me than
+the docs for the autoconf stuff... that's also one of the many reasons I
+was finally pushing for CMake instead of autoconf ;-)
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001693.html">[hatari-devel] Issues with CMake/CMakeLists.txt
+</A></li>
+	<LI>Next message: <A HREF="001725.html">[hatari-devel] Issues with CMake/CMakeLists.txt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1722">[ date ]</a>
+              <a href="thread.html#1722">[ thread ]</a>
+              <a href="subject.html#1722">[ subject ]</a>
+              <a href="author.html#1722">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

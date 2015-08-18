@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Some more demos that fail with 1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20more%20demos%20that%20fail%20with%201.4&In-Reply-To=%3Calpine.DEB.2.00.1103251852010.15416%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003214.html">
+   <LINK REL="Next"  HREF="003218.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Some more demos that fail with 1.4</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20more%20demos%20that%20fail%20with%201.4&In-Reply-To=%3Calpine.DEB.2.00.1103251852010.15416%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Some more demos that fail with 1.4">ae at dhs.nu
+       </A><BR>
+    <I>Fri Mar 25 18:58:33 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003214.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+        <LI>Next message: <A HREF="003218.html">[hatari-devel] trivial OSX gui update needed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3215">[ date ]</a>
+              <a href="thread.html#3215">[ thread ]</a>
+              <a href="subject.html#3215">[ subject ]</a>
+              <a href="author.html#3215">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 25 Mar 2011, Nicolas Pomar&#232;de wrote:
+
+&gt;&gt;<i> RGB Plasma / Omega
+</I>&gt;&gt;<i> <A HREF="http://files.dhs.nu/files_demo/omplasma.zip">http://files.dhs.nu/files_demo/omplasma.zip</A>
+</I>&gt;&gt;<i> <A HREF="http://pouet.net/prod.php?which=28031">http://pouet.net/prod.php?which=28031</A>
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> a) Crashes with double bus error at boot
+</I>&gt;<i>
+</I>&gt;<i> This disk has a wrong boot sector that indicates 2 sides, 1600 sectors and 10 
+</I>&gt;<i> sectors per track.
+</I>&gt;<i> But in fact, the real disk's size is 737280 bytes, which doesn't match the 
+</I>&gt;<i> above values.
+</I>&gt;<i>
+</I>&gt;<i> This new code should be more robust at guessing.
+</I>
+Hi,
+
+thanks for the update, I can confirm that the RGB Plasma now works, great 
+work! :-)
+
+
+However Hatari doesn't compile out of the box on OS X, I need to comment 
+out some stuff:
+
+First, check out a fresh Hatari, then do:
+
+cd hatari
+cmake -G &quot;Unix Makefiles&quot; .
+make
+
+/Users/ae/Atari/source/hatari/src/gui-osx/PrefsController.m: In function 
+'-[PrefsController initKeysDropDown:]':
+/Users/ae/Atari/source/hatari/src/gui-osx/PrefsController.m:520: warning: 
+comparison between signed and unsigned
+/Users/ae/Atari/source/hatari/src/gui-osx/PrefsController.m: In function 
+'-[PrefsController setAllControls]':
+/Users/ae/Atari/source/hatari/src/gui-osx/PrefsController.m:614: error: 
+'CNF_SCREEN' has no member named 'bCaptureChange'
+/Users/ae/Atari/source/hatari/src/gui-osx/PrefsController.m: In function 
+'-[PrefsController saveAllControls]':
+/Users/ae/Atari/source/hatari/src/gui-osx/PrefsController.m:825: error: 
+'CNF_SCREEN' has no member named 'bCaptureChange'
+make[2]: *** [src/CMakeFiles/hatari.dir/gui-osx/PrefsController.m.o] Error 
+1
+make[1]: *** [src/CMakeFiles/hatari.dir/all] Error 2
+make: *** [all] Error 2
+
+
+Here I comment out lines 614 and 825 of src/gui-osx/PrefsController.m then 
+it continues to compile, but at link time it hits this problem:
+
+Linking C executable hatari.app/Contents/MacOS/hatari
+Undefined symbols:
+   &quot;_AviRecordDefaultVcodec&quot;, referenced from:
+       -[SDLMain captureAnimation:] in SDLMain.m.o
+   &quot;_AviRecordDefaultCrop&quot;, referenced from:
+       -[SDLMain captureAnimation:] in SDLMain.m.o
+   &quot;_AviRecordFile&quot;, referenced from:
+       -[SDLMain captureAnimation:] in SDLMain.m.o
+ld: symbol(s) not found
+collect2: ld returned 1 exit status
+make[2]: *** [src/hatari.app/Contents/MacOS/hatari] Error 1
+make[1]: *** [src/CMakeFiles/hatari.dir/all] Error 2
+make: *** [all] Error 2
+
+
+If I comment out line 452:
+Avi_StartRecording ( AviRecordFile , AviRecordDefaultCrop , 
+nScreenRefreshRate , AviRecordDefaultVcodec );
+
+It will link as well.
+
+It is possible to compile, but a little annoying to do these patchings.
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003214.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+	<LI>Next message: <A HREF="003218.html">[hatari-devel] trivial OSX gui update needed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3215">[ date ]</a>
+              <a href="thread.html#3215">[ thread ]</a>
+              <a href="subject.html#3215">[ subject ]</a>
+              <a href="author.html#3215">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Joystick Button 2 patch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Joystick%20Button%202%20patch&In-Reply-To=%3C200902192129.08334.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000193.html">
+   <LINK REL="Next"  HREF="000195.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Joystick Button 2 patch</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Joystick%20Button%202%20patch&In-Reply-To=%3C200902192129.08334.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Joystick Button 2 patch">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Feb 19 20:29:08 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000193.html">[hatari-devel] Joystick Button 2 patch
+</A></li>
+        <LI>Next message: <A HREF="000195.html">[hatari-devel] Centurbo benchmark
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#178">[ date ]</a>
+              <a href="thread.html#178">[ thread ]</a>
+              <a href="subject.html#178">[ subject ]</a>
+              <a href="author.html#178">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 19 February 2009, Matthias Arndt wrote:
+&gt;<i> Allright, I did a small patch which addresses the needs of some modern
+</I>&gt;<i> gamers. They prefer to press a second firebutton on their gamepads to
+</I>&gt;<i> jump in Jump'n'Run games so I added this to Hatari in an optional way:
+</I>&gt;<i>
+</I>&gt;<i> I added a configuration option (lacks GUI!) bEnableJumpOnFire2 for each
+</I>&gt;<i> joystick. If this is TRUE, pressing PC joystick button 2 will now not
+</I>&gt;<i> press SPACE anymore but emulate pushing the ST joystick UP which maps to
+</I>&gt;<i> jumping in most jumper games.
+</I>&gt;<i>
+</I>&gt;<i> Except for making this configurabl in the GUI, it should work. I tried
+</I>&gt;<i> with Giana Sisters and my USB gamepad. By default the option is set to
+</I>&gt;<i> FALSE to have the old default behaviour of pressing SPACE.
+</I>&gt;<i>
+</I>&gt;<i> Comments and code reviews welcome!
+</I>
+The cosmetic changes were fine, but new features &amp; options should be
+discussed on the devel mailing list first.
+
+A single hack like JoystickSpaceBar is quite OK, additional ones aren't
+anymore.  New ones indicate that there should be some generic mechanism
+for setting what the different joysticks buttons do (generate joy events,
+key presses...).  Could you come up with a proposal for that?
+
+Then you would need to add a command line option(s) for this and update
+the manual page.  GUI configuration would be nice too. That requires
+updating the HTML manual.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000193.html">[hatari-devel] Joystick Button 2 patch
+</A></li>
+	<LI>Next message: <A HREF="000195.html">[hatari-devel] Centurbo benchmark
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#178">[ date ]</a>
+              <a href="thread.html#178">[ thread ]</a>
+              <a href="subject.html#178">[ subject ]</a>
+              <a href="author.html#178">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

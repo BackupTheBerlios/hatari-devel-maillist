@@ -1,0 +1,316 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP debugging and breakpoints
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3C200906071451.14907.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000334.html">
+   <LINK REL="Next"  HREF="000343.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP debugging and breakpoints</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3C200906071451.14907.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] DSP debugging and breakpoints">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jun  7 13:51:14 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000334.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+        <LI>Next message: <A HREF="000343.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#337">[ date ]</a>
+              <a href="thread.html#337">[ thread ]</a>
+              <a href="subject.html#337">[ subject ]</a>
+              <a href="author.html#337">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 07 June 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> &gt;&gt; That's the idea I had when thinking about the 68000 breakpoints.
+</I>&gt;<i> &gt;&gt; Possible extensions I saw were also :
+</I>&gt;<i> &gt;&gt;   - add a .b .w .l suffix after the register name to limit the size
+</I>&gt;<i> &gt;&gt;     of the comparison.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Sounds fine.  The support for this can be used internally also in DSP
+</I>&gt;<i> &gt; emu when matching PC (16-bit) instead of the other registers (32-bit).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt;   - use the () syntax as in 68000 to indicate &quot;read the memory pointed
+</I>&gt;<i> &gt;&gt; by this register/address&quot;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; This starts to make parsing pretty complicated...  I think at least
+</I>&gt;<i> &gt; these should be separated by spaces from anything else.  Like this:
+</I>&gt;<i> &gt; 	( a0 ) .w = ffff | ( d0 ) .b &amp; 1 = 1
+</I>&gt;<i>
+</I>&gt;<i> I don't really like the spaces ; at least I think it should be possible
+</I>&gt;<i> to use them or not, but for the parser, all spaces should be removed as I
+</I>&gt;<i> don't see why adding () would bring ambiguity ?
+</I>
+Well, the parser update Thomas just did already splits things on white 
+space.  It's a pretty ugly to need to collect them again together, but I
+guess I could do that at later point.
+
+
+&gt;<i> &gt;&gt;   - in your db example, don't specify an address, but make it optional
+</I>&gt;<i> &gt;&gt; by using a more generic approach using the name 'pc' ; so setting a
+</I>&gt;<i> &gt;&gt; breakpoint would not be &quot;db &lt;addr&gt;&quot; but &quot;db pc=&lt;addr&gt;&quot;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I like this because it gets rid of the separate single stepping
+</I>&gt;<i> &gt; debugger command and boolean.  Single stepping would then be just a
+</I>&gt;<i> &gt; condition for: pc = pc
+</I>&gt;<i>
+</I>&gt;<i> You seldom starts the emulator with single stepping, this would single
+</I>&gt;<i> step at the start of the ROM and would have no real interest.
+</I>&gt;<i> In my experience, you first set a breakpoint at a given pc  (and in that
+</I>&gt;<i> case we could accept the syntax 'db &lt;addr&gt;' as equivalent to 'db
+</I>&gt;<i> pc=&lt;addr&gt;').
+</I>
+Better to have different commands for different syntaxes &amp; shortcuts.
+
+
+&gt;<i> When the pc is reached, the debugger is called and then you 
+</I>&gt;<i> use a different key to single step (for example 'z').
+</I>&gt;<i>
+</I>&gt;<i> But as I see it, I don't think that single stepping should be made with a
+</I>&gt;<i> breakpoint ; it should just be a flag that calls the debugger each time
+</I>&gt;<i> an instruction was executed.
+</I>
+It would get rid of one extra check within DSP emu inner loop, but I guess
+it could be bit flag like proposed for m68k, so that only checking the
+flags variable is needed when breakpoints or single stepping isn't needed.
+
+
+&gt;<i> &gt; And clearing breakpoint(s) could then be done with just:
+</I>&gt;<i> &gt; 	db
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If one wants multiple breakpoints, they would need to be given by ORing
+</I>&gt;<i> &gt; the conditions:
+</I>&gt;<i> &gt; 	pc = 575443 ||&#160;pc 345567
+</I>&gt;<i>
+</I>&gt;<i> I think we could have a command 'bl' that lists all breakpoint with its
+</I>&gt;<i> index number.
+</I>
+I.e. they would need to be stored also in the ascii format...
+
+
+&gt;<i> Then we could have a command 'br' to remove one specific breakpoint from
+</I>&gt;<i> the list (and optionally reorder all index numbers)
+</I>
+I think for the beginning everything would be cleared.  I'm not so convinced
+of need for &quot;multiple&quot; breakpoints, see my comment on OR chaining below.
+
+
+&gt;<i> Then a command 'b' (or whatever) to add a new breakpoint at the end of
+</I>&gt;<i> the list/array.
+</I>&gt;<i>
+</I>&gt;<i> If I recall these were the commands available under Amiga Mon by Timo
+</I>&gt;<i> Rossi, a very powerful monitor under amiga.
+</I>&gt;<i>
+</I>&gt;<i> But the syntax you propose with || or &amp;&amp; would be more useful to me to
+</I>&gt;<i> define a single breakpoint consisting of several conditions.
+</I>&gt;<i>
+</I>&gt;<i> &gt;&gt;   - use the '&amp;' to apply an optionnal mask before doing the comparison
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Only on the left side?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If it's allowed only on the left side, it's easier for parser to catch
+</I>&gt;<i> &gt; mistakes between bitwise and boolean AND.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Or maybe we only need bitwise AND and boolean OR?  That would be even
+</I>&gt;<i> &gt; clearer.
+</I>&gt;<i>
+</I>&gt;<i> Only the left side should be enough. I think we need boolean AND, so
+</I>&gt;<i> maybe using '&amp;' and '&amp;&amp;' is enough to separate bitwise/boolean meaning ?
+</I>
+If bitwise '&amp;' is needed only on the left side, the boolean AND can be
+also '&amp;' (shorter to type :-)).
+
+
+&gt;<i> &gt;&gt; The syntax I was thinking about would allow things like :
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; pc=$1200  : stop when pc=$1200 (before executing the instruction at
+</I>&gt;<i> &gt;&gt; $1200)
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; (a0)=32 : stop when the 32 bits pointed by a0 contain the value 32
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; ($ff820a).b = 2 : stop when the byte stored at address $ff820a=2
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; ($ff8260).b &amp; 3 = 1 : stop when the byte stored at address $ff8260,
+</I>&gt;<i> &gt;&gt; masked with a binary &quot;and 3&quot; is 1 -&gt; useful to stop when the
+</I>&gt;<i> &gt;&gt; resolution is changed, as only bit 0 and 1 of $ff8260 have a meaning
+</I>&gt;<i> &gt;&gt; on STF/E.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The current debugger understands all addresses as hex already so '$' is
+</I>&gt;<i> &gt; superfluous.  Maybe all values should always be interpreted as hex?
+</I>&gt;<i>
+</I>&gt;<i> Well, I wonder if defaulting to hex is a good idea in the end ? I know
+</I>&gt;<i> it's the current mode, but as we plan to improve the debugger, perhaps we
+</I>&gt;<i> should change this ?
+</I>&gt;<i> I think that default to decimal and adding '$' for hex is better, and
+</I>&gt;<i> could also allow '%' for binary latter for example.
+</I>
+Needs to be done separately, I think first it will work with hex.
+
+
+&gt;<i> &gt;&gt; (a1).w = d1 : stop if the 16 bits pointed by a0 are the same as the 16
+</I>&gt;<i> &gt;&gt; lower bits of register d0.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; So the mask should affect both sides?  Wouldn't it be more logical
+</I>&gt;<i> &gt; for the comparison operation then?
+</I>&gt;<i> &gt;  ( a1 ) =w d1
+</I>&gt;<i> &gt; ?
+</I>&gt;<i>
+</I>&gt;<i> I would say we use the smallest mask of both side, so (a1).w=d1.b would
+</I>&gt;<i> compare only 8 bits. I find the =w a little strange to read ; I think
+</I>&gt;<i> adding .b .w .l after the register is closer to what a 68000 coder would
+</I>&gt;<i> use when coding in asm.
+</I>
+If it can be specified only for the operator, that makes the parsing easier.
+It also makes it more explicit for the user what's the size.  It could be
+with &quot;.&quot; though if that makes it clearer:
+	( a1 ) =.w d1
+
+(Semantically it's more of a width for the comparison than value :-))
+
+
+breakpoint = &lt;expression&gt; [ |&#160;&lt;expression&gt; ]*N [ &amp; &lt;expression&gt; ]*N
+expression = &lt;value&gt; [&amp; &lt;number&gt; ] &lt;condition&gt;[.width] &lt;value&gt;
+
+where:
+	value = [(] &lt;register-name |&#160;address | number&gt; [)]
+	condition = '&lt;' |&#160;'&gt;' | '=' |&#160;'!'
+	width = 'b' | 'w' | 'l'
+
+As DSP and CPU have registers with same names and different widths and
+different address spaces, there needs to be functions implemented for
+DSP and CPU which:
+	- get register name, and return pointer to register &amp; its width
+	- get address space ID and address, and return its contents
+
+Otherwise I think the parsing &amp; matching can actually be common code.
+
+
+&gt;<i> &gt;&gt; This means we would have some reserved word (=regs)that should be
+</I>&gt;<i> &gt;&gt; interpreted as 68000 registers, not as some hexa values : a0 to a7, d0
+</I>&gt;<i> &gt;&gt; to d7, pc, ssp, ..., + more for dsp reg.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The register parsing should probably be separate for DSP and m68k as it
+</I>&gt;<i> &gt; needs getting pointers to registers within CPU/DSP structs, knowing
+</I>&gt;<i> &gt; their sizes etc.  Parsing would be separate from matching the parsed
+</I>&gt;<i> &gt; conditions.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I can try to experiment a bit with the parsing &amp; matching code for DSP
+</I>&gt;<i> &gt; later (goes probably to next week).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; A breakpoint &quot;unit&quot; would be :
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; &lt;value&gt; &lt;comparison&gt; &lt;value&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; where &lt;value&gt; could be
+</I>&gt;<i> &gt;&gt;    regs[.size] [&amp;mask]
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; | (regs)[.size] [&amp;mask]
+</I>&gt;<i> &gt;&gt; | constant[.size]
+</I>&gt;<i> &gt;&gt; | (constant)[.size]
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Then as you suggest, we should be able to &quot;chain&quot; many units with
+</I>&gt;<i> &gt;&gt; &quot;and&quot; or &quot;or&quot; to have a more complex condition for the final
+</I>&gt;<i> &gt;&gt; breakpoint.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Do you see a real use for AND chaining?
+</I>&gt;<i>
+</I>&gt;<i> Yes, for example stop at a given PC, but only after a number of
+</I>&gt;<i> iterations was made :
+</I>&gt;<i> pc=$1234 &amp;&amp; d0=45
+</I>&gt;<i>
+</I>&gt;<i> Or stop at a given PC when it changed the color to $700 :
+</I>&gt;<i> pc=$1234 &amp;&amp; ($ff8240).w=$700
+</I>&gt;<i>
+</I>&gt;<i> But the logical OR chaining is less useful, as it could be done with
+</I>&gt;<i> another different breakpoint.
+</I>
+The problem with that is the ordering.   I mean, you could do this:
+	(cond1 &amp;&amp; cond2) ||&#160;cond3
+but to get this:
+	(cond1 ||&#160;cond2) &amp;&amp; cond3
+you would need to write it like this to get it properly ORed with separate
+breakpoints:
+	(cond1 &amp;&amp; cond3) ||&#160;(cond2 &amp;&amp; cond3)
+
+At least for now I would like to avoid the additional code &amp; complexity of
+multiple breakpoints as the same can be achieved by conditions chaining.
+I would assume that normally one is debugging just one thing?
+
+If you're worried about typing, readline already makes it convenient to
+modify a breakpoint condition you gave earlier so I don't think that's an
+issue either.  You just give all the conditions you're interested about in
+an order that you want them to work.
+
+
+I haven't thought to support grouping of conditions as I think that can be
+done well enough by re-ordering the conditions (and readline supports
+cut/copy/paste keyboard shortcuts).  The use-case for them is same as
+for multiple breakpoints i.e. they both would need:
+- extra code for chain of things to go through in the CPU/DSP mainloop
+- extra code/commands for handling listing and removing of breakpoints
+
+
+&gt;<i> &gt;&gt; Based on the skeleton code you wrote, I think this could be quite
+</I>&gt;<i> &gt;&gt; feasible with a little extra work, and would give a very good
+</I>&gt;<i> &gt;&gt; flexibility.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Then we should be able to have many breakpoints at the same time, each
+</I>&gt;<i> &gt;&gt; breakpoint being the combination of one or more condition.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; This means we would have a linked list (or a limited size array,
+</I>&gt;<i> &gt;&gt; that's easier to handle) of max N breakpoints, each entry would
+</I>&gt;<i> &gt;&gt; contain a structure describing one breakpoint (a breakpoint could be a
+</I>&gt;<i> &gt;&gt; combination of many conditions with &quot;or&quot; or &quot;and&quot;)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Array is also faster.
+</I>&gt;<i>
+</I>&gt;<i> Yes, and I think we can have a hard limit like 50 or so for the array
+</I>&gt;<i> size to avoid dynamic resizing or things like that. I think having
+</I>&gt;<i> dynamic memory allocation for breakpoint is a little overkill
+</I>
+If you really need both condition chaining and multiple breakpoints, then
+it may be better done with dynamic allocations.  I hope condition chaining
+would be enough though...?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000334.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+	<LI>Next message: <A HREF="000343.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#337">[ date ]</a>
+              <a href="thread.html#337">[ thread ]</a>
+              <a href="subject.html#337">[ subject ]</a>
+              <a href="author.html#337">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C201011072104.33889.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002603.html">
+   <LINK REL="Next"  HREF="002615.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C201011072104.33889.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Nov  7 20:04:33 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002603.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002615.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2614">[ date ]</a>
+              <a href="thread.html#2614">[ thread ]</a>
+              <a href="subject.html#2614">[ subject ]</a>
+              <a href="author.html#2614">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 06 November 2010, Laurent Sallafranque wrote:
+&gt;<i> But when we'll want to update WinUae core later (if needed), I think
+</I>&gt;<i> it'll be hard to know what was changed.
+</I>
+I think something that should be done before that is checking whether most
+of the L&quot;&quot; / TCHAR changes could be removed by defining TCHAR as wchar_t.
+It seemed that at least half of the changes were related to these...
+
+
+Btw. I noticed this in compat.h:
+-----------
+#define false 0
+#define true 1
+
+#ifndef bool
+#define bool int
+#endif
+-----------
+
+Instead you should use (C99):
+	#include &lt;stdbool.h&gt;
+
+(It's included by main.h also, so including that's another alternative.)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002603.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002615.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2614">[ date ]</a>
+              <a href="thread.html#2614">[ thread ]</a>
+              <a href="subject.html#2614">[ subject ]</a>
+              <a href="author.html#2614">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new support for avi recording
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3C200910082240.06815.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000784.html">
+   <LINK REL="Next"  HREF="000807.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new support for avi recording</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3C200910082240.06815.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] new support for avi recording">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Oct  8 21:40:06 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000784.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000807.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#790">[ date ]</a>
+              <a href="thread.html#790">[ thread ]</a>
+              <a href="subject.html#790">[ subject ]</a>
+              <a href="author.html#790">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 08 October 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> after quite some time, I finally completed the avi recording support I
+</I>&gt;<i> started 2 months ago.
+</I>
+I took a quick look at the code.  It looks otherwise fine, but:
+
+* You reverted the PNG saving SDL screen locking fix, please fix it again.
+
+* Line conversion functions are now duplicated in both screenshot and AVI
+  recording C-files.  Maybe you could add a (lineConvert.h?) header which
+  contains the static inline functions and is included into both?
+
+* Shouldn't these functions now move to avi_record.c:
+  - ScreenSnapShot_AreWeRecording()
+  - ScreenSnapShot_BeginRecording()
+  - ScreenSnapShot_EndRecording()
+  - ScreenSnapShot_RecordFrame()
+  ?
+
+* Not really important, but all the other other Hatari functions names seem
+   to be of Prefix_CamelCaps() format and yours are in AviSomething()
+   format.
+
+
+&gt;<i> This mode will create some video+audio recording of Hatari with as little
+</I>&gt;<i> overhead as possible.
+</I>&gt;<i>
+</I>&gt;<i> Although the avi support is modular and could be extended with support
+</I>&gt;<i> for other audio/video codecs, I chose to use only some lossless and low
+</I>&gt;<i> cpu codecs. This way, you can record a game while playing it, without
+</I>&gt;<i> suffering slowdown.
+</I>&gt;<i>
+</I>&gt;<i> Sound is saved as 16 bits stereo pcm (same as the wav recording option).
+</I>&gt;<i>
+</I>&gt;<i> Video can be saved as uncompressed 24 bits BMP images or as PNG images.
+</I>&gt;<i> No frames are skipped, so you will get a full 50 or 60 Hz video in the
+</I>&gt;<i> end.
+</I>
+What happens if user has (automatic) frame skip enabled?
+
+(it's the default)
+
+
+&gt;<i> The BMP format uses very few cpu but requires a lot of disk space and
+</I>&gt;<i> some fast disk to be able to record all the frames.
+</I>&gt;<i>
+</I>&gt;<i> The PNG format uses a compression level of 4, which gives a good tradeoff
+</I>&gt;<i> between disk space and cpu usage.
+</I>&gt;<i>
+</I>&gt;<i> The following options were added :
+</I>&gt;<i> --avirecord : immediatly starts recording (useful when restoring a
+</I>&gt;<i>    memory snapshot)
+</I>&gt;<i> --avirecord_vcodec : choose between BMP and PNG (default is png)
+</I>&gt;<i> --avirecord_fps : force frame rate (useful if the program changes frame
+</I>&gt;<i>    rate, such as boot sequence where the shifter starts at 60 Hz then
+</I>&gt;<i> goes to 50 Hz) (default is 50)
+</I>&gt;<i> --avirecord_crop : remove all gui element (status bar) from the recorded
+</I>&gt;<i>    video (default is yes)
+</I>&gt;<i> --avirecord_file : choose destination file (default is hatari.avi)
+</I>
+None of the other Hatari options are with underscores.  Could you change
+these e.g. to:
+ --avirecord
+ --avi-vcodec
+ --avi-fps
+ --avi-crop
+ --avi-file
+
+And document them in the manual page?
+
+(I can then copy the stuff from there to the HTML manual.)
+
+
+&gt;<i> For the GUI, I replaced the 'record animation' option with 'record AVI'
+</I>&gt;<i> as quick hack. Feel free to add back 'record animation' button if someone
+</I>&gt;<i> requires it (but I think that 'record avi' supersedes this mode, so we
+</I>&gt;<i> shouldn't need it anymore).
+</I>
+&quot;Record AVI&quot; sounds fine to me. :-)
+
+
+&gt;<i> For better results, don't use &quot;zoom low res&quot; option, as this will require
+</I>&gt;<i> 4 times more data to compress and a lot more cpu.
+</I>&gt;<i>
+</I>&gt;<i> Although it's possible to extend the codec list, I think using bmp and
+</I>&gt;<i> png should be enough. This mode is not supposed to be a full ffmpeg
+</I>&gt;<i> implementation, but a way to record Hatari's output in real time in a
+</I>&gt;<i> lossless format.
+</I>&gt;<i> Videos can then be recompressed using mencoder or ffmpeg to use h264
+</I>&gt;<i> codec and mp3 for example.
+</I>&gt;<i>
+</I>&gt;<i> example :
+</I>&gt;<i>
+</I>&gt;<i> hatari --memstate ~/Emul/ST/hatari.sav/nostalgic_intro.sav -z 1
+</I>&gt;<i> --avirecord  --avirecord_fps 50 --avirecord_crop y --avirecord_file
+</I>&gt;<i> /tmp/hatari.avi
+</I>
+As there are several things that one should take into consideration
+(recording CPU and disk usage, zoom factor etc) and above is also useful
+information that user doesn't see from the command line help or builtin GUI,
+maybe you could add a section to the manual about these things?
+
+You could also update the todo &amp; release notes.
+
+
+&gt;<i> Happy recording of your faves demos !
+</I>
+Yes, now I have to test this cool new Hatari feature... :-)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000784.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000807.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#790">[ date ]</a>
+              <a href="thread.html#790">[ thread ]</a>
+              <a href="subject.html#790">[ subject ]</a>
+              <a href="author.html#790">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

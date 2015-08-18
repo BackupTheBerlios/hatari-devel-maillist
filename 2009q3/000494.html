@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Blitter interrupt CPU usage
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Blitter%20interrupt%20CPU%20usage&In-Reply-To=%3C4A63560B.5040000%40freemind-tobe.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000493.html">
+   <LINK REL="Next"  HREF="000479.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Blitter interrupt CPU usage</H1>
+    <B>Jean-Baptiste Berlioz</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Blitter%20interrupt%20CPU%20usage&In-Reply-To=%3C4A63560B.5040000%40freemind-tobe.com%3E"
+       TITLE="[hatari-devel] Blitter interrupt CPU usage">jb.berlioz at freemind-tobe.com
+       </A><BR>
+    <I>Sun Jul 19 19:21:15 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000493.html">[hatari-devel] Blitter interrupt CPU usage
+</A></li>
+        <LI>Next message: <A HREF="000479.html">[hatari-devel] Raster stability issue in new Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#494">[ date ]</a>
+              <a href="thread.html#494">[ thread ]</a>
+              <a href="subject.html#494">[ subject ]</a>
+              <a href="author.html#494">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> According to the Compatibility list, the problematic cases are:
+</I>&gt;<i> 
+</I>&gt;<i> * E.P.S.S. Demo by Unit 17:
+</I>&gt;<i>    <A HREF="http://www.pouet.net/prod.php?which=30912">http://www.pouet.net/prod.php?which=30912</A>
+</I>&gt;<i>    -&gt; bottom border isn't right
+</I>&gt;<i> 
+</I>&gt;<i> * Extreme Rage by Anatomica:
+</I>&gt;<i>   <A HREF="http://pouet.net/prod.php?which=15428">http://pouet.net/prod.php?which=15428</A>
+</I>&gt;<i> 
+</I>&gt;<i> * Jam-Cols by Inner Circuit Explorers:
+</I>&gt;<i>   <A HREF="http://www.pouet.net/prod.php?which=31452">http://www.pouet.net/prod.php?which=31452</A>
+</I>&gt;<i> 
+</I>&gt;<i> * RGBeast by Aggression:
+</I>&gt;<i>   <A HREF="http://pouet.net/prod.php?which=29355">http://pouet.net/prod.php?which=29355</A>
+</I>&gt;<i>   -&gt; Not sure whether the issues come from blitter or overscan.
+</I>&gt;<i>        (I don't have real STE, but the Youtube video of this looks
+</I>&gt;<i>        impressive!)
+</I>
+
+I'm afraid all these demos use synched code. As i said (and used in my 
+last demo), the execution of some CPU instructions can overlap partially 
+with the blitter (it depends on how the instruction fetch words from the 
+bus). I'll have to disassemble these demos to check how they start the 
+blitter and what instruction come just after, to be sure i'm not missing 
+something.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000493.html">[hatari-devel] Blitter interrupt CPU usage
+</A></li>
+	<LI>Next message: <A HREF="000479.html">[hatari-devel] Raster stability issue in new Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#494">[ date ]</a>
+              <a href="thread.html#494">[ thread ]</a>
+              <a href="subject.html#494">[ subject ]</a>
+              <a href="author.html#494">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

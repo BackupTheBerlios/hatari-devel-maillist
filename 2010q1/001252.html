@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C1995001052.20100117011057%40hol.gr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001249.html">
+   <LINK REL="Next"  HREF="001244.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>George Nakos</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C1995001052.20100117011057%40hol.gr%3E"
+       TITLE="[hatari-devel] CMake build system">ggn at hol.gr
+       </A><BR>
+    <I>Sun Jan 17 00:10:57 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001249.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001244.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1252">[ date ]</a>
+              <a href="thread.html#1252">[ thread ]</a>
+              <a href="subject.html#1252">[ subject ]</a>
+              <a href="author.html#1252">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Thomas,
+
+Saturday, January 16, 2010, 11:51:47 PM, you wrote:
+
+&gt;&gt;<i> Datum: Sat, 16 Jan 2010 15:03:31 +0200
+</I>&gt;&gt;<i> Von: George Nakos &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ggn at hol.gr</A>&gt;
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> I'm  sad  to  report  that  it  didn't work on my Windows install with
+</I>&gt;&gt;<i> mingw/msys.  It's  trying  to  create  nmake  makefiles,  which  isn't
+</I>&gt;&gt;<i> present,  and  when  I try to force mingw makefiles it just doesn't go
+</I>&gt;&gt;<i> ahead  (can't  remember  the  exact  error  atm), I even tried the gui
+</I>&gt;&gt;<i> version,  but still no go. Also it seems that it needs to be spoon fed
+</I>&gt;&gt;<i> with  some  paths/bins.  I  gave  up  on it after a couple of hours of
+</I>&gt;&gt;<i> experimenting.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> All in all, no go here so far...
+</I>
+&gt;<i> Hi George,
+</I>
+&gt;<i> thanks for the feedback!
+</I>&gt;<i> there seems to be a special generator for MSYS:
+</I>
+&gt;<i> <A HREF="http://cmake.org/cmake/help/cmake-2-8-docs.html#gen:MSYSMakefiles">http://cmake.org/cmake/help/cmake-2-8-docs.html#gen:MSYSMakefiles</A>
+</I>
+&gt;<i> Have you tried that one already?
+</I>
+&gt;<i> Apart from that, I still had some bugs in the scripts, causing the
+</I>&gt;<i> Makefile generation to fail if one of the _optional_ libraries like
+</I>&gt;<i> portaudio or readline was missing :-(
+</I>&gt;<i> Could you maybe do a quick test with the latest hg version again? Thanks!
+</I>
+Okay, tried hg pull/update, then tried to invoke cmake again. Still no
+go.  I  experimented  again  (it's been quite a few days since I tried
+it),  and I remembered where I got stuck: I don't know how to force it
+to create mingw (or msys) makefiles.
+
+Here's what I tried:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">Administrator at Desktop</A> ~/hatari/obj
+$ cmake -G MSYS Makefiles ..
+CMake Error: Could not create named generator MSYS
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">Administrator at Desktop</A> ~/hatari/obj
+$ cmake -G MinGW Makefiles ..
+CMake Error: Could not create named generator MinGW
+
+
+Dunno really. Something has to be in my PATH? Ideas?
+
+
+
+-- 
+Best regards,
+ George                            mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ggn at hol.gr</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001249.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001244.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1252">[ date ]</a>
+              <a href="thread.html#1252">[ thread ]</a>
+              <a href="subject.html#1252">[ subject ]</a>
+              <a href="author.html#1252">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Two Hatari bugs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Two%20Hatari%20bugs&In-Reply-To=%3C4DDADC26.10604%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003440.html">
+   <LINK REL="Next"  HREF="003523.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Two Hatari bugs</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Two%20Hatari%20bugs&In-Reply-To=%3C4DDADC26.10604%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Two Hatari bugs">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue May 24 00:13:58 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003440.html">[hatari-devel] Two Hatari bugs
+</A></li>
+        <LI>Next message: <A HREF="003523.html">[hatari-devel] Two Hatari bugs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3481">[ date ]</a>
+              <a href="thread.html#3481">[ thread ]</a>
+              <a href="subject.html#3481">[ subject ]</a>
+              <a href="author.html#3481">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 14/05/2011 16:37, Anders Eriksson a &#233;crit :
+&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I've found two bugs in Hatari that seems to be across both Mac OS X and
+</I>&gt;<i> Linux platforms.
+</I>&gt;<i>
+</I>&gt;<i> Bug #1
+</I>&gt;<i> If you leave Hatari with the F12 menu open for many hours (say over a
+</I>&gt;<i> night) Hatari becomes unresponsive and needs a kill -9 to terminate.
+</I>&gt;<i> I've confirmed this with the Hatari in the repositry from both Mac OS X
+</I>&gt;<i> 10.6 and Ubuntu Linux 11.04.
+</I>
+Hello
+
+regarding this problem, do you have an idea of how many hours you waited 
+with F12 open to get this problem ?
+
+OSX doesn't have nanosleep, which could cause such time wrapping problem 
+as you observed ; if that's the case, it could be fixed easily. But 
+under linux, the counter is 64 bits, with 32 bits for seconds, so that 
+should be way beyond what is needed to wait more than a few hours.
+
+Just to be sure, what do you get when running &quot;./configure&quot; under your 
+mac and your ubuntu ? Do you get the following lines :
+
+-- Looking for gettimeofday
+-- Looking for gettimeofday - found
+-- Looking for nanosleep
+-- Looking for nanosleep - found
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003440.html">[hatari-devel] Two Hatari bugs
+</A></li>
+	<LI>Next message: <A HREF="003523.html">[hatari-devel] Two Hatari bugs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3481">[ date ]</a>
+              <a href="thread.html#3481">[ thread ]</a>
+              <a href="subject.html#3481">[ subject ]</a>
+              <a href="author.html#3481">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

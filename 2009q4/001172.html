@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mouse pointer problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20pointer%20problem&In-Reply-To=%3C20091230140508.343ec498%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001171.html">
+   <LINK REL="Next"  HREF="001174.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mouse pointer problem</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20pointer%20problem&In-Reply-To=%3C20091230140508.343ec498%40phineus%3E"
+       TITLE="[hatari-devel] Mouse pointer problem">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Dec 30 14:05:08 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001171.html">[hatari-devel]  Mouse pointer problem
+</A></li>
+        <LI>Next message: <A HREF="001174.html">[hatari-devel] Mouse pointer problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1172">[ date ]</a>
+              <a href="thread.html#1172">[ thread ]</a>
+              <a href="subject.html#1172">[ subject ]</a>
+              <a href="author.html#1172">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 30 Dec 2009 13:29:36 +0100 (CET)
+LAURENT SALLAFRANQUE &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at arkea.com</A>&gt; wrote:
+
+&gt;<i> I don't agree with you here.
+</I>&gt;<i> 
+</I>&gt;<i> It seems to me there's an offset with the mouse pointer when it first
+</I>&gt;<i> appears.
+</I>&gt;<i> 
+</I>&gt;<i> As long as I &quot;recalibrate&quot; the mouse by moving the mouse pointer to
+</I>&gt;<i> each border of the screen, the mouse reacts perfectly.
+</I>&gt;<i> 
+</I>&gt;<i> When I move the mouse pointer on the left border, it continues to
+</I>&gt;<i> &quot;move&quot; inside hatari for a few seconds before displaying the linux
+</I>&gt;<i> (or windows) pointer.
+</I>&gt;<i> 
+</I>&gt;<i> The &quot;offset&quot; becomes null in this case and after, when I enter again
+</I>&gt;<i> into the hatari window, everything is OK.
+</I>&gt;<i> 
+</I>&gt;<i> It looks as if the ST borders are taken into account when hatari
+</I>&gt;<i> starts in falcon mode for copmputing of the mouse pointer first
+</I>&gt;<i> position.
+</I>
+The problem in Falcon mode are most likely not the ST borders, but the
+fact that it switches the resolution a couple of times until the
+Desktop is reached.
+
+It normally works like this (in ST mode): During Reset_Cold() we set
+the host mouse pointer to the middle of the screen, and when the ST has
+finally booted, the ST mouse pointer is roughly in sync with the host
+mouse pointer since it also appears in the middle of the screen.
+
+Now in Falcon mode, we also set the host mouse pointer to the middle of
+the screen, but the Falcon TOS then switches the resolution a couple of
+times until the desktop has been reached, so the Falcon mouse pointer
+is not in sync with the host mouse pointer anymore.
+
+You could try the following:
+
+1) For debugging, change the &quot;SDL_ShowCursor(SDL_DISABLE)&quot; to
+&quot;SDL_ShowCursor(SDL_ENABLE)&quot; in screen.c, then you can see the host
+mouse pointer, too.
+
+2) Try to add something like &quot;Main_WarpMouse(sdlscrn-&gt;w/2,
+ sdlscrn-&gt;h/2)&quot; at the end of HostScreen_setWindowSize() in
+falcon/hostscreen.c to see whether this helps a little bit.
+
+&gt;<i>
+</I>&gt;<i> What is mouse grab supposed to do (AltGr + M)? 
+</I>&gt;<i> I've done the test under windows, but I detected to change.
+</I>&gt;<i> 
+</I>
+That keyboard shortcut should lock the mouse pointer within the Hatari
+window. Have a look at your hatari.cfg to see whether it has been
+configured to a different key.
+
+ Thomas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001171.html">[hatari-devel]  Mouse pointer problem
+</A></li>
+	<LI>Next message: <A HREF="001174.html">[hatari-devel] Mouse pointer problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1172">[ date ]</a>
+              <a href="thread.html#1172">[ thread ]</a>
+              <a href="subject.html#1172">[ subject ]</a>
+              <a href="author.html#1172">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

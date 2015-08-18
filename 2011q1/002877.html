@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Changeset 4b5f4b81ab6f breaks YM sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Changeset%204b5f4b81ab6f%20breaks%20YM%20sound&In-Reply-To=%3C4D3DF559.2070406%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002876.html">
+   <LINK REL="Next"  HREF="002878.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Changeset 4b5f4b81ab6f breaks YM sound</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Changeset%204b5f4b81ab6f%20breaks%20YM%20sound&In-Reply-To=%3C4D3DF559.2070406%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Changeset 4b5f4b81ab6f breaks YM sound">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jan 24 22:55:37 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002876.html">[hatari-devel] Changeset 4b5f4b81ab6f breaks YM sound
+</A></li>
+        <LI>Next message: <A HREF="002878.html">[hatari-devel] Higher precision when generating samples
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2877">[ date ]</a>
+              <a href="thread.html#2877">[ thread ]</a>
+              <a href="subject.html#2877">[ subject ]</a>
+              <a href="author.html#2877">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 24/01/2011 05:08, David Savinkoff a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Changeset 4b5f4b81ab6f
+</I>&gt;<i> &quot;Correct case where a noise per&lt;  3 produced no noise output at all&quot;
+</I>&gt;<i>
+</I>&gt;<i> hatari/src/sound.c  on Sept 04 2010 broke YM sound on channels A and B.
+</I>&gt;<i> You can hear this when listening to 505's &quot;On Behalf Of The Queen&quot;
+</I>&gt;<i> in the Blubber Demo, or on MaxYmizer.
+</I>&gt;<i>
+</I>&gt;<i> David
+</I>
+Hi,
+
+thanks for noticing it, I tested some tunes with sid effects, but not 
+Maxymizer ones.
+
+Some recent replays like Maxymizer are setting Per=0 when doing volume 
+modulation on one voice (for samples or sid effect) because in that case 
+you're modulating a nearly constant '1' signal, which gives better results.
+
+Unfortunately, the new code was producing a constant '0' signal in that 
+case (due to a bad bitshift) and there was no output sound.
+
+I just commited the correct fix.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002876.html">[hatari-devel] Changeset 4b5f4b81ab6f breaks YM sound
+</A></li>
+	<LI>Next message: <A HREF="002878.html">[hatari-devel] Higher precision when generating samples
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2877">[ date ]</a>
+              <a href="thread.html#2877">[ thread ]</a>
+              <a href="subject.html#2877">[ subject ]</a>
+              <a href="author.html#2877">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

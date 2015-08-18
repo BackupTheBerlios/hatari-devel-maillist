@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Wotanoid problem  :  Malloc ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wotanoid%20problem%20%20%3A%20%20Malloc%20%3F&In-Reply-To=%3C4B5B3382.4050109%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001315.html">
+   <LINK REL="Next"  HREF="001320.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Wotanoid problem  :  Malloc ?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wotanoid%20problem%20%20%3A%20%20Malloc%20%3F&In-Reply-To=%3C4B5B3382.4050109%40free.fr%3E"
+       TITLE="[hatari-devel] Wotanoid problem  :  Malloc ?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Jan 23 18:36:02 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001315.html">[hatari-devel] Wotanoid problem
+</A></li>
+        <LI>Next message: <A HREF="001320.html">[hatari-devel] Wotanoid problem  :  Malloc ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1318">[ date ]</a>
+              <a href="thread.html#1318">[ thread ]</a>
+              <a href="subject.html#1318">[ subject ]</a>
+              <a href="author.html#1318">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Would it be the Malloc gemdos function that gives problems ?
+(I haven't founf where it is implemented in Hatari) (gemdos.c ?)
+
+Here is the Gemdos trace
+ 
+
+GEMDOS Fopen(&quot;data\bat.cmc&quot;, 0x2)
+conv data\bat.cmc -&gt; 
+/media/Jeux/Jeux/Atari/DiskDur/Jeux/Falcon/WOTANOID/DATA/BAT.CMC
+-&gt; FD 0 (read/write)
+GEMDOS Fread(64, -1, 0x16c70c)
+GEMDOS Fclose(64)
+GEMDOS call 0x4C (Pterm)
+GEMDOS call 0x49 (Mfree)
+GEMDOS call 0x49 (Mfree)
+GEMDOS call 0x48 (Malloc)
+GEMDOS call 0x48 (Malloc)
+GEMDOS call 0x49 (Mfree)
+GEMDOS call 0x49 (Mfree)
+GEMDOS call 0x48 (Malloc)
+GEMDOS call 0x48 (Malloc)
+GEMDOS call 0x48 (Malloc)
+GEMDOS call 0x48 (Malloc)
+GEMDOS call 0x48 (Malloc)
+GEMDOS call 0x48 (Malloc)
+GEMDOS call 0x19 (Dgetdrv)
+GEMDOS Dsetdrv(0x2)
+GEMDOS call 0x19 (Dgetdrv)
+GEMDOS Dsetdrv(0x2)
+GEMDOS call 0x19 (Dgetdrv)
+GEMDOS Dsetdrv(0x2)
+GEMDOS call 0x48 (Malloc)
+
+
+
+
+Laurent Sallafranque a &#233;crit :
+&gt;<i> In complement, when code arrives il Load_file, registers are llike this :
+</I>&gt;<i>
+</I>&gt;<i> &gt; cpureg                                                               
+</I>&gt;<i> D0: 00070000 D1: 00000001 D2: ffff0000 D3: 00000000                    
+</I>&gt;<i> D4: 00010000 D5: 00000000 D6: fffe0001 D7: 00000000                    
+</I>&gt;<i> A0: 0003a028 A1: 0016c70c A2: 000445b0 A3: 00000000                    
+</I>&gt;<i> A4: 0003dbec A5: 0002e0d4 A6: 00dc16c6 A7: 00dc16b0                    
+</I>&gt;<i> USP=00dc16f2 ISP=00dc16b0 MSP=00000000 VBR=00000000                    
+</I>&gt;<i> T=00 S=1 M=0 X=0 N=0 Z=0 V=0 C=0 IMASK=3                               
+</I>&gt;<i> FP0: 0 FP1: 0 FP2: 0 FP3: 0                                            
+</I>&gt;<i> FP4: 0 FP5: 0 FP6: 0 FP7: 0
+</I>&gt;<i> N=0 Z=0 I=0 NAN=0
+</I>&gt;<i> prefetch 6100d7e0
+</I>&gt;<i> 0002e630: 48e7 fffe 203c ffff ffff MVMLE.L #$fffe,-(A7)
+</I>&gt;<i> next PC: 0002e634
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> (A0)
+</I>&gt;<i> 03A028: 64 61 74 61 5c 62 61 74 2e 63 6d 63 00 64 61 74   
+</I>&gt;<i> data\bat.cmc.dat
+</I>&gt;<i> 03A038: 61 5c 6f 70 74 69 6f 6e 73 2e 63 6d 63 00 00 00   
+</I>&gt;<i> a\options.cmc...
+</I>&gt;<i>
+</I>&gt;<i> Hope this helps
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;<i> Hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've add a look at Wotanoid (falcon).
+</I>&gt;&gt;<i> The problem is absolutely not a DSP problem here.
+</I>&gt;&gt;<i> I've disassembled the 68030 code with desert drain.
+</I>&gt;&gt;<i> (I can send it to you if needed)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> the program goes wrong in the following part of code.
+</I>&gt;&gt;<i> (don't try to read it all, I'll explain what I think goes wrong).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I think the problem comes from the Load_file function (see code below)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Just after, it does a &quot;depack&quot;, and goes to &quot;prepare_un_sprite_cmc&quot;.
+</I>&gt;&gt;<i> The problem is here because D2 (used for the loop) starts with value 
+</I>&gt;&gt;<i> -1 ($ffffffff)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> D2 comes from D1 (move D1, D2)
+</I>&gt;&gt;<i> D1 is saved by the movem.l (just after recale_adr:)
+</I>&gt;&gt;<i> D1 comes from the depack routine (just after the load_file).
+</I>&gt;&gt;<i>         ok59:                 lea         (A1),A0
+</I>&gt;&gt;<i>             cmpi.l      #$434D5030,(A0)+
+</I>&gt;&gt;<i>             move.l      (A0)+,D1
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If the load_file is wrong, the depack will depack wrong.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The load file contains 3 TRAP #1 (I don't know what to do with that).
+</I>&gt;&gt;<i> But I think this part is related to hatari/host computer code.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> That's why I think the problem is here.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> As there are many programs that loop until they reach the ROM 
+</I>&gt;&gt;<i> addresses, I think
+</I>&gt;&gt;<i> this problem would let more programs to run.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Any comment here ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Best regards,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Load_cmc:             movem.l     D0-A6,-(SP)
+</I>&gt;&gt;<i>             move.l      #-1,D0
+</I>&gt;&gt;<i>             bsr.w       Load_file
+</I>&gt;&gt;<i>             lea         (A1),A0
+</I>&gt;&gt;<i>             lea         $7D00(A0),A1
+</I>&gt;&gt;<i>             move.l      4(A0),D3
+</I>&gt;&gt;<i>             bsr.w       depack
+</I>&gt;&gt;<i>             bra.b       ok59
+</I>&gt;&gt;<i> use_cmp:              movem.l     D0-A6,-(SP)
+</I>&gt;&gt;<i> ok59:                 lea         (A1),A0
+</I>&gt;&gt;<i>             cmpi.l      #$434D5030,(A0)+
+</I>&gt;&gt;<i>             move.l      (A0)+,D1
+</I>&gt;&gt;<i>             move.w      D1,D2
+</I>&gt;&gt;<i>             addq.l      #1,D1
+</I>&gt;&gt;<i>             lea         (A0),A3
+</I>&gt;&gt;<i>             lea         0(A3,D1.w*4),A0
+</I>&gt;&gt;<i>             move.l      A0,D7
+</I>&gt;&gt;<i> recale_adr:
+</I>&gt;&gt;<i>             add.l       D7,0(A3,D2.w*4)
+</I>&gt;&gt;<i>             dbra        D2,recale_adr
+</I>&gt;&gt;<i>             movem.l     D0-D2/A0,-(SP)
+</I>&gt;&gt;<i>             move.l      D3,D0
+</I>&gt;&gt;<i>             subq.l      #1,D1
+</I>&gt;&gt;<i>             movea.l     A2,A0
+</I>&gt;&gt;<i>             move.w      #1,D2
+</I>&gt;&gt;<i>             bsr.w       Malloc
+</I>&gt;&gt;<i>             movea.l     A0,A1
+</I>&gt;&gt;<i>             move.l      D0,D3
+</I>&gt;&gt;<i>             movem.l     (SP)+,D0-D2/A0
+</I>&gt;&gt;<i>             movea.l     A1,A4
+</I>&gt;&gt;<i>             move.w      D1,D2
+</I>&gt;&gt;<i>             subq.w      #2,D2
+</I>&gt;&gt;<i> prepare_un_sprite_cmc: A1,(A2)+
+</I>&gt;&gt;<i>             movea.l     (A3)+,A0
+</I>&gt;&gt;<i>             bsr.w       prep_tmx_plus
+</I>&gt;&gt;<i>             movea.l     4(A1),A1
+</I>&gt;&gt;<i>             dbra        D2,prepare_un_sprite_cmc
+</I>&gt;&gt;<i>             suba.l      A4,A1
+</I>&gt;&gt;<i>             move.l      A1,D1
+</I>&gt;&gt;<i>             move.l      D3,D0
+</I>&gt;&gt;<i>             bsr.w       Mshrink
+</I>&gt;&gt;<i>             movem.l     (SP)+,D0-A6
+</I>&gt;&gt;<i>             rts       
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -----------&gt; Here is the Load_file function &lt;------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Load_file: movem.l     D1/D2/A0-A2,-(SP)
+</I>&gt;&gt;<i>             lea         (A1),A2
+</I>&gt;&gt;<i>             move.l      D0,D2
+</I>&gt;&gt;<i>             move.w      #2,-(SP)
+</I>&gt;&gt;<i>             move.l      A0,-(SP)
+</I>&gt;&gt;<i>             move.w      #$3D,-(SP)
+</I>&gt;&gt;<i>             trap        #1          ;Fopen
+</I>&gt;&gt;<i>             addq.l      #8,SP
+</I>&gt;&gt;<i>             move.w      D0,handle2
+</I>&gt;&gt;<i>             move.l      A2,-(SP)
+</I>&gt;&gt;<i>             move.l      D2,-(SP)
+</I>&gt;&gt;<i>             move.w      D0,-(SP)
+</I>&gt;&gt;<i>             move.w      #$3F,-(SP)
+</I>&gt;&gt;<i>             trap        #1          ;Fread
+</I>&gt;&gt;<i>             adda.l      #12,SP
+</I>&gt;&gt;<i>             move.l      D0,-(SP)
+</I>&gt;&gt;<i>             move.w      handle2,-(SP)
+</I>&gt;&gt;<i>             move.w      #$3E,-(SP)
+</I>&gt;&gt;<i>             trap        #1          ;Fclose
+</I>&gt;&gt;<i>             addq.l      #4,SP
+</I>&gt;&gt;<i>             move.l      (SP)+,D0
+</I>&gt;&gt;<i>             movem.l     (SP)+,D1/D2/A0-A2
+</I>&gt;&gt;<i>             rts       
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001315.html">[hatari-devel] Wotanoid problem
+</A></li>
+	<LI>Next message: <A HREF="001320.html">[hatari-devel] Wotanoid problem  :  Malloc ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1318">[ date ]</a>
+              <a href="thread.html#1318">[ thread ]</a>
+              <a href="subject.html#1318">[ subject ]</a>
+              <a href="author.html#1318">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

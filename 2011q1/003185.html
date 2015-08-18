@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] So, do you have a planned release date for 1.5.0?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20So%2C%20do%20you%20have%20a%20planned%20release%20date%20for%201.5.0%3F&In-Reply-To=%3C4D865485.7010802%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003184.html">
+   <LINK REL="Next"  HREF="003186.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] So, do you have a planned release date for 1.5.0?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20So%2C%20do%20you%20have%20a%20planned%20release%20date%20for%201.5.0%3F&In-Reply-To=%3C4D865485.7010802%40corp.free.fr%3E"
+       TITLE="[hatari-devel] So, do you have a planned release date for 1.5.0?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Mar 20 20:24:53 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003184.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+        <LI>Next message: <A HREF="003186.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3185">[ date ]</a>
+              <a href="thread.html#3185">[ thread ]</a>
+              <a href="subject.html#3185">[ subject ]</a>
+              <a href="author.html#3185">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 20/03/2011 19:53, Eero Tamminen a &#233;crit :
+
+&gt;<i> Anything for the STE PowerUp game STE music? :-)
+</I>&gt;<i>
+</I>
+Hi,
+
+I didn't remember this one ; what's was wrong, so I can see if I can 
+reproduce ?
+
+&gt;<i> It would be nice if somebody on this list could check the things that are in
+</I>&gt;<i> the compability list mentioned to have issues with Hatari v1.0 or before:
+</I>&gt;<i> - Enchanted Lands
+</I>
+The versions I used always worked. What meant &quot;doesn't load at all&quot; ? 
+Did it stop after Thalion intro or before ? Could be related to the 
+protection, but I don't have an original version to check it.
+I think we can remove this &quot;orange&quot; warning.
+
+&gt;<i> - F15 Strike Eagle 2 (I'd remove this if nobody can test it)
+</I>
+I think Thomas committed some fix for this some times ago.
+
+&gt;<i> - DevPac 2.2 Monst (crashy)
+</I>
+Never crashed for me ; since Hatari now handles some complex 68000 
+protections using stacks/exceptions/... I think we can remove this one too.
+
+&gt;<i> - Neochrome (rasters)
+</I>
+Someone should test this, but I don't think it's still valid.
+
+&gt;<i> - Protracker STE (50kHz replay)
+</I>
+I don't know protracker STE enough to judge its quality ; if someone has 
+some examples I will have a look.
+
+&gt;<i> I tested several Falcon demos using DSP with the old core and it seems that
+</I>&gt;<i> several have regressed (at least couple EKO's&amp;  Lazer's demos, Hmmm demo).
+</I>&gt;<i>
+</I>&gt;<i> I guess the reason is that how timings are done has changed in DSP_Run()
+</I>&gt;<i> from what was in v1.4.  How that gets called is different between the CPU
+</I>&gt;<i> cores too:
+</I>&gt;<i> ----
+</I>&gt;<i> $ grep DSP_Run uae-cpu/*.c
+</I>&gt;<i> uae-cpu/newcpu.c:       DSP_Run( Cycles_GetCounter(CYCLES_COUNTER_CPU) );
+</I>&gt;<i> uae-cpu/newcpu.c:       DSP_Run( Cycles_GetCounter(CYCLES_COUNTER_CPU) );
+</I>&gt;<i> $ grep DSP_Run cpu/*.c
+</I>&gt;<i> cpu/newcpu.c:                       DSP_Run(cpu_cycles* 2 / CYCLE_UNIT);
+</I>&gt;<i> cpu/newcpu.c:               DSP_Run(cpu_cycles* 2 / CYCLE_UNIT);
+</I>&gt;<i> cpu/newcpu.c:               DSP_Run(cpu_cycles* 2 / CYCLE_UNIT);
+</I>&gt;<i>
+</I>&gt;<i> Laurent, is there something you could do for this?
+</I>
+This way of counting cycles should be equivalent. The main difference is 
+that old cpu doesn't have correct cpu cycle for 68030 instruction (it 
+uses 68000 timings) whereas new core has correct 68030 cycle counting.
+So, this is not fixable with old cpu core. This is clearly an example of 
+things that will only work with new core, nothing we can do about this 
+(without loosing a lot of time by duplicating 2 dsp cores).
+
+I wouldn't call these &quot;regressions&quot; in that case, because it was more or 
+less working by luck with old cpu core : dsp code was tailored to make 
+the demo works with a bad cycle counting. Now that we have correct 
+timing in new cpu core, dsp was adjusted to work in the &quot;correct&quot; way.
+
+I don't think we need to &quot;maintain&quot; DSP with old cpu core, regressions 
+will happen, but huge improvements will happen too with new cpu core
+-&gt; dsp issues with only old cpu core should now be discarded/ignored if 
+the programs work with new cpu core.
+
+
+&gt;<i> PS. WinUAE's core doesn't have DSP_Run() calls in all m68k_run_* functions,
+</I>&gt;<i> should it have (at least in few more of them)?
+</I>
+Some m68k_run_* functions are not supposed to be called in Falcon mode, 
+so this could be normal. Anyway, we can unify this latter when all other 
+cpu issues are fixed.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003184.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+	<LI>Next message: <A HREF="003186.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3185">[ date ]</a>
+              <a href="thread.html#3185">[ thread ]</a>
+              <a href="subject.html#3185">[ subject ]</a>
+              <a href="author.html#3185">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

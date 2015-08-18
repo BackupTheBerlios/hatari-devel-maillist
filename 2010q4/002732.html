@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari UI; Installation and Syntax
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20UI%3B%20Installation%20and%20Syntax&In-Reply-To=%3C17553683.270785.1293827615142.JavaMail.nitido%40priv-edtnes95%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002731.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari UI; Installation and Syntax</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20UI%3B%20Installation%20and%20Syntax&In-Reply-To=%3C17553683.270785.1293827615142.JavaMail.nitido%40priv-edtnes95%3E"
+       TITLE="[hatari-devel] Hatari UI; Installation and Syntax">dsavnkff at telus.net
+       </A><BR>
+    <I>Fri Dec 31 21:33:35 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002731.html">[hatari-devel] Console I/O on Windows
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2732">[ date ]</a>
+              <a href="thread.html#2732">[ thread ]</a>
+              <a href="subject.html#2732">[ subject ]</a>
+              <a href="author.html#2732">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+&gt;<i>On perjantai 31 joulukuu 2010, David Savinkoff wrote:
+</I>&gt;&gt;<i> I did a quick check with 'top' and a recent hatari using Blue and Flu:
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Falcon with no dsp, no frameskip (and all deluxe options) TOS 4.04 ...
+</I>&gt;&gt;<i> GEM desktop idles at 79% CPU ... Both Blue and Flu run at 84% CPU.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ST and STE (TOS 206UK) with deluxe options idles the desktop at 20% CPU;
+</I>&gt;&gt;<i> this is the performance I've always had with Hatari.
+</I>&gt;<i>
+</I>&gt;<i> With &quot;Patch Timer-D&quot; option enabled in both Falcon &amp; ST?
+</I>
+(Yes -- D.S.)
+
+I believe the Desktop idling at 79% (above) is meaningless because
+my cpu was max'd-out. Better Falcon Desktop info is with:
+&quot;Patch Timer-D&quot; = yes
+&quot;Frame Skip&quot; = 1
+&quot;DSP&quot; = off
+&quot;030 CPU Clock&quot; = 16MHz
+Result at Idle: (Hatari = 56%CPU), (Xorg = 16%CPU) (Cpu = 69%us)
+Result with Blue: (Hatari = 86%CPU), (Xorg = 13%CPU) (Cpu = 96%us max'd)
+
+&quot;Frame Skip = auto&quot; looks like the best option
+Result at Idle: (Hatari = 68%CPU), (Xorg = 30%CPU) (Cpu = 92%us max'd)
+Result with Blue: (Hatari = 86%CPU), (Xorg = 12%CPU) (Cpu = 96%us max'd)
+
+&gt;<i>
+</I>&gt;<i> Compatibility list lists only couple of games with which it has some
+</I>&gt;<i> effect on rasters &amp; sound speed, otherwise it's fine for everything
+</I>&gt;<i> and can speed things a lot, especially in ST emulation where interrupt
+</I>&gt;<i>handling takes relatively larger part of the Hatari CPU consumption.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> I believe these numbers are reasonable and I don't believe there is
+</I>&gt;&gt;<i> a problem.
+</I>&gt;<i>
+</I>&gt;<i> One of the reasons why Falcon idle is so high and ST so low is that Falcon
+</I>&gt;<i> emulation always converts/draws the whole screen whereas ST emulation
+</I>&gt;<i> does that only for the changed parts.
+</I>&gt;<i>
+</I>&gt;<i> Same might be useful for Falcon emulation also in modes with less colors
+</I>&gt;<i> (e.g. 4 or less bits), but it would complicate the code quite a bit and help
+</I>&gt;<i> only for stuff that updates only small parts of screen.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> 998.418 MHz Pentium3 (1996.83 BogoMIPS) CentOS 5.5 with some
+</I>&gt;&gt;<i> of my PIII customized, optimized and recompiled packages
+</I>&gt;&gt;<i> (xorg, SDL, mesa, hatari ...)
+</I>&gt;&gt;<i> My puddle-jumper does at least warp 1.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>	- Eero
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002731.html">[hatari-devel] Console I/O on Windows
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2732">[ date ]</a>
+              <a href="thread.html#2732">[ thread ]</a>
+              <a href="subject.html#2732">[ subject ]</a>
+              <a href="author.html#2732">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

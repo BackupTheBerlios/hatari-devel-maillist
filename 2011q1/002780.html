@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mahabharata demo problem ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mahabharata%20demo%20problem%20%3F&In-Reply-To=%3C4D2E242C.2050204%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002779.html">
+   <LINK REL="Next"  HREF="002781.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mahabharata demo problem ?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mahabharata%20demo%20problem%20%3F&In-Reply-To=%3C4D2E242C.2050204%40free.fr%3E"
+       TITLE="[hatari-devel] Mahabharata demo problem ?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Jan 12 22:59:08 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002779.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+        <LI>Next message: <A HREF="002781.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2780">[ date ]</a>
+              <a href="thread.html#2780">[ thread ]</a>
+              <a href="subject.html#2780">[ subject ]</a>
+              <a href="author.html#2780">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here is what I get in /var/log/Xorg.0.log
+
+Backtrace:
+[ 17122.093] 0: /usr/bin/X (xorg_backtrace+0x28) [0x45c448]
+[ 17122.093] 1: /usr/bin/X (0x400000+0x5a71d) [0x45a71d]
+[ 17122.093] 2: /lib/libpthread.so.0 (0x7f31b6190000+0xfb40) 
+[0x7f31b619fb40]
+[ 17122.093] 3: /usr/lib/xorg/modules/libfb.so (fbCopyNtoN+0x6e) 
+[0x7f31b214922e]
+[ 17122.093] 4: /usr/lib/xorg/extra-modules/modules/glesx.so 
+(0x7f31b0033000+0x36709) [0x7f31b0069709]
+[ 17122.093] 5: /usr/lib/xorg/extra-modules/modules/glesx.so 
+(0x7f31b0033000+0x37e75) [0x7f31b006ae75]
+[ 17122.093] 6: /usr/bin/X (0x400000+0xdc2b0) [0x4dc2b0]
+[ 17122.093] 7: /usr/bin/X (0x400000+0xd0a29) [0x4d0a29]
+[ 17122.093] 8: /usr/bin/X (0x400000+0x3f949) [0x43f949]
+[ 17122.093] 9: /usr/bin/X (0x400000+0x2184b) [0x42184b]
+[ 17122.093] 10: /lib/libc.so.6 (__libc_start_main+0xfe) [0x7f31b50fbd8e]
+[ 17122.093] 11: /usr/bin/X (0x400000+0x213d9) [0x4213d9]
+[ 17122.093] Segmentation fault at address 0x18
+[ 17122.093]
+Caught signal 11 (Segmentation fault). Server aborting
+[ 17122.093]
+Please consult the The X.Org Foundation support
+      at <A HREF="http://wiki.x.org">http://wiki.x.org</A>
+  for help.
+[ 17122.093] Please also check the log file at &quot;/var/log/Xorg.0.log&quot; for 
+additional information.
+[ 17122.093]
+[ 17122.231] (II) Power Button: Close
+[ 17122.231] (II) UnloadModule: &quot;evdev&quot;
+[ 17122.391] (II) Power Button: Close
+[ 17122.391] (II) UnloadModule: &quot;evdev&quot;
+[ 17122.560] (II) Dell Premium USB Optical Mouse: Close
+[ 17122.560] (II) UnloadModule: &quot;evdev&quot;
+[ 17122.760] (II) HID 04f3:0103: Close
+[ 17122.760] (II) UnloadModule: &quot;evdev&quot;
+[ 17123.000] (II) HID 04f3:0103: Close
+[ 17123.000] (II) UnloadModule: &quot;evdev&quot;
+[ 17123.000] (II) AIGLX: Suspending AIGLX clients for VT switch
+[ 17123.002] (II) fglrx(0): Backup framebuffer data.
+[ 17123.024] (II) fglrx(0): Backup complete.
+[ 17123.177]  ddxSigGiveUp: Closing log
+
+
+
+
+
+Le 12/01/2011 22:54, Laurent Sallafranque a &#233;crit :
+&gt;<i> I'm not in fullscreen, but the window which opens seems to be very big 
+</I>&gt;<i> on the X axis.
+</I>&gt;<i>
+</I>&gt;<i> Where may I find the X logs ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> It's possible that SDL resolution changes (for fullscreen) trigger
+</I>&gt;&gt;<i> a bug in your graphics driver.  What graphics card and driver for
+</I>&gt;&gt;<i> it you have?
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I've got a ATI Radeon HD 5700 Series
+</I>&gt;<i> I'm using the proprietary drivers from ATI that are installed with the 
+</I>&gt;<i> latest Ubuntu release (10.10).
+</I>&gt;<i> It seems to be an old version of the drivers anyway.
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002779.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+	<LI>Next message: <A HREF="002781.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2780">[ date ]</a>
+              <a href="thread.html#2780">[ thread ]</a>
+              <a href="subject.html#2780">[ subject ]</a>
+              <a href="author.html#2780">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

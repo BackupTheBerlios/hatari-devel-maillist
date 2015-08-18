@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Small test to run on STE
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2012q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20test%20to%20run%20on%20STE&In-Reply-To=%3C4F3D74D4.4000304%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004270.html">
+   <LINK REL="Next"  HREF="004272.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Small test to run on STE</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20test%20to%20run%20on%20STE&In-Reply-To=%3C4F3D74D4.4000304%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Small test to run on STE">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Feb 16 22:27:48 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004270.html">[hatari-devel] Small test to run on STE
+</A></li>
+        <LI>Next message: <A HREF="004272.html">[hatari-devel] Small test to run on STE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4271">[ date ]</a>
+              <a href="thread.html#4271">[ thread ]</a>
+              <a href="subject.html#4271">[ subject ]</a>
+              <a href="author.html#4271">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 16/02/2012 22:03, Konador, Cyprian wrote:
+&gt;<i> My STE doesn't boot with 1MB, therefore I've checked with 2MB and the result is $3f
+</I>
+thanks, that's interesting. So the STE is masking $ff8205 with $3f 
+(which is the maximum possible RAM on STF/STE) whatever the real size of 
+the current RAM is (but it's true it would be more complicated to take 
+the RAM size into account at the hardware level for $ff8205).
+
+I will add this to Hatari, as this is the method use by the Delirious 
+Demo IV) to detect an STE is used instead of an STF.
+
+
+Nicolas
+
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Nicolas Pomar&#232;de [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>]
+</I>&gt;<i> Sent: Monday, February 13, 2012 9:53 AM
+</I>&gt;<i> To: Mailing list for Hatari developers
+</I>&gt;<i> Cc: Konador, Cyprian
+</I>&gt;<i> Subject: Re: [hatari-devel] Small test to run on STE
+</I>&gt;<i>
+</I>&gt;<i> Le 13/02/2012 00:00, Konador, Cyprian a &#233;crit :
+</I>&gt;&gt;<i> $3F on my 4MB STe
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Attached you can find test program and source code
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> BR
+</I>&gt;&gt;<i> Cyprian
+</I>&gt;<i>
+</I>&gt;<i> Thanks to you and roger burrows, this indeed looks like hi byte of the screen address is masked with the RAM's size.
+</I>&gt;<i>
+</I>&gt;<i> Maybe someone with a 1MB or 2MB STE here could try cyprian's test program to be sure we get different values ?
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel-bounces at lists.berlios.de</A>
+</I>&gt;&gt;<i> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel-bounces at lists.berlios.de</A>] On Behalf Of Nicolas
+</I>&gt;&gt;<i> Pomar&#232;de
+</I>&gt;&gt;<i> Sent: Sunday, February 12, 2012 12:11 PM
+</I>&gt;&gt;<i> To: Mailing list for Hatari developers
+</I>&gt;&gt;<i> Subject: Re: [hatari-devel] Small test to run on STE
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On 14/11/2011 22:55, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;&gt;<i> Hello
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I'm wondering if the video address on STE is masked depending on the
+</I>&gt;&gt;&gt;<i> RAM size ; could someone with an STE runs this small program and tell
+</I>&gt;&gt;&gt;<i> me the result of D0 and D1 (you need to be in supervisor mode) :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> stop $2300
+</I>&gt;&gt;&gt;<i> stop $2300
+</I>&gt;&gt;&gt;<i> move.b $ff8205,d0
+</I>&gt;&gt;&gt;<i> move.b #$ff,$ff8205
+</I>&gt;&gt;&gt;<i> move.b $ff8205,d1
+</I>&gt;&gt;&gt;<i> move.b d0,$ff8205
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> This will briefly modify the video address high byte and restore it.
+</I>&gt;&gt;&gt;<i> But I'm wondering if you will read $ff after writing it to $ff8205,
+</I>&gt;&gt;&gt;<i> or if it will be masked depending on the max size of 4 MB (and you
+</I>&gt;&gt;&gt;<i> would read $03 for example).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Anders maybe ? ;-)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thanks
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Nicolas
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Ping :)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Anyone with an STE that would be able to run this small test from devpac or another asm ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004270.html">[hatari-devel] Small test to run on STE
+</A></li>
+	<LI>Next message: <A HREF="004272.html">[hatari-devel] Small test to run on STE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4271">[ date ]</a>
+              <a href="thread.html#4271">[ thread ]</a>
+              <a href="subject.html#4271">[ subject ]</a>
+              <a href="author.html#4271">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

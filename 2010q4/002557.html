@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C201010221942.55778.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002556.html">
+   <LINK REL="Next"  HREF="002558.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C201010221942.55778.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Oct 22 18:42:55 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002556.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002558.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2557">[ date ]</a>
+              <a href="thread.html#2557">[ thread ]</a>
+              <a href="subject.html#2557">[ subject ]</a>
+              <a href="author.html#2557">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 22 October 2010, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 22/10/2010 12:44, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; * If you take some file directly from uae-cpu/, it would be preferably
+</I>&gt;<i> &gt; if it could be a separate commit from other winuae code modifications.
+</I>&gt;<i> &gt; Such file could, at least eventually, be in some directory common to
+</I>&gt;<i> &gt; both AUE&amp;  WinUAE code (at least maccess.h changes looked like this)
+</I>&gt;<i>
+</I>&gt;<i> I don't think it's useful to create a common directory, in the end
+</I>&gt;<i> uae-cpu directory will be removed, so the common directory won't be
+</I>&gt;<i> needed as there will only be a &quot;cpu&quot; dir.
+</I>
+Right.
+
+
+&gt;<i> I think the current &quot;uae&quot; directory should be considered &quot;under heavy
+</I>&gt;<i> work, for developper only, will be cleaned later&quot;, we should accept it
+</I>&gt;<i> contains &quot;dirty&quot; / redundant files for now.
+</I>
+The main point was tracking the changes.  Are they something that's
+already tested with current UAE stuff to be working and used as-is with
+WinAUE, or modification to WinAUE code just to get WinAUE to compile.
+I.e. it would help a bit understanding &amp; reviewing the changes.
+
+
+&gt;<i> &gt; * for these kind of changes:
+</I>...
+&gt;<i> &gt; -              for (int i = 0; i&lt;  2; i++) {
+</I>&gt;<i> &gt; +              int i;
+</I>&gt;<i> &gt; +              for (i = 0; i&lt;  2; i++) {
+</I>&gt;<i> &gt; ---
+</I>&gt;<i> &gt;   (it's enough for declaration to be at the start of a block.)
+</I>&gt;<i>
+</I>&gt;<i> I prefer the one from Laurent where all variables are declared at the
+</I>&gt;<i> start, instead of doing it in the &quot;for&quot; block.
+</I>
+Me too, but lately I've been forced to read/review C++ code (also elsewhere
+than in Hatari :-)) and that's eroded my opinion a bit....
+
+
+&gt;<i> But in the end, I don't think we should apply cosmetic changes to winuae
+</I>&gt;<i> code for now until everything is fixed ; this will make backporting
+</I>&gt;<i> patches from winuae harder.
+</I>
+&quot;for (int i = 0; i&lt;  2; i++)&quot; is C++, it doesn't compile with C-compiler.
+
+AUE is C-code, is the C++ in WinAUE C++ just an accident or done on purpose?
+
+I mean, if upstream would be willing to accept fixes for C compilation,
+making the changes smaller and closer to what's in original code could
+help in getting them upstreaming...?
+
+(Most of Laurent's changes would seem to relate to C++ -&gt; C conversion.)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002556.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002558.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2557">[ date ]</a>
+              <a href="thread.html#2557">[ thread ]</a>
+              <a href="subject.html#2557">[ subject ]</a>
+              <a href="author.html#2557">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

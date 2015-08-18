@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon mode enabling DSP by default
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20mode%20enabling%20DSP%20by%20default&In-Reply-To=%3C201101162003.10549.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002805.html">
+   <LINK REL="Next"  HREF="002790.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon mode enabling DSP by default</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20mode%20enabling%20DSP%20by%20default&In-Reply-To=%3C201101162003.10549.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Falcon mode enabling DSP by default">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Jan 16 19:03:10 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002805.html">[hatari-devel] Falcon mode enabling DSP by default
+</A></li>
+        <LI>Next message: <A HREF="002790.html">[hatari-devel] WinAUE changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2817">[ date ]</a>
+              <a href="thread.html#2817">[ thread ]</a>
+              <a href="subject.html#2817">[ subject ]</a>
+              <a href="author.html#2817">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 15 tammikuu 2011, Eero Tamminen wrote:
+&gt;<i> However I get different results with these:
+</I>&gt;<i> 	hatari --machine falcon --dsp emu --tos tos404.img mahabhar.prg
+</I>&gt;<i> 	hatari --tos tos404.img mahabhar.prg
+</I>&gt;<i>
+</I>&gt;<i> With latter the Mahabharata demo doesn't work.
+</I>
+Adding &quot;--dsp emu&quot; was enough to get latter working so it's something
+DSP emulation related.
+
+(And using just memory snapshot works fine too except for keyboard
+handling discussed in the other thread.)
+
+
+&gt;<i> Btw. I noticed that DSP isn't reseted in Reset_ST() although e.g.
+</I>&gt;<i> Crossbar and Videl are reseted there.  Should it be?
+</I>&gt;<i> 
+</I>&gt;<i> Currently it's reseted:
+</I>&gt;<i> - before memory snapshot is loaded
+</I>&gt;<i> - from psg.c
+</I>&gt;<i> - by TOS4 on startup I think (but not EmuTOS I guess)
+</I>
+Adding DSP_Reset() to Reset_ST() wasn't enought to fix it.
+
+
+&gt;<i> In the latter case these happen in main.c:
+</I>&gt;<i>         SDLGui_Init();
+</I>&gt;<i>         Printer_Init();
+</I>&gt;<i>         RS232_Init();
+</I>&gt;<i>         Midi_Init();
+</I>&gt;<i>         Screen_Init();
+</I>&gt;<i>         Main_SetTitle(NULL);
+</I>&gt;<i>         HostScreen_Init();
+</I>&gt;<i>         DSP_Init();
+</I>&gt;<i>         Floppy_Init();
+</I>&gt;<i>         M68000_Init();                /* Init CPU emulation */
+</I>&gt;<i>         Audio_Init();
+</I>&gt;<i>         DmaSnd_Init();
+</I>&gt;<i>         Keymap_Init();
+</I>&gt;<i>         /* Init HD emulation */
+</I>&gt;<i>         HDC_Init();
+</I>&gt;<i>         Ide_Init();
+</I>&gt;<i>         GemDOS_Init();
+</I>&gt;<i> 
+</I>&gt;<i> before TOS4 setting forces these:
+</I>&gt;<i>                 ConfigureParams.System.nDSPType = DSP_TYPE_EMU;
+</I>&gt;<i>                 ConfigureParams.System.nMachineType = MACHINE_FALCON;
+</I>&gt;<i>                 ConfigureParams.System.nCpuFreq = 16;
+</I>&gt;<i>                 IoMem_Init();
+</I>&gt;<i>                 ConfigureParams.System.nCpuLevel = 3;
+</I>&gt;<i>                 M68000_CheckCpuLevel();
+</I>&gt;<i> 
+</I>&gt;<i> Does the stuff done in main.c before this have anything that could depend
+</I>&gt;<i> from the above falcon setting?
+</I>
+But adding DSP_Init() call when TOS4 forces switch to Falcon mode fixed
+this so I commited it.
+
+
+Starting with ST mode, using TOS4 to switch it to Falcon mode and after
+running Mahabharata demo using TOS v1.4 to switch Hatari back to ST mode
+results in colors being wrong.  Changing to mono monitor and back to RGB
+monitor fixed that though... (I'm not going to look into that, it's too much
+fo a corner case :))
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002805.html">[hatari-devel] Falcon mode enabling DSP by default
+</A></li>
+	<LI>Next message: <A HREF="002790.html">[hatari-devel] WinAUE changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2817">[ date ]</a>
+              <a href="thread.html#2817">[ thread ]</a>
+              <a href="subject.html#2817">[ subject ]</a>
+              <a href="author.html#2817">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

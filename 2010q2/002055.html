@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3C13418749.1309682.1273611334466.JavaMail.nitido%40priv-edtnes94%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002054.html">
+   <LINK REL="Next"  HREF="002056.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3C13418749.1309682.1273611334466.JavaMail.nitido%40priv-edtnes94%3E"
+       TITLE="[hatari-devel] Slow sound buffer">dsavnkff at telus.net
+       </A><BR>
+    <I>Tue May 11 22:55:34 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002054.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002056.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2055">[ date ]</a>
+              <a href="thread.html#2055">[ thread ]</a>
+              <a href="subject.html#2055">[ subject ]</a>
+              <a href="author.html#2055">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100511/551770d5/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100511/551770d5/attachment.html</A>&gt;
+-------------- next part --------------
+************
+On Tue, 11 May 2010, David Savinkoff wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> &gt; Theoretically, 508/512 should give 46 ms delay at 11 kHz, which should
+</I>&gt;<i> &gt; not be noticeable. If you can hear it, then the delay is bigger than what
+</I>&gt;<i> &gt; SDL reports.
+</I>&gt;<i> &gt;
+</I>&gt;<i> I guess the delay is caused by drifting to maximum delay with
+</I>&gt;<i> MIXBUFFER_SIZE = 16384 and not SoundBufferSize = 512.
+</I>&gt;<i> (the larger either is, however, the longer the delay)
+</I>
+I have some doubt on the &quot;drift&quot; effect over time. If delay was drifting,
+I don't see anything in the code that would prevent it from drifting
+forever. Except is would drift modulo MIXBUFFER_SIZE.
+So, delay would increase, go back to 0, increase again, ...
+
+But from what you report, delay seems constant over time, so for me this
+looks like a problem at SDL's init that create a delay once for all and
+then this delay doesn't change after. Maybe SDL/alsa is dropping some
+frames at start in your case and is never able to regain those lost
+frames.
+
+Assuming we try different values instead of 46 ms at 11 kHz, could you try
+these values for &quot;samples&quot; and see if you have better results.
+
+20 ms : samples = 221
+10 ms : samples = 111
+
+If this gives better results, I could add a parameter to specify sound
+latency (but I would be interested to know first if this can be fixed by
+using sdl 1.2.14)
+
+************
+Reply
+************
+
+Hi,
+
+I'm looking at the Audio_CallBack(), line 33, in audio.c as I say what
+is on my mind here.
+
+When nGeneratedSamples &gt;= len, enough samples are available, so pass
+completed buffer to audio system. However, what happens if Hatari
+continues to provide more samples than the callback swallows?
+I believe we have to slow down Hatari's sample rate to let the callback
+catch up. The opposite is true when too few samples are generated.
+Otherwise the buffer drifts to the extreme of Not enough samples
+available, or too many (which can cause a delay and lost samples).
+Thus, three sample rates (slower, exact, faster) are needed for each
+of which hatari already has (eg. 44090 44100 44110 Hz) while SDL only
+sees the exact frequency.
+
+When nGeneratedSamples &gt; len  ; go slower
+When nGeneratedSamples &lt; len  ; go faster
+When nGeneratedSamples == len ; otherwise be exact
+
+Note that the exact frequency is needed to reduce 'hunting' or
+excessive correcting.
+
+Maybe this problem will have to be corrected after the release.
+
+
+I am able to compile SDL-1.2.13 with my gcc toolchain but not SDL-1.2.14
+I'm stuck with SDL-1.2.13
+
+David Savinkoff
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002054.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002056.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2055">[ date ]</a>
+              <a href="thread.html#2055">[ thread ]</a>
+              <a href="subject.html#2055">[ subject ]</a>
+              <a href="author.html#2055">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

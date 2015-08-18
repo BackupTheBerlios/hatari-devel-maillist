@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Latest Hatari HG version gets stuck sometimes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Latest%20Hatari%20HG%20version%20gets%20stuck%20sometimes&In-Reply-To=%3Calpine.LMD.2.00.0907041856160.24453%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000446.html">
+   <LINK REL="Next"  HREF="000448.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Latest Hatari HG version gets stuck sometimes</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Latest%20Hatari%20HG%20version%20gets%20stuck%20sometimes&In-Reply-To=%3Calpine.LMD.2.00.0907041856160.24453%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Latest Hatari HG version gets stuck sometimes">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Jul  4 19:02:30 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000446.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+        <LI>Next message: <A HREF="000448.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#447">[ date ]</a>
+              <a href="thread.html#447">[ thread ]</a>
+              <a href="subject.html#447">[ subject ]</a>
+              <a href="author.html#447">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 4 Jul 2009, Matthias Arndt wrote:
+
+&gt;<i> Am Samstag, den 04.07.2009, 17:20 +0200 schrieb <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>:
+</I>&gt;&gt;<i> On Sat, 4 Jul 2009, Matthias Arndt wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> [...]
+</I>&gt;&gt;&gt;<i> I don't know if this is related to Nicolas's patch.
+</I>&gt;&gt;&gt;<i> I can reproduce thsi lockup witha  totally blank screen (and even F12
+</I>&gt;&gt;&gt;<i> not working anymore) with the freshly released &quot;Just when&quot; Demo by XIA
+</I>&gt;&gt;&gt;<i> (<A HREF="http://files.dhs.nu/party/sommarhack2009/justwhen.zip">http://files.dhs.nu/party/sommarhack2009/justwhen.zip</A>)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> HG version from about 10mins ago, STE+4MB TOS 1.62de
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Worked fine with me.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Just to check, do you use the 'patch timer D' option (I don't) ? As I
+</I>&gt;&gt;<i> think those problems are all related to something leaking in the internal
+</I>&gt;&gt;<i> interrupt management.
+</I>&gt;<i>
+</I>&gt;<i> Hmm, Timer D patch was active, indeed! I will try without and report if
+</I>&gt;<i> that makes a difference.
+</I>
+This could help to create the context to trigger the bug, but of course 
+this should not cause this problem.
+
+&gt;<i>
+</I>&gt;<i> Is that option still needed for some cases? I remember it fixed some
+</I>&gt;<i> programs to run properly ;)
+</I>
+When timer D patch is active, it will prevent consuming too much cpu under 
+TOS / GEM, because the tos is setting the timer parameters to values that 
+will trigger timer D interrupt very often (although the TOS doesn't need 
+it). But in that case, some programs could be confused if they try to use 
+the timer D themselves. You can leave the patch if you mostly use GEM 
+programs.
+
+When patch is inactive, hatari behaves closely to what a real ST would do, 
+but this could consume a little more CPU to handle those useless timer D 
+interrupt. So for maximum compatibilty if you use games/demos, you should 
+not use this patch option.
+
+In my case, I definitly remove this option, as I want to be as close to 
+real hardware as possible, and I don't see any noticeable speed change. 
+Have a try to see if this slow down hatari in your case.
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000446.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+	<LI>Next message: <A HREF="000448.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#447">[ date ]</a>
+              <a href="thread.html#447">[ thread ]</a>
+              <a href="subject.html#447">[ subject ]</a>
+              <a href="author.html#447">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Choosing ym mixing method in the UI
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Choosing%20ym%20mixing%20method%20in%20the%20UI&In-Reply-To=%3C201104042219.52646.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003301.html">
+   <LINK REL="Next"  HREF="003303.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Choosing ym mixing method in the UI</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Choosing%20ym%20mixing%20method%20in%20the%20UI&In-Reply-To=%3C201104042219.52646.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Choosing ym mixing method in the UI">oak at helsinkinet.fi
+       </A><BR>
+    <I>Mon Apr  4 21:19:52 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003301.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+        <LI>Next message: <A HREF="003303.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3302">[ date ]</a>
+              <a href="thread.html#3302">[ thread ]</a>
+              <a href="subject.html#3302">[ subject ]</a>
+              <a href="author.html#3302">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On maanantai 04 huhtikuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> by default, Hatari is using linear mixing to average the 3 YM voices and
+</I>&gt;<i> get the final sample to play.
+</I>&gt;<i> 
+</I>&gt;<i> Due to the hardware/filters used in a real ST, this doesn't fully match
+</I>&gt;<i> the reality, so it's also possible to mix the 3 voices using a table of
+</I>&gt;<i> all possible combination measured on an ST (this is in sound.c)
+</I>&gt;<i> 
+</I>&gt;<i> This table method is closer to what should be expected and gives really
+</I>&gt;<i> much better/cleaner results when playing samples on STF (by combining
+</I>&gt;<i> the 3 YM voices), but it might not please everyone's ears.
+</I>&gt;<i> 
+</I>&gt;<i> So, I'd like to make this the default, but this would need an option to
+</I>&gt;<i> change it from the UI easily.
+</I>&gt;<i> 
+</I>&gt;<i> Eero, do you think you could add 2 check boxes to the &quot;sound&quot; panel to
+</I>&gt;<i> handle this ?
+</I>
+You mean radio boxes, I assume user cannot select both?
+
+What about command line and configuration option,
+I guess the command line option could be:
+	--ym-mixer &lt;x&gt;  YM mixing method (x=linear/table)
+?
+
+&gt;<i> ------------------------------------------
+</I>&gt;<i> 
+</I>&gt;<i> YM voice mixing  [] linear   [] ST table
+</I>&gt;<i> 
+</I>&gt;<i> ------------------------------------------
+</I>
+Isn't the table used for mixing STE/Falcon/TT YM sound?
+
+
+&gt;<i> This should change YmVolumeMixing in sound.c to YM_LINEAR_MIXING or
+</I>&gt;<i> YM_TABLE_MIXING.
+</I>&gt;<i> 
+</I>&gt;<i> (we could also add some checkboxes to enable some filters, but I have no
+</I>&gt;<i> idea of what filters to use for now, so this can be made later)
+</I>
+Attached are three possible layouts that could be used to fit this to
+sound dialog, please pick one. :-)
+
+I can look into this and the add command line option after the configuration
+variable is there.
+
+
+	- Eero
+-------------- next part --------------
+-------------------------------------
+
+   SOUND     [] Enabled
+
+ Playback quality:
+ o 11025 Hz  o 22050 Hz  o 44100 Hz
+ o 12517 Hz  o 25033 Hz  o 48000 Hz
+ o 16000 Hz  o 32000 Hz  o 50066 Hz
+
+ YM mixing:  o ST table  o linear
+
+-------------------------------------
+
+         Sound options
+   
+ [] Sound enabled       YM mixing:
+                         o Linear
+			 o ST table
+ Playback quality:
+ o 11025 Hz  o 22050 Hz  o 44100 Hz
+ o 12517 Hz  o 25033 Hz  o 48000 Hz
+ o 16000 Hz  o 32000 Hz  o 50066 Hz
+
+-------------------------------------
+
+ Sound options           o 11025 Hz
+                         o 12517 Hz
+ [] Sound enabled        o 16000 Hz
+                         o 22050 Hz
+ YM mixing:              o 25033 Hz
+  o Linear               o 32000 Hz
+  o ST table             o 44100 Hz
+                         o 48000 Hz
+                         o 50066 Hz
+
+-------------------------------------
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003301.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+	<LI>Next message: <A HREF="003303.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3302">[ date ]</a>
+              <a href="thread.html#3302">[ thread ]</a>
+              <a href="subject.html#3302">[ subject ]</a>
+              <a href="author.html#3302">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

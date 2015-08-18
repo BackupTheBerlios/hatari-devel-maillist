@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] measuring Hatari performance (was: Very big DSP	optimisations)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20measuring%20Hatari%20performance%20%28was%3A%20Very%20big%20DSP%0A%09optimisations%29&In-Reply-To=%3C200904240056.09962.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000264.html">
+   <LINK REL="Next"  HREF="000266.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] measuring Hatari performance (was: Very big DSP	optimisations)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20measuring%20Hatari%20performance%20%28was%3A%20Very%20big%20DSP%0A%09optimisations%29&In-Reply-To=%3C200904240056.09962.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] measuring Hatari performance (was: Very big DSP	optimisations)">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Apr 23 23:56:09 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000264.html">[hatari-devel] Avena : Sonolumineszenz
+</A></li>
+        <LI>Next message: <A HREF="000266.html">[hatari-devel] measuring Hatari performance (was: Very big DSP optimisations)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#265">[ date ]</a>
+              <a href="thread.html#265">[ thread ]</a>
+              <a href="subject.html#265">[ subject ]</a>
+              <a href="author.html#265">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 17 April 2009, Eero Tamminen wrote:
+&gt;<i> So... I have been thinking that Hatari should have some performance
+</I>&gt;<i> metrics.
+</I>&gt;<i>
+</I>&gt;<i> Thomas, maybe when the HATARI_TRACE define is set, Hatari could could
+</I>&gt;<i> show a count of how many frames it has displayed and e.g. output a
+</I>&gt;<i> running average of that at certain interval + number of shown frames e.g.
+</I>&gt;<i> on SIGUSR1.
+</I>
+I though that it could be done a bit more simple, see the attachment.
+The code is so simple that I think it could be included into Hatari as
+is...?
+
+
+Use like this:
+
+* Start Hatari so that it works as fast as it can:
+     hatari --fast-forward yes
+* Press Pause or F12, or invoke them in some automated way:
+    sudo apt-get install xautomation
+    xte 'sleep 10' 'key Pause'
+  (after unpause, counter starts again from zero)
+
+So, to measure whether some e.g. DSP optimization made things faster, one
+could have a dir which has in auto/-folder a test program that starts
+automatically and then some script could start Hatari with that and after
+some fixed interval simulate a Pause key press.  If the FPS increased, the
+optimization is improvement.
+
+NOTE: For short time periods the FPS value seems to fluctuate quite a lot,
+Hatari needs to run several tens of seconds for FPS to keep fairly stable
+(with few percentages).  Hatari speed depends also a lot on what options are
+used (frame skip, spec512, zooming, sound etc), so they need to be kept
+same.  And of course there shouldn't be any background activity in the
+meanwhile (better is to run the test multiple times until it stabilizes)
+and one should measure only one optimization at the time.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: fps.diff
+Type: text/x-diff
+Size: 1491 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090424/f76f9c0f/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090424/f76f9c0f/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000264.html">[hatari-devel] Avena : Sonolumineszenz
+</A></li>
+	<LI>Next message: <A HREF="000266.html">[hatari-devel] measuring Hatari performance (was: Very big DSP optimisations)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#265">[ date ]</a>
+              <a href="thread.html#265">[ thread ]</a>
+              <a href="subject.html#265">[ subject ]</a>
+              <a href="author.html#265">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

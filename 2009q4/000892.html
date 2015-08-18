@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crossbar refartoring
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crossbar%20refartoring&In-Reply-To=%3C4AFE8FA3.80009%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000891.html">
+   <LINK REL="Next"  HREF="000912.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crossbar refartoring</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crossbar%20refartoring&In-Reply-To=%3C4AFE8FA3.80009%40free.fr%3E"
+       TITLE="[hatari-devel] Crossbar refartoring">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Nov 14 12:08:19 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000891.html">[hatari-devel] Little point about crossbar code
+</A></li>
+        <LI>Next message: <A HREF="000912.html">[hatari-devel] Crossbar refactoring
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#892">[ date ]</a>
+              <a href="thread.html#892">[ thread ]</a>
+              <a href="subject.html#892">[ subject ]</a>
+              <a href="author.html#892">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've re factored completely the crossbar code.
+
+Now, I only use 2 interrupts : 25 Mhz and 32 Mhz interrupts.
+Devices are using one or the other clock. There's a special case when 
+the clock is using the STE compatible clock. I've mapped this case to 
+the 25 Mhz clock.
+
+Now, when there's a clock, I transfer all the datas from devices to 
+devices (everything is synchronized together).
+
+In non handshaking mode, things seem to work neither better nor worse 
+than before.
+There are still strange things : if you listen to EKO demo &quot;Eko System&quot; 
+music, it sounds well at beginning, then there's a period of 20 seconds 
+where the music is strange, then, it sounds very well again untill the end.
+
+Do you listen the same thing than me ?
+
+
+In handshake mode, I do my tests with the 4k demo &quot;aggressive party 2&quot; 
+from nocrew. (A 4d dsp tridi word).
+Without cheating, It only displays the first picture correctly, then 
+only the background.
+
+I've added a temporary variable names toto (I'll remove it as soon as 
+possible).
+I've found only one value of toto which let the demo runs correctly (but 
+slowly). It's when toto=200.
+
+Does it works also for you with this value ?
+Can you try another values (like 8 or 16 or 100 for example) and tell me 
+if it works or not for you ?
+(It's in crossbar.c code)
+
+I continue to code the crossbar.
+
+Regards,
+
+Laurent
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000891.html">[hatari-devel] Little point about crossbar code
+</A></li>
+	<LI>Next message: <A HREF="000912.html">[hatari-devel] Crossbar refactoring
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#892">[ date ]</a>
+              <a href="thread.html#892">[ thread ]</a>
+              <a href="subject.html#892">[ subject ]</a>
+              <a href="author.html#892">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

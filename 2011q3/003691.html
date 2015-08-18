@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New STE DMA audio emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C6588592.1554541.1310425161462.JavaMail.nitido%40priv-edtnes92%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003678.html">
+   <LINK REL="Next"  HREF="003695.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New STE DMA audio emulation</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C6588592.1554541.1310425161462.JavaMail.nitido%40priv-edtnes92%3E"
+       TITLE="[hatari-devel] New STE DMA audio emulation">dsavnkff at telus.net
+       </A><BR>
+    <I>Tue Jul 12 00:59:21 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003678.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+        <LI>Next message: <A HREF="003695.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3691">[ date ]</a>
+              <a href="thread.html#3691">[ thread ]</a>
+              <a href="subject.html#3691">[ subject ]</a>
+              <a href="author.html#3691">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+If you are curious about extras with regard to this subject,
+I've put together some Octave examples for my reference.
+
+David
+***********************************************
+
+On Jul 11, 2011, Nicolas Pomar&#232;de &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt; wrote: 
+
+Le 11/07/2011 00:39, David Savinkoff a &#233;crit :
+
+&gt;<i> On Jul 10, 2011, Nicolas Pomar&#232;de&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt;  wrote:
+</I>&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> I applied your patch.
+</I>&gt;<i>
+</I>&gt;<i> By the way, for ym2149 sound, I once used the low pass filter from
+</I>&gt;<i> StSound by Leonard, which uses this formula :
+</I>&gt;<i>
+</I>&gt;<i>     out = (m_lowPassFilter[0]&gt;&gt;2) + (m_lowPassFilter[1]&gt;&gt;1) + (in&gt;&gt;2);
+</I>&gt;<i>
+</I>&gt;<i> Do you know what is the difference with your version ?
+</I>&gt;<i>
+</I>&gt;<i>     out = lowPassFilter[0] + (lowPassFilter[1]&lt;&lt;1) + in;
+</I>&gt;<i>
+</I>&gt;<i> Maybe a lower output volume for Leonard's one ?
+</I>&gt;<i>
+</I>&gt;<i> Thanks
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i> ******************************************************************
+</I>&gt;<i>
+</I>&gt;<i> Both filters are the same except mine is 4 times louder.
+</I>&gt;<i> I want less round-off error and more speed so I divide by
+</I>&gt;<i> four later while mixing the DMA and YM together.
+</I>&gt;<i>
+</I>&gt;<i> Usually the filters are normalized so that the dc gain is one.
+</I>&gt;<i> Leonard's filter is 1/4 + 1/2 + 1/4 = 1
+</I>&gt;<i> Mine is             1   + 2   + 1   = 4
+</I>&gt;<i> BTW the my previous filter was 1 + 1 + 1 + 1 = 4 thus has
+</I>&gt;<i> a different frequency response.
+</I>&gt;<i>
+</I>&gt;<i> David
+</I>&gt;<i>
+</I>
+
+OK, thanks for the explanation.
+
+Nicolas
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: FIRplotOctave.m
+Type: application/octet-stream
+Size: 1168 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110711/513a7430/attachment.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110711/513a7430/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003678.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+	<LI>Next message: <A HREF="003695.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3691">[ date ]</a>
+              <a href="thread.html#3691">[ thread ]</a>
+              <a href="subject.html#3691">[ subject ]</a>
+              <a href="author.html#3691">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

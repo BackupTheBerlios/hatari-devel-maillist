@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger Question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20Question&In-Reply-To=%3C201001120017.34378.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001205.html">
+   <LINK REL="Next"  HREF="001207.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger Question</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20Question&In-Reply-To=%3C201001120017.34378.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Debugger Question">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jan 11 23:17:34 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001205.html">[hatari-devel] Debugger Question
+</A></li>
+        <LI>Next message: <A HREF="001207.html">[hatari-devel] Debugger Question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1206">[ date ]</a>
+              <a href="thread.html#1206">[ thread ]</a>
+              <a href="subject.html#1206">[ subject ]</a>
+              <a href="author.html#1206">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 11 January 2010, Laurent Sallafranque wrote:
+&gt;<i> I'd like to add a &quot;componet&quot; debugging to the debugger.
+</I>&gt;<i>
+</I>&gt;<i> I'm starting to have a look at the Videl component, and I've written this:
+</I>&gt;<i>
+</I>&gt;<i> /**
+</I>&gt;<i>  * VIDEL_disasmRegisters : display the Videl registers values.
+</I>&gt;<i>  */
+</I>&gt;<i> void VIDEL_disasmRegisters(void)
+</I>...
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I'd like to get the whole register values of the Videl at once with one
+</I>&gt;<i> debugger command. Something like &quot;vd&quot; for videl disasm would be great.
+</I>&gt;<i>
+</I>&gt;<i> I could do the same for the crossbar (command cd for crossbar
+</I>&gt;<i> disassemble ?).
+</I>&gt;<i>
+</I>&gt;<i> Do you think we could add this function to the debugger ?
+</I>
+I was thinking of adding an &quot;info&quot; function to the debugger which could
+provide this kind of information.  We could then have:
+	info videl
+	info crossbar
+	info tos
+	info program
+etc.
+
+(These things don't need to have one or two letter acronyms because
+I can add TAB completion for them like I've done for some of the other
+debugger commands.)
+
+
+However, if the provided information is machine specific (videl is Falcon
+only etc) or OS specific (TOS vs. MiNT...), it should have appropriate
+checks and show something like:
+	&quot;No Videl&quot;
+when the HW or OS is not running.
+
+If you add these kind of functions to debug/info.c file:
+	void Info_Videl(void)
+I can do the integration &amp; TAB completion.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001205.html">[hatari-devel] Debugger Question
+</A></li>
+	<LI>Next message: <A HREF="001207.html">[hatari-devel] Debugger Question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1206">[ date ]</a>
+              <a href="thread.html#1206">[ thread ]</a>
+              <a href="subject.html#1206">[ subject ]</a>
+              <a href="author.html#1206">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

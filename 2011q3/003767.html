@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Last checks before releasing 1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3Calpine.DEB.2.00.1107181816060.15416%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003766.html">
+   <LINK REL="Next"  HREF="003756.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Last checks before releasing 1.5</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3Calpine.DEB.2.00.1107181816060.15416%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Last checks before releasing 1.5">ae at dhs.nu
+       </A><BR>
+    <I>Mon Jul 18 18:17:38 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003766.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+        <LI>Next message: <A HREF="003756.html">[hatari-devel] Startup/Setup problem with 24 bits addressing mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3767">[ date ]</a>
+              <a href="thread.html#3767">[ thread ]</a>
+              <a href="subject.html#3767">[ subject ]</a>
+              <a href="author.html#3767">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 18 Jul 2011, Nicolas Pomar&#232;de wrote:
+
+&gt;<i> So, solution is to use a lower value for fps_scale in the avi header.
+</I>&gt;<i>
+</I>&gt;<i> In avi_record.c, can you try changing lines 966/967 :
+</I>&gt;<i>       AviParams.Fps = Fps;
+</I>&gt;<i>       AviParams.Fps_scale = Fps_scale;
+</I>&gt;<i> with :
+</I>&gt;<i>       AviParams.Fps = Fps &gt;&gt; 8;
+</I>&gt;<i>       AviParams.Fps_scale = Fps_scale &gt;&gt; 8;
+</I>&gt;<i>
+</I>&gt;<i> This way fps_scale should be 65536 and you should not get warnings / errors. 
+</I>&gt;<i> If it doesn't work, try higher values 9, 10, ...
+</I>&gt;<i>
+</I>&gt;<i> If it works, I will update the sources accordingly.
+</I>
+
+Hi!
+
+Yep this works :)
+
+ffmpeg show the warning, but not fatal error, and the resulting file play 
+in Quicktime Player.
+
+
+&gt;&gt;&gt;<i> From the command line, add &quot;--avi-fps=50&quot; to force the value written
+</I>&gt;&gt;&gt;<i> into the avi header to 50 Hz.
+</I>&gt;&gt;&gt;<i> Or in the [video] section of hatari.cfg, change AviRecordFps=0 to
+</I>&gt;&gt;&gt;<i> AviRecordFps=50 for example.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Thanks, this made my day. Adding it to the configureation file worked a
+</I>&gt;&gt;<i> treat. :)
+</I>&gt;<i>
+</I>&gt;<i> Another solution is to add '-r 50' to ffmpeg, this should force the frame 
+</I>&gt;<i> rate and ignore the timebase (I haven't tested this).
+</I>
+I tried that before, but it didn't help. Anyway, everything's fine now, 
+thanks :)
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003766.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+	<LI>Next message: <A HREF="003756.html">[hatari-devel] Startup/Setup problem with 24 bits addressing mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3767">[ date ]</a>
+              <a href="thread.html#3767">[ thread ]</a>
+              <a href="subject.html#3767">[ subject ]</a>
+              <a href="author.html#3767">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

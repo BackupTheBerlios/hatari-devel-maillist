@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Union demo abort with new EmuTOS?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Union%20demo%20abort%20with%20new%20EmuTOS%3F&In-Reply-To=%3C201111102320.50409.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004170.html">
+   <LINK REL="Next"  HREF="004172.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Union demo abort with new EmuTOS?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Union%20demo%20abort%20with%20new%20EmuTOS%3F&In-Reply-To=%3C201111102320.50409.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Union demo abort with new EmuTOS?">oak at helsinkinet.fi
+       </A><BR>
+    <I>Thu Nov 10 22:20:50 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004170.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+        <LI>Next message: <A HREF="004172.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4171">[ date ]</a>
+              <a href="thread.html#4171">[ thread ]</a>
+              <a href="subject.html#4171">[ subject ]</a>
+              <a href="author.html#4171">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On torstai 10 marraskuu 2011, Thomas Huth wrote:
+&gt;<i> &gt; Does the Union demo crap out with EmuTOS because one of the line-A
+</I>&gt;<i> &gt; variables has a bogus value?
+</I>&gt;<i> 
+</I>&gt;<i> No, if you dump a little bit more of the history before the a000
+</I>&gt;<i> opcode, you'll see that the program is already executing garbage before
+</I>&gt;<i> this. It somehow jumps to a region in memory where no valid code has
+</I>&gt;<i> been stored (or the code there has been trashed somehow).
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Hatari can avoid the abort by checking that VDI_OldPC is valid (see
+</I>&gt;<i> &gt; attached patch), but how I can make it to raise illegal instruction
+</I>&gt;<i> &gt; exception if it isn't?
+</I>&gt;<i> 
+</I>&gt;<i> I'd rather suggest to chech m68k_getpc() being within the cartridge
+</I>&gt;<i> memory region when OpCode_VDI has been called.
+</I>
+Any particular reason why it should be done like that?   IMHO checking
+VDI_OldPC is cleaner, as that must anyway be valid when this is called.
+
+
+&gt;<i> When it is called from somewhere else, just run op_illg_1 instead of of
+</I>&gt;<i> VDI_Complete.
+</I>
+Thanks!
+
+I guess running the fill_prefetch_0() after that is fine, nothing's
+expecting things to be 100% correctly prefilled after illegal opcodes?
+:<i>-)
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004170.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+	<LI>Next message: <A HREF="004172.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4171">[ date ]</a>
+              <a href="thread.html#4171">[ thread ]</a>
+              <a href="subject.html#4171">[ subject ]</a>
+              <a href="author.html#4171">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

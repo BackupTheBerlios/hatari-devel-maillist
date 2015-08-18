@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] 68030 Debug mode and new CPU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068030%20Debug%20mode%20and%20new%20CPU&In-Reply-To=%3C4D62F5AA.9060306%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003110.html">
+   <LINK REL="Next"  HREF="003112.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] 68030 Debug mode and new CPU</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068030%20Debug%20mode%20and%20new%20CPU&In-Reply-To=%3C4D62F5AA.9060306%40free.fr%3E"
+       TITLE="[hatari-devel] 68030 Debug mode and new CPU">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Feb 22 00:30:50 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003110.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+        <LI>Next message: <A HREF="003112.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3111">[ date ]</a>
+              <a href="thread.html#3111">[ thread ]</a>
+              <a href="subject.html#3111">[ subject ]</a>
+              <a href="author.html#3111">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Because cpummu.h needs to include &quot;main.h&quot;, should I include it only 
+there and make an exception to the rule ?
+
+I've tried to include &quot;main.h&quot; only in xxx_files.c, but it's needed in 
+cpummu.h
+
+I'm waiting your advice before committing.
+
+Laurent
+
+
+Le 21/02/2011 21:55, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On maanantai 21 helmikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i> OK Eero,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> But as likely is also used in cpummu.h, shouldn't I include &quot;main.h&quot;
+</I>&gt;&gt;<i> only in cpummu.h ?
+</I>&gt;<i> There are some Hatari include files which include other includes, but Thomas
+</I>&gt;<i> thinks it's better to do the inclusions in C-files, otherwise you could get
+</I>&gt;<i> into funny issues despite the header ifdef multiple-inclusion protection.
+</I>&gt;<i>
+</I>&gt;<i> Thomas, what were the issues into which you've run with that?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;&gt;<i> Regards
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Le 21/02/2011 21:10, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On maanantai 21 helmikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;&gt;&gt;<i> It seems to work for me, no regression detected.
+</I>&gt;&gt;&gt;<i> Thanks!
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Le 20/02/2011 23:07, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;&gt;&gt;&gt;<i> Btw. While testing the compilation, I noticed this in cpu/cpummu.h:
+</I>&gt;&gt;&gt;&gt;&gt;<i> 	#define likely(x) x
+</I>&gt;&gt;&gt;&gt;&gt;<i> 	#define unlikely(x) x
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Why the optimization macros from main.h (intended to mark code
+</I>&gt;&gt;&gt;&gt;&gt;<i> branches as cold/hot) are nullified?
+</I>&gt;&gt;&gt;<i> They were already in your original import of this file:
+</I>&gt;&gt;&gt;<i> <A HREF="http://hg.berlios.de/repos/hatari/file/026e498bd040/src/cpu/cpummu.h">http://hg.berlios.de/repos/hatari/file/026e498bd040/src/cpu/cpummu.h</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Is it just just that the WinUAE author didn't know how to properly
+</I>&gt;&gt;&gt;<i> check for GCC version when he imported the MMU code from Aranym?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Maybe you could just remove them and add:
+</I>&gt;&gt;&gt;<i> 	#include &quot;main.h&quot;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> to any C-file that gets compiler warning after that?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> 	- Eero
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003110.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+	<LI>Next message: <A HREF="003112.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3111">[ date ]</a>
+              <a href="thread.html#3111">[ thread ]</a>
+              <a href="subject.html#3111">[ subject ]</a>
+              <a href="author.html#3111">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

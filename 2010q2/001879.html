@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] cross compiling
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cross%20compiling&In-Reply-To=%3Calpine.LMD.2.00.1004201440570.24470%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001878.html">
+   <LINK REL="Next"  HREF="001880.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] cross compiling</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cross%20compiling&In-Reply-To=%3Calpine.LMD.2.00.1004201440570.24470%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] cross compiling">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Apr 20 14:43:57 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001878.html">[hatari-devel] cross compiling
+</A></li>
+        <LI>Next message: <A HREF="001880.html">[hatari-devel] cross compiling
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1879">[ date ]</a>
+              <a href="thread.html#1879">[ thread ]</a>
+              <a href="subject.html#1879">[ subject ]</a>
+              <a href="author.html#1879">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 20 Apr 2010, Christer Solskogen wrote:
+
+&gt;<i> one more question regarding cross compiling
+</I>&gt;<i> CMAKE_RANLIB seems to be set to /usr/bin/ranlib - but shouldn't it
+</I>&gt;<i> rather be set to i586-pc-mingw32-ranlib?
+</I>&gt;<i> I'm getting a lot of &quot;could not read symbols: Archive has no index;
+</I>&gt;<i> run ranlib to add one&quot;
+</I>
+Yes, it should. In my case the mingw's ranlib is corectly detected. The 
+only things I had to &quot;hardcode&quot; in cmake/Toolchain-mingw32.cmake were :
+
+SET(CMAKE_C_COMPILER i586-pc-mingw32-gcc)
+SET(CMAKE_CXX_COMPILER i586-pc-mingw32-g++)
+SET(CMAKE_RC_COMPILER i586-pc-mingw32-windres)
+
+With these values, cmake should find the correct ranlib itself. If not, 
+then maybe your cmake version is not recent enough or not fully installed.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001878.html">[hatari-devel] cross compiling
+</A></li>
+	<LI>Next message: <A HREF="001880.html">[hatari-devel] cross compiling
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1879">[ date ]</a>
+              <a href="thread.html#1879">[ thread ]</a>
+              <a href="subject.html#1879">[ subject ]</a>
+              <a href="author.html#1879">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

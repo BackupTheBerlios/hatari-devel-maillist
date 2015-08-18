@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Linking with readline (was: Problem in falcon
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Linking%20with%20readline%20%28was%3A%20Problem%20in%20falcon&In-Reply-To=%3C20100426193707.1facc1fc%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001923.html">
+   <LINK REL="Next"  HREF="001925.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Linking with readline (was: Problem in falcon</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Linking%20with%20readline%20%28was%3A%20Problem%20in%20falcon&In-Reply-To=%3C20100426193707.1facc1fc%40phineus%3E"
+       TITLE="[hatari-devel] Linking with readline (was: Problem in falcon">huth at users.berlios.de
+       </A><BR>
+    <I>Mon Apr 26 19:37:07 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001923.html">[hatari-devel] Linking with readline (was: Problem in falcon
+</A></li>
+        <LI>Next message: <A HREF="001925.html">[hatari-devel] Linking with readline
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1924">[ date ]</a>
+              <a href="thread.html#1924">[ thread ]</a>
+              <a href="subject.html#1924">[ subject ]</a>
+              <a href="author.html#1924">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 25 Apr 2010 17:29:51 -0600 (MDT)
+David Savinkoff &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">dsavnkff at telus.net</A>&gt; wrote:
+
+&gt;<i> Hi All,&lt;br&gt;&lt;br&gt;I couldn't get appending READLINE_LIBRARY with
+</I>&gt;<i> -lncurses to = work&lt;br&gt;with the latest sources, but I found proof
+</I>&gt;<i> that the cfmakeraw probl= em&lt;br&gt;is because of undefined symbols in
+</I>&gt;<i> the cmake tests on my system.&lt;br&gt;
+</I>
+Ah, ok, now it makes sense. Seems like I simply should clean up the
+CMAKE_REQUIRED_LIBRARIES variable once the corresponding test has been done,
+or the other check_function_exists() calls will fail later!
+
+I've committed a patch to repository now - could you please check
+whether CMake with hg tip is working for you now?
+
+&gt;<i> &lt;br&gt;David S= avinkoff&lt;br&gt;&lt;br&gt;My email service provider is
+</I>&gt;<i> broken also.&lt;br&gt;
+</I>
+Yes, your recent e-mails are quite unreadable... :-( please try to
+switch off HTML in your e-mails, too, if it is anyhow possible.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001923.html">[hatari-devel] Linking with readline (was: Problem in falcon
+</A></li>
+	<LI>Next message: <A HREF="001925.html">[hatari-devel] Linking with readline
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1924">[ date ]</a>
+              <a href="thread.html#1924">[ thread ]</a>
+              <a href="subject.html#1924">[ subject ]</a>
+              <a href="author.html#1924">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

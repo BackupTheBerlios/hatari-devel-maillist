@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] TOS 3.06 and double click
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20TOS%203.06%20and%20double%20click&In-Reply-To=%3C200912022330.08847.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001048.html">
+   <LINK REL="Next"  HREF="001051.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] TOS 3.06 and double click</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20TOS%203.06%20and%20double%20click&In-Reply-To=%3C200912022330.08847.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] TOS 3.06 and double click">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Dec  2 22:30:08 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001048.html">[hatari-devel] HDD initialization oddities in Hatari
+</A></li>
+        <LI>Next message: <A HREF="001051.html">[hatari-devel] TOS 3.06 and double click
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1050">[ date ]</a>
+              <a href="thread.html#1050">[ thread ]</a>
+              <a href="subject.html#1050">[ subject ]</a>
+              <a href="author.html#1050">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 02 December 2009, Uwe Seimet wrote:
+&gt;<i> &gt; Where one can see this issue?  I can double click on the desktop
+</I>&gt;<i> &gt; just fine (e.g. to launch hddriver).
+</I>&gt;<i>
+</I>&gt;<i> I can reproduce it like this: Use TOS 3.06, 68EC030, TT. Do not
+</I>&gt;<i> configure any hard drives, so that after booting you just get a screen
+</I>&gt;<i> with the floppy drives and the rom module. Now double any icon, e.g. the
+</I>&gt;<i> trashcan. This does not open the trask can, like it should. Using the
+</I>&gt;<i> middle mouse button works.
+</I>
+Works fine with EmuTOS and with TOS3 on ST resolutions and TT low &amp; midrez.
+
+Only thing where double clicking doesn't seem to work is *TT* highrez.
+
+
+On Tuesday 01 December 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> It's true using cpu cycles could be misleading, but if I recall correctly
+</I>&gt;<i> I think there's a compensation for the clock difference between 68000 and
+</I>&gt;<i> 68030 (else, the mfp timings would not be good on falcon), so I'm not
+</I>&gt;<i> really sure it's the cause of the problem (from what I recall int.c
+</I>&gt;<i> counts 68000 cycles at 8Mhz, regardless of the cpu speed).
+</I>&gt;<i>
+</I>&gt;<i> But I could be wrong, I didn't really work on the mouse part, so I don't
+</I>&gt;<i> know all the subtleties that lead to the current code.
+</I>&gt;<i>
+</I>&gt;<i> If double clicking works with tos 2 and 68030 at 32 Mhz (I don't know if
+</I>&gt;<i> hatari can starts in this mode), then the problem would be tos related,
+</I>&gt;<i> not int.c related.
+</I>
+As it happens only in TT highrez and that can be set only by TOS3,
+that cannot really be tested.
+
+Is there something in video.c that could cause IKBD to do something
+funny in TT highrez (<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">1280x960 at 1</A>, rez ID = 6, uses videl code for drawing)?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001048.html">[hatari-devel] HDD initialization oddities in Hatari
+</A></li>
+	<LI>Next message: <A HREF="001051.html">[hatari-devel] TOS 3.06 and double click
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1050">[ date ]</a>
+              <a href="thread.html#1050">[ thread ]</a>
+              <a href="subject.html#1050">[ subject ]</a>
+              <a href="author.html#1050">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

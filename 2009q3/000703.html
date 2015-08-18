@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Little question with relative_interrupts
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Little%20question%20with%20relative_interrupts&In-Reply-To=%3C20090916224847.73c403ef%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000698.html">
+   <LINK REL="Next"  HREF="000704.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Little question with relative_interrupts</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Little%20question%20with%20relative_interrupts&In-Reply-To=%3C20090916224847.73c403ef%40phineus%3E"
+       TITLE="[hatari-devel] Little question with relative_interrupts">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Sep 16 22:48:47 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000698.html">[hatari-devel] Little question with relative_interrupts
+</A></li>
+        <LI>Next message: <A HREF="000704.html">[hatari-devel] Little question with relative_interrupts
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#703">[ date ]</a>
+              <a href="thread.html#703">[ thread ]</a>
+              <a href="subject.html#703">[ subject ]</a>
+              <a href="author.html#703">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 16 Sep 2009 00:35:23 +0200 (CEST)
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+
+&gt;<i> On Wed, 16 Sep 2009, Laurent Sallafranque wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Hello,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; While reading code in int.c and int.h (for the crossbar), I asked
+</I>&gt;<i> &gt; me the following question :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Extract from int.c
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  Thanks to Arnaud Carre (Leonard / Oxygene) for sharing this method
+</I>&gt;<i> &gt; used in Saint (and also
+</I>&gt;<i> &gt;  used in sc68).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  Conversions are based on these values :
+</I>&gt;<i> &gt;    real MFP frequency is 2457600 Hz
+</I>&gt;<i> &gt;    real CPU frequency is 8021247 Hz (PAL european STF), which we
+</I>&gt;<i> &gt; round to 8021248.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  Then :
+</I>&gt;<i> &gt;    8021248 = ( 2^8 * 31333 )
+</I>&gt;<i> &gt;    2457600 = ( 2^15 * 3 * 5^2 )
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  So, the ratio 8021248 / 2457600 can be expressed as 31333 / 9600
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Are these values still OK for a falcon (where the CPU is ~16 000
+</I>&gt;<i> &gt; 000 and not 8 021 248 ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If no, would this explain that some demos/games need to run at 32
+</I>&gt;<i> &gt; Mhz ?
+</I>&gt;<i> 
+</I>&gt;<i> yes, the current MFP code is adapted to a 68000 cpu and an MFP as
+</I>&gt;<i> found in an STF/STE.
+</I>&gt;<i> 
+</I>&gt;<i> Some factors should be applied when the cpu freq is different from 
+</I>&gt;<i> 8021247 Hz.
+</I>
+int.c always thinks that the CPU runs at 8 MHz. To emulate higher CPU
+frequencies, we simply divide the CPU cycles by two or four in
+M68000_AddCycles(). This should have the same effect as multiplying the
+frequencies by two or four.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000698.html">[hatari-devel] Little question with relative_interrupts
+</A></li>
+	<LI>Next message: <A HREF="000704.html">[hatari-devel] Little question with relative_interrupts
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#703">[ date ]</a>
+              <a href="thread.html#703">[ thread ]</a>
+              <a href="subject.html#703">[ subject ]</a>
+              <a href="author.html#703">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

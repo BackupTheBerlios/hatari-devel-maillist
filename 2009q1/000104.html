@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] cycle precise blitter accesses
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cycle%20precise%20blitter%20accesses&In-Reply-To=%3C4985F432.6060600%40freemind-tobe.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000101.html">
+   <LINK REL="Next"  HREF="000105.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] cycle precise blitter accesses</H1>
+    <B>Jean-Baptiste Berlioz</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cycle%20precise%20blitter%20accesses&In-Reply-To=%3C4985F432.6060600%40freemind-tobe.com%3E"
+       TITLE="[hatari-devel] cycle precise blitter accesses">jb.berlioz at freemind-tobe.com
+       </A><BR>
+    <I>Sun Feb  1 20:12:50 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000101.html">[hatari-devel] cycle precise blitter accesses
+</A></li>
+        <LI>Next message: <A HREF="000105.html">[hatari-devel] cycle precise blitter accesses
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#104">[ date ]</a>
+              <a href="thread.html#104">[ thread ]</a>
+              <a href="subject.html#104">[ subject ]</a>
+              <a href="author.html#104">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE><A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> 
+</I>&gt;<i> Hello,
+</I>&gt;<i> 
+</I>&gt;<i> looking at the blitter source, I see that the cumulative cycles for the 
+</I>&gt;<i> current blitter operation are stored in BlitterVars.op_cycles, so this 
+</I>&gt;<i> should make it possible to know how many cpu cycles elapsed since the 
+</I>&gt;<i> start of a blitting operation, and know precisely the corresponding 
+</I>&gt;<i> video position at that time (for precise timing when blitter accesses 
+</I>&gt;<i> ff820a for example).
+</I>&gt;<i> 
+</I>&gt;<i> But I would expect for this to work that Cycles_GetCounterOnWriteAccess 
+</I>&gt;<i> has a reference to BlitterVars.op_cycles when the bus is 
+</I>&gt;<i> BUS_MODE_BLITTER, which is not the case.
+</I>&gt;<i> 
+</I>&gt;<i> Tob&#233;, is there a reason for this ? Do you have some code you need to 
+</I>&gt;<i> finish to handle this and that you didn't commit yet, or am I missing 
+</I>&gt;<i> something ?
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Nicolas
+</I>
+Hi Nicolas,
+
+BlitterVars.op_cycles is used internally to store the amount of cycles 
+cumulated while the blitter is performing a single operation.
+After each operation, it is used to decrement PendingInterruptCount and 
+trigger pending interrupts (Blitter_FlushCycles()).
+Basically, this is an optimization : instead of checking for pending 
+interrupts each time the blitter consumes some cycles, it is delayed 
+after the operation is finished (an operation takes between 4 and 12 
+cycles).
+
+Now, if you look at Blitter_AddCycles(), you will notice that it 
+increase nCyclesMainCounter, each time the blitter reads or writes to 
+memory. Blitter_AddCycles() is called after each read or write, and 
+always consume 4 cycles + nWaitStateCycles.
+
+That's why Cycles_GetCounterOnWriteAccess() when BusMode is 
+BUS_MODE_BLITTER is only: &quot;nAddCycles = 4 + nWaitStateCycles;&quot;
+
+Note that Blitter_AddCycles(int) is always called with (4) as 
+argument... Maybe it could be changed to Blitter_AddNop() without the 
+argument since it's constant.
+
+Tob&#233;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000101.html">[hatari-devel] cycle precise blitter accesses
+</A></li>
+	<LI>Next message: <A HREF="000105.html">[hatari-devel] cycle precise blitter accesses
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#104">[ date ]</a>
+              <a href="thread.html#104">[ thread ]</a>
+              <a href="subject.html#104">[ subject ]</a>
+              <a href="author.html#104">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

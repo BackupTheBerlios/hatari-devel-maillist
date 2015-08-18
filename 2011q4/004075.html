@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow HD boot with the new floppy code
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20HD%20boot%20with%20the%20new%20floppy%20code&In-Reply-To=%3C4E901EBF.3010608%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004073.html">
+   <LINK REL="Next"  HREF="004090.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow HD boot with the new floppy code</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20HD%20boot%20with%20the%20new%20floppy%20code&In-Reply-To=%3C4E901EBF.3010608%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Slow HD boot with the new floppy code">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Oct  8 11:58:23 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004073.html">[hatari-devel] Slow HD boot with the new floppy code
+</A></li>
+        <LI>Next message: <A HREF="004090.html">[hatari-devel] Merge to latest winuae core
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4075">[ date ]</a>
+              <a href="thread.html#4075">[ thread ]</a>
+              <a href="subject.html#4075">[ subject ]</a>
+              <a href="author.html#4075">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 08/10/2011 11:48, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On lauantai 08 lokakuu 2011, Miro Krop&#225;&#269;ek wrote:
+</I>&gt;&gt;<i> I've just pulled the current code&amp;  compiled it and I noticed there's a
+</I>&gt;&gt;<i> noticable slowdown, especially with &quot;Fast floppy access&quot; disabled.
+</I>&gt;<i>
+</I>&gt;<i> Btw. I just tried &quot;--fastfdc yes&quot; option with the STNICC demo, and with
+</I>&gt;<i> that it's slower than with &quot;--fastfdc no&quot;.  It's slower than normal speed
+</I>&gt;<i> even when using also fastforward, which seems a bit curious.
+</I>&gt;<i>
+</I>&gt;<i> I would have expected that demo just not to work/freeze completely...
+</I>
+Yes, I saw that too ; but this demo is very specific as it uses a 
+cirecular 64 KB block of memory to load data from the disk, with very 
+strict timings. I guess changing too much the FDC speed has this side 
+effect.
+
+
+&gt;<i>
+</I>&gt;&gt;<i> As I understand it, the recent changes to the floppy code should make
+</I>&gt;&gt;<i> it more precise but I assure you, the booting on Falcon doesn't take
+</I>&gt;&gt;<i> that long ;)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> To be clear, I'm talking about a time between pressing a key to the
+</I>&gt;&gt;<i> desktop appearance.
+</I>&gt;<i>
+</I>&gt;<i> What Falcon specific things work only from floppy / why you would
+</I>&gt;<i> use floppy images with the Falcon emulation? :-)
+</I>
+I don't think he wants to use a floppy ; it's that the falcon boots much 
+slower on HD if no disk is present in drive A.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004073.html">[hatari-devel] Slow HD boot with the new floppy code
+</A></li>
+	<LI>Next message: <A HREF="004090.html">[hatari-devel] Merge to latest winuae core
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4075">[ date ]</a>
+              <a href="thread.html#4075">[ thread ]</a>
+              <a href="subject.html#4075">[ subject ]</a>
+              <a href="author.html#4075">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

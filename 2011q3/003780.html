@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari 1.5.0 is released
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%201.5.0%20is%20released&In-Reply-To=%3C4E254C29.20702%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003778.html">
+   <LINK REL="Next"  HREF="003812.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari 1.5.0 is released</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%201.5.0%20is%20released&In-Reply-To=%3C4E254C29.20702%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Hatari 1.5.0 is released">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Jul 19 11:19:37 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003778.html">[hatari-devel] Hatari 1.5.0 is released
+</A></li>
+        <LI>Next message: <A HREF="003812.html">[hatari-devel] Hatari 1.5.0 is released
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3780">[ date ]</a>
+              <a href="thread.html#3780">[ thread ]</a>
+              <a href="subject.html#3780">[ subject ]</a>
+              <a href="author.html#3780">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 19/07/2011 11:04, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On tiistai 19 hein&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;<i> after quite some time, a new version is now available.
+</I>&gt;<i> ...
+</I>&gt;&gt;<i> Don't hesitate to try this new version and to report your results.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Have a happy summer with Hatari 1.5 :)
+</I>&gt;<i>
+</I>&gt;<i> If v1.5 needs some urgent fixes, I guess they'll go to something
+</I>&gt;<i> branched from the v1.5.0 tag commit, right?
+</I>&gt;<i>
+</I>
+Yes, but as this can be complicated, please wait a few days (let's say 
+monday 25th july) before commiting again (well, you can of course commit 
+in your local tree)
+
+&gt;<i>
+</I>&gt;<i> I.e. is it now OK to start pushing pending changes to repository tip:
+</I>&gt;<i> - debugger CPU/DSP &quot;history&quot; command
+</I>&gt;<i>    (useful for breakpoints etc)
+</I>&gt;<i> - proper return code from all debugger commands
+</I>&gt;<i>    (for remote UI, will help with breakpoints)
+</I>&gt;<i> - HDC/header cleanup
+</I>&gt;<i>
+</I>&gt;<i> And start working on the new stuff:
+</I>&gt;<i> - separate --desktop-st option for ST/STE
+</I>&gt;<i>    (without SDL UI stuff until your ST/STE border drawing stuff is in)
+</I>
+I thought a little more about this one, see the thread about this.
+
+&gt;<i> - make WinAUE the default CPU core
+</I>
+UAE please :)
+
+As for making it the default CPU core, we're faaaar from that point, no 
+work has been done on it recently and I'm not sure people realise the 
+workload it means and that it will impact lots of important place 
+(video, mfp, ...).
+Honestly, given the pace at which it evolves, I don't see a full working 
+replacement before one year or more.
+
+&gt;<i> - start fixing WinAUE debugging support (add exception debugging,
+</I>&gt;<i>    fix what it does on reset etc)
+</I>
+Let's not add complexity to a part that does not fully replace the 
+current cpu core yet.
+For now, people will have to live without the debugger features added to 
+the current cpu core not being present in winuae's core.
+First step is really to make winuae's core works, and then we will 
+backport the modifications from current cpu.
+
+The more we add code to Winuae's cpu, the more complex it will be to fix 
+real emulation issues (and there're a lot of them to be able to 
+integrate in STF/STE mode).
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003778.html">[hatari-devel] Hatari 1.5.0 is released
+</A></li>
+	<LI>Next message: <A HREF="003812.html">[hatari-devel] Hatari 1.5.0 is released
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3780">[ date ]</a>
+              <a href="thread.html#3780">[ thread ]</a>
+              <a href="subject.html#3780">[ subject ]</a>
+              <a href="author.html#3780">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

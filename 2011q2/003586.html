@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] start and break question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20start%20and%20break%20question&In-Reply-To=%3C4DF4F6D2.6010903%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003583.html">
+   <LINK REL="Next"  HREF="003590.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] start and break question</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20start%20and%20break%20question&In-Reply-To=%3C4DF4F6D2.6010903%40corp.free.fr%3E"
+       TITLE="[hatari-devel] start and break question">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jun 12 19:26:42 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003583.html">[hatari-devel] start and break question
+</A></li>
+        <LI>Next message: <A HREF="003590.html">[hatari-devel] start and break question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3586">[ date ]</a>
+              <a href="thread.html#3586">[ thread ]</a>
+              <a href="subject.html#3586">[ subject ]</a>
+              <a href="author.html#3586">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 12/06/2011 00:51, Eero Tamminen a &#233;crit :
+&gt;&gt;<i> Personnaly, I really don't like the &quot;?&quot; syntax ; I'd rather use {} to
+</I>&gt;&gt;<i> enclose expression ; it's not used in asm coding as far as I remember,
+</I>&gt;<i>
+</I>&gt;<i> MonST uses {} for indirect addressing in its own expressions.
+</I>&gt;<i> Hatari debugger uses () for that, similarly to disassembly.
+</I>
+Hi,
+
+Well, we don't necessarily have to follow monst usage, I think () is 
+better as it's widely used by any asm coder (using devpac or other 
+assemblers)
+
+&gt;<i> Well, in expressions it might be nice to use () for changing precedence
+</I>&gt;<i> instead of indirect addressing, but that would require using something
+</I>&gt;<i> else than () for indirect addressing...
+</I>&gt;<i>
+</I>&gt;<i> But I guess everybody's already gotten used to using () for indirect
+</I>&gt;<i> addressing and doesn't need changing of operator precedence in expressions?
+</I>&gt;<i>
+</I>
+Yes, better leave it this way for now.
+
+&gt;<i>
+</I>&gt;&gt;<i> As {} is also used in C or many other languages to delimit a block of
+</I>&gt;&gt;<i> code, I think it would also make sense to use this to enclose
+</I>&gt;&gt;<i> breakpoints' expressions/conditions.
+</I>&gt;<i>
+</I>&gt;<i> So:
+</I>&gt;<i> 	b VBL = {VBL+4}
+</I>&gt;<i> ?
+</I>
+Yes, or VBL = {VBL} + 4
+
+
+&gt;&gt;<i> In the case of expression used in breakpoints, I think they should
+</I>&gt;&gt;<i> always be run-time evaluated each time a breakpoint condition is tested.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> As I wrote in another thread I prefer the {} notation to add an
+</I>&gt;&gt;<i> expression/condition to a pc breakpoint (instead of the ?xxx? notation),
+</I>&gt;<i>
+</I>&gt;<i> That thread was about marker for arithmetic expressions that will be
+</I>&gt;<i> immediately evaluated when a command is entered by the user.
+</I>&gt;<i>
+</I>&gt;<i> The ?foo? syntax was proposal for stuff that's evaluated whenever
+</I>&gt;<i> breakpoint is checked at run-time.  Conditional breakpoints can already
+</I>&gt;<i> evaluate registers[1]&amp;  variables at run-time, but they don't support
+</I>&gt;<i> conditions with arithmetic operations being calculated at run-time:
+</I>&gt;<i> 	a0 + a1 + 4 = (a2) - 5
+</I>&gt;<i>
+</I>&gt;<i> You can only use immediately evaluated arithmetic operations in them:
+</I>&gt;<i> 	b &quot;a0 + a1 + 4&quot; = &quot;(a2) - 5&quot;
+</I>&gt;<i>
+</I>&gt;<i> (quoted parts are evaluated before the command itself is parsed i.e.
+</I>&gt;<i> this works for all debugger commands.)
+</I>&gt;<i> 	
+</I>&gt;<i>
+</I>&gt;<i> You need different identifiers for both of these evaluation modes
+</I>&gt;<i> so that they can be differentiated and run-time evaluated stuff can
+</I>&gt;<i> include immediately evaluated things if needed.
+</I>
+I don't think there's a big need for breakpoints with parts of the 
+condition not being run-time evaluated (ie at the time the command is 
+parsed).
+In the specific case of breakpoint, if the user really wants the value 
+used at the time the breakpoint is parsed, then I think it's up to the 
+user to replace for example the register with its content.
+
+But maybe we could have a syntax that allows both run time and parse 
+time value breakpoints ; what about saying that :
+  - a register/internal variable is always run time evaluated when 
+provided directly with its name
+  - when the reg/variable is enclosed in {} then the current value of 
+the reg/variable is substituted at parse time.
+
+So, if D0=12
+b D0=40  will break when D0 reach 40
+b {D0}=40 will break when 12=40 (ie never)
+
+b VBL={VBL}+4  will break after 4 VBLs
+b VBL=VBL+4  will never break because the same variable can't have 2 
+different values
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003583.html">[hatari-devel] start and break question
+</A></li>
+	<LI>Next message: <A HREF="003590.html">[hatari-devel] start and break question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3586">[ date ]</a>
+              <a href="thread.html#3586">[ thread ]</a>
+              <a href="subject.html#3586">[ subject ]</a>
+              <a href="author.html#3586">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

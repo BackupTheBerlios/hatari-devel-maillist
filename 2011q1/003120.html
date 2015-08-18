@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] SIGSEGV error with MMU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20SIGSEGV%20error%20with%20MMU&In-Reply-To=%3C4D656A4B.8010104%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003118.html">
+   <LINK REL="Next"  HREF="003121.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] SIGSEGV error with MMU</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20SIGSEGV%20error%20with%20MMU&In-Reply-To=%3C4D656A4B.8010104%40free.fr%3E"
+       TITLE="[hatari-devel] SIGSEGV error with MMU">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Feb 23 21:12:59 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003118.html">[hatari-devel] SIGSEGV error with MMU
+</A></li>
+        <LI>Next message: <A HREF="003121.html">[hatari-devel] SIGSEGV error with MMU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3120">[ date ]</a>
+              <a href="thread.html#3120">[ thread ]</a>
+              <a href="subject.html#3120">[ subject ]</a>
+              <a href="author.html#3120">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>(gdb) p regs
+$1 = {regs = {47, 65535, 0, 0, 65535, 14680064, 0, 0, 14680064, 2368, 0,
+14683474, 14683140, 512, 0, 34924}, pc = 14685088, pc_p = 0x0,
+pc_oldp = 0x0, irc = 65535, ir = 0, spcflags = 0, usp = 0, isp = 0, msp 
+= 0,
+sr = 9984, t1 = 0 '\000', t0 = 0 '\000', s = 1 '\001', m = 0 '\000',
+x = 0 '\000', stopped = 0 '\000', intmask = 7, ipl = 0, ipl_pin = 0,
+vbr = 0, sfc = 0, dfc = 0, fp = {0, 0, 0, 0, 0, 0, 0, 0}, fp_result = 1,
+fpcr = 0, fpsr = 0, fpiar = 0, fpsr_highbyte = 0, cacr = 0, caar = 0,
+itt0 = 0, itt1 = 0, dtt0 = 0, dtt1 = 0, tcr = 0, mmusr = 0, urp = 0,
+srp = 0, buscr = 0, mmu_fslw = 0, mmu_fault_addr = 0, mmu_ssw = 0,
+wb3_data = 0, wb3_status = 0, mmu_enabled = 0, mmu_pagesize_8k = 0,
+fault_pc = 14681008, pcr = 0, address_space_mask = 0, panic = 0 '\000',
+panic_pc = 0, panic_addr = 0, prefetch020data = {0, 0}, prefetch020addr = {
+4294967295, 4294967295}, ce020memcycles = 0}
+
+
+(gdb) p STRam
+$2 = 
+&quot;`.\004\004\000\340\000\060\000\340\071\214\000\340\071\214\000\340\071\214\000\340\rR\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\224\352\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\rR\000\340\f\232\000\340\rR\000\340\f\260\000\340\rR\000\340\rR\000\340\rR\000\340\071\214\000\340\071\214\000\340\rR\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\r|\000\340\rv\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214\000\340\071\214&quot;, 
+'\000' &lt;se 
+r\377\377\377\377\377&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;\000\000\000\377\377\377\377\377&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;
+
+Hope this helps.
+
+
+PS. I started reading cpu/memory.[ch]&amp;  newcpu.h, but got confused with
+the large amount of functions, struct members[1] and functions that aren't
+used anywhere.  Is WinAUE code missing large pieces?
+
+
+ From now, I've just tried to change as little as possible the original 
+code, but removing only what avoid compilation.
+Of course, we'll have to choose one day if we fork the original code and 
+adapt it to our needs (that's what was done with previous old_core). In 
+this case, it would be hardeer to diff WinUae's changes into our code. 
+(but I'm not sure that WinUae will change a lot now).
+
+If you're OK to use code cleaned, I can remove unused code, Amiga 
+specific only code, ...
+But maybe we'll need this code :
+- for ST/STe emulation (run_P1 mode)
+- for cycle exact
+- for MMU,
+- for ...
+
+Regards
+
+Laurent
+
+
+Le 23/02/2011 20:55, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On keskiviikko 23 helmikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i> I've tested quickly the mmu code.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I start with my usual 68030 CPU, no MMU.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Then, I press &quot;F12&quot; and change the following parameters :
+</I>&gt;&gt;<i> CPU = 68040, activate MMU
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Then I reset Hatari.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I get a SIGSEGV error when hatari reset (look at the gdb trace) :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Exception 2 (0) at e02ce2 -&gt;  e02ce6!
+</I>&gt;&gt;<i> Building CPU, 46224 opcodes (4 1 1)
+</I>&gt;&gt;<i> CPU=68040, FPU=68040, MMU=1, JIT=0.
+</I>&gt;&gt;<i> MMU: enabled=0 page8k=0
+</I>&gt;&gt;<i> MMU: enabled=0 page8k=0
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Program received signal SIGSEGV, Segmentation fault.
+</I>&gt;&gt;<i> 0x00000000004f4e40 in get_iword () at
+</I>&gt;&gt;<i> /home/laurent/Atari/hatari/src/cpu/newcpu.h:326
+</I>&gt;&gt;<i> 326    {
+</I>&gt;&gt;<i> (gdb) bt
+</I>&gt;&gt;<i> #0  0x00000000004f4e40 in get_iword () at
+</I>&gt;&gt;<i> /home/laurent/Atari/hatari/src/cpu/newcpu.h:326
+</I>&gt;&gt;<i> #1  next_iword () at /home/laurent/Atari/hatari/src/cpu/newcpu.h:327
+</I>&gt;&gt;<i> #2  0x00000000006fe8d4 in op_11b0_31_ff (opcode=5040) at
+</I>&gt;&gt;<i> /home/laurent/Atari/hatari/build/src/cpu/cpuemu_31.c:7548
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i> static inline uae_u16 do_get_mem_word(void *a)
+</I>&gt;<i> {
+</I>&gt;<i>          return SDL_SwapBE16(*(uae_u16 *)a);
+</I>&gt;<i> }
+</I>&gt;<i> ...
+</I>&gt;<i> STATIC_INLINE uae_u32 get_iword (int o)
+</I>&gt;<i> {
+</I>&gt;<i>          return do_get_mem_word((uae_u16 *)((regs).pc_p + (o)));
+</I>&gt;<i> }
+</I>&gt;<i> ...
+</I>&gt;<i> STATIC_INLINE uae_u32 next_iword (void)
+</I>&gt;<i> {
+</I>&gt;<i>          uae_u32 r = get_iword (0);
+</I>&gt;<i>          m68k_incpc (2);
+</I>&gt;<i>          return r;
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I.e. Hatari segfaulted when trying to byte-swap word at &quot;regs.pc_p&quot; address.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> If anybody's got an idea of where the problem can come from, I'd be
+</I>&gt;&gt;<i> happy to get some help.
+</I>&gt;<i> What gdb shows for &quot;print regs&quot; and &quot;print STRam&quot; after the crash?
+</I>&gt;<i>
+</I>&gt;<i> I.e. is regs.pc_p pointing even close to STRam array containing the emulated
+</I>&gt;<i> RAM?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> I continue to search.
+</I>&gt;<i> Maybe the ST RAM memory accessor functions (in cpu/memory.c) aren't properly
+</I>&gt;<i> set up for MMU access?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i> PS. I started reading cpu/memory.[ch]&amp;  newcpu.h, but got confused with
+</I>&gt;<i> the large amount of functions, struct members[1] and functions that aren't
+</I>&gt;<i> used anywhere.  Is WinAUE code missing large pieces?
+</I>&gt;<i>
+</I>&gt;<i> [1] Try e.g.:
+</I>&gt;<i> 	grep -e baseaddr -e xlateaddr $(find -type f)
+</I>&gt;<i>
+</I>&gt;<i> Then I looked into JIT stuff, and uurgh...  That I definitely don't want to
+</I>&gt;<i> debug. :-)
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003118.html">[hatari-devel] SIGSEGV error with MMU
+</A></li>
+	<LI>Next message: <A HREF="003121.html">[hatari-devel] SIGSEGV error with MMU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3120">[ date ]</a>
+              <a href="thread.html#3120">[ thread ]</a>
+              <a href="subject.html#3120">[ subject ]</a>
+              <a href="author.html#3120">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

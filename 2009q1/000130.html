@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Ym / Dma mixing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3C498DA5B9.90109%40freemind-tobe.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000129.html">
+   <LINK REL="Next"  HREF="000133.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Ym / Dma mixing</H1>
+    <B>Jean-Baptiste Berlioz</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3C498DA5B9.90109%40freemind-tobe.com%3E"
+       TITLE="[hatari-devel] Ym / Dma mixing">jb.berlioz at freemind-tobe.com
+       </A><BR>
+    <I>Sat Feb  7 16:16:09 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000129.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+        <LI>Next message: <A HREF="000133.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#130">[ date ]</a>
+              <a href="thread.html#130">[ thread ]</a>
+              <a href="subject.html#130">[ subject ]</a>
+              <a href="author.html#130">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Wow that's a lots of mails :)
+
+First point, about performances, remember we are talking about sounds 
+processing. At the best quality, 44100 Hz 16 bits stereo, we only have 
+to process 441000 * 2 * 2 = 176400 bytes per seconds. Sure it needs to 
+be optimized (like everything in a realtime application) but i don't 
+think this is the 'primary target'.
+I'll dump some profiling informations soon, you can do the same on your 
+side and then we can study the results and know what eats up CPU, and 
+what needs to be optimized for slower platforms.
+
+Second point, about DMA samples interpolation, as i said before, i'll 
+start to implement this for real in the next step, after fixing wav and 
+ym recording (done). The new implementation is quite lame (the current 
+too :)). Let's talk about this later.
+
+Third point, the new implementation vs the current one. Correct me if 
+i'm wrong:
+
+In the current implementation:
+Ym samples are generated when:
+   - an ym register is written - from the last time a register was 
+written to the current time - then the register is changed.
+   - at each VBL - from the last time a register was written to the 
+current time.
+
+If a SDL audio callback occurs between two ym register write access, or 
+between an ym register write access and a VBL, the samples between the 
+last time and the current time are missing.
+
+As far as i know, there's no way to synchronize the SDL audio callback 
+and the VBL, for this we need direct access to the primary buffer.
+
+In the new implementation, the last ym register write access is the last 
+history event stored. Samples are generated even after the last event.
+
+Cheers,
+JB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000129.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+	<LI>Next message: <A HREF="000133.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#130">[ date ]</a>
+              <a href="thread.html#130">[ thread ]</a>
+              <a href="subject.html#130">[ subject ]</a>
+              <a href="author.html#130">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

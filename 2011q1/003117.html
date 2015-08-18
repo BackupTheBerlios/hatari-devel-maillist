@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon emulation,	NewCpu and documentation on the site
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20emulation%2C%0A%09NewCpu%20and%20documentation%20on%20the%20site&In-Reply-To=%3C201102232053.45001.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003115.html">
+   <LINK REL="Next"  HREF="003119.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon emulation,	NewCpu and documentation on the site</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20emulation%2C%0A%09NewCpu%20and%20documentation%20on%20the%20site&In-Reply-To=%3C201102232053.45001.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Falcon emulation,	NewCpu and documentation on the site">oak at helsinkinet.fi
+       </A><BR>
+    <I>Wed Feb 23 19:53:44 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003115.html">[hatari-devel] Falcon emulation,	NewCpu and documentation on the site
+</A></li>
+        <LI>Next message: <A HREF="003119.html">[hatari-devel] Falcon emulation, NewCpu and documentation on the site
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3117">[ date ]</a>
+              <a href="thread.html#3117">[ thread ]</a>
+              <a href="subject.html#3117">[ subject ]</a>
+              <a href="author.html#3117">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 23 helmikuu 2011, Laurent Sallafranque wrote:
+&gt;<i> As now Falcon emulation is based on the new CPU, maybe we
+</I>&gt;<i> should tell it in the Hatari's documentation.
+</I>
+The old UAE CPU emulation works still fine for many things, but
+what's the performance difference between it and the new CPU?
+I.e. is there some reason why people would want to use old CPU
+for Falcon emulation?
+
+If we would &quot;support&quot; / test only new CPU for Falcon emulation, the build
+scripts should be changed so that they generate two binaries:
+* one with old CPU and DSP emulation disabled, for ST/STE, and
+* another one for TT/Falcon with the new CPU &amp; DSP emulation enabled
+as CPU cannot be switched at run-time.
+
+The window title should also state this[1] although both would still support
+all of the st/ste/tt/falcon --machine types.
+
+[1] e.g. &quot;Hatari TT/Falcon v1.5&quot;.
+
+Even if new CPU would eventually get as good ST/STE emulation as the old
+one, for ST/STE it might still make sense to keep the old core for
+performance reasons.
+
+
+&gt;<i> I've added 1.4+ in the compatibility list.
+</I>&gt;<i> But I don't say that it needs the new CPU to work well.
+</I>
+It would be nice to have some way still to find which programs require
+the new CPU to work properly.  Maybe:
+- Don't Break The Oath
+- Outline 2006 invite
+- Beams
+
+Demos comments should still mention that they use NoCrew MP2 player?
+
+(Then there could be a general comment about NoCrew MP2 player needing
+new CPU core for it to sound OK.)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003115.html">[hatari-devel] Falcon emulation,	NewCpu and documentation on the site
+</A></li>
+	<LI>Next message: <A HREF="003119.html">[hatari-devel] Falcon emulation, NewCpu and documentation on the site
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3117">[ date ]</a>
+              <a href="thread.html#3117">[ thread ]</a>
+              <a href="subject.html#3117">[ subject ]</a>
+              <a href="author.html#3117">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] LMC1992 and Microwire emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4B9D6356.1020407%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001674.html">
+   <LINK REL="Next"  HREF="001676.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] LMC1992 and Microwire emulation</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4B9D6356.1020407%40free.fr%3E"
+       TITLE="[hatari-devel] LMC1992 and Microwire emulation">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Mar 14 23:29:42 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001674.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+        <LI>Next message: <A HREF="001676.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1675">[ date ]</a>
+              <a href="thread.html#1675">[ thread ]</a>
+              <a href="subject.html#1675">[ subject ]</a>
+              <a href="author.html#1675">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi David,
+
+ &gt;&gt; do you plan to add things?
+ &gt;  We'll work together on this one until it works.
+
+Great, that's nice of you.
+
+
+ &gt;&gt; or implement it ?
+ &gt; Your job :)
+
+No problem.
+
+
+for the rest, I think the best would be 2 precalculated tables if that's 
+not too much job.
+Hatari can precalculate values at the beginning and fill the lookup tables.
+
+Like this, it'll take the lower CPU time to get the filter values for 
+left and right channel.
+
+I don't know if  combined parameters are closer to STE reality or 
+separate ones are better
+(you're the specialist here ;)
+
+Anyway, we must find the best compromize between speed and accuracy.
+
+ From my point of view, I would say option 3 :
+
+ -A lookup table may be used to access the coefficients, depending
+  on the bass and treble settings.
+
+Actually, I've got 2 buffers :
+- 1 for the left channel sound
+- 1 for the right channel sound
+
+ From my understanding, bass and treble are independent.
+Bass and treble are the same value for both left channel and right channel.
+
+So, if the 14400 elements is too hard to compute automatically at 
+Hatari's startup,
+we should use the 2 tables and combine them by programming.
+
+Another 2 question :
+
+- I've seen that you use 512 size buffers to compute the bass/treble.
+  My buffers are not sized by 512. Will it be a problem ?
+
+- Ste's sound frequency can be     6258.0 Hz, 12517.0 Hz, 25033.0 Hz or 
+50066.0 Hz
+  Will the filter works for all these frequencies or will we have to 
+compute 4 tables ?
+
+
+Again thanks a lot.
+
+Regards
+
+Laurent
+
+
+
+David Savinkoff a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> &gt; Can I use your code to include it into hatari?
+</I>&gt;<i>  Yes.
+</I>&gt;<i>
+</I>&gt;<i> &gt; do you plan to add things?
+</I>&gt;<i>  We'll work together on this one until it works.
+</I>&gt;<i>
+</I>&gt;<i> &gt; or implement it ?
+</I>&gt;<i>  Your job :)
+</I>&gt;<i>
+</I>&gt;<i> &gt; As on STe / TT the bass and treble parameters can vary from -12 dB
+</I>&gt;<i> &gt; to +12 dB independently, which variables in your code should I map
+</I>&gt;<i> &gt; to bass value and treble value ?
+</I>&gt;<i>
+</I>&gt;<i>  IIRfilterL() and IIRfilterR() currently share the same coefficients,
+</I>&gt;<i>  thus filtering the left and right sound channels the same (as is
+</I>&gt;<i>  the case on the Atari).
+</I>&gt;<i>
+</I>&gt;<i>  The Bass and Treble will be independent. There are three ways this
+</I>&gt;<i>   could be done:
+</I>&gt;<i>  -A program will be made to generate separate bass and treble
+</I>&gt;<i>   coefficients.
+</I>&gt;<i>  -A program will be made to combine the bass and treble coefficients
+</I>&gt;<i>  -A lookup table may be used to access the coefficients, depending
+</I>&gt;<i>   on the bass and treble settings.
+</I>&gt;<i>
+</I>&gt;<i>  Three considerations:
+</I>&gt;<i>  - It is possible to generate separate bass and treble coefficients
+</I>&gt;<i>  'on the fly' in Hatari, then combine the coefficients, then use them
+</I>&gt;<i>  every time the bass or treble changes (no look up table)
+</I>&gt;<i>  - It is possible to put separate bass and treble coefficients into two
+</I>&gt;<i>  separate lookup tables and combine them 'on the fly' every time the
+</I>&gt;<i>  bass or treble changes.
+</I>&gt;<i>  - It is possible to put combined bass and treble coefficients into one
+</I>&gt;<i>  lookup table, then use them every time the bass or treble changes.
+</I>&gt;<i>
+</I>&gt;<i>  Bass alone needs 3 coefficients for one setting. Treble is the same.
+</I>&gt;<i>  There are 24 independent settings for bass and treble on the Atari.
+</I>&gt;<i>  A bass lookup table would be 3*24=72 elements long, likewise, the
+</I>&gt;<i>  treble table. Thus, two 72 element single dimensional arrays are used
+</I>&gt;<i>  in this case.
+</I>&gt;<i>
+</I>&gt;<i>  A combined lookup table would be a single two dimensional array of
+</I>&gt;<i>  (5 coefficients * 24 settings) by (5 coefficients * 24 settings).
+</I>&gt;<i>  Thus 14400 elements would be used. This array could be initialized
+</I>&gt;<i>  in Hatari, or could be part of the program data.
+</I>&gt;<i>
+</I>&gt;<i> The coefficients in BassTrebCut12dB were semi-laboriously derived
+</I>&gt;<i> with a simple calculator, pencil, paper and eraser.
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001674.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+	<LI>Next message: <A HREF="001676.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1675">[ date ]</a>
+              <a href="thread.html#1675">[ thread ]</a>
+              <a href="subject.html#1675">[ subject ]</a>
+              <a href="author.html#1675">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

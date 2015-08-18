@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3Cc1a0d1561001230159v2604f520p708343637b06bf09%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001307.html">
+   <LINK REL="Next"  HREF="001310.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Christer Solskogen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3Cc1a0d1561001230159v2604f520p708343637b06bf09%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] CMake build system">christer.solskogen at gmail.com
+       </A><BR>
+    <I>Sat Jan 23 10:59:20 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001307.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001310.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1308">[ date ]</a>
+              <a href="thread.html#1308">[ thread ]</a>
+              <a href="subject.html#1308">[ subject ]</a>
+              <a href="author.html#1308">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, Jan 23, 2010 at 10:47 AM, Thomas Huth &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">huth at users.berlios.de</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> FYI: It's now possible to create a Xcode project with the CMake build
+</I>&gt;<i> system, too :-) There are still some issues left (SDLMain.nib is not
+</I>&gt;<i> loaded right when the user starts hatari.app), but they can certainly
+</I>&gt;<i> be fixed.
+</I>&gt;<i>
+</I>
+I'm sorry but it looks even worse now:
+
+tenderheart:hatari solskogen$ ./configure
+-- The C compiler identification is GNU
+-- The CXX compiler identification is GNU
+-- Checking whether C compiler has -isysroot
+-- Checking whether C compiler has -isysroot - yes
+-- Check for working C compiler: /usr/bin/gcc
+-- Check for working C compiler: /usr/bin/gcc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Checking whether CXX compiler has -isysroot
+-- Checking whether CXX compiler has -isysroot - yes
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Found READLINE: /usr/lib/libreadline.dylib
+-- Found ZLIB: /usr/lib/libz.dylib
+-- Found PNG: /opt/local/lib/libpng.dylib
+-- Looking for XOpenDisplay in
+/opt/local/lib/libX11.dylib;/opt/local/lib/libXext.dylib
+-- Looking for XOpenDisplay in
+/opt/local/lib/libX11.dylib;/opt/local/lib/libXext.dylib - found
+-- Looking for gethostbyname
+-- Looking for gethostbyname - found
+-- Looking for connect
+-- Looking for connect - found
+-- Looking for remove
+-- Looking for remove - found
+-- Looking for shmat
+-- Looking for shmat - found
+-- Looking for IceConnectionNumber in ICE
+-- Looking for IceConnectionNumber in ICE - not found
+-- Found X11: /opt/local/lib/libX11.dylib
+-- Found PORTAUDIO: /opt/local/lib/libportaudio.dylib
+-- Looking for include files HAVE_TERMIOS_H
+-- Looking for include files HAVE_TERMIOS_H - found
+-- Looking for include files HAVE_GLOB_H
+-- Looking for include files HAVE_GLOB_H - found
+-- Looking for include files HAVE_STRINGS_H
+-- Looking for include files HAVE_STRINGS_H - found
+-- Looking for include files HAVE_MALLOC_H
+-- Looking for include files HAVE_MALLOC_H - not found.
+-- Looking for include files HAVE_SDL_SDL_CONFIG_H
+-- Looking for include files HAVE_SDL_SDL_CONFIG_H - not found.
+-- Looking for include files HAVE_SYS_TIMES_H
+-- Looking for include files HAVE_SYS_TIMES_H - found
+-- Looking for include files HAVE_UNIX_DOMAIN_SOCKETS
+-- Looking for include files HAVE_UNIX_DOMAIN_SOCKETS - found
+-- Looking for cfmakeraw
+-- Looking for cfmakeraw - found
+-- Looking for setenv
+-- Looking for setenv - found
+-- Looking for select
+-- Looking for select - found
+-- Found PythonInterp: /opt/local/bin/python2.6
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/solskogen/source/hatari
+
+Now you must type: make; make install
+to actually build and install the software
+
+[  4%] Building CXX object src/gui-osx/CMakeFiles/GuiOsx.dir/SDLMain.m.o
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m: In function
+'-[SDLMain insertDiskA:]':
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:98: warning:
+'cString' is deprecated (declared at
+/System/Library/Frameworks/Foundation.framework/Headers/NSString.h:367)
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m: In function
+'-[SDLMain insertDiskB:]':
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:122: warning:
+'cString' is deprecated (declared at
+/System/Library/Frameworks/Foundation.framework/Headers/NSString.h:367)
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m: In function
+'-[SDLMain captureSound:]':
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:184: warning:
+'stringWithCString:' is deprecated (declared at
+/System/Library/Frameworks/Foundation.framework/Headers/NSString.h:386)
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m: In function
+'-[SDLMain saveMemorySnap:]':
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:236: warning:
+'stringWithCString:' is deprecated (declared at
+/System/Library/Frameworks/Foundation.framework/Headers/NSString.h:386)
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m: In function
+'-[SDLMain restoreMemorySnap:]':
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:282: warning:
+'stringWithCString:' is deprecated (declared at
+/System/Library/Frameworks/Foundation.framework/Headers/NSString.h:386)
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:308: warning:
+'cString' is deprecated (declared at
+/System/Library/Frameworks/Foundation.framework/Headers/NSString.h:367)
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m: In function 'main':
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:446: warning:
+'poseAsClass:' is deprecated (declared at
+/System/Library/Frameworks/Foundation.framework/Headers/NSObject.h:127)
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:446: error:
+'poseAsClass:' is unavailable (declared at
+/System/Library/Frameworks/Foundation.framework/Headers/NSObject.h:127)
+make[2]: *** [src/gui-osx/CMakeFiles/GuiOsx.dir/SDLMain.m.o] Error 1
+make[1]: *** [src/gui-osx/CMakeFiles/GuiOsx.dir/all] Error 2
+make: *** [all] Error 2
+
+But I dont really care about hatari.app. I normally start hatari from CLI.
+-- 
+chs,
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001307.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001310.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1308">[ date ]</a>
+              <a href="thread.html#1308">[ thread ]</a>
+              <a href="subject.html#1308">[ subject ]</a>
+              <a href="author.html#1308">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

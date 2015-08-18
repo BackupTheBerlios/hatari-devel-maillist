@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel]  Coding style (was: new support for avi recording)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%20Coding%20style%20%28was%3A%20new%20support%20for%20avi%20recording%29&In-Reply-To=%3C20091018192706.274abc75%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000847.html">
+   <LINK REL="Next"  HREF="000852.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel]  Coding style (was: new support for avi recording)</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%20Coding%20style%20%28was%3A%20new%20support%20for%20avi%20recording%29&In-Reply-To=%3C20091018192706.274abc75%40phineus%3E"
+       TITLE="[hatari-devel]  Coding style (was: new support for avi recording)">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Oct 18 19:27:06 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000847.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000852.html">[hatari-devel] Coding style (was: new support for avi recording)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#851">[ date ]</a>
+              <a href="thread.html#851">[ thread ]</a>
+              <a href="subject.html#851">[ subject ]</a>
+              <a href="author.html#851">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 18 Oct 2009 13:32:33 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> On Sunday 18 October 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;<i> &gt; &gt; Btw. I changed AviRecording -&gt; bRecordingAvi as other recording
+</I>&gt;<i> &gt; &gt; bools used that name format.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; No please, I made this on purpose, I *really* don't like this
+</I>&gt;<i> &gt; microsoft naming scheme. The name should be self explanatory
+</I>&gt;<i> &gt; without having to add &quot;sz&quot;, &quot;b&quot; or whatever microsoft once chose.
+</I>
+I also don't like the &quot;sz&quot; prefix - I mean every proper string in C is
+NUL-terminated, so the &quot;z&quot; does not make any additonal sense to me.
+But I don't mind if a variable is prefixed with an &quot;s&quot; to mark it as a
+string.
+Concerning the &quot;b&quot; ... see my comment below.
+
+&gt;<i> &gt; I know hatari comes from a windows project at its basis, but no one
+</I>&gt;<i> &gt; is really prefixing/suffixing variables with their types nowaday in
+</I>&gt;<i> &gt; any project I know, so maybe we should not enforce this.
+</I>&gt;<i>
+</I>&gt;<i> Truth to be told, I'm not so fond of it either (and don't use them in
+</I>&gt;<i> my own projects[1]), but I think inconsistent naming conventions in
+</I>&gt;<i> source code are even worse.  Renaming everything in current Hatari
+</I>&gt;<i> code base not to have prefixes doesn't seem reasonable either.
+</I>
+I second that. The worst thing is a mixture within one file.
+ 
+&gt;<i> My own prefences match the Linux kernel coding guideline:
+</I>&gt;<i> 	<A HREF="http://www.kernel.org/doc/Documentation/CodingStyle">http://www.kernel.org/doc/Documentation/CodingStyle</A>
+</I>
+Linux style is basically ok, but I don't like it when the &quot;{&quot; braces
+are opened at the end of a line instead of the beginning of a new line.
+
+&gt;<i> &gt; What is useful is the context in which the variable is used, and
+</I>&gt;<i> &gt; this should be enough IMO to see what a variable is for and what
+</I>&gt;<i> &gt; type it is (thing like &quot;if (AviRecording==true)&quot; are enough to see
+</I>&gt;<i> &gt; we're dealing with a boolean I think)
+</I>&gt;<i> 
+</I>&gt;<i> If you have a global function named AviRecording, then smallcaps b in
+</I>&gt;<i> the beginning of the corresponding variable helps differentiating it.
+</I>&gt;<i> Depending on context, compiler might not warn you about that.
+</I>
+Yes, and I've seen some projects already where people start mixing
+boolean and normal types, e.g. &quot;a = 2&quot; at one place, and then later &quot;if
+(a == true)&quot; ... guess what ... right, that's crappy code.
+So for boolean, I have to say that I like the prefix. But since Hatari
+also uses a lot of code (CPU, DSP) from other projects which is not
+written in that manner, I don't think that we should enforce the one or
+the other way.
+
+&gt;<i> &gt; I know this is a matter of choice, but I really find this notation
+</I>&gt;<i> &gt; to be redundant. If some variables need to go from 16 bits int to
+</I>&gt;<i> &gt; 32, should we rename all prefixes from &quot;w&quot; to &quot;dw&quot; ? What matters
+</I>&gt;<i> &gt; most to understand the code is the stored value, not really the
+</I>&gt;<i> &gt; storage size.
+</I>
+You're right about such prefixes, indicating the size of an integer is
+a very bad idea. But for distinguishing the basic type of a variable, I
+think it's not that bad (boolean &quot;b&quot; vs. integer &quot;n&quot; vs. String &quot;s&quot; or
+pointer &quot;p&quot;).
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000847.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000852.html">[hatari-devel] Coding style (was: new support for avi recording)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#851">[ date ]</a>
+              <a href="thread.html#851">[ thread ]</a>
+              <a href="subject.html#851">[ subject ]</a>
+              <a href="author.html#851">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] HDC/ACSI command sector count &amp; error handling?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2013q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20HDC/ACSI%20command%20sector%20count%20%26%20error%20handling%3F&In-Reply-To=%3C20131027101639.GA6186%40seimet.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004280.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] HDC/ACSI command sector count &amp; error handling?</H1>
+    <B>Uwe Seimet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20HDC/ACSI%20command%20sector%20count%20%26%20error%20handling%3F&In-Reply-To=%3C20131027101639.GA6186%40seimet.de%3E"
+       TITLE="[hatari-devel] HDC/ACSI command sector count &amp; error handling?">Uwe.Seimet at seimet.de
+       </A><BR>
+    <I>Sun Oct 27 11:16:39 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004280.html">[hatari-devel] HDC/ACSI command sector count &amp; error handling?
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4281">[ date ]</a>
+              <a href="thread.html#4281">[ thread ]</a>
+              <a href="subject.html#4281">[ subject ]</a>
+              <a href="author.html#4281">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Eero,
+
+I don't think that the FIFO behavior is causing the problems I have
+observed, at least not those related to unknown commands.
+As fara s the FIFO is conderned any hard disk driver compliant to the
+SCSI Driver specification (i. e. CBHD and HDDRIVER) has to ensure that any
+byte count can be transferred.
+In practice HDDRIVER (and I guess CBHD as well) when required sends an
+additional command (INQUIRY) just for the purpose of filling the FIFO with
+up to 16 bytes, so that everything is transferred. The excess bytes are
+internally discarded and the caller just sees the data that were
+transferred in response to the command he sent.
+
+So when using the SCSI Driver interface the caller does not have to care
+for this ACSI/DMA peculiarity but can treat the ACSI bus more or less
+like a regular SCSI bus.
+
+Take care
+
+Uwe
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> Is this old thread relevant to the current ACSI discussion?
+</I>&gt;<i> 
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> 
+</I>&gt;<i> On keskiviikko 11 toukokuu 2011, Eero Tamminen wrote:
+</I>&gt;<i> &gt; On keskiviikko 04 toukokuu 2011, Uwe Seimet wrote:
+</I>&gt;<i> &gt; &gt; &gt; Uwe, could you comment on this?
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; I don't think I can comment on it in detail right now. As far byte 4 in
+</I>&gt;<i> &gt; &gt; the SCSI command block is concerned this is either a byte or a sector
+</I>&gt;<i> &gt; &gt; count, depending on the SCSI command. It tells the SCSI device the
+</I>&gt;<i> &gt; &gt; maximum number of bytes or sectors it shall return.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Thanks, so one cannot unconditionally get the sector count from it...
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; &gt; <A HREF="http://en.wikipedia.org/wiki/SCSI_command">http://en.wikipedia.org/wiki/SCSI_command</A> provides more information,
+</I>&gt;<i> &gt; &gt; <A HREF="http://www.seagate.com/staticfiles/support/disc/manuals/scsi/100293068a">http://www.seagate.com/staticfiles/support/disc/manuals/scsi/100293068a</A>
+</I>&gt;<i> &gt; &gt; .p df has all the details.
+</I>&gt;<i> &gt; &gt; The ST's ACSI/DMA bus is basically a stripped down SCSI bus and as far
+</I>&gt;<i> &gt; &gt; as the structure of commands is concerned they are identical to
+</I>&gt;<i> &gt; &gt; standard SCSI commands.
+</I>&gt;<i> &gt; &gt; Note that it is a restriction of the DMA chip that it always buffers 16
+</I>&gt;<i> &gt; &gt; bytes before they get available. This means that in order not to lose
+</I>&gt;<i> &gt; &gt; bytes the software sending the SCSI command has to ensure that the byte
+</I>&gt;<i> &gt; &gt; count is always a multiple of 16. When transferring sectors this is not
+</I>&gt;<i> &gt; &gt; an issue because the READ/WRITE commands use byte 4 as a sector count,
+</I>&gt;<i> &gt; &gt; and the sector size is usually be a multiple of 16. (Usually, but not
+</I>&gt;<i> &gt; &gt; always. There are SCSI drives where you can configure the sector size
+</I>&gt;<i> &gt; &gt; when formatting, and they allow sectors sizes that are not a multiple
+</I>&gt;<i> &gt; &gt; of 16.)
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Any idea whether the HDC sector count needs to affect the DMA status
+</I>&gt;<i> &gt; register byte or disk controller register byte?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; (Currently it doesn't because the HDC sector cound fdc.c gets is always
+</I>&gt;<i> &gt; zero.)
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; &gt; &gt; On sunnuntai 01 toukokuu 2011, Thomas Huth wrote:
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt;  From above you can see that &quot;HDCSectorCount&quot; can never get any
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; other value than zero (unlike e.g. FDCSectorCountRegister which
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; seems to be used for similar purpose).  So what's the point in
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; having that variable?
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; hdc.c code gets the HDC sector count with this macro, it
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; doesn't use the variable:
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; #define HD_SECTORCOUNT(a) (a.command[4]&amp;  0xFF)        /* get
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; sector count */
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; Attached is a cleanup patch for hdc.c which also makes this mismatch
+</I>&gt;<i> &gt; &gt; &gt; clearer.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Has anybody comments on the patch?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Functionally it should be equivivalent to the current code.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; hdc.c originally hasn't been written by me but by Sven de
+</I>&gt;<i> &gt; &gt; &gt; &gt; Marothy... Dunno why this variable isn't used (anymore)? Maybe it
+</I>&gt;<i> &gt; &gt; &gt; &gt; was used in the past,
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; Looking at the first hdc.c source version from 2002:
+</I>&gt;<i> &gt; &gt; &gt; 	<A HREF="http://hg.berlios.de/repos/hatari/rev/b518e26c49a6">http://hg.berlios.de/repos/hatari/rev/b518e26c49a6</A>
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; That code worked similarly already from the beginning.
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; or it is not necessary since the ACSI commands are executed
+</I>&gt;<i> &gt; &gt; &gt; &gt; immediately instead of delayed like the FDC commands?
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; In fdc.c, that variable (would) affect:
+</I>&gt;<i> &gt; &gt; &gt; - Read DMA status byte (DMAStatus_ff8606rd variable)
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; - DiskControllerByte (0xff8604 HW register), when:
+</I>&gt;<i> &gt; &gt; &gt;         if ((DMAModeControl_ff8606wr &amp; 0x18) == 0x08)     /* HDC
+</I>&gt;<i> &gt; &gt; &gt;         status reg
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; selected? */
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; Should those be affected by HDC command sector count, as the fdc.c
+</I>&gt;<i> &gt; &gt; &gt; code seems to expect, or not, as it happens with the current hdc.c
+</I>&gt;<i> &gt; &gt; &gt; code?
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; If it should affect them, do all HDC commands have a valid sector
+</I>&gt;<i> &gt; &gt; &gt; count at command[4], or is the sector count something that's valid
+</I>&gt;<i> &gt; &gt; &gt; only for specific HDC commands?
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; If former is true, the new HDC_GetSectorCount() function can just
+</I>&gt;<i> &gt; &gt; &gt; return HDCCommand.command[4], otherwise e.g. the HD_SECTORCOUNT()
+</I>&gt;<i> &gt; &gt; &gt; macro could be changed to store the queried sector count to an
+</I>&gt;<i> &gt; &gt; &gt; internal hdc.c variable that will be returned by that function.
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; Or if the sector count isn't actually needed, it can be just removed
+</I>&gt;<i> &gt; &gt; &gt; competely...
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; And another thing I noticed is that the DMA status register bit is
+</I>&gt;<i> &gt; &gt; &gt; set only floppy read/write errors, not on HDC/ASCI read/write
+</I>&gt;<i> &gt; &gt; &gt; errors...
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Any idea whether the HDC read/write errors need to affect the DMA status
+</I>&gt;<i> &gt; register too?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; (I would image them to be pretty unlikely to happen with HD images
+</I>&gt;<i> &gt; though, so this would be mostly for emulation accuracy reasons. :))
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+-- 
+-----------------------------------------------------------------------
+  Dr. Uwe Seimet                                <A HREF="http://www.seimet.de/">http://www.seimet.de/</A>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004280.html">[hatari-devel] HDC/ACSI command sector count &amp; error handling?
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4281">[ date ]</a>
+              <a href="thread.html#4281">[ thread ]</a>
+              <a href="subject.html#4281">[ subject ]</a>
+              <a href="author.html#4281">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

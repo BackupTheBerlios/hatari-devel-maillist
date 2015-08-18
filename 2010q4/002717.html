@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari UI; Installation and Syntax
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20UI%3B%20Installation%20and%20Syntax&In-Reply-To=%3C391316.211318.1293402476307.JavaMail.nitido%40priv-edtnes95%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002726.html">
+   <LINK REL="Next"  HREF="002720.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari UI; Installation and Syntax</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20UI%3B%20Installation%20and%20Syntax&In-Reply-To=%3C391316.211318.1293402476307.JavaMail.nitido%40priv-edtnes95%3E"
+       TITLE="[hatari-devel] Hatari UI; Installation and Syntax">dsavnkff at telus.net
+       </A><BR>
+    <I>Sun Dec 26 23:27:56 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002726.html">[hatari-devel] Profiling Hatari code with Valgrind (was: Major	changes in DSP code)
+</A></li>
+        <LI>Next message: <A HREF="002720.html">[hatari-devel] Hatari UI; Installation and Syntax
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2717">[ date ]</a>
+              <a href="thread.html#2717">[ thread ]</a>
+              <a href="subject.html#2717">[ subject ]</a>
+              <a href="author.html#2717">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Eero,
+
+1) Shouldn't
+/tmp/local/share/hatari/hconsole/hconsole.py
+have a wrapper installed into
+/usr/local/bin or /usr/bin ?
+
+2) Hatariui gives me a SyntaxError
+
+$ ./hatariui
+Traceback (most recent call last):
+  File &quot;./../share/hatari/hatariui/hatariui.py&quot;, line 29, in ?
+    from debugui import HatariDebugUI
+  File &quot;/tmp/local/share/hatari/hatariui/debugui.py&quot;, line 25, in ?
+    from uihelpers import UInfo, create_button, create_toggle, \
+  File &quot;/tmp/local/share/hatari/hatariui/uihelpers.py&quot;, line 351
+    class FselAndEjectFactory():
+                              ^
+SyntaxError: invalid syntax
+$
+
+How I fixed it on my system (pygtk2 2.10.1 and python 2.4.3)
+
+Removing () allows my system to work, shown below:
+line 351
+class FselAndEjectFactory():
+class FselAndEjectFactory:
+
+line 383
+class FselEntry():
+class FselEntry:
+
+
+Thanks, and Good work
+David
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002726.html">[hatari-devel] Profiling Hatari code with Valgrind (was: Major	changes in DSP code)
+</A></li>
+	<LI>Next message: <A HREF="002720.html">[hatari-devel] Hatari UI; Installation and Syntax
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2717">[ date ]</a>
+              <a href="thread.html#2717">[ thread ]</a>
+              <a href="subject.html#2717">[ subject ]</a>
+              <a href="author.html#2717">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

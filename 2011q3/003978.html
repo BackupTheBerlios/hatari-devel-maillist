@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mouse movements limited in Hextracker
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20movements%20limited%20in%20Hextracker&In-Reply-To=%3C201109022228.23728.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003870.html">
+   <LINK REL="Next"  HREF="003858.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mouse movements limited in Hextracker</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20movements%20limited%20in%20Hextracker&In-Reply-To=%3C201109022228.23728.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Mouse movements limited in Hextracker">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Sep  2 21:28:23 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003870.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+        <LI>Next message: <A HREF="003858.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3978">[ date ]</a>
+              <a href="thread.html#3978">[ thread ]</a>
+              <a href="subject.html#3978">[ subject ]</a>
+              <a href="author.html#3978">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 03 elokuu 2011, Eero Tamminen wrote:
+&gt;<i> Either user needs to use grab/fullscreen, or Hextracker needs
+</I>&gt;<i> to be fixed.   Personally I would prefer the latter, the mouse
+</I>&gt;<i> moves annoyingly slowly in it.
+</I>
+I found another program that has the same issue: Spectrum 512.
+
+It would be useful if people could try some other med-rez programs
+with mouse support to find out how wide spread this problem.
+-&gt; is it enough to mention the issue in compatibility list,
+   or should some kludge added to Hatari for them?
+
+
+&gt;<i> On sunnuntai 31 hein&#228;kuu 2011, Eero Tamminen wrote:
+</I>&gt;<i> &gt; I think that's because host mouse position compared to the Hatari
+</I>&gt;<i> &gt; window position is different in fullscreen and in windowed mode and
+</I>&gt;<i> &gt; therefore emulator gets (probably pretty large) mouse movement event
+</I>&gt;<i> &gt; from SDL (which IKBD code splits into smaller -127 - 128 sized
+</I>&gt;<i> &gt; movement packets).
+</I>&gt;<i> 
+</I>&gt;<i> I added some debug output to Hatari with the attached patch and
+</I>&gt;<i> this is what mouse movement events SDL reports...
+</I>&gt;<i> 
+</I>&gt;<i> 1. On pressing F11 to switch to FULLSCREEN
+</I>&gt;<i>    mouse: abs (840, 525) rel (424, 237)
+</I>&gt;<i> 
+</I>&gt;<i> 2. On pressing F11 to switch to WINDOWED mode
+</I>&gt;<i>    mouse: abs (412, 261) rel (-428, -264)
+</I>&gt;<i> 
+</I>&gt;<i> 3. On pressing F11 to switch to FULLSCREEN
+</I>&gt;<i>    mouse: abs (840, 525) rel (428, 264)
+</I>&gt;<i> 
+</I>&gt;<i> 4. On pressing F11 to switch to WINDOWED mode
+</I>&gt;<i>    mouse: abs (412, 261) rel (-428, -264)
+</I>&gt;<i> 
+</I>&gt;<i> Between F11 presses I didn't move the mouse.
+</I>&gt;<i> 
+</I>&gt;<i> &quot;abs&quot; is the absolute mouse co-ordinates reported by SDL
+</I>&gt;<i> and &quot;rel&quot; is the reported relative offset that gets given
+</I>&gt;<i> to IKBD (after it's scaled down by the zoom factor).
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> As you can see, the mouse movements come from X11/SDL, Hatari
+</I>&gt;<i> just propagates them to the emulated program.
+</I>
+I tried storing the relative Hatari window mouse offset before toggling
+fullscreen and restoring it afterwards, but it didn't help.  And making
+it to apply in every case (with --desktop on/off, --desktop-st on/off etc)
+would have required to copy same code to several different places.
+
+Better if user just grabs mouse.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003870.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+	<LI>Next message: <A HREF="003858.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3978">[ date ]</a>
+              <a href="thread.html#3978">[ thread ]</a>
+              <a href="subject.html#3978">[ subject ]</a>
+              <a href="author.html#3978">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

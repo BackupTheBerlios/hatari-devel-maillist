@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crosscompiling Hatari for GP2X Wiz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C201103302343.39300.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003285.html">
+   <LINK REL="Next"  HREF="003263.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crosscompiling Hatari for GP2X Wiz</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C201103302343.39300.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Crosscompiling Hatari for GP2X Wiz">oak at helsinkinet.fi
+       </A><BR>
+    <I>Wed Mar 30 22:43:39 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003285.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+        <LI>Next message: <A HREF="003263.html">[hatari-devel] New DSP trace functions added
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3279">[ date ]</a>
+              <a href="thread.html#3279">[ thread ]</a>
+              <a href="subject.html#3279">[ subject ]</a>
+              <a href="author.html#3279">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 30 maaliskuu 2011, Matthias Arndt wrote:
+&gt;<i> &gt; Actually, I started to think that the joystick thing could be quite
+</I>&gt;<i> &gt; inconvenient for the user.  He would need to use Hatari options dialog
+</I>&gt;<i> &gt; to switch to normal joystick after he's handled the key press.
+</I>&gt;<i> 
+</I>&gt;<i> Well, I did not intend to have a full keyboard emulation for the
+</I>&gt;<i> beginning.
+</I>&gt;<i> 
+</I>&gt;<i> Just X presses Atari SPACE, Y presses ESC, B pressed RETURN, A is
+</I>&gt;<i> joystick fire
+</I>&gt;<i> 
+</I>&gt;<i> something else opens the GUI or stops emulation.
+</I>
+Ah, that's sounds better, I keep forgetting that the joysticks on these
+new-fangled devices have actually more buttons than the old Atari ones. :-)
+
+
+&gt;<i> Mouse support is by touchscreen, the joypad inputs joystick stuffs.
+</I>&gt;<i> It's not perfect but enough for many games and watching demos.
+</I>&gt;<i> 
+</I>&gt;<i> If this works, I will consider implementing an onscreen touch keyboard.
+</I>&gt;<i> That would be spawend by a joystick key as well.
+</I>
+I would assume there to be already SDL code that can be used for that,
+but popping up some grid of letters &amp; numbers shouldn't be that hard
+to do either and it could be useful also on other devices.
+
+If the keys aren't needed that often and only a single one at the time, one
+more option for an onscreen keyboard would be directly in the keyboard
+options dialog. 
+
+Press &amp; release of given key code can be simulated with:
+                        IKBD_PressSTKey(keycode, true);
+                        IKBD_PressSTKey(keycode, false);
+
+And press &amp; release of a single letter with:
+                        Keymap_SimulateCharacter(letter, true);
+                        Keymap_SimulateCharacter(letter, false);
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003285.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+	<LI>Next message: <A HREF="003263.html">[hatari-devel] New DSP trace functions added
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3279">[ date ]</a>
+              <a href="thread.html#3279">[ thread ]</a>
+              <a href="subject.html#3279">[ subject ]</a>
+              <a href="author.html#3279">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

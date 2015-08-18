@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New patch for crossbar : ultimate arena wanted
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20patch%20for%20crossbar%20%3A%20ultimate%20arena%20wanted&In-Reply-To=%3C201106012251.31641.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003510.html">
+   <LINK REL="Next"  HREF="003516.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New patch for crossbar : ultimate arena wanted</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20patch%20for%20crossbar%20%3A%20ultimate%20arena%20wanted&In-Reply-To=%3C201106012251.31641.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] New patch for crossbar : ultimate arena wanted">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Jun  1 21:51:31 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003510.html">[hatari-devel] New patch for crossbar : ultimate arena wanted
+</A></li>
+        <LI>Next message: <A HREF="003516.html">[hatari-devel] New patch for crossbar : ultimate arena wanted
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3514">[ date ]</a>
+              <a href="thread.html#3514">[ thread ]</a>
+              <a href="subject.html#3514">[ subject ]</a>
+              <a href="author.html#3514">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 01 kes&#228;kuu 2011, Laurent Sallafranque wrote:
+&gt;<i> I've patched the crossbar. The $ff8901 bug seems to be removed.
+</I>
+What's this change:
+---
+     1.2 +++ b/src/falcon/crossbar.c    Wed Jun 01 10:02:48 2011 +0200
+     1.3 @@ -458,8 +458,6 @@
+     1.4                dmaPlay.isRunning = 0;
+     1.5                dmaPlay.loopMode = 0;
+     1.6                nCbar_DmaSoundControl = sndCtrl;
+     1.7 -              memset(dac.buffer_left, 0, sizeof(dac.buffer_left));
+     1.8 -              memset(dac.buffer_right, 0, 
+sizeof(dac.buffer_right));
+     1.9        }
+    1.10  
+    1.11        /* DMA Record mode */
+----
+?
+
+
+Btw. Nicolas, when I looked how the STE DMA code handles it:
+---- ioMemTabSTE.c --------
+        { 0xff8900, SIZE_WORD, DmaSnd_SoundControl_ReadWord, 
+DmaSnd_SoundControl_WriteWord },   /* DMA sound control */
+---- dmaSnd.c --------
+void DmaSnd_SoundControl_ReadWord(void)
+{
+        IoMem_WriteWord(0xff8900, nDmaSoundControl);
+...
+void DmaSnd_SoundControl_WriteWord(void)
+{
+...
+        nNewSndCtrl = IoMem_ReadWord(0xff8900) &amp; 3;
+---------
+
+While I assume this works fine, according to Compedium $ff8900 byte of this
+word is Falcon only while $ff8901 byte is used by everything else except
+STF, so the code above seems a bit misleading?
+
+
+&gt;<i> Eero, in an old thread
+</I>&gt;<i> (<A HREF="https://lists.berlios.de/pipermail/hatari-devel/2010q1/001514.html">https://lists.berlios.de/pipermail/hatari-devel/2010q1/001514.html</A>),
+</I>&gt;<i> you said Ultimate Arena had also the $ff8901 bug.
+</I>&gt;<i> 
+</I>&gt;<i> Could you please test again and tell me if it's OK now ?
+</I>
+It seems to work fine, but as I didn't have it in my broken programs folders
+I'm not sure how easy the issue was to trigger. 
+
+When running, it output this once to console:
+crossbar DMA Play: Illegal buffer size (from 0x076b1c to 0x076b1c)
+
+
+&gt;<i> Could you also send me this game ? (I haven't got it) ?
+</I>&gt;<i> If you have a link (for download), could you add it to the compatibility
+</I>&gt;<i> list ?
+</I>
+It was already in the list, but commented to be unstable.  As it seemed to
+work now fine, I removed that comment &amp; updated Hatari version for it to
+v1.5. :-)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003510.html">[hatari-devel] New patch for crossbar : ultimate arena wanted
+</A></li>
+	<LI>Next message: <A HREF="003516.html">[hatari-devel] New patch for crossbar : ultimate arena wanted
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3514">[ date ]</a>
+              <a href="thread.html#3514">[ thread ]</a>
+              <a href="subject.html#3514">[ subject ]</a>
+              <a href="author.html#3514">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

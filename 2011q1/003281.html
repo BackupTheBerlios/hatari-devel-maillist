@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Some more demos that fail with 1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20more%20demos%20that%20fail%20with%201.4&In-Reply-To=%3C4D93AAB7.6050500%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003225.html">
+   <LINK REL="Next"  HREF="003287.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Some more demos that fail with 1.4</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20more%20demos%20that%20fail%20with%201.4&In-Reply-To=%3C4D93AAB7.6050500%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Some more demos that fail with 1.4">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Mar 31 00:12:07 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003225.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+        <LI>Next message: <A HREF="003287.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3281">[ date ]</a>
+              <a href="thread.html#3281">[ thread ]</a>
+              <a href="subject.html#3281">[ subject ]</a>
+              <a href="author.html#3281">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 25/03/2011 22:17, Eero Tamminen a &#233;crit :
+
+Hello,
+
+here're some reports on some of those demos
+
+&gt;<i> * Pixel Twin's Mental Hangover actually crashes Hatari:
+</I>&gt;<i>     <A HREF="http://www.pouet.net/prod.php?which=11181">http://www.pouet.net/prod.php?which=11181</A>
+</I>&gt;<i>
+</I>&gt;<i> Valgrind says:
+</I>&gt;<i> ==4016== Invalid write of size 1
+</I>&gt;<i> ==4016==    at 0x40264DC: memset (mc_replace_strmem.c:602)
+</I>&gt;<i> ==4016==    by 0x80D18DC: Video_InterruptHandler_HBL (video.c:1942)
+</I>&gt;<i> ==4016==    by 0x810CB30: m68k_go (newcpu.c:1758)
+</I>&gt;<i> ==4016==    by 0x80B3A33: M68000_Start (m68000.c:241)
+</I>&gt;<i> ==4016==    by 0x80B4823: main (main.c:773)
+</I>&gt;<i> ==4016==  Address 0x4981d00 is 0 bytes after a block of size 614,400 alloc'd
+</I>&gt;<i> ==4016==    at 0x4023F50: malloc (vg_replace_malloc.c:236)
+</I>&gt;<i> ==4016==    by 0x80C2E81: Screen_Init (screen.c:517)
+</I>&gt;<i> ==4016==    by 0x80B46C9: main (main.c:585)
+</I>&gt;<i>
+</I>&gt;<i> (when it gets 4 bytes past the screen buffer, Hatari crashes)
+</I>
+Tough one, I spent some time figuring what was wrong. In fact, due to a 
+very buggy loader in the boot sector, this demo can sometime consider it 
+needs to load $c18f sectors with xbios(8) ! Since memory location for 
+the sector is incremented by 512 bytes on each sector, you end up 
+filling the whole ram (as well as the IO space !) with garbage read from 
+wrong sectors.
+
+The problem is that at the start of the boot sector D1=3e7bxxxx (number 
+of sectors to read) and the loader doesn't clear the upper 16 bits...
+Now, since it works under Steem with the same TOS, I needed to 
+understand why the upper 16 bits were 0 on a real STE.
+In fact, those bits in D1 are the result of initializing the TOS 
+date/time by reading the real time clock at $fffc21-3f.
+
+Since normal STF/STE didn't have an RTC, this loader worked (more or 
+less by luck). When there's no RTC, D1=0 at the start of the boot.
+
+Note that it depends on the TOS : with 1.04 or 1.62, D1!=0 but with 2.06 
+the loader starts.
+
+But after that, when all sectors are loaded, the demo check there's no 
+cardridge connected to the ST (at $fa0000). Since HD emulation is at the 
+same space under Hatari, it's considered as an ripping cardridge and the 
+demo wipes the whole RAM with the blitter -&gt; bus errors again.
+
+So, to run this demo, you need to disable RTC and HD emulation.
+
+I added a note for this in compatibility.html.
+
+
+&gt;<i> * Songs of the Unexpected gets double bus error after playing the first song
+</I>&gt;<i>     in the main demo for a while:
+</I>&gt;<i> 	<A HREF="http://www.pouet.net/prod.php?which=22398">http://www.pouet.net/prod.php?which=22398</A>
+</I>
+I can reproduce, it's quite random and never at the same time, so a 
+little hard to fix for now.
+
+
+&gt;<i> * Aura's Hifidelity dreams seems now fine:
+</I>&gt;<i> 	<A HREF="http://www.pouet.net/prod.php?which=996">http://www.pouet.net/prod.php?which=996</A>
+</I>
+It was an FDC problem that I fixed in 2008/12
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> * As does Hemoroids Necrosys (it's music is something truly
+</I>&gt;<i>    horrible though):
+</I>&gt;<i> 	<A HREF="http://www.pouet.net/prod.php?which=14395">http://www.pouet.net/prod.php?which=14395</A>
+</I>
+Music is crap, but it's how it sound on a real STE :(
+
+
+&gt;<i> * Delirious 3 crashes on startup:
+</I>&gt;<i>    <A HREF="http://www.pouet.net/prod.php?which=21347">http://www.pouet.net/prod.php?which=21347</A>
+</I>
+Worked for me. Have you tried in STE mode ?
+
+&gt;<i>
+</I>&gt;<i> * Once the actual demo starts:
+</I>&gt;<i>    <A HREF="http://www.pouet.net/prod.php?which=15437">http://www.pouet.net/prod.php?which=15437</A>
+</I>&gt;<i>
+</I>&gt;<i>    Bad taste dies to:
+</I>&gt;<i>    Your Atari program just did something terribly stupid:
+</I>&gt;<i>    VoidMem_xlate($533b0aa5)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+I get this a few seconds after the yellow/red vector balls appear. Do 
+you get the error at the same point ?
+ From what I see, the demo code seems to be altered by a bad write at 
+address $404c2. The resulting wrong instruction tries to add.w on an odd 
+address, which creates this crash.
+
+I will need to add some code in Hatari to track what part of the demo is 
+producing this bad write.
+
+
+&gt;<i>
+</I>&gt;<i> * AFL pro fooball doesn't anymore freeze on startup:
+</I>&gt;<i>    <A HREF="../2010q2/002284.html">http://lists.berlios.de/pipermail/hatari-devel/2010q2/002284.html</A>
+</I>&gt;<i>
+</I>&gt;<i>    But there's some screen update/color issue between the game halves
+</I>&gt;<i>    (when running a demo game) when panels from top&amp;  bottom are scrolled
+</I>&gt;<i>    towards screen center.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> * GGN's Kuovadis game (Daleks clone) dies at startup after screen goes blank
+</I>&gt;<i>    and it tries to scan disk for mods.  I'm not sure where I got the program,
+</I>&gt;<i>    GGN's page seems to be missing a link:
+</I>&gt;<i> 	<A HREF="http://users.hol.gr/~ggn/">http://users.hol.gr/~ggn/</A>
+</I>
+Havent't tested these 2 ones for now.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003225.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+	<LI>Next message: <A HREF="003287.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3281">[ date ]</a>
+              <a href="thread.html#3281">[ thread ]</a>
+              <a href="subject.html#3281">[ subject ]</a>
+              <a href="author.html#3281">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

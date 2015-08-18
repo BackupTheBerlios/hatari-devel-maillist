@@ -1,0 +1,782 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Suggestion about small additions for v1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3C21780065.6531.1274793820588.JavaMail.www%40wwinf1g14%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002176.html">
+   <LINK REL="Next"  HREF="002180.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Suggestion about small additions for v1.4</H1>
+    <B>J&#233;r&#244;me VERNET</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3C21780065.6531.1274793820588.JavaMail.www%40wwinf1g14%3E"
+       TITLE="[hatari-devel] Suggestion about small additions for v1.4">vernet.jerome at wanadoo.fr
+       </A><BR>
+    <I>Tue May 25 15:23:40 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002176.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002180.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2177">[ date ]</a>
+              <a href="thread.html#2177">[ thread ]</a>
+              <a href="subject.html#2177">[ subject ]</a>
+              <a href="author.html#2177">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Can't see why it do not build. Can you try without the XCode project (cmake -G &quot;Unix Makefiles&quot;).
+
+I didn't test XCode generator with cmake.
+
+Jerome
+
+--------------
+
+
+
+
+
+&gt;<i> Message du 25/05/10 09:21
+</I>&gt;<i> De : &quot;Anders Eriksson&quot; 
+</I>&gt;<i> A : &quot;Mailing list for Hatari developers&quot; 
+</I>&gt;<i> Copie &#224; : 
+</I>&gt;<i> Objet : Re: [hatari-devel] Suggestion about small additions for v1.4
+</I>&gt;<i> 
+</I>&gt;<i> On Mon, 24 May 2010, Eero Tamminen wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On Wednesday 12 May 2010, Eero Tamminen wrote:
+</I>&gt;<i> &gt;&gt; On Wednesday 12 May 2010, Anders Eriksson wrote:
+</I>&gt;<i> &gt;&gt; &gt; &gt; Attached is mostly untested patch for adding question on whether the
+</I>&gt;<i> &gt;&gt; &gt; &gt; (last) succesfully created disk image should be inserted to drive A:.
+</I>&gt;<i> &gt;&gt; &gt; &gt; I think drive B: is too rare case to worry about (and it would need
+</I>&gt;<i> &gt;&gt; &gt; &gt; creating a new dialog).
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; Thanks for this patch, I hope it goes into the repo as well :) However
+</I>&gt;<i> &gt;&gt; &gt; having an alert with three options should be doable?
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; Mount A: | Mount B: |&#160;Don't mount
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; It's of course doable, but would need more code and is something that
+</I>&gt;<i> &gt;&gt; can be done later.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I had some extra time, so I completed this. As it's a general usability
+</I>&gt;<i> &gt; improvement, doesn't need updating manual, is fairly isolated &amp; seemed
+</I>&gt;<i> &gt; to work fine, I pushed it to repo:
+</I>&gt;<i> &gt; <A HREF="http://hg.berlios.de/repos/hatari/rev/8195baf82d1b">http://hg.berlios.de/repos/hatari/rev/8195baf82d1b</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Anders, could you verify that it works fine?
+</I>&gt;<i> 
+</I>&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> I am unable to compile Hatari. When I pulled updates I got merge errors. 
+</I>&gt;<i> So I did a clean checkout, created the Xcode project with cmake and then 
+</I>&gt;<i> tried to build.
+</I>&gt;<i> 
+</I>&gt;<i> 12 errors, see log below.
+</I>&gt;<i> 
+</I>&gt;<i> --
+</I>&gt;<i> Anders Eriksson
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A> <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A> <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Build build68k of project Hatari with configuration Release
+</I>&gt;<i> 
+</I>&gt;<i> CreateUniversalBinary src/uae-cpu/Release/build68k normal &quot;i386 ppc&quot;
+</I>&gt;<i> cd /Users/ae/hatari
+</I>&gt;<i> /usr/bin/lipo -create /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/build68k.build/Objects-normal/i386/build68k 
+</I>&gt;<i> /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/build68k.build/Objects-normal/ppc/build68k -output /Users/ae/hatari/src/uae-cpu/Release/build68k
+</I>&gt;<i> 
+</I>&gt;<i> /usr/bin/lipo: can't open input file: /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/build68k.build/Objects-normal/i386/build68k (No such file or 
+</I>&gt;<i> directory)
+</I>&gt;<i> Command /usr/bin/lipo failed with exit code 1
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Build gencpu of project Hatari with configuration Release
+</I>&gt;<i> 
+</I>&gt;<i> PhaseScriptExecution &quot;CMake Rules&quot; src/uae-cpu/Hatari.build/Release/gencpu.build/Script-6CC5006CC5006CC500000000.sh
+</I>&gt;<i> cd /Users/ae/hatari
+</I>&gt;<i> setenv ACTION build
+</I>&gt;<i> setenv ALTERNATE_GROUP staff
+</I>&gt;<i> setenv ALTERNATE_MODE u+w,go-w,a+rX
+</I>&gt;<i> setenv ALTERNATE_OWNER ae
+</I>&gt;<i> setenv ALWAYS_SEARCH_USER_PATHS YES
+</I>&gt;<i> setenv APPLE_INTERNAL_DEVELOPER_DIR /AppleInternal/Developer
+</I>&gt;<i> setenv APPLE_INTERNAL_DIR /AppleInternal
+</I>&gt;<i> setenv APPLE_INTERNAL_DOCUMENTATION_DIR /AppleInternal/Documentation
+</I>&gt;<i> setenv APPLE_INTERNAL_LIBRARY_DIR /AppleInternal/Library
+</I>&gt;<i> setenv APPLE_INTERNAL_TOOLS /AppleInternal/Developer/Tools
+</I>&gt;<i> setenv APPLY_RULES_IN_COPY_FILES NO
+</I>&gt;<i> setenv ARCHS &quot;i386 ppc&quot;
+</I>&gt;<i> setenv ARCHS_STANDARD_32_64_BIT &quot;x86_64 i386 ppc&quot;
+</I>&gt;<i> setenv ARCHS_STANDARD_32_BIT &quot;i386 ppc&quot;
+</I>&gt;<i> setenv ARCHS_STANDARD_64_BIT x86_64
+</I>&gt;<i> setenv BUILD_COMPONENTS &quot;headers build&quot;
+</I>&gt;<i> setenv BUILD_DIR /Users/ae/hatari/src/uae-cpu
+</I>&gt;<i> setenv BUILD_ROOT /Users/ae/hatari/src/uae-cpu
+</I>&gt;<i> setenv BUILD_STYLE Release
+</I>&gt;<i> setenv BUILD_VARIANTS normal
+</I>&gt;<i> setenv BUILT_PRODUCTS_DIR /Users/ae/hatari/src/uae-cpu/Release
+</I>&gt;<i> setenv CACHE_ROOT /var/folders/uj/ujBBejajGfqtOnyhnqQtT++++TI/-Caches-/com.apple.Xcode.501
+</I>&gt;<i> setenv CCHROOT /var/folders/uj/ujBBejajGfqtOnyhnqQtT++++TI/-Caches-/com.apple.Xcode.501
+</I>&gt;<i> setenv CHMOD /bin/chmod
+</I>&gt;<i> setenv CHOWN /usr/sbin/chown
+</I>&gt;<i> setenv CLASS_FILE_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/JavaClasses
+</I>&gt;<i> setenv CLEAN_PRECOMPS YES
+</I>&gt;<i> setenv CLONE_HEADERS NO
+</I>&gt;<i> setenv CODESIGNING_FOLDER_PATH /Users/ae/hatari/src/uae-cpu/Release/gencpu
+</I>&gt;<i> setenv CODE_SIGNING_ALLOWED YES
+</I>&gt;<i> setenv COMMAND_MODE legacy
+</I>&gt;<i> setenv COMPOSITE_SDK_DIRS /var/folders/uj/ujBBejajGfqtOnyhnqQtT++++TI/-Caches-/com.apple.Xcode.501/CompositeSDKs
+</I>&gt;<i> setenv CONFIGURATION Release
+</I>&gt;<i> setenv CONFIGURATION_BUILD_DIR /Users/ae/hatari/src/uae-cpu/Release
+</I>&gt;<i> setenv CONFIGURATION_TEMP_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release
+</I>&gt;<i> setenv COPYING_PRESERVES_HFS_DATA NO
+</I>&gt;<i> setenv COPY_PHASE_STRIP YES
+</I>&gt;<i> setenv COPY_RESOURCES_FROM_STATIC_FRAMEWORKS YES
+</I>&gt;<i> setenv CP /bin/cp
+</I>&gt;<i> setenv CURRENT_ARCH ppc
+</I>&gt;<i> setenv CURRENT_VARIANT normal
+</I>&gt;<i> setenv DEAD_CODE_STRIPPING NO
+</I>&gt;<i> setenv DEBUGGING_SYMBOLS YES
+</I>&gt;<i> setenv DEBUG_INFORMATION_FORMAT dwarf
+</I>&gt;<i> setenv DEPLOYMENT_LOCATION NO
+</I>&gt;<i> setenv DEPLOYMENT_POSTPROCESSING NO
+</I>&gt;<i> setenv DERIVED_FILES_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/DerivedSources
+</I>&gt;<i> setenv DERIVED_FILE_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/DerivedSources
+</I>&gt;<i> setenv DERIVED_SOURCES_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/DerivedSources
+</I>&gt;<i> setenv DEVELOPER_APPLICATIONS_DIR /Developer/Applications
+</I>&gt;<i> setenv DEVELOPER_BIN_DIR /Developer/usr/bin
+</I>&gt;<i> setenv DEVELOPER_DIR /Developer
+</I>&gt;<i> setenv DEVELOPER_FRAMEWORKS_DIR /Developer/Library/Frameworks
+</I>&gt;<i> setenv DEVELOPER_FRAMEWORKS_DIR_QUOTED &quot;\&quot;/Developer/Library/Frameworks\&quot;&quot;
+</I>&gt;<i> setenv DEVELOPER_LIBRARY_DIR /Developer/Library
+</I>&gt;<i> setenv DEVELOPER_SDK_DIR /Developer/SDKs
+</I>&gt;<i> setenv DEVELOPER_TOOLS_DIR /Developer/Tools
+</I>&gt;<i> setenv DEVELOPER_USR_DIR /Developer/usr
+</I>&gt;<i> setenv DEVELOPMENT_LANGUAGE English
+</I>&gt;<i> setenv DO_HEADER_SCANNING_IN_JAM NO
+</I>&gt;<i> setenv DSTROOT /tmp/Hatari.dst
+</I>&gt;<i> setenv DWARF_DSYM_FILE_NAME gencpu.dSYM
+</I>&gt;<i> setenv DWARF_DSYM_FOLDER_PATH /Users/ae/hatari/src/uae-cpu/Release
+</I>&gt;<i> setenv ENABLE_HEADER_DEPENDENCIES YES
+</I>&gt;<i> setenv ENABLE_OPENMP_SUPPORT NO
+</I>&gt;<i> setenv EXCLUDED_INSTALLSRC_SUBDIRECTORY_PATTERNS &quot;.svn CVS&quot;
+</I>&gt;<i> setenv EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES &quot;*.nib *.lproj *.framework *.gch (*) CVS .svn *.xcodeproj *.xcode *.pbproj *.pbxproj&quot;
+</I>&gt;<i> setenv EXECUTABLE_NAME gencpu
+</I>&gt;<i> setenv EXECUTABLE_PATH gencpu
+</I>&gt;<i> setenv FILE_LIST /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/Objects/LinkFileList
+</I>&gt;<i> setenv FIXED_FILES_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/FixedFiles
+</I>&gt;<i> setenv FRAMEWORK_FLAG_PREFIX -framework
+</I>&gt;<i> setenv FRAMEWORK_SEARCH_PATHS &quot;\&quot;/Users/ae/hatari/src/uae-cpu/Release\&quot; &quot;
+</I>&gt;<i> setenv FRAMEWORK_VERSION A
+</I>&gt;<i> setenv FULL_PRODUCT_NAME gencpu
+</I>&gt;<i> setenv GCC3_VERSION 3.3
+</I>&gt;<i> setenv GCC_DYNAMIC_NO_PIC YES
+</I>&gt;<i> setenv GCC_GENERATE_DEBUGGING_SYMBOLS NO
+</I>&gt;<i> setenv GCC_INLINES_ARE_PRIVATE_EXTERN NO
+</I>&gt;<i> setenv GCC_OPTIMIZATION_LEVEL 3
+</I>&gt;<i> setenv GCC_PFE_FILE_C_DIALECTS &quot;c objective-c c++ objective-c++&quot;
+</I>&gt;<i> setenv GCC_PREPROCESSOR_DEFINITIONS &quot;'CMAKE_INTDIR=\&quot;Release\&quot;' 'CONFDIR=\&quot;/etc\&quot;' '_GNU_SOURCE=1 -D_THREAD_SAFE'&quot;
+</I>&gt;<i> setenv GCC_SYMBOLS_PRIVATE_EXTERN NO
+</I>&gt;<i> setenv GCC_TREAT_WARNINGS_AS_ERRORS NO
+</I>&gt;<i> setenv GCC_VERSION 4.2
+</I>&gt;<i> setenv GENERATE_MASTER_OBJECT_FILE NO
+</I>&gt;<i> setenv GENERATE_PKGINFO_FILE NO
+</I>&gt;<i> setenv GENERATE_PROFILING_CODE NO
+</I>&gt;<i> setenv GID 20
+</I>&gt;<i> setenv GROUP staff
+</I>&gt;<i> setenv HEADERMAP_INCLUDES_FLAT_ENTRIES_FOR_TARGET_BEING_BUILT YES
+</I>&gt;<i> setenv HEADERMAP_INCLUDES_FRAMEWORK_ENTRIES_FOR_ALL_PRODUCT_TYPES YES
+</I>&gt;<i> setenv HEADERMAP_INCLUDES_NONPUBLIC_NONPRIVATE_HEADERS YES
+</I>&gt;<i> setenv HEADERMAP_INCLUDES_PROJECT_HEADERS YES
+</I>&gt;<i> setenv HEADER_SEARCH_PATHS &quot;/Users/ae/hatari/src/uae-cpu/Release/include /Users/ae/hatari /Users/ae/hatari/src/includes /Users/ae/hatari/src/debug 
+</I>&gt;<i> /Users/ae/hatari/src/falcon /Users/ae/hatari/src/uae-cpu /Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/SDL.framework/Headers 
+</I>&gt;<i> /Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/libpng.framework/Headers /Users/ae/hatari/src/uae-cpu/. /Users/ae/hatari/src/uae-cpu/../.. 
+</I>&gt;<i> /Users/ae/hatari/src/uae-cpu/../includes&quot;
+</I>&gt;<i> setenv ICONV /usr/bin/iconv
+</I>&gt;<i> setenv INFOPLIST_EXPAND_BUILD_SETTINGS YES
+</I>&gt;<i> setenv INFOPLIST_OUTPUT_FORMAT same-as-input
+</I>&gt;<i> setenv INFOPLIST_PREPROCESS NO
+</I>&gt;<i> setenv INSTALL_DIR /tmp/Hatari.dst
+</I>&gt;<i> setenv INSTALL_GROUP staff
+</I>&gt;<i> setenv INSTALL_MODE_FLAG u+w,go-w,a+rX
+</I>&gt;<i> setenv INSTALL_OWNER ae
+</I>&gt;<i> setenv INSTALL_ROOT /tmp/Hatari.dst
+</I>&gt;<i> setenv JAVAC_DEFAULT_FLAGS &quot;-J-Xms64m -J-XX:NewSize=4M -J-Dfile.encoding=UTF8&quot;
+</I>&gt;<i> setenv JAVA_APP_STUB /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub
+</I>&gt;<i> setenv JAVA_ARCHIVE_CLASSES YES
+</I>&gt;<i> setenv JAVA_ARCHIVE_TYPE JAR
+</I>&gt;<i> setenv JAVA_COMPILER /usr/bin/javac
+</I>&gt;<i> setenv JAVA_FRAMEWORK_RESOURCES_DIRS Resources
+</I>&gt;<i> setenv JAVA_JAR_FLAGS cv
+</I>&gt;<i> setenv JAVA_SOURCE_SUBDIR .
+</I>&gt;<i> setenv JAVA_USE_DEPENDENCIES YES
+</I>&gt;<i> setenv JAVA_ZIP_FLAGS -urg
+</I>&gt;<i> setenv JIKES_DEFAULT_FLAGS &quot;+E +OLDCSO&quot;
+</I>&gt;<i> setenv KEEP_PRIVATE_EXTERNS NO
+</I>&gt;<i> setenv LD_GENERATE_MAP_FILE NO
+</I>&gt;<i> setenv LD_MAP_FILE_PATH /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/gencpu-LinkMap-normal-ppc.txt
+</I>&gt;<i> setenv LD_OPENMP_FLAGS -fopenmp
+</I>&gt;<i> setenv LEX /Developer/usr/bin/lex
+</I>&gt;<i> setenv LIBRARY_FLAG_NOSPACE YES
+</I>&gt;<i> setenv LIBRARY_FLAG_PREFIX -l
+</I>&gt;<i> setenv LIBRARY_SEARCH_PATHS &quot;\&quot;/Users/ae/hatari/src/uae-cpu/Release\&quot; debug/Release debug falcon/Release falcon gui-sdl/Release gui-sdl uae-cpu/Release 
+</I>&gt;<i> uae-cpu&quot;
+</I>&gt;<i> setenv LINKER_DISPLAYS_MANGLED_NAMES NO
+</I>&gt;<i> setenv LINK_FILE_LIST_normal_i386 /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/Objects-normal/i386/gencpu.LinkFileList
+</I>&gt;<i> setenv LINK_FILE_LIST_normal_ppc /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/Objects-normal/ppc/gencpu.LinkFileList
+</I>&gt;<i> setenv LINK_WITH_STANDARD_LIBRARIES YES
+</I>&gt;<i> setenv LOCAL_ADMIN_APPS_DIR /Applications/Utilities
+</I>&gt;<i> setenv LOCAL_APPS_DIR /Applications
+</I>&gt;<i> setenv LOCAL_DEVELOPER_DIR /Library/Developer
+</I>&gt;<i> setenv LOCAL_LIBRARY_DIR /Library
+</I>&gt;<i> setenv MACOSX_DEPLOYMENT_TARGET 10.6
+</I>&gt;<i> setenv MAC_OS_X_VERSION_ACTUAL 1063
+</I>&gt;<i> setenv MAC_OS_X_VERSION_MAJOR 1060
+</I>&gt;<i> setenv MAC_OS_X_VERSION_MINOR 0603
+</I>&gt;<i> setenv NATIVE_ARCH i386
+</I>&gt;<i> setenv NATIVE_ARCH_32_BIT i386
+</I>&gt;<i> setenv NATIVE_ARCH_64_BIT x86_64
+</I>&gt;<i> setenv NATIVE_ARCH_ACTUAL x86_64
+</I>&gt;<i> setenv NO_COMMON YES
+</I>&gt;<i> setenv OBJECT_FILE_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/Objects
+</I>&gt;<i> setenv OBJECT_FILE_DIR_normal /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/Objects-normal
+</I>&gt;<i> setenv OBJROOT /Users/ae/hatari/src/uae-cpu
+</I>&gt;<i> setenv ONLY_ACTIVE_ARCH NO
+</I>&gt;<i> setenv OPTIMIZATION_LEVEL 0
+</I>&gt;<i> setenv OS MACOS
+</I>&gt;<i> setenv OSAC /usr/bin/osacompile
+</I>&gt;<i> setenv OTHER_CFLAGS &quot;-Wall -Wwrite-strings -Wsign-compare -Wmissing-prototypes -Wstrict-prototypes -Wcast-qual -Wbad-function-cast -Wpointer-arith 
+</I>&gt;<i> -Wno-unused -Wno-sign-compare -Wno-shadow -DNDEBUG &quot;
+</I>&gt;<i> setenv OTHER_CPLUSPLUSFLAGS &quot;-Wall -Wwrite-strings -Wsign-compare -Wmissing-prototypes -Wstrict-prototypes -Wcast-qual -Wbad-function-cast 
+</I>&gt;<i> -Wpointer-arith -Wno-unused -Wno-sign-compare -Wno-shadow -DNDEBUG &quot;
+</I>&gt;<i> setenv OTHER_LDFLAGS &quot; -Wl,-search_paths_first -headerpad_max_install_names &quot;
+</I>&gt;<i> setenv PACKAGE_TYPE com.apple.package-type.mach-o-executable
+</I>&gt;<i> setenv PASCAL_STRINGS YES
+</I>&gt;<i> setenv PATH_PREFIXES_EXCLUDED_FROM_HEADER_DEPENDENCIES &quot;/usr/include /usr/local/include /System/Library/Frameworks /System/Library/PrivateFrameworks 
+</I>&gt;<i> /Developer/Headers /Developer/SDKs /Developer/Platforms&quot;
+</I>&gt;<i> setenv PFE_FILE_C_DIALECTS c
+</I>&gt;<i> setenv PKGINFO_FILE_PATH /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/PkgInfo
+</I>&gt;<i> setenv PLATFORM_DEVELOPER_APPLICATIONS_DIR /Developer/Applications
+</I>&gt;<i> setenv PLATFORM_DEVELOPER_BIN_DIR /Developer/usr/bin
+</I>&gt;<i> setenv PLATFORM_DEVELOPER_LIBRARY_DIR /Developer/Library
+</I>&gt;<i> setenv PLATFORM_DEVELOPER_SDK_DIR /Developer/SDKs
+</I>&gt;<i> setenv PLATFORM_DEVELOPER_TOOLS_DIR /Developer/Tools
+</I>&gt;<i> setenv PLATFORM_DEVELOPER_USR_DIR /Developer/usr
+</I>&gt;<i> setenv PLATFORM_NAME macosx
+</I>&gt;<i> setenv PLIST_FILE_OUTPUT_FORMAT same-as-input
+</I>&gt;<i> setenv PREBINDING NO
+</I>&gt;<i> setenv PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR YES
+</I>&gt;<i> setenv PRECOMP_DESTINATION_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/PrefixHeaders
+</I>&gt;<i> setenv PRESERVE_DEAD_CODE_INITS_AND_TERMS NO
+</I>&gt;<i> setenv PRODUCT_NAME gencpu
+</I>&gt;<i> setenv PRODUCT_SETTINGS_PATH
+</I>&gt;<i> setenv PRODUCT_TYPE com.apple.product-type.tool
+</I>&gt;<i> setenv PROFILING_CODE NO
+</I>&gt;<i> setenv PROJECT Hatari
+</I>&gt;<i> setenv PROJECT_DERIVED_FILE_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/DerivedSources
+</I>&gt;<i> setenv PROJECT_DIR /Users/ae/hatari
+</I>&gt;<i> setenv PROJECT_FILE_PATH /Users/ae/hatari/Hatari.xcodeproj
+</I>&gt;<i> setenv PROJECT_NAME Hatari
+</I>&gt;<i> setenv PROJECT_TEMP_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build
+</I>&gt;<i> setenv RECURSIVE_SEARCH_PATHS_FOLLOW_SYMLINKS YESd/SymbolRepositories
+</I>&gt;<i> setenv SYMROOT /Users/ae/hatari/src/uae-cpu
+</I>&gt;<i> setenv SYSTEM_ADMIN_APPS_DIR /Applications/Utilities
+</I>&gt;<i> setenv SYSTEM_APPS_DIR /Applications
+</I>&gt;<i> setenv SYSTEM_CORE_SERVICES_DIR /System/Library/CoreServices
+</I>&gt;<i> setenv SYSTEM_DEMOS_DIR /Applications/Extras
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_APPS_DIR /Developer/Applications
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_BIN_DIR /Developer/usr/bin
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_DEMOS_DIR &quot;/Developer/Applications/Utilities/Built Examples&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_DIR /Developer
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_DOC_DIR &quot;/Developer/ADC Reference Library&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_GRAPHICS_TOOLS_DIR &quot;/Developer/Applications/Graphics Tools&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_JAVA_TOOLS_DIR &quot;/Developer/Applications/Java Tools&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_PERFORMANCE_TOOLS_DIR &quot;/Developer/Applications/Performance Tools&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_RELEASENOTES_DIR &quot;/Developer/ADC Reference Library/releasenotes&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_TOOLS /Developer/Tools
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_TOOLS_DOC_DIR &quot;/Developer/ADC Reference Library/documentation/DeveloperTools&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_TOOLS_RELEASENOTES_DIR &quot;/Developer/ADC Reference Library/releasenotes/DeveloperTools&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_USR_DIR /Developer/usr
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_UTILITIES_DIR /Developer/Applications/Utilities
+</I>&gt;<i> setenv SYSTEM_DOCUMENTATION_DIR /Library/Documentation
+</I>&gt;<i> setenv SYSTEM_LIBRARY_DIR /System/Library
+</I>&gt;<i> setenv TARGETNAME gencpu
+</I>&gt;<i> setenv TARGET_BUILD_DIR /Users/ae/hatari/src/uae-cpu/Release
+</I>&gt;<i> setenv TARGET_NAME gencpu
+</I>&gt;<i> setenv TARGET_TEMP_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build
+</I>&gt;<i> setenv TEMP_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build
+</I>&gt;<i> setenv TEMP_FILES_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build
+</I>&gt;<i> setenv TEMP_FILE_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build
+</I>&gt;<i> setenv TEMP_ROOT /Users/ae/hatari/src/uae-cpu
+</I>&gt;<i> setenv UID 501
+</I>&gt;<i> setenv UNSTRIPPED_PRODUCT NO
+</I>&gt;<i> setenv USER ae
+</I>&gt;<i> setenv USER_APPS_DIR /Users/ae/Applications
+</I>&gt;<i> setenv USER_LIBRARY_DIR /Users/ae/Library
+</I>&gt;<i> setenv USE_DYNAMIC_NO_PIC YES
+</I>&gt;<i> setenv USE_HEADERMAP NO
+</I>&gt;<i> setenv USE_HEADER_SYMLINKS NO
+</I>&gt;<i> setenv VALID_ARCHS &quot;i386 ppc ppc64 ppc7400 ppc970 x86_64&quot;
+</I>&gt;<i> setenv VERBOSE_PBXCP NO
+</I>&gt;<i> setenv VERSION_INFO_BUILDER ae
+</I>&gt;<i> setenv VERSION_INFO_FILE gencpu_vers.c
+</I>&gt;<i> setenv VERSION_INFO_STRING &quot;\&quot;@(#)PROGRAM:gencpu PROJECT:Hatari-\&quot;&quot;
+</I>&gt;<i> setenv WARNING_CFLAGS &quot;-Wmost -Wno-four-char-constants -Wno-unknown-pragmas&quot;
+</I>&gt;<i> setenv XCODE_APP_SUPPORT_DIR /Developer/Library/Xcode
+</I>&gt;<i> setenv XCODE_VERSION_ACTUAL 0320
+</I>&gt;<i> setenv XCODE_VERSION_MAJOR 0300
+</I>&gt;<i> setenv XCODE_VERSION_MINOR 0320
+</I>&gt;<i> setenv YACC /Developer/usr/bin/yacc
+</I>&gt;<i> setenv i386 YES
+</I>&gt;<i> /bin/sh -c /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/Script-6CC5006CC5006CC500000000.sh
+</I>&gt;<i> 
+</I>&gt;<i> make: *** No rule to make target `/Users/ae/hatari/src/uae-cpu/Release/build68k', needed by `/Users/ae/hatari/src/uae-cpu/cpudefs.c'. Stop.
+</I>&gt;<i> Command /bin/sh failed with exit code 2
+</I>&gt;<i> 
+</I>&gt;<i> CompileC src/uae-cpu/Hatari.build/Release/gencpu.build/Objects-normal/i386/cpudefs.o src/uae-cpu/cpudefs.c normal i386 c com.apple.compilers.gcc.4_2
+</I>&gt;<i> cd /Users/ae/hatari
+</I>&gt;<i> setenv LANG en_US.US-ASCII
+</I>&gt;<i> /Developer/usr/bin/gcc-4.2 -x c -arch i386 -fmessage-length=0 -pipe -Wno-tr-DCMAKE_INTDIR=&quot;Release&quot; -DCONFDIR=&quot;/etc&quot; &quot;-D_GNU_SOURCE=1 -D_THREAD_SAFE&quot; 
+</I>&gt;<i> -isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6 -Wmost -Wno-four-char-constants -Wno-unknown-pragmas 
+</I>&gt;<i> -F/Users/ae/hatari/src/uae-cpu/Release -I/Users/ae/hatari/src/uae-cpu/Release/include -I/Users/ae/hatari -I/Users/ae/hatari/src/includes 
+</I>&gt;<i> -I/Users/ae/hatari/src/debug -I/Users/ae/hatari/src/falcon -I/Users/ae/hatari/src/uae-cpu 
+</I>&gt;<i> -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/SDL.framework/Headers -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/libpng.framework/Headers 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu -I/Users/ae/hatari/src/uae-cpu/../.. -I/Users/ae/hatari/src/uae-cpu/../includes 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/DerivedSources/i386 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/DerivedSources -Wall -Wwrite-strings -Wsign-compare -Wmissing-prototypes 
+</I>&gt;<i> -Wstrict-prototypes -Wcast-qual -Wbad-function-cast -Wpointer-arith -Wno-unused -Wno-sign-compare -Wno-shadow -DNDEBUG -c 
+</I>&gt;<i> /Users/ae/hatari/src/uae-cpu/cpudefs.c -o /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/Objects-normal/i386/cpudefs.o
+</I>&gt;<i> 
+</I>&gt;<i> i686-apple-darwin10-gcc-4.2.1: /Users/ae/hatari/src/uae-cpu/cpudefs.c: No such file or directory
+</I>&gt;<i> i686-apple-darwin10-gcc-4.2.1: warning: '-x c' after last input file has no effect
+</I>&gt;<i> i686-apple-darwin10-gcc-4.2.1: no input files
+</I>&gt;<i> Command /Developer/usr/bin/gcc-4.2 failed with exit code 1
+</I>&gt;<i> 
+</I>&gt;<i> CompileC src/uae-cpu/Hatari.build/Release/gencpu.build/Objects-normal/ppc/cpudefs.o src/uae-cpu/cpudefs.c normal ppc c com.apple.compilers.gcc.4_2
+</I>&gt;<i> cd /Users/ae/hatari
+</I>&gt;<i> setenv LANG en_US.US-ASCII
+</I>&gt;<i> /Developer/usr/bin/gcc-4.2 -x c -arch ppc -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -O3 -mdynamic-no-pic -DCMAKE_INTDIR=&quot;Release&quot; 
+</I>&gt;<i> -DCONFDIR=&quot;/etc&quot; &quot;-D_GNU_SOURCE=1 -D_THREAD_SAFE&quot; -isysroot /Developer/SDKs/MacOSX10.6.sdk -mtune=G4 -mmacosx-version-min=10.6 -Wmost 
+</I>&gt;<i> -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/ae/hatari/src/uae-cpu/Release -I/Users/ae/hatari/src/uae-cpu/Release/include -I/Users/ae/hatari 
+</I>&gt;<i> -I/Users/ae/hatari/src/includes -I/Users/ae/hatari/src/debug -I/Users/ae/hatari/src/falcon -I/Users/ae/hatari/src/uae-cpu 
+</I>&gt;<i> -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/SDL.framework/Headers -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/libpng.framework/Headers 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu -I/Users/ae/hatari/src/uae-cpu/../.. -I/Users/ae/hatari/src/uae-cpu/../includes 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/DerivedSources/ppc 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/DerivedSources -Wall -Wwrising-prototypes -Wstrict-prototypes -Wcast-qual 
+</I>&gt;<i> -Wbad-function-cast -Wpointer-arith -Wno-unused -Wno-sign-compare -Wno-shadow -DNDEBUG -c /Users/ae/hatari/src/uae-cpu/cpudefs.c -o 
+</I>&gt;<i> /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/gencpu.build/Objects-normal/ppc/cpudefs.o
+</I>&gt;<i> 
+</I>&gt;<i> powerpc-apple-darwin10-gcc-4.2.1: /Users/ae/hatari/src/uae-cpu/cpudefs.c: No such file or directory
+</I>&gt;<i> powerpc-apple-darwin10-gcc-4.2.1: warning: '-x c' after last input file has no effect
+</I>&gt;<i> powerpc-apple-darwin10-gcc-4.2.1: no input files
+</I>&gt;<i> Command /Developer/usr/bin/gcc-4.2 failed with exit code 1
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Build UaeCpu of project Hatari with configuration Release
+</I>&gt;<i> 
+</I>&gt;<i> PhaseScriptExecution &quot;CMake Rules&quot; src/uae-cpu/Hatari.build/Release/UaeCpu.build/Script-6B00006B00006B0000000000.sh
+</I>&gt;<i> cd /Users/ae/hatari
+</I>&gt;<i> setenv ACTION build
+</I>&gt;<i> setenv ALTERNATE_GROUP staff
+</I>&gt;<i> setenv ALTERNATE_MODE u+w,go-w,a+rX
+</I>&gt;<i> setenv ALTERNATE_OWNER ae
+</I>&gt;<i> setenv ALWAYS_SEARCH_USER_PATHS YES
+</I>&gt;<i> setenv APPLE_INTERNAL_DEVELOPER_DIR /AppleInternal/Developer
+</I>&gt;<i> setenv APPLE_INTERNAL_DIR /AppleInternal
+</I>&gt;<i> setenv APPLE_INTERNAL_DOCUMENTATION_DIR /AppleInternal/Documentation
+</I>&gt;<i> setenv APPLE_INTERNAL_LIBRARY_DIR /AppleInternal/Library
+</I>&gt;<i> setenv APPLE_INTERNAL_TOOLS /AppleInternal/Developer/Tools
+</I>&gt;<i> setenv APPLY_RULES_IN_COPY_FILES NO
+</I>&gt;<i> setenv ARCHS &quot;i386 ppc&quot;
+</I>&gt;<i> setenv ARCHS_STANDARD_32_64_BIT &quot;x86_64 i386 ppc&quot;
+</I>&gt;<i> setenv ARCHS_STANDARD_32_BIT &quot;i386 ppc&quot;
+</I>&gt;<i> setenv ARCHS_STANDARD_64_BIT x86_64
+</I>&gt;<i> setenv BUILD_COMPONENTS &quot;headers build&quot;
+</I>&gt;<i> setenv BUILD_DIR /Users/ae/hatari/src/uae-cpu
+</I>&gt;<i> setenv BUILD_ROOT /Users/ae/hatari/src/uae-cpu
+</I>&gt;<i> setenv BUILD_STYLE Release
+</I>&gt;<i> setenv BUILD_VARIANTS normal
+</I>&gt;<i> setenv BUILT_PRODUCTS_DIR /Users/ae/hatari/src/uae-cpu/Release
+</I>&gt;<i> setenv CACHE_ROOT /var/folders/uj/ujBBejajGfqtOnyhnqQtT++++TI/-Caches-/com.apple.Xcode.501
+</I>&gt;<i> setenv CCHROOT /var/folders/uj/ujBBejajGfqtOnyhnqQtT++++TI/-Caches-/com.apple.Xcode.501
+</I>&gt;<i> setenv CHMOD /bin/chmod
+</I>&gt;<i> setenv CHOWN /usr/sbin/chown
+</I>&gt;<i> setenv CLASS_FILE_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/JavaClasses
+</I>&gt;<i> setenv CLEAN_PRECOMPS YES
+</I>&gt;<i> setenv CLONE_HEADERS NO
+</I>&gt;<i> setenv CODESIGNING_FOLDER_PATH /Users/ae/hatari/src/uae-cpu/Release/libUaeCpu.a
+</I>&gt;<i> setenv Ctenv COMPOSITE_SDK_DIRS /var/folders/uj/ujBBejajGfqtOnyhnqQtT++++TI/-Caches-/com.apple.Xcode.501/CompositeSDKs
+</I>&gt;<i> setenv CONFIGURATION Release
+</I>&gt;<i> setenv CONFIGURATION_BUILD_DIR /Users/ae/hatari/src/uae-cpu/Release
+</I>&gt;<i> setenv CONFIGURATION_TEMP_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release
+</I>&gt;<i> setenv COPYING_PRESERVES_HFS_DATA NO
+</I>&gt;<i> setenv COPY_PHASE_STRIP YES
+</I>&gt;<i> setenv COPY_RESOURCES_FROM_STATIC_FRAMEWORKS YES
+</I>&gt;<i> setenv CP /bin/cp
+</I>&gt;<i> setenv CURRENT_ARCH ppc
+</I>&gt;<i> setenv CURRENT_VARIANT normal
+</I>&gt;<i> setenv DEAD_CODE_STRIPPING NO
+</I>&gt;<i> setenv DEBUGGING_SYMBOLS YES
+</I>&gt;<i> setenv DEBUG_INFORMATION_FORMAT dwarf
+</I>&gt;<i> setenv DEPLOYMENT_LOCATION NO
+</I>&gt;<i> setenv DEPLOYMENT_POSTPROCESSING NO
+</I>&gt;<i> setenv DERIVED_FILES_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources
+</I>&gt;<i> setenv DERIVED_FILE_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources
+</I>&gt;<i> setenv DERIVED_SOURCES_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources
+</I>&gt;<i> setenv DEVELOPER_APPLICATIONS_DIR /Developer/Applications
+</I>&gt;<i> setenv DEVELOPER_BIN_DIR /Developer/usr/bin
+</I>&gt;<i> setenv DEVELOPER_DIR /Developer
+</I>&gt;<i> setenv DEVELOPER_FRAMEWORKS_DIR /Developer/Library/Frameworks
+</I>&gt;<i> setenv DEVELOPER_FRAMEWORKS_DIR_QUOTED &quot;\&quot;/Developer/Library/Frameworks\&quot;&quot;
+</I>&gt;<i> setenv DEVELOPER_LIBRARY_DIR /Developer/Library
+</I>&gt;<i> setenv DEVELOPER_SDK_DIR /Developer/SDKs
+</I>&gt;<i> setenv DEVELOPER_TOOLS_DIR /Developer/Tools
+</I>&gt;<i> setenv DEVELOPER_USR_DIR /Developer/usr
+</I>&gt;<i> setenv DEVELOPMENT_LANGUAGE English
+</I>&gt;<i> setenv DO_HEADER_SCANNING_IN_JAM NO
+</I>&gt;<i> setenv DSTROOT /tmp/Hatari.dst
+</I>&gt;<i> setenv DWARF_DSYM_FILE_NAME libUaeCpu.a.dSYM
+</I>&gt;<i> setenv DWARF_DSYM_FOLDER_PATH /Users/ae/hatari/src/uae-cpu/Release
+</I>&gt;<i> setenv ENABLE_HEADER_DEPENDENCIES YES
+</I>&gt;<i> setenv ENABLE_OPENMP_SUPPORT NO
+</I>&gt;<i> setenv EXCLUDED_INSTALLSRC_SUBDIRECTORY_PATTERNS &quot;.svn CVS&quot;
+</I>&gt;<i> setenv EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES &quot;*.nib *.lproj *.framework *.gch (*) CVS .svn *.xcodeproj *.xcode *.pbproj *.pbxproj&quot;
+</I>&gt;<i> setenv EXECUTABLE_EXTENSION a
+</I>&gt;<i> setenv EXECUTABLE_NAME libUaeCpu.a
+</I>&gt;<i> setenv EXECUTABLE_PATH libUaeCpu.a
+</I>&gt;<i> setenv EXECUTABLE_PREFIX lib
+</I>&gt;<i> setenv EXECUTABLE_SUFFIX .a
+</I>&gt;<i> setenv FILE_LIST /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects/LinkFileList
+</I>&gt;<i> setenv FIXED_FILES_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/FixedFiles
+</I>&gt;<i> setenv FRAMEWORK_FLAG_PREFIX -framework
+</I>&gt;<i> setenv FRAMEWORK_SEARCH_PATHS &quot;\&quot;/Users/ae/hatari/src/uae-cpu/Release\&quot; &quot;
+</I>&gt;<i> setenv FRAMEWORK_VERSION A
+</I>&gt;<i> setenv FULL_PRODUCT_NAME libUaeCpu.a
+</I>&gt;<i> setenv GCC3_VERSION 3.3
+</I>&gt;<i> setenv GCC_ENABLE_SYMBOL_SEPARATION NO
+</I>&gt;<i> setenv GCC_GENERATE_DEB HEADERMAP_INCLUDES_PROJECT_HEADERS YES
+</I>&gt;<i> setenv HEADER_SEARCH_PATHS &quot;/Users/ae/hatari/src/uae-cpu/Release/include /Users/ae/hatari /Users/ae/hatari/src/includes /Users/ae/hatari/src/debug 
+</I>&gt;<i> /Users/ae/hatari/src/falcon /Users/ae/hatari/src/uae-cpu /Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/SDL.framework/Headers 
+</I>&gt;<i> /Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/libpng.framework/Headers /Users/ae/hatari/src/uae-cpu/. /Users/ae/hatari/src/uae-cpu/../.. 
+</I>&gt;<i> /Users/ae/hatari/src/uae-cpu/../includes&quot;
+</I>&gt;<i> setenv ICONV /usr/bin/iconv
+</I>&gt;<i> setenv INFOPLIST_EXPAND_BUILD_SETTINGS YES
+</I>&gt;<i> setenv INFOPLIST_OUTPUT_FORMAT same-as-input
+</I>&gt;<i> setenv INFOPLIST_PREPROCESS NO
+</I>&gt;<i> setenv INSTALL_DIR /tmp/Hatari.dst
+</I>&gt;<i> setenv INSTALL_GROUP staff
+</I>&gt;<i> setenv INSTALL_MODE_FLAG u+w,go-w,a+rX
+</I>&gt;<i> setenv INSTALL_OWNER ae
+</I>&gt;<i> setenv INSTALL_ROOT /tmp/Hatari.dst
+</I>&gt;<i> setenv JAVAC_DEFAULT_FLAGS &quot;-J-Xms64m -J-XX:NewSize=4M -J-Dfile.encoding=UTF8&quot;
+</I>&gt;<i> setenv JAVA_APP_STUB /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub
+</I>&gt;<i> setenv JAVA_ARCHIVE_CLASSES YES
+</I>&gt;<i> setenv JAVA_ARCHIVE_TYPE JAR
+</I>&gt;<i> setenv JAVA_COMPILER /usr/bin/javac
+</I>&gt;<i> setenv JAVA_FRAMEWORK_RESOURCES_DIRS Resources
+</I>&gt;<i> setenv JAVA_JAR_FLAGS cv
+</I>&gt;<i> setenv JAVA_SOURCE_SUBDIR .
+</I>&gt;<i> setenv JAVA_USE_DEPENDENCIES YES
+</I>&gt;<i> setenv JAVA_ZIP_FLAGS -urg
+</I>&gt;<i> setenv JIKES_DEFAULT_FLAGS &quot;+E +OLDCSO&quot;
+</I>&gt;<i> setenv KEEP_PRIVATE_EXTERNS NO
+</I>&gt;<i> setenv LD_GENERATE_MAP_FILE NO
+</I>&gt;<i> setenv LD_MAP_FILE_PATH /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/UaeCpu-LinkMap-normal-ppc.txt
+</I>&gt;<i> setenv LD_OPENMP_FLAGS -fopenmp
+</I>&gt;<i> setenv LEX /Developer/usr/bin/lex
+</I>&gt;<i> setenv LIBRARY_FLAG_NOSPACE YES
+</I>&gt;<i> setenv LIBRARY_FLAG_PREFIX -l
+</I>&gt;<i> setenv LIBRARY_SEARCH_PATHS &quot;\&quot;/Users/ae/hatari/src/uae-cpu/Release\&quot; &quot;
+</I>&gt;<i> setenv LIBRARY_STYLE STATIC
+</I>&gt;<i> setenv LINKER_DISPLAYS_MANGLED_NAMES NO
+</I>&gt;<i> setenv LINK_FILE_LIST_normal_i386 /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects-normal/i386/UaeCpu.LinkFileList
+</I>&gt;<i> setenv LINK_FILE_LIST_normal_ppc /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects-normal/ppc/UaeCpu.LinkFileList
+</I>&gt;<i> setenv LINK_WITH_STANDARD_LIBRARIES YES
+</I>&gt;<i> setenv LOCAL_ADMIN_APPS_DIR /Applications/Utilities
+</I>&gt;<i> setenv LOCAL_APPS_DIR /Applications
+</I>&gt;<i> setenv LOCAL_DEVELOPER_DIR /Library/Developer
+</I>&gt;<i> setenv LOCAL_LIBRARY_DIR /Library
+</I>&gt;<i> setenv MACH_O_TYPE staticlib
+</I>&gt;<i> setenv MACOSX_DEPLOYMetenv OSAC /usr/bin/osacompile
+</I>&gt;<i> setenv OTHER_CFLAGS &quot;-Wall -Wwrite-strings -Wsign-compare -Wmissing-prototypes -Wstrict-prototypes -Wcast-qual -Wbad-function-cast -Wpointer-arith 
+</I>&gt;<i> -Wno-unused -Wno-sign-compare -Wno-shadow -DNDEBUG &quot;
+</I>&gt;<i> setenv OTHER_CPLUSPLUSFLAGS &quot;-Wall -Wwrite-strings -Wsign-compare -Wmissing-prototypes -Wstrict-prototypes -Wcast-qual -Wbad-function-cast 
+</I>&gt;<i> -Wpointer-arith -Wno-unused -Wno-sign-compare -Wno-shadow -DNDEBUG &quot;
+</I>&gt;<i> setenv PACKAGE_TYPE com.apple.package-type.static-library
+</I>&gt;<i> setenv PASCAL_STRINGS YES
+</I>&gt;<i> setenv PATH_PREFIXES_EXCLUDED_FROM_HEADER_DEPENDENCIES &quot;/usr/include /usr/local/include /System/Library/Frameworks /System/Library/PrivateFrameworks 
+</I>&gt;<i> /Developer/Headers /Developer/SDKs /Developer/Platforms&quot;
+</I>&gt;<i> setenv PFE_FILE_C_DIALECTS c
+</I>&gt;<i> setenv PKGINFO_FILE_PATH /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/PkgInfo
+</I>&gt;<i> setenv PLATFORM_DEVELOPER_APPLICATIONS_DIR /Developer/Applications
+</I>&gt;<i> setenv PLATFORM_DEVELOPER_BIN_DIR /Developer/usr/bin
+</I>&gt;<i> setenv PLATFORM_DEVELOPER_LIBRARY_DIR /Developer/Library
+</I>&gt;<i> setenv PLATFORM_DEVELOPER_SDK_DIR /Developer/SDKs
+</I>&gt;<i> setenv PLATFORM_DEVELOPER_TOOLS_DIR /Developer/Tools
+</I>&gt;<i> setenv PLATFORM_DEVELOPER_USR_DIR /Developer/usr
+</I>&gt;<i> setenv PLATFORM_NAME macosx
+</I>&gt;<i> setenv PLIST_FILE_OUTPUT_FORMAT same-as-input
+</I>&gt;<i> setenv PREBINDING NO
+</I>&gt;<i> setenv PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR YES
+</I>&gt;<i> setenv PRECOMP_DESTINATION_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/PrefixHeaders
+</I>&gt;<i> setenv PRESERVE_DEAD_CODE_INITS_AND_TERMS NO
+</I>&gt;<i> setenv PRIVATE_HEADERS_FOLDER_PATH /usr/local/include
+</I>&gt;<i> setenv PRODUCT_NAME UaeCpu
+</I>&gt;<i> setenv PRODUCT_SETTINGS_PATH
+</I>&gt;<i> setenv PRODUCT_TYPE com.apple.product-type.library.static
+</I>&gt;<i> setenv PROFILING_CODE NO
+</I>&gt;<i> setenv PROJECT Hatari
+</I>&gt;<i> setenv PROJECT_DERIVED_FILE_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/DerivedSources
+</I>&gt;<i> setenv PROJECT_DIR /Users/ae/hatari
+</I>&gt;<i> setenv PROJECT_FILE_PATH /Users/ae/hatari/Hatari.xcodeproj
+</I>&gt;<i> setenv PROJECT_NAME Hatari
+</I>&gt;<i> setenv PROJECT_TEMP_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build
+</I>&gt;<i> setenv PUBLIC_HEADERS_FOLDER_PATH /usr/local/include
+</I>&gt;<i> setenv RECURSIVE_SEARCH_PATHS_FOLLOW_SYMLINKS YES
+</I>&gt;<i> setenv REMOVE_CVS_FROM_RESOURCES YES
+</I>&gt;<i> setenv REMOVE_SVN_FROM_RESOURCES YES
+</I>&gt;<i> setenv REZ_COLLECTOR_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/ResourceManagerResources
+</I>&gt;<i> setenv REZ_EXECUTABLE YES
+</I>&gt;<i> setenv REZ_OBJECTS_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/ResourceManagerResources/Objects
+</I>&gt;<i> setenv REZ_SEAlders/uj/ujBBejajGfqtOnyhnqQtT++++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders
+</I>&gt;<i> setenv SKIP_INSTALL YES
+</I>&gt;<i> setenv SOURCE_ROOT /Users/ae/hatari
+</I>&gt;<i> setenv SRCROOT /Users/ae/hatari
+</I>&gt;<i> setenv STANDARD_C_PLUS_PLUS_LIBRARY_TYPE dynamic
+</I>&gt;<i> setenv STRINGS_FILE_OUTPUT_ENCODING UTF-16
+</I>&gt;<i> setenv STRIP_INSTALLED_PRODUCT YES
+</I>&gt;<i> setenv STRIP_STYLE debugging
+</I>&gt;<i> setenv SYMBOL_REPOSITORY_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/SymbolRepositories
+</I>&gt;<i> setenv SYMROOT /Users/ae/hatari/src/uae-cpu
+</I>&gt;<i> setenv SYSTEM_ADMIN_APPS_DIR /Applications/Utilities
+</I>&gt;<i> setenv SYSTEM_APPS_DIR /Applications
+</I>&gt;<i> setenv SYSTEM_CORE_SERVICES_DIR /System/Library/CoreServices
+</I>&gt;<i> setenv SYSTEM_DEMOS_DIR /Applications/Extras
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_APPS_DIR /Developer/Applications
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_BIN_DIR /Developer/usr/bin
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_DEMOS_DIR &quot;/Developer/Applications/Utilities/Built Examples&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_DIR /Developer
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_DOC_DIR &quot;/Developer/ADC Reference Library&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_GRAPHICS_TOOLS_DIR &quot;/Developer/Applications/Graphics Tools&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_JAVA_TOOLS_DIR &quot;/Developer/Applications/Java Tools&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_PERFORMANCE_TOOLS_DIR &quot;/Developer/Applications/Performance Tools&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_RELEASENOTES_DIR &quot;/Developer/ADC Reference Library/releasenotes&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_TOOLS /Developer/Tools
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_TOOLS_DOC_DIR &quot;/Developer/ADC Reference Library/documentation/DeveloperTools&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_TOOLS_RELEASENOTES_DIR &quot;/Developer/ADC Reference Library/releasenotes/DeveloperTools&quot;
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_USR_DIR /Developer/usr
+</I>&gt;<i> setenv SYSTEM_DEVELOPER_UTILITIES_DIR /Developer/Applications/Utilities
+</I>&gt;<i> setenv SYSTEM_DOCUMENTATION_DIR /Library/Documentation
+</I>&gt;<i> setenv SYSTEM_LIBRARY_DIR /System/Library
+</I>&gt;<i> setenv TARGETNAME UaeCpu
+</I>&gt;<i> setenv TARGET_BUILD_DIR /Users/ae/hatari/src/uae-cpu/Release
+</I>&gt;<i> setenv TARGET_NAME UaeCpu
+</I>&gt;<i> setenv TARGET_TEMP_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build
+</I>&gt;<i> setenv TEMP_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build
+</I>&gt;<i> setenv TEMP_FILES_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build
+</I>&gt;<i> setenv TEMP_FILE_DIR /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build
+</I>&gt;<i> setenv TEMP_ROOT /Users/ae/hatari/src/uae-cpu
+</I>&gt;<i> setenv UID 501
+</I>&gt;<i> setenv UNSTRIPPED_PRODUCT NO
+</I>&gt;<i> setenv USER ae
+</I>&gt;<i> setenv USER_APPS_DIR /Users/ae/Applications
+</I>&gt;<i> setenv USER_LIBRAODE_VERSION_MINOR 0320
+</I>&gt;<i> setenv YACC /Developer/usr/bin/yacc
+</I>&gt;<i> setenv i386 YES
+</I>&gt;<i> /bin/sh -c /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/Script-6B00006B00006B0000000000.sh
+</I>&gt;<i> 
+</I>&gt;<i> make: *** No rule to make target `/Users/ae/hatari/src/uae-cpu/Release/build68k', needed by `/Users/ae/hatari/src/uae-cpu/cpudefs.c'. Stop.
+</I>&gt;<i> Command /bin/sh failed with exit code 2
+</I>&gt;<i> 
+</I>&gt;<i> CompileC src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects-normal/i386/cpudefs.o src/uae-cpu/cpudefs.c normal i386 c com.apple.compilers.gcc.4_2
+</I>&gt;<i> cd /Users/ae/hatari
+</I>&gt;<i> setenv LANG en_US.US-ASCII
+</I>&gt;<i> /Developer/usr/bin/gcc-4.2 -x c -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -O3 -DCMAKE_INTDIR=&quot;Release&quot; 
+</I>&gt;<i> -DCONFDIR=&quot;/etc&quot; &quot;-D_GNU_SOURCE=1 -D_THREAD_SAFE&quot; -isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6 -Wmost -Wno-four-char-constants 
+</I>&gt;<i> -Wno-unknown-pragmas -F/Users/ae/hatari/src/uae-cpu/Release -I/Users/ae/hatari/src/uae-cpu/Release/include -I/Users/ae/hatari 
+</I>&gt;<i> -I/Users/ae/hatari/src/includes -I/Users/ae/hatari/src/debug -I/Users/ae/hatari/src/falcon -I/Users/ae/hatari/src/uae-cpu 
+</I>&gt;<i> -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/SDL.framework/Headers -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/libpng.framework/Headers 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu -I/Users/ae/hatari/src/uae-cpu/../.. -I/Users/ae/hatari/src/uae-cpu/../includes 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources/i386 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources -Wall -Wwrite-strings -Wsign-compare -Wmissing-prototypes 
+</I>&gt;<i> -Wstrict-prototypes -Wcast-qual -Wbad-function-cast -Wpointer-arith -Wno-unused -Wno-sign-compare -Wno-shadow -DNDEBUG -c 
+</I>&gt;<i> /Users/ae/hatari/src/uae-cpu/cpudefs.c -o /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects-normal/i386/cpudefs.o
+</I>&gt;<i> 
+</I>&gt;<i> i686-apple-darwin10-gcc-4.2.1: /Users/ae/hatari/src/uae-cpu/cpudefs.c: No such file or directory
+</I>&gt;<i> i686-apple-darwin10-gcc-4.2.1: warning: '-x c' after last input file has no effect
+</I>&gt;<i> i686-apple-darwin10-gcc-4.2.1: no input files
+</I>&gt;<i> Command /Developer/usr/bin/gcc-4.2 failed with exit code 1
+</I>&gt;<i> 
+</I>&gt;<i> CompileC src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects-normal/i386/cpuemu.o src/uae-cpu/cpuemu.c normal i386 c com.apple.compilers.gcc.4_2
+</I>&gt;<i> rs/ae/hatari
+</I>&gt;<i> setenv LANG en_US.US-ASCII
+</I>&gt;<i> /Developer/usr/bin/gcc-4.2 -x c -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -O3 -DCMAKE_INTDIR=&quot;Release&quot; 
+</I>&gt;<i> -DCONFDIR=&quot;/etc&quot; &quot;-D_GNU_SOURCE=1 -D_THREAD_SAFE&quot; -isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6 -Wmost -Wno-four-char-constants 
+</I>&gt;<i> -Wno-unknown-pragmas -F/Users/ae/hatari/src/uae-cpu/Release -I/Users/ae/hatari/src/uae-cpu/Release/include -I/Users/ae/hatari 
+</I>&gt;<i> -I/Users/ae/hatari/src/includes -I/Users/ae/hatari/src/debug -I/Users/ae/hatari/src/falcon -I/Users/ae/hatari/src/uae-cpu 
+</I>&gt;<i> -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/SDL.framework/Headers -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/libpng.framework/Headers 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu -I/Users/ae/hatari/src/uae-cpu/../.. -I/Users/ae/hatari/src/uae-cpu/../includes 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources/i386 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources -Wall -Wwrite-strings -Wsign-compare -Wmissing-prototypes 
+</I>&gt;<i> -Wstrict-prototypes -Wcast-qual -Wbad-function-cast -Wpointer-arith -Wno-unused -Wno-sign-compare -Wno-shadow -DNDEBUG -c 
+</I>&gt;<i> /Users/ae/hatari/src/uae-cpu/cpuemu.c -o /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects-normal/i386/cpuemu.o
+</I>&gt;<i> 
+</I>&gt;<i> i686-apple-darwin10-gcc-4.2.1: /Users/ae/hatari/src/uae-cpu/cpuemu.c: No such file or directory
+</I>&gt;<i> i686-apple-darwin10-gcc-4.2.1: warning: '-x c' after last input file has no effect
+</I>&gt;<i> i686-apple-darwin10-gcc-4.2.1: no input files
+</I>&gt;<i> Command /Developer/usr/bin/gcc-4.2 failed with exit code 1
+</I>&gt;<i> 
+</I>&gt;<i> CompileC src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects-normal/i386/cpustbl.o src/uae-cpu/cpustbl.c normal i386 c com.apple.compilers.gcc.4_2
+</I>&gt;<i> cd /Users/ae/hatari
+</I>&gt;<i> setenv LANG en_US.US-ASCII
+</I>&gt;<i> /Developer/usr/bin/gcc-4.2 -x c -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -O3 -DCMAKE_INTDIR=&quot;Release&quot; 
+</I>&gt;<i> -DCONFDIR=&quot;/etc&quot; &quot;-D_GNU_SOURCE=1 -D_THREAD_SAFE&quot; -isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6 -Wmost -Wno-four-char-constants 
+</I>&gt;<i> -Wno-unknown-pragmas -F/Users/ae/hatari/src/uae-cpu/Release -I/Users/ae/hatari/src/uae-cpu/Release/include -I/Users/ae/hatari 
+</I>&gt;<i> -I/Users/ae/hatari/src/includes -I/Users/ae/hatari/src/debug -I/Users/ae/hatari/src/falcon -I/Useatari/src/uae-cpu 
+</I>&gt;<i> -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/SDL.framework/Headers -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/libpng.framework/Headers 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu -I/Users/ae/hatari/src/uae-cpu/../.. -I/Users/ae/hatari/src/uae-cpu/../includes 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources/i386 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources -Wall -Wwrite-strings -Wsign-compare -Wmissing-prototypes 
+</I>&gt;<i> -Wstrict-prototypes -Wcast-qual -Wbad-function-cast -Wpointer-arith -Wno-unused -Wno-sign-compare -Wno-shadow -DNDEBUG -c 
+</I>&gt;<i> /Users/ae/hatari/src/uae-cpu/cpustbl.c -o /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects-normal/i386/cpustbl.o
+</I>&gt;<i> 
+</I>&gt;<i> i686-apple-darwin10-gcc-4.2.1: /Users/ae/hatari/src/uae-cpu/cpustbl.c: No such file or directory
+</I>&gt;<i> i686-apple-darwin10-gcc-4.2.1: warning: '-x c' after last input file has no effect
+</I>&gt;<i> i686-apple-darwin10-gcc-4.2.1: no input files
+</I>&gt;<i> Command /Developer/usr/bin/gcc-4.2 failed with exit code 1
+</I>&gt;<i> 
+</I>&gt;<i> CompileC src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects-normal/ppc/cpudefs.o src/uae-cpu/cpudefs.c normal ppc c com.apple.compilers.gcc.4_2
+</I>&gt;<i> cd /Users/ae/hatari
+</I>&gt;<i> setenv LANG en_US.US-ASCII
+</I>&gt;<i> /Developer/usr/bin/gcc-4.2 -x c -arch ppc -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -O3 -DCMAKE_INTDIR=&quot;Release&quot; -DCONFDIR=&quot;/etc&quot; 
+</I>&gt;<i> &quot;-D_GNU_SOURCE=1 -D_THREAD_SAFE&quot; -isysroot /Developer/SDKs/MacOSX10.6.sdk -mtune=G4 -mmacosx-version-min=10.6 -Wmost -Wno-four-char-constants 
+</I>&gt;<i> -Wno-unknown-pragmas -F/Users/ae/hatari/src/uae-cpu/Release -I/Users/ae/hatari/src/uae-cpu/Release/include -I/Users/ae/hatari 
+</I>&gt;<i> -I/Users/ae/hatari/src/includes -I/Users/ae/hatari/src/debug -I/Users/ae/hatari/src/falcon -I/Users/ae/hatari/src/uae-cpu 
+</I>&gt;<i> -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/SDL.framework/Headers -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/libpng.framework/Headers 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu -I/Users/ae/hatari/src/uae-cpu/../.. -I/Users/ae/hatari/src/uae-cpu/../includes 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources/ppc 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources -Wall -Wwrite-strings -Wsign-compare -Wmissing-prototypes 
+</I>&gt;<i> -Wstrict-prototypes -Wcast-qual -Wbad-function-cast -Wpointer-ano-unused -Wno-sign-compare -Wno-shadow -DNDEBUG -c 
+</I>&gt;<i> /Users/ae/hatari/src/uae-cpu/cpudefs.c -o /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects-normal/ppc/cpudefs.o
+</I>&gt;<i> 
+</I>&gt;<i> powerpc-apple-darwin10-gcc-4.2.1: /Users/ae/hatari/src/uae-cpu/cpudefs.c: No such file or directory
+</I>&gt;<i> powerpc-apple-darwin10-gcc-4.2.1: warning: '-x c' after last input file has no effect
+</I>&gt;<i> powerpc-apple-darwin10-gcc-4.2.1: no input files
+</I>&gt;<i> Command /Developer/usr/bin/gcc-4.2 failed with exit code 1
+</I>&gt;<i> 
+</I>&gt;<i> CompileC src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects-normal/ppc/cpuemu.o src/uae-cpu/cpuemu.c normal ppc c com.apple.compilers.gcc.4_2
+</I>&gt;<i> cd /Users/ae/hatari
+</I>&gt;<i> setenv LANG en_US.US-ASCII
+</I>&gt;<i> /Developer/usr/bin/gcc-4.2 -x c -arch ppc -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -O3 -DCMAKE_INTDIR=&quot;Release&quot; -DCONFDIR=&quot;/etc&quot; 
+</I>&gt;<i> &quot;-D_GNU_SOURCE=1 -D_THREAD_SAFE&quot; -isysroot /Developer/SDKs/MacOSX10.6.sdk -mtune=G4 -mmacosx-version-min=10.6 -Wmost -Wno-four-char-constants 
+</I>&gt;<i> -Wno-unknown-pragmas -F/Users/ae/hatari/src/uae-cpu/Release -I/Users/ae/hatari/src/uae-cpu/Release/include -I/Users/ae/hatari 
+</I>&gt;<i> -I/Users/ae/hatari/src/includes -I/Users/ae/hatari/src/debug -I/Users/ae/hatari/src/falcon -I/Users/ae/hatari/src/uae-cpu 
+</I>&gt;<i> -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/SDL.framework/Headers -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/libpng.framework/Headers 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu -I/Users/ae/hatari/src/uae-cpu/../.. -I/Users/ae/hatari/src/uae-cpu/../includes 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources/ppc 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources -Wall -Wwrite-strings -Wsign-compare -Wmissing-prototypes 
+</I>&gt;<i> -Wstrict-prototypes -Wcast-qual -Wbad-function-cast -Wpointer-arith -Wno-unused -Wno-sign-compare -Wno-shadow -DNDEBUG -c 
+</I>&gt;<i> /Users/ae/hatari/src/uae-cpu/cpuemu.c -o /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects-normal/ppc/cpuemu.o
+</I>&gt;<i> 
+</I>&gt;<i> powerpc-apple-darwin10-gcc-4.2.1: /Users/ae/hatari/src/uae-cpu/cpuemu.c: No such file or directory
+</I>&gt;<i> powerpc-apple-darwin10-gcc-4.2.1: warning: '-x c' after last input file has no effect
+</I>&gt;<i> powerpc-apple-darwin10-gcc-4.2.1: no input files
+</I>&gt;<i> Command /Developer/usr/bin/gcc-4.2 faih exit code 1
+</I>&gt;<i> 
+</I>&gt;<i> CompileC src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects-normal/ppc/cpustbl.o src/uae-cpu/cpustbl.c normal ppc c com.apple.compilers.gcc.4_2
+</I>&gt;<i> cd /Users/ae/hatari
+</I>&gt;<i> setenv LANG en_US.US-ASCII
+</I>&gt;<i> /Developer/usr/bin/gcc-4.2 -x c -arch ppc -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -O3 -DCMAKE_INTDIR=&quot;Release&quot; -DCONFDIR=&quot;/etc&quot; 
+</I>&gt;<i> &quot;-D_GNU_SOURCE=1 -D_THREAD_SAFE&quot; -isysroot /Developer/SDKs/MacOSX10.6.sdk -mtune=G4 -mmacosx-version-min=10.6 -Wmost -Wno-four-char-constants 
+</I>&gt;<i> -Wno-unknown-pragmas -F/Users/ae/hatari/src/uae-cpu/Release -I/Users/ae/hatari/src/uae-cpu/Release/include -I/Users/ae/hatari 
+</I>&gt;<i> -I/Users/ae/hatari/src/includes -I/Users/ae/hatari/src/debug -I/Users/ae/hatari/src/falcon -I/Users/ae/hatari/src/uae-cpu 
+</I>&gt;<i> -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/SDL.framework/Headers -I/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks/libpng.framework/Headers 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu -I/Users/ae/hatari/src/uae-cpu/../.. -I/Users/ae/hatari/src/uae-cpu/../includes 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources/ppc 
+</I>&gt;<i> -I/Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/DerivedSources -Wall -Wwrite-strings -Wsign-compare -Wmissing-prototypes 
+</I>&gt;<i> -Wstrict-prototypes -Wcast-qual -Wbad-function-cast -Wpointer-arith -Wno-unused -Wno-sign-compare -Wno-shadow -DNDEBUG -c 
+</I>&gt;<i> /Users/ae/hatari/src/uae-cpu/cpustbl.c -o /Users/ae/hatari/src/uae-cpu/Hatari.build/Release/UaeCpu.build/Objects-normal/ppc/cpustbl.o
+</I>&gt;<i> 
+</I>&gt;<i> powerpc-apple-darwin10-gcc-4.2.1: /Users/ae/hatari/src/uae-cpu/cpustbl.c: No such file or directory
+</I>&gt;<i> powerpc-apple-darwin10-gcc-4.2.1: warning: '-x c' after last input file has no effect
+</I>&gt;<i> powerpc-apple-darwin10-gcc-4.2.1: no input files
+</I>&gt;<i> Command /Developer/usr/bin/gcc-4.2 failed with exit code 1
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Build hatari of project Hatari with configuration Release
+</I>&gt;<i> 
+</I>&gt;<i> Ld src/Hatari.build/Release/hatari.build/Objects-normal/i386/hatari normal i386
+</I>&gt;<i> cd /Users/ae/hatari
+</I>&gt;<i> setenv MACOSX_DEPLOYMENT_TARGET 10.6
+</I>&gt;<i> /Developer/usr/bin/gcc-4.2 -arch i386 -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Users/ae/hatari/src/Release -Ldebug/Release -Ldebug -Lfalcon/Release 
+</I>&gt;<i> -Lfalcon -Lgui-sdl/Release -Lgui-sdl -Luae-cpu/Release -Luae-cpu -F/Users/ae/hatari/src/Release -F/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks 
+</I>&gt;<i> -filelist /Users/ae/src/Hatari.build/Release/hatari.build/Objects-normal/i386/hatari.LinkFileList -mmacosx-version-min=10.6 -Wl,-search_paths_first 
+</I>&gt;<i> -headerpad_max_install_names /Users/ae/hatari/src/Release/libFloppy.a /Users/ae/hatari/src/debug/Release/libDebug.a 
+</I>&gt;<i> /Users/ae/hatari/src/falcon/Release/libFalcon.a /Users/ae/hatari/src/gui-sdl/Release/libGuiSdl.a /Users/ae/hatari/src/uae-cpu/Release/libUaeCpu.a 
+</I>&gt;<i> -framework SDL -framework Cocoa /usr/lib/libreadline.dylib /usr/lib/libz.dylib -framework libpng /usr/X11R6/lib/libX11.dylib 
+</I>&gt;<i> /usr/local/lib/libportaudio.dylib -o /Users/ae/hatari/src/Hatari.build/Release/hatari.build/Objects-normal/i386/hatari
+</I>&gt;<i> 
+</I>&gt;<i> i686-apple-darwin10-gcc-4.2.1: /Users/ae/hatari/src/uae-cpu/Release/libUaeCpu.a: No such file or directory
+</I>&gt;<i> Command /Developer/usr/bin/gcc-4.2 failed with exit code 1
+</I>&gt;<i> 
+</I>&gt;<i> Ld src/Hatari.build/Release/hatari.build/Objects-normal/ppc/hatari normal ppc
+</I>&gt;<i> cd /Users/ae/hatari
+</I>&gt;<i> setenv MACOSX_DEPLOYMENT_TARGET 10.6
+</I>&gt;<i> /Developer/usr/bin/gcc-4.2 -arch ppc -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Users/ae/hatari/src/Release -Ldebug/Release -Ldebug -Lfalcon/Release 
+</I>&gt;<i> -Lfalcon -Lgui-sdl/Release -Lgui-sdl -Luae-cpu/Release -Luae-cpu -F/Users/ae/hatari/src/Release -F/Developer/SDKs/MacOSX10.6.sdk/Library/Frameworks 
+</I>&gt;<i> -filelist /Users/ae/hatari/src/Hatari.build/Release/hatari.build/Objects-normal/ppc/hatari.LinkFileList -mmacosx-version-min=10.6 
+</I>&gt;<i> -Wl,-search_paths_first -headerpad_max_install_names /Users/ae/hatari/src/Release/libFloppy.a /Users/ae/hatari/src/debug/Release/libDebug.a 
+</I>&gt;<i> /Users/ae/hatari/src/falcon/Release/libFalcon.a /Users/ae/hatari/src/gui-sdl/Release/libGuiSdl.a /Users/ae/hatari/src/uae-cpu/Release/libUaeCpu.a 
+</I>&gt;<i> -framework SDL -framework Cocoa /usr/lib/libreadline.dylib /usr/lib/libz.dylib -framework libpng /usr/X11R6/lib/libX11.dylib 
+</I>&gt;<i> /usr/local/lib/libportaudio.dylib -o /Users/ae/hatari/src/Hatari.build/Release/hatari.build/Objects-normal/ppc/hatari
+</I>&gt;<i> 
+</I>&gt;<i> powerpc-apple-darwin10-gcc-4.2.1: /Users/ae/hatari/src/uae-cpu/Release/libUaeCpu.a: No such file or directory
+</I>&gt;<i> Command /Developer/usr/bin/gcc-4.2 failed with exit code 1
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> --------------------------------------------------------------------------------------- Orange vous informe que cet e-mail a ete controle par l'anti-virus mail. Aucun virus connu a ce jour par nos services n'a ete detecte. 
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i> [ (pas de nom de fichier) (0.2 Ko) ]
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100525/e6715947/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100525/e6715947/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002176.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002180.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2177">[ date ]</a>
+              <a href="thread.html#2177">[ thread ]</a>
+              <a href="subject.html#2177">[ subject ]</a>
+              <a href="author.html#2177">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

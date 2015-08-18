@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New WinUae core merging question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20WinUae%20core%20merging%20question&In-Reply-To=%3C4E8F7BD4.9030702%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004063.html">
+   <LINK REL="Next"  HREF="004087.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New WinUae core merging question</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20WinUae%20core%20merging%20question&In-Reply-To=%3C4E8F7BD4.9030702%40free.fr%3E"
+       TITLE="[hatari-devel] New WinUae core merging question">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Oct  8 00:23:16 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004063.html">[hatari-devel] New WinUae core merging question
+</A></li>
+        <LI>Next message: <A HREF="004087.html">[hatari-devel] New WinUae core merging question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4067">[ date ]</a>
+              <a href="thread.html#4067">[ thread ]</a>
+              <a href="subject.html#4067">[ subject ]</a>
+              <a href="author.html#4067">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks for the ideas, there's both nice.
+
+I'll do it this way.
+
+Regards
+
+Laurent
+
+
+
+Le 07/10/2011 23:15, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 07/10/2011 22:17, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;<i> Hi all,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've nearly finished to merge the new WinUae core into hatari.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've reincluded some parts of the winuae code I had deleted last time,
+</I>&gt;&gt;<i> and I've added comments (prefixed by laurent:) each time I've done some
+</I>&gt;&gt;<i> changes (for future merges understanding).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've got one problem with newcpu.c
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> They've changed the function Exception() from
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> void Exception(int nr, uaecptr oldpc, int ExceptionSource)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> to
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> void REGPARAM2 Exception (int nr)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> oldpc is removed, either is ExceptionSource.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Exception is called many times from the cpucores, but also from Hatari
+</I>&gt;&gt;<i> code (m68000.c for example).
+</I>&gt;<i>
+</I>&gt;<i> Hello
+</I>&gt;<i>
+</I>&gt;<i> oldpc is needed to build the exception stack, so I guess it's stored 
+</I>&gt;<i> elsewhere, so not passing it as a parameter should not be a problem, 
+</I>&gt;<i> WinUae certainly handles it in a different way.
+</I>&gt;<i>
+</I>&gt;<i> As for ExceptionSource, it was not part of the original Uae/WinUae 
+</I>&gt;<i> code, I added it myself (changeset 1314 october 2008) because on the 
+</I>&gt;<i> ST it possible to change the MFP's vector base, so you can't determine 
+</I>&gt;<i> an exception's type by just looking at &quot;nr&quot;, you need to know if it 
+</I>&gt;<i> was caused by the CPU or by some other pieces of hardware (mfp for 
+</I>&gt;<i> example)
+</I>&gt;<i>
+</I>&gt;<i> So, ExceptionSource should be added to WinUAE source, possibly with 
+</I>&gt;<i> some #define to see this is an Hatari's specific part.
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> All functions called by exception (exception_normal, Exception_ce000 and
+</I>&gt;&gt;<i> exception_mmu) need also to be changed.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've got 2 possibilities to fix that :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 1) patching the whole gencpu.c code+ all other winuae new core functions
+</I>&gt;&gt;<i> that call Exception
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 2) patching all the rest of Hatari's code to remove the oldpc and
+</I>&gt;&gt;<i> ExceptionSource parameters.
+</I>&gt;&gt;<i> I can add a variable which would be set to M68000_EXC_SRC_CPU by default
+</I>&gt;&gt;<i> and would be changed by the actual value in all hatari's function.
+</I>&gt;&gt;<i> Then, I would use this variable in Exception () and it's derivated
+</I>&gt;&gt;<i> functions.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Any preference here ?
+</I>&gt;<i>
+</I>&gt;<i> I think both are needed.
+</I>&gt;<i>
+</I>&gt;<i> 1) In the cpu/ files, you need to add a second parameter to Exception, 
+</I>&gt;<i> it will always be M68000_EXC_SRC_CPU or M68000_EXC_SRC_AUTOVEC and 
+</I>&gt;<i> replicate the code from uae-cpu/newcpu.c that uses this variable in 
+</I>&gt;<i> Exception().
+</I>&gt;<i>
+</I>&gt;<i> 2) In order to reduce patches in Hatari's main code and keep 
+</I>&gt;<i> compatibility with UAE and WinUAE at the same time, I think the 
+</I>&gt;<i> safest/cleanest way would be sthg like this :
+</I>&gt;<i>
+</I>&gt;<i> #if ENABLE_WINUAE_CPU
+</I>&gt;<i> #define EXCEPTION(nr , oldpc , source)  Exception ( nr , source )
+</I>&gt;<i> #else
+</I>&gt;<i> #define EXCEPTION(nr , oldpc , source)  Exception ( nr , oldpc , source)
+</I>&gt;<i> #endif
+</I>&gt;<i>
+</I>&gt;<i> Then in Hatari's code, replace all call to &quot;Exception&quot; by the macro 
+</I>&gt;<i> &quot;EXCEPTION&quot;, this way it will adapt to the selected cpu core at 
+</I>&gt;<i> compile time.
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004063.html">[hatari-devel] New WinUae core merging question
+</A></li>
+	<LI>Next message: <A HREF="004087.html">[hatari-devel] New WinUae core merging question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4067">[ date ]</a>
+              <a href="thread.html#4067">[ thread ]</a>
+              <a href="subject.html#4067">[ subject ]</a>
+              <a href="author.html#4067">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

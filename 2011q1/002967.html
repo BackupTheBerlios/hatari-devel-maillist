@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] IoMem question :
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IoMem%20question%20%3A&In-Reply-To=%3C4D488328.3050700%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003035.html">
+   <LINK REL="Next"  HREF="002973.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] IoMem question :</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IoMem%20question%20%3A&In-Reply-To=%3C4D488328.3050700%40free.fr%3E"
+       TITLE="[hatari-devel] IoMem question :">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Feb  1 23:03:20 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003035.html">[hatari-devel] MacOsx: bad color in falcon mode
+</A></li>
+        <LI>Next message: <A HREF="002973.html">[hatari-devel] IoMem question :
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2967">[ date ]</a>
+              <a href="thread.html#2967">[ thread ]</a>
+              <a href="subject.html#2967">[ subject ]</a>
+              <a href="author.html#2967">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Address 0xff8006 is read only.
+So, if I don't want a program to be able to write at this address, 
+should I declare the write part as WriteWithoutInterception or 
+IoMem_VoidWrite) ?
+
+This value is hardware fixed, it is fixed in STMemory_SetDefaultConfig
+    STMemory_WriteByte(0xff8006, nFalcSysCntrl);
+
+Regards
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003035.html">[hatari-devel] MacOsx: bad color in falcon mode
+</A></li>
+	<LI>Next message: <A HREF="002973.html">[hatari-devel] IoMem question :
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2967">[ date ]</a>
+              <a href="thread.html#2967">[ thread ]</a>
+              <a href="subject.html#2967">[ subject ]</a>
+              <a href="author.html#2967">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

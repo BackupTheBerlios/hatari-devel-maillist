@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Keep Desktop Resolution option for ST/E mode?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Keep%20Desktop%20Resolution%20option%20for%20ST/E%20mode%3F&In-Reply-To=%3C201108062259.26340.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003859.html">
+   <LINK REL="Next"  HREF="003915.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Keep Desktop Resolution option for ST/E mode?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Keep%20Desktop%20Resolution%20option%20for%20ST/E%20mode%3F&In-Reply-To=%3C201108062259.26340.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Keep Desktop Resolution option for ST/E mode?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Aug  6 21:59:26 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003859.html">[hatari-devel] Keep Desktop Resolution option for ST/E mode?
+</A></li>
+        <LI>Next message: <A HREF="003915.html">[hatari-devel] Keep Desktop Resolution option for ST/E mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3890">[ date ]</a>
+              <a href="thread.html#3890">[ thread ]</a>
+              <a href="subject.html#3890">[ subject ]</a>
+              <a href="author.html#3890">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 30 hein&#228;kuu 2011, Eero Tamminen wrote:
+&gt;<i> Attached is an updated patch.
+</I>&gt;<i>
+</I>&gt;<i> It centers the ST/E screen to the desktop resolution, I tested that it
+</I>&gt;<i> works with the VDI mode and unlike previous patch, it shows statusbar
+</I>&gt;<i> also in fullscreen and doesn't cause statusbar assert if one does a ST
+</I>&gt;<i> reset in fullscreen...
+</I>
+Monochrome mode needs the attached fix too, unlike all the other converters,
+it wasn't taking SDL pitch (full SDL buffer width) correctly into account.
+
+
+&gt;&gt;<i> So, maybe have it just as command line &amp; config option that isn't
+</I>&gt;&gt;<i> on by default?
+</I>&gt;<i> 
+</I>&gt;<i> Any comments on adding these?
+</I>
+Unless somebody objects, I'll put these into repository in few days.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: high.diff
+Type: text/x-patch
+Size: 460 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110806/1142279c/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110806/1142279c/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003859.html">[hatari-devel] Keep Desktop Resolution option for ST/E mode?
+</A></li>
+	<LI>Next message: <A HREF="003915.html">[hatari-devel] Keep Desktop Resolution option for ST/E mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3890">[ date ]</a>
+              <a href="thread.html#3890">[ thread ]</a>
+              <a href="subject.html#3890">[ subject ]</a>
+              <a href="author.html#3890">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

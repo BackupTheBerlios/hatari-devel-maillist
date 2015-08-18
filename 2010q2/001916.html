@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Linking with readline (was: Problem in falcon	mode ?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Linking%20with%20readline%20%28was%3A%20Problem%20in%20falcon%0A%09mode%20%3F%29&In-Reply-To=%3C201004251307.54941.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001915.html">
+   <LINK REL="Next"  HREF="001919.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Linking with readline (was: Problem in falcon	mode ?)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Linking%20with%20readline%20%28was%3A%20Problem%20in%20falcon%0A%09mode%20%3F%29&In-Reply-To=%3C201004251307.54941.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Linking with readline (was: Problem in falcon	mode ?)">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Apr 25 12:07:54 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001915.html">[hatari-devel] Linking with readline (was: Problem in falcon	mode ?)
+</A></li>
+        <LI>Next message: <A HREF="001919.html">[hatari-devel] Linking with readline (was: Problem in falcon mode ?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1916">[ date ]</a>
+              <a href="thread.html#1916">[ thread ]</a>
+              <a href="subject.html#1916">[ subject ]</a>
+              <a href="author.html#1916">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 25 April 2010, David Savinkoff wrote:
+&gt;<i> Here is the info:
+</I>&gt;<i>
+</I>&gt;<i> build.cursespatch.ok/&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; These 4 directories have the expected
+</I>&gt;<i> build.noreadline.ok/&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; cmake build logs, an extra log, and
+</I>&gt;<i> build.pristine.fail/&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; CmakeLists.txt where it is different
+</I>&gt;<i> build.unlinkedcurses.fail/
+</I>&gt;<i> commands-used.txt&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; More
+</I>&gt;<i> curses.readelf.txt&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; of
+</I>&gt;<i> readline.6.1.INSTALL.quote.txt&#160;&#160;&#160; my
+</I>&gt;<i> readline.readelf.txt&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; observations
+</I>
+Great, thanks!
+
+What Hatari's CMake file has, is:
+---------
+find_package(Readline)
+if(READLINE_FOUND)
+        set(CMAKE_REQUIRED_LIBRARIES &quot;readline&quot;)
+        check_function_exists(rl_filename_completion_function 
+HAVE_RL_COMPLETION_FUNCTION)
+        if(HAVE_RL_COMPLETION_FUNCTION)
+                set(HAVE_LIBREADLINE 1)
+        endif(HAVE_RL_COMPLETION_FUNCTION)
+endif(READLINE_FOUND)
+---------
+
+&gt;<i> Command to generate the hatari.error.log is:
+</I>&gt;<i> $ (pwd ; cmake .. ; VERBOSE=1 make) &amp;&gt; hatari.pristine.error.log
+</I>
+And this outputs:
+-- Found READLINE: /usr/lib/libreadline.so
+-- Looking for rl_filename_completion_function
+-- Looking for rl_filename_completion_function - not found
+
+I.e. it doesn't define readline usage and your Hatari won't be built
+with readline support.
+
+
+Your build fails to same thing as Laurent's build:
+
+/tmp/hatari-be0f922c0d0b/src/rs232.c:58: error: static declaration 
+of &#8216;cfmakeraw&#8217; follows non-static declaration
+/usr/include/termios.h:77: error: previous declaration of &#8216;cfmakeraw&#8217; was 
+here
+make[2]: *** [src/CMakeFiles/hatari.dir/rs232.c.o] Error 1
+make[2]: Leaving directory `/tmp/hatari-be0f922c0d0b/build'
+make[1]: *** [src/CMakeFiles/hatari.dir/all] Error 2
+
+
+Not to readline.  I.e. everything works as expected in regards to readline
+and there's nothing to fix in regards to how Hatari handles readline.
+
+What your're proposing would just break it for others because on their
+systems readline is linked against the correct library.
+
+
+&gt;<i> Command to see what is in the library:
+</I>&gt;<i> $ eu-readelf -a /usr/lib/libcurses.so &gt; curses.readelf.txt
+</I>
+This would have been enough to tell what's the problem:
+$ objdump -p /usr/lib/libreadline.so|grep NEEDED
+  NEEDED      libncurses.so.5
+  NEEDED      libc.so.6
+
+
+&gt;<i> Note this quote from the readline 6.1 INSTALL note:
+</I>&gt;<i>
+</I>&gt;<i> `--with-curses'
+</I>&gt;<i> &#160; This tells readline that it can find the termcap library functions
+</I>&gt;<i> &#160; (tgetent, et al.) in the curses library, rather than a separate
+</I>&gt;<i> &#160; termcap library.&#160; Readline uses the termcap functions, but does not
+</I>&gt;<i> &#160; link with the termcap or curses library itself, allowing applications
+</I>&gt;<i> &#160; which link with readline the to choose an appropriate library.
+</I>&gt;<i> &#160; This option tells readline to link the example programs with the
+</I>&gt;<i> &#160; curses library rather than libtermcap.
+</I>
+This is for source build of readline and can be useful for people building
+readline from scratch on some obsolete Unix systems.
+
+On normal Linux systems the readline package maintainer know whether his/her
+distro has ncurses, curses or termcap.  If he's not listing the correct one
+(ncurses for things from this century) on the readline build, the package is
+broken.
+
+Unbelievably, this is a bug in CentOS and RHEL:
+	<A HREF="https://bugzilla.redhat.com/show_bug.cgi?id=499837">https://bugzilla.redhat.com/show_bug.cgi?id=499837</A>
+
+(I had no idea RHEL/CentOS is that broken.  I registed to their bugzilla
+just to comment on how trivially Debian solved this problem already in
+90's.)
+
+Users of such a broken distro need to append &quot;;-lncurses&quot; to the CMake
+READLINE_LIBRARY variable to get readline for the debugger.  I guess we
+could add that information to the installation instructions (and pointer to
+the RHEL bug).
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001915.html">[hatari-devel] Linking with readline (was: Problem in falcon	mode ?)
+</A></li>
+	<LI>Next message: <A HREF="001919.html">[hatari-devel] Linking with readline (was: Problem in falcon mode ?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1916">[ date ]</a>
+              <a href="thread.html#1916">[ thread ]</a>
+              <a href="subject.html#1916">[ subject ]</a>
+              <a href="author.html#1916">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

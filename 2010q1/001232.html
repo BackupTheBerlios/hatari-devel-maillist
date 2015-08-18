@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Big problems with bus error on Falcon
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Big%20problems%20with%20bus%20error%20on%20Falcon&In-Reply-To=%3C4B4F9AA4.6080808%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001230.html">
+   <LINK REL="Next"  HREF="001234.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Big problems with bus error on Falcon</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Big%20problems%20with%20bus%20error%20on%20Falcon&In-Reply-To=%3C4B4F9AA4.6080808%40free.fr%3E"
+       TITLE="[hatari-devel] Big problems with bus error on Falcon">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Jan 14 23:28:52 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001230.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+        <LI>Next message: <A HREF="001234.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1232">[ date ]</a>
+              <a href="thread.html#1232">[ thread ]</a>
+              <a href="subject.html#1232">[ subject ]</a>
+              <a href="author.html#1232">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>It's too interesting, I take 5 minutes to answear ;)
+
+&gt;<i> This is address 0xff800A.  According to docs it's unassigned.
+</I>
+That's why I'm asking myself that on the real computer, reading (or 
+writing to) an unasigned area does not generate a bus error as it does 
+on hatari. (it's just a guess, I have no clue).
+
+
+&gt;<i> Another strange thing : the game conquest stops with a bus error at
+</I>&gt;<i> address $ff8901.
+</I>
+
+&gt;<i> Did it try to read or write a word from an odd address?
+</I>
+
+I don't know, I'll have to look at the code.
+
+
+Which docs do you use ?
+I use the compendium and the hardware.txt docs.
+
+
+&gt;<i> Btw. I was looking at the current Falcon mappings:
+</I>&gt;<i>
+</I>&gt;<i> For example:
+</I>&gt;<i>         { 0xff8006, SIZE_WORD, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> IoMem_WriteWithoutInterception }, /* Falcon configuration */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> *Byte* at 0xff8006 is monitor type (programs cannot change), but
+</I>&gt;<i> the next byte is Falcon processor control byte:
+</I>&gt;<i> 	bit 0: 030 speed (set 16Mhz, unset 8Mhz)
+</I>&gt;<i> 	bit 2: blitter speed (set 16Mhz, unset 8Mhz)
+</I>&gt;<i> 	bit 5: STE bus emulation (0=on, 1=off)
+</I>&gt;<i>
+</I>&gt;<i> Shouldn't we emulate at least the first two bits?
+</I>&gt;<i>   
+</I>
+Yes, probably. If it's not too hard to emulate ;)
+
+&gt;<i> Then:
+</I>&gt;<i>         { 0xff800A, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i>         { 0xff800C, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i>         { 0xff8060, SIZE_LONG, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i>
+</I>&gt;<i> According to my documentation whole 0xff8008 - 0xff81ff range is unassigned.
+</I>&gt;<i> Why these particular addresses are singled out, why all the (503) addresses
+</I>&gt;<i> in this range aren't the same?
+</I>&gt;<i>   
+</I>Perhaps because Thomas added them one by one when he discovered and 
+corrected bus error for specifics programs (the same way I did it for 
+illusion). Thomas ?
+
+
+
+&gt;<i> Then to video handling...
+</I>&gt;<i> ...
+</I>&gt;<i> So I guess display size can be wrong?
+</I>&gt;<i>   
+</I>
+Yes, I think so too, but Videl Emulation is quite incomplete for now.
+I think I'll give it a try one of these days (but I don't feel as 
+comfortable with video than I was with crossbar).
+&gt;<i> According to my documentation, 0xff860e - 0xff86ff is unassigned,
+</I>&gt;<i> is this a bug:
+</I>&gt;<i>         { 0xff860e, SIZE_BYTE, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                               /* No bus error here */
+</I>&gt;<i>         { 0xff860f, SIZE_BYTE, FDC_FloppyMode_ReadByte, 
+</I>&gt;<i> FDC_FloppyMode_WriteByte },             /* Floppy mode (?) register */
+</I>&gt;<i>   
+</I>Again, some patchs added one by one to let the falcon run ?
+Perhaps the good way would be to put all unasigned areas as 
+readvoid/writevoid ?
+
+&gt;<i> 0xff8700 - 0xff878e are SCSI registers with the areas 0xff8716 - 0xff877f - 
+</I>&gt;<i> and 0xff8790 - 0xff879f being unassigned.  ioMemTabFalcon didn't have
+</I>&gt;<i> anything on them.  Would be good to have comment on them.
+</I>&gt;<i>   
+</I>I don't know here.
+
+
+&gt;<i> Microwire registers not implemented:
+</I>&gt;<i>         { 0xff8922, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                                     /* Microwire data */
+</I>&gt;<i>         { 0xff8924, SIZE_WORD, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_VoidWrite },                                     /* Microwire mask */
+</I>&gt;<i>   
+</I>Microwire doesn't exist on Falcon. I've left the 2 registers here just 
+in case.
+Perhaps they should be removed. (except if as I suppose, all N/A areas 
+should be void read / write).
+
+&gt;<i> These were not in my document, what the crossbar thing does here?
+</I>&gt;<i>         { 0xff893b, SIZE_BYTE, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> IoMem_WriteWithoutInterception }, /* No bus error here */
+</I>&gt;<i>         { 0xff893c, SIZE_WORD, Crossbar_CodecStatus_ReadWord, 
+</I>&gt;<i> Crossbar_CodecStatus_WriteWord }, /* CODEC status */
+</I>&gt;<i>         { 0xff893e, SIZE_WORD, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> IoMem_WriteWithoutInterception }, /* No bus error here */
+</I>&gt;<i> ?
+</I>&gt;<i>   
+</I>0xff893b : N/A ? I don't know here (it's just here in case of a program 
+access to address 3a with a word.
+
+0xff893c : (word) : Codec Status . It's a read only register that gives 
+the state of the codecs (overflow, ...) I haven't implemented it 
+completly in the crossbar for now.
+
+0xff893e : N/A ?
+
+
+&gt;<i> GPIO data stuff not implemented:
+</I>&gt;<i>         { 0xff8940, SIZE_WORD, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> IoMem_WriteWithoutInterception }, /* GPx direction */
+</I>&gt;<i>         { 0xff8942, SIZE_WORD, IoMem_ReadWithoutInterception, 
+</I>&gt;<i> IoMem_WriteWithoutInterception }, /* GPx port */
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>I'll probably never code these 2 ones, as they're relative to external 
+DSP connector.
+
+
+&gt;<i> SCC DMA and port registers not implemented:
+</I>&gt;<i>         { 0xff8c80, 8, IoMem_VoidRead, 
+</I>&gt;<i> IoMem_WriteWithoutInterception },                        /* TODO: SCC */
+</I>&gt;<i>   
+</I>
+I Don't know what is SCC.
+
+&gt;<i> It would be nice if the &quot;No bus errors here&quot;  things added would have
+</I>&gt;<i> comments why they are there...
+</I>&gt;<i>   
+</I>At least, the $FF800A could be commented with &quot;Illusion/aura compatibility)
+
+
+
+What would be great is to know what exactly happens on a real falcon.
+Like this, we could code it correctly.
+
+
+Regards
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001230.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+	<LI>Next message: <A HREF="001234.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1232">[ date ]</a>
+              <a href="thread.html#1232">[ thread ]</a>
+              <a href="subject.html#1232">[ subject ]</a>
+              <a href="author.html#1232">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

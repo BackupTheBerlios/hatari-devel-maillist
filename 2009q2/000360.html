@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CPU breakpoints and single-stepping
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3C200906082217.49784.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000359.html">
+   <LINK REL="Next"  HREF="000362.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CPU breakpoints and single-stepping</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3C200906082217.49784.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] CPU breakpoints and single-stepping">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jun  8 21:17:49 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000359.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+        <LI>Next message: <A HREF="000362.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#360">[ date ]</a>
+              <a href="thread.html#360">[ thread ]</a>
+              <a href="subject.html#360">[ subject ]</a>
+              <a href="author.html#360">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 08 June 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> &gt; Btw.  I was thinking that the conditional breakpoint checking will
+</I>&gt;<i> &gt; be quite a bit slower than normal address based breakpoints, so
+</I>&gt;<i> &gt; maybe we should have both?
+</I>&gt;<i>
+</I>&gt;<i> Well, I think that as soon as you use breakpoint, you don't care about
+</I>&gt;<i> speed anymore ; I'm only exagerating a little, but I really think that if
+</I>&gt;<i> the user choose to use advanced debugging functions, he must have a
+</I>&gt;<i> machine powerful enough to handle it, so splitting the code in 2 kinds of
+</I>&gt;<i> breakpoints seems to be extra work not necessarily needed to me. But if
+</I>&gt;<i> someone feels like doing it, why not :)
+</I>
+I'm mostly concerned about the DSP side.  Currently e.g. even the trivial
+DSP_Run() is quite visible in profile because it's run 7x for each m68k
+instruction and this adds a lot of code to execute at that place when
+there're conditional breakpoints.  (And half of the time DSP emu would like
+to take much more CPU than my machine has available.... :-))
+
+Extra performance may also be nice for speeding up the emulation
+while waiting the breakpoint to trigger.  But let's see whether this will be
+a problem in practice.
+
+
+	- Eero
+
+PS. I added the current code as breakcond.c to repo.  I will shortly add
+some more parsing code to it + do some other fine-tuning.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000359.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+	<LI>Next message: <A HREF="000362.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#360">[ date ]</a>
+              <a href="thread.html#360">[ thread ]</a>
+              <a href="subject.html#360">[ subject ]</a>
+              <a href="author.html#360">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

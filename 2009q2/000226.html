@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] IDE in ST/STE mode?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20in%20ST/STE%20mode%3F&In-Reply-To=%3C20090403174613.3345736d%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000224.html">
+   <LINK REL="Next"  HREF="000225.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] IDE in ST/STE mode?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20in%20ST/STE%20mode%3F&In-Reply-To=%3C20090403174613.3345736d%40phineus%3E"
+       TITLE="[hatari-devel] IDE in ST/STE mode?">huth at users.berlios.de
+       </A><BR>
+    <I>Fri Apr  3 17:46:13 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000224.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+        <LI>Next message: <A HREF="000225.html">[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#226">[ date ]</a>
+              <a href="thread.html#226">[ thread ]</a>
+              <a href="subject.html#226">[ subject ]</a>
+              <a href="author.html#226">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 1 Apr 2009 23:31:56 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> &gt; For the ACSI code, there's some magic in hdc.c which parses the
+</I>&gt;<i> &gt; partition table on the HD image (see HDC_GetInfo), so the GEMDOS
+</I>&gt;<i> &gt; drive letter can be mapped after the ACSI partitions.
+</I>&gt;<i> 
+</I>&gt;<i> I took a look at that, but it's lacking a lot of things:
+</I>&gt;<i> - Doesn't support extended (XGM) partitions
+</I>&gt;<i> - Doesn't support ICD partition table format
+</I>&gt;<i>   (8 additional partition entries on root sector)
+</I>&gt;<i> - Doesn't support MSDOS partition table
+</I>&gt;<i>   (supported by several HD drivers)
+</I>&gt;<i> 
+</I>&gt;<i> &gt; But this code  does not exist for the IDE layer yet,
+</I>&gt;<i> 
+</I>&gt;<i> I think the partition counting code could be shared between the two
+</I>&gt;<i> (mbr.c?).
+</I>
+Well, maybe, but then the code would also have to take care of
+endianess issues (IDE images are byte-swapped).
+
+&gt;<i> The hard thing is knowing what's supported on the TOS side though:
+</I>&gt;<i> - EmuTOS supporting only DOS MBR, or (also)
+</I>&gt;<i> - HD driver supporting only old AHDI MBR / GEM partitions, or
+</I>&gt;<i> - HD driver supporting also new AHDI MBR (BGM &amp; XGM partitions), or
+</I>&gt;<i> - HD driver supporting (also) ICD partition table format
+</I>&gt;<i> - No EmuTOS or HD driver
+</I>&gt;<i> 
+</I>&gt;<i> Because if that's guessed wrong, either GEMDOS emu goes over a
+</I>&gt;<i> partition, or there's a partition &quot;gap&quot;.
+</I>&gt;<i> 
+</I>&gt;<i> How that could be solved?
+</I>&gt;<i> 
+</I>&gt;<i> Maybe by getting rid of the ACSI &amp; IDE partition counting code
+</I>&gt;<i> completely and just requiring user to specify partition offset for
+</I>&gt;<i> GEMDOS drives when using them with ACSI or IDE emulation?
+</I>
+Yes, either we could use an offset for the first GEMDOS drive, or we
+make it fully configurable for each drive (like Kenneth does it already
+by enumerating the drives by the folder names).
+
+&gt;<i> &gt; so there is a conflict when using IDE and GEMDOS at the same time.
+</I>&gt;<i> 
+</I>&gt;<i> But ACSI &amp; IDE should work together?
+</I>
+Yes, I think so (since this is the job of the Atari side hard disk
+driver).
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000224.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+	<LI>Next message: <A HREF="000225.html">[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#226">[ date ]</a>
+              <a href="thread.html#226">[ thread ]</a>
+              <a href="subject.html#226">[ subject ]</a>
+              <a href="author.html#226">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

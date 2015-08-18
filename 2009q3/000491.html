@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Number/address handling change in DebugUI
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Number/address%20handling%20change%20in%20DebugUI&In-Reply-To=%3C200907191647.12297.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000487.html">
+   <LINK REL="Next"  HREF="000495.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Number/address handling change in DebugUI</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Number/address%20handling%20change%20in%20DebugUI&In-Reply-To=%3C200907191647.12297.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Number/address handling change in DebugUI">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jul 19 15:47:12 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000487.html">[hatari-devel] Breakpoint question
+</A></li>
+        <LI>Next message: <A HREF="000495.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#491">[ date ]</a>
+              <a href="thread.html#491">[ thread ]</a>
+              <a href="subject.html#491">[ subject ]</a>
+              <a href="author.html#491">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 18 July 2009, Eero Tamminen wrote:
+&gt;<i> On Saturday 18 July 2009, Thomas Huth wrote:
+</I>&gt;<i> &gt; Now it's just a little bit confusing that the &quot;b&quot; command requires &quot;$&quot;
+</I>&gt;<i> &gt; prefix for hexadecimal values while all other commands do not require a
+</I>&gt;<i> &gt; prefix... Maybe we should add the requirement for the &quot;$&quot; prefix for
+</I>&gt;<i> &gt; the other commands, too? What do you think?
+</I>&gt;<i>
+</I>&gt;<i> Hm.  I could move the decimal / hexadecimal ($-prefix) / binary
+</I>&gt;<i> (%-prefix) parsing function from breakcond.c to debugui.c and change
+</I>&gt;<i> everything in DebugUI to use it...  I'll look into that.
+</I>
+I moved the dec/bin/hex handling from breakcond.c to str.c along with
+the address range parsing from debugui.c.  Then I changed breakcond.c
+and debugui.c to use these new string functions:
+- Str_GetNumber()
+- Str_ParseRange()
+which understand the prefixes.
+
+Now all the numbers in the debugger are understood as decimal unless
+they're prefixed with '$' (for hexadecimal) or '%' (for binary decimal).
+
+(only exception are the data bytes given to the memwrite command, I thought
+it better to keep them still as hex.  I think that kind of data is mostly
+given as hexadecimals and entering '$' for all the values could get quite
+tedious...)
+
+
+I also added a &quot;value&quot; (&quot;v&quot;) helper command which shows the given number
+in the supported bin/dec/hex number bases.
+
+Some other debugui.c changes:
+- changed remaining unsigned longs to (more correct) Uint32
+  (needed by prefix supporting functions)
+- renamed nBreakPoint variable to more descriptive BreakAddr
+  (in address based  breakpoint functions)
+
+
+	- Eero
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000487.html">[hatari-devel] Breakpoint question
+</A></li>
+	<LI>Next message: <A HREF="000495.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#491">[ date ]</a>
+              <a href="thread.html#491">[ thread ]</a>
+              <a href="subject.html#491">[ subject ]</a>
+              <a href="author.html#491">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

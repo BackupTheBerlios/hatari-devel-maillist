@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Fwd: Re:  Wrong timestamp of copied files
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fwd%3A%20Re%3A%20%20Wrong%20timestamp%20of%20copied%20files&In-Reply-To=%3C201105011312.59136.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003375.html">
+   <LINK REL="Next"  HREF="003384.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Fwd: Re:  Wrong timestamp of copied files</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fwd%3A%20Re%3A%20%20Wrong%20timestamp%20of%20copied%20files&In-Reply-To=%3C201105011312.59136.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Fwd: Re:  Wrong timestamp of copied files">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun May  1 12:12:59 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003375.html">[hatari-devel] Could somebody check Zero-5 on real STE?
+</A></li>
+        <LI>Next message: <A HREF="003384.html">[hatari-devel] ACSI bus support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3383">[ date ]</a>
+              <a href="thread.html#3383">[ thread ]</a>
+              <a href="subject.html#3383">[ subject ]</a>
+              <a href="author.html#3383">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 01 toukokuu 2011, Uwe Seimet wrote:
+&gt;<i> &gt; Does requesting mktime() to check whether DST should be used work any
+</I>&gt;<i> &gt; better for you?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; (Attached patch uses -1 instead of 1 for isdst to do that)
+</I>&gt;<i> 
+</I>&gt;<i> This looks much better now. The problems appears to be gone.
+</I>
+Thanks, I commited that change.
+
+
+&gt;<i> &gt; What host OS &amp; C-library you have?
+</I>&gt;<i> 
+</I>&gt;<i> It's Linux 2.6.38.4 (current kernel) amd64, glibc 2.11.3 (released
+</I>&gt;<i> November 2010).
+</I>
+I don't think kernel version or 64-bit affects this, but Glibc version
+could.  However, mine is 2.11.2 i.e. nearly same, so I wouldn't expect
+it to be cause for this either... -&gt; I wonder what could cause it.
+
+Which Linux distro you're using?
+
+Do you run your HW clock in UTC (as is default I think)?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003375.html">[hatari-devel] Could somebody check Zero-5 on real STE?
+</A></li>
+	<LI>Next message: <A HREF="003384.html">[hatari-devel] ACSI bus support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3383">[ date ]</a>
+              <a href="thread.html#3383">[ thread ]</a>
+              <a href="subject.html#3383">[ subject ]</a>
+              <a href="author.html#3383">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

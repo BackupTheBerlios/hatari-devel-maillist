@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Troubles compiling latest Hatari with new avi support
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%20support&In-Reply-To=%3C1255021786.19626.1.camel%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000816.html">
+   <LINK REL="Next"  HREF="000786.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Troubles compiling latest Hatari with new avi support</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%20support&In-Reply-To=%3C1255021786.19626.1.camel%40localhost%3E"
+       TITLE="[hatari-devel] Troubles compiling latest Hatari with new avi support">marndt at asmsoftware.de
+       </A><BR>
+    <I>Thu Oct  8 19:09:46 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000816.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000786.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#785">[ date ]</a>
+              <a href="thread.html#785">[ thread ]</a>
+              <a href="subject.html#785">[ subject ]</a>
+              <a href="author.html#785">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I get the following error whiel trying to build the latest snapshot:
+
+avi_record.o: In function
+`AviRecordAudioStream_PCM':/home/marndt/src/hatari/src                          /avi_record.c:609: undefined reference to `SDL_SwapLE16'
+:<i>/home/marndt/src/hatari/src/avi_record.c:610: undefined reference to
+</I>`SDL_SwapL                          E16'
+collect2: ld gab 1 als Ende-Status zur&#252;ck
+make[2]: *** [hatari] Fehler 1
+make[2]: Verlasse Verzeichnis '/home/marndt/src/hatari/src'
+make[1]: *** [all] Fehler 2
+make[1]: Verlasse Verzeichnis '/home/marndt/src/hatari/src'
+make: *** [all] Fehler 2
+
+Yes I know that my libSDL is out of date - but is it possible to either
+take care of this? Make avi support optional (i won't need it anyway) or
+find a workaround to let it compile anyway?
+
+I will not upgrade SDL just for Hatari.
+
+cheers,
+Matthias
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000816.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000786.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#785">[ date ]</a>
+              <a href="thread.html#785">[ thread ]</a>
+              <a href="subject.html#785">[ subject ]</a>
+              <a href="author.html#785">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

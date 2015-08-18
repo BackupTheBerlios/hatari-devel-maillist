@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [info] : Falcon crossbar, sound and DSP
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Binfo%5D%20%3A%20Falcon%20crossbar%2C%20sound%20and%20DSP&In-Reply-To=%3C4AB0B163.2010808%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000704.html">
+   <LINK REL="Next"  HREF="000701.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [info] : Falcon crossbar, sound and DSP</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Binfo%5D%20%3A%20Falcon%20crossbar%2C%20sound%20and%20DSP&In-Reply-To=%3C4AB0B163.2010808%40free.fr%3E"
+       TITLE="[hatari-devel] [info] : Falcon crossbar, sound and DSP">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Sep 16 11:35:31 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000704.html">[hatari-devel] Little question with relative_interrupts
+</A></li>
+        <LI>Next message: <A HREF="000701.html">[hatari-devel] [info] : Falcon crossbar, sound and DSP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#699">[ date ]</a>
+              <a href="thread.html#699">[ thread ]</a>
+              <a href="subject.html#699">[ subject ]</a>
+              <a href="author.html#699">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I understand much better the falcon crossbar now.
+
+First, there's no DMA sound in the falcon.
+We shouldn't connect the DSP to the Ste DMA sound.
+
+The Falcon DMA is connecting the crossbar (and not the DSP) to the 
+falcon memory.
+If you look at the crossbar scheme, you can see that the sound going 
+from the DSP, but also from the external port, the PSG (or micro) can go 
+to the DMA record.
+In this case, datas are transfered to falcon memory.
+
+The usual output for games and demos is to connect the DSP to the DAC.
+The matrice is connected like this : DSP out (SSI) --&gt; Crossbar --&gt; DAC.
+
+The DAC is linked to the bipper (cool ;), the screen sound, and the 
+phone output of the falcon.
+
+The DAC can be connected to one of the 4 tracks
+In general, sound is composed of 1 track stereo 16 bits.
+The DAC is connected to track 0 in this common case.
+
+But we can tell the crossbar and the DSP SSI to communicate with 4 
+tracks 16 bits.
+Datas transfered in this case look like this :
+
+L1R1 L2R2 L3R3 L4R4 L1R1 L2R2 L3R3 L4R4 L1R1 ...
+
+A new frame starts at each L1
+
+The DAC can be connected to the track1 (L1R1), to the track2 (L2R2), ...
+
+In 4 tracks 16 bits stereo transfer mode, we can transfer datas at 
+nearly 8 Mhz between DSP and Crossbar (and to falcon memory if DSP out 
+is connected to the DMA record)
+
+The crossbar communicates with all the components in hand-shacked mode 
+or not, and at a certain frequency.
+
+For Hatari, I think we should remove current SSI-&gt;Ste DMA sound code to 
+keep dma_sound.c for Ste DMA sound only and create a new crossbar.c file 
+for the falcon crossbar.
+
+It'll be easier to implement later a &quot;micro&quot; entrance, a &quot;CD entrance&quot; 
+via the &quot;external port&quot; and manage correctly all the falcon sound like this.
+
+I can try to write something if you're all OK.
+
+Regards,
+
+Laurent
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000704.html">[hatari-devel] Little question with relative_interrupts
+</A></li>
+	<LI>Next message: <A HREF="000701.html">[hatari-devel] [info] : Falcon crossbar, sound and DSP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#699">[ date ]</a>
+              <a href="thread.html#699">[ thread ]</a>
+              <a href="subject.html#699">[ subject ]</a>
+              <a href="author.html#699">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

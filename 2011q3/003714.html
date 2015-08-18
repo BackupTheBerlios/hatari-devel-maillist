@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Froggies over the fence
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Froggies%20over%20the%20fence&In-Reply-To=%3C201107132028.21423.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003712.html">
+   <LINK REL="Next"  HREF="003716.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Froggies over the fence</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Froggies%20over%20the%20fence&In-Reply-To=%3C201107132028.21423.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Froggies over the fence">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Jul 13 19:28:21 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003712.html">[hatari-devel] Froggies over the fence
+</A></li>
+        <LI>Next message: <A HREF="003716.html">[hatari-devel] Froggies over the fence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3714">[ date ]</a>
+              <a href="thread.html#3714">[ thread ]</a>
+              <a href="subject.html#3714">[ subject ]</a>
+              <a href="author.html#3714">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 13 hein&#228;kuu 2011, Anders Eriksson wrote:
+&gt;<i> I just want to report that it seems like Froggies over the fence demo has
+</I>&gt;<i> stopped working in the current version of Hatari.
+</I>
+So it seems.
+
+I tested with 4MB STF + TOS 1.04.
+
+
+&gt;<i> After selecting a screen in the main menu, the laoder doesn't appear.
+</I>
+According to profiler, all time is spent on $0c0a1c. The code is:
+--- 
+&gt;<i> disasm 0x0c0a18
+</I>$0c0a18 : 0811 0000                            btst      #0,(a1)
+11169843/111698430 times/cycles:
+$0c0a1c : 67fa                                 beq.s     $c0a18
+&gt;<i> e (a1)
+</I>  value in RAM at ($fffffc00).l = $2000100
+---
+
+After rebooting few times, even main menu stopped loading.
+The the code is looping here:
+---
+&gt;<i> d 0x08c368-0x08c36f
+</I>4472144/53665728 times/cycles:
+$08c368 : 1483                                 move.b    d3,(a2)
+$08c36a : 1484                                 move.b    d4,(a2)
+4472144/71554304 times/cycles:
+$08c36c : 0c13 0001                            cmpi.b    #1,(a3)
+&gt;<i> e (a2)
+</I>  value in RAM at ($fffffa19).l = $0
+&gt;<i> e (a3)
+</I>  value in RAM at ($fffffa1f).l = $ef005000
+---
+
+
+&gt;<i> I've tried with two different sources of the demo disks, the same thing
+</I>&gt;<i> happens. As far as I can remember, this demo did work before? Hopefully I
+</I>&gt;<i> didn't screw up something..
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003712.html">[hatari-devel] Froggies over the fence
+</A></li>
+	<LI>Next message: <A HREF="003716.html">[hatari-devel] Froggies over the fence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3714">[ date ]</a>
+              <a href="thread.html#3714">[ thread ]</a>
+              <a href="subject.html#3714">[ subject ]</a>
+              <a href="author.html#3714">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

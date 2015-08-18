@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP Instruction cycle count
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20Instruction%20cycle%20count&In-Reply-To=%3C4A57B1AF.6070705%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000466.html">
+   <LINK REL="Next"  HREF="000471.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP Instruction cycle count</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20Instruction%20cycle%20count&In-Reply-To=%3C4A57B1AF.6070705%40free.fr%3E"
+       TITLE="[hatari-devel] DSP Instruction cycle count">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Fri Jul 10 23:25:03 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000466.html">[hatari-devel] DSP Instruction cycle count
+</A></li>
+        <LI>Next message: <A HREF="000471.html">[hatari-devel] DSP Instruction cycle count
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#469">[ date ]</a>
+              <a href="thread.html#469">[ thread ]</a>
+              <a href="subject.html#469">[ subject ]</a>
+              <a href="author.html#469">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+&gt;&gt;<i> I've noticed that BadMood seems to run much faster.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Which version?  BadMood 2.14 seems to work fine, but
+</I>&gt;<i> BadMood 3.x graphics look broken.
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>I've tested many times BadMood 3.07A.
+It's still working well for me, and much faster than before.
+Anyone 's got problems with BadMood ?
+
+
+I've tested with programs wich are timing sensitives like Rot3dDSP, 
+Bounds3 falcon, bound2 falcon, anf Hmmm.
+They all still work.
+
+By the way, I think I'll have to customize some timings (lostly the 
+external X, Y and P memory access).
+
+Does anybody knows a tool or have examples of DSP programs with cycle 
+timings that I could use to compare with the ones I added to hatari ?
+
+If there are too much problems with my actual timings code, we can still 
+use the 'i=7' test in dsp.c for now.
+
+&gt;&gt;<i> Dsp sound seems to be clearer (but still not perfect).
+</I>&gt;&gt;<i>     
+</I>&gt;<i> Is it normal that when programs (demos) exit, there's still some
+</I>&gt;<i> background sound?
+</I>&gt;<i>   
+</I>I think sound is bufferized, that's probably why we can listen some 
+music after a reset (Thomas ?)
+
+&gt;&gt;<i> emulation improvement ? 
+</I>&gt;&gt;<i>     
+</I>&gt;<i> &quot;Atari UK demos&quot; and &quot;Les Dinosaures&quot; demo version work now.
+</I>&gt;<i>   
+</I>Good :)
+
+&gt;&gt;<i> Tell me if you detect regression with some programs that were running
+</I>&gt;&gt;<i> before.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> &quot;Built-in Obsolescence&quot; earlier run a bit, now it stops at startup.  Hatari
+</I>&gt;<i> outputs a DSP stack overflow warning.
+</I>&gt;<i>   
+</I>Yes, I know for this one, but it is not relative to the new cycle code.
+(I've uncommented some lines into the stack management code).
+I'll have to search deeper that strange bug.
+
+&gt;<i> Similar issue with with the &quot;Are you sitting comfortably?&quot; demo from RG.
+</I>&gt;<i>   
+</I>I'll have a look at this one, but all bugs relative to the stack are not 
+relative to the new cycles counting.
+In fact, Buil in obsolescence goes into an interrupt with a jmp (fast 
+interrupt), but sub the stack pointer by 1.
+The correct way to code it would be to jsr to the interrupt (long 
+interrupt). Many programs are correctly coded, this one not.
+&gt;<i> Btw.  Have you tried the conditional breakpoints yet &amp; do they work OK for 
+</I>&gt;<i> DSP? :-)
+</I>&gt;<i>   
+</I>
+Not yet, sorry. I haven't got that much time these days.
+
+:<i>-/
+</I>
+Regards,
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000466.html">[hatari-devel] DSP Instruction cycle count
+</A></li>
+	<LI>Next message: <A HREF="000471.html">[hatari-devel] DSP Instruction cycle count
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#469">[ date ]</a>
+              <a href="thread.html#469">[ thread ]</a>
+              <a href="subject.html#469">[ subject ]</a>
+              <a href="author.html#469">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

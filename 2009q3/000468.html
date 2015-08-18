@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Interrupt assert triggered by video.c
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Interrupt%20assert%20triggered%20by%20video.c&In-Reply-To=%3Calpine.LMD.2.00.0907102247550.25102%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000467.html">
+   <LINK REL="Next"  HREF="000501.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Interrupt assert triggered by video.c</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Interrupt%20assert%20triggered%20by%20video.c&In-Reply-To=%3Calpine.LMD.2.00.0907102247550.25102%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Interrupt assert triggered by video.c">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Jul 10 22:52:36 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000467.html">[hatari-devel] Interrupt assert triggered by video.c
+</A></li>
+        <LI>Next message: <A HREF="000501.html">[hatari-devel] Interrupt assert triggered by video.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#468">[ date ]</a>
+              <a href="thread.html#468">[ thread ]</a>
+              <a href="subject.html#468">[ subject ]</a>
+              <a href="author.html#468">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 10 Jul 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> (I found a potential culprit, see the end)
+</I>&gt;<i>
+</I>&gt;<i> On Thursday 09 July 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;<i> From the trace, it seems the assert is showing a bug that is not related
+</I>&gt;&gt;<i> to video.c but was already present in dmasnd.c
+</I>&gt;<i>
+</I>&gt;<i> I just managed to get this assert triggered also by video.c:
+</I>&gt;<i> #3  0xb7bbd5be in __assert_fail () from /lib/i686/cmov/libc.so.6
+</I>&gt;<i> #4  0x080615de in Int_AddRelativeInterruptWithOffset (CycleTime=-59622,
+</I>&gt;<i>    CycleType=1, Handler=INTERRUPT_VIDEO_ENDLINE, CycleOffset=0) at
+</I>&gt;<i> int.c:392
+</I>&gt;<i> #5  0x08061607 in Int_AddRelativeInterrupt (CycleTime=-59622, CycleType=1,
+</I>&gt;<i>    Handler=INTERRUPT_VIDEO_ENDLINE) at int.c:352
+</I>&gt;<i> #6  0x0807493c in Video_AddInterrupt (Pos=-59622,
+</I>&gt;<i>    Handler=INTERRUPT_VIDEO_ENDLINE) at video.c:2539
+</I>&gt;<i>
+</I>&gt;<i> &lt;one-liner static Video_AddInterruptTimerB() function's missing here&gt;
+</I>&gt;<i>
+</I>&gt;<i> #7  0x08077772 in Video_Sync_WriteByte () at video.c:2552
+</I>&gt;<i> #8  0x08061d27 in IoMem_wput (addr=16744970, val=512) at ioMem.c:400
+</I>&gt;<i> #9  0x080cbf32 in op_31fc_0_ff (opcode=12796) at memory.h:118
+</I>&gt;<i> #10 0x0807c533 in m68k_go (may_quit=1) at newcpu.c:1709
+</I>&gt;<i> #11 0x08063e29 in M68000_Start () at m68000.c:224
+</I>&gt;<i> #12 0x08064969 in main (argc=11, argv=Cannot access memory at address 0x12b5
+</I>&gt;<i> ) at main.c:712
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> This happened with Falcon emulation when AceTracker (demo) switched
+</I>&gt;<i> from the GEM file selector back to the tracker screen that has a different
+</I>&gt;<i> resolution.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> First checking &quot;Pos&quot;...
+</I>&gt;<i>
+</I>&gt;<i> (gdb) up
+</I>&gt;<i> ...
+</I>&gt;<i> #6  0x0807493c in Video_AddInterrupt (Pos=-59622,
+</I>&gt;<i>    Handler=INTERRUPT_VIDEO_ENDLINE) at video.c:2539
+</I>&gt;<i> 2539                    Int_AddRelativeInterrupt ( Pos - LineCycles +
+</I>&gt;<i> nCyclesPerLine , INT_CPU_CYCLE, Handler );
+</I>&gt;<i> (gdb) info locals
+</I>&gt;<i> FrameCycles = 124766
+</I>&gt;<i> HblCounterVideo = 264
+</I>&gt;<i> LineCycles = 60534
+</I>&gt;<i> (gdb) up
+</I>&gt;<i> #7  0x08077772 in Video_Sync_WriteByte () at video.c:2552
+</I>&gt;<i> 2552            Video_AddInterrupt ( Pos , INTERRUPT_VIDEO_ENDLINE );
+</I>&gt;<i> (gdb) info locals
+</I>&gt;<i> FrameCycles = &lt;value optimized out&gt;
+</I>&gt;<i> HblCounterVideo = 264
+</I>&gt;<i> LineCycles = 60546
+</I>&gt;<i> Freq = 2 '\002'
+</I>&gt;<i>
+</I>&gt;<i> line 2552:
+</I>&gt;<i> --------
+</I>&gt;<i> static void Video_AddInterruptTimerB ( int Pos )
+</I>&gt;<i> {
+</I>&gt;<i>        Video_AddInterrupt ( Pos , INTERRUPT_VIDEO_ENDLINE );
+</I>&gt;<i> }
+</I>&gt;<i> --------
+</I>&gt;<i> Video_Sync_WriteByte () :
+</I>&gt;<i> --------
+</I>&gt;<i> ...
+</I>&gt;<i>                /* Update Timer B's position */
+</I>&gt;<i>                LineTimerBCycle = Video_TimerB_GetPos ( HblCounterVideo );
+</I>&gt;<i>                Video_AddInterruptTimerB ( LineTimerBCycle );
+</I>&gt;<i> ...
+</I>&gt;<i> ---------
+</I>&gt;<i> Video_TimerB_GetPos ():
+</I>&gt;<i> ---------
+</I>&gt;<i> int Video_TimerB_GetPos ( int LineNumber )
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i>        if ( ( IoMem[0xfffa03] &amp; ( 1 &lt;&lt; 3 ) ) == 0 )                    /*
+</I>&gt;<i> we're counting end of line events */
+</I>&gt;<i>        {
+</I>&gt;<i>                Pos = ShifterFrame.ShifterLines[
+</I>&gt;<i> LineNumber ].DisplayEndCycle + TIMERB_VIDEO_CYCLE_OFFSET;
+</I>&gt;<i>        }
+</I>&gt;<i>        else                                                            /*
+</I>&gt;<i> we're counting start of line events */
+</I>&gt;<i>        {
+</I>&gt;<i>                Pos = ShifterFrame.ShifterLines[
+</I>&gt;<i> LineNumber ].DisplayStartCycle + TIMERB_VIDEO_CYCLE_OFFSET;
+</I>&gt;<i>        }
+</I>&gt;<i> #endif
+</I>&gt;<i>        return Pos;
+</I>&gt;<i> ---------
+</I>&gt;<i>
+</I>&gt;<i> Nothing funny there though:
+</I>&gt;<i> ---------
+</I>&gt;<i> (gdb) print ShifterFrame.ShifterLines[ 264 ].DisplayStartCycle
+</I>&gt;<i> $3 = -1
+</I>&gt;<i> (gdb) print ShifterFrame.ShifterLines[264].DisplayEndCycle
+</I>&gt;<i> $4 = 376
+</I>&gt;<i> ---------
+</I>&gt;<i>
+</I>&gt;<i> And from how it's used:
+</I>&gt;<i> ---------
+</I>&gt;<i> static void Video_AddInterrupt ( int Pos , interrupt_id Handler )
+</I>&gt;<i> {
+</I>&gt;<i>        int FrameCycles , HblCounterVideo , LineCycles;
+</I>&gt;<i>
+</I>&gt;<i>        Video_GetPosition ( &amp;FrameCycles , &amp;HblCounterVideo , &amp;LineCycles );
+</I>&gt;<i>
+</I>&gt;<i>        if ( LineCycles &lt; Pos )                 /* changed before reaching
+</I>&gt;<i> the new Pos on the current line */
+</I>&gt;<i>                Int_AddRelativeInterrupt ( Pos - LineCycles , INT_CPU_CYCLE,
+</I>&gt;<i> Handler );
+</I>&gt;<i>        else                                    /* Pos will be applied on
+</I>&gt;<i> next line */
+</I>&gt;<i>                Int_AddRelativeInterrupt ( Pos - LineCycles +
+</I>&gt;<i> nCyclesPerLine , INT_CPU_CYCLE, Handler );
+</I>&gt;<i> }
+</I>&gt;<i> ------------
+</I>&gt;<i>
+</I>&gt;<i> I can see that Gdb shows the &quot;Pos&quot; value wrong in above backtrace because
+</I>&gt;<i> it gives the same value as for CycleTime which in above code will obviously
+</I>&gt;<i> gets a different value when LineCycles differs from zero.  So I think Pos
+</I>&gt;<i> value is fine.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Btw. If value's passed  in a register and this value doesn't need to be
+</I>&gt;<i> recovered after the function returns, GCC doesn't do that nor provide info
+</I>&gt;<i> about the previous value (in higher stack frames), at least for optimized
+</I>&gt;<i> code.
+</I>&gt;<i>
+</I>&gt;<i> One might not be able to trust local values either in optimized code, but
+</I>&gt;<i> static/global variables one can.  So...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> FrameCycles  value seems to be shown right:
+</I>&gt;<i> (gdb) print nCyclesCounter[1]
+</I>&gt;<i> $5 = 124766
+</I>&gt;<i>
+</I>&gt;<i> And LineCycles is the culprit:
+</I>&gt;<i> (gdb) print nHBL
+</I>&gt;<i> $6 = 263
+</I>&gt;<i> (gdb) print FrameCycles - ShifterFrame.ShifterLines[ nHBL ].StartCycle
+</I>&gt;<i> $7 = -63724
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> There seems to be a pretty obvious bug in Video_ConvertPosition():
+</I>&gt;<i> -------
+</I>&gt;<i>        *pHBL = nHBL;
+</I>&gt;<i>        *pLineCycles = FrameCycles - ShifterFrame.ShifterLines[
+</I>&gt;<i> nHBL ].StartCycle;
+</I>&gt;<i>
+</I>&gt;<i>        if ( *pLineCycles &lt; 0 )                                 /* reading
+</I>&gt;<i> from the previous video line */
+</I>&gt;<i>        {
+</I>&gt;<i>                *pHBL = nHBL-1;
+</I>&gt;<i>                *pLineCycles = FrameCycles - ShifterFrame.ShifterLines[
+</I>&gt;<i> nHBL ].StartCycle;
+</I>&gt;<i> ===&gt; &quot;nHBL&quot; instead of &quot;nHBL-1&quot;
+</I>&gt;<i>        }
+</I>&gt;<i>
+</I>&gt;<i>        else if ( *pLineCycles &gt;= nCyclesPerLine )              /* reading
+</I>&gt;<i> on the next line, but HBL int was delayed */
+</I>&gt;<i>        {
+</I>&gt;<i>                *pHBL = nHBL+1;
+</I>&gt;<i>                *pLineCycles -= nCyclesPerLine;
+</I>&gt;<i>        }
+</I>&gt;<i> -------
+</I>&gt;<i>
+</I>&gt;<i> I would rewrite this as:
+</I>&gt;<i> -------
+</I>&gt;<i>        *pLineCycles = FrameCycles - ShifterFrame.ShifterLines[
+</I>&gt;<i> nHBL ].StartCycle;
+</I>&gt;<i>
+</I>&gt;<i>        if ( *pLineCycles &lt; 0 )                                 /* reading
+</I>&gt;<i> from the previous video line */
+</I>&gt;<i>        {
+</I>&gt;<i>                assert(nHBL &gt; 0);
+</I>&gt;<i>                *pHBL = nHBL-1;
+</I>&gt;<i>                *pLineCycles = FrameCycles - ShifterFrame.ShifterLines[
+</I>&gt;<i> nHBL-1 ].StartCycle;
+</I>&gt;<i>                assert(*pLineCycles &gt;= 0);
+</I>&gt;<i>        }
+</I>&gt;<i>
+</I>&gt;<i>        else if ( *pLineCycles &gt;= nCyclesPerLine )              /* reading
+</I>&gt;<i> on the next line, but HBL int was delayed */
+</I>&gt;<i>        {
+</I>&gt;<i>                *pHBL = nHBL+1;
+</I>&gt;<i>                *pLineCycles -= nCyclesPerLine;
+</I>&gt;<i>        }
+</I>&gt;<i>        else
+</I>&gt;<i>                *pHBL = nHBL;
+</I>&gt;<i> -------
+</I>
+Yes, there could be a problem when *pLineCycles &lt; 0, I need to check this 
+next week, I'm away at the moment.
+
+As for rewriting the code, I prefer always doing the most common case all 
+the time, because the 2 ifs happen rarely, so you avoid a 'jump' with the 
+last else (and most of the time, it's less costly do always do an 
+assignement, than to do a potential jmp/bra)
+
+Nicolas
+
+
+&gt;<i>
+</I>&gt;<i> However, even that might not help because:
+</I>&gt;<i> (gdb) print FrameCycles - ShifterFrame.ShifterLines[ nHBL-1 ].StartCycle
+</I>&gt;<i> $8 = -63500
+</I>&gt;<i> (gdb) print FrameCycles - ShifterFrame.ShifterLines[ 200 ].StartCycle
+</I>&gt;<i> $9 = -47752
+</I>&gt;<i> (gdb) print FrameCycles - ShifterFrame.ShifterLines[ 100 ].StartCycle
+</I>&gt;<i> $10 = -22352
+</I>&gt;<i> (gdb) print FrameCycles - ShifterFrame.ShifterLines[ 50 ].StartCycle
+</I>&gt;<i> $11 = -9652
+</I>&gt;<i> (gdb) print FrameCycles - ShifterFrame.ShifterLines[ 25 ].StartCycle
+</I>&gt;<i> $12 = -4656
+</I>&gt;<i> (gdb) print FrameCycles - ShifterFrame.ShifterLines[ 0 ].StartCycle
+</I>&gt;<i> $13 = 0
+</I>&gt;<i>
+</I>&gt;<i> But hopefully that happened because of the above bug...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i> PS. The current code is pretty horrible read with the mass of ifdefs,
+</I>&gt;<i> I hope you can clean it soon. :-)
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000467.html">[hatari-devel] Interrupt assert triggered by video.c
+</A></li>
+	<LI>Next message: <A HREF="000501.html">[hatari-devel] Interrupt assert triggered by video.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#468">[ date ]</a>
+              <a href="thread.html#468">[ thread ]</a>
+              <a href="subject.html#468">[ subject ]</a>
+              <a href="author.html#468">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

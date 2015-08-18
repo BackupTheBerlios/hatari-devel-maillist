@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Joystick Button 2 patch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Joystick%20Button%202%20patch&In-Reply-To=%3C20090228092227.544ffd5a%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000182.html">
+   <LINK REL="Next"  HREF="000191.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Joystick Button 2 patch</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Joystick%20Button%202%20patch&In-Reply-To=%3C20090228092227.544ffd5a%40phineus%3E"
+       TITLE="[hatari-devel] Joystick Button 2 patch">th.huth at gmx.de
+       </A><BR>
+    <I>Sat Feb 28 09:22:27 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000182.html">[hatari-devel] Joystick Button 2 patch
+</A></li>
+        <LI>Next message: <A HREF="000191.html">[hatari-devel] Joystick Button 2 patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#189">[ date ]</a>
+              <a href="thread.html#189">[ thread ]</a>
+              <a href="subject.html#189">[ subject ]</a>
+              <a href="author.html#189">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 21 Feb 2009 16:13:55 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> I was mostly thinking of replacing the spacebar thingy and what you
+</I>&gt;<i> added to the configuration with a per joystick setting like:
+</I>&gt;<i> &quot;ButtonActions&quot;.
+</I>&gt;<i> 
+</I>&gt;<i> It could be a 16-bit value per joystick button where one byte would
+</I>&gt;<i> have bits for the:
+</I>&gt;<i> - 4 joystick directions
+</I>&gt;<i> - fire
+</I>&gt;<i> - shift/alt/control key modifiers
+</I>&gt;<i> and another byte would have a keycode to trigger.
+</I>&gt;<i> 
+</I>&gt;<i> Or maybe key modifiers should have byte of their own, then one could
+</I>&gt;<i> trigger also mouse button presses with any of the joysticks if needed.
+</I>&gt;<i> 
+</I>&gt;<i> This way one could tie buttons to about any input action (e.g. one
+</I>&gt;<i> button to left+up+fire, one to up, one to space, one to
+</I>&gt;<i> control+alt+del etc.).
+</I>&gt;<i> 
+</I>&gt;<i> The command line syntax could look like:
+</I>&gt;<i> *  --buttonactions&lt;port&gt; &lt;inputs&gt;
+</I>&gt;<i>    Trigger given input with buttons of joystick in given &lt;port&gt;.
+</I>&gt;<i>    See manual page for syntax on defining the inputs.
+</I>
+Sorry, but this sounds rather over-engeneered to me. Even I had to read
+your text three times until I really understood it - I think the normal
+user will be overextended by this. As long as it is not easy
+configurable in the GUI, too, this won't help anybody but you who wrote
+the code. And do we really really need fully configurable joystick
+buttons anyway? There are hardly any complaints about this on the
+mailing lists and forums...
+
+&gt;<i> And config file could look like this:
+</I>&gt;<i> -------
+</I>&gt;<i> [Joystick3]
+</I>&gt;<i> ButtonActions = ffff,00ab,0120
+</I>&gt;<i> --------
+</I>&gt;<i> (I think it would be clearest to give the values in hexadecimal.)
+</I>
+Note that for this you would certainly have to extend the config file
+parsing, too (it only supports one value per variable right now).
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000182.html">[hatari-devel] Joystick Button 2 patch
+</A></li>
+	<LI>Next message: <A HREF="000191.html">[hatari-devel] Joystick Button 2 patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#189">[ date ]</a>
+              <a href="thread.html#189">[ thread ]</a>
+              <a href="subject.html#189">[ subject ]</a>
+              <a href="author.html#189">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

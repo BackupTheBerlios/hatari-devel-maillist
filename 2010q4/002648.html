@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] A new disassembler in Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20new%20disassembler%20in%20Hatari&In-Reply-To=%3C201011190059.33032.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002659.html">
+   <LINK REL="Next"  HREF="002535.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] A new disassembler in Hatari</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20new%20disassembler%20in%20Hatari&In-Reply-To=%3C201011190059.33032.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] A new disassembler in Hatari">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Nov 18 23:59:32 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002659.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+        <LI>Next message: <A HREF="002535.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2648">[ date ]</a>
+              <a href="thread.html#2648">[ thread ]</a>
+              <a href="subject.html#2648">[ subject ]</a>
+              <a href="author.html#2648">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 18 November 2010, Markus Fritze wrote:
+&gt;<i> With a bit delay (work...) here is the new 68k disassembler. I've written
+</I>&gt;<i> it from scratch and tested it against IDA Pro (BTW: which has a BUNCH of
+</I>&gt;<i> bugs in 68k). It is plain drop-in: add the ZIP'd source to the project
+</I>&gt;<i> and remove the old m68k_disasm() routine from newcpu.c (as well as the
+</I>&gt;<i> leftovers from the old one).
+</I>
+Great, thanks!
+
+Others can comment how nice it's to use, I'll comment on bit on things
+in the code that might need improvement. :)
+
+* &quot;written by&quot; -&gt; &quot;copyright by&quot;
+
+* I don't think all pre-processors support '#' being anywhere else than
+  at the start of the line (&quot;define&quot; can be indented though):
+	#define MC68EC000	0x000002	// 16-/32-Bit Embedded Controller
+
+* You should use TAB size of 8, e.g. this looks pretty broken:
+---------
+       long    addr;                           // address of the label
+        Disass68kDataType       type;   // type of the data on the address
+        int             size;                           // size of the 
+label, references inside it are addressed via base address + offset
+        int             count;                          // number of 
+elements at this address with the given size
+        int             structIndex;            // -1 no struct to describe 
+the element
+        char    *name;                          // name of the label
+        char    *comment;                       // optional comment
+} disSymbolEntry;
+---------
+  (trying to keep most things within 80 cols instead of putting several
+   things on same line would be nice too.)
+
+* Disass68k() is huge function, maybe you could consider splitting it to
+  couple of subfunctions?
+
+* As far as I could see, your code wasn't using/showing normal debugger
+  symbols, nor profiler information.  Could that be added?
+
+
+&gt;<i> If you want: add the symbol files from Symbols.zip to the .hatari folder
+</I>&gt;<i> to get symbols (and more detailed ones for the TOS 3.06 and 4.04)
+</I>
+Those will be useful, but:
+
+* I think the current debugger symbol code could be easily extended
+   to support symbol size &amp; count and extra types, everything else except
+   structures.
+
+* Why OSX has separate binary versions of the symbols files?
+  (and debugger code?)
+
+
+&gt;<i> The disassembler can be fully configured via Diss68kOptions and
+</I>&gt;<i> optionCPUTypeMask as well the TAB settings. Check the beginning of the
+</I>&gt;<i> source. Somebody might want to add this to the preferences of Hatari.
+</I>
+I can do that later on.  Please add TODOs about those to suitable places in
+your code. :-)
+
+
+&gt;<i> The disassembler is able to deal with any 68k CPU (68000...68060, CPU32,
+</I>&gt;<i> FPU and PMMU) and should detect illegal opcodes based on the CPU mask.
+</I>
+Is there a function to get next instruction address which _doesn't_ print
+anything?
+
+
+	- Eero
+
+PS. As you have all the opcode tables, a potentially useful future addition
+could be a function that search for given instruction subset from memory,
+similarly to Monst...
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002659.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+	<LI>Next message: <A HREF="002535.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd	try)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2648">[ date ]</a>
+              <a href="thread.html#2648">[ thread ]</a>
+              <a href="subject.html#2648">[ subject ]</a>
+              <a href="author.html#2648">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

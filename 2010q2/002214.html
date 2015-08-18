@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari on OS X
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20on%20OS%20X&In-Reply-To=%3C4C017185.3010205%40wanadoo.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002211.html">
+   <LINK REL="Next"  HREF="002215.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari on OS X</H1>
+    <B>Jerome Vernet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20on%20OS%20X&In-Reply-To=%3C4C017185.3010205%40wanadoo.fr%3E"
+       TITLE="[hatari-devel] Hatari on OS X">vernet.jerome at wanadoo.fr
+       </A><BR>
+    <I>Sat May 29 21:56:53 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002211.html">[hatari-devel] Hatari on OS X
+</A></li>
+        <LI>Next message: <A HREF="002215.html">[hatari-devel] Hatari on OS X
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2214">[ date ]</a>
+              <a href="thread.html#2214">[ thread ]</a>
+              <a href="subject.html#2214">[ subject ]</a>
+              <a href="author.html#2214">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 29/05/10 13:26, Thomas Huth a &#233;crit :
+&gt;<i>
+</I>&gt;<i> I think it would be better to fix the &quot;poseAsClass&quot; problem in
+</I>&gt;<i> SDLMain.m instead of forcing a 32-bit build... The SDLMain.m from the
+</I>&gt;<i> latest SDL 1.2 has this problem fixed, so someone who is still able to
+</I>&gt;<i> build the OS X code should port this fix to our SDLMain.m, too.
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>It's done, see the included diff. Now, can be built in 64 Bits. I can 
+even build a Universal Binary 32/64 bits for ppc and x86.
+SDLMain.c and SDLMain.h are from SDL 1.12.14. Need to be (again) changed 
+to be used with SDL 1.3...
+
+I also made some change to localizations, Alert Windows now speak French 
+(not all messages yet) (and English, and everything someone want to 
+translate in) .
+
+After an disk image is created, it now ask for mount in drive A or B.
+
+I found (not corrected) a bug, when loading from the Preferences Panel 
+some config files, it crash. Only in the MacOsX GUI, not SDL-GUI. Cannot 
+yet find why.
+
+Can you tell me what did you change about the nForceBpp to 16 in MacOsX 
+Gui ?
+
+I will try on my iBook why it do not run under 10.4, but it should run 
+on a 10.5 Intel ppc (cannot test here, no 10.5).
+
+Jerome
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: gui-osx05292010.diff.gz
+Type: application/x-gzip
+Size: 9751 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100529/95ea3b2e/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100529/95ea3b2e/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002211.html">[hatari-devel] Hatari on OS X
+</A></li>
+	<LI>Next message: <A HREF="002215.html">[hatari-devel] Hatari on OS X
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2214">[ date ]</a>
+              <a href="thread.html#2214">[ thread ]</a>
+              <a href="subject.html#2214">[ subject ]</a>
+              <a href="author.html#2214">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

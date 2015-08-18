@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3Cc1a0d1561001170222n638572f6o85abaa1e6d7e032f%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001247.html">
+   <LINK REL="Next"  HREF="001257.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Christer Solskogen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3Cc1a0d1561001170222n638572f6o85abaa1e6d7e032f%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] CMake build system">christer.solskogen at gmail.com
+       </A><BR>
+    <I>Sun Jan 17 11:22:32 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001247.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001257.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1255">[ date ]</a>
+              <a href="thread.html#1255">[ thread ]</a>
+              <a href="subject.html#1255">[ subject ]</a>
+              <a href="author.html#1255">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, Jan 16, 2010 at 10:44 PM, Thomas H. &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">th.huth at gmx.de</A>&gt; wrote:
+&gt;<i> Hmm, could you try adding the following line somewhere before the FIND_PACKAGE_HANDLE_STANDARD_ARGS line in cmake/FindReadline.cmake:
+</I>&gt;<i>
+</I>&gt;<i> INCLUDE(FindPackageHandleStandardArgs)
+</I>&gt;<i>
+</I>
+With the last update from mercirual the output is different:
+tenderheart:hatari solskogen$ ./configure
+-- Found ZLIB: /usr/lib/libz.dylib
+-- Found PNG: /opt/local/lib/libpng.dylib
+-- Looking for XOpenDisplay in
+/opt/local/lib/libX11.dylib;/opt/local/lib/libXext.dylib
+-- Looking for XOpenDisplay in
+/opt/local/lib/libX11.dylib;/opt/local/lib/libXext.dylib - found
+-- Looking for gethostbyname
+-- Looking for gethostbyname - found
+-- Looking for connect
+-- Looking for connect - found
+-- Looking for remove
+-- Looking for remove - found
+-- Looking for shmat
+-- Looking for shmat - found
+-- Looking for IceConnectionNumber in ICE
+-- Looking for IceConnectionNumber in ICE - not found
+-- Found X11: /opt/local/lib/libX11.dylib
+-- Found PORTAUDIO: /opt/local/lib/libportaudio.dylib
+CMake Error at CMakeLists.txt:64 (check_include_files):
+  Unknown CMake command &quot;check_include_files&quot;.
+
+-- 
+chs
+
+-- 
+chs,
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001247.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001257.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1255">[ date ]</a>
+              <a href="thread.html#1255">[ thread ]</a>
+              <a href="subject.html#1255">[ subject ]</a>
+              <a href="author.html#1255">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

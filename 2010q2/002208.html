@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari on OS X (was: Suggestion about small	additions for v1.4)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20on%20OS%20X%20%28was%3A%20Suggestion%20about%20small%0A%09additions%20for%20v1.4%29&In-Reply-To=%3C20100529132619.31bc0bf6%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002182.html">
+   <LINK REL="Next"  HREF="002211.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari on OS X (was: Suggestion about small	additions for v1.4)</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20on%20OS%20X%20%28was%3A%20Suggestion%20about%20small%0A%09additions%20for%20v1.4%29&In-Reply-To=%3C20100529132619.31bc0bf6%40phineus%3E"
+       TITLE="[hatari-devel] Hatari on OS X (was: Suggestion about small	additions for v1.4)">huth at users.berlios.de
+       </A><BR>
+    <I>Sat May 29 13:26:19 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002182.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002211.html">[hatari-devel] Hatari on OS X
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2208">[ date ]</a>
+              <a href="thread.html#2208">[ thread ]</a>
+              <a href="subject.html#2208">[ subject ]</a>
+              <a href="author.html#2208">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 25 May 2010 22:47:06 +0200
+Jerome Vernet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">vernet.jerome at wanadoo.fr</A>&gt; wrote:
+
+&gt;<i> Le 25/05/10 22:19, Thomas Huth a &#233;crit :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Looks like there is a problem with creating an universal binary for
+</I>&gt;<i> &gt; the intermediate build68k program on your system... could you please
+</I>&gt;<i> &gt; comment out the following line in the top-most CMakeLists.txt and
+</I>&gt;<i> &gt; try if it works then:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   set(CMAKE_OSX_ARCHITECTURES &quot;i386;ppc&quot; CACHE STRING &quot;Target
+</I>&gt;<i> &gt;   architectures&quot; FORCE)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;    
+</I>&gt;<i> remove only &quot;;ppc&quot;. If not, under 10.6.3, gcc will try to build a
+</I>&gt;<i> x86_64 (by default) app, wich will cause error with SDL 1.2 (wich is
+</I>&gt;<i> NOT 64 bits on MacOsX and use deprecated interfaces with Cocoa
+</I>&gt;<i> 64Bits).
+</I>
+I think it would be better to fix the &quot;poseAsClass&quot; problem in
+SDLMain.m instead of forcing a 32-bit build... The SDLMain.m from the
+latest SDL 1.2 has this problem fixed, so someone who is still able to
+build the OS X code should port this fix to our SDLMain.m, too.
+
+Actually, it seems like Hatari now does not run properly on Mac OS X
+10.4 anymore - your new .nib files really seem only to work with 10.5
+upwards (I just checked it again with your latest update, Jerome).
+
+That means I (and most likely most other PowerPC users) can not use
+Hatari on OS X anymore, so I simply removed the &quot;;ppc&quot; from the
+CMakeLists.txt file now ==&gt; Support for Hatari on PowerMacs / Mac OS X
+older than 10.5 is now over, but at least the build problems with newer
+OS X versions should be fixed now.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002182.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002211.html">[hatari-devel] Hatari on OS X
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2208">[ date ]</a>
+              <a href="thread.html#2208">[ thread ]</a>
+              <a href="subject.html#2208">[ subject ]</a>
+              <a href="author.html#2208">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

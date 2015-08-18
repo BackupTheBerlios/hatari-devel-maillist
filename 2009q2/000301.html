@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Merged python-ui from sourceforge
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Merged%20python-ui%20from%20sourceforge&In-Reply-To=%3C20090529092404.67070bd6%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000300.html">
+   <LINK REL="Next"  HREF="000296.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Merged python-ui from sourceforge</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Merged%20python-ui%20from%20sourceforge&In-Reply-To=%3C20090529092404.67070bd6%40phineus%3E"
+       TITLE="[hatari-devel] Merged python-ui from sourceforge">huth at users.berlios.de
+       </A><BR>
+    <I>Fri May 29 09:24:04 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000300.html">[hatari-devel] Merged python-ui from sourceforge
+</A></li>
+        <LI>Next message: <A HREF="000296.html">[hatari-devel] Hatari --sound option update?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#301">[ date ]</a>
+              <a href="thread.html#301">[ thread ]</a>
+              <a href="subject.html#301">[ subject ]</a>
+              <a href="author.html#301">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 26 May 2009 22:53:30 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> &gt; I just tried to clean it up a little bit, 
+</I>&gt;<i> &gt; using &quot;hg export&quot; and &quot;hg import&quot; to replay the patches at the
+</I>&gt;<i> &gt; previous tip instead... looks much better now,
+</I>&gt;<i> 
+</I>&gt;<i> What I did was:
+</I>&gt;<i> ---------------------
+</I>&gt;<i> Get Hatari CVS repo from Sourceforge to a work dir:
+</I>&gt;<i>     mkdir repo; cd repo
+</I>&gt;<i>     rsync -av hatari.cvs.sourceforge.net::cvsroot/hatari/*
+</I>&gt;<i> 
+</I>&gt;<i> Point CVS to workdir:
+</I>&gt;<i>     export CVSROOT=/home/eero/repo
+</I>&gt;<i> 
+</I>&gt;<i> Checkout python-ui module:
+</I>&gt;<i>     mkdir checkout; cd checkout
+</I>&gt;<i>     cvs checkout python-ui
+</I>&gt;<i> 
+</I>&gt;<i> Convert it and its history to Mercurial repo:
+</I>&gt;<i>     hg convert python-ui
+</I>&gt;<i> 
+</I>&gt;<i> Mergeing that to main Hatari repo:
+</I>&gt;<i>     hg clone hatari-hg work         # pull from both repos...
+</I>&gt;<i>     cd work
+</I>&gt;<i>     hg pull -f ../python-ui-hg
+</I>&gt;<i>     hg update -C tip                # Now update to python-ui-hg
+</I>&gt;<i> tip... mkdir python-ui                 # And put things to subdir by 
+</I>&gt;<i> renaming...
+</I>&gt;<i>     hg rename &lt;dirs &amp; files&gt; python-ui
+</I>&gt;<i>     hg commit -m &quot;Move everything into python-ui directory.&quot;
+</I>&gt;<i> ---------------------
+</I>&gt;<i> 
+</I>&gt;<i> Could I have done at my end what you did?  How?
+</I>
+Since the files should be put into the python-ui folder, it was a
+little bit difficult: I first exported your patches with hg export :
+
+x=1851 ; while [ $x -lt 1968 ]; do \
+   hg export $x &gt; /tmp/patch-$x.txt ; let x=x+1; \
+done
+
+And then imported them again with these commands:
+
+for i in /tmp/patch-1*.txt ; do \
+  cat $i | sed 's,+++ b/,+++ b/python-ui/,' \
+     | sed 's,--- a/,--- a/python-ui/,' \
+     | hg import -u &quot;Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt;&quot; -d - \
+; done
+
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000300.html">[hatari-devel] Merged python-ui from sourceforge
+</A></li>
+	<LI>Next message: <A HREF="000296.html">[hatari-devel] Hatari --sound option update?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#301">[ date ]</a>
+              <a href="thread.html#301">[ thread ]</a>
+              <a href="subject.html#301">[ subject ]</a>
+              <a href="author.html#301">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

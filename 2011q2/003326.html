@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Questions about DMA sound clock cycles and timers in	general
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Questions%20about%20DMA%20sound%20clock%20cycles%20and%20timers%20in%0A%09general&In-Reply-To=%3C4DA20B91.1020206%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003324.html">
+   <LINK REL="Next"  HREF="003336.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Questions about DMA sound clock cycles and timers in	general</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Questions%20about%20DMA%20sound%20clock%20cycles%20and%20timers%20in%0A%09general&In-Reply-To=%3C4DA20B91.1020206%40free.fr%3E"
+       TITLE="[hatari-devel] Questions about DMA sound clock cycles and timers in	general">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Apr 10 21:57:05 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003324.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+        <LI>Next message: <A HREF="003336.html">[hatari-devel] Little trace question :
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3326">[ date ]</a>
+              <a href="thread.html#3326">[ thread ]</a>
+              <a href="subject.html#3326">[ subject ]</a>
+              <a href="author.html#3326">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I was just asking myself if the DMA sound doesn't take some Cycles bud 
+while reading datas from memory (or writing datas to memory for the 
+Falcon) ?
+
+If yes, I don't know if we take these extra cycles into account.
+What is this extra wait time consumed by the DMA ?
+
+Does the STE and the Falcon work the same for DMA sound ? (I mean, does 
+the Falcon DMAs (read and write) reload/rewrite their datas during the 
+HBL (to feed the 2x32 octets buffers) ?
+
+Is the DMA time taken by the STE and the Falcon the same ?
+
+
+A last question about some cycles timings used in newcpu.c :
+
+in exception_normal(), I can read the following cycles timings for 
+different interrupts.
+Are these timings the same for the falcon ?
+
+(I think also at the new DSP_interrupt added in MFP, which comes from 
+the combel in the real falcon)
+
+
+     /* Handle exception cycles (special case for MFP) */
+     if (ExceptionSource == M68000_EXC_SRC_INT_MFP)
+     {
+       M68000_AddCycles(44+12);            /* MFP interrupt, 'nr' can be 
+in a different range depending on $fffa17 */
+     }
+     else if (nr &gt;= 24 &amp;&amp; nr &lt;= 31)
+     {
+       if ( nr == 26 )                /* HBL */
+       {
+         /* store current cycle pos when then interrupt was received 
+(see video.c) */
+         LastCycleHblException = Cycles_GetCounter(CYCLES_COUNTER_VIDEO);
+         M68000_AddCycles(44+12);        /* Video Interrupt */
+       }
+       else if ( nr == 28 )             /* VBL */
+         M68000_AddCycles(44+12);        /* Video Interrupt */
+       else
+         M68000_AddCycles(44+4);            /* Other Interrupts */
+     }
+     else if(nr &gt;= 32 &amp;&amp; nr &lt;= 47)
+     {
+       M68000_AddCycles(34-4);            /* Trap (total is 34, but 
+cpuemu.c already adds 4) */
+     }
+     else switch(nr)
+     {
+       case 2: M68000_AddCycles(50); break;    /* Bus error */
+       case 3: M68000_AddCycles(50); break;    /* Address error */
+       case 4: M68000_AddCycles(34); break;    /* Illegal instruction */
+       case 5: M68000_AddCycles(38); break;    /* Div by zero */
+       case 6: M68000_AddCycles(40); break;    /* CHK */
+       case 7: M68000_AddCycles(34); break;    /* TRAPV */
+       case 8: M68000_AddCycles(34); break;    /* Privilege violation */
+       case 9: M68000_AddCycles(34); break;    /* Trace */
+       case 10: M68000_AddCycles(34); break;    /* Line-A - probably 
+wrong */
+       case 11: M68000_AddCycles(34); break;    /* Line-F - probably 
+wrong */
+       default:
+         /* FIXME: Add right cycles value for MFP interrupts and copro 
+exceptions ... */
+         if(nr &lt; 64)
+           M68000_AddCycles(4);            /* Coprocessor and unassigned 
+exceptions (???) */
+         else
+           M68000_AddCycles(44+12);        /* Must be a MFP or DSP 
+interrupt */
+         break;
+     }
+
+
+
+Regards
+
+Laurent
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003324.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+	<LI>Next message: <A HREF="003336.html">[hatari-devel] Little trace question :
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3326">[ date ]</a>
+              <a href="thread.html#3326">[ thread ]</a>
+              <a href="subject.html#3326">[ subject ]</a>
+              <a href="author.html#3326">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

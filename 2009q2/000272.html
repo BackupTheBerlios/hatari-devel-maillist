@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari dsp debug mode ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20dsp%20debug%20mode%20%3F&In-Reply-To=%3C200904261545.57284.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000271.html">
+   <LINK REL="Next"  HREF="000273.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari dsp debug mode ?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20dsp%20debug%20mode%20%3F&In-Reply-To=%3C200904261545.57284.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari dsp debug mode ?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Apr 26 14:45:57 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000271.html">[hatari-devel] Hatari dsp debug mode ?
+</A></li>
+        <LI>Next message: <A HREF="000273.html">[hatari-devel] Hatari dsp debug mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#272">[ date ]</a>
+              <a href="thread.html#272">[ thread ]</a>
+              <a href="subject.html#272">[ subject ]</a>
+              <a href="author.html#272">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 26 April 2009, Laurent Sallafranque wrote:
+&gt;<i> I've added the very first code to DSP dd debug.
+</I>&gt;<i>
+</I>&gt;<i> Eero, it seems there's a bug (I haven't found it), if you could find it,
+</I>&gt;<i> that would be great.
+</I>&gt;<i>
+</I>&gt;<i> If you do :
+</I>&gt;<i>
+</I>&gt;<i> dd  : it seems to be ok
+</I>&gt;<i> dd ffe0 : it displays code from ffe0 to ffff (seems ok)
+</I>
+The default is supposed to be a small number of lines disassembed
+because you're (supposed to be) able to continue it just by pressing Enter.
+
+
+&gt;<i> dd 100 200 : it displays code from adress 100 to ffff (not OK)
+</I>
+As the help says, the correct syntax is 100-200.  Debugger interprets
+above as single value &quot;100&quot;.  The reason why it continues to ffff is that
+you forced single value to do that.  Which I think is incorrect, see above.
+
+(It took a while to notice because you had done indentation changes
+and removed the debugging while this functionality is still unfininished...)
+
+
+&gt;<i> I've modified the dsp_disasm.c code to display the opcode of the
+</I>&gt;<i> instruction currently debugged.
+</I>&gt;<i>
+</I>&gt;<i> A line looks like this : Dsp:  opcode  -  instruction.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> There's still something missing I'll try to upload today. Some Dsp
+</I>&gt;<i> instructions are 1 dsp Word length, some other are 2 dsp word length.
+</I>&gt;<i> This is not implemented into Dsp_disasm.c
+</I>&gt;<i> this results in some strange code disassembling sometimes.
+</I>
+You should also change the DSP emu disassembly code to return
+the next address to disassemble and set disassembly address in
+the debugui.c to that so that &quot;Enter&quot; works correctly.
+
+
+&gt;<i> Thomas, for the #define DSP_DISASM 0 (or 1, or undefined), I think we
+</I>&gt;<i> should remove it from ds_cpu.c and keep only
+</I>&gt;<i> #define DSP_DISASM_INST 0    /* Instructions */
+</I>&gt;<i> #define DSP_DISASM_REG 0    /* Registers changes */
+</I>&gt;<i> #define DSP_DISASM_MEM 0    /* Memory changes */
+</I>&gt;<i> #define DSP_DISASM_INTER 0    /* Interrupts */
+</I>&gt;<i> #define DSP_DISASM_STATE 0    /* State change */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Like this, if we need to active disasm_reg or disasm_memory, it would
+</I>&gt;<i> work. I don't think this would make us loose CPU_time (perhaps a few more
+</I>&gt;<i> bytes in memory).
+</I>
+dsp_postexecute_update_pc() has some stuff that is done when just DSP_DISASM
+is enabled.
+
+
+&gt;<i> Do you agree ?
+</I>
+Why the disassembly is done within the emulation (e.g. DSP_DISASM_MEM
+replaces memory access operations), couldn't it be done only within the
+debugger (at least once there's breakpoint support)?
+
+
+Btw. If it would be for tracing, then it should be protected by the Hatari
+tracing defines (see includes/log.h &amp; log.c).  For example this stuff in
+dsp_core.c is clearly about tracing:
+--------------
+/* More disasm infos, if wanted */
+#define DSP_DISASM_HOSTREAD 0   /* Dsp-&gt;Host transfer */
+#define DSP_DISASM_HOSTWRITE 0  /* Host-&gt;Dsp transfer */
+#define DSP_DISASM_STATE 0      /* State changes */
+--------------
+
+(The point about tracing is that besides it being possible to disable it
+completely at build time with *configure*, you can enable&amp;disable parts of
+it at run-time.)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000271.html">[hatari-devel] Hatari dsp debug mode ?
+</A></li>
+	<LI>Next message: <A HREF="000273.html">[hatari-devel] Hatari dsp debug mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#272">[ date ]</a>
+              <a href="thread.html#272">[ thread ]</a>
+              <a href="subject.html#272">[ subject ]</a>
+              <a href="author.html#272">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

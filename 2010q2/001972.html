@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling support to Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3C201005042133.58869.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001969.html">
+   <LINK REL="Next"  HREF="001973.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling support to Hatari debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3C201005042133.58869.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Profiling support to Hatari debugger">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue May  4 20:33:58 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001969.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="001973.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1972">[ date ]</a>
+              <a href="thread.html#1972">[ thread ]</a>
+              <a href="subject.html#1972">[ subject ]</a>
+              <a href="author.html#1972">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 04 May 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> &gt; What about the global CurrentInstrCycles variable value?
+</I>&gt;<i>
+</I>&gt;<i> It's not always correct ; it's more like a &quot;basis&quot;, but some instructions
+</I>&gt;<i> have a &quot;dynamic&quot; time (asr, lsr, movem, ...) that depend on the operand.
+</I>&gt;<i> CurrentInstrCycles is useful for some classes of instruction often
+</I>&gt;<i> related to overscan timing, but it's sometimes a rough approximation.
+</I>
+Ok, I could start testing with that.
+
+Btw. I was thinking of adding some statistics output to the CPU profile,
+_separately_ for each of the RAM, Cartridge ROM and ROM TOS memory area:
+- min and max execution addresses
+- total number of cycles and instructions executed
+- max and min cycles &amp; counts (min meaning smallest value larger than zero)
+
+With some profiling code refactoring, it should also be possible to show the
+cycles &amp; counts for each instruction in the debugger disassembly output.
+I'm already storing these values per address, so there's no sense in
+throwing this information away pre-maturely. :-)
+
+
+&gt;<i> In the end, &quot;cycles = (*cpufunctbl[opcode])(opcode)&quot; is the real value
+</I>&gt;<i> for the opcode.
+</I>&gt;<i>
+</I>&gt;<i> &gt; Or maybe use Cycles_GetCounter(CYCLES_COUNTER_CPU)?
+</I>&gt;<i>
+</I>&gt;<i> CYCLES_COUNTER_CPU counts the number of cycles for the instruction + the
+</I>&gt;<i> time needed to process some interruption/exception that could occur at
+</I>&gt;<i> the same time, so it may be a little more that the time taken by
+</I>&gt;<i> instruction at a specific PC (also this counter is only set when DSP mode
+</I>&gt;<i> is enabled, as it's not needed for ST/STE emulation).
+</I>&gt;<i>
+</I>&gt;<i> In your case, &quot;cycles&quot; above + nWaitStateCycles is really the time taken
+</I>&gt;<i> by an instruction (all overscan timings are based on this value).
+</I>
+So as a conclusion...  To get the correct cycles spent by instruction
+execution, I should use:
+	uae_u32 opcode = get_iword_prefetch (0);
+	cycles = (*cpufunctbl[opcode])(opcode) + nWaitStateCycles;
+?
+
+Will that work fine also in non-compatible CPU mode which seems
+e.g. to be using get_iword(0) instead of get_iword_prefetch (0)?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001969.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="001973.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1972">[ date ]</a>
+              <a href="thread.html#1972">[ thread ]</a>
+              <a href="subject.html#1972">[ subject ]</a>
+              <a href="author.html#1972">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

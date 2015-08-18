@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Re : DSP host interface interrupted mode : help needed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Re%20%3A%20DSP%20host%20interface%20interrupted%20mode%20%3A%20help%0A%20needed&In-Reply-To=%3C4AAFF947.10606%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000691.html">
+   <LINK REL="Next"  HREF="000708.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Re : DSP host interface interrupted mode : help needed</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Re%20%3A%20DSP%20host%20interface%20interrupted%20mode%20%3A%20help%0A%20needed&In-Reply-To=%3C4AAFF947.10606%40free.fr%3E"
+       TITLE="[hatari-devel] Re : DSP host interface interrupted mode : help needed">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Sep 15 22:29:59 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000691.html">[hatari-devel] Re : DSP host interface interrupted mode : help needed
+</A></li>
+        <LI>Next message: <A HREF="000708.html">[hatari-devel] Re : DSP host interface interrupted mode : help needed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#695">[ date ]</a>
+              <a href="thread.html#695">[ thread ]</a>
+              <a href="subject.html#695">[ subject ]</a>
+              <a href="author.html#695">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've added a new function to dsp.c
+
+Dsp_get_HREQ()
+
+It can take 2 values :
+0 = no interrupt
+0x8000 = interrupt
+
+Regards
+
+Laurent
+
+
+Thomas Huth a &#233;crit :
+&gt;<i> On Mon, 14 Sep 2009 15:40:38 +0200
+</I>&gt;<i> LAURENT SALLAFRANQUE &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">LAURENT.SALLAFRANQUE at ARKEA.COM</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i>  From what I've understood of the google traduction of the german 
+</I>&gt;&gt;<i> message :), it seems that the DSP sends its interrupt to the COMBEL
+</I>&gt;&gt;<i> chip and not directly to the MFP chip. The COMBEL gather MFP and DSP 
+</I>&gt;&gt;<i> interrupts at level 6, and interrupts the 68030.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> But, as the COMBEL isn't adressable by software (it's a pure hardware 
+</I>&gt;&gt;<i> chip) and as the MFP does already a big part of the COMBEL job, could
+</I>&gt;&gt;<i> we imagine to just upgrade the actual MFP code to MFP/COMBEL chip 
+</I>&gt;&gt;<i> management. We could add the lightgun interrupt later if needed ;)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Like this, the DSP interrupt could be easily added to the MFP code
+</I>&gt;&gt;<i> (at interrupt level 6).
+</I>&gt;&gt;<i> I think, the level of interrupt musn't be too high, as the DSP is 
+</I>&gt;&gt;<i> waiting for the host to feed him with datas.
+</I>&gt;&gt;<i> That's not crucial (as a VSYNC is for example).
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Well, we have to make sure that we run the interrupt at the right
+</I>&gt;<i> priority or software might crash. Imagine for example, that a programs
+</I>&gt;<i> uses both, VBL and DSP interrupt. When the DSP interrupt routine is
+</I>&gt;<i> suddenly interrupted by the VBL routine (which certainly can not happen
+</I>&gt;<i> on a real Falcon), then it have strange side effects...
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> As I don't know well the MFP part, would you (Thomas), add the
+</I>&gt;&gt;<i> interrupt ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> (I can add the &quot;dsp_get_HREQ()&quot; function in dsp.c if you want it to
+</I>&gt;&gt;<i> be coded this way).
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Ok, please prepare the code, then tell me where I can add the code that
+</I>&gt;<i> should trigger the interrupt, then I'll have a try.
+</I>&gt;<i>
+</I>&gt;<i>  Thomas
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000691.html">[hatari-devel] Re : DSP host interface interrupted mode : help needed
+</A></li>
+	<LI>Next message: <A HREF="000708.html">[hatari-devel] Re : DSP host interface interrupted mode : help needed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#695">[ date ]</a>
+              <a href="thread.html#695">[ thread ]</a>
+              <a href="subject.html#695">[ subject ]</a>
+              <a href="author.html#695">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

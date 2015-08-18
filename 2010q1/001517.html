@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Road Riot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Road%20Riot&In-Reply-To=%3C4B82C2E9.40005%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001516.html">
+   <LINK REL="Next"  HREF="001518.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Road Riot</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Road%20Riot&In-Reply-To=%3C4B82C2E9.40005%40free.fr%3E"
+       TITLE="[hatari-devel] Road Riot">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Feb 22 18:46:17 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001516.html">[hatari-devel] Road Riot
+</A></li>
+        <LI>Next message: <A HREF="001518.html">[hatari-devel] Just for fun : Winrec under hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1517">[ date ]</a>
+              <a href="thread.html#1517">[ thread ]</a>
+              <a href="subject.html#1517">[ subject ]</a>
+              <a href="author.html#1517">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Just to complete my precedent mail : if I use the DSP stack patch, AFM 
+doesn't run anymore.
+
+Regards,
+
+Laurent
+
+
+Laurent Sallafranque a &#233;crit :
+&gt;<i> The lines to comment to avoid the stack error are :
+</I>&gt;<i>
+</I>&gt;<i> diff -r b277f94e5575 src/falcon/dsp_cpu.c
+</I>&gt;<i> --- a/src/falcon/dsp_cpu.c      Sat Feb 20 09:55:49 2010 +0100
+</I>&gt;<i> +++ b/src/falcon/dsp_cpu.c      Mon Feb 22 10:48:43 2010 +0100
+</I>&gt;<i> @@ -1145,17 +1145,17 @@
+</I>&gt;<i>         dsp_core-&gt;registers[DSP_REG_SP] = (underflow | stack_error |
+</I>&gt;<i> stack) &amp; BITMASK(6);
+</I>&gt;<i>         stack &amp;= BITMASK(4);
+</I>&gt;<i>
+</I>&gt;<i> -       if (stack) {
+</I>&gt;<i> +//     if (stack) {
+</I>&gt;<i>                 /* SSH part */
+</I>&gt;<i>                 dsp_core-&gt;stack[0][stack] = curpc &amp; BITMASK(16);
+</I>&gt;<i>                 /* SSL part, if instruction is not like &quot;MOVEC xx, SSH&quot;  */
+</I>&gt;<i>                 if (sshOnly == 0) {
+</I>&gt;<i>                         dsp_core-&gt;stack[1][stack] = cursr &amp; BITMASK(16);
+</I>&gt;<i>                 }
+</I>&gt;<i> -       } else {
+</I>&gt;<i> -               dsp_core-&gt;stack[0][0] = 0;
+</I>&gt;<i> -               dsp_core-&gt;stack[1][0] = 0;
+</I>&gt;<i> -       }
+</I>&gt;<i> +//     } else {
+</I>&gt;<i> +//             dsp_core-&gt;stack[0][0] = 0;
+</I>&gt;<i> +//             dsp_core-&gt;stack[1][0] = 0;
+</I>&gt;<i> +//     }
+</I>&gt;<i>
+</I>&gt;<i>         /* Update SSH and SSL registers */
+</I>&gt;<i>         dsp_core-&gt;registers[DSP_REG_SSH] = dsp_core-&gt;stack[0][stack];
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> With this, RoadRiot works, (sound is not nice).
+</I>&gt;<i> (I didn't know this game, I really don't like it ;)
+</I>&gt;<i>
+</I>&gt;<i> Build in obsolescence works too (but freezes latter on a black screen).
+</I>&gt;<i> Some more programs may run better (those with stack problems).
+</I>&gt;<i>
+</I>&gt;<i> But again, I don't know if the problem is in this part of the code or
+</I>&gt;<i> somewhere else.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> any advise ?
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001516.html">[hatari-devel] Road Riot
+</A></li>
+	<LI>Next message: <A HREF="001518.html">[hatari-devel] Just for fun : Winrec under hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1517">[ date ]</a>
+              <a href="thread.html#1517">[ thread ]</a>
+              <a href="subject.html#1517">[ subject ]</a>
+              <a href="author.html#1517">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Suggestion about small additions for v1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3CAANLkTilJR4g7BIovqhQW4YZP9Nj18HhBnmpfmQpuNbd4%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002102.html">
+   <LINK REL="Next"  HREF="002110.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Suggestion about small additions for v1.4</H1>
+    <B>K&#229;re Andersen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3CAANLkTilJR4g7BIovqhQW4YZP9Nj18HhBnmpfmQpuNbd4%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Suggestion about small additions for v1.4">kareandersen at gmail.com
+       </A><BR>
+    <I>Thu May 13 20:10:12 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002102.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002110.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2108">[ date ]</a>
+              <a href="thread.html#2108">[ thread ]</a>
+              <a href="subject.html#2108">[ subject ]</a>
+              <a href="author.html#2108">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, May 13, 2010 at 7:16 PM,  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt; wrote:
+&gt;<i> On Thu, 13 May 2010, K&#229;re Andersen wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> However, the onscreen elements can certainly be made to look a lot nicer
+</I>&gt;&gt;<i> if we replace then with alpha blended, well designed graphics... If we can
+</I>&gt;&gt;<i> get some that is :D
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> So, not only we need more coders, but you're asking for pixel artists too ?
+</I>&gt;<i> :)
+</I>
+
+Dreaming my friends, just dreaming :)
+
+Anyway, I came over this, causing my ugly hardcoded 32 bit GL &quot;blit&quot;
+to crash (yes i will clean it up before submitting anything);
+
+in PrefsController.m at line 787 (atleast before committing Jeromes
+patches), there is this line:
+
+	ConfigureParams.Screen.nForceBpp = ([force8bpp state] == NSOnState) ? 8 : 16;
+
+This means, whenever you touch the OS X GUI and bpp != 8 (NEVER
+happens) you get nforceBpp = 16 in the config file. Ouch. So, not only
+is performance already troubled by the lousy SDL 1.2 implementation on
+OS X - hatari OS X GUI is making it go an extra round and convert it
+up to 32bpp... This makes no sense.
+
+-Kaare
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002102.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002110.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2108">[ date ]</a>
+              <a href="thread.html#2108">[ thread ]</a>
+              <a href="subject.html#2108">[ subject ]</a>
+              <a href="author.html#2108">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

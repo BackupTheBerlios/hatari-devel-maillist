@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Inconsistency when renaming file on GEMDOS drive
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Inconsistency%20when%20renaming%20file%20on%20GEMDOS%20drive&In-Reply-To=%3C20100109115932.GA11537%40quattro.seimet.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001183.html">
+   <LINK REL="Next"  HREF="001194.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Inconsistency when renaming file on GEMDOS drive</H1>
+    <B>Uwe Seimet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Inconsistency%20when%20renaming%20file%20on%20GEMDOS%20drive&In-Reply-To=%3C20100109115932.GA11537%40quattro.seimet.de%3E"
+       TITLE="[hatari-devel] Inconsistency when renaming file on GEMDOS drive">Uwe.Seimet at seimet.de
+       </A><BR>
+    <I>Sat Jan  9 12:59:32 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001183.html">[hatari-devel] GEMDOS HD emulation broken?
+</A></li>
+        <LI>Next message: <A HREF="001194.html">[hatari-devel] Inconsistency when renaming file on GEMDOS drive
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1187">[ date ]</a>
+              <a href="thread.html#1187">[ thread ]</a>
+              <a href="subject.html#1187">[ subject ]</a>
+              <a href="author.html#1187">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+When renaming a write-protected (by GEMDOS) file on a GEMDOS drive I get
+a strange effect. The filename is HDDRIVER.PRG. When trying to rename it
+to HDDRIVER.PR nothing happens except for this error message:
+
+GEMDOS missing read/write permission to file '/home/us/TT.hatari/C/AUTO/HDDRIVER.PRG'
+
+But when renaming HDDRIVER.PRG to HDDRIVER.PRX renaming the file works,
+even though I get the same error message.
+
+Something seems to be inconsistent here, as if the outcome of renaming a
+file depends on the length of the filename/extension.
+
+Best regards
+
+Uwe
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001183.html">[hatari-devel] GEMDOS HD emulation broken?
+</A></li>
+	<LI>Next message: <A HREF="001194.html">[hatari-devel] Inconsistency when renaming file on GEMDOS drive
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1187">[ date ]</a>
+              <a href="thread.html#1187">[ thread ]</a>
+              <a href="subject.html#1187">[ subject ]</a>
+              <a href="author.html#1187">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

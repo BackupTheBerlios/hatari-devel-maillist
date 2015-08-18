@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3C4D23485B.1080105%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002735.html">
+   <LINK REL="Next"  HREF="002736.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3C4D23485B.1080105%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Jan  4 17:18:35 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002735.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002736.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2737">[ date ]</a>
+              <a href="thread.html#2737">[ thread ]</a>
+              <a href="subject.html#2737">[ subject ]</a>
+              <a href="author.html#2737">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 03/01/2011 09:06, David Savinkoff a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I have tested and solved this problem on my system with hatari 1.4.0
+</I>&gt;<i> and the latest sources.
+</I>&gt;<i>
+</I>&gt;<i> ****
+</I>&gt;<i> In audio.c :
+</I>&gt;<i> SoundBufferSize = desiredAudioSpec.size;
+</I>&gt;<i> SoundBufferSize /= 4;
+</I>&gt;<i>
+</I>&gt;<i> Is replaced with:
+</I>&gt;<i> SoundBufferSize = desiredAudioSpec.samples;
+</I>&gt;<i>
+</I>&gt;<i> I believe the intention now agrees with the result (as it still works) :)
+</I>&gt;<i>
+</I>&gt;<i> ****
+</I>&gt;<i> In sound.c :
+</I>&gt;<i> MixBuffer[][] latency is now controlled.
+</I>&gt;<i>
+</I>&gt;<i> The change here is what controls the sound latency without
+</I>&gt;<i> compromising sound quality. I now get tactile sound response
+</I>&gt;<i> from the keys when i use tos206.us (60 Hz) at any sampling rate.
+</I>&gt;<i>
+</I>&gt;<i> For approx 16 millisecond response I use:
+</I>&gt;<i> hatari --sound-buffer-size 16
+</I>&gt;<i>
+</I>&gt;<i> or place:
+</I>&gt;<i> nSdlAudioBufferSize = 16
+</I>&gt;<i> in:
+</I>&gt;<i> hatari.cfg
+</I>&gt;<i> ****
+</I>&gt;<i> David
+</I>
+
+Hello,
+
+I agree that the first patch for audio.c should not cause problem (it's 
+mostly cosmetic) since samples * 4 = size in our case.
+
+But regarding the modification you propose in sound.c, I'm still not 
+convinced that it's the correct way to go.
+
+Going back to the discussion we had in may 2010, I still don't find it 
+logical that changing the size of the internal Hatari's working buffer 
+should affect the output sound from SDL.
+
+I agree that changing the desired &quot;samples&quot; (with nSdlAudioBufferSize) 
+will impact the latency and the rate at which SDL audio callbacks are made.
+
+But I still consider that reducing the size of the working buffer is 
+just hiding a real problem by a shorter size of the ring buffer.
+
+In your case, using (SoundBufferSize&lt;&lt;1) might be good, but what if some 
+(buggy ?) alsa drivers for other sound cards had a delay twice as big as 
+yours ? With a shorter working buffer and a bigger delay than yours, it 
+could be completly possible that we overwrite data currently being 
+played by SDL by the new data being computed by Hatari in sound.c
+
+Maybe this constant delay you have is something that can only be 
+controled at the alsa level, or maybe a newer SDL version would handle 
+alsa better if that's the cause ?
+
+Have you been able to test with a more recent kernel or with SDL 1.2.14 ?
+Also, do you have the possibility to install pulseaudio to see if you 
+get better results than when using alsa directly ?
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002735.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002736.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2737">[ date ]</a>
+              <a href="thread.html#2737">[ thread ]</a>
+              <a href="subject.html#2737">[ subject ]</a>
+              <a href="author.html#2737">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

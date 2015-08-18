@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New STE DMA audio emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C4E10EE26.3020703%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003634.html">
+   <LINK REL="Next"  HREF="003637.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New STE DMA audio emulation</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C4E10EE26.3020703%40corp.free.fr%3E"
+       TITLE="[hatari-devel] New STE DMA audio emulation">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jul  4 00:33:10 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003634.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+        <LI>Next message: <A HREF="003637.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3636">[ date ]</a>
+              <a href="thread.html#3636">[ thread ]</a>
+              <a href="subject.html#3636">[ subject ]</a>
+              <a href="author.html#3636">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 03/07/2011 23:34, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On perjantai 01 hein&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;<i> Please test this new version with all your favorite STE programs. For
+</I>&gt;&gt;<i> great results, don't forget to run Hextracker which gives really clear
+</I>&gt;&gt;<i> output even with 7 voices or more.
+</I>&gt;<i>
+</I>&gt;<i> Sounds is much better now.
+</I>&gt;<i>
+</I>&gt;<i> Btw.  Have you noticed that Hextracker mouse doesn't track host mouse
+</I>&gt;<i> properly in windowed mode?  After using Hextracker for a while, I cannot
+</I>&gt;<i> anymore move mouse cursor to a place where I could click on &quot;Play&quot;...
+</I>
+hello,
+
+No, I didn't really use the tracker, except for starting a mod.
+
+But I noticed that if I lock the mouse in windowed mode 'alt+m', after a 
+while the mouse was unlocked again and could exit Hatari's window (this 
+seems to be triggered when loading a module and having the tos' 
+fileselector displayed, but I'm not sure if there's a relation ?)
+
+
+&gt;<i>
+</I>&gt;<i> Some other notes about sound:
+</I>&gt;<i> * R0x doesn't anymore give messages mentioned in compat list:
+</I>&gt;<i>    &quot;DMA snd: Illegal buffer size (from 0x0 to 0x0)&quot;
+</I>
+The error (which is in ROx) is still there, it's just that I don't print 
+an error anymore as this case is handled by the dma's emulation.
+
+&gt;<i> * Paradox Xmas-2004 scroller music has strange skips
+</I>
+I don't hear them ; do you mean the dma sound or the ym sound, what part 
+of the demo is that in ?
+
+&gt;<i> * In many demos and some games STE sound has much less volume
+</I>&gt;<i>    than ST sound (e.g. PowerUp game supports both &quot;ST&quot; and &quot;STE&quot;
+</I>&gt;<i>    sounds and STE one has maybe half the volume of ST one)
+</I>
+DMA's volume should not have changed in the modifications I made, I 
+think it was already like that before.
+
+But it's true the lowpass filter is lowering the volume a little ; David 
+Savinkoff certainly knows this better than me (I don't have an STE to 
+compare the volume difference).
+
+
+&gt;<i>
+</I>&gt;&gt;<i> In order to fix this, I added a new file clocks_timings.c ; the purpose
+</I>&gt;&gt;<i> of this file is to put all the hardware's clocks informations for all
+</I>&gt;&gt;<i> emulated Atari machines in a single file. This file then provides some
+</I>&gt;&gt;<i> functions to compute the exact values of VBL per sec, length of a VBL in
+</I>&gt;&gt;<i> micro sec, ...
+</I>&gt;<i>
+</I>&gt;<i> Some comments on the changes (from newer to older):
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> * Is the ifdeffed &quot;old_code&quot;&amp;  &quot;olddma&quot;&amp;  &quot;nofifo&quot; stuff still needed?
+</I>&gt;<i>
+</I>&gt;<i>    There were also couple of compiler warnings:
+</I>&gt;<i> ---
+</I>&gt;<i> [ 56%] Building C object src/CMakeFiles/hatari.dir/dmaSnd.c.o
+</I>&gt;<i> src/dmaSnd.c:354: warning: &#8216;DmaSnd_FIFO_ReadByte&#8217; defined but not used
+</I>&gt;<i> src/dmaSnd.c:372: warning: &#8216;DmaSnd_FIFO_ReadWord&#8217; defined but not used
+</I>&gt;<i> ---
+</I>
+Those are parts of the &quot;I will clean the code once no one reports 
+regression in new dma code&quot; :)
+
+
+&gt;<i>
+</I>&gt;<i> * <A HREF="http://hg.berlios.de/repos/hatari/rev/df8c0a09d846">http://hg.berlios.de/repos/hatari/rev/df8c0a09d846</A>
+</I>&gt;<i>
+</I>&gt;<i> -&gt;  It's a bit ugly to do init on uninit phase, but I think it's also best
+</I>&gt;<i>     to do the re-init if machine needs reset (not just when machine type
+</I>&gt;<i>     changes), because that takes into account also changing e.g. TV to mono
+</I>&gt;<i>     monitor (HZ change).
+</I>
+What phase is &quot;uninit&quot; ? ClocksTimings_InitMachine is called when 
+machine changes, which seems enough to me, I don't see what you call 
+&quot;uninit&quot;.
+Calling ClocksTimings_InitMachine when video freq change is not 
+necessary, the machine's clocks don't depend on the chosen video freq 
+(that's why video freq is a parameter of some other functions in 
+clocks_timings.c)
+
+
+&gt;<i>
+</I>&gt;<i> -&gt;  ClocksTimings_InitMachine() call doesn't belong to dlgSystem.c,
+</I>&gt;<i>     it should be done where the changes are applied (why calling
+</I>&gt;<i>     it in change.c wouldn't be enough?)
+</I>
+It's possible I left some redundant calls, I will check that.
+
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> * <A HREF="http://hg.berlios.de/repos/hatari/rev/065cb494bb3f">http://hg.berlios.de/repos/hatari/rev/065cb494bb3f</A>
+</I>&gt;<i>
+</I>&gt;<i> -&gt;  &quot;the number of cpu cycles per second is not a multiple of the number
+</I>&gt;<i>     of cpu cycles per second.&quot;
+</I>&gt;<i>     - did you mean instructions?
+</I>
+I meant &quot;VBL&quot; :)
+
+&gt;<i> -&gt;  There are several functions like this:
+</I>&gt;<i> ----
+</I>&gt;<i> Uint32  ClocksTimings_GetVBLPerSec ( MACHINETYPE MachineType , int
+</I>&gt;<i> ScreenRefreshRate )
+</I>&gt;<i> {
+</I>&gt;<i>          Uint32  VBLPerSec;
+</I>&gt;<i> /* Upper 8 bits are for int part, 24 lower bits for float part */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>          VBLPerSec = ScreenRefreshRate&lt;&lt;  24;
+</I>&gt;<i> /* default rounded value */
+</I>&gt;<i>
+</I>&gt;<i>          if ( RoundVBLPerSec == false )
+</I>&gt;<i>          {
+</I>&gt;<i>                  /* STF and STE have the same numbers of cycles per VBL */
+</I>&gt;<i>                  if ( ( MachineType == MACHINE_ST ) || ( MachineType ==
+</I>&gt;<i> MACHINE_STE ) )
+</I>&gt;<i>                          VBLPerSec = ( (Sint64)MachineClocks.CPU_Freq&lt;&lt;  24 )
+</I>&gt;<i> / ClocksTimings_GetCyclesPerVBL ( MachineType , ScreenRefreshRate );
+</I>&gt;<i>
+</I>&gt;<i>                  /* For machines where cpu freq can be changed, we don't know
+</I>&gt;<i> the number of cycles per VBL */
+</I>&gt;<i>                  /* -&gt;  comment code to keep the default value from above */
+</I>&gt;<i>                  //else if ( ( MachineType == MACHINE_MEGA_STE ) || (
+</I>&gt;<i> MachineType == MACHINE_TT ) || ( MachineType == MACHINE_FALCON ) )
+</I>&gt;<i>                  //      VBLPerSec = ScreenRefreshRate&lt;&lt;  24;
+</I>&gt;<i>          }
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>          return VBLPerSec;
+</I>&gt;<i> }
+</I>&gt;<i> ----
+</I>&gt;<i>
+</I>&gt;<i> Why not just do something like this:
+</I>&gt;<i> ----
+</I>&gt;<i> Uint32  ClocksTimings_GetVBLPerSec ( MACHINETYPE MachineType , int
+</I>&gt;<i> ScreenRefreshRate )
+</I>&gt;<i> {
+</I>&gt;<i>          if ( RoundVBLPerSec == false )
+</I>&gt;<i>          {
+</I>&gt;<i>                  /* STF and STE have the same numbers of cycles per VBL */
+</I>&gt;<i>                  if ( ( MachineType == MACHINE_ST ) || ( MachineType ==
+</I>&gt;<i> MACHINE_STE ) )
+</I>&gt;<i>                          return ( (Sint64)MachineClocks.CPU_Freq&lt;&lt;  24 ) /
+</I>&gt;<i> ClocksTimings_GetCyclesPerVBL ( MachineType , ScreenRefreshRate );
+</I>&gt;<i>          }
+</I>&gt;<i>
+</I>&gt;<i>          /* Upper 8 bits are for int part, 24 lower bits for float part */
+</I>&gt;<i>          return ScreenRefreshRate&lt;&lt;  24;
+</I>&gt;<i>
+</I>&gt;<i> }
+</I>&gt;<i> ----
+</I>&gt;<i> ?
+</I>
+I did this on purpose to emphasize the fact that MEGA_STE, TT and FALCON 
+should eventually be handled with their own special case ; so I prefer 
+leaving a commented code that does nothing to make it clear that those 
+machines need a customised value too.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003634.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+	<LI>Next message: <A HREF="003637.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3636">[ date ]</a>
+              <a href="thread.html#3636">[ thread ]</a>
+              <a href="subject.html#3636">[ subject ]</a>
+              <a href="author.html#3636">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

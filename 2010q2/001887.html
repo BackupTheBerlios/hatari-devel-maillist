@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Problem in falcon mode ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%20falcon%20mode%20%3F&In-Reply-To=%3C201004212051.52558.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001886.html">
+   <LINK REL="Next"  HREF="001889.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Problem in falcon mode ?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%20falcon%20mode%20%3F&In-Reply-To=%3C201004212051.52558.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Problem in falcon mode ?">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Apr 21 19:51:52 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001886.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+        <LI>Next message: <A HREF="001889.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1887">[ date ]</a>
+              <a href="thread.html#1887">[ thread ]</a>
+              <a href="subject.html#1887">[ subject ]</a>
+              <a href="author.html#1887">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 21 April 2010, Laurent Sallafranque wrote:
+&gt;<i> Ok, I've sold my cmake problem by installing Gcc-c++ package.
+</I>&gt;<i>
+</I>&gt;<i> Cmake compiles well now.
+</I>
+I don't see why the errors you get would be g++ related, as Hatari's
+not compiled with that.
+
+Do you still get these issues resulting from something in portaudio:
+---------
+-- Looking for cfmakeraw
+CMake Error at CMakeLists.txt:9 (ADD_EXECUTABLE):
+  Target &quot;cmTryCompileExec&quot; links to item &quot; /usr/lib/libportaudio.so&quot; which
+  has leading or trailing whitespace.  This is now an error according to
+  policy CMP0004.
+
+CMake Error: Internal CMake error, TryCompile generation of cmake failed
+-- Looking for cfmakeraw - not found
+---------
+?
+
+
+&gt;<i> But when I try make, it doesn't compile (and there are some warnings) :
+</I>&gt;<i> [ 79%] Building C object src/CMakeFiles/hatari.dir/rs232.c.o
+</I>&gt;<i> /home/laurent/Atari/hatari/src/rs232.c:57: error: static declaration of
+</I>&gt;<i> &#8216;cfmakeraw&#8217; follows non-static declaration
+</I>&gt;<i> /usr/include/termios.h:77: note: previous declaration of &#8216;cfmakeraw&#8217; was
+</I>&gt;<i> here
+</I>&gt;<i> make[2]: *** [src/CMakeFiles/hatari.dir/rs232.c.o] Erreur 1
+</I>
+Your problem seems to be that portaudio somehow messes up CMake
+cfmakeraw() detection and therefore Hatari will use it's own version
+instead.  Which naturally conflicts with the system one...
+
+
+Portaudio being related to audio might explain also other audio related 
+issues...
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001886.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+	<LI>Next message: <A HREF="001889.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1887">[ date ]</a>
+              <a href="thread.html#1887">[ thread ]</a>
+              <a href="subject.html#1887">[ subject ]</a>
+              <a href="author.html#1887">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

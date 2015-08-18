@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CC0ACD7.9010006%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002542.html">
+   <LINK REL="Next"  HREF="002554.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CC0ACD7.9010006%40free.fr%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Oct 21 23:12:55 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002542.html">[hatari-devel] Catching trap exit?
+</A></li>
+        <LI>Next message: <A HREF="002554.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2553">[ date ]</a>
+              <a href="thread.html#2553">[ thread ]</a>
+              <a href="subject.html#2553">[ subject ]</a>
+              <a href="author.html#2553">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've uploaded a draft version of my work (for archiving).
+It compiles until newcpu.c
+
+I've only modified 1 common file : m68000.h
+
+I think l I've changed 2 lines (20.43 and 20.51) :
+
+    20.42  &lt;<A HREF="http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.42">http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.42</A>&gt;  -/* bus access mode */
+    20.43  &lt;<A HREF="http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.43">http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.43</A>&gt;  +/* bus acces mode */
+    20.44  &lt;<A HREF="http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.44">http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.44</A>&gt;   #define	BUS_MODE_CPU		0			/* bus is owned by the cpu */
+    20.45  &lt;<A HREF="http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.45">http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.45</A>&gt;   #define	BUS_MODE_BLITTER	1			/* bus is owned by the blitter */
+    20.46  &lt;<A HREF="http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.46">http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.46</A>&gt;
+    20.47  &lt;<A HREF="http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.47">http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.47</A>&gt;  @@ -284,7 +262,7 @@
+    20.48  &lt;<A HREF="http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.48">http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.48</A>&gt;   extern void M68000_Start(void);
+    20.49  &lt;<A HREF="http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.49">http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.49</A>&gt;   extern void M68000_CheckCpuLevel(void);
+    20.50  &lt;<A HREF="http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.50">http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.50</A>&gt;   extern void M68000_MemorySnapShot_Capture(bool bSave);
+    20.51  &lt;<A HREF="http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.51">http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.51</A>&gt;  -extern void M68000_BusError(Uint32 addr, bool bRead);
+    20.52  &lt;<A HREF="http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.52">http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.52</A>&gt;  +extern void M68000_BusError(Uint32 addr, bool bReadWrite);
+    20.53  &lt;<A HREF="http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.53">http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.53</A>&gt;   extern void M68000_Exception(Uint32 ExceptionVector , int ExceptionSource);
+    20.54  &lt;<A HREF="http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.54">http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.54</A>&gt;   extern void M68000_WaitState(int nCycles);
+    20.55  &lt;<A HREF="http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.55">http://hg.berlios.de/repos/hatari/rev/6eeb9583fed9#l20.55</A>&gt;
+
+
+Don't hesitate to upload previous version of these 2 lines if necessary.
+
+If you have comments about this winuae hack (or if you want to help me), 
+it's always a pleasure to hear from you.
+
+Regards,
+
+Laurent
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20101021/9ff437b1/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20101021/9ff437b1/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002542.html">[hatari-devel] Catching trap exit?
+</A></li>
+	<LI>Next message: <A HREF="002554.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2553">[ date ]</a>
+              <a href="thread.html#2553">[ thread ]</a>
+              <a href="subject.html#2553">[ subject ]</a>
+              <a href="author.html#2553">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

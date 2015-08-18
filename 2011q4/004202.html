@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Stereo DC filtering which accounts for DMA sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Stereo%20DC%20filtering%20which%20accounts%20for%20DMA%20sound&In-Reply-To=%3C22289112.876913.1321824754315.JavaMail.nitido%40priv-edtnes89%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004199.html">
+   <LINK REL="Next"  HREF="004204.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Stereo DC filtering which accounts for DMA sound</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Stereo%20DC%20filtering%20which%20accounts%20for%20DMA%20sound&In-Reply-To=%3C22289112.876913.1321824754315.JavaMail.nitido%40priv-edtnes89%3E"
+       TITLE="[hatari-devel] Stereo DC filtering which accounts for DMA sound">dsavnkff at telus.net
+       </A><BR>
+    <I>Sun Nov 20 22:32:34 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004199.html">[hatari-devel] X + op head cycles
+</A></li>
+        <LI>Next message: <A HREF="004204.html">[hatari-devel] Stereo DC filtering which accounts for DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4202">[ date ]</a>
+              <a href="thread.html#4202">[ thread ]</a>
+              <a href="subject.html#4202">[ subject ]</a>
+              <a href="author.html#4202">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 06/11/2011 04:57, David Savinkoff wrote:
+&gt;<i> Hi Nicolas,
+</I>&gt;<i>
+</I>&gt;<i> &quot;The Seven Gates of Jambala&quot; on the Madness Demo has a noticeable
+</I>&gt;<i> difference in ambience. The stereo bass jumps and bounces from
+</I>&gt;<i> ear to ear because of shifting phase with the current DC filter.
+</I>&gt;<i> The stereo bass sounds refined, tight and proper with the new
+</I>&gt;<i> IIR filter (which performs identically to a first order Analog
+</I>&gt;<i> filter - eg. resistor + capacitor in the ST).
+</I>&gt;<i> Use headphones to examine the ambience closely.
+</I>&gt;<i>
+</I>
+Hello
+
+I got time to test your patch, but I didn't hear such difference as you
+said with &quot;7 gates of jambala&quot; in STE mode or SH11INV in STF mode.
+
+At least, that's good news, because there's no quality regression, but I
+don't hear differences using headphone.
+
+For instance, I don't understand what you mean by &quot;jump from ear to ear&quot;
+? Do you mean sound goes from left channel to right channel ?
+
+
+***DS***
+The effect is subtle, similar to being in a live room, and listening
+to the ambience in different locations.
+********
+
+If so, that would be a bug in the previous dmaSnd.c file, but not an
+effect of the filter. There're 2 functions DmaSnd_LowPassFilterLeft and
+DmaSnd_LowPassFilterRight, and as Madness uses stereo output, I don't
+see how sound could go from one ear to the other ?
+
+
+***DS***
+The Madness demo is stereo, my filter is after the YM2149 and DMA.
+Thus I'm hearing the ambience difference between YM*dc-block +
+stereoDMA*no-dc-block And (YM + stereoDMA)*IIR-dc-block.
+Mathematically different. It would be better if SDL did not need
+dc blocking.
+********
+
+Anyway, if this patch is &quot;mathematically&quot; more correct than the previous
+one, I can apply it, it's just that I don't hear the differences (maybe
+others do ? You can try by getting hatari 1.5 sources and applying the 3
+patches sent on 4/11/2011 by David).
+
+By the way, you say this emulates an RC filter ; but what are the values
+for R and C in the case of your patch ?
+
+
+***DS***
+This patch is mathematically more correct because it emulates analog
+electronics with transfer functions based on actual circuits.
+
+For the Atari STf: (using ac/dc analysis and transistor gain)
+R is about 3800 ohms and C is 100 microfarads.
+This would make a high pass filter cutoff frequency of:
+f = 1/(2*pi*3800*100e-6) = 0.42 Hz. My filter is measured to be 11 Hz.
+
+My frequency is better because:
+1) Atari could have done better with a 3.9 microfarad capacitor.
+--- DC blocking should be a reasonable subsonic filter because
+--- very low frequencies are indistinguishable from DC.
+2) This filter is to prevent SDL from popping and clicking. (see 1)
+
+One can test the sound by replacing C11 on an STf (see schematics)
+with a 25 volt, 3.9 microfarad multilayer ceramic capacitor.
+*******
+
+Thanks
+
+Nicolas
+
+Thanks
+David
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004199.html">[hatari-devel] X + op head cycles
+</A></li>
+	<LI>Next message: <A HREF="004204.html">[hatari-devel] Stereo DC filtering which accounts for DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4202">[ date ]</a>
+              <a href="thread.html#4202">[ thread ]</a>
+              <a href="subject.html#4202">[ subject ]</a>
+              <a href="author.html#4202">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

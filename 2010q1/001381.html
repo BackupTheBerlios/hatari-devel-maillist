@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Whip is working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Whip%20is%20working&In-Reply-To=%3C4B620A6E.70802%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001377.html">
+   <LINK REL="Next"  HREF="001394.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Whip is working</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Whip%20is%20working&In-Reply-To=%3C4B620A6E.70802%40free.fr%3E"
+       TITLE="[hatari-devel] Whip is working">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Jan 28 23:06:38 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001377.html">[hatari-devel] Whip is working
+</A></li>
+        <LI>Next message: <A HREF="001394.html">[hatari-devel] Whip is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1381">[ date ]</a>
+              <a href="thread.html#1381">[ thread ]</a>
+              <a href="subject.html#1381">[ subject ]</a>
+              <a href="author.html#1381">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+You're right with the chain, but there's no DMA activity at all.
+There should be a DMA start playing and start recording, but nothing in 
+the traces.
+It's at address $ff8901.
+
+I've included the full crossbar trace.
+
+Very strange...
+
+Regards,
+
+Laurent
+
+
+Crossbar : $ff8936 (record track select) write: 0x00
+Crossbar : $ff8937 (CODEC input) write: 0x00       
+Crossbar : $ff8936 (record track select) write: 0x00
+Crossbar : $ff8937 (CODEC input) write: 0x01       
+Crossbar : $ff8938 (ADC input) write: 0x00         
+Crossbar : $ff8939 (CODEC channel amplification) write: 0x88
+Crossbar : $ff8938 (ADC input) write: 0x00                 
+Crossbar : $ff8939 (CODEC channel amplification) write: 0x88
+Crossbar : $ff8930 (source device) write: 0x0081           
+Crossbar : $ff8932 (destination device) write: 0x0080      
+Crossbar : $ff8920 (sound mode control) write: 0x00        
+crossbar : $ff8921 (additional sound mode control) write: 0x03
+Crossbar : $ff8920 (sound mode control) write: 0x00
+crossbar : $ff8921 (additional sound mode control) write: 0x43
+Crossbar : $ff8930 (source device) write: 0x0080
+Crossbar : $ff8930 (source device) write: 0x0080
+Crossbar : $ff8930 (source device) write: 0x0081
+Crossbar : $ff8934 (ext. clock divider) write: 0x00
+Crossbar : $ff8935 (int. clock divider) write: 0x00
+Crossbar : $ff8934 (ext. clock divider) write: 0x00
+Crossbar : $ff8935 (int. clock divider) write: 0x02
+Crossbar : $ff8932 (destination device) write: 0x0080
+Crossbar : $ff8930 (source device) write: 0x0081
+Crossbar : $ff8930 (source device) write: 0x0081
+Crossbar : $ff8930 (source device) write: 0x0091
+Crossbar : $ff8934 (ext. clock divider) write: 0x00
+Crossbar : $ff8935 (int. clock divider) write: 0x00
+Crossbar : $ff8934 (ext. clock divider) write: 0x00
+Crossbar : $ff8935 (int. clock divider) write: 0x02
+Crossbar : $ff8932 (destination device) write: 0x0080
+Crossbar : $ff8930 (source device) write: 0x0091
+Crossbar : $ff8930 (source device) write: 0x0091
+Crossbar : $ff8930 (source device) write: 0x0191
+Crossbar : $ff8934 (ext. clock divider) write: 0x00
+Crossbar : $ff8935 (int. clock divider) write: 0x00
+Crossbar : $ff8934 (ext. clock divider) write: 0x00
+Crossbar : $ff8935 (int. clock divider) write: 0x02
+Crossbar : $ff8932 (destination device) write: 0x0080
+Crossbar : $ff8930 (source device) write: 0x0191
+Crossbar : $ff8934 (ext. clock divider) write: 0x00
+Crossbar : $ff8935 (int. clock divider) write: 0x00
+Crossbar : $ff8934 (ext. clock divider) write: 0x00
+Crossbar : $ff8935 (int. clock divider) write: 0x02
+Crossbar : $ff8932 (destination device) write: 0x00f0
+Crossbar : $ff8900 (Sound DMA control) write: 0x00
+Crossbar : $ff8901 (additional Sound DMA control) write: 0x00
+
+
+
+
+
+Thomas Huth a &#233;crit :
+&gt;<i> On Wed, 27 Jan 2010 22:17:48 +0200
+</I>&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Wednesday 27 January 2010, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>  From what I see, there's no output sound configured (or there's
+</I>&gt;&gt;&gt;<i> something I miss) :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> $FF8930 : DMA Crossbar Input Select Controller  : 0191
+</I>&gt;&gt;&gt;<i> $FF8932 : DMA Crossbar Output Select Controller : 00f0
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> (info crossbar is a really nice option in debugger :)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> This means (for me) that only ADC is connected to DSP in, but the
+</I>&gt;&gt;&gt;<i> DAC output is connected to DMA out (not DSP out).
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i>
+</I>&gt;<i> But DMA input is connected to the DSP output, right? So I think you've
+</I>&gt;<i> got this chain:
+</I>&gt;<i>
+</I>&gt;<i> Mic -&gt; ADC -&gt; DSP in -&gt; DSP out -&gt; DMA in -&gt; DMA out -&gt; DAC -&gt; Speaker
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> Does Whip plays the sound from the microphone on a real Falcon ?
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> I have no idea, I didn't have a Falcon (a friend who kept Atari BBS
+</I>&gt;&gt;<i> in 90's had a modded one, but I don't recall seeing Whip on it).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Maybe somebody on the list can (test and) tell?
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> As far as I can remember, the answer is yes. I sometimes used Whip, and
+</I>&gt;<i> it played the music through the speakers that I've connected to the
+</I>&gt;<i> Falcon.
+</I>&gt;<i>
+</I>&gt;<i>  Thomas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001377.html">[hatari-devel] Whip is working
+</A></li>
+	<LI>Next message: <A HREF="001394.html">[hatari-devel] Whip is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1381">[ date ]</a>
+              <a href="thread.html#1381">[ thread ]</a>
+              <a href="subject.html#1381">[ subject ]</a>
+              <a href="author.html#1381">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

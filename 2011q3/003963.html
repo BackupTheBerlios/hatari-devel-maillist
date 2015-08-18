@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Could you all test this on hatari falcon new core and real hardware please ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Could%20you%20all%20test%20this%20on%20hatari%20falcon%20new%0A%20core%20and%20real%20hardware%20please%20%3F&In-Reply-To=%3C4E556F01.6020101%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003962.html">
+   <LINK REL="Next"  HREF="003952.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Could you all test this on hatari falcon new core and real hardware please ?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Could%20you%20all%20test%20this%20on%20hatari%20falcon%20new%0A%20core%20and%20real%20hardware%20please%20%3F&In-Reply-To=%3C4E556F01.6020101%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Could you all test this on hatari falcon new core and real hardware please ?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Aug 24 23:37:05 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003962.html">[hatari-devel] Could you all test this on hatari falcon new core and real hardware please ?
+</A></li>
+        <LI>Next message: <A HREF="003952.html">[hatari-devel] 2 automations disks games that seem not to work with	the old CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3963">[ date ]</a>
+              <a href="thread.html#3963">[ thread ]</a>
+              <a href="subject.html#3963">[ subject ]</a>
+              <a href="author.html#3963">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 24/08/2011 23:05, Laurent Sallafranque a &#233;crit :
+&gt;<i> Just a though: Did you disable really all interrupts before starting
+</I>&gt;<i> your benchmark loop? I had a quick look at your sourcecode, and you
+</I>&gt;<i> disable the MFP interrupts there, but I did not see that you've
+</I>&gt;<i> increased the IPL to disable VBL interrupts? So if some VBL interrupts
+</I>&gt;<i> occur during your measurement, these might mess up the results. That
+</I>&gt;<i> might also be an explanation for the differences, since the VBLs are
+</I>&gt;<i> not emulated correctly in Falcon mode yet, are they?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> What changes would you suggest in my source ?
+</I>&gt;<i>
+</I>&gt;<i> VBL is not yet implemented, but as I do STOP #$2300 (to wait a VBL) and
+</I>&gt;<i> then I loop 100, 500 or 1000 NOPS, I thought there can't be a VBL (it
+</I>&gt;<i> should be more than 100 000 cycles, no ?)
+</I>
+You can add after stopping mfp :
+
+	move.l	#Int_Empty,$70.w
+
+If a VBL int is very long, it could delay the stop 2300 too much and 
+then your wait loop could be interrupted by the next vbl (especially for 
+the 10000 case).
+
+Putting an empty vbl can not hurt.
+
+
+I don't think the 68030 runs too fast, the cycle count should be correct 
+(that's just some nops, 4 cycles). Then the dsp number of cycles for 
+each run is computed from the 68030 number of cycles, so this should not 
+be wrong (if we assume 16 MHz for cpu and 32 for dsp)
+
+Possible problem could be that the dsp doesn't emulate some instruction 
+cases with the correct number of cycles, and this would create the 
+observed difference.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003962.html">[hatari-devel] Could you all test this on hatari falcon new core and real hardware please ?
+</A></li>
+	<LI>Next message: <A HREF="003952.html">[hatari-devel] 2 automations disks games that seem not to work with	the old CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3963">[ date ]</a>
+              <a href="thread.html#3963">[ thread ]</a>
+              <a href="subject.html#3963">[ subject ]</a>
+              <a href="author.html#3963">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

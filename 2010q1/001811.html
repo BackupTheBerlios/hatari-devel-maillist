@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] LMC1992 and Microwire emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C201003312240.14758.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001809.html">
+   <LINK REL="Next"  HREF="001813.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] LMC1992 and Microwire emulation</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C201003312240.14758.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] LMC1992 and Microwire emulation">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Mar 31 21:40:14 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001809.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+        <LI>Next message: <A HREF="001813.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1811">[ date ]</a>
+              <a href="thread.html#1811">[ thread ]</a>
+              <a href="subject.html#1811">[ subject ]</a>
+              <a href="author.html#1811">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 31 March 2010, Anders Eriksson wrote:
+&gt;<i> I've tested the latest Hatari as of this morning.
+</I>&gt;<i>
+</I>&gt;<i> The bass/treble levels seems better, but still not quite on level
+</I>&gt;<i> with a real STe. Also it leaves some high-pitch noise sound now and then.
+</I>&gt;<i>
+</I>&gt;<i> Example: <A HREF="http://ae.dhs.nu/tmp/phazer_hg4.mp3">http://ae.dhs.nu/tmp/phazer_hg4.mp3</A>
+</I>&gt;<i> From real STe: <A HREF="http://ae.dhs.nu/tmp/phazer_ste.mp3">http://ae.dhs.nu/tmp/phazer_ste.mp3</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I also tested a couple of other STe-demos and found qute bad sound
+</I>&gt;<i> distortion, examples:
+</I>&gt;<i>
+</I>&gt;<i> 1. Dynamite demo by Unit 17
+</I>&gt;<i>   - Demo: <A HREF="http://pouet.net/prod.php?which=30915">http://pouet.net/prod.php?which=30915</A>
+</I>&gt;<i>   - Hatari mp3: <A HREF="http://ae.dhs.nu/tmp/dynamite_20100331.mp3">http://ae.dhs.nu/tmp/dynamite_20100331.mp3</A>
+</I>
+
+Bad:
+
+In their E.P.S.S. demo, one channel doesn't seem to sound at all.
+(There's one volume bar moving at the beginning of the demo, but
+no sound is heard.)
+
+And after the demo has been running for maybe 5 minutes, it aborts with:
+hatari: cycInt.c:377: CycInt_AddRelativeInterruptWithOffset: Assertion 
+`CycleTime &gt;= 0' failed.
+Aborted
+
+
+STE stereo music is again broken in PowerUp game.
+
+Zero-5 game demo startup sound is still broken.
+
+I think Utopos demo sound is better than last week but still has glitches &amp;
+scratches.
+
+Sound volume in Cream's Madness music demo is now really, really low.
+
+Last two are regressions from Hatari 1.3.x.
+
+
+Good:
+
+Attackwave sound is still OK (better than before patches).
+
+If in &quot;Penta&quot; game one selects both &quot;Music and effects&quot;, there were sound
+glitches when moving the focus in game menu, that's now fixed (or at least
+better).
+
+
+&gt;<i> 2. Songs of the unexpected by OUCH
+</I>&gt;<i>   - Demo: <A HREF="http://pouet.net/prod.php?which=22398">http://pouet.net/prod.php?which=22398</A>
+</I>&gt;<i>   - Hatari mp3: <A HREF="http://pouet.net/prod.php?which=22398">http://pouet.net/prod.php?which=22398</A>
+</I>&gt;<i>
+</I>&gt;<i> I did not notice much if any difference between 44100, 48000 or 50066 Hz
+</I>&gt;<i> settings in Hatari.
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001809.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+	<LI>Next message: <A HREF="001813.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1811">[ date ]</a>
+              <a href="thread.html#1811">[ thread ]</a>
+              <a href="subject.html#1811">[ subject ]</a>
+              <a href="author.html#1811">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

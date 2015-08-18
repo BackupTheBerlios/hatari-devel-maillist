@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mahabharata demo problem ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mahabharata%20demo%20problem%20%3F&In-Reply-To=%3C201101122346.15617.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002775.html">
+   <LINK REL="Next"  HREF="002779.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mahabharata demo problem ?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mahabharata%20demo%20problem%20%3F&In-Reply-To=%3C201101122346.15617.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Mahabharata demo problem ?">oak at helsinkinet.fi
+       </A><BR>
+    <I>Wed Jan 12 22:46:15 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002775.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+        <LI>Next message: <A HREF="002779.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2777">[ date ]</a>
+              <a href="thread.html#2777">[ thread ]</a>
+              <a href="subject.html#2777">[ subject ]</a>
+              <a href="author.html#2777">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 12 tammikuu 2011, Laurent Sallafranque wrote:
+&gt;<i> I get the following message on the console :
+</I>&gt;<i> 
+</I>&gt;<i> Configuration file /etc/hatari.cfg not found.
+</I>&gt;<i> Hatari devel (Jan 12 2011), compiled on:  Jan 12 2011, 22:14:32
+</I>&gt;<i> GEMDOS HDD emulation, C: &lt;-&gt; /media/0470BC8670BC7FCA/Jeux/Atari.
+</I>&gt;<i> bt_audio_service_open: connect() failed: Connection refused (111)
+</I>&gt;<i> bt_audio_service_open: connect() failed: Connection refused (111)
+</I>&gt;<i> bt_audio_service_open: connect() failed: Connection refused (111)
+</I>&gt;<i> bt_audio_service_open: connect() failed: Connection refused (111)
+</I>
+Bluetooth headset audio (from pulseaudio?)?
+
+
+&gt;<i> XIO:  fatal IO error 104 (Connection reset by peer) on X server &quot;:0.0&quot;
+</I>&gt;<i>        after 197 requests (195 known processed) with 0 events remaining.
+</I>&gt;<i> 
+</I>&gt;<i> Le 12/01/2011 22:35, Laurent Sallafranque a &#233;crit :
+</I>&gt;<i> &gt; Hello,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I don't know what happen, but when I launch the Mahabharata
+</I>&gt;<i> &gt; &lt;<A HREF="http://pouet.net/prod.php?which=990">http://pouet.net/prod.php?which=990</A>&gt; demo
+</I>
+In fullscreen I guess?
+
+
+&gt;<i> &gt; with the latest hatari, all
+</I>&gt;<i> &gt; my linux applications close, my linux cession close too. I have to
+</I>&gt;<i> &gt; sign me to return to my gnome environment. (of course, hatari is
+</I>&gt;<i> &gt; closed too)
+</I>
+X server crashes and gets restarted by your X session manager?
+
+-&gt; Look into your X log why X crashed.
+
+
+&gt;<i> &gt; Do you encounter something similar ?
+</I>&gt;<i> &gt; It seems to do this only with this demo (maybe something related to
+</I>&gt;<i> &gt; Eero's patch about strange screen's size) ?
+</I>
+It's possible that SDL resolution changes (for fullscreen) trigger
+a bug in your graphics driver.  What graphics card and driver for
+it you have?
+
+
+&gt;<i> &gt; I test it again.
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002775.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+	<LI>Next message: <A HREF="002779.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2777">[ date ]</a>
+              <a href="thread.html#2777">[ thread ]</a>
+              <a href="subject.html#2777">[ subject ]</a>
+              <a href="author.html#2777">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

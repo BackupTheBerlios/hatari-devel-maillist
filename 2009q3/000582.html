@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari VDI mode colors issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20VDI%20mode%20colors%20issue&In-Reply-To=%3Calpine.LMD.2.00.0908140007130.17555%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000577.html">
+   <LINK REL="Next"  HREF="000583.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari VDI mode colors issue</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20VDI%20mode%20colors%20issue&In-Reply-To=%3Calpine.LMD.2.00.0908140007130.17555%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Hatari VDI mode colors issue">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Aug 14 00:17:30 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000577.html">[hatari-devel] Hatari VDI mode colors issue
+</A></li>
+        <LI>Next message: <A HREF="000583.html">[hatari-devel] Hatari VDI mode colors issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#582">[ date ]</a>
+              <a href="thread.html#582">[ thread ]</a>
+              <a href="subject.html#582">[ subject ]</a>
+              <a href="author.html#582">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 12 Aug 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Wednesday 12 August 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;&gt;<i> Your latest version in the repo seems to have fixed things for 2 &amp; 4
+</I>&gt;&gt;&gt;<i> planes, but the 1-plane (mono) mode shows still inversed.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Very strange, you mean just the fact to return from Video_Sync_WriteByte
+</I>&gt;&gt;<i> when bUseVDIRes is true ?
+</I>&gt;<i>
+</I>&gt;<i> So it seemed.
+</I>&gt;<i>
+</I>
+I tried to have a look at the vdi rendering code, as this could be related 
+to inverted colors in the palette, but vdi mode in 2 colors doesn't use 
+STRGBPalette[].
+
+Shouldn't it be the case to determine if a '1' pixel is black or white 
+(which allows to change the color of the border) ?  (well, it's not the 
+case either in high640x8.c but it works with &quot;hatari -m&quot;, and the code is 
+nearly identical to vdi2.c, so I don't really know)
+
+Thomas, maybe you have an idea what colors are used when in vdi mode.
+
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000577.html">[hatari-devel] Hatari VDI mode colors issue
+</A></li>
+	<LI>Next message: <A HREF="000583.html">[hatari-devel] Hatari VDI mode colors issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#582">[ date ]</a>
+              <a href="thread.html#582">[ thread ]</a>
+              <a href="subject.html#582">[ subject ]</a>
+              <a href="author.html#582">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

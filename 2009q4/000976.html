@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fseek%20bug%20with%2064%20bit%20OS%20%2864%20bit%20longs%29&In-Reply-To=%3C200911221851.29038.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000973.html">
+   <LINK REL="Next"  HREF="000978.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fseek%20bug%20with%2064%20bit%20OS%20%2864%20bit%20longs%29&In-Reply-To=%3C200911221851.29038.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Nov 22 17:51:28 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000973.html">[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+</A></li>
+        <LI>Next message: <A HREF="000978.html">[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#976">[ date ]</a>
+              <a href="thread.html#976">[ thread ]</a>
+              <a href="subject.html#976">[ subject ]</a>
+              <a href="author.html#976">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 22 November 2009, Uwe Seimet wrote:
+&gt;<i> &gt; Does the (untested) attached patch work for you?
+</I>&gt;<i>
+</I>&gt;<i> I am not sure if I am missing something, but I don't think the cases 1
+</I>&gt;<i> and 2 are identical:
+</I>...
+
+Sorry, I was in a hurry to leave when I posted it.  You're of course right.
+
+Attached is a new version.  I removed the error handling changes and left
+only the changes relevant to the problem + comments.  Sint32 cast &quot;should&quot;
+be more portable than what you used in your patch.
+
+
+Btw. I don't understand how the Fseek mode 2 can have worked earlier, even
+for 32-bit.  The original code casted Uint32 returned by STMemory_ReadLong()
+to a signed long and then did for mode 2:
+	nDestPos = nFileSize - Offset;
+
+Only a negative signed value is valid in mode 2 (according to my Atari ST
+Internals) as anything else would go past the file end.  So as far as I can
+see, the new position has become invalid which the code later in this
+function turns to the out-of-range GEMDOS error code:
+        if (nDestPos &lt; 0 || nDestPos &gt; nFileSize)
+        {
+                /* Restore old position and return error */
+                fseek(fhndl, nOldPos, SEEK_SET);
+                Regs[REG_D0] = GEMDOS_ERANGE;
+                return true;
+        }
+
+What programs are using negative from-the-end-of-file seeks on Atari with
+which this could be tested for whether they now work better with GEMDOS
+mode (even on 32-bits)?
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: fseek.diff
+Type: text/x-diff
+Size: 859 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20091122/ff854584/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20091122/ff854584/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000973.html">[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+</A></li>
+	<LI>Next message: <A HREF="000978.html">[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#976">[ date ]</a>
+              <a href="thread.html#976">[ thread ]</a>
+              <a href="subject.html#976">[ subject ]</a>
+              <a href="author.html#976">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

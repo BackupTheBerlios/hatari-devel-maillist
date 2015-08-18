@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] spec512 using blitter on STE
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20spec512%20using%20blitter%20on%20STE&In-Reply-To=%3C4B47FD3D.1020204%40freemind-tobe.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001182.html">
+   <LINK REL="Next"  HREF="001186.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] spec512 using blitter on STE</H1>
+    <B>Jean-Baptiste Berlioz</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20spec512%20using%20blitter%20on%20STE&In-Reply-To=%3C4B47FD3D.1020204%40freemind-tobe.com%3E"
+       TITLE="[hatari-devel] spec512 using blitter on STE">jb.berlioz at freemind-tobe.com
+       </A><BR>
+    <I>Sat Jan  9 04:51:25 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001182.html">[hatari-devel] spec512 using blitter on STE
+</A></li>
+        <LI>Next message: <A HREF="001186.html">[hatari-devel] spec512 using blitter on STE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1184">[ date ]</a>
+              <a href="thread.html#1184">[ thread ]</a>
+              <a href="subject.html#1184">[ subject ]</a>
+              <a href="author.html#1184">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yes i'm still around, and ready to fix blitter timings.
+16 cycles, that's huge, i'd like to see the source code, just before the 
+blitter was started.
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> Hello,
+</I>&gt;<i> 
+</I>&gt;<i> while looking at the wrong colors displayed in the intro of the STE 20th 
+</I>&gt;<i> year demo, I was able to get a correct result by simulating color changes 
+</I>&gt;<i> 16 cycles earlier for all blitter writes.
+</I>&gt;<i> 
+</I>&gt;<i> These are the current (wrong) timings :
+</I>&gt;<i> 
+</I>&gt;<i> cpu video_cyc= 32828  60@ 64 : 0001caae: 2689 1885 43e9 0050 51cb MOVE.L A1,(A3)
+</I>&gt;<i> IO write.l $ff8a24 = $00043e28
+</I>&gt;<i> cpu video_cyc= 32840  72@ 64 : 0001cab0: 1885 43e9 0050 51cb ffd0 MOVE.B D5,(A4)
+</I>&gt;<i> IO write.b $ff8a3c = $c0
+</I>&gt;<i> blitter write ctrl=c0 video_cyc=32840 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">72 at 64</A> pc=1cab2 instr_cyc=8
+</I>&gt;<i> IO write.w $ff8250 = $0000
+</I>&gt;<i> write col addr=ff8250 col=0 video_cyc_w=32860 line_cyc_w=92 @ nHBL=64/video_hbl_w=64 pc=1cab2 instr_cyc=8
+</I>&gt;<i> IO write.w $ff8252 = $0888
+</I>&gt;<i> write col addr=ff8252 col=888 video_cyc_w=32868 line_cyc_w=100 @ nHBL=64/video_hbl_w=64 pc=1cab2 instr_cyc=8
+</I>&gt;<i> IO write.w $ff8254 = $0088
+</I>&gt;<i> write col addr=ff8254 col=88 video_cyc_w=32876 line_cyc_w=108 @ nHBL=64/video_hbl_w=64 pc=1cab2 instr_cyc=8
+</I>&gt;<i> IO write.w $ff8256 = $0111
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> to get correct pictures, ff8250 should be changed at cycle 76, not 92, for 
+</I>&gt;<i> example.
+</I>&gt;<i> 
+</I>&gt;<i> JB / Tobe are you still around ? Do you have any idea of what's wrong ?
+</I>&gt;<i> (this works fine under steem, which is odd because I had the feeling 
+</I>&gt;<i> latest hatari had better blitter's timings than steem for many demos)
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Nicolas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001182.html">[hatari-devel] spec512 using blitter on STE
+</A></li>
+	<LI>Next message: <A HREF="001186.html">[hatari-devel] spec512 using blitter on STE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1184">[ date ]</a>
+              <a href="thread.html#1184">[ thread ]</a>
+              <a href="subject.html#1184">[ subject ]</a>
+              <a href="author.html#1184">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

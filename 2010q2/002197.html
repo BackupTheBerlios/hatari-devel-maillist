@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Using GL for Hatari output on OSX
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Using%20GL%20for%20Hatari%20output%20on%20OSX&In-Reply-To=%3C201005272352.09844.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002147.html">
+   <LINK REL="Next"  HREF="002085.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Using GL for Hatari output on OSX</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Using%20GL%20for%20Hatari%20output%20on%20OSX&In-Reply-To=%3C201005272352.09844.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Using GL for Hatari output on OSX">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu May 27 22:52:09 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002147.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002085.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2197">[ date ]</a>
+              <a href="thread.html#2197">[ thread ]</a>
+              <a href="subject.html#2197">[ subject ]</a>
+              <a href="author.html#2197">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 17 May 2010, Eero Tamminen wrote:
+&gt;<i> &gt; Something is indeed very much screwed in the OSX SDL 1.2 pipeline...
+</I>&gt;<i> &gt; But unfortunately, performance is still lackluster (~40% cpu on 2.4Ghz
+</I>&gt;<i> &gt; Core2Quad) with OpenGL blits. Atleast its possible to scale to any
+</I>&gt;<i> &gt; arbitrary size with no cpu cost...
+</I>&gt;<i>
+</I>&gt;<i> Basically 3D HW / OpenGL helps with performance only in the cases where
+</I>&gt;<i> you're dealing with lots &amp; complex geometry and where your texture
+</I>&gt;<i> content is static.  If all you use it for is pushing constantly updating
+</I>&gt;<i> texture content and basically no geometry,
+</I>
+Then suitable methods for this could be either the GL texture streaming[1]
+or using some Video API.  SDL offers latter, but I don't know how common
+its support is:
+	<A HREF="http://sdl.beuc.net/sdl.wiki/SDL_Overlay">http://sdl.beuc.net/sdl.wiki/SDL_Overlay</A>
+
+OSX SDL backend seems to support two of the formats according to its
+internal QZ_CreateYUVOverlay() function code:
+-------------
+    if (format == SDL_YV12_OVERLAY ||
+        format == SDL_IYUV_OVERLAY) {
+
+        codec = kYUV420CodecType;
+    }
+    else {
+        SDL_SetError (&quot;Hardware: unsupported video format&quot;);
+        return NULL;
+    }
+-----------
+
+
+[1] <A HREF="http://www.opengl.org/registry/specs/ARB/pixel_buffer_object.txt">http://www.opengl.org/registry/specs/ARB/pixel_buffer_object.txt</A>
+<A HREF="http://processors.wiki.ti.com/index.php/OpenGLES_Texture_Streaming_-_bc-cat_User_Guide">http://processors.wiki.ti.com/index.php/OpenGLES_Texture_Streaming_-_bc-cat_User_Guide</A>
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002147.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002085.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2197">[ date ]</a>
+              <a href="thread.html#2197">[ thread ]</a>
+              <a href="subject.html#2197">[ subject ]</a>
+              <a href="author.html#2197">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

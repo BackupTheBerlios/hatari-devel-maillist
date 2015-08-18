@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Statusbar - additional info
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Statusbar%20-%20additional%20info&In-Reply-To=%3C200912102353.44908.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001105.html">
+   <LINK REL="Next"  HREF="001094.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Statusbar - additional info</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Statusbar%20-%20additional%20info&In-Reply-To=%3C200912102353.44908.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Statusbar - additional info">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Dec 10 22:53:44 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001105.html">[hatari-devel] Non working demo
+</A></li>
+        <LI>Next message: <A HREF="001094.html">[hatari-devel] Statusbar - additional info
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1091">[ date ]</a>
+              <a href="thread.html#1091">[ thread ]</a>
+              <a href="subject.html#1091">[ subject ]</a>
+              <a href="author.html#1091">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 10 December 2009, Konador, Cyprian wrote:
+&gt;<i> During watching demos, I used to compare different cpu setup for
+</I>&gt;<i> particular screen. And sometims I wonder which configuration is used now
+</I>&gt;<i> - clean or custom... With that information on statusbar, we get clear
+</I>&gt;<i> meassage about current setup.
+</I>
+OK.
+
+&gt;<i> &gt; &gt; LED are a bit smaller now.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; They were wide to look more like (Atari) leds. :-)
+</I>&gt;<i>
+</I>&gt;<i> Sorry for that :)
+</I>
+If it's fine for others, I don't mind...
+
+
+&gt;<i> &gt; If you want that kind of a change, you need to make it to be
+</I>&gt;<i> &gt; configurable
+</I>&gt;<i> &gt; separately for fullscreen and windowed mode + allow changing them
+</I>&gt;<i> &gt; from the options GUI.  The main issue is where in the GUI you can fit
+</I>&gt;<i> &gt; the extra option(s)...
+</I>&gt;<i>
+</I>&gt;<i> Maybe we can put Statusbar in the same way as Resolution - with arrows?
+</I>&gt;<i> Something like that:
+</I>&gt;<i> 	Statusbar: &lt;&lt; Off / Always / Window only &gt;&gt;
+</I>
+Another possibility would be to move some stuff from the screen dialog
+to another (new) dialog.
+
+Easiest would be just to add yet another keyboard shortcut, e.g.
+AltGr+B (statusBar), but we have already a huge amount of these
+shortcuts and statusbar setting is really something that people
+would probably want Hatari to remember...
+
+
+&gt;<i> &gt; Current command line options can still set both at the same.
+</I>&gt;<i>
+</I>&gt;<i> Yep, but nice to have it in GUI too. for such lamer as me :)
+</I>
+...and be in GUI.   I always need to look into manual to check
+other shortcuts than Reset, Cold reset, fast forward (X) or Joystick.
+
+
+&gt;<i> &gt; The code itself look fine.  For patches, please send them in future
+</I>&gt;<i> &gt; in unified context diff format (diff -u).
+</I>&gt;<i>
+</I>&gt;<i> I missed that switch, thanks
+</I>&gt;<i>
+</I>&gt;<i> Thanks for understanding
+</I>&gt;<i>
+</I>&gt;<i> Attached you can find updated diff
+</I>
+Thanks.
+
+
+&gt;<i> &gt; Only thing that was strange was this, what it's for?
+</I>&gt;<i> &gt; +
+</I>&gt;<i> &gt; +       Statusbar_UpdateInfo();
+</I>&gt;<i> &gt;         Statusbar_ShowMessage(surf, currentticks);
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (It should be called from appropriate places _outside_ statusbar.c.)
+</I>&gt;<i>
+</I>&gt;<i> It refresh statusbar after changes done in Main Menu.
+</I>
+Before applying the patch, what exactly is the problem you're trying
+to fix with this call?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001105.html">[hatari-devel] Non working demo
+</A></li>
+	<LI>Next message: <A HREF="001094.html">[hatari-devel] Statusbar - additional info
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1091">[ date ]</a>
+              <a href="thread.html#1091">[ thread ]</a>
+              <a href="subject.html#1091">[ subject ]</a>
+              <a href="author.html#1091">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

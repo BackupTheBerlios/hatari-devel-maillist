@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New FDC emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20FDC%20emulation&In-Reply-To=%3C201110072252.23133.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004053.html">
+   <LINK REL="Next"  HREF="004062.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New FDC emulation</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20FDC%20emulation&In-Reply-To=%3C201110072252.23133.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] New FDC emulation">oak at helsinkinet.fi
+       </A><BR>
+    <I>Fri Oct  7 21:52:23 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004053.html">[hatari-devel] New FDC emulation
+</A></li>
+        <LI>Next message: <A HREF="004062.html">[hatari-devel] New FDC emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4060">[ date ]</a>
+              <a href="thread.html#4060">[ thread ]</a>
+              <a href="subject.html#4060">[ subject ]</a>
+              <a href="author.html#4060">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 07 lokakuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> After seeing a lot of bug reports about games not running under Hatari,
+</I>&gt;<i> due to uncomplete emulation of the WD1772, I committed the result of my
+</I>&gt;<i> work during the latest weeks.
+</I>&gt;<i> 
+</I>&gt;<i> The fdc.c emulation has been nearly completly rewritten, with accuracy
+</I>&gt;<i> in mind regarding registers emulation, delays and dma transfers.
+</I>
+Wow, that was a large rewrite (lots of commits etc). :-)
+
+[...]
+&gt;<i> I removed the &quot;--slowfdc&quot; option and replaced it with &quot;--fastfdc&quot; (which
+</I>&gt;<i> is off by default). This way, Hatari will start in maximum compatibility
+</I>&gt;<i> mode regarding FDC, so users should get the best results out of the box.
+</I>&gt;<i> If you want faster disk acceses (at the risk of some incompatibilities),
+</I>&gt;<i> you can use --fastfdc to speed up most delays by a factor 10.
+</I>
+IMHO things that don't work with &quot;--fastfdc on&quot; should be rare enough
+that they could even be listed in the compatibility list.   What do you
+think?
+
+
+&gt;<i> I updated python-ui and the OSX gui to use this new option.
+</I>
+Nice. :-)
+
+
+&gt;<i> Please, test a lot of demos / games (but mainly games) and report the
+</I>&gt;<i> regressions you could see.
+</I>
+Will do.  Great work, thanks!
+
+
+Btw. Could you update the Manual &quot;The Floppy Disks Dialog&quot; section
+text &amp; image also?
+
+
+Regarding this:
+-#define VERSION_STRING      &quot;1.5.0&quot;   /* Version number of compatible 
+memory snapshots - Always 6 bytes (inc' NULL) */
++#define VERSION_STRING      &quot;devel&quot;   /* Version number of compatible 
+memory snapshots - Always 6 bytes (inc' NULL) */
+ 
+IMHO it might be better just to put there larger number, e.g. &quot;1.5.1&quot; to
+signify that it's later version.  Just in case it gets forgotten for next
+release and so that it doesn't match earlier devel releases...
+
+
+	- Eero
+
+PS. I'm not going to do much Hatari stuff for a while, I'm looking
+into EmuTOS bugs (writing test programs for them) and testing AHCC.
+
+I might eventually do also a bit of test automation for both Hatari
+and EmuTOS as described here:
+<A HREF="http://sourceforge.net/mailarchive/forum.php?thread_name=201109192303.28066.oak%40helsinkinet.fi&amp;forum_name=emutos-">http://sourceforge.net/mailarchive/forum.php?thread_name=201109192303.28066.oak%40helsinkinet.fi&amp;forum_name=emutos-</A>
+devel
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004053.html">[hatari-devel] New FDC emulation
+</A></li>
+	<LI>Next message: <A HREF="004062.html">[hatari-devel] New FDC emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4060">[ date ]</a>
+              <a href="thread.html#4060">[ thread ]</a>
+              <a href="subject.html#4060">[ subject ]</a>
+              <a href="author.html#4060">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20immediately%20showing%20regs%20%26%0A%20memdump%3F&In-Reply-To=%3C20090405102311.6ee14546%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000231.html">
+   <LINK REL="Next"  HREF="000236.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20immediately%20showing%20regs%20%26%0A%20memdump%3F&In-Reply-To=%3C20090405102311.6ee14546%40phineus%3E"
+       TITLE="[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?">th.huth at gmx.de
+       </A><BR>
+    <I>Sun Apr  5 10:23:11 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000231.html">[hatari-devel] Hatari debugger immediately showing regs &amp;	memdump?
+</A></li>
+        <LI>Next message: <A HREF="000236.html">[hatari-devel] Hatari debugger immediately showing regs &amp;	memdump?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#233">[ date ]</a>
+              <a href="thread.html#233">[ thread ]</a>
+              <a href="subject.html#233">[ subject ]</a>
+              <a href="author.html#233">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 5 Apr 2009 00:20:01 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> On Saturday 04 April 2009, Laurent Sallafranque wrote:
+</I>&gt;<i> &gt; Wouldn't it be possible to have 3 windows :
+</I>&gt;<i> 
+</I>&gt;<i> Multiple window support needs SDL v1.3:
+</I>&gt;<i> <A HREF="http://lists.libsdl.org/pipermail/sdl-libsdl.org/2005-June/050650.html">http://lists.libsdl.org/pipermail/sdl-libsdl.org/2005-June/050650.html</A>
+</I>&gt;<i> 
+</I>&gt;<i> It's not yet released, but you can check prereleases:
+</I>&gt;<i> 	<A HREF="http://www.libsdl.org/svn.php">http://www.libsdl.org/svn.php</A>
+</I>&gt;<i> 
+</I>&gt;<i> &gt; One which would always display the 680x0 registers
+</I>&gt;<i> &gt; One which would always display the DSP registers
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; One which would let us write commands and displays results ?
+</I>&gt;<i> 
+</I>&gt;<i> Easier solution could be using the Hatari control-socket to implement
+</I>&gt;<i> something like that out of process.
+</I>
+Ok, but pushing all debug information through the control-socket might
+become slow or unhandy at some point. Maybe we should start to use
+gtk windows within the hatari executable itself? Or maybe rather extend
+the gui-sdl code (or statusbar?) with some debugging dialogs?
+Well, one thing is clear: It's a lot of work. And I think before
+starting that, we should rather improve the current debugger as it is,
+e.g. we still miss proper breakpoint support, single stepping, etc.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000231.html">[hatari-devel] Hatari debugger immediately showing regs &amp;	memdump?
+</A></li>
+	<LI>Next message: <A HREF="000236.html">[hatari-devel] Hatari debugger immediately showing regs &amp;	memdump?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#233">[ date ]</a>
+              <a href="thread.html#233">[ thread ]</a>
+              <a href="subject.html#233">[ subject ]</a>
+              <a href="author.html#233">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Monochrome Monitor in Falcon mode
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Monochrome%20Monitor%20in%20Falcon%20mode&In-Reply-To=%3C201102212250.47083.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003095.html">
+   <LINK REL="Next"  HREF="003114.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Monochrome Monitor in Falcon mode</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Monochrome%20Monitor%20in%20Falcon%20mode&In-Reply-To=%3C201102212250.47083.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Monochrome Monitor in Falcon mode">oak at helsinkinet.fi
+       </A><BR>
+    <I>Mon Feb 21 21:50:47 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003095.html">[hatari-devel] Monochrome Monitor in Falcon mode
+</A></li>
+        <LI>Next message: <A HREF="003114.html">[hatari-devel] Monochrome Monitor in Falcon mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3108">[ date ]</a>
+              <a href="thread.html#3108">[ thread ]</a>
+              <a href="subject.html#3108">[ subject ]</a>
+              <a href="author.html#3108">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 20 helmikuu 2011, Laurent Sallafranque wrote:
+&gt;<i> I've thrown a quick eye into this.
+</I>&gt;<i> This is the original videl code I'll rewrite soon.
+</I>
+Btw. I tried what the TOS4 desktop video mode settings set as ST shifter
+mode.  Everything else used 0x1 except for the compatibility modes for
+ST low and ST high which both used 0x0.  Both old and current Hatari
+videl code handled all of those fine, for RGB &amp; VGA &amp; TV monitor types.
+
+Only thing that bugs is use of mono monitor, which apparently uses mode 2.
+Attached patch would fix that case, but I'm not sure is that enough/right.
+
+
+	- Eero
+
+&gt;<i> As it'll take some time to write the full videl emulation, I've differed
+</I>&gt;<i> a little the coding of it to when I have more time.
+</I>&gt;<i> 
+</I>&gt;<i> for info, in videl.c, I've just added some traces and prepared the code
+</I>&gt;<i> (memorySnapshot, structure, comments, ...)
+</I>&gt;<i> I haven't changed anything from the original videl code until now.
+</I>&gt;<i> 
+</I>&gt;<i> Laurent
+</I>&gt;<i> 
+</I>&gt;<i> Le 19/02/2011 18:10, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; On lauantai 19 helmikuu 2011, Thomas Huth wrote:
+</I>&gt;<i> &gt;&gt; I just tried to start Hatari in Falcon mode, with monochrome
+</I>&gt;<i> &gt;&gt; monitor, ... but the screen does not come up right anymore. The screen
+</I>&gt;<i> &gt;&gt; looks like 1280x400 instead of 640x400, and there is only graphics in
+</I>&gt;<i> &gt;&gt; the upper part of the window...
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I could reproduce it.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;&gt; I think there have been some changes to Videl code recently, maybe
+</I>&gt;<i> &gt;&gt; something broke during these changes?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; ST, STE&amp;  TT monochrome look fine, including the 640x400 TT monochrome,
+</I>&gt;<i> &gt; so it was Videl specific.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;&gt; Could somebody please have a look?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; The problem is the new code in videl.c::VIDEL_ST_ShiftModeWriteByte().
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I commited one fix to that function, it was reading byte register as
+</I>&gt;<i> &gt; word and as result selecting wrong branch in switch, but that's not
+</I>&gt;<i> &gt; enough to fix the whole issue.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Now the right switch case is selected, but code there isn't correct:
+</I>&gt;<i> &gt; -------------
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;                  case 2: /* 1BP/640 Pixels */
+</I>&gt;<i> &gt;                  
+</I>&gt;<i> &gt;                          line_width = 0x28;
+</I>&gt;<i> &gt;                          video_mode = videl.monitor_type ==
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; FALCON_MONITOR_VGA ? 0x8 : 0x6;
+</I>&gt;<i> &gt; ...
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;          /* Set line width ($FFFF8210) */
+</I>&gt;<i> &gt;          IoMem_WriteWord(0xff8210, line_width);
+</I>&gt;<i> &gt;          
+</I>&gt;<i> &gt;          /* Set video mode ($FFFF82C2) */
+</I>&gt;<i> &gt;          IoMem_WriteWord(0xff82c2, video_mode);
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; -------------
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; This code (like all other cases in this switch) checks only for VGA and
+</I>&gt;<i> &gt; seems to be expecting everything else to be RGB and for non-VGA
+</I>&gt;<i> &gt; monitors it sets the video mode &quot;half pixel&quot;&amp;  &quot;interlace&quot; bits.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; &quot;half pixel&quot; bit (0x4) doesn't seem to have any effect on monochrome
+</I>&gt;<i> &gt; monitor, but interlace bit (0x2) makes the screen 640x800 instead
+</I>&gt;<i> &gt; of the correct 640x400.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Laurent, could you fix the remaining part?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 	- Eero
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; PS. I don't understand why the code in this function is needed, things
+</I>&gt;<i> &gt; seem to be working fine without it...?
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; hatari-devel mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: videl-mono.diff
+Type: text/x-patch
+Size: 904 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110221/43c76427/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110221/43c76427/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003095.html">[hatari-devel] Monochrome Monitor in Falcon mode
+</A></li>
+	<LI>Next message: <A HREF="003114.html">[hatari-devel] Monochrome Monitor in Falcon mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3108">[ date ]</a>
+              <a href="thread.html#3108">[ thread ]</a>
+              <a href="subject.html#3108">[ subject ]</a>
+              <a href="author.html#3108">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

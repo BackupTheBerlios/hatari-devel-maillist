@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Conditional breakpoint code, please comment!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C20090614124630.47490%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000372.html">
+   <LINK REL="Next"  HREF="000374.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Conditional breakpoint code, please comment!</H1>
+    <B>Thomas H.</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C20090614124630.47490%40gmx.net%3E"
+       TITLE="[hatari-devel] Conditional breakpoint code, please comment!">th.huth at gmx.de
+       </A><BR>
+    <I>Sun Jun 14 14:46:30 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000372.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+        <LI>Next message: <A HREF="000374.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#373">[ date ]</a>
+              <a href="thread.html#373">[ thread ]</a>
+              <a href="subject.html#373">[ subject ]</a>
+              <a href="author.html#373">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Datum: Sun, 14 Jun 2009 13:01:21 +0300
+</I>&gt;<i> Von: Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt;
+</I>&gt;<i> 
+</I>&gt;<i> Thomas, Laurent &amp; Nicholas, could you comment on this stuff?
+</I>
+Uuh, that's quite a lot of code, reviewing it completely will certainly take some time...
+
+&gt;<i> On Saturday 13 June 2009, Eero Tamminen wrote:
+</I>&gt;<i> &gt;&gt; 2. add register name parsing code 
+</I>&gt;<i> 
+</I>&gt;<i> See attached register-cpu.diff and register-dsp.diff patch files on
+</I>&gt;<i> proposal
+</I>&gt;<i> how I thought this could be done.
+</I>&gt;<i> 
+</I>&gt;<i> In both cases I've separated the code from register setting functions
+</I>&gt;<i> (in debugui.c and dsp.c respectively) to a globally visible function that
+</I>&gt;<i> returns address for given register.  This function is then used by DebugUI
+</I>&gt;<i> register setting functions and will be used by breakcond (I'll commit the
+</I>&gt;<i> support for this after some extra breakcond.c testing).
+</I>&gt;<i> 
+</I>&gt;<i> This doesn't yet provide all registers for breakcond.c (see [1]), but
+</I>&gt;<i> the change is completely transparent to current debugger register setting
+</I>&gt;<i> functionality.
+</I>&gt;<i> 
+</I>&gt;<i> The CPU register code could be minimized by using index instead of switch
+</I>&gt;<i> case for data &amp; address registers like (original) DSP code did.  m68000.h
+</I>&gt;<i> could provide a macro or inline for this.  I use array &amp; bisecting for
+</I>&gt;<i> finding the DSP register as there are so many of them.
+</I>&gt;<i> 
+</I>&gt;<i> Laurent &amp; Thomas, any comments on these?  Does the approach seem OK?
+</I>
+Sounds good to me.
+
+&gt;<i> &gt; &gt; 3. integrate it with DebugUI etc.
+</I>&gt;<i> 
+</I>&gt;<i> breakcond-integrate.diff shows how I've thought to integrate breakcond.c
+</I>&gt;<i> into debugui.c:
+</I>&gt;<i> 
+</I>&gt;<i> * similarly to address breakpoints and single stepping, there are two
+</I>&gt;<i>   additional variables for condition breakpoint DSP &amp; CPU counts which
+</I>&gt;<i>    values are checked and requested from breakcond.c at appropriate place.
+</I>&gt;<i> 
+</I>&gt;<i> * DebugUI_BreakCondCpu()/Dsp() are debugui.c wrappers for breakcond.c
+</I>&gt;<i>   BreakCond_Command() function (not yet commited to breakcond.c).
+</I>&gt;<i>   Commands list has entries for these.
+</I>&gt;<i> 
+</I>&gt;<i> * Because I don't want to join again the arguments from debugui.c for the
+</I>&gt;<i>   breakpoint condition code's own tokenizing, I added support to debugui.c
+</I>&gt;<i>   for specifying that the arguments for certain options shouldn't be
+</I>&gt;<i>   separated. There's a new bNoParsing flag to command structure to signify
+</I>&gt;<i>   this and the DebugUI command parsing function code was suffled around
+</I>&gt;<i>   a bit to support this.
+</I>
+Ok.
+
+&gt;<i> * Address breakpoint names are now &quot;address&quot;/&quot;a&quot; and condition breakpoints
+</I>&gt;<i>   are &quot;breakpoint&quot;/&quot;b&quot;.  Address breakpoints are still needed[1].
+</I>&gt;<i> 
+</I>&gt;<i> I'll commit the functions needed in breakcond.c for above after some extra
+</I>&gt;<i> testing.
+</I>&gt;<i> 
+</I>&gt;<i> Thomas, any comments on this?
+</I>
+Fine for me, too.
+
+&gt;<i> &gt; Also, any objections if I:
+</I>&gt;<i> &gt; - add tests/-directory to Hatari top level
+</I>&gt;<i> &gt; - put the breakpoint condition testing code there + Makefile that
+</I>&gt;<i> &gt;   automatically validates that breakpoint condition parsing works fine?
+</I>&gt;<i> 
+</I>&gt;<i> ?
+</I>
+Isn't your main() function in breakcond.c already doing this job? Why a separate directory for code that will go away later anyway?
+
+&gt;<i> I also noticed that many headers (e.g. DSP ones) missed &quot;extern&quot;s
+</I>&gt;<i> for functions.  Any objections on adding those?
+</I>
+That's just cosmetics... I don't mind... but since most headers use the &quot;extern&quot; keyword for prototypes, we should maybe do it consistently and always use the &quot;extern&quot; keyword.
+
+ Thomas
+
+-- 
+GMX FreeDSL Komplettanschluss mit DSL 6.000 Flatrate und Telefonanschluss
+f&#252;r nur 17,95 Euro/mtl.!* <A HREF="http://portal.gmx.net/de/go/dsl02">http://portal.gmx.net/de/go/dsl02</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000372.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+	<LI>Next message: <A HREF="000374.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#373">[ date ]</a>
+              <a href="thread.html#373">[ thread ]</a>
+              <a href="subject.html#373">[ subject ]</a>
+              <a href="author.html#373">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Compil hatari under windows (cygwin)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compil%20hatari%20under%20windows%20%28cygwin%29&In-Reply-To=%3C1409519598.20101105001428%40hol.gr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002586.html">
+   <LINK REL="Next"  HREF="002593.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Compil hatari under windows (cygwin)</H1>
+    <B>George Nakos</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compil%20hatari%20under%20windows%20%28cygwin%29&In-Reply-To=%3C1409519598.20101105001428%40hol.gr%3E"
+       TITLE="[hatari-devel] Compil hatari under windows (cygwin)">ggn at hol.gr
+       </A><BR>
+    <I>Thu Nov  4 23:14:28 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002586.html">[hatari-devel] Compil hatari under windows (cygwin)
+</A></li>
+        <LI>Next message: <A HREF="002593.html">[hatari-devel]  WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2587">[ date ]</a>
+              <a href="thread.html#2587">[ thread ]</a>
+              <a href="subject.html#2587">[ subject ]</a>
+              <a href="author.html#2587">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Thomas,
+
+Friday, November 5, 2010, 12:04:28 AM, you wrote:
+
+&gt;<i> On Thu, 4 Nov 2010 23:49:18 +0200
+</I>&gt;<i> George Nakos &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ggn at hol.gr</A>&gt; wrote:
+</I>
+&gt;&gt;<i> [ 97%] Building C object
+</I>&gt;&gt;<i> tools/hmsa/CMakeFiles/hmsa.dir/__/__/src/file.c.obj
+</I>&gt;&gt;<i> c:/msys/1.0/home/Administrator/hatari/src/file.c:18:18: fatal error:
+</I>&gt;&gt;<i> zlib.h: No such file or directory compilation terminated.
+</I>&gt;&gt;<i> make[2]: *** [tools/hmsa/CMakeFiles/hmsa.dir/__/__/src/file.c.obj]
+</I>&gt;&gt;<i> Error 1 make[1]: *** [tools/hmsa/CMakeFiles/hmsa.dir/all] Error 2
+</I>&gt;&gt;<i> make: *** [all] Error 2
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> I've  been  having  this  for  years  -  no  matter where I put zlib.h
+</I>&gt;&gt;<i> (including  the src dir and whatever else), it simply won't find it. I
+</I>&gt;&gt;<i> might as well copy/paste the file inside file.c ;)
+</I>
+&gt;<i> Hmmm, since file.c seems to compile fine for the main hatari
+</I>&gt;<i> executable, I guess this might be simply because of the zlib header
+</I>&gt;<i> file path is missing in tools/hmsa/CMakeLists.txt ...
+</I>
+&gt;<i> Could you please try whether it helps to add the following lines at the
+</I>&gt;<i> beginning of tools/hmsa/CMakeLists.txt:
+</I>
+&gt;<i> if(ZLIB_FOUND)
+</I>&gt;<i>         include_directories(${ZLIB_INCLUDE_DIR})
+</I>&gt;<i> endif(ZLIB_FOUND)
+</I>
+&gt;<i> I hope that should fix this problem...
+</I>
+Yep it actually did!
+
+
+
+-- 
+Best regards,
+ George                            mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ggn at hol.gr</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002586.html">[hatari-devel] Compil hatari under windows (cygwin)
+</A></li>
+	<LI>Next message: <A HREF="002593.html">[hatari-devel]  WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2587">[ date ]</a>
+              <a href="thread.html#2587">[ thread ]</a>
+              <a href="subject.html#2587">[ subject ]</a>
+              <a href="author.html#2587">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

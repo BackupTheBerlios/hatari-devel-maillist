@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] GEMDOS HD emulation broken?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20HD%20emulation%20broken%3F&In-Reply-To=%3C3345009024.3239364738%40%5B192.168.178.13%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001162.html">
+   <LINK REL="Next"  HREF="001165.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] GEMDOS HD emulation broken?</H1>
+    <B>Gerhard Stoll</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20HD%20emulation%20broken%3F&In-Reply-To=%3C3345009024.3239364738%40%5B192.168.178.13%5D%3E"
+       TITLE="[hatari-devel] GEMDOS HD emulation broken?">gerhard_stoll at gmx.de
+       </A><BR>
+    <I>Wed Dec 30 09:08:24 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001162.html">[hatari-devel] GEMDOS HD emulation broken?
+</A></li>
+        <LI>Next message: <A HREF="001165.html">[hatari-devel] GEMDOS HD emulation broken?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1164">[ date ]</a>
+              <a href="thread.html#1164">[ thread ]</a>
+              <a href="subject.html#1164">[ subject ]</a>
+              <a href="author.html#1164">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eero Tamminen wrote:
+
+&gt;<i> Regs[REG_D0] = Index+BASE_FILEHANDLE;  /* Return valid ST 
+</I>&gt;<i> file handle from range 6 to 45! (ours start from 0) */
+</I>&gt;<i> ... in GemDOS_Read() ...
+</I>&gt;<i> Handle = STMemory_ReadWord(Params)-BASE_FILEHANDLE;
+</I>&gt;<i> 
+</I>&gt;<i> I don't understand the second comment though, can you explain that?
+</I>
+The GEMDOS have some standard handle.
+
+0 = Keyboard
+1 = Screen
+2 = Serial port
+3 = Parallel port
+
+The number 4 and 5 are reseved so that nomral handle numbers for files 
+only start at 6. About the 45 I have no info.
+
+&lt;<A HREF="http://toshyp.atari.org/00500a.htm#Fopen">http://toshyp.atari.org/00500a.htm#Fopen</A>&gt;
+
+Gerhard
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001162.html">[hatari-devel] GEMDOS HD emulation broken?
+</A></li>
+	<LI>Next message: <A HREF="001165.html">[hatari-devel] GEMDOS HD emulation broken?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1164">[ date ]</a>
+              <a href="thread.html#1164">[ thread ]</a>
+              <a href="subject.html#1164">[ subject ]</a>
+              <a href="author.html#1164">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

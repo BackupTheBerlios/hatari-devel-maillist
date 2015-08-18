@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] IDE HD emulation error handling
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20HD%20emulation%20error%20handling&In-Reply-To=%3C20100120224025.7219743e%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001295.html">
+   <LINK REL="Next"  HREF="001305.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] IDE HD emulation error handling</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20HD%20emulation%20error%20handling&In-Reply-To=%3C20100120224025.7219743e%40phineus%3E"
+       TITLE="[hatari-devel] IDE HD emulation error handling">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Jan 20 22:40:25 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001295.html">[hatari-devel] IDE HD emulation error handling
+</A></li>
+        <LI>Next message: <A HREF="001305.html">[hatari-devel] IDE HD emulation error handling
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1297">[ date ]</a>
+              <a href="thread.html#1297">[ thread ]</a>
+              <a href="subject.html#1297">[ subject ]</a>
+              <a href="author.html#1297">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 20 Jan 2010 22:41:05 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> I guess the things with &quot;dma&quot; in their name are not relevant as
+</I>&gt;<i> current Hatari code doesn't seem to support IDE DMA.
+</I>
+Right, the IDE adaptor of the Falcon does not support DMA.
+
+&gt;<i> What about the block error modes?   Does Atari have those?
+</I>
+That doesn't ring a bell... dunno
+
+&gt;<i> PS. There's a lot of stuff supporting extra features like:
+</I>&gt;<i> - More complete ATAPI
+</I>&gt;<i> - DVD-ROM
+</I>&gt;<i> - CF disk
+</I>&gt;<i> - SMART
+</I>&gt;<i> - DMA-mode
+</I>&gt;<i> 
+</I>&gt;<i> Is any of this relevant or Atari &amp; copyable as is from Qemu?
+</I>
+I think the IDE interfaces of the Ataris were only used for hard disks
+and CD-ROM drives. So I don't think that support of DVD, CF or SMART
+makes any sense in Hatari. And since Hatari does not support CD-ROM
+drive emulation either yet, a more complete ATAPI emulation also
+currently does not make any sense.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001295.html">[hatari-devel] IDE HD emulation error handling
+</A></li>
+	<LI>Next message: <A HREF="001305.html">[hatari-devel] IDE HD emulation error handling
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1297">[ date ]</a>
+              <a href="thread.html#1297">[ thread ]</a>
+              <a href="subject.html#1297">[ subject ]</a>
+              <a href="author.html#1297">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

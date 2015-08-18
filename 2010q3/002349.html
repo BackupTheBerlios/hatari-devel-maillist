@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Freeze / abort in Talk2Talk 2 demo?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Freeze%20/%20abort%20in%20Talk2Talk%202%20demo%3F&In-Reply-To=%3Calpine.LMD.2.00.1007121438170.28944%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002348.html">
+   <LINK REL="Next"  HREF="002350.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Freeze / abort in Talk2Talk 2 demo?</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Freeze%20/%20abort%20in%20Talk2Talk%202%20demo%3F&In-Reply-To=%3Calpine.LMD.2.00.1007121438170.28944%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Freeze / abort in Talk2Talk 2 demo?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jul 12 14:41:07 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002348.html">[hatari-devel] Freeze / abort in Talk2Talk 2 demo?
+</A></li>
+        <LI>Next message: <A HREF="002350.html">[hatari-devel] Freeze / abort in Talk2Talk 2 demo?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2349">[ date ]</a>
+              <a href="thread.html#2349">[ thread ]</a>
+              <a href="subject.html#2349">[ subject ]</a>
+              <a href="author.html#2349">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 12 Jul 2010, Anders Eriksson wrote:
+
+&gt;<i> On Mon, 12 Jul 2010, Eero Tamminen wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> I tried to debug the issue, but CMake by default makes non-debuggable
+</I>&gt;&gt;<i> binaries. Main thing Gdb told is that Hatari goes often to
+</I>&gt;&gt;<i> Video_InterruptHandler_EndLine().
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> After re-compiling Hatari with asserts and -g (+ still using -O3), reading
+</I>&gt;&gt;<i> the demo text + scrolling up &amp; down many times, I got an assert:
+</I>&gt;&gt;<i> hatari: /home/eero/work/hatari/src/cycInt.c:378:
+</I>&gt;&gt;<i> CycInt_AddRelativeInterruptWithOffset: Assertion `CycleTime &gt;= 0' failed.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Can somebody reproduce this (freeze, or abort when asserts are enabled)?
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I have a feeling it's not the scrolling, it will crash even if you let it be 
+</I>&gt;<i> for itself. I have some suspicion it might be the maxYMiser soundrout, 
+</I>&gt;<i> because I've seen this in other (older though) maxYMiser songs. But just a 
+</I>&gt;<i> hunch.
+</I>
+Hi
+
+
+hmmm, crashes here too, even without scrolling that much. As there's no 
+border removal / resolution changes, I suspect this may be a problem in 
+the STE DMA sound emulation, which uses internal hatari's timers too (as 
+it happened once in the EPSS demo).
+I will try to capture some traces, but this will be difficult as it's not 
+easily reproduceable and the demo can run quite a lot before freezing.
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002348.html">[hatari-devel] Freeze / abort in Talk2Talk 2 demo?
+</A></li>
+	<LI>Next message: <A HREF="002350.html">[hatari-devel] Freeze / abort in Talk2Talk 2 demo?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2349">[ date ]</a>
+              <a href="thread.html#2349">[ thread ]</a>
+              <a href="subject.html#2349">[ subject ]</a>
+              <a href="author.html#2349">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

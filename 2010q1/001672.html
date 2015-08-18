@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] updates to cmake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20updates%20to%20cmake%20build%20system&In-Reply-To=%3Calpine.LMD.2.00.1003141306280.586%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001668.html">
+   <LINK REL="Next"  HREF="001678.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] updates to cmake build system</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20updates%20to%20cmake%20build%20system&In-Reply-To=%3Calpine.LMD.2.00.1003141306280.586%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] updates to cmake build system">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Mar 14 13:08:50 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001668.html">[hatari-devel] updates to cmake build system
+</A></li>
+        <LI>Next message: <A HREF="001678.html">[hatari-devel] updates to cmake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1672">[ date ]</a>
+              <a href="thread.html#1672">[ thread ]</a>
+              <a href="subject.html#1672">[ subject ]</a>
+              <a href="author.html#1672">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 13 Mar 2010, George Nakos wrote:
+
+&gt;<i> I  ran  the  above  command  with a slight change (I call cmake-gui, I
+</I>&gt;<i> *hate*  supplying paths by hand). After the usual fiddling around with
+</I>&gt;<i> the usual &quot;can't find path for sdl&quot; and stuff, this is what I ended up
+</I>&gt;<i> with:
+</I>&gt;<i>
+</I>&gt;<i> Could NOT find READLINE  (missing:  READLINE_LIBRARY READLINE_INCLUDE_DIR)
+</I>&gt;<i> Could NOT find PORTAUDIO  (missing:  PORTAUDIO_LIBRARY PORTAUDIO_INCLUDE_DIR)
+</I>&gt;<i> CMake Error at C:/Program Files/CMake 2.8/share/cmake-2.8/Modules/CMakeDetermineRCCompiler.cmake:30 (MESSAGE):
+</I>&gt;<i>  Could not find compiler set in environment variable RC:
+</I>&gt;<i>
+</I>&gt;<i>  CMAKE_RC_COMPILER-NOTFOUND.
+</I>&gt;<i> Call Stack (most recent call first):
+</I>&gt;<i>  src/CMakeLists.txt:67 (ENABLE_LANGUAGE)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> CMake Error: Error required internal CMake variable not set, cmake may be not be built correctly.
+</I>&gt;<i> Missing variable is:
+</I>&gt;<i> CMAKE_RC_COMPILER_ENV_VAR
+</I>&gt;<i> CMake Error: Could not find cmake module file:C:/msys/1.0/home/Administrator/hatari/cunt/CMakeFiles/CMakeRCCompiler.cmake
+</I>&gt;<i> CMake Error: your RC compiler: &quot;CMAKE_RC_COMPILER-NOTFOUND&quot; was not found.   Please set CMAKE_RC_COMPILER to a valid compiler path or name.
+</I>&gt;<i> Configuring incomplete, errors occurred!
+</I>&gt;<i>
+</I>
+Hello,
+
+Do you have &quot;windres&quot; installed with mingw ?
+
+If so, could you try to run : cmake -DCMAKE_RC_COMPILER=windres .
+
+It seems cmake under windows is using some env var based on visual studio 
+and doesn't default to windres.
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001668.html">[hatari-devel] updates to cmake build system
+</A></li>
+	<LI>Next message: <A HREF="001678.html">[hatari-devel] updates to cmake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1672">[ date ]</a>
+              <a href="thread.html#1672">[ thread ]</a>
+              <a href="subject.html#1672">[ subject ]</a>
+              <a href="author.html#1672">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

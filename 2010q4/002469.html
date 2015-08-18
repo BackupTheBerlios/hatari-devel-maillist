@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Executing program with Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Executing%20program%20with%20Hatari&In-Reply-To=%3C201010072046.51955.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002461.html">
+   <LINK REL="Next"  HREF="002485.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Executing program with Hatari</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Executing%20program%20with%20Hatari&In-Reply-To=%3C201010072046.51955.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Executing program with Hatari">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Oct  7 19:46:51 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002461.html">[hatari-devel] Executing program with Hatari
+</A></li>
+        <LI>Next message: <A HREF="002485.html">[hatari-devel] Executing program with Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2469">[ date ]</a>
+              <a href="thread.html#2469">[ thread ]</a>
+              <a href="subject.html#2469">[ subject ]</a>
+              <a href="author.html#2469">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 07 October 2010, Thomas Huth wrote:
+&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;<i> &gt; One possibility would be to in Hatari start:
+</I>&gt;<i> &gt; * Check if the given file is a GEMDOS program (starts with 0x601a)
+</I>&gt;<i> &gt;   instead of disk image.  If it is:
+</I>&gt;<i> &gt;   - enable GEMDOS HDD emulation for directory where this program
+</I>&gt;<i> &gt; resides
+</I>&gt;<i> &gt;   - write a suitably modified desktop file contents e.g. into
+</I>&gt;<i> &gt; ~/.hatari/ directory.  Contents will be different depending on whether
+</I>&gt;<i> &gt;     normal TOS or EmuTOS is used
+</I>&gt;<i> &gt;   - set a flag that DESKTOP.INF/EMUDESK.INF file opens should be
+</I>&gt;<i> &gt;     redirected in GEMDOS emulation to this file (maybe only first one
+</I>&gt;<i> &gt;     after boot?)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thomas, Nicolas, how does that sound?  Acceptable? :-)
+</I>&gt;<i>
+</I>&gt;<i> Sounds like a nice, crazy hack to me 8-)
+</I>
+And it's more portable than the shell script hack I posted earlier
+(= should work also on Windows)...
+
+
+&gt;<i> I also think that using DESKTOP.INF is the only feasible way to
+</I>&gt;<i> automatically start such a program, ... not sure whether I like the
+</I>&gt;<i> idea of the &quot;virtual&quot; INF file, but I also don't have a better idea
+</I>&gt;<i> right now to avoid such problems like write-protected folders.
+</I>&gt;<i> And I think you should write such a temporary file rather to /tmp/
+</I>&gt;<i> instead of ~/.hatari/, by using the tmpfile() function for example.
+</I>
+Is there any particular reason to use tmpfile() instead of user's ~/.hatari/
+directory?
+
+Writing to /tmp/ (which is world writable directory unlike user's home dir)
+means that I need to use tmpfile() so that I get a random file name, to
+avoid security issues.
+
+Random file names mean that I need to remove the file at Hatari exit,
+and if I don't do it at all possible exit places, Hatari can &quot;leak&quot; these
+files.  File with fixed name like ~/.hatari/autorun.inf could be left there.
+
+
+&gt;<i> Oh, and you might need to support NEWDESK.INF for newer TOS versions as
+</I>&gt;<i> well...
+</I>
+I was thinking that I would put the main bulk of the code into tos.c and
+besides writing a INF file suitable for given TOS version, I would specify
+there what exact path+file that TOS version is looking for.
+
+E.g. TOS 1.4 checks for &quot;C:\DESKTOP.INF&quot; whereas EmuTOS checks
+for &quot;EMUDESK.INF&quot; i.e. doesn't use path. -&gt; I need to check every TOS
+version for this.
+
+
+And while checking the given Hatari argument for whether it's an Atari
+program or some other file (i.e. disk image) I though Hatari could also
+check whether it's a directory and if it is, handle it like it were given
+with &quot;-d&quot; option (i.e. GEMDOS HDD dir).
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002461.html">[hatari-devel] Executing program with Hatari
+</A></li>
+	<LI>Next message: <A HREF="002485.html">[hatari-devel] Executing program with Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2469">[ date ]</a>
+              <a href="thread.html#2469">[ thread ]</a>
+              <a href="subject.html#2469">[ subject ]</a>
+              <a href="author.html#2469">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

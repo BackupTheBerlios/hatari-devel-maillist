@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Stereo DC filtering which accounts for DMA sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Stereo%20DC%20filtering%20which%20accounts%20for%20DMA%20sound&In-Reply-To=%3C23764617.890526.1321910425451.JavaMail.nitido%40priv-edtnes89%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004209.html">
+   <LINK REL="Next"  HREF="004218.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Stereo DC filtering which accounts for DMA sound</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Stereo%20DC%20filtering%20which%20accounts%20for%20DMA%20sound&In-Reply-To=%3C23764617.890526.1321910425451.JavaMail.nitido%40priv-edtnes89%3E"
+       TITLE="[hatari-devel] Stereo DC filtering which accounts for DMA sound">dsavnkff at telus.net
+       </A><BR>
+    <I>Mon Nov 21 22:20:25 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004209.html">[hatari-devel] Head cycles : x + op head
+</A></li>
+        <LI>Next message: <A HREF="004218.html">[hatari-devel] Stereo DC filtering which accounts for DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4210">[ date ]</a>
+              <a href="thread.html#4210">[ thread ]</a>
+              <a href="subject.html#4210">[ subject ]</a>
+              <a href="author.html#4210">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Le 20/11/2011 22:32, David Savinkoff a &#233;crit :
+</I>&gt;&gt;<i> It would be better if SDL did not need
+</I>&gt;&gt;<i> dc blocking.
+</I>&gt;&gt;<i> ********
+</I>&gt;<i>
+</I>&gt;<i> What DC blocking for SDL are you talking about ? I don't hear any click
+</I>&gt;<i> as you report.
+</I>
+If the current dc blocker is disabled there is a lot of clicking.
+I actually patched things to test what happens when dc is allowed
+through. The result was clicks whenever hatari was paused, and
+whenever alsa or SDL decided to mix in extra sound or silence.
+
+It is easier to do things better!
+
+Blocking dc at very low freqencies with high sample rates gets troublesome.
+Higher precision is needed for IIR filters, and more taps and precision are
+needed for FIR filters. The IIR filter has a measured cutoff at 11 Hz, the
+current 512 tap FIR filter is about 22 Hz. The FIR filter will need
+512*(22/0.42) = 26819 taps, and the IIR filter may need int64_t.
+
+The reason Atari used a 100uF electrolyic instead of 3.9uF is because
+a wet aluminum electrolytic is a very poor capacitor (more like RLC)
+100uF is more of an attempt to swamp the resistance and inductance
+with excessive capacitance. Thus, in practice, the cutoff frequency
+on the hatari is probably ten times higher than 0.42Hz &gt;= 4Hz.
+
+How I derived lumped component value:
+
+Looking at the STf schematic; R8=1K is pulled up by the YM2149 so this
+1K is electrcally in parallel with the YM2149 from the perspective of
+the -ve end of C11=100uF. R8 can have 2.5volts and 0volts applied to it
+at 50% duty cycle with a 5v powersupply. If R8 is pulled up to 2.5 volts
+by a series resistor connected to 5.0 volts, that resistor will be
+1k (YM2149 looks like 1k when pulling up and infinite otherwise).
+Thus the YM2149 looks like 2k on average.
+
+Q1 has an approximate gain of 100 so R12=470 looks like 47k on Q1's
+base.
+
+(R8=1k//2k) + (R9=10k//R10=5.1k//47k) = 3817.7 ohms
+
+C11=100uF derated by 40% and designed to swamp its inadequecies by a
+factor of 10 was calculated to be 5.7uF by the person who put it there.
+
+Thanks
+David
+
+PS:
+My lousy mail frustrates me also. It would be a luxury to have a
+secure email connection with highlighting. I have to cut and paste
+into vim. I think a solution is to save the email source, open it
+with kmail, edit, then cut and paste into lousy telus mail.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004209.html">[hatari-devel] Head cycles : x + op head
+</A></li>
+	<LI>Next message: <A HREF="004218.html">[hatari-devel] Stereo DC filtering which accounts for DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4210">[ date ]</a>
+              <a href="thread.html#4210">[ thread ]</a>
+              <a href="subject.html#4210">[ subject ]</a>
+              <a href="author.html#4210">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

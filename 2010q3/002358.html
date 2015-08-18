@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Bugs%20and%20GUI%20%28Was%3A%20Little%20AceTracker%20question%29&In-Reply-To=%3C201007181217.49697.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002357.html">
+   <LINK REL="Next"  HREF="002359.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Bugs and GUI (Was: Little AceTracker question)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Bugs%20and%20GUI%20%28Was%3A%20Little%20AceTracker%20question%29&In-Reply-To=%3C201007181217.49697.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Bugs and GUI (Was: Little AceTracker question)">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jul 18 11:17:49 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002357.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+        <LI>Next message: <A HREF="002359.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2358">[ date ]</a>
+              <a href="thread.html#2358">[ thread ]</a>
+              <a href="subject.html#2358">[ subject ]</a>
+              <a href="author.html#2358">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 18 July 2010, Anders Eriksson wrote:
+&gt;<i> Anyway here are snaps from all parts of Hatari 1.4.0 on OS X:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://ae.dhs.nu/pics/Hatari140_OSX/">http://ae.dhs.nu/pics/Hatari140_OSX/</A>
+</I>
+Thanks, this is quite nice &amp; interesting. :-)
+
+What's the &quot;Hatari help&quot; thingy and what &quot;Search&quot; does?
+
+What the debugger looks like?  Does it have support for reading
+debugger commands from file (like the builtin debugger has)?
+
+
+Other comments:
+
+* The &quot;Enable debugger interface&quot; option most likely should be named
+  &quot;Invoke debugger on exceptions&quot;.
+
+* Who uses &quot;Enable Bios/Xbios interception&quot; and for what kind things?
+  Only thing I've myself used it so far is tracing Bios &amp; Xbios, but OSX UI
+  doesn't support setting tracing options (like my Python/Gtk GUI does[1]).
+
+* &quot;New floppy image&quot; dialog misses support for creating HD (1.44MB)
+  and ED (2.88MB) disk images.
+
+* The &quot;Falcon/TT aspect ratio&quot; setting is useless except for debugging
+  changes to Hatari's scaling code, so I think there's no point in offering
+  it to users.
+
+  What the &quot;Zoom ST-lowres.&quot; option is supposed to do?
+  (There's a --zoom command line option in Hatari, but it just selects one
+  of the pre-defined max. sizes which therefore overrides user's own max
+  settings + that code is not callable from GUI code)
+
+* Avi &amp; sound recording options seem to be missing.  Btw. in case you
+  haven't noticed, Hatari will automatically save either in YM or WAV format
+  based on filename extension. :-)
+
+* There should be different headings/names for IDE master &amp; slave images.
+  GEMDOS write protection supports &quot;auto&quot; mode like floppies do, so plain
+  checkbox isn't enough.  Typo: &quot;Alow&quot; -&gt; &quot;Allow&quot;.
+
+* Joystick keys configuration is missing.
+  (I don't have them in Python/Gtk UI either)
+
+* MIDI input file setting is missing.
+
+* System settings screen looks pretty cramped.  IMHO it's  bad idea to stuff
+  memory settings there too + there's no support for saving &amp; restoring
+  emulation memory state.
+
+  Btw, for full compatibility testing you might want to turn off the Blitter
+  option. It's about ST blitter, not STE one.  It probably should be
+  renamed &quot;Blitter emulation (ST only)&quot; even in SDL GUI as it's in command
+  line.
+
+* Hatari has no support for changing the control socket at run-time.
+  That option is useful only for things that _start_ Hatari to control it
+  through a socket so it's sensible only as command line option.  Having
+  the socket with fixed file name could even be a security issue.
+
+* I don't see any code for changing (trace) log file during Hatari run-time.
+  (would be nice though, I've missed it myself)
+
+
+[1] See &quot;Trace settings&quot; here:
+	<A HREF="http://koti.mbnet.fi/tammat/hatari/hatari-ui.shtml#Screenshots">http://koti.mbnet.fi/tammat/hatari/hatari-ui.shtml#Screenshots</A>
+
+
+&gt;<i> having a sidebar with scroll-list isn't unconventional, it exists in most
+</I>&gt;<i> modern IDEs for for instance.
+</I>
+In your examples they typically represent file system objects and are also 
+hierarchical.  I think your SDL GUI example is closer to tabs (many widget
+toolkits like Gtk, Fltk... support having them on at any edge + scrolling
+through the tabs).
+
+With tabs it would be best to join the active tab label with its view so
+that user associates them better together.  This also makes the view name
+at top redundant &amp; saves some vertical space in the view like getting rid of
+the &quot;Back to main menu&quot; button did.
+
+
+&gt;<i> &gt; Usability:
+</I>&gt;<i> &gt; Looks:
+</I>&gt;<i> &gt; Implementation issues:
+</I>&gt;<i>
+</I>&gt;<i> Now my textfile wasn't THAT serious, it was only an example how the
+</I>&gt;<i> small SDL-GUI could implement more options.
+</I>
+Sure. But thanks anyway! :-)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002357.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+	<LI>Next message: <A HREF="002359.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2358">[ date ]</a>
+              <a href="thread.html#2358">[ thread ]</a>
+              <a href="subject.html#2358">[ subject ]</a>
+              <a href="author.html#2358">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

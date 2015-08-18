@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger improvements
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20improvements&In-Reply-To=%3C4B6D599A.6010907%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001418.html">
+   <LINK REL="Next"  HREF="001422.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger improvements</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20improvements&In-Reply-To=%3C4B6D599A.6010907%40free.fr%3E"
+       TITLE="[hatari-devel] Debugger improvements">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Feb  6 12:59:22 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001418.html">[hatari-devel] Debugger improvements
+</A></li>
+        <LI>Next message: <A HREF="001422.html">[hatari-devel] Debugger improvements
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1419">[ date ]</a>
+              <a href="thread.html#1419">[ thread ]</a>
+              <a href="subject.html#1419">[ subject ]</a>
+              <a href="author.html#1419">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Eero,
+
+I'll test all of this next week, I won't be here today and tomorrow.
+
+Would it be possible to have this kind of command :
+
+d pc
+dd pc
+
+This is easier to write than d $e1563 for example ;)
+(I'm sometimes lazy)
+
+Regards
+
+Laurent
+
+
+
+
+Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> FYI: I just commited (lightly tested) symbols support for conditional
+</I>&gt;<i> breakpoints.  This allows setting breakpoints on data symbols (and
+</I>&gt;<i> their value changes) whereas address breakpoints supported only
+</I>&gt;<i> code symbols.
+</I>&gt;<i>
+</I>&gt;<i> Next to come will be symbol support for cpu memdump and
+</I>&gt;<i> dsp disasm &amp; memdump (+ counter support for dsp address
+</I>&gt;<i> breakpoints).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Btw. The feature commented below will allow &quot;run until &lt;condition&gt;&quot;
+</I>&gt;<i> that was one of the Monst things missing from Hatari debugger.
+</I>&gt;<i>
+</I>&gt;<i> One can use:
+</I>&gt;<i> 	b &lt;some condition&gt; once
+</I>&gt;<i> 	c
+</I>&gt;<i> to run until some condition happens, the breakpoint is automatically
+</I>&gt;<i> removed after that.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Btw. I was wondering about the data change breakpoint mentioned below.
+</I>&gt;<i> Currently with &quot;!&quot; comparison, it tracks changes constantly by updating
+</I>&gt;<i> the value which causes a breakpoint.  Should there be also something like:
+</I>&gt;<i> 	pc &gt; pc
+</I>&gt;<i> Which would take the current value of PC and break when PC register goes
+</I>&gt;<i> over value (would really make sense only with &quot;once&quot; keyword)?
+</I>&gt;<i>
+</I>&gt;<i> It's a bit handier than first using &quot;regs&quot; to check register value or
+</I>&gt;<i> &quot;memdump&quot; to check a memory address value and then typing that
+</I>&gt;<i> value to the breakpoint expression.
+</I>&gt;<i>
+</I>&gt;<i> (The PC reg example above would be handy for getting out of looping code.)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i> On Sunday 31 January 2010, Eero Tamminen wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> There are quite many different values it writes there:
+</I>&gt;&gt;&gt;<i>       $007f
+</I>&gt;&gt;&gt;<i>       $00bf
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> ...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I added IMHO nice new feature to conditional breakconds to find out these
+</I>&gt;&gt;<i> kind of issues.  Now, to see when a value of a specific memory address
+</I>&gt;&gt;<i> changes, just give exactly the same expression for that address value on
+</I>&gt;&gt;<i> both sides of the condition comparison.  To just see the value changes
+</I>&gt;&gt;<i> without breaking, add &quot;trace&quot; keyword to the end of the whole expression.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Like this:
+</I>&gt;&gt;<i> -----------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> b ($ffff9202).w ! ($ffff9202).w trace
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> CPU condition breakpoint 1 with 1 condition(s) added.
+</I>&gt;&gt;<i> -&gt; Track condition(s), show value(s) when matched.
+</I>&gt;&gt;<i> -&gt; Trace, show hits, but don't break.
+</I>&gt;&gt;<i> -----------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Tracing is also shown in the conditional breakpoints list:
+</I>&gt;&gt;<i> -----------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> b
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> 1 conditional CPU breakpoints:
+</I>&gt;&gt;<i>   1: ( $ffff9202 ) . w ! ( $ffff9202 ) . w, traced
+</I>&gt;&gt;<i> -----------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The tracked breakpoint can have also additional conditions to make sure
+</I>&gt;&gt;<i> that it's not triggered too often.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> And naturally you can monitor changes happening to multiple addresses at
+</I>&gt;&gt;<i> the same time just by adding more breakpoint with this kind of
+</I>&gt;&gt;<i> conditions.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The trace output of the example breakpoint looks like this with
+</I>&gt;&gt;<i> Moonspeader: -----------
+</I>&gt;&gt;<i> 1. breakpoint conditions matched 1664 times.
+</I>&gt;&gt;<i>   $ffff9202 = $df
+</I>&gt;&gt;<i> 1. breakpoint conditions matched 1665 times.
+</I>&gt;&gt;<i>   $ffff9202 = $ffff
+</I>&gt;&gt;<i> 1. breakpoint conditions matched 1666 times.
+</I>&gt;&gt;<i>   $ffff9202 = $fb
+</I>&gt;&gt;<i> 1. breakpoint conditions matched 1667 times.
+</I>&gt;&gt;<i>   $ffff9202 = $ffff
+</I>&gt;&gt;<i> 1. breakpoint conditions matched 1668 times.
+</I>&gt;&gt;<i>   $ffff9202 = $bf
+</I>&gt;&gt;<i> -----------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I hope you'll like it. :-)
+</I>&gt;&gt;<i>     
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001418.html">[hatari-devel] Debugger improvements
+</A></li>
+	<LI>Next message: <A HREF="001422.html">[hatari-devel] Debugger improvements
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1419">[ date ]</a>
+              <a href="thread.html#1419">[ thread ]</a>
+              <a href="subject.html#1419">[ subject ]</a>
+              <a href="author.html#1419">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Choosing ym mixing method in the UI
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Choosing%20ym%20mixing%20method%20in%20the%20UI&In-Reply-To=%3C4D9A1B52.10701%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003302.html">
+   <LINK REL="Next"  HREF="003305.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Choosing ym mixing method in the UI</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Choosing%20ym%20mixing%20method%20in%20the%20UI&In-Reply-To=%3C4D9A1B52.10701%40free.fr%3E"
+       TITLE="[hatari-devel] Choosing ym mixing method in the UI">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Apr  4 21:26:10 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003302.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+        <LI>Next message: <A HREF="003305.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3303">[ date ]</a>
+              <a href="thread.html#3303">[ thread ]</a>
+              <a href="subject.html#3303">[ subject ]</a>
+              <a href="author.html#3303">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+For my part, I prefer the first one.
+
+&gt;<i>  Isn't the table used for mixing STE/Falcon/TT YM sound?
+</I>
+For the falcon part, I get the Ym sound already composed, and I mix it with the other channels via the crossbar.
+
+Regards
+
+Laurent
+
+
+
+
+Le 04/04/2011 21:19, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On maanantai 04 huhtikuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;<i> by default, Hatari is using linear mixing to average the 3 YM voices and
+</I>&gt;&gt;<i> get the final sample to play.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Due to the hardware/filters used in a real ST, this doesn't fully match
+</I>&gt;&gt;<i> the reality, so it's also possible to mix the 3 voices using a table of
+</I>&gt;&gt;<i> all possible combination measured on an ST (this is in sound.c)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This table method is closer to what should be expected and gives really
+</I>&gt;&gt;<i> much better/cleaner results when playing samples on STF (by combining
+</I>&gt;&gt;<i> the 3 YM voices), but it might not please everyone's ears.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So, I'd like to make this the default, but this would need an option to
+</I>&gt;&gt;<i> change it from the UI easily.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Eero, do you think you could add 2 check boxes to the &quot;sound&quot; panel to
+</I>&gt;&gt;<i> handle this ?
+</I>&gt;<i> You mean radio boxes, I assume user cannot select both?
+</I>&gt;<i>
+</I>&gt;<i> What about command line and configuration option,
+</I>&gt;<i> I guess the command line option could be:
+</I>&gt;<i> 	--ym-mixer&lt;x&gt;   YM mixing method (x=linear/table)
+</I>&gt;<i> ?
+</I>&gt;<i>
+</I>&gt;&gt;<i> ------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> YM voice mixing  [] linear   [] ST table
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ------------------------------------------
+</I>&gt;<i> Isn't the table used for mixing STE/Falcon/TT YM sound?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> This should change YmVolumeMixing in sound.c to YM_LINEAR_MIXING or
+</I>&gt;&gt;<i> YM_TABLE_MIXING.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> (we could also add some checkboxes to enable some filters, but I have no
+</I>&gt;&gt;<i> idea of what filters to use for now, so this can be made later)
+</I>&gt;<i> Attached are three possible layouts that could be used to fit this to
+</I>&gt;<i> sound dialog, please pick one. :-)
+</I>&gt;<i>
+</I>&gt;<i> I can look into this and the add command line option after the configuration
+</I>&gt;<i> variable is there.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110404/0565f536/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110404/0565f536/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003302.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+	<LI>Next message: <A HREF="003305.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3303">[ date ]</a>
+              <a href="thread.html#3303">[ thread ]</a>
+              <a href="subject.html#3303">[ subject ]</a>
+              <a href="author.html#3303">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

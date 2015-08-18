@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Execution history debugger command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201108141333.21389.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003931.html">
+   <LINK REL="Next"  HREF="003924.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Execution history debugger command</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201108141333.21389.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Execution history debugger command">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Aug 14 12:33:21 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003931.html">[hatari-devel] EmuTOS LMC1992 initialization
+</A></li>
+        <LI>Next message: <A HREF="003924.html">[hatari-devel] Inaccurate white color
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3923">[ date ]</a>
+              <a href="thread.html#3923">[ thread ]</a>
+              <a href="subject.html#3923">[ subject ]</a>
+              <a href="author.html#3923">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 10 kes&#228;kuu 2011, Eero Tamminen wrote:
+&gt;<i> I decided that the history thing should:
+</I>&gt;<i> 
+</I>&gt;<i> * Store only PC for DSP &amp; CPU, but for everything,
+</I>&gt;<i>   not just breakpoint
+</I>&gt;<i> 
+</I>&gt;<i> * When being asked for history, show disassembly of
+</I>&gt;<i>   instructions on these PC addresses
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> This can be utilized in breakpoints by automatically showing
+</I>&gt;<i> the instructions leading to the breakpoint being hit, with
+</I>&gt;<i> something like this:
+</I>&gt;<i>   history on
+</I>&gt;<i> 	lock history 8
+</I>&gt;<i> 	b &lt;some condition&gt;  :lock
+</I>&gt;<i> 
+</I>&gt;<i> This would, whenever given condition is hit, show the &quot;locked&quot;
+</I>&gt;<i> information i.e. history of requested last 8 instructions and
+</I>&gt;<i> then continue.
+</I>
+I commited this now.  History shows both PC and DSP instructions.
+
+
+&gt;<i> I can make it so that PC values/instructions that were shown by
+</I>&gt;<i> previous breakpoint aren't repeated if breakpoint happens to hit more
+</I>&gt;<i> often than at 8 instructions interval.
+</I>&gt;<i> 
+</I>&gt;<i> You can also ask more history in debugger and it will mark in
+</I>&gt;<i> the output the places where breakpoints (or other debugger
+</I>&gt;<i> entries) happened.
+</I>
+The output looks like this on ST:
+---------------------------------
+You have entered debug mode. Type c to continue emulation, h for help.
+
+CPU=$1a0c2, VBL=140, FrameCycles=72, HBL=0, LineCycles=72, DSP=N/A
+&gt;<i> history on
+</I>&gt;<i> lock history 8
+</I>Locked history output.
+&gt;<i> c 200
+</I>Returning to emulation for 200 CPU instructions...
+$01a0c6 : 6604                                 bne.s     $1a0cc
+$01a0c8 : 7604                                 moveq     #4,d3
+$01a0ca : 600c                                 bra.s     $1a0d8
+$01a0d8 : 5882                                 addq.l    #4,d2
+$01a0da : d4c3                                 adda.w    d3,a2
+$01a0dc : 60dc                                 bra.s     $1a0ba
+$01a0ba : b481                                 cmp.l     d1,d2
+$01a0bc : 6720                                 beq.s     $1a0de
+Debugger: *CPU steps*
+&gt;<i> c
+</I>Returning to emulation...
+OS clock ticks / second: 100
+Your system is too slow, some sound samples were not correctly emulated
+SPEED: 1209.0 VBL/s (1753/1.4s), diff=0.0%
+$084a42 : 2441                                 movea.l   d1,a2
+$084a44 : 3012                                 move.w    (a2),d0
+$084a46 : d15b                                 add.w     d0,(a3)+
+$084a48 : 1228 00ee                            move.b    $ee(a0),d1
+$084a4c : 2441                                 movea.l   d1,a2
+$084a4e : 3012                                 move.w    (a2),d0
+$084a50 : d15b                                 add.w     d0,(a3)+
+$084a52 : 1228 00f0                            move.b    $f0(a0),d1
+Debugger: *User break*
+&gt;<i> info default
+</I>
+CPU=$84a56, VBL=1754, FrameCycles=64, HBL=0, LineCycles=64, DSP=N/A
+--------------------------
+
+If you &quot;lock&quot; the output on entering debugger to a debugger script,
+you can in that script get whatever information you want in addition
+to the amount of history you specified.
+
+
+If you run it on Falcon with DSP enabled, you see also DSP
+instructions:
+--------------------------
+&gt;<i> lock history 10
+</I>Locked history output.
+&gt;<i> c 2
+</I>Returning to emulation for 2 CPU instructions...
+p:0051  0c0051         (04 cyc)  jmp p:$0051
+p:0051  0c0051         (04 cyc)  jmp p:$0051
+Debugger: *CPU steps*
+$e07cde : 51c8 fffc                            dbra      d0,$e07cdc
+p:0051  0c0051         (04 cyc)  jmp p:$0051
+p:0051  0c0051         (04 cyc)  jmp p:$0051
+p:0051  0c0051         (04 cyc)  jmp p:$0051
+$e07cdc : 20c2                                 move.l    d2,(a0)+
+p:0051  0c0051         (04 cyc)  jmp p:$0051
+p:0051  0c0051         (04 cyc)  jmp p:$0051
+p:0051  0c0051         (04 cyc)  jmp p:$0051
+Debugger: *CPU steps*
+--------------------------
+
+The first &quot;Debugger&quot; line in above output indcates where I gave the &quot;c 2&quot;
+command to continue for 2 CPU instructions, after my previous stepping
+debugger invocation had finished.
+
+
+&gt;<i> This will give with couple of extra code lines variables for
+</I>&gt;<i> previous DSP &amp; CPU PC variable values which can be used e.g. to
+</I>&gt;<i> find out jumps to some location that aren't loop jumps:
+</I>&gt;<i> 	b  pc = &lt;entry address&gt;  &amp;&amp;  PrevPcCpu ! &lt;loop jump address&gt;
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003931.html">[hatari-devel] EmuTOS LMC1992 initialization
+</A></li>
+	<LI>Next message: <A HREF="003924.html">[hatari-devel] Inaccurate white color
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3923">[ date ]</a>
+              <a href="thread.html#3923">[ thread ]</a>
+              <a href="subject.html#3923">[ subject ]</a>
+              <a href="author.html#3923">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Execution history debugger command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C4DE565B5.5090008%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003492.html">
+   <LINK REL="Next"  HREF="003517.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Execution history debugger command</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C4DE565B5.5090008%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Execution history debugger command">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Jun  1 00:03:33 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003492.html">[hatari-devel] Execution history debugger command
+</A></li>
+        <LI>Next message: <A HREF="003517.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3502">[ date ]</a>
+              <a href="thread.html#3502">[ thread ]</a>
+              <a href="subject.html#3502">[ subject ]</a>
+              <a href="author.html#3502">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 31/05/2011 19:56, Eero Tamminen a &#233;crit :
+
+&gt;&gt;<i> There, you have the registers and a history of what value were in PC,
+</I>&gt;&gt;<i> but I'm not sure it's enough to do something that really add extra
+</I>&gt;&gt;<i> values. Breakpoints are much more useful, and in the current state we
+</I>&gt;&gt;<i> have some rather good syntax to handle them.
+</I>&gt;<i>
+</I>&gt;<i> Would it be more useful to have the history saved on breakpoints instead
+</I>&gt;<i> of what I proposed?
+</I>&gt;<i>
+</I>&gt;<i> To get information on branches with those, I would need a new kind of
+</I>&gt;<i> breakpoint that is triggered only on branches which offset is larger than
+</I>&gt;<i> &lt;limit&gt;.  Would that kind of breakpoint facility be useful for you too?
+</I>&gt;<i>
+</I>&gt;<i> I guess best way to do that would be to have an internal debugger variable
+</I>&gt;<i> which value = abs(previous_pc - current_pc).  Any suggestions for its name?
+</I>&gt;<i> :-)
+</I>
+Honestly, I never felt the need for some kind of &quot;branch breakpoint&quot;, a 
+problem is rarely related to branches only, you need the context of all 
+instructions before and after the branch, which in fact means you need 
+all instructions.
+
+Most of the time, when I want to debug complex problems, this can't be 
+limited to tracking a limited history. At one point, I need to go back 
+many VBLs in time, which means an history of 100000s instructions !
+
+So, my solution is to run &quot;hatari --trace cpu_all&quot;, which basically 
+gives you an history of all the instructions ; then I add breakpoints to 
+the places that make sense to me and this allows me to narrow the field 
+to the source of the problem by doing successive runs of Hatari.
+
+With a rather long practice of asm, I think it's more efficient to get a 
+full trace up to the point of the crash, do a first analysis of the log 
+file, then add some breakpoints here and there and iterate.
+
+
+Nicolas
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003492.html">[hatari-devel] Execution history debugger command
+</A></li>
+	<LI>Next message: <A HREF="003517.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3502">[ date ]</a>
+              <a href="thread.html#3502">[ thread ]</a>
+              <a href="subject.html#3502">[ subject ]</a>
+              <a href="author.html#3502">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

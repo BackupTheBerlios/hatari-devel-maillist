@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Chaos AD demo question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Chaos%20AD%20demo%20question&In-Reply-To=%3C4D59A96F.9020103%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003046.html">
+   <LINK REL="Next"  HREF="003063.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Chaos AD demo question</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Chaos%20AD%20demo%20question&In-Reply-To=%3C4D59A96F.9020103%40free.fr%3E"
+       TITLE="[hatari-devel] Chaos AD demo question">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Feb 14 23:15:11 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003046.html">[hatari-devel] Chaos AD demo question
+</A></li>
+        <LI>Next message: <A HREF="003063.html">[hatari-devel] Chaos AD demo question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3047">[ date ]</a>
+              <a href="thread.html#3047">[ thread ]</a>
+              <a href="subject.html#3047">[ subject ]</a>
+              <a href="author.html#3047">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Later, I can read :
+
+cpu video_cyc= 63032  <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">56 at 123</A> : 00E032EC 1029 0002                MOVE.B 
+(A1, $0002) == $fffffc02,D0&lt;---- here
+cpu video_cyc= 63042  <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">66 at 123</A> : 00E032F0 b1fc 0000 0f96           CMPA.L 
+#$00000f96,A0
+cpu video_cyc= 63048  <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">72 at 123</A> : 00E032F6 6600 0622                BNE.W 
+#$0622 == $00E0391A (F)
+cpu video_cyc= 63054  <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">78 at 123</A> : 00E032FA 4a38 115a                TST.B 
+$0000115a
+cpu video_cyc= 63060  <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">84 at 123</A> : 00E032FE 6664                     BNE.B 
+#$00000064 == $00E03364 (F)
+
+cpu video_cyc= 63064  <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">88 at 123</A> : 00E03300 0c00 00f6                CMP.B 
+#$f6,D0 &lt;---- here
+cpu video_cyc= 63070  <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">94 at 123</A> : 00E03304 6406                     BCC.B 
+#$00000006 == $00E0330C (T) &lt;---- here
+cpu video_cyc= 63076 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">100 at 123</A> : 00E0330C 0400 00f6                SUB.B 
+#$f6,D0
+cpu video_cyc= 63082 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">106 at 123</A> : 00E03310 0280 0000 00ff           AND.L 
+#$000000ff,D0
+cpu video_cyc= 63088 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">112 at 123</A> : 00E03316 47f9 00e0 3350           LEA.L 
+$00e03350,A3
+cpu video_cyc= 63094 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">118 at 123</A> : 00E0331C 11f3 0000 115a           MOVE.B 
+(A3, D0.W*1, $00) == $00e03359,$0000115a
+cpu video_cyc= 63104 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">128 at 123</A> : 00E03322 47f9 00e0 335a           LEA.L 
+$00e0335a,A3
+cpu video_cyc= 63110 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">134 at 123</A> : 00E03328 11f3 0000 115b           MOVE.B 
+(A3, D0.W*1, $00) == $00e03363,$0000115b
+cpu video_cyc= 63120 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">144 at 123</A> : 00E0332E 0640 00f6                ADD.W 
+#$00f6,D0
+cpu video_cyc= 63124 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">148 at 123</A> : 00E03332 0c00 00f8                CMP.B 
+#$f8,D0 &lt;---- here ...
+cpu video_cyc= 63130 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">154 at 123</A> : 00E03336 6d0c                     BLT.B 
+#$0000000c == $00E03344 (F)
+cpu video_cyc= 63134 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">158 at 123</A> : 00E03338 0c00 00fb                CMP.B 
+#$fb,D0
+cpu video_cyc= 63140 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">164 at 123</A> : 00E0333C 6e06                     BGT.B 
+#$00000006 == $00E03344 (T)
+cpu video_cyc= 63146 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">170 at 123</A> : 00E03344 0c00 00fd                CMP.B 
+#$fd,D0
+cpu video_cyc= 63152 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">176 at 123</A> : 00E03348 6d04                     BLT.B 
+#$00000004 == $00E0334E (F)
+cpu video_cyc= 63156 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">180 at 123</A> : 00E0334A 11c0 1173                MOVE.B 
+D0,$00001173
+cpu video_cyc= 63162 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">186 at 123</A> : 00E0334E 4e75                     RTS.L
+
+
+There are lot of tests with D0 ($F8 (mouse), $FB(mouse), $FD(Joystick)). 
+Is this correct ?
+
+Doesn't this code use the Acia 6802 ?
+
+Laurent
+
+
+
+Le 14/02/2011 23:09, Laurent Sallafranque a &#233;crit :
+&gt;<i> In the trace, I can read this :
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc= 10168 440@ 19 : 00E032EC 1029 0002                
+</I>&gt;<i> MOVE.B (A1, $0002) == $fffffc02,D0 &lt;--here
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc= 10178 450@ 19 : 00E032F0 b1fc 0000 0f96           
+</I>&gt;<i> CMPA.L #$00000f96,A0
+</I>&gt;<i> cpu video_cyc= 10184 456@ 19 : 00E032F6 6600 0622                BNE.W 
+</I>&gt;<i> #$0622 == $00E0391A (F)
+</I>&gt;<i> cpu video_cyc= 10190 462@ 19 : 00E032FA 4a38 115a                TST.B 
+</I>&gt;<i> $0000115a
+</I>&gt;<i> cpu video_cyc= 10196 468@ 19 : 00E032FE 6664                     BNE.B 
+</I>&gt;<i> #$00000064 == $00E03364 (F)
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc= 10200 472@ 19 : 00E03300 0c00 00f6                CMP.B 
+</I>&gt;<i> #$f6,D0&lt;-- and here
+</I>&gt;<i> cpu video_cyc= 10206 478@ 19 : 00E03304 6406                     BCC.B 
+</I>&gt;<i> #$00000006 == $00E0330C (F)
+</I>&gt;<i>
+</I>&gt;<i> It seems to test Status report ($F6).
+</I>&gt;<i>
+</I>&gt;<i> What is this exactly ?
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hello
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> from the ikbd's doc :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The special codes 0xF6 through 0xFF are reserved for use as follows:
+</I>&gt;&gt;<i>     0xF6            status report
+</I>&gt;&gt;<i>     0xF7            absolute mouse position record
+</I>&gt;&gt;<i>     0xF8-0xFB       relative mouse position records(lsbs determind by
+</I>&gt;&gt;<i>                      mouse button states)
+</I>&gt;&gt;<i>     0xFC            time-of-day
+</I>&gt;&gt;<i>     0xFD            joystick report (both sticks)
+</I>&gt;&gt;<i>     0xFE            joystick 0 event
+</I>&gt;&gt;<i>     0xFF            joystick 1 event
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So, this waits for an event on joystick 0
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Nicolas
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003046.html">[hatari-devel] Chaos AD demo question
+</A></li>
+	<LI>Next message: <A HREF="003063.html">[hatari-devel] Chaos AD demo question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3047">[ date ]</a>
+              <a href="thread.html#3047">[ thread ]</a>
+              <a href="subject.html#3047">[ subject ]</a>
+              <a href="author.html#3047">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

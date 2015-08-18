@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari 1.4 emulation bugs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%201.4%20emulation%20bugs&In-Reply-To=%3Calpine.DEB.1.10.1011072103440.387%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002613.html">
+   <LINK REL="Next"  HREF="002595.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari 1.4 emulation bugs</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%201.4%20emulation%20bugs&In-Reply-To=%3Calpine.DEB.1.10.1011072103440.387%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Hatari 1.4 emulation bugs">ae at dhs.nu
+       </A><BR>
+    <I>Sun Nov  7 21:10:50 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002613.html">[hatari-devel] Hatari 1.4 emulation bugs
+</A></li>
+        <LI>Next message: <A HREF="002595.html">[hatari-devel] Hatari feature suggestion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2619">[ date ]</a>
+              <a href="thread.html#2619">[ thread ]</a>
+              <a href="subject.html#2619">[ subject ]</a>
+              <a href="author.html#2619">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 7 Nov 2010, Nicolas Pomar&#232;de wrote:
+
+&gt;&gt;<i> b) When using hardware scroller in fullscreen, there is graphic garbage
+</I>&gt;&gt;<i> in the right border (Firehorn pic and interference circles), also seen
+</I>&gt;&gt;<i> in Tuttugandi
+</I>&gt;<i>
+</I>&gt;<i> I was not able to see how it looks on a real STE. Would it be possible for 
+</I>&gt;<i> you to send me a video of the right border in such case (the best would be if 
+</I>&gt;<i> you could change the horizontal position of your STE's monitor to fully 
+</I>&gt;<i> display the extreme right part of the screen) ?
+</I>
+Hi!
+
+
+Here are two videos, one from my STe with the entire PAL frame captured, 
+and one from Hatari 1.4.
+
+<A HREF="http://ae.dhs.nu/tmp/molz_ste.mp4">http://ae.dhs.nu/tmp/molz_ste.mp4</A>
+<A HREF="http://ae.dhs.nu/tmp/molz_hatari.mp4">http://ae.dhs.nu/tmp/molz_hatari.mp4</A>
+
+As you can see, there is no graphcis corruption on a real machine. A quick 
+guess would be that when hscroll !=0 the error occurs in hatari.
+
+
+&gt;&gt;<i> 4. The Saw / Offbase
+</I>&gt;&gt;<i> <A HREF="http://pacidemo.planet-d.net/archives/THESAW.ZIP">http://pacidemo.planet-d.net/archives/THESAW.ZIP</A>
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> a) Audio is garbage
+</I>&gt;<i>
+</I>&gt;<i> Sorry, can't reproduce. Under STF or STE I have an audible sountrack.
+</I>
+My bad, I forgot to clarify; in STe-mode the audio is garbage, but in 
+ST-mode it's fine. I think they use the TCB tracker routs and use the 
+STe-specific replay on there.
+
+
+&gt;<i> Thanks for your reports, don't hesitate to send more :)
+</I>
+As I continue to expand VideoDB (<A HREF="http://dhs.nu/video.php">http://dhs.nu/video.php</A>) I'm sure more 
+reports will follow :-)
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002613.html">[hatari-devel] Hatari 1.4 emulation bugs
+</A></li>
+	<LI>Next message: <A HREF="002595.html">[hatari-devel] Hatari feature suggestion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2619">[ date ]</a>
+              <a href="thread.html#2619">[ thread ]</a>
+              <a href="subject.html#2619">[ subject ]</a>
+              <a href="author.html#2619">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New problem with GullBach demo (Aura falcon demo)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20problem%20with%20GullBach%20demo%20%28Aura%20falcon%20demo%29&In-Reply-To=%3C200907101053.18781.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000462.html">
+   <LINK REL="Next"  HREF="000467.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New problem with GullBach demo (Aura falcon demo)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20problem%20with%20GullBach%20demo%20%28Aura%20falcon%20demo%29&In-Reply-To=%3C200907101053.18781.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] New problem with GullBach demo (Aura falcon demo)">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Jul 10 09:53:18 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000462.html">[hatari-devel] New problem with GullBach demo (Aura falcon demo)
+</A></li>
+        <LI>Next message: <A HREF="000467.html">[hatari-devel] Interrupt assert triggered by video.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#464">[ date ]</a>
+              <a href="thread.html#464">[ thread ]</a>
+              <a href="subject.html#464">[ subject ]</a>
+              <a href="author.html#464">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 09 July 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> On Thu, 9 Jul 2009, Laurent Sallafranque wrote:
+</I>&gt;<i> &gt; Here is the trace (hope this helps)
+</I>
+Thanks!
+
+&gt;<i> &gt; (gdb) bt
+</I>&gt;<i> &gt; #0  0x00007fb513877fb5 in raise () from /lib/libc.so.6
+</I>&gt;<i> &gt; #1  0x00007fb513879bc3 in abort () from /lib/libc.so.6
+</I>&gt;<i> &gt; #2  0x00007fb513870f09 in __assert_fail () from /lib/libc.so.6
+</I>&gt;<i> &gt; #3  0x000000000041d028 in Int_AddRelativeInterruptWithOffset
+</I>&gt;<i> &gt; (CycleTime=-340026, CycleType=1,
+</I>&gt;<i> &gt;    Handler=INTERRUPT_DMASOUND, CycleOffset=0) at int.c:392
+</I>
+This bt misses couple of functions.  One is static and another inline so GCC
+probably left out the function frames for them.  Strange that Gdb doesn't
+show the names of the functions though, debug sections should have
+enough information to decipher that.
+
+Laurent, the functions are (you can find them by looking at what's at the
+indicated line number and where the relevant functions are called):
+	DmaSnd_StartNewFrame()
+	DmaSnd_CheckForEndOfFrame()
+
+&gt;<i> &gt; #4  0x000000000040f4cf in DmaSnd_GenerateSamples (nMixBufIdx=4484,
+</I>&gt;<i> &gt; nSamplesToGenerate=2) at dmaSnd.c:191
+</I>&gt;<i> &gt; #5  0x000000000042d864 in Sound_Update () at sound.c:1033
+</I>&gt;<i> &gt; #6  0x000000000043bdb1 in m68k_go (may_quit=&lt;value optimized out&gt;) at
+</I>&gt;<i> &gt; newcpu.c:1738
+</I>&gt;<i> &gt; #7  0x0000000000420991 in main (argc=4, argv=0x7fff1c7b2aa8) at
+</I>&gt;<i> &gt; main.c:712
+</I>...
+&gt;<i> From the trace, it seems the assert is showing a bug that is not related
+</I>&gt;<i> to video.c but was already present in dmasnd.c
+</I>
+Ok, this isn't properly validating the values it reads from ST RAM:
+----------------
+static void DmaSnd_StartNewFrame(void)
+{
+        int nCyclesForFrame;
+
+        nFrameStartAddr = (IoMem[0xff8903] &lt;&lt; 16) | (IoMem[0xff8905] &lt;&lt; 8) | 
+(IoMem[0xff8907] &amp; ~1);
+        nFrameEndAddr = (IoMem[0xff890f] &lt;&lt; 16) | (IoMem[0xff8911] &lt;&lt; 8) | 
+(IoMem[0xff8913] &amp; ~1);
+
+        FrameCounter = 0;
+        nFrameLen = nFrameEndAddr - nFrameStartAddr;
+
+        /* To get smooth sound, set an &quot;interrupt&quot; for the end of the frame 
+that
+         * updates the sound mix buffer. */
+        nCyclesForFrame = nFrameLen * (8013000.0 / 
+DmaSnd_DetectSampleRate());
+        if (!(nDmaSoundMode &amp; DMASNDMODE_MONO))  /* Is it stereo? */
+                nCyclesForFrame = nCyclesForFrame / 2;
+        Int_AddRelativeInterrupt(nCyclesForFrame, INT_CPU_CYCLE, 
+INTERRUPT_DMASOUND);
+}
+----------------
+
+
+&gt;<i> CycleTime=-340026, which is &lt;0 and wrong, it should always be &gt;0.
+</I>&gt;<i>
+</I>&gt;<i> But this would mean that nFrameEndAddr &lt; nFrameStartAddr ; this case
+</I>&gt;<i> should be handled I guess (I don't know what is intended by this demo on
+</I>&gt;<i> a real falcon).
+</I>&gt;<i>
+</I>&gt;<i> I leave this to some falcon experts :)
+</I>
+Laurent/Thomas, what happens / should happen on real Falcon if DMA sound
+frame start and end mismatch?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000462.html">[hatari-devel] New problem with GullBach demo (Aura falcon demo)
+</A></li>
+	<LI>Next message: <A HREF="000467.html">[hatari-devel] Interrupt assert triggered by video.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#464">[ date ]</a>
+              <a href="thread.html#464">[ thread ]</a>
+              <a href="subject.html#464">[ subject ]</a>
+              <a href="author.html#464">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

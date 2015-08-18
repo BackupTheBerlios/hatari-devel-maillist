@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Makefiles removal?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Makefiles%20removal%3F&In-Reply-To=%3C20100613203104.2b4cc9d7%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002309.html">
+   <LINK REL="Next"  HREF="002307.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Makefiles removal?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Makefiles%20removal%3F&In-Reply-To=%3C20100613203104.2b4cc9d7%40phineus%3E"
+       TITLE="[hatari-devel] Makefiles removal?">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Jun 13 20:31:04 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002309.html">[hatari-devel] Makefiles removal?
+</A></li>
+        <LI>Next message: <A HREF="002307.html">[hatari-devel] Makefiles removal?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2306">[ date ]</a>
+              <a href="thread.html#2306">[ thread ]</a>
+              <a href="subject.html#2306">[ subject ]</a>
+              <a href="author.html#2306">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 13 Jun 2010 20:19:52 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On Sunday 13 June 2010, Thomas Huth wrote:
+</I>&gt;<i> &gt;&gt; I noticed that you removed all the makefiles. I think this was
+</I>&gt;<i> &gt;&gt; premature.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; We may need to do some bugfix point release for 4.x still and you
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Well, in that case it is also inappropriate that you've committed
+</I>&gt;<i> &gt; also your profiling, hmsa and other stuff already!
+</I>&gt;<i> 
+</I>&gt;<i> Dropping a build system is a bit larger change compared to feature
+</I>&gt;<i> additions, especially when I have posted patches detailing them,
+</I>&gt;<i> asked opinion on adding them and others had agreed to them (they
+</I>&gt;<i> don't affect greatly to what others do).
+</I>
+The new build system is available since month, so don't dare to say
+that this is less tested than your new patches.
+
+&gt;<i> If there are tested &amp; already working new features, I don't see why
+</I>&gt;<i> they couldn't be included to the release to get wider testing for
+</I>&gt;<i> them, if that doesn't need too much effort.
+</I>
+Bug fix releases should normally only fix bugs, not introduce new
+features which can _always_ contain new bugs.
+However, if we still decide to add new features to a bugfix release, we
+should then rather cherry-pick the appropriate patches instead of
+blindly releasing the hg tip.
+ 
+&gt;<i> (Removing the (other) v1.4 build system complicates things like that
+</I>&gt;<i> to some extent (like other larger changes) without adding any extra
+</I>&gt;<i> value.)
+</I>
+As I mentioned above, a proper bugfix release should always be done on
+a separate branch. That's also how I did it for the 1.3.1 release a
+year ago.
+
+&gt;<i> &gt; That's your stuff only, so I leave it up to you to add it to the
+</I>&gt;<i> &gt; CMake files.
+</I>&gt;<i> 
+</I>&gt;<i> How / why?
+</I>
+Maybe by reading the friendly documentation of cmake and having a try?
+;-)
+
+&gt;<i> Test stuff is developer-only and contains Linux specific things like
+</I>&gt;<i> running the tests under Valgrind (which is Linux only), so I think
+</I>&gt;<i> it's fine to have a normal GNU Makefile there.
+</I>
+Why did you run valgrind from within the Makefile? Shouldn't this
+rather be a separate shell script?
+
+&gt;<i> As to Mudflap debugging support, I have no idea how to add support
+</I>&gt;<i> to it to CMake, I need your help there.
+</I>
+Well, don't be so lazy, Eero, just have a try, ... and if you get
+stuck, I still can try to help you there.
+
+
+&gt;<i> &gt; &gt; Please add those or restore the Makefiles.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Or what?
+</I>&gt;<i> 
+</I>&gt;<i> Well, it's a bit unfair to remove &amp; break other's code without a
+</I>&gt;<i> warning. I think I'm entitled to cry &quot;foul&quot;.  :-)
+</I>
+This certainly hasn't been without a notice. Well, ok, there wasn't a
+direct warning yesterday, but I think we discussed it clearly on this
+mailing list to keep the old Makefiles for the 1.4 release and to
+remove them afterwards. You added mudflap support just a couple of
+weeks ago, so instead of adding it to the old Makefiles, you could have
+also added it directly to the new CMake-files instead.
+
+So please stop behaving like an offended child now, and try to get used
+to cmake at last instead.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002309.html">[hatari-devel] Makefiles removal?
+</A></li>
+	<LI>Next message: <A HREF="002307.html">[hatari-devel] Makefiles removal?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2306">[ date ]</a>
+              <a href="thread.html#2306">[ thread ]</a>
+              <a href="subject.html#2306">[ subject ]</a>
+              <a href="author.html#2306">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

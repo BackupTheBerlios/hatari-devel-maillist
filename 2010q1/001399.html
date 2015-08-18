@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issue with current directory in file selector
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issue%20with%20current%20directory%20in%20file%20selector&In-Reply-To=%3C89BA532D8C956043994C773C71153C92A892E77D6B%40GVW1088EXB.americas.hpqcorp.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001488.html">
+   <LINK REL="Next"  HREF="001403.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issue with current directory in file selector</H1>
+    <B>Konador, Cyprian</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issue%20with%20current%20directory%20in%20file%20selector&In-Reply-To=%3C89BA532D8C956043994C773C71153C92A892E77D6B%40GVW1088EXB.americas.hpqcorp.net%3E"
+       TITLE="[hatari-devel] Issue with current directory in file selector">cyprian.konador at hp.com
+       </A><BR>
+    <I>Sun Jan 31 00:03:23 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001488.html">[hatari-devel] Debugger improvements
+</A></li>
+        <LI>Next message: <A HREF="001403.html">[hatari-devel] Issue with current directory in file selector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1399">[ date ]</a>
+              <a href="thread.html#1399">[ thread ]</a>
+              <a href="subject.html#1399">[ subject ]</a>
+              <a href="author.html#1399">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All,
+
+
+I faced an issue with file selector under Windows (I'm not sure about other systems). That issue appears when I press Browse button in TOS setup / Floppy disk menu.
+When I press Browse and choose floppy disk image first time, I see proper directory (defined as &quot;Default floppy images directory&quot;). When I press Browse second time, I see Hatari home folder. I observed  the same behaviour, for TOS setup.
+
+I found out that function File_SplitPath in file.c returns wrong path. 
+E.g. C:\Hatari\Floppy\Nosta.msa is splitted (in function SDLGui_FileSelect) as follow:
+path: C:\Hatari\Floppy\
+fname: Nosta.msa 
+
+but should be:
+path: C:\Hatari\Floppy
+fname: Nosta.msa 
+
+Attached you can find path for that issue.
+
+Thanks
+
+Regards
+Cyprian
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: file.diff
+Type: application/octet-stream
+Size: 388 bytes
+Desc: file.diff
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100130/776997b0/attachment.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100130/776997b0/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001488.html">[hatari-devel] Debugger improvements
+</A></li>
+	<LI>Next message: <A HREF="001403.html">[hatari-devel] Issue with current directory in file selector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1399">[ date ]</a>
+              <a href="thread.html#1399">[ thread ]</a>
+              <a href="subject.html#1399">[ subject ]</a>
+              <a href="author.html#1399">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

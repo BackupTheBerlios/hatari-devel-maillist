@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Monochrome Monitor in Falcon mode
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Monochrome%20Monitor%20in%20Falcon%20mode&In-Reply-To=%3C201102191910.30094.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003077.html">
+   <LINK REL="Next"  HREF="003095.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Monochrome Monitor in Falcon mode</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Monochrome%20Monitor%20in%20Falcon%20mode&In-Reply-To=%3C201102191910.30094.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Monochrome Monitor in Falcon mode">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Feb 19 18:10:30 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003077.html">[hatari-devel] Monochrome Monitor in Falcon mode
+</A></li>
+        <LI>Next message: <A HREF="003095.html">[hatari-devel] Monochrome Monitor in Falcon mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3079">[ date ]</a>
+              <a href="thread.html#3079">[ thread ]</a>
+              <a href="subject.html#3079">[ subject ]</a>
+              <a href="author.html#3079">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 19 helmikuu 2011, Thomas Huth wrote:
+&gt;<i> I just tried to start Hatari in Falcon mode, with monochrome
+</I>&gt;<i> monitor, ... but the screen does not come up right anymore. The screen
+</I>&gt;<i> looks like 1280x400 instead of 640x400, and there is only graphics in
+</I>&gt;<i> the upper part of the window...
+</I>
+I could reproduce it.
+
+&gt;<i> I think there have been some changes to Videl code recently, maybe
+</I>&gt;<i> something broke during these changes?
+</I>
+ST, STE &amp; TT monochrome look fine, including the 640x400 TT monochrome,
+so it was Videl specific.
+
+&gt;<i> Could somebody please have a look?
+</I>
+The problem is the new code in videl.c::VIDEL_ST_ShiftModeWriteByte().
+
+I commited one fix to that function, it was reading byte register as word
+and as result selecting wrong branch in switch, but that's not enough to
+fix the whole issue.
+
+Now the right switch case is selected, but code there isn't correct:
+-------------
+                case 2: /* 1BP/640 Pixels */
+                        line_width = 0x28;
+                        video_mode = videl.monitor_type == 
+FALCON_MONITOR_VGA ? 0x8 : 0x6;
+...
+        /* Set line width ($FFFF8210) */
+        IoMem_WriteWord(0xff8210, line_width); 
+        
+        /* Set video mode ($FFFF82C2) */
+        IoMem_WriteWord(0xff82c2, video_mode); 
+-------------
+
+This code (like all other cases in this switch) checks only for VGA and
+seems to be expecting everything else to be RGB and for non-VGA monitors
+it sets the video mode &quot;half pixel&quot; &amp; &quot;interlace&quot; bits.
+
+&quot;half pixel&quot; bit (0x4) doesn't seem to have any effect on monochrome
+monitor, but interlace bit (0x2) makes the screen 640x800 instead
+of the correct 640x400.
+
+Laurent, could you fix the remaining part?
+
+
+	- Eero
+
+PS. I don't understand why the code in this function is needed, things seem
+to be working fine without it...?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003077.html">[hatari-devel] Monochrome Monitor in Falcon mode
+</A></li>
+	<LI>Next message: <A HREF="003095.html">[hatari-devel] Monochrome Monitor in Falcon mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3079">[ date ]</a>
+              <a href="thread.html#3079">[ thread ]</a>
+              <a href="subject.html#3079">[ subject ]</a>
+              <a href="author.html#3079">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] GEMDOS emulation,	what are the legal ST memory areas to write to?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20emulation%2C%0A%09what%20are%20the%20legal%20ST%20memory%20areas%20to%20write%20to%3F&In-Reply-To=%3C1739638109.10430761259142181166.JavaMail.root%40mail-zstore-1-a.gicm.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000993.html">
+   <LINK REL="Next"  HREF="001005.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] GEMDOS emulation,	what are the legal ST memory areas to write to?</H1>
+    <B>LAURENT SALLAFRANQUE</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20emulation%2C%0A%09what%20are%20the%20legal%20ST%20memory%20areas%20to%20write%20to%3F&In-Reply-To=%3C1739638109.10430761259142181166.JavaMail.root%40mail-zstore-1-a.gicm.net%3E"
+       TITLE="[hatari-devel] GEMDOS emulation,	what are the legal ST memory areas to write to?">laurent.sallafranque at arkea.com
+       </A><BR>
+    <I>Wed Nov 25 10:43:01 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000993.html">[hatari-devel] Catching return from an exception?
+</A></li>
+        <LI>Next message: <A HREF="001005.html">[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1004">[ date ]</a>
+              <a href="thread.html#1004">[ thread ]</a>
+              <a href="subject.html#1004">[ subject ]</a>
+              <a href="author.html#1004">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've read all this thread.
+
+Is the MoonGame problem I related in a precedent thread can be similar to this one ?
+
+I explain what I mean :
+
+When I use a 14 Mg RAM falcon emulation, i get a &gt;&gt; Illegal ROMmem bput at 00e00000
+&gt;&gt;<i> M68000 Bus Error at address $e00000.
+</I>
+When I use a 8 Mg RAM falcon emulation, I get Bus error bget at 00800000
+M68000 Bus Error at address $800000.
+
+Shouldn't these addresses be void acces instead of returning a bus error ?
+
+It looks the same than what you describe in the Gemdos problem with bus error and acces to RAM.
+
+Regards,
+
+Laurent
+
+
+-- 
+Laurent Sallafranque
+CICM / groupe Arkea
+Domaine Ged/Archivage
+1 rue Louis Lichou
+29480 Le Relecq Kerhuon
+T&#233;l : 02 98 00 20 76
+
+--
+Ce message et  toutes les pieces jointes (ci-apres  le &quot;message&quot;) sont
+confidentiels et etablis a l'intention exclusive de ses destinataires.
+Toute  utilisation ou  diffusion  non autorisee  est interdite.   Tout
+message  etant  susceptible  d'alteration,  l'emetteur  decline  toute
+responsabilite au titre de  ce message  s'il a  ete altere, deforme ou
+falsifie.
+                -----------------------------------
+This message and any  attachments (the &quot;message&quot;) are confidential and
+intended  solely   for  the   addressees.  Any  unauthorised   use  or
+dissemination is prohibited. As e-mails are susceptible to alteration,
+the issuer shall  not be  liable for  the  message if altered, changed
+or falsified.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000993.html">[hatari-devel] Catching return from an exception?
+</A></li>
+	<LI>Next message: <A HREF="001005.html">[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1004">[ date ]</a>
+              <a href="thread.html#1004">[ thread ]</a>
+              <a href="subject.html#1004">[ subject ]</a>
+              <a href="author.html#1004">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Conditional breakpoints for DSP
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoints%20for%20DSP&In-Reply-To=%3C200907031126.52935.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000465.html">
+   <LINK REL="Next"  HREF="000434.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Conditional breakpoints for DSP</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoints%20for%20DSP&In-Reply-To=%3C200907031126.52935.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Conditional breakpoints for DSP">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Jul  3 10:26:52 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000465.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+        <LI>Next message: <A HREF="000434.html">[hatari-devel] Hatari patches for bitplane conversion + XBios	Hatari control from inside the emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#433">[ date ]</a>
+              <a href="thread.html#433">[ thread ]</a>
+              <a href="subject.html#433">[ subject ]</a>
+              <a href="author.html#433">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 19 June 2009, Laurent Sallafranque wrote:
+&gt;<i> &gt;&gt;&gt; The .w means nothing in DSP, as you always access to DSP memory
+</I>&gt;<i> &gt;&gt;&gt; (internal or external) in word size (24 bits).
+</I>
+I just added DSP memory support to the conditional breakpoints.  Please test
+whether the DSP breakpoints work now fine (and memory dumping &amp; register
+setting in the debugger still work fine too).  Except maybe for syntax, it
+should be now &quot;feature complete&quot;.
+
+For example following triggers when the &quot;Papa was a Bladerunner&quot; demo starts
+the rotozoomer screen:
+===============
+&gt;<i> db ($33).x = $001be0
+</I>DSP condition breakpoint 1 added.
+&gt;<i> c
+</I>Returning to emulation...
+------------------------------
+
+M68000 Bus Error at address $ff8e21.
+M68000 Bus Error at address $ff8c01.
+Breakpoint '( $33 ) . x = $001be0' matched.
+===============
+
+(I.e. value at X:0x33 is or changes to 0x1be0)
+
+
+&gt;<i> &gt; Why when writing to R* &amp; N* registers in the DSP_Disasm_SetRegister()
+</I>&gt;<i> &gt; function you limited writes to 16-bits in dsp.c?  Because the offset
+</I>&gt;<i> &gt; cannot be larger (although dsp_core struct uses Uint32 for this and
+</I>&gt;<i> &gt; other registers except PC)?
+</I>&gt;<i> &gt; For some registers you used even bitmasks that have holes...?
+</I>&gt;<i>
+</I>&gt;<i> No, in DSP, memory and registers are 2 completly different things.
+</I>&gt;<i>
+</I>&gt;<i> 1) Memory
+</I>&gt;<i>
+</I>&gt;<i> Memory is 32Ko word sized. (a dsp word is always 24 bits).
+</I>&gt;<i> Memory goes from $0 to $FFFF (Yes, I know it's 64 Ko, let me explain).
+</I>&gt;<i>
+</I>&gt;<i> DSP contains 3 internal RAM
+</I>&gt;<i>
+</I>&gt;<i> X internal RAM : 0 -&gt; FF
+</I>&gt;<i> Y internal RAM : 0 -&gt; FF
+</I>&gt;<i> P internal RAM : 0 -&gt; 1FF
+</I>&gt;<i>
+</I>&gt;<i> DSP also contains 2 internal ROMS
+</I>&gt;<i> X internal ROM : FF -&gt; 1FF
+</I>&gt;<i> Y internal ROM : FF -&gt; 1FF
+</I>
+This is bit strange, why the code for checking for ROM accesses uses
+also this:
+              if (dsp_core.registers[DSP_REG_OMR] &amp; (1&lt;&lt;DSP_OMR_DE)) {
+?
+
+Does additionally some specific bit need to be set to when accessing ROM?
+
+
+&gt;<i> DSP contains 2 peripheral datas area
+</I>&gt;<i> X peripheral : FFC0 -&gt; FFFF
+</I>&gt;<i> Y peripheral : FFC0 -&gt; FFFF
+</I>&gt;<i>
+</I>&gt;<i> DSP contains also a 32K external ram
+</I>&gt;<i>
+</I>&gt;<i> P memory is mapped on the 32 K of this ram (the upper 32K addresses are
+</I>&gt;<i> identical to the lower 32 K) (it's a 32k shadow memory)
+</I>&gt;<i>
+</I>&gt;<i> Y memory is a 16K area and is mapped from 0 to 3fff in P memory
+</I>&gt;<i> X memory is a 16K area and is mapped from 4000 to 7fff in P memory.
+</I>&gt;<i>
+</I>&gt;<i> So, if you write to address x:300, x:4300, x:8300, x:c300, p:4300,
+</I>&gt;<i> p:c300, you write to the exactly same addresses. The same for y memory.
+</I>&gt;<i> But if you write to x:0 (internal DSP Ram), or x:4000 (external RAM),
+</I>&gt;<i> these are 2 different rams.
+</I>&gt;<i>
+</I>&gt;<i> 2) Registers
+</I>&gt;<i>
+</I>&gt;<i> Registers are not in memory, they're not used to access to memory except
+</I>&gt;<i> R0-R7 registers.
+</I>&gt;<i>
+</I>&gt;<i> A and B are 2 56 bits registers.
+</I>&gt;<i> A is composed of A2 (8 bits), A1 (24 bits) and A0 (24 bits).
+</I>&gt;<i> B is composed of B2 (8 bits), B1 (24 bits) and B0 (24 bits).
+</I>&gt;<i>
+</I>&gt;<i> X and Y are two 48 bits registers.
+</I>&gt;<i>
+</I>&gt;<i> X is composed of X1 (24 bits) and X0 (24 bits).
+</I>&gt;<i> Y is composed of Y1 (24 bits) and Y0 (24 bits).
+</I>&gt;<i>
+</I>&gt;<i> R0-R7 are 16 bits registers
+</I>&gt;<i> N0-N7 are 16 bits registers
+</I>&gt;<i> M0-M7 are 16 bits registers
+</I>&gt;<i>
+</I>&gt;<i> LA and LC are 16 bits registers.
+</I>
+What are the (6-bits?) SP and the (16-bits?) SSH &amp; SSL registers?
+
+(they seem to be related to stack handling)
+
+
+&gt;<i> SR register is used to keep the state of the DSP (carry bit, overflow
+</I>&gt;<i> bit, ...) This register contains holes (not all the bits are used to
+</I>&gt;<i> keep informations, the unused bits must be 0).
+</I>
+Ok, the mask for this in dsp.c is:
+	1110111111111111
+	1234567812345678
+
+But I'm wondering also about the OMR register:
+	01011111
+	12345678
+
+What's this and why its mask has holes?
+
+
+&gt;<i> A move x:(R6) reads the value of register R6 (a 16 bits value), then
+</I>&gt;<i> reads at address (R6) in x memory the 24 bits value.
+</I>&gt;<i>
+</I>&gt;<i> R0-R7 are 16 bits registers because DSP memory is ranged from $0 to
+</I>&gt;<i> $ffff (16 bits). The datas contained in memory are 24 bits ranged.
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000465.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+	<LI>Next message: <A HREF="000434.html">[hatari-devel] Hatari patches for bitplane conversion + XBios	Hatari control from inside the emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#433">[ date ]</a>
+              <a href="thread.html#433">[ thread ]</a>
+              <a href="subject.html#433">[ subject ]</a>
+              <a href="author.html#433">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

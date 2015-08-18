@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Compiler warnings / system call
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compiler%20warnings%20/%20system%20call&In-Reply-To=%3C201002282045.31336.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001603.html">
+   <LINK REL="Next"  HREF="001618.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Compiler warnings / system call</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compiler%20warnings%20/%20system%20call&In-Reply-To=%3C201002282045.31336.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Compiler warnings / system call">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Feb 28 19:45:31 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001603.html">[hatari-devel] Compiler warnings / system call
+</A></li>
+        <LI>Next message: <A HREF="001618.html">[hatari-devel] Compiler warnings / system call
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1609">[ date ]</a>
+              <a href="thread.html#1609">[ thread ]</a>
+              <a href="subject.html#1609">[ subject ]</a>
+              <a href="author.html#1609">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 28 February 2010, Thomas Huth wrote:
+&gt;<i> When compiling the current hg tip, I get these compiler warnings:
+</I>&gt;<i>
+</I>&gt;<i> /home/thomas/devel/hatari/master/src/debug/debugui.c: In function
+</I>&gt;<i> &#8216;DebugUI_Exec&#8217;: /home/thomas/devel/hatari/master/src/debug/debugui.c:392:
+</I>&gt;<i> warning: ignoring return value of &#8216;system&#8217;, declared with attribute
+</I>&gt;<i> warn_unused_result /home/thomas/devel/hatari/master/src/debug/debugui.c:
+</I>&gt;<i> In function &#8216;DebugUI_ParseFile&#8217;:
+</I>&gt;<i> /home/thomas/devel/hatari/master/src/debug/debugui.c:956: warning:
+</I>&gt;<i> ignoring return value of &#8216;chdir&#8217;, declared with attribute
+</I>&gt;<i> warn_unused_result
+</I>&gt;<i>
+</I>&gt;<i> Eero, could you please fix them?
+</I>
+Sure.
+
+
+&gt;<i> Also I have to say that I dislike the use of the system() call in
+</I>&gt;<i> Hatari. First, I guess this call is quite specific to Unix-like
+</I>&gt;<i> platforms, so we might run into problems on platforms that do not
+</I>&gt;<i> feature a standard system shell and thus do not implement this call in
+</I>&gt;<i> their C library.
+</I>
+system() manual page says:
+	CONFORMING TO
+	       C89, C99, POSIX.1-2001.
+
+I.e. it's standard.
+
+
+&gt;<i> Second, this could introduce possible security issues. On some systems,
+</I>&gt;<i> Hatari might be installed as suid-root, so that it can for example
+</I>&gt;<i> access the framebuffer device directly. Offering a system() call here 
+</I>&gt;<i> means to offer a root shell!
+</I>
+Anything running as suid root should do whatever requires root priviledge in
+the beginning and drop root priviledges immediately after that.  If somebody
+makes Hatari suid root without doing do that, that's plain stupid[1].  I'm
+not sure it's even safe to run plain SDL itself as suid root...
+
+[1]&#160;I've fixed several potential buffer overflows in Hatari during past half
+    a year, I'm sure there are more.  Hatari's just too complex to be run
+    as suid.
+
+If one needs to access framebuffer, it's better to setup the system so
+that framebuffer is accessible by whoever logs in locally, similarly to how
+audio  and some other devices are handled within the past decade.
+Or it could be accessible by users who belong to certain group.
+
+
+Btw. I had my doubts about this feature too, but not from that point
+of view.
+
+Debugger is accessible also through Hatari command socket, if user enables
+socket (done automatically by Hatari UI), and through XBios 255 from
+the emulation environment, if one enables that.  But the socket should be
+accessible only by that user and --bios-intercept is not on by default.
+
+
+&gt;<i> So I vote for removing this debugger commando again
+</I>&gt;<i> - or is it really required badly? 
+</I>
+Laurent asked for &quot;ls&quot; in Debugger.  System() was only reasonable way to
+implement that (implementing &quot;ls&quot; within Hatari would need too much code
+for such a fringe feature).
+
+&quot;exec&quot; may also be convenient if one wants to do everything within
+the Hatari debugger instead of using both a separate terminal and Hatari
+console window (think about users who open Hatari + debugger window from
+a link on desktop).
+
+But if you don't think these important, I'm OK also with removing with.
+Or maybe it should be a configuration option?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001603.html">[hatari-devel] Compiler warnings / system call
+</A></li>
+	<LI>Next message: <A HREF="001618.html">[hatari-devel] Compiler warnings / system call
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1609">[ date ]</a>
+              <a href="thread.html#1609">[ thread ]</a>
+              <a href="subject.html#1609">[ subject ]</a>
+              <a href="author.html#1609">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

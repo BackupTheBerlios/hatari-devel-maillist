@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CPU breakpoints and single-stepping
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3C200906082252.07730.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000363.html">
+   <LINK REL="Next"  HREF="000365.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CPU breakpoints and single-stepping</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3C200906082252.07730.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] CPU breakpoints and single-stepping">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jun  8 21:52:07 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000363.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+        <LI>Next message: <A HREF="000365.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#364">[ date ]</a>
+              <a href="thread.html#364">[ thread ]</a>
+              <a href="subject.html#364">[ subject ]</a>
+              <a href="author.html#364">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 08 June 2009, Laurent Sallafranque wrote:
+&gt;<i> For the DSP breakpoints, I really would need them now to finish to debug
+</I>&gt;<i> the thing.
+</I>&gt;<i> After debugging, when the lattest bug is found, I've planned to optimize
+</I>&gt;<i> DSP code (there are many things to do im DSP optimisation code).
+</I>&gt;<i>
+</I>&gt;<i> Later, we'll be able to remove the breakpoint code into DSP if it takes
+</I>&gt;<i> too much cpu.
+</I>&gt;<i> But as I still consider this part as still not completly debugged, I
+</I>&gt;<i> don't care about speed.
+</I>&gt;<i> (And my CPU is really fast ;)
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i> PS : debug mode doesn't work at all for now, I'll try to see why.
+</I>
+Bah, you weren't using readline (*pukes*).
+
+Seems that Thomas forgot to test that; input line needs to be trimmed
+for strtok() when not using readline.
+
+I commited a fix for this, but if you're really using the Hatari debugger,
+you should consider installing readline -dev files &amp; reconfiguring Hatari.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000363.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+	<LI>Next message: <A HREF="000365.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#364">[ date ]</a>
+              <a href="thread.html#364">[ thread ]</a>
+              <a href="subject.html#364">[ subject ]</a>
+              <a href="author.html#364">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

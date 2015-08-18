@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake on MacOsX
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20on%20MacOsX&In-Reply-To=%3C20100322233657.5aab61ff%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001777.html">
+   <LINK REL="Next"  HREF="001763.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake on MacOsX</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20on%20MacOsX&In-Reply-To=%3C20100322233657.5aab61ff%40phineus%3E"
+       TITLE="[hatari-devel] CMake on MacOsX">huth at users.berlios.de
+       </A><BR>
+    <I>Mon Mar 22 23:36:57 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001777.html">[hatari-devel] CMake on MacOsX
+</A></li>
+        <LI>Next message: <A HREF="001763.html">[hatari-devel] pause and fullscreen behaviour
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1776">[ date ]</a>
+              <a href="thread.html#1776">[ thread ]</a>
+              <a href="subject.html#1776">[ subject ]</a>
+              <a href="author.html#1776">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 21 Mar 2010 17:17:13 +0100
+Jerome Vernet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">vernet.jerome at wanadoo.fr</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> CMake doesn't work on my Mac. First, it produce au config.h file
+</I>&gt;<i> which lead to errors:
+</I>&gt;<i> #define HAVE_POSIX_MEMALIGN 1==&gt;No mem_align unde MacOsX
+</I>
+Which Mac OS X version are you using? For Mac OS X 10.6.2, it seems to
+be available:
+
+<A HREF="http://developer.apple.com/mac/library/DOCUMENTATION/Darwin/Reference/ManPages/man3/posix_memalign.3.html">http://developer.apple.com/mac/library/DOCUMENTATION/Darwin/Reference/ManPages/man3/posix_memalign.3.html</A>
+
+It was missing on older versions of OS X, though...
+
+&gt;<i> #define HAVE_X11 1==&gt;should be 0 as we do not build an X11 app, but a 
+</I>&gt;<i> cocoa SDL App.
+</I>
+You can safely ignore this, as long as it's not causing compilation
+troubles. It's only used for embedding the Hatari window in a remote
+GUI, a feature that is not used on Mac OS X.
+
+&gt;<i> Then, make failed will building sdlmain.m, moslty, I guess, because
+</I>&gt;<i> bad compile options that I need to check.
+</I>&gt;<i> 
+</I>&gt;<i> /Users/jeromevernet/Documents/dev/Hatari-hgrc/hatari/src/gui-osx/SDLMain.m:451: 
+</I>&gt;<i> error: 'poseAsClass:' is unavailable (declared at 
+</I>&gt;<i> /System/Library/Frameworks/Foundation.framework/Headers/NSObject.h:127)
+</I>
+This is a problem with the SDLMain code on 64-bit versions of latest
+Mac OS X... try to Google for &quot;poseAsClass&quot; and &quot;SDL&quot; and you'll see
+that this problem comes from the SDL. Seems like the poseAsClass
+function has become obsolete on recent 64-bit versions of OS X.
+Unfortunately I haven't seen a fix for this yet, so I don't know how to
+avoid this problem.
+
+By the way, could it be that you were compiling a 32-bit build  in the
+past with the old project files, but now CMake generated a 64-bit build
+for you? Or why did you not run into this poseAsClass problem earlier?
+
+ Regards,
+  Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001777.html">[hatari-devel] CMake on MacOsX
+</A></li>
+	<LI>Next message: <A HREF="001763.html">[hatari-devel] pause and fullscreen behaviour
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1776">[ date ]</a>
+              <a href="thread.html#1776">[ thread ]</a>
+              <a href="subject.html#1776">[ subject ]</a>
+              <a href="author.html#1776">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

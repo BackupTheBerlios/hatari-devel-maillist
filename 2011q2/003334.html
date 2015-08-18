@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Choosing ym mixing method in the UI
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Choosing%20ym%20mixing%20method%20in%20the%20UI&In-Reply-To=%3C4DA4AD0F.4020909%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003482.html">
+   <LINK REL="Next"  HREF="003335.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Choosing ym mixing method in the UI</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Choosing%20ym%20mixing%20method%20in%20the%20UI&In-Reply-To=%3C4DA4AD0F.4020909%40free.fr%3E"
+       TITLE="[hatari-devel] Choosing ym mixing method in the UI">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Apr 12 21:50:39 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003482.html">[hatari-devel] A few more issues before v1.5
+</A></li>
+        <LI>Next message: <A HREF="003335.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3334">[ date ]</a>
+              <a href="thread.html#3334">[ thread ]</a>
+              <a href="subject.html#3334">[ subject ]</a>
+              <a href="author.html#3334">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Sound is incredibly better (and I'm not a musician;)
+
+Thanks a lot Nicolas.
+
+A little remark, I can see some comments in the console :
+
+mixing 1
+mixing 2
+mixing 1
+mixing 2
+mixing 2
+WAV sound data recording has been started.
+WAV Sound data recording has been stopped.
+mixing 1
+mixing 2
+mixing 2
+
+
+Is it normal ?
+
+Laurent
+
+
+Le 12/04/2011 00:13, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 11/04/2011 20:50, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On perjantai 08 huhtikuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;&gt;<i> Le 07/04/2011 22:55, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;&gt;&gt;<i> I noticed you added that, so I added the command line option.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I won't have time to update the SDL UI sound dialog before next week,
+</I>&gt;&gt;&gt;&gt;<i> but you can in the meanwhile update the manual page&amp;   HTML manual
+</I>&gt;&gt;&gt;&gt;<i> command line options documentation. :-)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I commited the reworked SDL GUI Sound dialog + manpage&amp;  manual update.
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi
+</I>&gt;<i>
+</I>&gt;<i> thanks a lot for the GUI (and for the doc, I didn't have time to 
+</I>&gt;<i> update it yet, but I couldn't make it better :) )
+</I>&gt;<i>
+</I>&gt;<i> A part of my code in sound.c was not complete, because the volume 
+</I>&gt;<i> conversion table was built only when Hatari started, not when 
+</I>&gt;<i> YmVolumeMixing changed ; I added a call to Sound_SetYmVolumeMixing to 
+</I>&gt;<i> fix that.
+</I>&gt;<i>
+</I>&gt;<i> Also, I changed YmVolumeMixing to 'table' by default. It will give a 
+</I>&gt;<i> better result when playing samples with the YM2149 (this also gives a 
+</I>&gt;<i> slightly higher volume output, but this shouldn't be a problem).
+</I>&gt;<i>
+</I>&gt;<i> For those interested in hearing the difference, run YM50K or Flashback 
+</I>&gt;<i> by TCB (or any other demo with sample/soundtrack) and change the YM 
+</I>&gt;<i> mixing method in the sound menu while the demo is playing, you should 
+</I>&gt;<i> immediatly hear the improvement.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003482.html">[hatari-devel] A few more issues before v1.5
+</A></li>
+	<LI>Next message: <A HREF="003335.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3334">[ date ]</a>
+              <a href="thread.html#3334">[ thread ]</a>
+              <a href="subject.html#3334">[ subject ]</a>
+              <a href="author.html#3334">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

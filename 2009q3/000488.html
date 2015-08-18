@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Blitter interrupt CPU usage (was: Timer-D CPU	usage in latest Hatari)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Blitter%20interrupt%20CPU%20usage%20%28was%3A%20Timer-D%20CPU%0A%09usage%20in%20latest%20Hatari%29&In-Reply-To=%3C200907191306.49266.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000485.html">
+   <LINK REL="Next"  HREF="000489.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Blitter interrupt CPU usage (was: Timer-D CPU	usage in latest Hatari)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Blitter%20interrupt%20CPU%20usage%20%28was%3A%20Timer-D%20CPU%0A%09usage%20in%20latest%20Hatari%29&In-Reply-To=%3C200907191306.49266.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Blitter interrupt CPU usage (was: Timer-D CPU	usage in latest Hatari)">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jul 19 12:06:49 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000485.html">[hatari-devel] Timer-D CPU usage in latest Hatari
+</A></li>
+        <LI>Next message: <A HREF="000489.html">[hatari-devel] Blitter interrupt CPU usage (was: Timer-D	CPU	usage in latest Hatari)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#488">[ date ]</a>
+              <a href="thread.html#488">[ thread ]</a>
+              <a href="subject.html#488">[ subject ]</a>
+              <a href="author.html#488">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 12 July 2009, Eero Tamminen wrote:
+&gt;<i> [1]: Using the &quot;Patch Timer-D&quot; option nearly halves the Clown screen CPU
+</I>&gt;<i> usage to ~29% and nearly reduces the &quot;colorshock&quot; screen CPU usage to
+</I>&gt;<i> 1/3 (to ~28%).  SureTrip goes to 5-20%.  This is because without this
+</I>&gt;<i> optimization in these cases by far most of the time is spent in handling
+</I>&gt;<i> the MFP Timer-D interrupts. According to Valgrind/Callgrind/Kcachegrind
+</I>&gt;<i> 1/2 CPU goes to MFP Timer-D, 1/3 to sound handling (mainly SDL_mixer
+</I>&gt;<i> thread + ALSA), 1/6 to m68k emulation and Spec512 conversion/palette
+</I>&gt;<i> routines etc.
+</I>
+Actually, although handling of Timer-D interrupts is a common issue, it's
+not the only interrupt that can cause huge CPU usage.  I noticed that in
+the STE mode, the Blitter emulation can cause Hatari to take 76% of CPU on
+my  machine when running the &quot;Tribute to Rainbow TOS&quot;  demo from
+<A HREF="http://atari.freemind-tobe.com/.">http://atari.freemind-tobe.com/.</A>
+
+This is with sound &amp; zooming disabled and Timer-D already patched out.
+
+2/3 of the Hatari CPU usage goes to Blitter interrupt handling (see the
+attached picture) and large part of the remaining 1/3 CPU usage goes to
+Spec512 handling.
+
+
+Btw. Would there be any chance of / would it make any sense to have
+an option for a &quot;dummy&quot; STE Blitter similarly to DSP?  (As I don't see how
+we could optimize the interrupt handling more than by couple of % while
+making the code less readable without somehow minimizing the number
+of interrupts that need to be handled)
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: blitter-interrupts.png
+Type: image/png
+Size: 28404 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090719/74e96f88/attachment.png">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090719/74e96f88/attachment.png</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000485.html">[hatari-devel] Timer-D CPU usage in latest Hatari
+</A></li>
+	<LI>Next message: <A HREF="000489.html">[hatari-devel] Blitter interrupt CPU usage (was: Timer-D	CPU	usage in latest Hatari)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#488">[ date ]</a>
+              <a href="thread.html#488">[ thread ]</a>
+              <a href="subject.html#488">[ subject ]</a>
+              <a href="author.html#488">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

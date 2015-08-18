@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP host interface interrupted mode : help needed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20host%20interface%20interrupted%20mode%20%3A%20help%20needed&In-Reply-To=%3C11850084.2529501.1252871851859.JavaMail.nitido%40priv-edtnes94%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000686.html">
+   <LINK REL="Next"  HREF="000689.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP host interface interrupted mode : help needed</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20host%20interface%20interrupted%20mode%20%3A%20help%20needed&In-Reply-To=%3C11850084.2529501.1252871851859.JavaMail.nitido%40priv-edtnes94%3E"
+       TITLE="[hatari-devel] DSP host interface interrupted mode : help needed">dsavnkff at telus.net
+       </A><BR>
+    <I>Sun Sep 13 21:57:31 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000686.html">[hatari-devel] DSP host interface interrupted mode : help needed
+</A></li>
+        <LI>Next message: <A HREF="000689.html">[hatari-devel] Re : DSP host interface interrupted mode : help	needed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#688">[ date ]</a>
+              <a href="thread.html#688">[ thread ]</a>
+              <a href="subject.html#688">[ subject ]</a>
+              <a href="author.html#688">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090913/ddf427a8/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090913/ddf427a8/attachment.html</A>&gt;
+-------------- next part --------------
+3.17 COMBO Chip
+
+
+Der COMBEL (COMBO) CHIP im Falcon
+
+Der COMBO ist ein speziell f&#252;r den FalconF03 hergestellter Multifunktionsbaustein mit folgenden Funktionen:
+
+- Memory Contol Unit [MCU]
+- Interrupt Priority and Illegal Condition Detection
+- Clock Dividers / Taktteiler
+- Chip Selekt Handling
+- Paddleport Controller
+- Joystick Controller
+- Light Gun Controller
+- Blitter (Grafischer Coprozessor im Falcon)
+
+
+Die MCU im COMBO nimmt die Adressen vom Adressbus (A1-A23) und wandelt diese in Reihen und Spalten f&#252;r das DRAM. Ebenso erzeugt die MCU die RAS- und CAS-Signale f&#252;r den Betrieb des Ramspeichers.
+
+Ebenso werden hier die Chipselektsignale f&#252;r das ROM und die I/O-Bausteine generiert. Die MCU im COMBO kann im FalconF030 bis zu 14MB Ram verwalten und Adressieren. Sie ist auch der Grund f&#252;r brachliegende 2 MB Speicher die im Falcon nicht mal als Ramdisk angesprochen werden k&#246;nnen.
+
+Die gr&#246;&#223;e des Ramspeichers beschr&#228;nkt sich im Falcon auf genau zwei Ausbaustufen. Es gibt eine 4MB und eine 14MB (16MB) Ramkarte die auf den internen Erweiterungsplatz gesteckt werden k&#246;nnen. Hierzu existieren genau zwei Selektionspins die &#252;ber einen weiteren Hardwarebaustein der MCU welche menge von RAM zur verf&#252;gung steht. Die MCU produziert ebenfalls s&#228;mtliche Adressen f&#252;r den Videospeicher, den Refresh und den CPU/DMA Datentransfer &#252;ber den Multiplex-Adressbus des Falcon.
+
+S&#228;mtliche Systeminterrupts werden im COMBO maskiert. Ebenso wird der Status aller Interrups im COMBO gespeichert. Beachten Sie die Auflistung der Systeminterrupts und deren Priorit&#228;t.
+
+Interrupt Level Priorit&#228;t
+----------------------------------------------
+7 (highest) Open (Bus)
+6 MFP / DSP Interrupt
+5 85C30 LAN Baustein
+4 VSYNC (Vertikal Blank)
+3 Open (Bus)
+2 HSYNC (Horizontal Blank)
+1 (lowest) Open (Bus)
+
+
+Die Hardware im COMBEL erlaubt es die Interruptlevels 1-3 als Interrupts von externen Devices zu behandeln. So sind einige Subsysteme in wie z.B der IDE oder der Parallelport in der Lage dieser Interrupts zu aktivieren. Weitere Hardware nutzt den Interruptlevel 5. Der COMBO Chip meldet der CPU &#252;ber die Leitungen IPLO-IPL2 mit welcher Priorit&#228;t der gerade aufgetretene Interrupt anliegt.
+
+Interrupt Signal Definiton
+
+IPL2 IPL1 IPL0 Interrupt Level
+----------------------------------------------
+1 1 1 Level 1
+1 0 1 Level 2
+1 0 0 Level 3
+0 1 1 Level 4
+0 1 0 Level 5
+0 0 1 Level 6
+0 0 0 Level 7
+
+
+Weiterhin ist der COMBEL in der Lage Bus Errors und Fehlfunktionen festzustellen.
+
+Nach folgenden Kriterien sendet der COMBEL ein BERR-Signal zur CPU:
+
+- Ein Buszyklus ist nicht in 16 Microsekunden beendet (&#196;nderbar auf 32uS)!!
+- Ein Versuch das ROM zu beschreiben
+- Ein Versuch Daten mit falscher L&#228;nge, Format in ein Register zu schreiben
+- Beschreiben des Systemspeichers im Usermode
+
+Taktteiler
+
+Das COMBO IC wandelt die Urspr&#252;nglichen 32Mhz Mastertakt in 16Mhz, 8Mhz sowie in ein 4 Mhz und in ein 500Khz Taktsignal um.
+
+Chipselekt
+
+Der COMBEL dekodiert die Adressen und selektiert daraus die Chipselektsignale f&#252;r weitere Peripheriebausteine des FalconF030.
+Das Betrifft folgende Chips:
+
+8650, MFP, VIDEL , RTCCS (RealTimeClock), MMU , Romport, (XROM3/XROM4)
+IDE (HIDECS0/HIDECS1) sowie ROM / ROM2
+
+Im COMBO werden ebenfalls die Signale PAD0X, PAD1X und PAD0Y, PAD1Y sowie PADRST verarbeitet. Alle diese Signale stammen vom Paddleport den es bisher auch nur am Falcon gibt.
+PADRST dient als Resetsignal f&#252;r den Paddleport.
+Ebenso befindet sich im innern des COMBO die Logik um ein paar Joysticks am Falcon betreiben zu k&#246;nnen. Hierzu liegen am COMBEL die Inputsignale JOYRH, JOYRL an. Beide Signale sind ReadEnable-Signale. JOYWH und JOYWL sind WriteEnable-Signale. BUTTON ist die Signalleitung f&#252;r die Feuertasten
+
+Der im COMBO integrierte BLITTER ist der grafische Coprozessor wie er auch schon in anderen Atari-Computern eingebaut war. Im Falcon wurde der Blitter aber eben in den COMBEL integriert. Der Blitter l&#228;sst sich im Falcon mit einem Softwarebefehl deaktivieren. In anderen Systemen musste hier ein Jumper oder eine L&#246;tbr&#252;cke gesetzt werden. Der Blitter sollte Bitblock-Operationen beschleunigen und die CPU unterst&#252;tzen/entlasten. Die Pinbelegung des COMBO Chip entnehmen Sie bitte dem Kapitel Pin aus DOITF030.
+
+Letztlich bleibt noch das Signal XPEN welches den COMBO veranlasst die Daten vom Horizontal-/ Vertikalz&#228;hler einzulesen. Diese Daten werden erreicht in dem die korrekte Position der &quot;Lightgun&quot; anhand des Bildschirm-Lichtrasters von der CPU errechnet wird.
+
+Bleibt als Abschlu&#223; noch zu sagen das Sie sich bem&#252;hen sollten den COMBEL in ihrem Falcon pfleglich zu Behandeln. Anhand dieser Erl&#228;uterungen k&#246;nnen Sie sehen das ohne diesen Chip ihr Falcon nicht mal eine Diskette einlesen wird. Sie werden ohne den COMBEL nicht mal eine einfache Bildschirmausgabe sehen k&#246;nnen.
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000686.html">[hatari-devel] DSP host interface interrupted mode : help needed
+</A></li>
+	<LI>Next message: <A HREF="000689.html">[hatari-devel] Re : DSP host interface interrupted mode : help	needed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#688">[ date ]</a>
+              <a href="thread.html#688">[ thread ]</a>
+              <a href="subject.html#688">[ subject ]</a>
+              <a href="author.html#688">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

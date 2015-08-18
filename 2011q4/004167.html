@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Moveq timings
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Moveq%20timings&In-Reply-To=%3C1435086707.6934651320944997847.JavaMail.root%40zimbra57-e10.priv.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004213.html">
+   <LINK REL="Next"  HREF="004168.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Moveq timings</H1>
+    <B>laurent.sallafranque at free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Moveq%20timings&In-Reply-To=%3C1435086707.6934651320944997847.JavaMail.root%40zimbra57-e10.priv.proxad.net%3E"
+       TITLE="[hatari-devel] Moveq timings">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Nov 10 18:09:57 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004213.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+        <LI>Next message: <A HREF="004168.html">[hatari-devel] Moveq timings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4167">[ date ]</a>
+              <a href="thread.html#4167">[ thread ]</a>
+              <a href="subject.html#4167">[ subject ]</a>
+              <a href="author.html#4167">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+In winuae cpu, there's only one MOVEQ instruction. 
+I've computed the following cycles :
+
+{6,	0,	6,0,0,0,	10,0,2,0},	// MOVEQ.L #&lt;data&gt;,Dn
+ 
+Do you agree ?
+
+
+If there's a moveq.W #&lt;data&gt;, Dn instruction too, I've got the following values :
+
+{4,	0,	4,0,0,0,	8,0,2,0},	// MOVEQ.W #&lt;data&gt;,Dn
+
+If it exists, are these good values ?
+
+
+Regards
+
+Laurent
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004213.html">[hatari-devel] Union demo abort with new EmuTOS?
+</A></li>
+	<LI>Next message: <A HREF="004168.html">[hatari-devel] Moveq timings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4167">[ date ]</a>
+              <a href="thread.html#4167">[ thread ]</a>
+              <a href="subject.html#4167">[ subject ]</a>
+              <a href="author.html#4167">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

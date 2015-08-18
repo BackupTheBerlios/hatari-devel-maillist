@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] So, do you have a planned release date for 1.5.0?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20So%2C%20do%20you%20have%20a%20planned%20release%20date%20for%201.5.0%3F&In-Reply-To=%3C201103202053.32408.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003187.html">
+   <LINK REL="Next"  HREF="003185.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] So, do you have a planned release date for 1.5.0?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20So%2C%20do%20you%20have%20a%20planned%20release%20date%20for%201.5.0%3F&In-Reply-To=%3C201103202053.32408.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] So, do you have a planned release date for 1.5.0?">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Mar 20 19:53:32 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003187.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+        <LI>Next message: <A HREF="003185.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3184">[ date ]</a>
+              <a href="thread.html#3184">[ thread ]</a>
+              <a href="subject.html#3184">[ subject ]</a>
+              <a href="author.html#3184">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 20 maaliskuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;&gt;<i> Nicolas, what do you think?
+</I>&gt;<i> 
+</I>&gt;<i> I also think a few improvements were made that would validate a new
+</I>&gt;<i> release. Most changes are small, but it's a fact that apart from Falcon
+</I>&gt;<i> emulation, Hatari now has a very good compatibility for STF/STE, so
+</I>&gt;<i> we're likely to have smaller incremental release in the future.
+</I>&gt;<i> 
+</I>&gt;<i> On my todo list, I have some fixes for dma audio/video synchronization
+</I>&gt;<i> (as reported by Evil / DHS in More Or Less Zero) as well as some
+</I>&gt;<i> precision improvements for ym sound. Code for that is already written, I
+</I>&gt;<i> need to integrate it and commit it.
+</I>
+Anything for the STE PowerUp game STE music? :-)
+
+
+&gt;<i> I'd like also to improve the first/last 16 pixels in STE mode when
+</I>&gt;<i> overscan + hscroll are enabled (color 0 is sometimes shown in Hatari,
+</I>&gt;<i> while it wouldn't be seen on a real STE). This would complete the video
+</I>&gt;<i> changes I already made for STE since 1.4 was released.
+</I>&gt;<i> 
+</I>&gt;<i> Regarding a release date, I'd rather have a target around May in order
+</I>&gt;<i> to be able to complete the above tasks (maybe it will be ready before).
+</I>
+Sounds good to me.
+
+It would be nice if somebody on this list could check the things that are in
+the compability list mentioned to have issues with Hatari v1.0 or before:
+- Enchanted Lands
+- F15 Strike Eagle 2 (I'd remove this if nobody can test it)
+- DevPac 2.2 Monst (crashy)
+- Neochrome (rasters)
+- Protracker STE (50kHz replay)
+
+As those are really ancient issues...
+
+
+&gt;<i> Regarding videl, any improvements will go in 1.5 as it should work with
+</I>&gt;<i> old CPU core. But I think we should not postpone v1.5 release because of
+</I>&gt;<i> Falcon's parts, else it will take much too long before a new release.
+</I>&gt;<i>
+</I>&gt;<i> We'll release 1.5 with the current state of Falcon's emulation (except
+</I>&gt;<i> if there're some real regressions in Falcon mode : we should fix them
+</I>&gt;<i> before releasing)
+</I>
+I tested several Falcon demos using DSP with the old core and it seems that
+several have regressed (at least couple EKO's &amp; Lazer's demos, Hmmm demo).  
+
+I guess the reason is that how timings are done has changed in DSP_Run()
+from what was in v1.4.  How that gets called is different between the CPU
+cores too:
+----
+$ grep DSP_Run uae-cpu/*.c
+uae-cpu/newcpu.c:       DSP_Run( Cycles_GetCounter(CYCLES_COUNTER_CPU) );
+uae-cpu/newcpu.c:       DSP_Run( Cycles_GetCounter(CYCLES_COUNTER_CPU) );
+$ grep DSP_Run cpu/*.c
+cpu/newcpu.c:                       DSP_Run(cpu_cycles* 2 / CYCLE_UNIT);
+cpu/newcpu.c:               DSP_Run(cpu_cycles* 2 / CYCLE_UNIT);
+cpu/newcpu.c:               DSP_Run(cpu_cycles* 2 / CYCLE_UNIT);
+
+Laurent, is there something you could do for this?
+
+
+	- Eero
+
+PS. WinUAE's core doesn't have DSP_Run() calls in all m68k_run_* functions,
+should it have (at least in few more of them)?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003187.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+	<LI>Next message: <A HREF="003185.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3184">[ date ]</a>
+              <a href="thread.html#3184">[ thread ]</a>
+              <a href="subject.html#3184">[ subject ]</a>
+              <a href="author.html#3184">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

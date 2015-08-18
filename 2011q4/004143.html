@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Bug with STE shifter features?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Bug%20with%20STE%20shifter%20features%3F&In-Reply-To=%3C4EB46F42.8000803%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004142.html">
+   <LINK REL="Next"  HREF="004144.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Bug with STE shifter features?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Bug%20with%20STE%20shifter%20features%3F&In-Reply-To=%3C4EB46F42.8000803%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Bug with STE shifter features?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Nov  5 00:03:30 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004142.html">[hatari-devel] Bug with STE shifter features?
+</A></li>
+        <LI>Next message: <A HREF="004144.html">[hatari-devel] merging new winuae core 2nd try : still KO
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4143">[ date ]</a>
+              <a href="thread.html#4143">[ thread ]</a>
+              <a href="subject.html#4143">[ subject ]</a>
+              <a href="author.html#4143">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 04/11/2011 21:00, Matthias Arndt a &#233;crit :
+&gt;<i> Hello together,
+</I>&gt;<i>
+</I>&gt;<i> I tried the game &quot;Whitewater Madness&quot; on Hatari today and I got strange
+</I>&gt;<i> flicker on the panel. I assume it is created with STE splitscreen
+</I>&gt;<i> techniques. Is this a bug of Hatari or of the game?
+</I>
+Hello
+
+It's a bug in the game and some emulation limitations in Hatari.
+
+The problem is that this game modifies video address and scrolling regs 
+to do the split screen, except that due to bad routines it does that 
+sometimes while the display has already started.
+Especially, modifying ff8265 while display is ON will create bad pixels, 
+so I think some faulty pixels would be seen sometimes even on a real STE 
+(but bottom panel would not be shifted by 16 pixels)
+
+As Hatari doesn't emulate changing scrolling while the display is on (it 
+would involve a much low level/slower emulation of the shifter), we 
+consider such bad hscroll changes should be delayed to the next line 
+when display is off again, in that case it shifts the pannel by 4 
+words/16 pixels.
+
+I will try to see if I can add a tolerance limit to change hscroll when 
+display was started only a few cycles ago, this should fix the problem.
+
+Apart from that, this game sure does look ugly !
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004142.html">[hatari-devel] Bug with STE shifter features?
+</A></li>
+	<LI>Next message: <A HREF="004144.html">[hatari-devel] merging new winuae core 2nd try : still KO
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4143">[ date ]</a>
+              <a href="thread.html#4143">[ thread ]</a>
+              <a href="subject.html#4143">[ subject ]</a>
+              <a href="author.html#4143">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

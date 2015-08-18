@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Catching trap exit?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Catching%20trap%20exit%3F&In-Reply-To=%3C4CBCA9A1.9060206%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002543.html">
+   <LINK REL="Next"  HREF="002547.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Catching trap exit?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Catching%20trap%20exit%3F&In-Reply-To=%3C4CBCA9A1.9060206%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Catching trap exit?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Oct 18 22:10:09 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002543.html">[hatari-devel] Catching trap exit?
+</A></li>
+        <LI>Next message: <A HREF="002547.html">[hatari-devel] Catching trap exit?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2544">[ date ]</a>
+              <a href="thread.html#2544">[ thread ]</a>
+              <a href="subject.html#2544">[ subject ]</a>
+              <a href="author.html#2544">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 18/10/2010 21:50, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Monday 18 October 2010, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;&gt;<i> EmuTOS has bug in regards to setting colors with VDI on TT&amp;   Falcon and
+</I>&gt;&gt;&gt;<i> I'd like to debug this.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The problem is that current breakpoints break when trap is being
+</I>&gt;&gt;&gt;<i> entered, but the information given to the function is processed after
+</I>&gt;&gt;&gt;<i> the instruction is handled and the effects of the trap function
+</I>&gt;&gt;&gt;<i> (changed HW registers etc) are visible only when the function
+</I>&gt;&gt;&gt;<i> completes...
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> So, I'd like to catch trap exit.  Any advice how?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> (Once I have this, I can chain the breakpoints so that specific trap
+</I>&gt;&gt;&gt;<i> function sets up the exit trap and showing the information + changing
+</I>&gt;&gt;&gt;<i> back to the trap function breakpoint. )
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> One solution could be to add a breakpoint when pc=current_pc + length of
+</I>&gt;&gt;<i> current opcode. This breakpoint would be automatically added when
+</I>&gt;&gt;<i> detecting a breakpoint for a trap for example.
+</I>&gt;<i>
+</I>&gt;<i> Sounds good.  I could setup an automatic variable which is zero when not in
+</I>&gt;<i> trap and otherwise contains the trap exit PC value.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> This way, you can add a breakpoint that triggers after a jsr, a bsr or a
+</I>&gt;&gt;<i> trap. This would work whether the routines returns with a rts or a rte.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This requires to compute the number of bytes of current opcode ; I
+</I>&gt;&gt;<i> haven't looked into it, but I think it could be determined by calling
+</I>&gt;&gt;<i> the disassembler routine and see how many bytes were used.
+</I>&gt;<i>
+</I>&gt;<i> Yes, that provides it.  Hopefully there's a function for that also with
+</I>&gt;<i> Markus' disassembler. :-)
+</I>&gt;<i>
+</I>&gt;<i> (If not, there's still the option of using breakpoint like:
+</I>&gt;<i> 	pc&gt;  &quot;pc +&lt;min opcode size&gt;&quot;&amp;&amp;   pc&lt;  &quot;pc +&lt;max opcode size&gt;&quot;
+</I>&gt;<i>
+</I>&gt;<i> Parts of the breakpoint expressions in &quot;&quot; are evaluated immediately.)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Only false positive could be if the 68000 code decides to change the
+</I>&gt;&gt;<i> stack to change the return address.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> example that wouldn't work :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> start:
+</I>&gt;&gt;<i> 	bsr	routine
+</I>&gt;&gt;<i> 	...
+</I>&gt;&gt;<i> 	...
+</I>&gt;&gt;<i> direct:
+</I>&gt;&gt;<i> 	nop
+</I>&gt;&gt;<i> 	...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> routine:
+</I>&gt;&gt;<i> 	...
+</I>&gt;&gt;<i> 	move.l	#direct,(a7)
+</I>&gt;&gt;<i> 	rts
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In that case, return would not be correctly detected, as PC would not be
+</I>&gt;&gt;<i> set to start+4 after reaching the rts.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> But I think this use case is rare, and in 99% this approach would work
+</I>&gt;&gt;<i> as expected (and it doesn't require to modify the cpu core)
+</I>&gt;<i>
+</I>&gt;<i> Thanks!
+</I>&gt;<i>
+</I>
+This approach could be made more generic and not limited to trap. By 
+using this method, you can have a more &quot;intelligent&quot; step function for 
+the debugger (as available under monst for instance) :
+  - you can have a simple step instruction that breaks each time PC is 
+changed
+  - you can have a more elaborate step instruction that breaks after 
+opcodes that changes PC by jumping elsewhere. This is handy to execute a 
+sub routine / trap handler as a whole, without going step by step in the 
+routine.
+
+Some disassembler used &quot;s&quot; and &quot;z&quot; shortcuts (or &quot;t&quot; for trace) to 
+differenciate these 2 behaviours.
+
+(Note that Vincent's idea of getting the return from 2(sp) is also a 
+valid one ; but to intercept any kind of branch opcodes you need to get 
+return pc from 2(a7) if this in an exception handler (trap, ...) or from 
+(a7) if this is a &quot;normal&quot; branch (bsr, jsr, ...), so slighlty more 
+cases to handle)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002543.html">[hatari-devel] Catching trap exit?
+</A></li>
+	<LI>Next message: <A HREF="002547.html">[hatari-devel] Catching trap exit?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2544">[ date ]</a>
+              <a href="thread.html#2544">[ thread ]</a>
+              <a href="subject.html#2544">[ subject ]</a>
+              <a href="author.html#2544">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

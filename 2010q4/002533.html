@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Tracing AES calls with the existing VDI code?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Tracing%20AES%20calls%20with%20the%20existing%20VDI%20code%3F&In-Reply-To=%3C201010142146.17056.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002532.html">
+   <LINK REL="Next"  HREF="002534.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Tracing AES calls with the existing VDI code?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Tracing%20AES%20calls%20with%20the%20existing%20VDI%20code%3F&In-Reply-To=%3C201010142146.17056.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Tracing AES calls with the existing VDI code?">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Oct 14 20:46:16 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002532.html">[hatari-devel] Tracing AES calls with the existing VDI code?
+</A></li>
+        <LI>Next message: <A HREF="002534.html">[hatari-devel] Tracing AES calls with the existing VDI code?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2533">[ date ]</a>
+              <a href="thread.html#2533">[ thread ]</a>
+              <a href="subject.html#2533">[ subject ]</a>
+              <a href="author.html#2533">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 14 October 2010, Thomas Huth wrote:
+&gt;<i> Gerhard Stoll &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">gerhard_stoll at gmx.de</A>&gt; wrote:
+</I>&gt;&gt;<i> I have an other question:
+</I>&gt;&gt;<i> For what is XBIOS (255) used from Hatari?
+</I>&gt;<i>
+</I>&gt;<i> This is a &quot;remote control&quot; interface that allows TOS programs to
+</I>&gt;<i> control certain settings of the emulator.
+</I>
+Or external program that starts Hatari with --control-socket option
+and provides Hatari a socket from which it should read the commands.
+&quot;hconsole&quot; and &quot;hatariui&quot; Python scripts are examples of such programs.
+
+The TOS program can do anything that &quot;hconsole&quot; can do through the Hatari
+remote API.  &quot;hconsole&quot; can be used to experiment with that API.
+
+
+&gt;<i> It can be used, for example, to switch to fast-forward mode etc.
+</I>
+The full set of what can be done through it is:
+- change anything that can be set by Hatari command line options
+  (some of them, like monitor type change, cause emulation reset)
+- invoke any debugger commands
+  (program can trace or set breakpoints to itself and even log these
+  to a file in a GEMDOS HDD directory it can access inside the emulation)
+- invoke Hatari keyboard shortcuts (like fast forward)
+- simulate key and mouse button presses
+
+The XBios call argument is a string containing the required command
+and its arguments.  Supported commands are:
+- hatari-debug &lt;Debug UI command&gt;
+- hatari-event &lt;event to simulate&gt;
+- hatari-option &lt;command line options&gt;
+- hatari-enable/disable/toggle &lt;device name&gt;
+- hatari-path &lt;config name&gt; &lt;new path&gt;
+- hatari-shortcut &lt;shortcut name&gt;
+- hatari-embed-info
+- hatari-stop
+- hatari-cont
+The last two can be used to stop and continue the Hatari emulation.
+
+If the command arguments are wrong or missing, Hatari will output
+usage information to the host console.
+
+The command or at least their argument names may still change.  They've
+evolved along with hatariui and hconsole, and be a bit gnarly, because they
+were never &quot;designed&quot; as a full set.  I would be interested about any
+comments on them...
+
+
+&gt;&gt;<i> Is it correct that every  programm can used this call?
+</I>
+Yes, and to track usage of this call, run Hatari with:
+	--trace xbios
+
+(and filter other calls out e.g. with &quot;grep HatariControl&quot;)
+
+
+&gt;<i> The XBIOS interception is disabled by default, so it  can not be used
+</I>&gt;<i> by TOS programs by default. You've got to enable the (X)BIOS
+</I>&gt;<i> interception with --bios-intercept to use it.
+</I>
+Which nowadays will also enable Bconout(2) output to host console...
+
+
+&gt;&gt;<i> Can this call  uesd independent what TOS is loaded?
+</I>
+Yes.
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002532.html">[hatari-devel] Tracing AES calls with the existing VDI code?
+</A></li>
+	<LI>Next message: <A HREF="002534.html">[hatari-devel] Tracing AES calls with the existing VDI code?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2533">[ date ]</a>
+              <a href="thread.html#2533">[ thread ]</a>
+              <a href="subject.html#2533">[ subject ]</a>
+              <a href="author.html#2533">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

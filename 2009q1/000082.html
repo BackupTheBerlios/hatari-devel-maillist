@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Joystick slows Hatari mouse pointer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Joystick%20slows%20Hatari%20mouse%20pointer&In-Reply-To=%3C200901251451.30499.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000081.html">
+   <LINK REL="Next"  HREF="000084.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Joystick slows Hatari mouse pointer</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Joystick%20slows%20Hatari%20mouse%20pointer&In-Reply-To=%3C200901251451.30499.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Joystick slows Hatari mouse pointer">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jan 25 13:51:30 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000081.html">[hatari-devel] Joystick slows Hatari mouse pointer
+</A></li>
+        <LI>Next message: <A HREF="000084.html">[hatari-devel] Joystick slows Hatari mouse pointer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#82">[ date ]</a>
+              <a href="thread.html#82">[ thread ]</a>
+              <a href="subject.html#82">[ subject ]</a>
+              <a href="author.html#82">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 25 January 2009, David Savinkoff wrote:
+&gt;<i> This new problem can be noticed by moving an Analog control on a
+</I>&gt;<i> USB joystick while moving the mouse. It only happens in the Hatari
+</I>&gt;<i> emulator window (not the settings menus). If you move the mouse
+</I>&gt;<i> pointer in circles while moving the analog control, then stop, you will
+</I>&gt;<i> see the mouse pointer continue to move in circles.
+</I>
+Hatari event handling isn't very &quot;efficient&quot; in this respect.
+
+Events are processed in Main_EventHandler() and while emulation is active,
+it returns after processing single event.  It ignores other than mouse and
+key events (joy.c handles then through other means than events).
+
+Main_EventHandler() is called from IKBD_InterruptHandler_AutoSend() which is 
+called at regular intervals.
+
+Summary: events are queued and processed one at the time, *at certain
+intervals*. Extra events in the queue, like joystick move events, slow down
+the event processing.
+
+We had earlier discovered that things don't work if SDL is told not to 
+deliver certain kind of events, but at least for things like mouse motion
+and analog joystick move events it would be more effective to process all
+the available events of this kind in one go.   I think in case of mouse and
+fire button presses, you would lose events if you would that.
+
+
+Try the attached patch, it compresses the mouse and joystick motion events
+in main loop (joy events are actually ignored).  On slow machines it should
+make Hatari mouse handling more responsive (mouse pointer skips instead
+of lagging).
+
+
+&gt;<i> I noticed this problem because my Logitech Wingman Extreme
+</I>&gt;<i> sometimes doesn't center it's rudder control.
+</I>&gt;<i>
+</I>&gt;<i> Aside:
+</I>&gt;<i> When running the 'top' utility, hatari doesn't use any more CPU time
+</I>&gt;<i> for either of the joystick and/or mouse.
+</I>
+
+&gt;<i> However, Xorg CPU goes up to render the moving mouse pointer
+</I>&gt;<i> regardless of joystick motion. 
+</I>
+You mean rendering of the emulated Atari mouse pointer?
+
+As the mouse pointer is drawn to screen, it means that emulator needs to
+blit the update Atari screen contents to the X display.
+
+
+&gt;<i> Note:
+</I>&gt;<i> I'm quite sure this is not because my computer is too slow, or
+</I>&gt;<i> because of my setup or libraries. I've recently been through helping
+</I>&gt;<i> with trouble-shooting the menus last time.
+</I>&gt;<i>
+</I>&gt;<i> 1GHz, Pentium 3, CentOS 5.2, SDL-1.2.13-6
+</I>
+Thanks for reporting this!
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: motion.diff
+Type: text/x-diff
+Size: 1437 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090125/855b5b7c/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090125/855b5b7c/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000081.html">[hatari-devel] Joystick slows Hatari mouse pointer
+</A></li>
+	<LI>Next message: <A HREF="000084.html">[hatari-devel] Joystick slows Hatari mouse pointer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#82">[ date ]</a>
+              <a href="thread.html#82">[ thread ]</a>
+              <a href="subject.html#82">[ subject ]</a>
+              <a href="author.html#82">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

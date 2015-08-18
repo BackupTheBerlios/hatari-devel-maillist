@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Regression when restoring desktop.inf
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Regression%20when%20restoring%20desktop.inf&In-Reply-To=%3C4DD2E1B4.9070808%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003444.html">
+   <LINK REL="Next"  HREF="003446.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Regression when restoring desktop.inf</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Regression%20when%20restoring%20desktop.inf&In-Reply-To=%3C4DD2E1B4.9070808%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Regression when restoring desktop.inf">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue May 17 22:59:32 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003444.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+        <LI>Next message: <A HREF="003446.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3445">[ date ]</a>
+              <a href="thread.html#3445">[ thread ]</a>
+              <a href="subject.html#3445">[ subject ]</a>
+              <a href="author.html#3445">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 17/05/2011 21:38, Eero Tamminen a &#233;crit :
+
+&gt;<i> With TOS 1.02&amp;  1.04 it happens both with latest *and* v1.4.0 version
+</I>&gt;<i> of Hatari, _both_ with floppy images and with Gemdos HD emu.
+</I>
+Not in my case, It works fine with tos 1.02 and 1.04
+
+&gt;<i>
+</I>&gt;<i> As with TOS 1.00, 1.62, 2.06, 3.06 KaosTos med-rez is restored fine, are you
+</I>&gt;<i> sure it's not a TOS 1.02/1.04 issue instead of Hatari one?
+</I>
+I just made the test again : no disk image in A or B, only gemdos hd emu
+  - run hatari 1.4 5 times : desktop is correctly restored in med res : OK
+  - run hatari dev 5 times : desktop is badly restored to low res : BAD
+  - run hatari 1.4 again : desktop is restored to med red : OK
+
+This is with the exact same hd directory.
+
+So, I really think there's a problem there. If I got time, I will try to 
+bisect using mercurial and see where this comes from.
+
+
+Nicolas
+
+
+&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i> PS. Have you already heard of the x86 emulator in JavaScript
+</I>&gt;<i> (from the author of Qemu):
+</I>&gt;<i> 	<A HREF="http://bellard.org/jslinux/">http://bellard.org/jslinux/</A>
+</I>&gt;<i> ?
+</I>&gt;<i> :-)
+</I>
+more or less, haven't tried it ; but maybe it could compile hatari in 
+x86 / js and run it from the browser :)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003444.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+	<LI>Next message: <A HREF="003446.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3445">[ date ]</a>
+              <a href="thread.html#3445">[ thread ]</a>
+              <a href="subject.html#3445">[ subject ]</a>
+              <a href="author.html#3445">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

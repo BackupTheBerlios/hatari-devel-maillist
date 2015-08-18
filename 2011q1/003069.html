@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20emu%20and%20STE%20compatibility%20%28D-Bug%20games%29&In-Reply-To=%3C4D5D9D6E.2050905%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003050.html">
+   <LINK REL="Next"  HREF="003070.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon emu and STE compatibility (D-Bug games)</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20emu%20and%20STE%20compatibility%20%28D-Bug%20games%29&In-Reply-To=%3C4D5D9D6E.2050905%40free.fr%3E"
+       TITLE="[hatari-devel] Falcon emu and STE compatibility (D-Bug games)">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Feb 17 23:13:02 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003050.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+        <LI>Next message: <A HREF="003070.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3069">[ date ]</a>
+              <a href="thread.html#3069">[ thread ]</a>
+              <a href="subject.html#3069">[ subject ]</a>
+              <a href="author.html#3069">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've discovered D-Bug games : <A HREF="http://dbug.kicks-ass.net/dbug/index.htm">http://dbug.kicks-ass.net/dbug/index.htm</A> 
+(section Patches).
+
+All these old atari games are modified to be copied on a hard disk and 
+run under Falcon.
+I've downloaded and tested more than ten of them.
+
+My analysis :
+
+- They all worked well except Xenon2 (see below).
+- Music (Yamaha and samples) render correctly with crossbar
+- Graphics are OK too (perhaps not when there are rasters, but I haven't 
+noticed it)
+- All games run at 16 Mhz (normal).
+
+So, Hatari seems to run quite well in Ste emulation mode.
+
+Now the &quot;to be improved in Hatari&quot; part :
+
+- With some games, the initial D-Bug main menu propose us to switch from 
+16 to 8 Mhz for better compatibility.
+I'm pretty sure they use register $ff8007.b (Bit 0)  for this (I'll 
+check tomorrow).
+
+Is there a way for us to switch the CPU speed of Hatari from 16 Mhz to 8 
+Mhz (or from 8 Mhz to 16 Mhz) on the fly (while Hatari runs) ?
+
+
+
+Another &quot;problem&quot; I discovered with Xenon 2 :
+
+When the game runs, it freezes Hatari with the following error :
+
+M68000 Bus Error writing at address $ff8804.
+M68000 Bus Error writing at address $ff8806.
+Exception 2 (0) at 417f0 -&gt; e00fb6!
+A-Trap a000 at e01028 (0x1a30be8)
+A-Trap a000 at e01028 (0x1a30be8)
+
+
+A quick look into hardware.txt tells this :
+
+$FF8802|byte |Write data                                           |W
+        |     +-----------------------------------------------------+
+        |     |Note: PSG Registers are now fixed at these addresses.|
+        |     |All other addresses are masked out on the Falcon. Any|
+        |     |writes to the shadow registers $8804-$88FF will cause|
+        |     |bus errors. Game/Demo coders beware!                 |
+
+
+I've tried quickly to patch Hatari with the following line of code :
+
+In ioMemTabFalcon.c :
+
+     { 0xff8800, SIZE_BYTE, PSG_ff8800_ReadByte, PSG_ff8800_WriteByte },
+     { 0xff8801, SIZE_BYTE, PSG_ff880x_ReadByte, PSG_ff8801_WriteByte },
+     { 0xff8802, SIZE_BYTE, PSG_ff880x_ReadByte, PSG_ff8802_WriteByte },
+     { 0xff8803, SIZE_BYTE, PSG_ff880x_ReadByte, PSG_ff8803_WriteByte },
++    { 0xff8804, 4, IoMem_ReadWithoutInterception, 
+IoMem_WriteWithoutInterception },
+
+With this line, Xenon 2 works perfectly.
+(I know I should have filled all registers from 8804 to 88ff, but it was 
+a quick test).
+
+So, there are 2 possibilities :
+- Xenon2 doesn't work on a real Falcon (but D-bug says it works and I 
+want to believe them), OR
+- When bit 5 of register $ff8007.b is clear (I'll check this too 
+tomorrow), all STe specific addresses (like shadow addresses) become 
+allowed.
+
+In this last case, should we code something like this in ioMemTabFalcon 
+for these special registers addresses ?
+
+if (ste compatible mode)
+     return value
+else
+     return a bus error ?
+
+
+
+For remind, here is what we know of this $ff8007.b register (this is the 
+comment I added in stMemory.c)
+
+         /* Set the Falcon Bus Control:
+             $FFFF8007 Falcon Bus Control
+                 BIT 6 : F30 Start (0=Cold, 1=Warm)
+                 BIT 5 : STe Bus Emulation (0=on)
+                 BIT 3 : Blitter Flag (0=on, 1=off)
+                 BIT 2 : Blitter (0=8mhz, 1=16mhz)
+                 BIT 0 : 68030 (0=8mhz, 1=16mhz)
+
+
+
+Regards
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003050.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+	<LI>Next message: <A HREF="003070.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3069">[ date ]</a>
+              <a href="thread.html#3069">[ thread ]</a>
+              <a href="subject.html#3069">[ subject ]</a>
+              <a href="author.html#3069">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

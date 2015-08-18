@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3C2530346.518479.1295389258707.JavaMail.nitido%40priv-edtnes95%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002828.html">
+   <LINK REL="Next"  HREF="002831.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3C2530346.518479.1295389258707.JavaMail.nitido%40priv-edtnes95%3E"
+       TITLE="[hatari-devel] Slow sound buffer">dsavnkff at telus.net
+       </A><BR>
+    <I>Tue Jan 18 23:20:58 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002828.html">[hatari-devel] WinUae cycles and DSP
+</A></li>
+        <LI>Next message: <A HREF="002831.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2830">[ date ]</a>
+              <a href="thread.html#2830">[ thread ]</a>
+              <a href="subject.html#2830">[ subject ]</a>
+              <a href="author.html#2830">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> On Jan 18, 2011, Nicolas Pomar&#232;de &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt; wrote: 
+</I>&gt;<i>
+</I>&gt;<i> Le 18/01/2011 06:39, David Savinkoff a &#233;crit :
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I found that making the timer delays more accurate helps with
+</I>&gt;&gt;<i> sound synchronization. In Main_WaitOnVbl(void) of main.c
+</I>&gt;&gt;<i> for example: nFrameDuration = 1000/nScreenRefreshRate
+</I>&gt;&gt;<i> results in 16 milliseconds when nScreenRefreshRate is 60Hz
+</I>&gt;&gt;<i> but it should be 16.66... This is a 100%*(16.66-16)/16 = 4.17%
+</I>&gt;&gt;<i> syncronization mismatch at 60 Hz. Solved, but CPU ticks are
+</I>&gt;&gt;<i> Not sound system sample rates (separate hardware with separate
+</I>&gt;&gt;<i> crystals). Thus hatari Must do more, and that is done in sound.c
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> //fprintf ( stderr, &quot;%d\n&quot;, nGeneratedSamples-len); was put in
+</I>&gt;&gt;<i> audio.c to display excess samples count for experimenting.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Problem solved and the sound is perfect!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Sincerely,
+</I>&gt;&gt;<i> David
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> thanks, I will look at this later (I'm a little busy these days) and 
+</I>&gt;<i> will try to commit some changes for video freq (it's indeed true that 
+</I>&gt;<i> 60Hz gives more rounding error than 50 Hz with the various output freq).
+</I>&gt;<i>
+</I>&gt;<i> From what I see, this improve rounding error for dma sound too, is that
+</I>&gt;<i> right ?
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>
+Hi,
+
+Main_WaitOnVbl() waits on each emulated VBL to synchronize the real
+time with the emulated ST. This now has less rounding error but
+probably doesn't make a difference unless it is taken advantage of.
+
+Your question about dma sound raised some issues with:
+#define SAMPLES_PER_FRAME  ((nAudioFrequency+35)/nScreenRefreshRate)
+Furthermore, I changed it (in sound.c) to:
+#define...((nAudioFrequency + d_nAudioFrequency)/nScreenRefreshRate)
+I have to use a different variable to do the frequency offset.
+
+It looks like nAudioFrequency+35 is meant to give more samples per
+frame at lower sample frequencies, but doing this will mess with
+FreqRatio in dmaSnd.c
+
+David
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002828.html">[hatari-devel] WinUae cycles and DSP
+</A></li>
+	<LI>Next message: <A HREF="002831.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2830">[ date ]</a>
+              <a href="thread.html#2830">[ thread ]</a>
+              <a href="subject.html#2830">[ subject ]</a>
+              <a href="author.html#2830">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

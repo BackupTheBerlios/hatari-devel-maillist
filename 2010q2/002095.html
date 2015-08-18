@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP debug reworked
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debug%20reworked&In-Reply-To=%3Calpine.LMD.2.00.1005131658300.19783%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001981.html">
+   <LINK REL="Next"  HREF="002144.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP debug reworked</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debug%20reworked&In-Reply-To=%3Calpine.LMD.2.00.1005131658300.19783%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] DSP debug reworked">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu May 13 17:28:17 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001981.html">[hatari-devel] DSP debug reworked
+</A></li>
+        <LI>Next message: <A HREF="002144.html">[hatari-devel] DSP debug reworked
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2095">[ date ]</a>
+              <a href="thread.html#2095">[ thread ]</a>
+              <a href="subject.html#2095">[ subject ]</a>
+              <a href="author.html#2095">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 5 May 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Wednesday 05 May 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;<i> On Wed, 5 May 2010, Laurent Sallafranque wrote:
+</I>&gt;&gt;&gt;<i> I wanted to add TRACE_LOGs for dsp debugging inside hatari.
+</I>&gt;&gt;&gt;<i> But I see in log.h that the 32 bits for LOGS are already used.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Is there a way to add my dsp traces ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> we could change LogTraceFlags to use Uint64 instead of Uint32, but I
+</I>&gt;&gt;<i> don't know if 64 bit are correctly supported on all possible cpus running
+</I>&gt;&gt;<i> hatari.
+</I>&gt;<i>
+</I>&gt;<i> cycInt.c already uses &quot;long long&quot; so I don't think that's a problem.
+</I>&gt;<i>
+</I>&gt;<i> But I was thinking of another solution, for two reasons:
+</I>&gt;<i> - long longs are slower (only 64-bit CPUs support them natively, on other
+</I>&gt;<i>  systems compiler needs several instructions for them)
+</I>&gt;<i> - what we do when we run out of 64 flag bits?
+</I>&gt;<i>
+</I>&gt;<i> What if subsystems with more flags would have their own flag variables?
+</I>&gt;<i>
+</I>&gt;<i> For example video stuff has currently 8 flags.  You could use for those
+</I>&gt;<i> a different macro (LOG_TRACE_VIDEO()?) which uses a different flag
+</I>&gt;<i> variable.
+</I>&gt;<i>
+</I>&gt;<i> (Support for different variables would need to be added to log.c too.)
+</I>&gt;<i>
+</I>
+Hello,
+
+regarding &quot;long long&quot; I agree they may not be native on all architectures, 
+but they're at the core of cycInt.c, and CycInt_SetNewInterrupt is called 
+much more often than log could be, so that shouldn't be noticeable.
+
+I don't think we will need more than 64 different log levels. We already 
+added logs in all parts, we need a few more for the DSP and maybe some 
+others here and there, but we shouldn't need more than 32 new ones.
+64 should be a limit we can manage.
+
+We should have a method :
+  - which is fast to test (so we don't get too much penalty when debug code 
+is enabled at compile time)
+
+  - which doesn't require to change the existing LOG calls in all the 
+sources.
+
+I'm not sure we require such a level of detail to split log macros between 
+video, sound, ...
+
+Current code basically does :
+ 	if (LogTraceFlags &amp; level)
+ 		{ print ... }
+
+new possible methods :
+
+  1) set LogTraceFlags to Uint64 -&gt; nothing else to change, we now have 64
+     bits to play with and the test remains fast (apart from dealing with
+     64 bits int)
+
+  2) have a global variable LogTraceOn = true or false and some additional
+     Uint32 to store flags (LogTraceFlags1, LogTraceFlags2, ...)
+
+with 2), code could become :
+ 	if ( LogTraceOn )
+ 	{
+ 		if ( level matches LogTraceFlags1 level
+ 			|| level matches LogTraceFlags2 )
+ 			{ print ... }
+ 	}
+
+problem is : how do we compare *rapidly* the value of level with several 
+LogTraceFlagsX variables ?
+
+
+I would go for 1st solution, as it requires nearly no changes ; or any 
+other solution that doesn't require to modify all the sources files that 
+have LOG_TRACE calls (only modifications should go to log.c / log.h) as 
+this would come to commit nearly the whole source tree, which is quite 
+overkill and not really readable.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001981.html">[hatari-devel] DSP debug reworked
+</A></li>
+	<LI>Next message: <A HREF="002144.html">[hatari-devel] DSP debug reworked
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2095">[ date ]</a>
+              <a href="thread.html#2095">[ thread ]</a>
+              <a href="subject.html#2095">[ subject ]</a>
+              <a href="author.html#2095">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

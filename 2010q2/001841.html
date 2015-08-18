@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Demo regression between 1.3.1 and current version
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Demo%20regression%20between%201.3.1%20and%20current%20version&In-Reply-To=%3C201004132352.47543.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001839.html">
+   <LINK REL="Next"  HREF="001842.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Demo regression between 1.3.1 and current version</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Demo%20regression%20between%201.3.1%20and%20current%20version&In-Reply-To=%3C201004132352.47543.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Demo regression between 1.3.1 and current version">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Apr 13 22:52:47 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001839.html">[hatari-devel] Demo regression between 1.3.1 and current version
+</A></li>
+        <LI>Next message: <A HREF="001842.html">[hatari-devel] Demo regression between 1.3.1 and current version
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1841">[ date ]</a>
+              <a href="thread.html#1841">[ thread ]</a>
+              <a href="subject.html#1841">[ subject ]</a>
+              <a href="author.html#1841">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 13 April 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> Thanks for reporting this, it was introduced when improving video counter
+</I>&gt;<i> on STE to fix EPSS Demo.
+</I>&gt;<i>
+</I>&gt;<i> The problem is that we must have a different behaviour when writing to
+</I>&gt;<i> $ff8205/07/09, depending on whether the writes happen when the MMU
+</I>&gt;<i> already sends data to the shifter or not.
+</I>&gt;<i> And in the case of the STE, MMU will start reading data 16 cycles earlier
+</I>&gt;<i> when hscroll is used with prefetching (using $ff8265 instead of $ff8264).
+</I>&gt;<i>
+</I>&gt;<i> I committed a patch to take this into account, both Pacemaker and EPSS
+</I>&gt;<i> are running fine now.
+</I>
+Verified.
+
+Jam-Cols demo seems fine to me too:
+	<A HREF="http://www.pouet.net/prod.php?which=31452">http://www.pouet.net/prod.php?which=31452</A>
+
+If there's still a problem, at least I don't see it. :-)
+
+
+Btw. the RGBeast demo screen:
+	<A HREF="http://pouet.net/prod.php?which=29355">http://pouet.net/prod.php?which=29355</A>
+
+Seems to look sometimes partly correct.  Any idea what's needed to
+get it working correctly (info could be added to compatibility page)?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001839.html">[hatari-devel] Demo regression between 1.3.1 and current version
+</A></li>
+	<LI>Next message: <A HREF="001842.html">[hatari-devel] Demo regression between 1.3.1 and current version
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1841">[ date ]</a>
+              <a href="thread.html#1841">[ thread ]</a>
+              <a href="subject.html#1841">[ subject ]</a>
+              <a href="author.html#1841">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

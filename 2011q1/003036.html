@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] STE sound breakage with lower sound frequencies
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20sound%20breakage%20with%20lower%20sound%20frequencies&In-Reply-To=%3C201102142116.10818.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003031.html">
+   <LINK REL="Next"  HREF="003048.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] STE sound breakage with lower sound frequencies</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20sound%20breakage%20with%20lower%20sound%20frequencies&In-Reply-To=%3C201102142116.10818.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] STE sound breakage with lower sound frequencies">oak at helsinkinet.fi
+       </A><BR>
+    <I>Mon Feb 14 20:16:10 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003031.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+        <LI>Next message: <A HREF="003048.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3036">[ date ]</a>
+              <a href="thread.html#3036">[ thread ]</a>
+              <a href="subject.html#3036">[ subject ]</a>
+              <a href="author.html#3036">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On maanantai 14 helmikuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> looking at the code in change.c, I see that when audio freq is changed
+</I>&gt;<i> this doesn't call Audio_SetOutputAudioFreq, but only Audio_Init (with
+</I>&gt;<i> Audio_Uninit being called just before).
+</I>&gt;<i> 
+</I>&gt;<i> This explains why we get STE sound when starting at 44.1 kHz and going
+</I>&gt;<i> to 16 kHz : DmaSnd_Init_Bass_and_Treble_Tables is not called, so we keep
+</I>&gt;<i> a working 44.1 kHz IIR table.
+</I>&gt;<i> If we start at 16 kHz, we create a 16 kHz IIR table and never change it
+</I>&gt;<i> if we go to 44.1 kHz later.
+</I>&gt;<i> 
+</I>&gt;<i> Could you modify change.c to also call Audio_SetOutputAudioFreq ? (as it
+</I>&gt;<i> is already the case when using --sound)
+</I>
+Currently it's called by Configuration_Apply() which is called from:
+- main.c after config &amp; options are parsed at startup
+- configuration.c when memory state is restored
+- change.c when configuration is changed
+
+I.e. it already does that.
+
+The problem seems to be be that Configuration_Apply() is called between
+Audio_UnInit() and Audio_Init() *and* DmaSnd_Init_Bass_and_Treble_Tables()
+is called from Audio_SetOutputAudioFreq() only if audio is enabled.
+
+-&gt; I think Audio_SetOutputAudioFreq() should be called from Audio_Init().
+
+If a separate function wouldn't be needed for memory snapshot restore,
+that functionality could be in Audio_Init() itself (and then would be only
+two lines).
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003031.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+	<LI>Next message: <A HREF="003048.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3036">[ date ]</a>
+              <a href="thread.html#3036">[ thread ]</a>
+              <a href="subject.html#3036">[ subject ]</a>
+              <a href="author.html#3036">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

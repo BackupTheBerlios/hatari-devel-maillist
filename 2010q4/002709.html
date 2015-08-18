@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Problem in 20 years STe megademo (DHS fullscreen) ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%2020%20years%20STe%20megademo%20%28DHS%0A%20fullscreen%29%20%3F&In-Reply-To=%3C20101221232821.5e1d5a48%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002707.html">
+   <LINK REL="Next"  HREF="002711.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Problem in 20 years STe megademo (DHS fullscreen) ?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%2020%20years%20STe%20megademo%20%28DHS%0A%20fullscreen%29%20%3F&In-Reply-To=%3C20101221232821.5e1d5a48%40phineus%3E"
+       TITLE="[hatari-devel] Problem in 20 years STe megademo (DHS fullscreen) ?">huth at users.berlios.de
+       </A><BR>
+    <I>Tue Dec 21 23:28:21 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002707.html">[hatari-devel] Problem in 20 years STe megademo (DHS fullscreen) ?
+</A></li>
+        <LI>Next message: <A HREF="002711.html">[hatari-devel] Problem in 20 years STe megademo (DHS	fullscreen) ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2709">[ date ]</a>
+              <a href="thread.html#2709">[ thread ]</a>
+              <a href="subject.html#2709">[ subject ]</a>
+              <a href="author.html#2709">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 21 Dec 2010 14:12:28 +0100 (CET)
+Anders Eriksson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>&gt; wrote:
+
+&gt;<i> hg clone <A HREF="http://hg.berlios.de/repos/hatari">http://hg.berlios.de/repos/hatari</A>
+</I>&gt;<i> cd hatari
+</I>&gt;<i> cmake -G Xcode .
+</I>&gt;<i> 
+</I>&gt;<i> Opening the Xcode project, select release / i386, hit build.
+</I>&gt;<i> 
+</I>&gt;<i> /Users/ae/hatari/src/gui-osx/PrefsController.m:614:0 /Users/ae/hatari/src/gui-osx/PrefsController.m:614:
+</I>&gt;<i> error: 'CNF_SCREEN' has no member named
+</I>&gt;<i> 'bCaptureChange' /Users/ae/hatari/src/gui-osx/PrefsController.m:825:0 /Users/ae/hatari/src/gui-osx/PrefsController.m:825:
+</I>&gt;<i> error: 'CNF_SCREEN' has no member named 'bCaptureChange'
+</I>
+That option has been removed by Eero a month ago... a quick fix to make
+it compilable again: Simply comment out these two lines.
+A proper fix would be to adapt the OS X gui of course, e.g. to use the
+new option bCrop instead of bCaptureChange there and in the dialog...
+Could one of the Mac users please do that and send a proper patch?
+S&#233;bastien? Jerome? ...?
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002707.html">[hatari-devel] Problem in 20 years STe megademo (DHS fullscreen) ?
+</A></li>
+	<LI>Next message: <A HREF="002711.html">[hatari-devel] Problem in 20 years STe megademo (DHS	fullscreen) ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2709">[ date ]</a>
+              <a href="thread.html#2709">[ thread ]</a>
+              <a href="subject.html#2709">[ subject ]</a>
+              <a href="author.html#2709">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

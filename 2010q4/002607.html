@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CD5915B.8030503%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002606.html">
+   <LINK REL="Next"  HREF="002608.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CD5915B.8030503%40free.fr%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Nov  6 18:33:15 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002606.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002608.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2607">[ date ]</a>
+              <a href="thread.html#2607">[ thread ]</a>
+              <a href="subject.html#2607">[ subject ]</a>
+              <a href="author.html#2607">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+First run is not that good :)
+At least, it doesn't crash
+
+I think I've got a problem with the rom or boot.
+
+If some of you wants to play with the new core, don't hesitate to upload 
+things.
+
+I've added the traces I get when I start Hatari
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent at OrdiLolo</A>:~/Atari/hatari/build/src$ ./hatari
+Configuration file /etc/hatari.cfg not found.
+Hatari devel (Nov  6 2010), compiled on:  Nov  6 2010, 17:04:15
+Building CPU table for configuration: 0
+1879 CPU functions
+Building CPU, 44316 opcodes (0 0 0)
+CPU=68000, FPU=0, MMU=0, JIT=0.
+GEMDOS HDD emulation, C: &lt;-&gt; /media/0470BC8670BC7FCA/Jeux/Atari.
+bt_audio_service_open: connect() failed: Connection refused (111)
+bt_audio_service_open: connect() failed: Connection refused (111)
+bt_audio_service_open: connect() failed: Connection refused (111)
+bt_audio_service_open: connect() failed: Connection refused (111)
+M68000 Bus Error reading at address $0.
+M68000 Bus Error reading at address $4.
+Illegal wput at fffffff2
+Illegal lput at fffffff4
+Illegal wput at fffffff8
+Illegal wput at fffffffa
+Illegal lput at fffffffc
+Exception 2 (0) at 30 -&gt; 0!
+
+
+
+Runnning hatari with --trace all gives :
+
+./hatari --trace all
+Configuration file /etc/hatari.cfg not found.
+Hatari devel (Nov  6 2010), compiled on:  Nov  6 2010, 17:04:15
+Building CPU table for configuration: 0
+1879 CPU functions
+Building CPU, 44316 opcodes (0 0 0)
+CPU=68000, FPU=0, MMU=0, JIT=0.
+GEMDOS HDD emulation, C: &lt;-&gt; /media/0470BC8670BC7FCA/Jeux/Atari.
+Crossbar : Recalculate_clock_Cycles
+            clock25 : 80
+            clock32 : 80
+int set new in video_cyc=0 active_int=0 pending_count=0
+int set new out video_cyc=0 active_int=14 pending_count=768000
+int add rel offset video_cyc=0 handler=14 handler_cyc=768000 
+offset_cyc=0 pending_count=768000
+int upd video_cyc=0 cycle_over=768000 cycle_sub=0
+int set new in video_cyc=0 active_int=14 pending_count=768000
+int set new out video_cyc=0 active_int=14 pending_count=768000
+int add rel offset video_cyc=0 handler=15 handler_cyc=768000 
+offset_cyc=0 pending_count=768000
+bt_audio_service_open: connect() failed: Connection refused (111)
+bt_audio_service_open: connect() failed: Connection refused (111)
+bt_audio_service_open: connect() failed: Connection refused (111)
+bt_audio_service_open: connect() failed: Connection refused (111)
+ikbd custom exe off
+int upd video_cyc=0 cycle_over=768000 cycle_sub=0
+int set new in video_cyc=0 active_int=14 pending_count=768000
+int set new out video_cyc=0 active_int=14 pending_count=768000
+int add rel offset video_cyc=0 handler=11 handler_cyc=1440000000 
+offset_cyc=0 pending_count=768000
+M68000 Bus Error reading at address $0.
+M68000 Bus Error reading at address $4.
+int upd video_cyc=0 cycle_over=768000 cycle_sub=0
+int set new in video_cyc=0 active_int=14 pending_count=768000
+int set new out video_cyc=0 active_int=14 pending_count=768000
+int add rel offset video_cyc=0 handler=3 handler_cyc=3840000 
+offset_cyc=0 pending_count=768000
+int upd video_cyc=0 cycle_over=768000 cycle_sub=0
+int set new in video_cyc=0 active_int=14 pending_count=768000
+int set new out video_cyc=0 active_int=14 pending_count=768000
+int add rel offset video_cyc=0 handler=2 handler_cyc=4876800 
+offset_cyc=0 pending_count=768000
+int upd video_cyc=0 cycle_over=768000 cycle_sub=0
+int set new in video_cyc=0 active_int=14 pending_count=768000
+int set new out video_cyc=0 active_int=14 pending_count=768000
+int add rel offset video_cyc=0 handler=1 handler_cyc=1282598400 
+offset_cyc=0 pending_count=768000
+Illegal wput at fffffff2
+
+Then it runs in pseudo &quot;loop&quot;
+
+Illegal lput at fffffff4
+Illegal wput at fffffff8
+Illegal wput at fffffffa
+Illegal lput at fffffffc
+...
+
+
+I'll continue to work on this tomorrow.
+
+Regards
+
+Laurent
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002606.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002608.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2607">[ date ]</a>
+              <a href="thread.html#2607">[ thread ]</a>
+              <a href="subject.html#2607">[ subject ]</a>
+              <a href="author.html#2607">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

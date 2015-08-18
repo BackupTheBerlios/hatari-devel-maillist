@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Long mail : new cpu cores + 2 questions.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Long%20mail%20%3A%20new%20cpu%20cores%20%2B%202%20questions.&In-Reply-To=%3C1515719875.5458791320075888111.JavaMail.root%40zimbra57-e10.priv.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004134.html">
+   <LINK REL="Next"  HREF="004136.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Long mail : new cpu cores + 2 questions.</H1>
+    <B>laurent.sallafranque at free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Long%20mail%20%3A%20new%20cpu%20cores%20%2B%202%20questions.&In-Reply-To=%3C1515719875.5458791320075888111.JavaMail.root%40zimbra57-e10.priv.proxad.net%3E"
+       TITLE="[hatari-devel] Long mail : new cpu cores + 2 questions.">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Oct 31 16:44:48 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004134.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+        <LI>Next message: <A HREF="004136.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4135">[ date ]</a>
+              <a href="thread.html#4135">[ thread ]</a>
+              <a href="subject.html#4135">[ subject ]</a>
+              <a href="author.html#4135">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Mikro,
+
+
+&gt;&gt;<i> But in the motorola 68030 doc, I can read : 
+</I>
+&gt;&gt;<i> Bcc (Taken) 6 0 6(0/0/0) 8(0/2/0) 
+</I>&gt;&gt;<i> Bcc.B (Not Taken) 4 0 4(0/0/0) 4(0/1/0) 
+</I>&gt;&gt;<i> Bcc.W (Not Taken) 6 0 6(0/0/0) 6(0/1/0) 
+</I>&gt;&gt;<i> Bcc.L (Not Taken) 6 0 6(0/0/0) 8(0/2/0) 
+</I>
+&gt;&gt;<i> It's in the file I've sent to Mikro, maybe he could confirm this. 
+</I>
+&gt;<i> Honestly, I've never measured branch cycles (who cares, they are only on the end of the loop :)) but you see how it's possible -- head is 6 cycles, so in case you find a nice instruction+addressing mode with such overlap, you can have really zero cycles instruction. 
+</I>
+I agree, but there's not any head/tail mechanism for now in the new winuae core.
+I can add it (I'd like to do it).
+But again, it'll derive from winuae code.
+Maybe it's time to derivate anyway.
+But you seem to tell that the most important is the falcon bus, not the processor instructions cycles for now (in a second time for better accuracy ?)
+
+&gt;&gt;<i> I think the 68020 and 68030 CPU's in WinUae are not complete nor accurate. 
+</I>There's quite good, but not perfect. 
+
+&gt;<i> Actually, it's all you need. We're in a little bit delicate situation because we've got the DSP and no sync in some loops but in most cases, you need only the bus cycles to get right. 
+</I>
+Ok, but as the 68030 is the main clock of the emulator, it needs to be accurate (sound, DSP, video, ... are based on the CPU cycles).
+
+Let's say I write a program that plays DMA sound.
+I do a DIV loop forever in the main code (DMA plays the music).
+Hatari will render it badly, as the div is given as 46, 70 or 90 cycles, but this is a maximum (it's frequently much less). 
+DMA won't play the correct number of samples, Video won't compute the VBL correctly.
+(I agree videl is still not here).
+
+The same is all instructions are approximatives. And, as you say, the same if bus cycles are not right.
+
+
+Just for a start (before the full file): how many cycles should these instructions take on the Falcon ? 
+
+NOP (2 or 4 cycles) ?
+MOVE.W D0,D1
+MOVE.L D0,D1
+
+MOVE.W D0,(A0)
+MOVE.L D0,(A0)
+
+MOVE.W (A0), D0
+MOVE.L (A0), D0
+
+
+Nicolas, if you have any idea on how to take into account the falcon bus nicely, I'd be interrested to uderstand all of this better (it's hard for me to understand this for now).
+ 
+Regards,
+
+Laurent
+
+
+
+
+-- 
+MiKRO / Mystic Bytes 
+<A HREF="http://mikro.atari.org">http://mikro.atari.org</A> 
+
+_______________________________________________
+hatari-devel mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004134.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+	<LI>Next message: <A HREF="004136.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4135">[ date ]</a>
+              <a href="thread.html#4135">[ thread ]</a>
+              <a href="subject.html#4135">[ subject ]</a>
+              <a href="author.html#4135">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

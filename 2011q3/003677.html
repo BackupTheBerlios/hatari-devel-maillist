@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New STE DMA audio emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C25275739.1534046.1310337549715.JavaMail.nitido%40priv-edtnes91%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003676.html">
+   <LINK REL="Next"  HREF="003678.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New STE DMA audio emulation</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C25275739.1534046.1310337549715.JavaMail.nitido%40priv-edtnes91%3E"
+       TITLE="[hatari-devel] New STE DMA audio emulation">dsavnkff at telus.net
+       </A><BR>
+    <I>Mon Jul 11 00:39:09 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003676.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+        <LI>Next message: <A HREF="003678.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3677">[ date ]</a>
+              <a href="thread.html#3677">[ thread ]</a>
+              <a href="subject.html#3677">[ subject ]</a>
+              <a href="author.html#3677">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>*****************************************************************
+Le 10/07/2011 23:21, David Savinkoff a &#233;crit :
+Hi Nicholas,
+
+Yes this works better.
+
+I would like to revert the anti-aliasing filter because it
+filters too much now that the DMA is working better.
+
+Please see my patch.
+
+Thank you,
+David
+*****************************************************************
+On Jul 10, 2011, Nicolas Pomar&#232;de &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt; wrote: 
+
+Hello,
+
+I applied your patch.
+
+By the way, for ym2149 sound, I once used the low pass filter from 
+StSound by Leonard, which uses this formula :
+
+   out = (m_lowPassFilter[0]&gt;&gt;2) + (m_lowPassFilter[1]&gt;&gt;1) + (in&gt;&gt;2);
+
+Do you know what is the difference with your version ?
+
+   out = lowPassFilter[0] + (lowPassFilter[1]&lt;&lt;1) + in;
+
+Maybe a lower output volume for Leonard's one ?
+
+Thanks
+
+Nicolas
+******************************************************************
+
+Both filters are the same except mine is 4 times louder.
+I want less round-off error and more speed so I divide by
+four later while mixing the DMA and YM together.
+
+Usually the filters are normalized so that the dc gain is one.
+Leonard's filter is 1/4 + 1/2 + 1/4 = 1
+Mine is             1   + 2   + 1   = 4
+BTW the my previous filter was 1 + 1 + 1 + 1 = 4 thus has
+a different frequency response.
+
+David
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003676.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+	<LI>Next message: <A HREF="003678.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3677">[ date ]</a>
+              <a href="thread.html#3677">[ thread ]</a>
+              <a href="subject.html#3677">[ subject ]</a>
+              <a href="author.html#3677">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

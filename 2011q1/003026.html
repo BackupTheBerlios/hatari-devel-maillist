@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] STE sound breakage with lower sound frequencies
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20sound%20breakage%20with%20lower%20sound%20frequencies&In-Reply-To=%3C20216126.168046.1297630316413.JavaMail.nitido%40priv-edtnes92%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003038.html">
+   <LINK REL="Next"  HREF="003027.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] STE sound breakage with lower sound frequencies</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20sound%20breakage%20with%20lower%20sound%20frequencies&In-Reply-To=%3C20216126.168046.1297630316413.JavaMail.nitido%40priv-edtnes92%3E"
+       TITLE="[hatari-devel] STE sound breakage with lower sound frequencies">dsavnkff at telus.net
+       </A><BR>
+    <I>Sun Feb 13 21:51:56 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003038.html">[hatari-devel] Demo Don't break the oath (DHS)
+</A></li>
+        <LI>Next message: <A HREF="003027.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3026">[ date ]</a>
+              <a href="thread.html#3026">[ thread ]</a>
+              <a href="subject.html#3026">[ subject ]</a>
+              <a href="author.html#3026">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+
+Here is a quick patch I didn't test it, but it should do good in theory.
+The sample rate must be more than twice the turnover frequency.
+Now the filter tables will be wrong, but usable if the sample
+frequency is too low.
+
+David
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: filter-fix-tip1.diff
+Type: application/octet-stream
+Size: 897 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110213/6749cce0/attachment.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110213/6749cce0/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003038.html">[hatari-devel] Demo Don't break the oath (DHS)
+</A></li>
+	<LI>Next message: <A HREF="003027.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3026">[ date ]</a>
+              <a href="thread.html#3026">[ thread ]</a>
+              <a href="subject.html#3026">[ subject ]</a>
+              <a href="author.html#3026">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

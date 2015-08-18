@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Strange CPU cycles
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Strange%20CPU%20cycles&In-Reply-To=%3Calpine.LMD.2.00.1002231444510.1931%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001523.html">
+   <LINK REL="Next"  HREF="001525.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Strange CPU cycles</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Strange%20CPU%20cycles&In-Reply-To=%3Calpine.LMD.2.00.1002231444510.1931%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Strange CPU cycles">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Feb 23 14:57:23 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001523.html">[hatari-devel] Strange CPU cycles
+</A></li>
+        <LI>Next message: <A HREF="001525.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1524">[ date ]</a>
+              <a href="thread.html#1524">[ thread ]</a>
+              <a href="subject.html#1524">[ subject ]</a>
+              <a href="author.html#1524">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 23 Feb 2010, Laurent Sallafranque wrote:
+
+&gt;&gt;<i> (I think this is already working like this)
+</I>&gt;<i>
+</I>&gt;<i> Yes it is. But during these 144 cycles, DSP could be waiting a data from CPU 
+</I>&gt;<i> that it would have received at cycle 50 (for exxample) on the real Falcon.
+</I>
+theorically yes, but in real life I'm not sure the offset is that big ; 
+most instructions that write to mem (except movem) will take 8-12 cycles, 
+so this would just delay the dsp from 8-12 cycles, but this would not slow 
+down the dsp.
+
+the problem could arise with instructions that write many words/longs at 
+one time to the dsp if the dsp waits for each words to be finished, but 
+does it really happen often in real cases ?
+
+the blitter is working in a similar way (regarding bus access) and except 
+for a few instructions, we managed to get correct timings in all cases
+(even if in hatari cpu and blitter run one after the other).
+
+I would suggest to try to collect data/examples on 680xx instructions that 
+seem to block/slow the dsp to see if we can find a clever way to emulate 
+this. The less we need to modify current cpu core, the better it will be.
+
+&gt;&gt;<i> Latest winuae has a cycle exact mode for the 68000 / A500 mode, where every 
+</I>&gt;<i> cycle goes to bus or copper or blitter ...
+</I>&gt;<i>
+</I>&gt;<i> Is it much slower than the older version with cpu as  master clock ?
+</I>
+If you consider a typical 68000, inst will be 12-16 cycles, splitting on 
+bus access will require to add 6-8 times more tests for each cpu 
+instruction, so yes, this would slow down quite a lot (to get an idea, one 
+could try to run winuae in normal and dycle exact a500 mode and see how 
+much cpu ressources it takes)
+
+&gt;<i>
+</I>&gt;<i> They've also included the 68030 MMU whick lacks in hatari.
+</I>
+Yes, but this is such a lot of work, than doing this will certainly 
+deserve to release hatari as 2.0 :)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001523.html">[hatari-devel] Strange CPU cycles
+</A></li>
+	<LI>Next message: <A HREF="001525.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1524">[ date ]</a>
+              <a href="thread.html#1524">[ thread ]</a>
+              <a href="subject.html#1524">[ subject ]</a>
+              <a href="author.html#1524">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

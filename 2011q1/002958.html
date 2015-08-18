@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] STE dmaSnd.c with better sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20dmaSnd.c%20with%20better%20sound&In-Reply-To=%3C1063154.894550.1296409324963.JavaMail.nitido%40priv-edtnes92%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002942.html">
+   <LINK REL="Next"  HREF="002959.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] STE dmaSnd.c with better sound</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20dmaSnd.c%20with%20better%20sound&In-Reply-To=%3C1063154.894550.1296409324963.JavaMail.nitido%40priv-edtnes92%3E"
+       TITLE="[hatari-devel] STE dmaSnd.c with better sound">dsavnkff at telus.net
+       </A><BR>
+    <I>Sun Jan 30 18:42:04 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002942.html">[hatari-devel] Fwd: Re: STE dmaSnd.c with better sound
+</A></li>
+        <LI>Next message: <A HREF="002959.html">[hatari-devel] Main_GetTicks really useful ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2958">[ date ]</a>
+              <a href="thread.html#2958">[ thread ]</a>
+              <a href="subject.html#2958">[ subject ]</a>
+              <a href="author.html#2958">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All,
+
+My comments are preceded with (DS).
+
+******************************
+
+
+
+Hi David,
+
+I'll have a closer look at this patch very soon.
+
+Is it possible to use Uint32 instead of int to have a homogeneous code ?
+
+(DS)	Yes
+
+May your changes could apply also to the Falcon crossbar Dma sound ?
+
+(DS)	Maybe a few of us could compare DmaSnd_GenerateSamples() and
+	Crossbar_GenerateSamples().
+
+Laurent
+
+
+
+
+Hi David
+
+I don't understand why you need to change the size of
+
+LMC1992_Master_Volume_Table
+LMC1992_LeftRight_Volume_Table
+
+
+As the biggest value in these tables is a Uint16.
+
+(DS)	There is a multipy that hurts my eyes without a type cast.
+
+*	(I think the code should me more explicit.)
+
+	/* Apply LMC1992 sound modifications (Left, Right and Master Volume) */
+	for (i = 0; i &lt; nSamplesToGenerate; i++) {
+		nBufIdx = (nMixBufIdx + i) % MIXBUFFER_SIZE;
+*		MixBuffer[nBufIdx][0] = (((MixBuffer[nBufIdx][0] * microwire.leftVolume) &gt;&gt; 16) * microwire.masterVolume) &gt;&gt; 16;
+*		MixBuffer[nBufIdx][1] = (((MixBuffer[nBufIdx][1] * microwire.rightVolume) &gt;&gt; 16) * microwire.masterVolume) &gt;&gt; 16;
+
+
+Same question for
+
+- Uint16 masterVolume; /* Master volume command */
+- Uint16 leftVolume; /* Left channel volume command */
+- Uint16 rightVolume; /* Right channel volume command */
+
+(DS) Same answer.
+
+Another question : in the reset part, you load the following values :
+
+- microwire.masterVolume = 65535;
+- microwire.leftVolume = 65535;
+- microwire.rightVolume = 65535;
++ microwire.masterVolume = 0;
++ microwire.leftVolume = 0;
++ microwire.rightVolume = 0;
+
+
+But according to the tables, values can't be 0, but 7 (for master volume
+and 655 for LeftRight values.
+Shouldn't we use these values instead ?
+
+(DS) Yes. Excuse: I didn't consider 0 to be critical here.
+
+
+Why do you add a return just before the end of the function ?
+
+(DS) I didn't want to be bothered possible dumb compiler warnings at the time.
+
+@@ -460,6 +476,7 @@
+MixBuffer[nBufIdx][0] = (((MixBuffer[nBufIdx][0] * microwire.leftVolume)&gt;&gt; 16) * microwire.masterVolume)&gt;&gt; 16;
+MixBuffer[nBufIdx][1] = (((MixBuffer[nBufIdx][1] * microwire.rightVolume)&gt;&gt; 16) * microwire.masterVolume)&gt;&gt; 16;
+}
++ return;
+}
+
+
+I haven't tested the patch, but shouldn't I keep only the removing of
+the mono part ?
+
+(DS) I think you need 'Mono dma', 'Stereo dma' and 'No dma'.
+
+Regards
+
+Laurent
+
+
+
+
+Hi David,
+
+I've uploaded your patch, but not :
+
+- the Unit16 change
+- the goto and the return at end of function (I've duplicated the call
+to filters for Yamaha's sound only)
+- I've fixed the minimum values to the following values instead of 0.
+microwire.masterVolume = 7;
+microwire.leftVolume = 655;
+microwire.rightVolume = 655;
+
+Can you tell me if this is OK for you or not ?
+
+(DS) I'll double check everything to be sure everybody is in agreement.
+
+Regards
+
+Laurent
+
+
+
+Le 30/01/2011 15:55, Laurent Sallafranque a &#233;crit :
+&gt;<i> - the goto and the return at end of function (I've duplicated the call
+</I>&gt;<i> to filters for Yamaha's sound only)
+</I>
+Hello
+
+regarding the goto / code duplication in that case, I would agree with
+David that a goto is better.
+
+Duplicating ~20-30 lines is not very good, both for readibility and
+maintainability.
+Maybe a new function could be created to handle this case if you don't
+want to use the &quot;goto&quot;.
+
+Nicolas
+
+(DS) Yesss!
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002942.html">[hatari-devel] Fwd: Re: STE dmaSnd.c with better sound
+</A></li>
+	<LI>Next message: <A HREF="002959.html">[hatari-devel] Main_GetTicks really useful ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2958">[ date ]</a>
+              <a href="thread.html#2958">[ thread ]</a>
+              <a href="subject.html#2958">[ subject ]</a>
+              <a href="author.html#2958">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

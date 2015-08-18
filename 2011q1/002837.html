@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Memory%2C%20Falcon%20and%20TT%20%2824%20vs%2032%20bits%20computers%29&In-Reply-To=%3C4D36C988.3060101%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002836.html">
+   <LINK REL="Next"  HREF="002838.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Memory%2C%20Falcon%20and%20TT%20%2824%20vs%2032%20bits%20computers%29&In-Reply-To=%3C4D36C988.3060101%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Jan 19 12:22:48 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002836.html">[hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)
+</A></li>
+        <LI>Next message: <A HREF="002838.html">[hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2837">[ date ]</a>
+              <a href="thread.html#2837">[ thread ]</a>
+              <a href="subject.html#2837">[ subject ]</a>
+              <a href="author.html#2837">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 19/01/2011 11:33, LAURENT SALLAFRANQUE a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> While trying to let run hatari's new core, I see that for 68020 and upper CPUs the memory it taken into account in 32 bits and not 24 bits.
+</I>&gt;<i>
+</I>&gt;<i> A quick look at iomem, ioMemTabFalcon, ioMemTabTT, and probably some other parts of the code shows me that all addresses are coded in 24 bits ($FF8000 instead of $FFFF8000).
+</I>&gt;<i>
+</I>&gt;<i> There's also a variable for taking this into account in WinUae CPU : currprefs.address_space_24.
+</I>&gt;<i>
+</I>&gt;<i> There's also a mask : regs.address_space_mask = 0xffffffff (32 bits) or regs.address_space_mask = 0x00ffffff (24 bits)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I think we'll need to adapt the actual uae-cpu code to take this into account if we want to be able to keep the 2 CPU's in the same branch.
+</I>&gt;<i>
+</I>&gt;<i> At least, changing all the IOmemTab... addresses to have all of them in 32 bits (also for the ST ?) and apply the memory mask for each memory call ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Any advise ?
+</I>&gt;<i>
+</I>
+Hello,
+
+I don't think that will be a problem, as far as I know the Falcon is 
+limited to 14 MB (which is below 24 bits), so for all atari Machine a 24 
+bits mask is enough (ROM is at E00000 and hardware regs at F00000, so 
+this leaves &quot;only&quot; everything below E00000, which is just 14 MB.
+
+If needed, we should use regs.address_space_mask = 0x00ffffff  and there 
+should be nothign to change in IOmemTab.
+
+regards
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002836.html">[hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)
+</A></li>
+	<LI>Next message: <A HREF="002838.html">[hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2837">[ date ]</a>
+              <a href="thread.html#2837">[ thread ]</a>
+              <a href="subject.html#2837">[ subject ]</a>
+              <a href="author.html#2837">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

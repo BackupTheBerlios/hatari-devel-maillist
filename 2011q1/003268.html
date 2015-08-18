@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crosscompiling Hatari for GP2X Wiz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C1301503311.2982.18.camel%40jll%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003264.html">
+   <LINK REL="Next"  HREF="003248.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crosscompiling Hatari for GP2X Wiz</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C1301503311.2982.18.camel%40jll%3E"
+       TITLE="[hatari-devel] Crosscompiling Hatari for GP2X Wiz">marndt at asmsoftware.de
+       </A><BR>
+    <I>Wed Mar 30 18:41:51 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003264.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+        <LI>Next message: <A HREF="003248.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3268">[ date ]</a>
+              <a href="thread.html#3268">[ thread ]</a>
+              <a href="subject.html#3268">[ subject ]</a>
+              <a href="author.html#3268">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Dienstag, den 29.03.2011, 23:36 +0300 schrieb Eero Tamminen:
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On maanantai 28 maaliskuu 2011, Matthias Arndt wrote:
+</I>&gt;<i> &gt; &gt; That's similar to N800, so there shouldn't be any problem.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I just want to make sure we talk about the same functionality:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; IF Button X on SDL_JOYSTICK(xy) IS PRESSED
+</I>&gt;<i> &gt;  SIMULATE ATARI KEYPRESS &lt;abc&gt;
+</I>&gt;<i> &gt; ENDIF
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; IF Button Y on SDL_JOYSTICK(xy) IS PRESSED
+</I>&gt;<i> &gt; SIMULATE HOST KEYPRESS &lt;abc&gt;  e.q. open GUI, quit emulator
+</I>&gt;<i> &gt; ENDIF
+</I>&gt;<i> 
+</I>&gt;<i> Oh, sorry, you were talking about mapping actual SDL joystick events
+</I>&gt;<i> to Atari keys.  For that there's no support in Hatari.
+</I>
+It should be easy to add to the joystick submodule. All I have to do is
+enqueue SDL_events for keypresses. The question is how should I design
+the API for this very specific patch?
+
+A #define for the complete functionality and more for the mappings?
+What I want to avoid are even more configuration options in the .ini
+file.
+
+&gt;<i> It's such a rare case that I don't think it should be in the UI, but if you
+</I>&gt;<i> can cleanly add support for configuring it from the config file, it's
+</I>&gt;<i> inclusion to Hatari could be considered.
+</I>
+I am considering a target specific C-file that needs to be added into
+the compilation process if a special #define is set.
+
+If all fails I could rewrite the joystick module just for use with my
+target.
+
+
+&gt;<i> Does the GP2X give joy events for its joystick, or are they mapped to
+</I>&gt;<i> joystick events just inside the GP2X SDL library?
+</I>
+A complete SDL_Joystick* structure is available but it only gives
+joystick button events, no axis events. The button mapping is as
+follows:
+
+		#define GP2X_BUTTON_UP              (0)
+		#define GP2X_BUTTON_DOWN            (4)
+		#define GP2X_BUTTON_LEFT            (2)
+		#define GP2X_BUTTON_RIGHT           (6)
+		#define GP2X_BUTTON_UPLEFT          (1)
+		#define GP2X_BUTTON_UPRIGHT         (7)
+		#define GP2X_BUTTON_DOWNLEFT        (3)
+		#define GP2X_BUTTON_DOWNRIGHT       (5)
+		#define GP2X_BUTTON_CLICK           (18)
+		#define GP2X_BUTTON_A               (12)
+		#define GP2X_BUTTON_B               (13)
+		#define GP2X_BUTTON_X               (14)
+		#define GP2X_BUTTON_Y               (15)
+		#define GP2X_BUTTON_L               (10)
+		#define GP2X_BUTTON_R               (11)
+		#define GP2X_BUTTON_MENU            (8)
+		#define GP2X_BUTTON_SELECT          (9)
+		#define GP2X_BUTTON_VOLUP           (16)
+		#define GP2X_BUTTON_VOLDOWN         (17)
+
+&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; If so, how can I determine which event number I have to map as I only
+</I>&gt;<i> &gt; have the standard SDL_Joystick defines available which give numbers
+</I>&gt;<i> &gt; between 0 and 16.
+</I>&gt;<i> 
+</I>&gt;<i> Check doc/keymap-sample.txt on how to map the keys.
+</I>&gt;<i> 
+</I>&gt;<i> Attached are Atari and SDL helper programs.
+</I>&gt;<i> 
+</I>&gt;<i> (Hm, maybe I should add them under Hatari tests/-dir...)
+</I>
+This is a good idea to add indeed.
+But if i go for a target specific joystick file, there won't be a need.
+
+Matthias
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003264.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+	<LI>Next message: <A HREF="003248.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3268">[ date ]</a>
+              <a href="thread.html#3268">[ thread ]</a>
+              <a href="subject.html#3268">[ subject ]</a>
+              <a href="author.html#3268">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

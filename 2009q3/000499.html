@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari patches for bitplane conversion
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C752526d20907211220q5fe8760cn6edb1f91ba774f0f%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000498.html">
+   <LINK REL="Next"  HREF="000500.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari patches for bitplane conversion</H1>
+    <B>K&#229;re Andersen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C752526d20907211220q5fe8760cn6edb1f91ba774f0f%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Hatari patches for bitplane conversion">kareandersen at gmail.com
+       </A><BR>
+    <I>Tue Jul 21 21:20:54 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000498.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+        <LI>Next message: <A HREF="000500.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#499">[ date ]</a>
+              <a href="thread.html#499">[ thread ]</a>
+              <a href="subject.html#499">[ subject ]</a>
+              <a href="author.html#499">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, Jul 21, 2009 at 8:46 PM, Eero Tamminen&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Tuesday 21 July 2009, K&#229;re Andersen wrote:
+</I>&gt;&gt;<i> Indeed. Which brings up another point: Why are the converters
+</I>&gt;&gt;<i> #include'd into one source file rather than being compiled as separate
+</I>&gt;&gt;<i> units as would make so much more sense? It really messes up the whole
+</I>&gt;&gt;<i> structure of the code, as they are neither inline functions nor simple
+</I>&gt;&gt;<i> headers...
+</I>&gt;<i>
+</I>&gt;<i> As the functions are declared static, they're in practice the same and you
+</I>&gt;<i> can consider them as inline. &#160;With GCC, specifying &quot;inline&quot; is pretty much
+</I>&gt;<i> redundant; if a function is static, with optimizations enabled GCC either
+</I>&gt;<i> inlines or directly jumps to it (depending on in how many places it's
+</I>&gt;<i> called in the code). &#160;You cannot help noticing this when you debug GCC
+</I>&gt;<i> optimized code with Gdb... :-)
+</I>
+&gt;<i> If you would put them to separate object files, they would need to be global
+</I>&gt;<i> functions and would have the normal function call overhead. &#160;If I remember
+</I>&gt;<i> correctly, a more important reason was that then the helper functions in
+</I>&gt;<i> screen.c (which are called from the convertors) would then need to be global
+</I>&gt;<i> and have the normal function call overhead too.
+</I>&gt;<i>
+</I>&gt;<i> (GCC / GAS don't support (yet) inter-object optimizations.)
+</I>
+Ah yes, I remember now, that table declaring them static, effectively
+giving them file scope. But uhm, is this overhead really noticeable?
+It seems you know GCC a lot better than me, so I wont argue, I just
+find it hard to maintain and it leads to all that code duplication. I
+keep thinking that these things should be dynamically linked and then
+the functors could be wrestled out from there... I am probably wrong
+:<i>) What I actually know best, is M68k :D I like readable, manageable
+</I>C-code tho :)
+
+
+&gt;&gt;<i> &gt; How do you want to detect that SDL feature? Hard-coding it with #ifdefs
+</I>&gt;&gt;<i> &gt; is a bad idea, IMHO.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I guess there are several ways to do this, including the check for
+</I>&gt;&gt;<i> hardware surfaces. The safest way should nevertheless be to do a bit
+</I>&gt;&gt;<i> of profiling on buffer creation (that is, program start _and_ screen
+</I>&gt;&gt;<i> mode changes). You can do a wait for vsync, and see how much time will
+</I>&gt;&gt;<i> pass in between. If its shorter than a given threshold, say 50Hz, then
+</I>&gt;&gt;<i> you dont have any vsync...
+</I>&gt;<i>
+</I>&gt;<i> I like run-time detection, but isn't it possible to do it only on Hatari
+</I>&gt;<i> startup, why it would need to be done on each screen mode change?
+</I>&gt;<i>
+</I>&gt;<i> (Some programs, especially for Falcon do frequent mode changes.)
+</I>
+Host screen mode changes, like say, going to full screen, could change
+the whole situation. In OS X at least, where it seems you bypass
+compositing by rendering SDL full screen...  And sure, in Behn i mess
+with the VIDEL until it bleeds out the DSP port. Nearly anyway. Well,
+I was young and naive ;)
+
+&gt;&gt;<i> A similar test is already done to get fine
+</I>&gt;&gt;<i> granularity cycle timing (and the comments about OS X in that part of
+</I>&gt;&gt;<i> the code are wrong mind you - we have HPET just as much as linux do).
+</I>&gt;<i>
+</I>&gt;<i> On PowerPC? &#160;(I think Thomas' Mac is PowerPC :-))
+</I>
+Ah, havent a clue about PPC, but then the #ifdefs are wrong anyway -
+and yes you are right - it is... :)
+
+-K&#229;re
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000498.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+	<LI>Next message: <A HREF="000500.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#499">[ date ]</a>
+              <a href="thread.html#499">[ thread ]</a>
+              <a href="subject.html#499">[ subject ]</a>
+              <a href="author.html#499">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [hatari-tracking] [hatari - Help] Can't install	Amberstar
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Bhatari-tracking%5D%20%5Bhatari%20-%20Help%5D%20Can%27t%20install%0A%09Amberstar&In-Reply-To=%3C201009272301.13863.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002444.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [hatari-tracking] [hatari - Help] Can't install	Amberstar</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Bhatari-tracking%5D%20%5Bhatari%20-%20Help%5D%20Can%27t%20install%0A%09Amberstar&In-Reply-To=%3C201009272301.13863.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] [hatari-tracking] [hatari - Help] Can't install	Amberstar">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Sep 27 22:01:13 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002444.html">[hatari-devel] #include missing?!?
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2445">[ date ]</a>
+              <a href="thread.html#2445">[ thread ]</a>
+              <a href="subject.html#2445">[ subject ]</a>
+              <a href="author.html#2445">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I looked into an issue reported on the forums.
+
+On Monday 27 September 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">admin at berlios.de</A> wrote:
+&gt;<i> Read and respond to this message at:
+</I>&gt;<i> <A HREF="http://developer.berlios.de/forum/message.php?msg_id=52007">http://developer.berlios.de/forum/message.php?msg_id=52007</A>
+</I>&gt;<i> By: paar
+</I>&gt;<i>
+</I>&gt;<i> Hi. I tried to install Amberstar (source:
+</I>&gt;<i> <A HREF="http://thalion.exotica.org.uk/games/amberstar/credits/credits.html">http://thalion.exotica.org.uk/games/amberstar/credits/credits.html</A>), but
+</I>&gt;<i> had no luck.
+</I>&gt;<i> I can go to install screen, choose HDD install (through image you
+</I>&gt;<i> provided on your website)
+</I>
+I.e: <A HREF="http://hatari.berlios.de/hd80mb.image.gz">http://hatari.berlios.de/hd80mb.image.gz</A>
+
+&gt;<i> but when first disk is finished, it keeps 
+</I>&gt;<i> asking for second disk, even it's at floppy drive.
+</I>
+This works fine for me with TOS 1.4.  But I can reproduce the issue
+with EmuTOS.
+
+Program just does fsfirst() GEMDOS call and then asks again for the original
+disk A instead of B, the next disk.  I wonder whether EmuTOS fsfirst() is
+returning a different file name than what it expected, or returning it in
+different (lower?) case?
+
+If somebody wants to debug it, you can catch the fsfirst() in debugger with:
+	b GemdosOpcode = $4e
+
+
+&gt;<i> I managed to install it once (with trouble), but couldn't play it, game
+</I>&gt;<i> said something is missing.
+</I>&gt;<i> GEMDOS install is not possible, appearently it cannot write to such HDD.
+</I>
+It does only GEMDOS dfree() (and wouldn't seem to be calling any other
+extra OS bios/xbios/gemdos calls) and claims a read error.
+
+I looked into Hatari GEMDOS emulation Dfree() implementation and it just
+returns a hard coded file system size (10MB free on 50MB file system having
+512 byte sectors with each cluster containing one sector).  I tried changing
+this a little, but that didn't help anything.
+
+On quick look into Atari docs, what gemdos.c does seemed fine.
+
+Any idea what could be wrong?
+
+(Dfree GEMDOS opcode is $36, in case somebody wants to catch it with
+Hatari debugger :-))
+
+
+&gt;<i> Disks with game are alright, at least it seems that way because install
+</I>&gt;<i> to other floppy disks works. Any advice? :(
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002444.html">[hatari-devel] #include missing?!?
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2445">[ date ]</a>
+              <a href="thread.html#2445">[ thread ]</a>
+              <a href="subject.html#2445">[ subject ]</a>
+              <a href="author.html#2445">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

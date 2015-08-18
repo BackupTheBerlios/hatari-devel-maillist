@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005080018200.20070%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002004.html">
+   <LINK REL="Next"  HREF="002007.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005080018200.20070%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat May  8 00:29:57 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002004.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002007.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2005">[ date ]</a>
+              <a href="thread.html#2005">[ thread ]</a>
+              <a href="subject.html#2005">[ subject ]</a>
+              <a href="author.html#2005">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 8 May 2010, Laurent Sallafranque wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> I think David's right.
+</I>&gt;<i> When I played with the crossbar code, at the beginning, I changed MIXBUFFER_SIZE to a huge value to have sound in Falcon mode.
+</I>&gt;<i> I used 1 000 000 (yes, a 1 Meg buffer).
+</I>&gt;<i> 
+</I>&gt;<i> Sound was really delayed in this case (sometimes more than 1 second).
+</I>&gt;<i> 
+</I>&gt;<i> I think that read pointer position and write pointer position were not synchronized.
+</I>&gt;<i> We're writing sounds in the buffer with a pointer and we're reading the sounds in Sound_Update() with the read pointer position.
+</I>&gt;<i> 
+</I>&gt;<i> Maybe these 2 pointers desynchronize at boot, or in time, and they should be re initialized when the first sound is activated.
+</I>&gt;<i> (it's just an idea like this).
+</I>
+Hello,
+
+I think there's something that is not correctly initialized at the start 
+(when creating MixBuffer), sound delay should not be dependant on 
+MIXBUFFER_SIZE as this is just a buffer to store samples and then picking 
+data in it to send to SDL. What is important is how many bytes we send to 
+SDL, not how many bytes we use in our internal ring buffer.
+
+&gt;<i> Reducing the MIXBUFFER_SIZE value reduce also the delay.
+</I>&gt;<i> Perhaps we could use a variable value here which would be dependant of the sound frequency ?
+</I>&gt;<i> (The sound buffer would be smaller for a low frequency and bigger for a high frequency)
+</I>
+We should not mix the meaning of MixBuffer and SDL's buffer (the one 
+having 'size' bytes when calling Audio_Init).
+I have the feeling that reducing MIXBUFFER_SIZE to fix the problem is a 
+side effect and is a wrong answer to a real problem.
+
+SDL should not be affected by MIXBUFFER_SIZE, that's why I'd like to get 
+the values printed after calling Audio_Init to compare them with my values 
+under linux (where I don't have any delay). In the case of SDL, we use 
+1024 samples per block, which is a rather &quot;aggresive&quot; value that should 
+give low latency, but maybe the host OS resizes this value to something 
+bigger.
+
+If ActiveSndBufIdx is not correctly set at the beginning, then we can get 
+a constant delay.
+
+
+Nicolas
+
+&gt;<i> 
+</I>&gt;<i> Le 07/05/2010 22:13, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit&#160;:
+</I>&gt;<i>       On Thu, 6 May 2010, David Savinkoff wrote:
+</I>&gt;<i>
+</I>&gt;<i>             Hi,
+</I>&gt;<i>
+</I>&gt;<i>             I feel like a giant anteater that hit the jackpot!
+</I>&gt;<i>
+</I>&gt;<i>             After looking at audio.c , MIXBUFFER_SIZE looked like
+</I>&gt;<i>             a good place to start.
+</I>&gt;<i>
+</I>&gt;<i>             Thus, in sound.h:
+</I>&gt;<i>             #define MIXBUFFER_SIZE&#160;&#160;&#160; 16384
+</I>&gt;<i>
+</I>&gt;<i>             Was changed to:
+</I>&gt;<i>             #define MIXBUFFER_SIZE&#160;&#160;&#160; 2048
+</I>&gt;<i>             ( I figured that this should Not reduce the delay.
+</I>&gt;<i>             &#160;However, it does. Is this a problem too?)
+</I>&gt;<i>
+</I>&gt;<i>             And compiled and run (working ok) with the following warning:
+</I>&gt;<i>             Warning: Soundbuffer size is too big!
+</I>&gt;<i>
+</I>&gt;<i>             So back to audio.c, line 124 to change some code:
+</I>&gt;<i>             &#160;&#160;&#160; if (SoundBufferSize &gt; MIXBUFFER_SIZE/2)
+</I>&gt;<i>             Was changed to:
+</I>&gt;<i>             &#160;&#160;&#160; if (SoundBufferSize/4 &gt; MIXBUFFER_SIZE/2)
+</I>&gt;<i>             ( Because desiredAudioSpec.samples is in [samples],
+</I>&gt;<i>             &#160;MIXBUFFER_SIZE is in [samples],
+</I>&gt;<i>             &#160;But SoundBufferSize = desiredAudioSpec.size; is in [bytes]
+</I>&gt;<i>             &#160;Bytes are multiplied by 2 for stereo and 2 for Sint16 )
+</I>&gt;<i>
+</I>&gt;<i>             It turns out that MIXBUFFER_SIZE = 2048 is the smallest size
+</I>&gt;<i>             without a warning (MIXBUFFER_SIZE has enough space for twice
+</I>&gt;<i>             the data because of its design as a circular buffer).
+</I>&gt;<i>
+</I>&gt;<i>             Hope that helps.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i>       Hello,
+</I>&gt;<i>
+</I>&gt;<i>       I had a look at Hatari's code and I don't see how changing MIXBUFFER_SIZE can change the delay of audio sound.
+</I>&gt;<i>
+</I>&gt;<i>       SDL is initialized with &quot;desiredAudioSpec.samples = 1024&quot;, so for 44.1 kHz this means 0.023 sec during each sdl callback and for 8 kHz this would
+</I>&gt;<i>       give a 0.128 sec so this should be some pretty reasonable delay, hardly noticeable.
+</I>&gt;<i>
+</I>&gt;<i>       So, the only value SDL will &quot;know&quot; is 1024 ; this means Audio_CallBack will be called with len=1024 and even at 8 kHz, the sound will be played as
+</I>&gt;<i>       chunk of 0.128 sec.
+</I>&gt;<i>
+</I>&gt;<i>       The fact that you get a shortened delay by changing an Hatari's variable (MIXBUFFER_SIZE) instead of an SDL's one (desiredAudioSpec.samples) makes
+</I>&gt;<i>       me believe the problem could be in the way MixBuffer is initialized, as well as SoundBufferSize (sound.c, line 922) :
+</I>&gt;<i>
+</I>&gt;<i>       &#160;&#160;&#160;&#160;&#160;&#160;&#160; nGeneratedSamples = SoundBufferSize + SAMPLES_PER_FRAME;
+</I>&gt;<i>       &#160;&#160;&#160;&#160;&#160;&#160;&#160; ActiveSndBufIdx = nGeneratedSamples % MIXBUFFER_SIZE;
+</I>&gt;<i>
+</I>&gt;<i>       If SoundBuffer is too high, we could get ActiveSndBufIdx too &quot;far ahead&quot; which would create a delay.
+</I>&gt;<i>
+</I>&gt;<i>       Could you add a line in Audio_Init in audio.c after the call to SDL_OpenAudio (before &quot;SoundBufferSize = desiredAudioSpec.size&quot;) :
+</I>&gt;<i>
+</I>&gt;<i>       fprintf ( stderr , &quot;freq %d samples %d size %d\n&quot; , desiredAudioSpec.freq , desiredAudioSpec.samples , desiredAudioSpec.size );
+</I>&gt;<i>
+</I>&gt;<i>       And then try changing freq in hatari (8000, 11000, 44100) to see what is printed ; I'd like to compare these values with what I get under my linux.
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i>       Nicolas
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i>
+</I></PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002004.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002007.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2005">[ date ]</a>
+              <a href="thread.html#2005">[ thread ]</a>
+              <a href="subject.html#2005">[ subject ]</a>
+              <a href="author.html#2005">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

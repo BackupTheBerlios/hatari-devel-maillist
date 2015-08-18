@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Moai demo as regressed a lot since hatari 1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Moai%20demo%20as%20regressed%20a%20lot%20since%20hatari%201.4&In-Reply-To=%3C4E1EA732.6010507%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003721.html">
+   <LINK REL="Next"  HREF="003724.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Moai demo as regressed a lot since hatari 1.4</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Moai%20demo%20as%20regressed%20a%20lot%20since%20hatari%201.4&In-Reply-To=%3C4E1EA732.6010507%40free.fr%3E"
+       TITLE="[hatari-devel] Moai demo as regressed a lot since hatari 1.4">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Jul 14 10:22:10 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003721.html">[hatari-devel] Moai demo as regressed a lot since hatari 1.4
+</A></li>
+        <LI>Next message: <A HREF="003724.html">[hatari-devel] Moai demo as regressed a lot since hatari 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3722">[ date ]</a>
+              <a href="thread.html#3722">[ thread ]</a>
+              <a href="subject.html#3722">[ subject ]</a>
+              <a href="author.html#3722">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've reverted the patch in dsp.c :: run to apply the rev 3144 patch 
+(just to see)
+
+With new cpu, it's KO (it was expected)
+with old cpu and the latest release source, it works perfectly well. 
+(demo + music)
+
+So, this demo frezees because of timing between CPU and DSP transfers.
+(I think that the 68030 CPU timings are better but still not perfect in 
+new winuae core).
+
+For example :
+I don't know if winUae core (68030) takes into account that a real atari 
+Falcon has a 16 bits bus and not a 32 bits bus.
+(this generates more waitstates cycles when reading/writing to odd 
+addressses or to non 4 bytes aligned memories in .L and .W access)
+
+Do you know if there's a parameter in winuae core that allows to tell 
+we're using on a 16 bits BUS ?
+If not, do you think it's easy to implement ? (I don't think so, but I 
+don't understand the 68x00 part of hatari well enough for now).
+
+This may probably be a part of the answear (cycles and precision problems).
+
+Regards
+
+Laurent
+
+
+Le 14/07/2011 09:16, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I've searched and found.
+</I>&gt;<i>
+</I>&gt;<i> I've recompiled a tens of older versions of hatari between 1.4 and rev 
+</I>&gt;<i> 3150 (wich was already KO)
+</I>&gt;<i> I've both compiled old and new CPU to do the tests.
+</I>&gt;<i>
+</I>&gt;<i> So, with old CPU, moai.prg run until rev 3144. r=Rev 3145 is KO
+</I>&gt;<i> with new cpu, moai.prg is always KO.
+</I>&gt;<i>
+</I>&gt;<i> The change in this release was the way to compute DSP cycles from CPU 
+</I>&gt;<i> cycles.
+</I>&gt;<i> It has improved many prgs, so I won't touch it before the next release.
+</I>&gt;<i>
+</I>&gt;<i> So, I'll still have to have a look at Falcon Timings to improve accuracy.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> It seems that moai as never worked with the new cpu (I thought I had 
+</I>&gt;<i> tested it).
+</I>&gt;<i>
+</I>&gt;<i> Le 13/07/2011 00:19, Nicolas Pomar&#232;de a &#233;crit :
+</I>&gt;&gt;<i> Le 13/07/2011 00:10, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;&gt;<i> I've recompiled the 1.4 from source to do some tests :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> moai in 1.4 version ran well, and sound was nice
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Moai in 1.5 version new cpu freeze after the loading screen and 
+</I>&gt;&gt;&gt;<i> sound is
+</I>&gt;&gt;&gt;<i> dirty
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> moai in 1.5 version old cpu freeze after the loading screen with no
+</I>&gt;&gt;&gt;<i> sound at all
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I've looked at crossbar.c, there's no major change between the 2
+</I>&gt;&gt;&gt;<i> versions (except my new code for hadshake transfers at 32 Mhz, but not
+</I>&gt;&gt;&gt;<i> it's not involved here).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I think there's a major change somewhere that has downgraded sound in
+</I>&gt;&gt;&gt;<i> some case (moai is a good example).
+</I>&gt;&gt;&gt;<i> A falcon frequency ? some timings ? ...
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> what is hg bisect for ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> hg bisect is very useful to find where a problem was introuced.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If you know rev A was OK and rev B was bad, but you don't know where 
+</I>&gt;&gt;<i> the change happened, bisect is your friend :)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> First mark current rev as bad, for example &quot;hg bisect -b 3420&quot; ; mark 
+</I>&gt;&gt;<i> hatari 1.4 as good &quot;hg bisec -g 2892&quot;. Now hg will revert sources to 
+</I>&gt;&gt;<i> the &quot;middle&quot; of those 2 revs. Compile hatari, test and mark the 
+</I>&gt;&gt;<i> result as good or bad with -g or -b (without a revision).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Continue until you find the error, and  hg will tell you what 
+</I>&gt;&gt;<i> revision caused the problem.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So, you should find the cause in O(log(n)), which is quite efficient.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Nicolas
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003721.html">[hatari-devel] Moai demo as regressed a lot since hatari 1.4
+</A></li>
+	<LI>Next message: <A HREF="003724.html">[hatari-devel] Moai demo as regressed a lot since hatari 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3722">[ date ]</a>
+              <a href="thread.html#3722">[ thread ]</a>
+              <a href="subject.html#3722">[ subject ]</a>
+              <a href="author.html#3722">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

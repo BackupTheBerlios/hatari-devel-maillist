@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Execution history debugger command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3CBANLkTinEB9cCs-vmxFGSf4-nBNzzAAUOiQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003521.html">
+   <LINK REL="Next"  HREF="003528.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Execution history debugger command</H1>
+    <B>Deniz Turkoglu</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3CBANLkTinEB9cCs-vmxFGSf4-nBNzzAAUOiQ%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Execution history debugger command">turkoglu.deniz at gmail.com
+       </A><BR>
+    <I>Thu Jun  2 16:27:19 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003521.html">[hatari-devel] Execution history debugger command
+</A></li>
+        <LI>Next message: <A HREF="003528.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3522">[ date ]</a>
+              <a href="thread.html#3522">[ thread ]</a>
+              <a href="subject.html#3522">[ subject ]</a>
+              <a href="author.html#3522">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Jun 2, 2011 at 11:28 AM, Nicolas Pomar&#232;de
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt; wrote:
+&gt;<i> Le 02/06/2011 01:15, Eero Tamminen a &#233;crit :
+</I>&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> (Wine isn't an emulator. &#160;It provides Win32 API and emulates some
+</I>&gt;&gt;&gt;&gt;<i> things, but the x86 code it runs directly.)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Well, then as a principle, I'm afraid I can't help you there. I'm not
+</I>&gt;&gt;&gt;<i> asking you to install some commercial program, we're just talking about
+</I>&gt;&gt;&gt;<i> a very good ST emulator that many people still consider superior to
+</I>&gt;&gt;&gt;<i> Hatari because of its nice UI.
+</I>&gt;&gt;&gt;<i> It won't install viruses, just test it for one hour and remove if after
+</I>&gt;&gt;&gt;<i> that if you prefer.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Before running it, does your version have same checksums as the version
+</I>&gt;&gt;<i> I just downloaded:
+</I>&gt;&gt;<i> $ md5sum Steem.exe steemupdate.exe unzipd32.dll
+</I>&gt;&gt;<i> 7d89731bd2bade75cf973ccd308ed50f &#160;Steem.exe
+</I>&gt;&gt;<i> 259d0340504a80fdcb2371367c3e704f &#160;steemupdate.exe
+</I>&gt;&gt;<i> aaddb5561976f09c2d002d8ebc78d54d &#160;unzipd32.dll
+</I>&gt;<i>
+</I>&gt;<i> Yes, I have the same md5sum for those files.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> [...]
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> If it's built into Hatari, I think it should be done with SDL[1]. &#160;This
+</I>&gt;&gt;&gt;&gt;<i> limits the &quot;UI&quot; to the size of the Hatari screen (SDL provides just one
+</I>&gt;&gt;&gt;&gt;<i> &quot;framebuffer&quot; as far as I know) which would complicate things because
+</I>&gt;&gt;&gt;&gt;<i> Hatari window size changes often on Falcon emulation.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> [1] While embedding Hatari SDL stuff to OSX UI is already working I
+</I>&gt;&gt;&gt;&gt;<i> think adding Qt to that mix would be a bad idea.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I mean, I have some doubts about it working. &#160;Has somebody successfully
+</I>&gt;&gt;<i> mixed C++ Qt&amp; &#160;Objective-C Cocoa widgets in same program and succefully
+</I>&gt;&gt;<i> built&amp; &#160;run it?
+</I>
+For the UI, there are also other alternatives. Qt is one, and I think
+they are quite popular, but other one is wxWidgets that I know of. Of
+course both has pros and cons, and of course SO has a discussion on
+this:
+
+<A HREF="http://stackoverflow.com/questions/2886258/wxwidgets-vs-qt">http://stackoverflow.com/questions/2886258/wxwidgets-vs-qt</A>
+
+I haven't used many Qt backed programs but some famous ones --binary
+blobs, are Skype and Google Earth on linux (afaik), KeepassX is open
+source and is also built using Qt, and those would be ideal to have a
+look at how Qt looks like.
+
+wxWidgets look quite native, they have posted some screenshots on
+<A HREF="http://www.wxwidgets.org/about/screensh.htm">http://www.wxwidgets.org/about/screensh.htm</A>
+
+&gt;<i> Well, if I recall correctly Vice and/or Openmsx are having different UI, I
+</I>&gt;<i> don't know if it's possible to mix qt/cocoa, but in that case it could be
+</I>&gt;<i> possible to make a QT only UI and use it also on OSX (if the user prefers it
+</I>&gt;<i> to the native osx look).
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Having SDL for the UI has the advantage of always being able to have all
+</I>&gt;&gt;&gt;<i> the settings on screen, even in fullscreen mode.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> But doing a debugger limited to the size of the SDL screen is too
+</I>&gt;&gt;&gt;<i> limited. Today, it's already complicated to add some options to the UI
+</I>&gt;&gt;&gt;<i> by taking care of the SDL window's size. At best we would have the same
+</I>&gt;&gt;&gt;<i> number of characters as in Monst, which is really limited considering
+</I>&gt;&gt;&gt;<i> most monitors go beyond 1280x1024.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> While the SDL debugger UI would be bound by the Hatari screen size, it
+</I>&gt;&gt;<i> doesn't mean that the output would have to be scaled like the Atari screen
+</I>&gt;&gt;<i> is. &#160;Adding --desktop option support for ST mode too and running in
+</I>&gt;&gt;<i> fullscreen would guarantee largest possible resolution.
+</I>&gt;<i>
+</I>&gt;<i> In my case running --desktop on a 1280x1024 monitor then pressing F11
+</I>&gt;<i> doesn't give that much more space (visually it looks the same as if I didn't
+</I>&gt;<i> use &quot;--desktop 1&quot;)
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I think we could have the usual SDL UI for running Hatari and for
+</I>&gt;&gt;&gt;<i> example a QT UI with external/resizable/movable windows for the debugger.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> As a separate program the UI could be any size and the size could be
+</I>&gt;&gt;&gt;&gt;<i> fixed at startup. &#160;Instead of separate windows, it could have e.g.
+</I>&gt;&gt;&gt;&gt;<i> separate screens which are switched using e.g. function keys.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I prefer having separate windows than many screens, because it implies
+</I>&gt;&gt;&gt;<i> you can have only one screen at a time, which is often a limitation if
+</I>&gt;&gt;&gt;<i> you want to have several hexa/asm dump visible at the same time to
+</I>&gt;&gt;&gt;<i> compare them.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If Hatari would be running at e.g. 1280x1024, you could fit several
+</I>&gt;&gt;<i> hex/asm
+</I>&gt;&gt;<i> dumps on same screen... &#160;How many of them you typically and at maximum
+</I>&gt;&gt;<i> would
+</I>&gt;&gt;<i> want to compare at the same time ?
+</I>&gt;<i>
+</I>&gt;<i> Do you mean emulating a 1280x1024 resolution in GEM ? But in that case it
+</I>&gt;<i> won't work with demos and games, and those are certainly the only candidates
+</I>&gt;<i> for a debugger.
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> (With single window approach it might be possible to offer the same
+</I>&gt;&gt;<i> UI both with SDL&amp; &#160;ncurses. &#160;SDL can look nicer whereas ncurses on
+</I>&gt;&gt;<i> console would support copy/paste.)
+</I>
+For debugging I have another idea, may it be radical or not feasible.
+Browsers have been working on remote debugging for sometime, almost
+all has an option; Chrome/Webkit : Remote Inspector, Firefox : Firebug
++ Crossfire, Opera : Scope.
+
+<A HREF="http://www.webkit.org/blog/1620/webkit-remote-debugging/">http://www.webkit.org/blog/1620/webkit-remote-debugging/</A>
+<A HREF="http://getfirebug.com/wiki/index.php/Crossfire">http://getfirebug.com/wiki/index.php/Crossfire</A>
+<A HREF="http://dragonfly.opera.com/app/scope-interface/">http://dragonfly.opera.com/app/scope-interface/</A>
+
+I think a wire protocol would benefit Hatari as well, esp. for
+debugging on devices, for instance N900. I have been checking the
+options and couldn't decide on the protocol, mainly the serializer. I
+am interested in using thrift (<A HREF="http://wiki.apache.org/thrift/Tutorial">http://wiki.apache.org/thrift/Tutorial</A>)
+to remotely debug/control/test hatari but it doesnt support events out
+of the box, which makes it a plain RPC and not fit for debugging. JSON
+is of course an option but I really like google-protobuff or thrift,
+mainly due to code generation and overall cleaner API that can be
+built with them.
+
+Having a clean protocol also means the UI can be done in any language,
+thrift has bindings for almost every language and it would be easy to
+build an UI that supports both local and remote debugging.
+
+-deniz
+
+&gt;<i> The problem with single window (everything in Hatari's current window) is
+</I>&gt;<i> that once in the debugger, you can't see the ST screen anymore. And when you
+</I>&gt;<i> want to debug colors/blitter or other gfx problems, it's very important to
+</I>&gt;<i> have the full Atari video screen visible, not overlapped by some other
+</I>&gt;<i> informations.
+</I>&gt;<i>
+</I>&gt;<i> I know lot of things can be made with ncurses, including using the mouse,
+</I>&gt;<i> but what if you want to resize some of those internal windows to make an
+</I>&gt;<i> hexa dump bigger/smaller for example ? You need to handle some kind of
+</I>&gt;<i> window resizing in ncurse. Same if you want to reorder/move those windows
+</I>&gt;<i> inside Hatari.
+</I>&gt;<i> Quite a nightmare in the end, reinventing the wheel in some ways, I don't
+</I>&gt;<i> think ncurse is the proper solution when you want to handle a variable
+</I>&gt;<i> number of windows, with different size and position.
+</I>&gt;<i>
+</I>&gt;<i> Having external windows seems really much more useful to me : you keep the
+</I>&gt;<i> Atari's video screen untouched and you have a bunch of windows locked on
+</I>&gt;<i> registers/asm/hex dump. You're not limited to Hatari's resolution, but you
+</I>&gt;<i> can benefit of all the space your OS is giving you (if you have dual monitor
+</I>&gt;<i> for example).
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003521.html">[hatari-devel] Execution history debugger command
+</A></li>
+	<LI>Next message: <A HREF="003528.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3522">[ date ]</a>
+              <a href="thread.html#3522">[ thread ]</a>
+              <a href="subject.html#3522">[ subject ]</a>
+              <a href="author.html#3522">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

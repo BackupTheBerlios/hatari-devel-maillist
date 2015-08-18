@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New support for STE's 224 bytes overscan
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20support%20for%20STE%27s%20224%20bytes%20overscan&In-Reply-To=%3Calpine.LMD.2.00.0912102208360.10929%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001088.html">
+   <LINK REL="Next"  HREF="001107.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New support for STE's 224 bytes overscan</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20support%20for%20STE%27s%20224%20bytes%20overscan&In-Reply-To=%3Calpine.LMD.2.00.0912102208360.10929%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] New support for STE's 224 bytes overscan">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Dec 10 22:23:12 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001088.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+        <LI>Next message: <A HREF="001107.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1089">[ date ]</a>
+              <a href="thread.html#1089">[ thread ]</a>
+              <a href="subject.html#1089">[ subject ]</a>
+              <a href="author.html#1089">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 10 Dec 2009, Anders Eriksson wrote:
+
+&gt;<i> On Mon, 7 Dec 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Yes, I'm planning to resolve these 2 points :
+</I>&gt;&gt;<i>  - remove the left part with 16 pixels using 2 bitplanes
+</I>&gt;&gt;<i>  - center the screen to the left ; correct value seems to be ~8 pixels
+</I>&gt;&gt;<i>    earlier (when compared with a normal 160 bytes line).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> For the second point, I need to update the test program I sent you last
+</I>&gt;&gt;<i> time to &quot;calibrate&quot; the exact shifting.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In fact, what you propose (if I understand it correctly) would work
+</I>&gt;&gt;<i> if the screen contains only 224 bytes lines for example. But on STF
+</I>&gt;&gt;<i> there're some screens mixing 230 and 160 bytes lines and in that case
+</I>&gt;&gt;<i> centering each line on the screen is not good because graphics would not
+</I>&gt;&gt;<i> be aligned (see the picture at the start of ULM's hidden screen in Oh
+</I>&gt;&gt;<i> Crickey ... for an example).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> With 230 bytes overscan, you need in fact to shift the whole line 4 pixels
+</I>&gt;&gt;<i> to the left to stay aligned with a 160 bytes lines and to work similarly
+</I>&gt;&gt;<i> as a real ST (you would have a similar problem if you centered the line
+</I>&gt;&gt;<i> when adding 16 pixels to left border on STE (by changing hscroll), gfx
+</I>&gt;&gt;<i> would not be correctly aligned with a normal ST line).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What I want to obtain is the same effect as you can see on the picture you
+</I>&gt;&gt;<i> posted earlier : we can see that the 224 bytes screen is not &quot;centered&quot;
+</I>&gt;&gt;<i> the same way as a 230 bytes one. So I must remove the 2 bitplanes on the
+</I>&gt;&gt;<i> left, but I don't want the &quot;visible&quot; pixels to start at the same place.
+</I>&gt;<i>
+</I>&gt;<i> Hi!
+</I>&gt;<i>
+</I>&gt;<i> I see, I never took into account that there should be centering around a
+</I>&gt;<i> 160 byte scanline (or even 168 byte on STe), it complicate things for
+</I>&gt;<i> sure. Epecially as the cycle counting needs to be centered as well so
+</I>&gt;<i> colour changes occour at the correct time. Phew, I'm glad I don't have to
+</I>&gt;<i> do those calculations :)
+</I>
+Hello,
+
+Yes, I see you're starting to see where're the problems :) This is why 
+it's important to know at what cycle the display starts and to respect 
+this in the emulation, even if the resulting picture looks a little &quot;off 
+centered&quot;.
+This effect can be seen also with spectrum512 like pictures ; in that 
+case, even a 1 pixel shift will make the result looks completly wrong 
+(that was a problem with paulo simoes overscan demos) (you can see this by 
+changing hscroll on STE and trying to display a spec512 picture).
+
+Other small (but very important) difference is that in 60 Hz, displays 
+starts 4 cycles earlier (and as this mode is often used to reduce color 
+flicker in spec512 mode ...)
+
+So, lots of things to take care of that you never take into account when 
+directly coding on st, and no real documentation for that, but that's the 
+fun of emulation, building your own tools to measure the inner working of 
+the machine :)
+
+
+&gt;<i>
+</I>&gt;<i> For some help I have compared the original last fullscreen picture from
+</I>&gt;<i> MOLZ to a STe-capture of the same.
+</I>&gt;<i>
+</I>&gt;<i> It looks like there are indeed about six pixels cut off at the right part
+</I>&gt;<i> of the image. The left part seems intact.
+</I>&gt;<i>
+</I>&gt;<i> Here is the comparison: <A HREF="http://ae.dhs.nu/pics/missing_pixels.png">http://ae.dhs.nu/pics/missing_pixels.png</A>
+</I>&gt;<i>
+</I>&gt;<i> Also taking into account that the capture-picture is &lt;416 pixels and
+</I>&gt;<i> scaled to that level anyway, those six pixels missing might grow to about
+</I>&gt;<i> 8. This sux :)  408 pixels and not 416 displayed as I had always thought.
+</I>&gt;<i> It could perhaps be sensible to limit Hataris window to 408 pixels if that
+</I>&gt;<i> really is all a real machine can see.
+</I>
+Thanks very much for this ; this in fact confirms what I observed with the 
+video you took of my test program, where I saw an 8 pixels shift 
+(something similar to the hi/lo switch technique that can be used on STF 
+to do 4 pixels horizontal scrolling).
+I will try to mix all this to improve Hatari's rendering.
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001088.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+	<LI>Next message: <A HREF="001107.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1089">[ date ]</a>
+              <a href="thread.html#1089">[ thread ]</a>
+              <a href="subject.html#1089">[ subject ]</a>
+              <a href="author.html#1089">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

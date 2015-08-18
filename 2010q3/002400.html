@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New FileSelector
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20FileSelector&In-Reply-To=%3Calpine.LMD.2.00.1009102241450.16890%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002399.html">
+   <LINK REL="Next"  HREF="002401.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New FileSelector</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20FileSelector&In-Reply-To=%3Calpine.LMD.2.00.1009102241450.16890%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] New FileSelector">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Sep 10 22:47:31 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002399.html">[hatari-devel] New FileSelector
+</A></li>
+        <LI>Next message: <A HREF="002401.html">[hatari-devel] New FileSelector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2400">[ date ]</a>
+              <a href="thread.html#2400">[ thread ]</a>
+              <a href="subject.html#2400">[ subject ]</a>
+              <a href="author.html#2400">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 10 Sep 2010, Laurent Sallafranque wrote:
+
+&gt;&gt;<i> More generally, changing the UI can be nice to propose some new ways to 
+</I>&gt;<i> work, but I
+</I>&gt;&gt;<i> think it would be best in that case to provide some code than can be turned 
+</I>&gt;<i> on/off using
+</I>&gt;&gt;<i> a &quot;define&quot;.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Yes, I agree here, but I had to change code here and there in many places, 
+</I>&gt;<i> and it would have been hard to put #defines everywhere.
+</I>&gt;<i>
+</I>&gt;<i> I'll have a look at the key repeat and I'll finish to add the mouse 
+</I>&gt;<i> scrolling.
+</I>&gt;<i> OK for keeping the old button.
+</I>&gt;<i>
+</I>&gt;<i> For the UI, I have plenties of ideas, but the actual UI is usable like this 
+</I>&gt;<i> (it wouls be more cosmetic changes).
+</I>&gt;<i> But I found the fileSelector was too poor to be useable like this.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>
+In case you have more ideas you'd like to commit for others to do some 
+tests, I think one way to do it could be to create a &quot;gui-sdl-new&quot; 
+directory for example and duplicate all code + changes in it.
+
+This would limit the number of #ifdef in others parts of the code and 
+would just need a few changes to cmakefile to choose which sdl gui to 
+compile.
+
+(another way could be to create a new branch in mercurial, but it could be 
+a little more complicated to have actives branches in the repository)
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002399.html">[hatari-devel] New FileSelector
+</A></li>
+	<LI>Next message: <A HREF="002401.html">[hatari-devel] New FileSelector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2400">[ date ]</a>
+              <a href="thread.html#2400">[ thread ]</a>
+              <a href="subject.html#2400">[ subject ]</a>
+              <a href="author.html#2400">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

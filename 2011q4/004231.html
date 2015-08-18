@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] behaviour when RS232 is not emulated
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20behaviour%20when%20RS232%20is%20not%20emulated&In-Reply-To=%3C4EDC049A.9090703%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004230.html">
+   <LINK REL="Next"  HREF="004232.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] behaviour when RS232 is not emulated</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20behaviour%20when%20RS232%20is%20not%20emulated&In-Reply-To=%3C4EDC049A.9090703%40corp.free.fr%3E"
+       TITLE="[hatari-devel] behaviour when RS232 is not emulated">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Dec  5 00:39:06 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004230.html">[hatari-devel] Developer access to the new hg repository
+</A></li>
+        <LI>Next message: <A HREF="004232.html">[hatari-devel] Something missing in tuxfamily
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4231">[ date ]</a>
+              <a href="thread.html#4231">[ thread ]</a>
+              <a href="subject.html#4231">[ subject ]</a>
+              <a href="author.html#4231">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello
+
+some games ('Treasure Trap' and 'The Deep' for example) are writing 
+messages or debug informations to the rs232 port. Those are not required 
+to play the game, but the program will loop until it can successfully 
+send the bytes.
+
+It's not obvious for users to know that settings should be changed to 
+enable RS232, especially since it has no real purpose (and this kind of 
+option can confuse the user).
+
+So, it would not be a problem if bytes written to $fffa2d were lost 
+(RS232_TransferBytesTo() already handle this), but the problem is when 
+reading the status in $fffa2d.
+
+for example, this is the code in &quot;The Deep&quot; :
+
+000033e2:  MOVE.B $00fffa2d,D0
+000033e8:  AND.B #$80,D0
+000033ec:  BEQ.B #$fffffff4 == 000033e2 (TRUE)
+000033ee:  MOVE.B (A7,$0001) == $00003b8f,$00fffa2f
+
+So, unless bit 7 in $fffa2d is set to 1 (buffer empty), this will loop 
+forever.
+
+In the case where rs232 is not enabled, we do :
+
+void RS232_TSR_ReadByte(void)
+{
+         if (ConfigureParams.RS232.bEnableRS232)
+                 IoMem[0xfffa2d] |= 0x80;        /* Buffer empty */
+         else
+                 IoMem[0xfffa2d] &amp;= ~0x80;       /* Buffer not empty */
+}
+
+I think it would be better do always &quot;|= 0x80&quot; to report an empty buffer 
+(which is more or less the case when rs232 is disabled).
+
+This way, programs will consider bytes are always sent and games that 
+don't require send/receive capabilities will still work without enabling 
+rs232.
+
+
+As I didn't write this part, does someone have any objection on this, 
+any side effect I don't know ?
+
+Regards
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004230.html">[hatari-devel] Developer access to the new hg repository
+</A></li>
+	<LI>Next message: <A HREF="004232.html">[hatari-devel] Something missing in tuxfamily
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4231">[ date ]</a>
+              <a href="thread.html#4231">[ thread ]</a>
+              <a href="subject.html#4231">[ subject ]</a>
+              <a href="author.html#4231">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Command completion added to debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Command%20completion%20added%20to%20debugger&In-Reply-To=%3C200909132131.41688.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000680.html">
+   <LINK REL="Next"  HREF="000684.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Command completion added to debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Command%20completion%20added%20to%20debugger&In-Reply-To=%3C200909132131.41688.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Command completion added to debugger">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Sep 13 20:31:41 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000680.html">[hatari-devel] Command completion added to debugger
+</A></li>
+        <LI>Next message: <A HREF="000684.html">[hatari-devel] Command completion added to debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#683">[ date ]</a>
+              <a href="thread.html#683">[ thread ]</a>
+              <a href="subject.html#683">[ subject ]</a>
+              <a href="author.html#683">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>HI,
+
+On Friday 11 September 2009, Thomas Huth wrote:
+&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;<i> &gt; Btw. As debugger will at some point get IKBD debugging support, maybe
+</I>&gt;<i> &gt; it would make sense to split the debugger code up a bit?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I was thinking that I could (next week) move stuff to a &quot;debugger/&quot;
+</I>&gt;<i> &gt; subdirectory where would eventually be following files:
+</I>&gt;<i> &gt; 	breakcond.c
+</I>&gt;<i> &gt; 	debugcpu.c
+</I>&gt;<i> &gt; 	debugdsp.c
+</I>&gt;<i> &gt; 	debugikbd.c
+</I>&gt;<i> &gt; 	debugui.c  -- just the parsing
+</I>&gt;<i>
+</I>&gt;<i> Do you just want to split up debugui.c, or do you also want to move the
+</I>&gt;<i> code from falcon/dps_disasm.c and uae/newcpu.c? I wouldn't do the
+</I>&gt;<i> latter since this code comes from external projects, so it's easier to
+</I>&gt;<i> sync changes when you don't change it too much.
+</I>
+This meant the Hatari specific code in dsp.c which is not shared with
+anything.  (register value printing etc which for m68k is currently in
+debugui.c)
+
+
+
+&gt;<i> Also, I would call that directory just &quot;debug&quot; instead of &quot;debugger&quot;,
+</I>&gt;<i> then would could consider to move log.c there, too.
+</I>
+Good idea, I'll do that.
+
+
+Btw.  It was a bit more work than I though because some things were directly
+referring to some things.  For example uae-cpu/* stuff refers directly to
+includes/*.h headers although uae-cpu/Makefile uses &quot;-I../includes&quot;:
+---------
+$ grep includes */*.h
+uae-cpu/hatari-glue.h:#include &quot;../includes/cycles.h&quot;
+$ grep includes */*.c
+uae-cpu/hatari-glue.c:#include &quot;../includes/main.h&quot;
+uae-cpu/hatari-glue.c:#include &quot;../includes/configuration.h&quot;
+uae-cpu/hatari-glue.c:#include &quot;../includes/int.h&quot;
+uae-cpu/hatari-glue.c:#include &quot;../includes/tos.h&quot;
+uae-cpu/hatari-glue.c:#include &quot;../includes/gemdos.h&quot;
+uae-cpu/hatari-glue.c:#include &quot;../includes/cart.h&quot;
+uae-cpu/hatari-glue.c:#include &quot;../includes/vdi.h&quot;
+uae-cpu/hatari-glue.c:#include &quot;../includes/stMemory.h&quot;
+uae-cpu/hatari-glue.c:#include &quot;../includes/ikbd.h&quot;
+uae-cpu/hatari-glue.c:#include &quot;../includes/video.h&quot;
+uae-cpu/memory.c:#include &quot;../includes/main.h&quot;
+uae-cpu/memory.c:#include &quot;../includes/tos.h&quot;
+uae-cpu/memory.c:#include &quot;../includes/ide.h&quot;
+uae-cpu/memory.c:#include &quot;../includes/ioMem.h&quot;
+uae-cpu/memory.c:#include &quot;../includes/reset.h&quot;
+uae-cpu/memory.c:#include &quot;../includes/stMemory.h&quot;
+uae-cpu/memory.c:#include &quot;../includes/m68000.h&quot;
+uae-cpu/newcpu.c:#include &quot;../includes/main.h&quot;
+uae-cpu/newcpu.c:#include &quot;../includes/m68000.h&quot;
+uae-cpu/newcpu.c:#include &quot;../includes/int.h&quot;
+uae-cpu/newcpu.c:#include &quot;../includes/mfp.h&quot;
+uae-cpu/newcpu.c:#include &quot;../includes/tos.h&quot;
+uae-cpu/newcpu.c:#include &quot;../includes/vdi.h&quot;
+uae-cpu/newcpu.c:#include &quot;../includes/cart.h&quot;
+uae-cpu/newcpu.c:#include &quot;../includes/dialog.h&quot;
+uae-cpu/newcpu.c:#include &quot;../includes/bios.h&quot;
+uae-cpu/newcpu.c:#include &quot;../includes/xbios.h&quot;
+uae-cpu/newcpu.c:#include &quot;../includes/video.h&quot;
+uae-cpu/newcpu.c:#include &quot;../includes/options.h&quot;
+------------
+
+Maybe &quot;../includes/&quot; prefix could be removed from these?
+
+
+&gt;<i> &gt; I'll add also a separate &quot;t&quot; / &quot;trace&quot; command for setting tracing
+</I>&gt;<i> &gt; flags (it will make it easier to implement showing/completion for
+</I>&gt;<i> &gt; trace flags).
+</I>&gt;<i>
+</I>&gt;<i> That's a good idea, always typing &quot;setopt --trace ...&quot; is quite
+</I>&gt;<i> annoying.
+</I>&gt;<i>
+</I>&gt;<i> &gt; I could maybe also move:
+</I>&gt;<i> &gt; * test stuff from breakcond.c to top level tests/ dir.
+</I>&gt;<i>
+</I>&gt;<i> Fine for me.
+</I>&gt;<i>
+</I>&gt;<i> &gt; * number base and range parsing from str.c back to debugui.c as that
+</I>&gt;<i> &gt; is only used in the debugger.
+</I>&gt;<i>
+</I>&gt;<i> I don't think that they will be used for something else, so you could
+</I>&gt;<i> move them back to the debugger, yes.
+</I>
+Ok, great!
+
+
+&gt;<i> &gt; * some of the stuff from falcon/dsp.c to debugger/debugdsp.c if I at
+</I>&gt;<i> &gt; some point add support for completing DSP register names (more of
+</I>&gt;<i> &gt;   a newbie &quot;TAB&quot; help command than really useful).
+</I>&gt;<i>
+</I>&gt;<i> Register names are three letters max ... is it really useful to have
+</I>&gt;<i> tab completion for that?
+</I>
+Not that much, I'll skip it.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000680.html">[hatari-devel] Command completion added to debugger
+</A></li>
+	<LI>Next message: <A HREF="000684.html">[hatari-devel] Command completion added to debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#683">[ date ]</a>
+              <a href="thread.html#683">[ thread ]</a>
+              <a href="subject.html#683">[ subject ]</a>
+              <a href="author.html#683">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

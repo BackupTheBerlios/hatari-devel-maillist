@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] start and break question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20start%20and%20break%20question&In-Reply-To=%3C201106060021.18115.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003531.html">
+   <LINK REL="Next"  HREF="003535.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] start and break question</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20start%20and%20break%20question&In-Reply-To=%3C201106060021.18115.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] start and break question">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jun  5 23:21:18 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003531.html">[hatari-devel] start and break question
+</A></li>
+        <LI>Next message: <A HREF="003535.html">[hatari-devel] start and break question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3532">[ date ]</a>
+              <a href="thread.html#3532">[ thread ]</a>
+              <a href="subject.html#3532">[ subject ]</a>
+              <a href="author.html#3532">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 05 kes&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 05/06/2011 16:37, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;<i> Would it be esay to add an option that would let me lauch a program and
+</I>&gt;&gt;<i> break at the first instruction ?
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> I think something like &quot;SB (start and break)&quot;.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> On the desktop, I launch a program by double clicking on it's icon,
+</I>&gt;&gt;<i> then it loads, then the debugger breaks at the first instruction.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> It would then be easy to add breakpoints, trace the source without all
+</I>&gt;&gt;<i> the &quot;loading garbage instructions, ...&quot;
+</I>&gt;&gt;<i> 
+</I>&gt;<i> It's not necessarily easy, I'm not sure there's a TOS function that is
+</I>&gt;<i> called just before jumping at the start of the program.
+</I>
+I traced TOS 1.04 GEMDOS calls on program startup:
+GEMDOS Pexec(0, ...)
+GEMDOS call 0x2F (Fgetdta)
+GEMDOS Fsfirst(&quot;C:\HEXT837.PRG&quot;, 0x17)
+GEMDOS: C:\HEXT837.PRG -&gt; host: /home/eero/down/st/hextracker/hext837.prg
+GEMDOS Fsnext()
+GEMDOS Pexec(5, ...)
+GEMDOS Fopen(&quot;C:\HEXT837.PRG&quot;, 0x0)
+GEMDOS: C:\HEXT837.PRG -&gt; host: /home/eero/down/st/hextracker/hext837.prg
+-&gt; FD 0 (read-only)
+GEMDOS Fread(64, 28, 0x125dc)
+GEMDOS Fread(64, 2147483647, 0x125f8)
+GEMDOS Fclose(64)
+GEMDOS call 0x30 (Sversion)
+GEMDOS call 0x4A (Mshrink)
+
+From this you can see that no clicking the program, TOS will call Pexec(0,)
+to load and run the program.  That will in its turn:
+- check the program existence
+- get largest available memory page and set basepage on
+  beginning of that with Pexec(5,)
+- open the program binary, load it to memory and close the file
+- set up the basepage and call the program
+
+It seems that at least on TOS 1.04, the text segment address is set between
+Sversion() and Mshrink() GEMDOS calls.
+
+If I set a PC address breakpoint to the text segment start after Mshrink(),
+it's not hit, so I think it's the program's own initialization code that's
+shrinking program's memory block to what it actually needs.
+
+
+I think catching the first program instruction would need a new virtual
+debugger variable that tracks the OS program basepage and the text segment
+address in that.  It would be then possible to set a breakpoint on it and
+its changes.
+
+How does that sound and how should I name that variable?
+
+(It would be also a very handly point to load the program debug symbols
+with correct RAM offset to the Hatari debugger, for programs that don't
+load themselves to a fixed address.)
+
+
+&gt;<i> But another way to do this is to run your program from MonST. Monst will
+</I>&gt;<i> load the .prg but it will not run it. At this point you will know
+</I>&gt;<i> where's the program's start and you can enter debuger, add breakpoint,
+</I>&gt;<i> go back to emulation and run the program from Monst.
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003531.html">[hatari-devel] start and break question
+</A></li>
+	<LI>Next message: <A HREF="003535.html">[hatari-devel] start and break question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3532">[ date ]</a>
+              <a href="thread.html#3532">[ thread ]</a>
+              <a href="subject.html#3532">[ subject ]</a>
+              <a href="author.html#3532">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari patches for bitplane conversion
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3Calpine.LMD.2.00.0907251051550.27505%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000514.html">
+   <LINK REL="Next"  HREF="000518.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari patches for bitplane conversion</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3Calpine.LMD.2.00.0907251051550.27505%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Hatari patches for bitplane conversion">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Jul 25 11:01:23 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000514.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+        <LI>Next message: <A HREF="000518.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#517">[ date ]</a>
+              <a href="thread.html#517">[ thread ]</a>
+              <a href="subject.html#517">[ subject ]</a>
+              <a href="author.html#517">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 25 Jul 2009, K&#229;re Andersen wrote:
+
+&gt;<i> Here we go :)
+</I>&gt;<i>
+</I>&gt;<i> I put the 32-bit converters into one file + header- shifter.c /
+</I>&gt;<i> shifter.h - made some inline functions (kicks in at -O3 atleast) in an
+</I>&gt;<i> attempt to refactor a bit and make it maintainable, and I did some
+</I>&gt;<i> testing.
+</I>&gt;<i>
+</I>&gt;<i> So far so good! Not able to find bad cases yet. Please review.
+</I>&gt;<i>
+</I>&gt;<i> Proper patches due soon - but the 16-bit converters and spec512 stuff
+</I>&gt;<i> will be implemented first.
+</I>&gt;<i>
+</I>&gt;<i> Also enclosed is a little screenshot of monochrome fullscreen updates
+</I>&gt;<i> with official Hatari 1.2.0 from Debian (ubuntu) compared to the new
+</I>&gt;<i> one....
+</I>&gt;<i>
+</I>&gt;<i> Have a great day!
+</I>&gt;<i>
+</I>&gt;<i> /K&#229;re
+</I>&gt;<i>
+</I>
+
+Thanks for your work ; have you considered writing a spec512 mode for med 
+res ? Although not often used in demos, it's currently missing for eg Best 
+Part of the Creation in Punish Your Machine or Highres demo by Paradox. If 
+you get some some time for this, I will vote for your code :)
+
+Also from a first read, your code doesn't look more complicated to 
+read/maintain than the current one, which is nice (but the examples you 
+sent are not handling spec512 mode, so this could add some complexity)
+
+About the naming, I don't think shifter.[ch] is an appropriate name ; in 
+fact, I think that it would be misleading regarding the other file names 
+used as it would look like being related to hardware reg in $ff82xx (what 
+video.c is doing now). Perhaps something like screenconvert.c ? But that's 
+just a detail :)
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000514.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+	<LI>Next message: <A HREF="000518.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#517">[ date ]</a>
+              <a href="thread.html#517">[ thread ]</a>
+              <a href="subject.html#517">[ subject ]</a>
+              <a href="author.html#517">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Ym / Dma mixing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3CPine.LNX.4.64.0902062240020.12785%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000118.html">
+   <LINK REL="Next"  HREF="000120.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Ym / Dma mixing</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3CPine.LNX.4.64.0902062240020.12785%40localhost%3E"
+       TITLE="[hatari-devel] Ym / Dma mixing">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Feb  6 23:35:57 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000118.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+        <LI>Next message: <A HREF="000120.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#119">[ date ]</a>
+              <a href="thread.html#119">[ thread ]</a>
+              <a href="subject.html#119">[ subject ]</a>
+              <a href="author.html#119">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 6 Feb 2009, Jean-Baptiste Berlioz wrote:
+
+&gt;<i> 1615.patch :
+</I>&gt;<i> previous mail
+</I>&gt;<i>
+</I>&gt;<i> 1616.patch :
+</I>&gt;<i> Fix wav and ym recording.
+</I>&gt;<i> Move recording related procedures to audio.c
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Jean-Baptiste Berlioz wrote:
+</I>&gt;&gt;<i> Hello,
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Here is a patch that affects sound emulation and mixing.
+</I>&gt;&gt;<i> This is work in progress, it needs some cleanup, fixes and improvements.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> I'm sending it for reviews, suggestions, tests and complete rejection :)
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> This is a quite large path sorry.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Commit message:
+</I>&gt;&gt;<i> &quot;&quot;&quot;
+</I>&gt;&gt;<i> Change the sound generation and mixing procedures.
+</I>&gt;&gt;<i> + Ym and Dma emulation are no longer dependant.
+</I>&gt;&gt;<i> + Samples are generated on demand when the SDL audio callback is triggered.
+</I>&gt;&gt;<i> + Mixing occurs in the SDL audio callback.
+</I>&gt;&gt;<i> + No more desync between SDL buffer and mixing buffer (no more mixing 
+</I>&gt;&gt;<i> buffer btw)
+</I>&gt;&gt;<i> + The SDL audio buffer size is frequency dependant (and small).
+</I>&gt;&gt;<i> + Dma samples are generated via linear interpolation (still not the best 
+</I>&gt;&gt;<i> method).
+</I>&gt;&gt;<i> + Sound is paused when exit confirmation is displayed.
+</I>&gt;&gt;<i> + Added some 4 pole filters (configurable).
+</I>&gt;&gt;<i> - Sound recording is broken (i'll fix it asap).
+</I>&gt;&gt;<i> - Ym register history can overflow.
+</I>&gt;&gt;<i> &quot;&quot;&quot;
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Note the two last lines :)
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> One of the most important change is the way samples are generated in the Ym 
+</I>&gt;&gt;<i> emulation:
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> - Now, when a ym register is written, the affected sample number is 
+</I>&gt;&gt;<i> computed and the change is stored in a list.
+</I>&gt;&gt;<i> When the SDL audio callback needs samples, it calls the ym emulation, and 
+</I>&gt;&gt;<i> the ym emulation replay the history and generate the samples.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> - The Dma sound generation is done the same way. The SDL audio callback ask 
+</I>&gt;&gt;<i> some samples to the Dma emulation (but there's no history).
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> This way, the ym and dma emulation are two independent things.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> The mixing is done in the SDL audio callback, and everything related to 
+</I>&gt;&gt;<i> mixing was moved in audio.c (sound.c is for ym things only and dmasnd.c is 
+</I>&gt;&gt;<i> for dma things only).
+</I>
+Hello,
+
+thanks for the patch ; I gave it a look, and have a few points :
+
+  - many parts of the mixing routines for dma sound are using float and 
+other math functions (ceilf, ...). I think this is a little overkill to 
+use float for every sample to compute its resampled version (perhaps 
+libsamplerate could do this optionnaly).
+
+But in the normal case, we can assume 44.1 kHz for the replay freq and 50 
+kHz for dma sound ; I think we can use some normal integer register to 
+compute a resampling step and using '&lt;&lt; 16' for example to simulate 16 
+bits of floating point (similar to the function used in sound.c to compute 
+envelope step for example). 50/40 is 1.25, so even at high dma rate the 
+integer part won't exceed 2 (or 6.25 when using 8kHz replay). This mean 
+that we can even use '&lt;&lt; 24' to simulate 24 bits of floating point 
+precision, which will certainly match the result you get with floats.
+
+If we consider embeded/non desktop PC as Hatari's targets too, trying to 
+avoid float should help maintaining performance.
+
+
+  - I don't see the need for the registers history ; this looks like an 
+unnecessary overhead to me. Sure, we save a buffer of (44100/50)=882 
+samples, but this just means 1764 bytes at the expense of a little slower 
+code (not that much I think), but a very much complex code.
+
+As dma samples are &quot;discrete&quot; bytes, I agree that it can make sense to 
+resample the dma sound on the fly depending on the replay freq.
+
+But for the YM part, I think it's more maintainable/slighlty faster to 
+&quot;loose&quot; 1.8 KB of ram and just have the ym part provides a buffer that is 
+already resampled at the correct replay freq (and anyway, the 1.8 KB you 
+can save this way is compensated by the history arrays used to store 
+data, 3*4KB, so at the end this method also uses more ram).
+
+When rewriting the ym sound emulation, I evaluated the idea of storing all 
+ym accesses and generate one frame of sound by replaying the history 
+(which is how sc68 is working too btw), but in the end, I think it adds 
+complexity and requires more ram for no gain in accuracy or sound quality.
+
+So, my &quot;vote&quot; would be to keep ym emulation simple by not adding this 
+cumulative way of storing registers to replay the whole history at the 
+end.
+
+The mixing routine would just be slightly changed from :
+
+                ymSample = Sound_NextSample();
+                DmaSnd_NextSamples(&amp;dmaLeft, &amp;dmaRight);
+
+to sthg like :
+
+                ymSample = ymbuf[ index++ ];
+                DmaSnd_NextSamples(&amp;dmaLeft, &amp;dmaRight);
+
+where ymbuf is one &quot;vbl&quot; of ymsample as generated in the current Hatari 
+version.
+
+
+  - This makes sense to mix buffer in the callback. I never experienced 
+sound replay problem (cpu powerful enough), but could this method have 
+side effects for people using older hardware (Pentium 3) or embeded 
+devices ? These less powerful machines are quite sensitive sometimes :)
+
+
+&gt;&gt;<i> 
+</I>&gt;&gt;<i> Now i need to fix sound recording (storing the mixed samples in a buffer), 
+</I>&gt;&gt;<i> and i need to test and improve the ym registers history, when a software is 
+</I>&gt;&gt;<i> abusing the ym registers, it might overflow the history.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> The next steps are:
+</I>&gt;&gt;<i> - fix sound recording (quite easy)
+</I>
+Why do you use RecordSoundRegs in Sound_WriteReg
+
+        RecordSoundRegs[reg] = data &amp; SoundRegsMask[reg];
+
+and not directly SoundRegs (which is already masked).
+
+Not a lot of bytes, but why using another copy of SoundRegs instead of 
+referencing it directly in the record functions as today ?
+
+
+&gt;&gt;<i> - handle history overflow (need to write a test program)
+</I>
+Although I appreciate the work, this is where I think the history method 
+is not needed. The extra complexity needs some testing scenario to be sure 
+no sound regression won't happen. Writing the current &quot;direct&quot; way of 
+mixing already took a lot of time to check sound was as precise as 
+possible, so changing it again doesn't sound a good idea to me (and this 
+won't improve sound quality, at best the quality will just be the same 
+as today with the history method).
+
+
+&gt;&gt;<i> - improve the dma resampling and filtering (not too hard)
+</I>&gt;&gt;<i> - implement LMC sound filters (the good things for the end, always)
+</I>
+sc68 has some starting point for this if I recall, unless there's some 
+proper docs somewhere detailing the filters applied ?
+
+&gt;&gt;<i> 
+</I>&gt;&gt;<i> The patch has been exported by 'hg export' and can be imported by 'hg 
+</I>&gt;&gt;<i> import'.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i> JB
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> PS: about 'improve the dma resampling', maybe *optionally* with a configure 
+</I>&gt;&gt;<i> flag we could use libsamplerate ?
+</I>
+I don't know ; does it really improve sound a lot at 44.1 kHz ? I'm not 
+sure the real problem to get a sound really close to dma is resampling, 
+but more in the modeling of filters that match the original 1 kohm 
+resistance between the sound chip and the left/right output for instance.
+
+Thomas's policy was to keep dependancies at the minimum to allow 
+compilation on as much system (including the &quot;broken&quot; ones), but perhaps 
+that if the code is made optional with configure this could be used (but 
+once again, I'm not sure that libresample would give huge difference when 
+resampling 50 Khz to a close 44.1 output freq, the ratio is too close to 1 
+to have some really audible aliasing artefacts I think).
+
+
+Thanks for you work :)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000118.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+	<LI>Next message: <A HREF="000120.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#119">[ date ]</a>
+              <a href="thread.html#119">[ thread ]</a>
+              <a href="subject.html#119">[ subject ]</a>
+              <a href="author.html#119">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

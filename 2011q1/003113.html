@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] 68030 Debug mode and new CPU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068030%20Debug%20mode%20and%20new%20CPU&In-Reply-To=%3C4D64D5EC.8070904%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003112.html">
+   <LINK REL="Next"  HREF="003049.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] 68030 Debug mode and new CPU</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068030%20Debug%20mode%20and%20new%20CPU&In-Reply-To=%3C4D64D5EC.8070904%40free.fr%3E"
+       TITLE="[hatari-devel] 68030 Debug mode and new CPU">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Feb 23 10:39:56 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003112.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+        <LI>Next message: <A HREF="003049.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3113">[ date ]</a>
+              <a href="thread.html#3113">[ thread ]</a>
+              <a href="subject.html#3113">[ subject ]</a>
+              <a href="author.html#3113">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've uploaded the patch. No more warning for likely and unlikely.
+Finally, I've made the change in only 4 files.
+So, I've included &quot;main.h&quot; in .c files instead of cpummu.h
+
+Regards
+
+Laurent
+
+
+
+Le 22/02/2011 22:45, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On tiistai 22 helmikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i> Because cpummu.h needs to include &quot;main.h&quot;, should I include it only
+</I>&gt;&gt;<i> there and make an exception to the rule ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've tried to include &quot;main.h&quot; only in xxx_files.c, but it's needed in
+</I>&gt;&gt;<i> cpummu.h
+</I>&gt;<i> This means that you need to include &quot;main.h&quot; before &quot;cpummu.h&quot;.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> I'm waiting your advice before committing.
+</I>&gt;<i> But several other include files already include main.h, so I guess it's
+</I>&gt;<i> OK to include in other headers too:
+</I>&gt;<i> $ grep main.h */*.h
+</I>&gt;<i> includes/control.h:#include &quot;main.h&quot;
+</I>&gt;<i> includes/ioMem.h:# include &quot;main.h&quot;
+</I>&gt;<i> includes/main.h:  Hatari - main.h
+</I>&gt;<i> includes/statusbar.h:#include &quot;main.h&quot;
+</I>&gt;<i> includes/stMemory.h:#include &quot;main.h&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003112.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+	<LI>Next message: <A HREF="003049.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3113">[ date ]</a>
+              <a href="thread.html#3113">[ thread ]</a>
+              <a href="subject.html#3113">[ subject ]</a>
+              <a href="author.html#3113">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

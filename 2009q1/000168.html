@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari and 8-bit screen
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20and%208-bit%20screen&In-Reply-To=%3C20090217002732.7bea50f6%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000162.html">
+   <LINK REL="Next"  HREF="000165.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari and 8-bit screen</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20and%208-bit%20screen&In-Reply-To=%3C20090217002732.7bea50f6%40phineus%3E"
+       TITLE="[hatari-devel] Hatari and 8-bit screen">th.huth at gmx.de
+       </A><BR>
+    <I>Tue Feb 17 00:27:32 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000162.html">[hatari-devel] Hatari and 8-bit screen
+</A></li>
+        <LI>Next message: <A HREF="000165.html">[hatari-devel] MacOsX GUI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#168">[ date ]</a>
+              <a href="thread.html#168">[ thread ]</a>
+              <a href="subject.html#168">[ subject ]</a>
+              <a href="author.html#168">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 15 Feb 2009 22:40:59 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> On Friday 13 February 2009, Jerome Vernet wrote:
+</I>&gt;<i> &gt; &gt; While testing new DSP code with couple of programs, I noticed a
+</I>&gt;<i> &gt; &gt; problem that happens only with Falcon/TT mode...  If program sets
+</I>&gt;<i> &gt; &gt; 8-bit mode, all colors to same value and freezes, what user is to
+</I>&gt;<i> &gt; &gt; do?  He doesn't see the options dialog or quit confirmation
+</I>&gt;<i> &gt; &gt; dialog (white on white...). It just seems like Hatari itself had
+</I>&gt;<i> &gt; &gt; frozen.  I had to use Gdb to notice that Hatari actually hadn't
+</I>&gt;<i> &gt; &gt; frozen.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Maybe Hatari in 8-bit mode should save &amp; set palette when entering
+</I>&gt;<i> &gt; &gt; options or other dialogs and restore the palette when leaving
+</I>&gt;<i> &gt; &gt; them?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The same way, I noticed that the Status bar sometime change, when
+</I>&gt;<i> &gt; the palette change. It's happen, I don't know why, with the Cecile
+</I>&gt;<i> &gt; driver with MagiC.
+</I>&gt;<i> 
+</I>&gt;<i> This is because 8-bit mode has palette and Statusbar needs to use
+</I>&gt;<i> colors. It can easily happen that an emulated (Falcon) program
+</I>&gt;<i> changes a palette entry used by Statusbar.
+</I>&gt;<i> 
+</I>&gt;<i> An alternative would be on each frame to re-find a suitable color and
+</I>&gt;<i> redraw the whole statusbar, but as this is a problem only on 8-bit
+</I>&gt;<i> mode, I didn't think it worth slowing down the screen updates.
+</I>
+Right. Since hardly anybody still uses 8-bit resolutions nowadays, I
+don't think it's worth the effort to add a lot of magic code for this
+color depth. We should rather focus on getting the 16 and 24/32 bit
+color depth rendering functions working here. This will also improve
+the speed of the Falcon mode a little bit since the SDL does not have
+to convert the screen from 8 bit mode to the native color depth
+anymore...
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000162.html">[hatari-devel] Hatari and 8-bit screen
+</A></li>
+	<LI>Next message: <A HREF="000165.html">[hatari-devel] MacOsX GUI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#168">[ date ]</a>
+              <a href="thread.html#168">[ thread ]</a>
+              <a href="subject.html#168">[ subject ]</a>
+              <a href="author.html#168">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

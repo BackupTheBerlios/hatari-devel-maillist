@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] some videl emulation news
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20some%20videl%20emulation%20news&In-Reply-To=%3C4DED4E08.4010208%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003549.html">
+   <LINK REL="Next"  HREF="003551.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] some videl emulation news</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20some%20videl%20emulation%20news&In-Reply-To=%3C4DED4E08.4010208%40free.fr%3E"
+       TITLE="[hatari-devel] some videl emulation news">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Jun  7 00:00:40 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003549.html">[hatari-devel] some videl emulation news
+</A></li>
+        <LI>Next message: <A HREF="003551.html">[hatari-devel] some videl emulation news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3553">[ date ]</a>
+              <a href="thread.html#3553">[ thread ]</a>
+              <a href="subject.html#3553">[ subject ]</a>
+              <a href="author.html#3553">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Mikro,
+
+ &gt; No need to be pessimistic. Patrice, me, Anders and possibly some 
+others many times had helped with exactly this -- to test some behavior, 
+check some registers etc... So Falcon coders are still here, just ask 
+your question ;)
+
+That's true. I thank you all who help on Falcon.
+
+I have sometime &quot;strange&quot; questions :), but I'm not an expert of the 
+Falcon (neither the ST) like you are.
+(I understand general things about electronics, CPUs, ...), I've coded a 
+little under real atari (1 demo) and some things under Falcon (some 3d 
+mapping, ...).
+
+Your help is always welcome
+
+Laurent
+
+
+Le 06/06/2011 23:45, Miro Krop&#225;&#269;ek a &#233;crit :
+&gt;<i>
+</I>&gt;<i>     So even a program on a real Falcon that would expect the dsp&lt;-&gt;cpu
+</I>&gt;<i>     synchronisation to work without any sync control is likely to fail
+</I>&gt;<i>     (unless you take the cache behaviour into account, which is more
+</I>&gt;<i>     complicated when coding in asm).
+</I>&gt;<i>
+</I>&gt;<i> You are absolutely right here. It's true we don't have so variable HW 
+</I>&gt;<i> setups like in Amiga world (where acceleration boards were present by 
+</I>&gt;<i> &quot;default&quot;, i.e. nobody counted on plain a1200's speed) but having DSP 
+</I>&gt;<i> &lt;-&gt; 030 unsynchronized was considered as pure madness even in the most 
+</I>&gt;<i> hardcore Falcon demo times. Lack of dsp sync is present only in the 
+</I>&gt;<i> tightest inner-loops.
+</I>&gt;<i>
+</I>&gt;<i>     That's why I think that for most programs, even a bad number of
+</I>&gt;<i>     cycles should not create so many bugs. There may be 2 or 3 general
+</I>&gt;<i>     issues to fix, but I don't think so many things need to be corrected.
+</I>&gt;<i>
+</I>&gt;<i> Exactly.
+</I>&gt;<i>
+</I>&gt;<i>     I don't want to sound pessimistic, but unless someone can help
+</I>&gt;<i>     with some real Falcon coding experiment in video/dsp fields and
+</I>&gt;<i>     provide some very simple test programs to show some non working
+</I>&gt;<i>     aspects in Hatari, then I think it will be very difficult to
+</I>&gt;<i>     improve Falcon's emulation.
+</I>&gt;<i>
+</I>&gt;<i>     So, any experiment Falcon coder (not me !) should raise his hand :)
+</I>&gt;<i>
+</I>&gt;<i> No need to be pessimistic. Patrice, me, Anders and possibly some 
+</I>&gt;<i> others many times had helped with exactly this -- to test some 
+</I>&gt;<i> behavior, check some registers etc... So Falcon coders are still here, 
+</I>&gt;<i> just ask your question ;)
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> MiKRO / Mystic Bytes
+</I>&gt;<i> <A HREF="http://mikro.atari.org">http://mikro.atari.org</A>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110607/00600319/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110607/00600319/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003549.html">[hatari-devel] some videl emulation news
+</A></li>
+	<LI>Next message: <A HREF="003551.html">[hatari-devel] some videl emulation news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3553">[ date ]</a>
+              <a href="thread.html#3553">[ thread ]</a>
+              <a href="subject.html#3553">[ subject ]</a>
+              <a href="author.html#3553">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

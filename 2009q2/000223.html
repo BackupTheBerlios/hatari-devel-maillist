@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] IDE in ST/STE mode?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20in%20ST/STE%20mode%3F&In-Reply-To=%3C20090401074536.074bd810%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000224.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] IDE in ST/STE mode?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20in%20ST/STE%20mode%3F&In-Reply-To=%3C20090401074536.074bd810%40phineus%3E"
+       TITLE="[hatari-devel] IDE in ST/STE mode?">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Apr  1 07:45:36 CEST 2009</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000224.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#223">[ date ]</a>
+              <a href="thread.html#223">[ thread ]</a>
+              <a href="subject.html#223">[ subject ]</a>
+              <a href="author.html#223">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 31 Mar 2009 21:45:24 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> On Tuesday 31 March 2009, Kenneth Kaufman wrote:
+</I>&gt;<i> &gt; I've managed to get the IDE drive support to allow the AHDI
+</I>&gt;<i> &gt; driver to recognise the IDE hard disk but i've not managed to
+</I>&gt;<i> &gt; figure out how the system gets the logical hard disk drive
+</I>&gt;<i> &gt; representation of the IDE or AHDI drive to show up? Is TOS handling
+</I>&gt;<i> &gt; this?
+</I>&gt;<i> 
+</I>&gt;<i> And HD driver I guess.
+</I>
+Right, the drive letters for IDE or ACSI drive are allocated from the
+emulated 68k code, whereas the drive letter for the GEMDOS HD is
+allocated from the emulator itself.
+
+&gt;<i> &gt; As far as I can figure so far, GEMDOS HDD is the only drive unit not
+</I>&gt;<i> &gt; managed directly by TOS.
+</I>&gt;<i> 
+</I>&gt;<i> Right.  IDE/ACSI drives are emulated at the HW level.  For GEMDOS
+</I>&gt;<i> drives, Hatari hooks into GEMDOS within the emulation.
+</I>
+Correct. And as you might think already, this is a potential conflict
+when two parties try to take care of similar things...
+
+&gt;<i> Thomas, if I give both IDE and GEMDOS drives + a floppy image with a
+</I>&gt;<i> HD driver, EmuTOS skips running the auto/-stuff from the floppy.  And
+</I>&gt;<i> running the driver manually after boot doesn't work either.  This is
+</I>&gt;<i> with Cecile.
+</I>&gt;<i> 
+</I>&gt;<i> If I use TOS 1.4, boot happens from a floppy, and IDE driver
+</I>&gt;<i> recognizes the hard disk, but only GEMDOS drive gets mounted by TOS.
+</I>&gt;<i> This is with HD driver.
+</I>
+I guess the problem is that both parties try to allocate drive C: and
+since GEMDOS HD emulation is done at a higher level, it disguises the
+IDE emulation.
+For the ACSI code, there's some magic in hdc.c which parses the
+partition table on the HD image (see HDC_GetInfo), so the GEMDOS
+drive letter can be mapped after the ACSI partitions. But this code
+does not exist for the IDE layer yet, so there is a conflict when using
+IDE and GEMDOS at the same time.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000224.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#223">[ date ]</a>
+              <a href="thread.html#223">[ thread ]</a>
+              <a href="subject.html#223">[ subject ]</a>
+              <a href="author.html#223">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

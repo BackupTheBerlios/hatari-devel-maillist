@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mouse movements limited in Hextracker
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20movements%20limited%20in%20Hextracker&In-Reply-To=%3C4E348341.20802%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003860.html">
+   <LINK REL="Next"  HREF="003864.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mouse movements limited in Hextracker</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20movements%20limited%20in%20Hextracker&In-Reply-To=%3C4E348341.20802%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Mouse movements limited in Hextracker">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jul 31 00:18:41 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003860.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+        <LI>Next message: <A HREF="003864.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3861">[ date ]</a>
+              <a href="thread.html#3861">[ thread ]</a>
+              <a href="subject.html#3861">[ subject ]</a>
+              <a href="author.html#3861">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 30/07/2011 22:41, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On lauantai 30 hein&#228;kuu 2011, David Savinkoff wrote:
+</I>&gt;&gt;&gt;<i> Can you try what Eero suggested : switch to fullscreen before starting
+</I>&gt;&gt;&gt;<i> hextracker, check mouse can move everywhere under fullscreen, then go
+</I>&gt;&gt;&gt;<i> back to window mode, lock mouse with atl+m and see if it works better
+</I>&gt;&gt;&gt;<i> .?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I didn't post before; because I thought someone who uses Hextracker
+</I>&gt;&gt;<i> would say something. The problem is a show-stopper in windowed mode.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Eero's suggestion works.
+</I>&gt;<i>
+</I>&gt;<i> Ok, so there's at least a workaround.
+</I>&gt;<i>
+</I>&gt;<i> Next step is verifying whether this is simply a Hextracker bug.
+</I>&gt;<i>
+</I>&gt;<i> With Hatari, in Hextracker the mouse moves _much_ slower in vertical
+</I>&gt;<i> direction than on med-rez GEM desktop.  Does that happen also on real ST?
+</I>&gt;<i>
+</I>&gt;<i> -&gt;  If yes, Hextracker doesn't scale mouse movements properly.
+</I>
+But even so, what causes the problem to appear for some people and not 
+others ? Is there a relation between the OS resolution and the mouse ?
+
+Even if hextracker doesn't scale correctly, why does it work in 
+fullscreen ? Is this because the screen X/Y ratio has a certain value ? 
+If so, can't we compensate delta X / delta Y in Hatari when we detect 
+the windowed resolution is not good ?
+
+Or is this something else ?
+
+
+&gt;<i>
+</I>&gt;&gt;<i> Note that alt-m is with the&lt;alt&gt;  key to the right of the spacebar.
+</I>&gt;<i>
+</I>&gt;<i> That key is AltGr, not Alt.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> How do you unlock the mouse if you accidentally lock it and don't know
+</I>&gt;&gt;<i> how to unlock it?
+</I>&gt;<i>
+</I>&gt;<i> Mouse grab is disabled while emulation is paused, so just press Pause to
+</I>&gt;<i> pause emulation or F12 for options.
+</I>&gt;<i>
+</I>&gt;<i> There are no other Hatari AltGr shortcuts near the M key in normal keyboard
+</I>&gt;<i> so it's unlikely that user accidentally presses this shortcut though.
+</I>
+Well, he can still press it without thinking about an Hatari shortcut, 
+just by mistake.
+But then, he can press F12 to quit from Hatari.
+
+It's hard to find a tradeoff when you grab all the keys/mouse event to 
+let the user exit this state.
+
+But maybe we could add an indicator in the status bar when mouse is 
+locked ? At least this would allow the user to know in which state 
+Hatari is.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003860.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+	<LI>Next message: <A HREF="003864.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3861">[ date ]</a>
+              <a href="thread.html#3861">[ thread ]</a>
+              <a href="subject.html#3861">[ subject ]</a>
+              <a href="author.html#3861">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

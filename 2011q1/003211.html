@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] FYI: new --desktop option
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C201103242321.56438.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003277.html">
+   <LINK REL="Next"  HREF="003216.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] FYI: new --desktop option</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C201103242321.56438.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] FYI: new --desktop option">oak at helsinkinet.fi
+       </A><BR>
+    <I>Thu Mar 24 22:21:56 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003277.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+        <LI>Next message: <A HREF="003216.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3211">[ date ]</a>
+              <a href="thread.html#3211">[ thread ]</a>
+              <a href="subject.html#3211">[ subject ]</a>
+              <a href="author.html#3211">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 23 maaliskuu 2011, Eero Tamminen wrote:
+&gt;<i> On keskiviikko 23 maaliskuu 2011, Christer Solskogen wrote:
+</I>&gt;<i> &gt; On Wed, Mar 23, 2011 at 11:03 AM, Anders Eriksson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>&gt; wrote:
+</I>&gt;<i> &gt; &gt; So I think this might not work on OS X right now.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I might have been to fast (again)
+</I>&gt;<i> &gt; --desktop only work with TOS 4.04. With 1.62 I got the same results as
+</I>&gt;<i> &gt; you.
+</I>&gt;<i> 
+</I>&gt;<i> As can be seen from the Hatari help heading under which this option is,
+</I>&gt;<i> it affects only Falcon/TT display.
+</I>&gt;<i> 
+</I>&gt;<i> This is because the Videl emulation code used for their screens supports
+</I>&gt;<i> arbitrary integer scaling factors, whereas the screen handling
+</I>&gt;<i> functionality for ST &amp; STE screens doesn't, it supports just
+</I>&gt;<i> doubling[1].
+</I>
+I.e. on very high DPI &amp; large monitors ST/STE screens would be postage stamp
+sized.  And because that code doesn't center the Atari screen, it would be
+in top left corner of the monitor.
+
+But if you nevertheless want to avoid resolution switch for ST/STE modes,
+the attached patch does that when you have the &quot;keep resolution&quot; option
+enabled.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: diff
+Type: text/x-patch
+Size: 406 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110324/92ef2159/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110324/92ef2159/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003277.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+	<LI>Next message: <A HREF="003216.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3211">[ date ]</a>
+              <a href="thread.html#3211">[ thread ]</a>
+              <a href="subject.html#3211">[ subject ]</a>
+              <a href="author.html#3211">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

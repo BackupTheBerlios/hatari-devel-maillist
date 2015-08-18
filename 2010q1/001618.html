@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Compiler warnings / system call
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compiler%20warnings%20/%20system%20call&In-Reply-To=%3C201003012358.01978.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001609.html">
+   <LINK REL="Next"  HREF="001611.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Compiler warnings / system call</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compiler%20warnings%20/%20system%20call&In-Reply-To=%3C201003012358.01978.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Compiler warnings / system call">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Mar  1 22:58:01 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001609.html">[hatari-devel] Compiler warnings / system call
+</A></li>
+        <LI>Next message: <A HREF="001611.html">[hatari-devel] Mega STe registers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1618">[ date ]</a>
+              <a href="thread.html#1618">[ thread ]</a>
+              <a href="subject.html#1618">[ subject ]</a>
+              <a href="author.html#1618">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 28 February 2010, Eero Tamminen wrote:
+&gt;<i> Anything running as suid root should do whatever requires root priviledge
+</I>&gt;<i> in the beginning and drop root priviledges immediately after that.  If
+</I>&gt;<i> somebody makes Hatari suid root without doing do that, that's plain
+</I>&gt;<i> stupid[1].
+</I>
+And of course unless one's running suid-root Hatari under suitable security 
+framework and security policy which restricts what Hatari can do, Hatari's
+users could use Hatari to overwrite system files with their own contents 
+(using e.g. --printer option)...
+ 
+
+&gt;<i> Debugger is accessible also through Hatari command socket, if user
+</I>&gt;<i> enables socket (done automatically by Hatari UI), and through XBios 255
+</I>&gt;<i> from the emulation environment, if one enables that.  But the socket
+</I>&gt;<i> should be accessible only by that user and --bios-intercept is not on by
+</I>&gt;<i> default.
+</I>
+Btw. I'm not sure people on the list appreciate how flexible Hatari is
+nowadays.
+
+One can use the control socket not just to change Hatari settings, but do
+anything one can do from the debugger and to simulate user events.
+
+With --bios-intercept, one can make an automated Atari test/demo program
+that changes what Atari model Hatari emulates and tests itself whether it
+can run properly under different Atari models, amount of memory etc...
+
+
+&gt;<i> &gt; So I vote for removing this debugger commando again
+</I>&gt;<i> &gt; - or is it really required badly?
+</I>&gt;<i>
+</I>&gt;<i> Laurent asked for &quot;ls&quot; in Debugger.  System() was only reasonable way to
+</I>&gt;<i> implement that (implementing &quot;ls&quot; within Hatari would need too much code
+</I>&gt;<i> for such a fringe feature).
+</I>&gt;<i>
+</I>&gt;<i> &quot;exec&quot; may also be convenient if one wants to do everything within
+</I>&gt;<i> the Hatari debugger instead of using both a separate terminal and Hatari
+</I>&gt;<i> console window (think about users who open Hatari + debugger window from
+</I>&gt;<i> a link on desktop).
+</I>
+&quot;exec&quot; allows the --bios-intercept thing to go even further.  Atari program
+could even re-compile itself by &quot;exec&quot;ing a script that runs host's
+cross-compiler...
+
+(Maybe I should add Hatari Manual section on &quot;Crazy things you can do with 
+Hatari&quot;...)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001609.html">[hatari-devel] Compiler warnings / system call
+</A></li>
+	<LI>Next message: <A HREF="001611.html">[hatari-devel] Mega STe registers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1618">[ date ]</a>
+              <a href="thread.html#1618">[ thread ]</a>
+              <a href="subject.html#1618">[ subject ]</a>
+              <a href="author.html#1618">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

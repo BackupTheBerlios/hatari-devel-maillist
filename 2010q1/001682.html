@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] updates to cmake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20updates%20to%20cmake%20build%20system&In-Reply-To=%3Calpine.LMD.2.00.1003152204310.23894%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001704.html">
+   <LINK REL="Next"  HREF="001670.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] updates to cmake build system</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20updates%20to%20cmake%20build%20system&In-Reply-To=%3Calpine.LMD.2.00.1003152204310.23894%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] updates to cmake build system">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Mar 15 22:08:17 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001704.html">[hatari-devel] updates to cmake build system
+</A></li>
+        <LI>Next message: <A HREF="001670.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1682">[ date ]</a>
+              <a href="thread.html#1682">[ thread ]</a>
+              <a href="subject.html#1682">[ subject ]</a>
+              <a href="author.html#1682">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 15 Mar 2010, Thomas Huth wrote:
+
+&gt;&gt;&gt;<i> If so, could you try to run : cmake -DCMAKE_RC_COMPILER=windres .
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> It seems cmake under windows is using some env var based on visual
+</I>&gt;&gt;&gt;<i> studio and doesn't default to windres.
+</I>&gt;<i>
+</I>&gt;<i> Nicolas, in this case, could we set this variable by default like this
+</I>&gt;<i> in the top-level CMakeLists.txt file:
+</I>&gt;<i>
+</I>&gt;<i> if (WIN32 and not CMAKE_RC_COMPILER)
+</I>&gt;<i> 	set(CMAKE_RC_COMPILER windres)
+</I>&gt;<i> endif()
+</I>
+Yes, that's what I planned to do, but I wanted george to confirm it before 
+commiting.
+
+&gt;&gt;<i> c:/msys/1.0/home/Administrator/hatari/src/cycInt.c: In function
+</I>&gt;&gt;<i> 'CycInt_AddAbsoluteInterrupt':
+</I>&gt;&gt;<i> c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:325: warning:
+</I>&gt;&gt;<i> unknown conversion type character 'l' in format
+</I>&gt;&gt;<i> c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:325: warning:
+</I>&gt;&gt;<i> format '%d' expects type 'int', but argument 5 has type 'Sint64'
+</I>&gt;&gt;<i> c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:325: warning: too
+</I>&gt;&gt;<i> many arguments for format
+</I>&gt;<i>
+</I>&gt;<i> That sounds either like your cycInt.c file is not up-to-date or like
+</I>&gt;<i> you're using a very old or broken GCC compiler. Which compiler version
+</I>&gt;<i> are you using?
+</I>
+In fact, I get the same errors when crosscompiling with 
+i586-pc-mingw32-gcc 4.4.2 under linux, but it's quite strange that this 
+version doesn't handle 'll' in %d conversion, this seemed rather standard 
+to me.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001704.html">[hatari-devel] updates to cmake build system
+</A></li>
+	<LI>Next message: <A HREF="001670.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1682">[ date ]</a>
+              <a href="thread.html#1682">[ thread ]</a>
+              <a href="subject.html#1682">[ subject ]</a>
+              <a href="author.html#1682">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

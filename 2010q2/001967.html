@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling support to Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3Calpine.LMD.2.00.1005032251440.8753%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002026.html">
+   <LINK REL="Next"  HREF="001968.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling support to Hatari debugger</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3Calpine.LMD.2.00.1005032251440.8753%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Profiling support to Hatari debugger">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon May  3 23:08:22 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002026.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="001968.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1967">[ date ]</a>
+              <a href="thread.html#1967">[ thread ]</a>
+              <a href="subject.html#1967">[ subject ]</a>
+              <a href="author.html#1967">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 3 May 2010, Eero Tamminen wrote:
+
+&gt;&gt;<i> to get more users output and see how this could be integrated to fit
+</I>&gt;&gt;<i> best with external programs that could process these data
+</I>&gt;<i>
+</I>&gt;<i> I think the main issue is in getting symbols information to Hatari.
+</I>&gt;<i> Currently only AHCC provides it in suitable format (after Henk has changed
+</I>&gt;<i> the addresses from decimal to hex, similarly to &quot;nm&quot;, in next AHCC release).
+</I>&gt;<i>
+</I>&gt;<i> What kind of post-processing you were thinking for the information
+</I>&gt;<i> coming out of Hatari?
+</I>
+Hello,
+
+I was thinking about something that would take all the addr/count 
+statistics and build some graphs or things like that. Certainly some input 
+format should be followed to get interesting results.
+
+&gt;<i>
+</I>&gt;&gt;<i> (and with what users would like to do with these).
+</I>&gt;<i>
+</I>&gt;<i> GCC users have also gprof (I assume it works also on Atari), so this profile
+</I>&gt;<i> stuff is more interesting for people using less advanced C-compilers or
+</I>&gt;<i> writing direct assembly.  After profile has cycle information, demo writers
+</I>&gt;<i> should be more interested in it. :-)
+</I>
+This could be useful to profile some complex routines, but I'm not that 
+sure for demos ; demos coders already use motorola cycles tables and as 
+many demos are using overscan, profiling is not the real problem, it's 
+more about combining instructions in the right order to optimise the range 
+of available cycles between some fixed positions.
+
+&gt;<i> While on cycle accuracy, how do I get the information about how many cycles
+</I>&gt;<i> the previous instruction used?  For CPU?  For DSP?
+</I>
+In m68k_run_1(), &quot;cycles&quot; contains the result for the last opcode. In case 
+some special processing should be made, there's already the code block :
+
+         if (regs.spcflags) {
+             if (do_specialties ())
+                 return;
+         }
+
+In that case, we could modify do_specialties() to take &quot;int cycles&quot; as an 
+argument, and put some redirection to profiling code in do_specialties().
+
+But in the end, this could impact performance when profiling is on. I 
+think a better approach could be :
+
+  - use #if/#endif to turn profiling code on/off if the user really wants 
+it. Efficent, but less user friendly as you need to recompile.
+
+  - create m68k_run_3() for example with all the additional &quot;slower&quot; 
+profiling code and add some code in main() to call the correct m68k_run_X 
+function.
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Also, I'm currently assuming (to save memory) that CPU and DSP instructions
+</I>&gt;<i> can never be on odd addresses.  Is that correct?
+</I>
+It's true for CPU (else you will get an exception). I don't know for DSP.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002026.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="001968.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1967">[ date ]</a>
+              <a href="thread.html#1967">[ thread ]</a>
+              <a href="subject.html#1967">[ subject ]</a>
+              <a href="author.html#1967">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

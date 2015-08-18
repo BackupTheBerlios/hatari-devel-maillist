@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] VC6 compatibility changes?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20VC6%20compatibility%20changes%3F&In-Reply-To=%3C20090212213203.3fbefc32%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000164.html">
+   <LINK REL="Next"  HREF="000155.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] VC6 compatibility changes?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20VC6%20compatibility%20changes%3F&In-Reply-To=%3C20090212213203.3fbefc32%40phineus%3E"
+       TITLE="[hatari-devel] VC6 compatibility changes?">th.huth at gmx.de
+       </A><BR>
+    <I>Thu Feb 12 21:32:03 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000164.html">[hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled
+</A></li>
+        <LI>Next message: <A HREF="000155.html">[hatari-devel] VC6 compatibility changes?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#154">[ date ]</a>
+              <a href="thread.html#154">[ thread ]</a>
+              <a href="subject.html#154">[ subject ]</a>
+              <a href="author.html#154">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 11 Feb 2009 15:51:02 +0000
+Kenneth Kaufman &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">kvkconsultancy at hotmail.com</A>&gt; wrote:
+
+&gt;<i> &gt; &gt; &gt; /* do args */&gt; &gt; &gt; - ret = Change_Options(argc, argv);&gt; &gt; &gt; +
+</I>&gt;<i> &gt; &gt; &gt; ret = Change_Options(argc, (const char**)argv);&gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; free(argv);&gt; &gt; &gt; return ret;&gt; &gt; &gt; }&gt; &gt; &gt; &gt; What's the problem
+</I>&gt;<i> &gt; &gt; &gt; with this?&gt; &gt; (non-const pointer to const char* pointers?)&gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; The first change (&quot;const char **argv&quot; to &quot;char *argv&quot;) comes
+</I>&gt;<i> &gt; &gt; &gt; from&gt; Kenneth patch. Kenneth, could you elaborate why this was
+</I>&gt;<i> &gt; &gt; &gt; from&gt; necessary? Did&gt; VC6 produce an error or just a warning?
+</I>&gt;<i>  
+</I>&gt;<i> I made this change back in my early attempts to correct the
+</I>&gt;<i> compilation issues when I was trying to resolve the warnings as well.
+</I>&gt;<i> I had to think back and reproduce the error, if the variable is
+</I>&gt;<i> defined as: const char** argv; 
+</I>&gt;<i> The compiler errors when it reaches:
+</I>&gt;<i>  
+</I>&gt;<i> free(argv)
+</I>&gt;<i>  
+</I>&gt;<i> With a warning:
+</I>&gt;<i>  
+</I>&gt;<i> warning C4090: 'function' : different 'const' qualifierswarning
+</I>&gt;<i> C4022: 'free' : pointer mismatch for actual parameter 1 
+</I>
+Ah, ok, thanks for the explanation, now it makes sense - your compiler
+does not like the implicit cast from &quot;const char**&quot; to &quot;void *&quot;.
+Then the correct solution is to keep the &quot;const&quot; for the declaration of
+argv, and to explicitly cast it to &quot;void *&quot; for the free() function.
+Fine, I'll change that...
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000164.html">[hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled
+</A></li>
+	<LI>Next message: <A HREF="000155.html">[hatari-devel] VC6 compatibility changes?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#154">[ date ]</a>
+              <a href="thread.html#154">[ thread ]</a>
+              <a href="subject.html#154">[ subject ]</a>
+              <a href="author.html#154">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Implementation for WIN_FORMAT
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Implementation%20for%20WIN_FORMAT&In-Reply-To=%3C200911151838.01656.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000905.html">
+   <LINK REL="Next"  HREF="000910.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Implementation for WIN_FORMAT</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Implementation%20for%20WIN_FORMAT&In-Reply-To=%3C200911151838.01656.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Implementation for WIN_FORMAT">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Nov 15 17:38:01 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000905.html">[hatari-devel] GEMDOS mount issues
+</A></li>
+        <LI>Next message: <A HREF="000910.html">[hatari-devel] 030 option for Hatari?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#909">[ date ]</a>
+              <a href="thread.html#909">[ thread ]</a>
+              <a href="subject.html#909">[ subject ]</a>
+              <a href="author.html#909">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 15 November 2009, Uwe Seimet wrote:
+&gt;<i> &gt; I had a look at ide.c: The IDE format track command (WIN_FORMAT in
+</I>&gt;<i> &gt; ide.c) is not implemented, and that's why HDDRUTIL reports that the
+</I>&gt;<i> &gt; drive could not be formatted.
+</I>&gt;<i>
+</I>&gt;<i> If you implement WIN_FORMAT in ide.c like this HDDRUTIL can format the
+</I>&gt;<i> drive:
+</I>&gt;<i>
+</I>&gt;<i>                 case WIN_FORMAT:
+</I>&gt;<i>                         ide_cmd_lba48_transform(s, lba48);
+</I>&gt;<i>                         s-&gt;error = 0;
+</I>&gt;<i>                         s-&gt;status = READY_STAT | SEEK_STAT;
+</I>&gt;<i>                         s-&gt;req_nb_sectors = s-&gt;mult_sectors;
+</I>&gt;<i>                         n = s-&gt;nsector;
+</I>&gt;<i>                         if (n &gt; s-&gt;req_nb_sectors)
+</I>&gt;<i>                                 n = s-&gt;req_nb_sectors;
+</I>&gt;<i>                         ide_transfer_start(s, s-&gt;io_buffer, 512 * n, 
+</I>ide_sector_write);
+&gt;<i>                         s-&gt;media_changed = 1; 
+</I>&gt;<i>                         break;
+</I>
+I tested this and it formatting seems to work fine with it.
+
+For some reason I got on first time when the formatting ended a large
+number of warnings that block read lengths didn't match how much could
+be read.  However, I wasn't able to reproduce that error when immediately
+doing reformat, or when starting several times from beginning (creating
+image with Hatari scripts, copying some files to it etc).
+
+So... I guess this is good.  I'll commit it.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000905.html">[hatari-devel] GEMDOS mount issues
+</A></li>
+	<LI>Next message: <A HREF="000910.html">[hatari-devel] 030 option for Hatari?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#909">[ date ]</a>
+              <a href="thread.html#909">[ thread ]</a>
+              <a href="subject.html#909">[ subject ]</a>
+              <a href="author.html#909">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

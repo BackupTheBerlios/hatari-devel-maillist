@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] C++
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20C%2B%2B&In-Reply-To=%3C201110012030.54873.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004031.html">
+   <LINK REL="Next"  HREF="004030.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] C++</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20C%2B%2B&In-Reply-To=%3C201110012030.54873.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] C++">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sat Oct  1 19:30:54 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004031.html">[hatari-devel] C++
+</A></li>
+        <LI>Next message: <A HREF="004030.html">[hatari-devel] ICD command support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4032">[ date ]</a>
+              <a href="thread.html#4032">[ thread ]</a>
+              <a href="subject.html#4032">[ subject ]</a>
+              <a href="author.html#4032">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 01 lokakuu 2011, Markus Heiden wrote:
+&gt;<i> &gt;&gt; Except for this, I prefer working in C, but it's just my point of
+</I>&gt;<i> &gt;&gt; view.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I second that, I also prefer plain C.
+</I>
+Likewise, but I'm a bit ambivalent on this because Aranym &amp; WinUAE
+are C++.  Very restricted[1] C++ isn't too bad and C++ has a bit better
+type checking that C.
+
+
+&gt;<i> I did not want to convert the whole hatari project to C++, but I asked
+</I>&gt;<i> for C++ because it allows more modularization of the code. Due to this,
+</I>&gt;<i> the code is less coupled to each other, what makes it easier to unit
+</I>&gt;<i> test exactly one part of the code, e.g. by mocking the not tested parts.
+</I>&gt;<i> As for the hd part, oo-programming could ease the programming of the
+</I>&gt;<i> class 0 and class 1 parsers and would allow e.g. easier support of
+</I>&gt;<i> multiple hd images.
+</I>&gt;<i> 
+</I>&gt;<i> I think that the core code should stay written in a procedural way (C)
+</I>&gt;<i> for performance reasons. But maybe even this code could benefit from
+</I>&gt;<i> some of the C++ features, like exceptions.
+</I>
+Hatari code aims to be portable.
+
+According to Mozilla/Firefox portability guideline[1], one shouldn't use
+neither exceptions, RTTI, static objects, iostream or namespaces (and few
+other minor things) in portable C++ code.
+
+
+&gt;<i> But e.g. inheritance should be avoided.
+</I>
+There are some issues in C99 (for which Hatari currently aims for)
+and C++ code compatibility.  If part of the code is C++, whole Hatari
+should be compiled with a C++ compiler -&gt; issues reported by the (to
+some extent) better / different type checking in C++ need to be fixed.
+
+If you compile Hatari with C++ compiler instead of C one, how
+many additional warnings do you get and how much effort do you
+think it would take to fix them?
+
+
+	- Eero
+
+[1] <A HREF="https://developer.mozilla.org/en/C___Portability_Guide">https://developer.mozilla.org/en/C___Portability_Guide</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004031.html">[hatari-devel] C++
+</A></li>
+	<LI>Next message: <A HREF="004030.html">[hatari-devel] ICD command support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4032">[ date ]</a>
+              <a href="thread.html#4032">[ thread ]</a>
+              <a href="subject.html#4032">[ subject ]</a>
+              <a href="author.html#4032">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

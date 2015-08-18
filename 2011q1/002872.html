@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] MP2 question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MP2%20question&In-Reply-To=%3CAANLkTi%3D4dSA7c7ktL_7ppRegNsQ9A6Etu5b8Vm4_xc3%3D%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002862.html">
+   <LINK REL="Next"  HREF="002874.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] MP2 question</H1>
+    <B>Tomas Sk&#228;re</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MP2%20question&In-Reply-To=%3CAANLkTi%3D4dSA7c7ktL_7ppRegNsQ9A6Etu5b8Vm4_xc3%3D%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] MP2 question">tomas.skare at gmail.com
+       </A><BR>
+    <I>Sun Jan 23 17:50:54 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002862.html">[hatari-devel] MP2 question
+</A></li>
+        <LI>Next message: <A HREF="002874.html">[hatari-devel] MP2 question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2872">[ date ]</a>
+              <a href="thread.html#2872">[ thread ]</a>
+              <a href="subject.html#2872">[ subject ]</a>
+              <a href="author.html#2872">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Laurent,
+
+I'm the correct Tomas (I changed my last name many years ago).
+
+I don't really remember the details about this, since I haven't used the
+Atari in about 10 years. I do remember that there were some strange
+things with the transferring, though.
+
+After looking at the compensating code for some time now, I will try to
+explain the logic behind the code. Basically, the data is shifted two
+bits to the left after the transfer.
+
+I assume that you know some about how the registers in the DSP work.
+
+&gt;<i> &#160; &#160; &#160; &#160;movep &#160; X:&lt;&lt;M_RX,A
+</I>
+When reading from the DMA (M_RX), the data ends up in the high
+16 bits of A1.
+
+A = 00:ffff00:000000
+
+&gt;<i> &#160; &#160; &#160; &#160;lsr &#160; &#160; A
+</I>&gt;<i> &#160; &#160; &#160; &#160;lsr &#160; &#160; A &#160; &#160; &#160; &#160;Y:DMA_r_state,x0
+</I>
+A is shifted two bits to the right, and the left-over bits from the previous
+transfer is fetched into x0, only the highest two bits are set.
+
+A = 00:3fffc0:000000
+x0 = c00000
+
+&gt;<i> &#160; &#160; &#160; &#160;or &#160; &#160; &#160;x0,A &#160; &#160; #&gt;$010000,x1
+</I>
+Previous left-over bits are OR:ed together with the new 16-bits and x1 is
+set to a special multiple value. This is used to divide by 128 later, and is
+essentially just a faster way of shifting down a value.
+
+A = 00:ffffc0:000000
+
+&gt;<i> &#160; &#160; &#160; &#160;lsr &#160; &#160; A
+</I>
+I'm really not sure why this is done instead of multiplying by 008000 (i.e.
+divide by 256) instead, but I probably had a good reason back then. Might
+have something to do with losing bit precision.
+
+A = 00:7fffe0:000000
+
+&gt;<i> &#160; &#160; &#160; &#160;move &#160; &#160;A1,x0
+</I>
+A = 00:7fffe0:000000
+x0 = 7fffe0
+
+&gt;<i> &#160; &#160; &#160; &#160;mpy &#160; &#160; x0,x1,A &#160;#&gt;$ffff,x0
+</I>
+Divide x0 by 128 and store in A. Also set x0 to 00ffff after the multiply.
+
+A = 00:00ffff:c00000
+
+&gt;<i> &#160; &#160; &#160; &#160;and &#160; &#160; x0,A &#160; &#160; A0,Y:DMA_r_state
+</I>
+Store the shifted two bits into Y:DMA_r_state for the next round.
+AND A with 00ffff in case bits from A2 has been shifted down.
+
+&gt;<i> &#160; &#160; &#160; &#160;move &#160; &#160;A1,x0
+</I>
+Move the resulting 16-bit value into x0.
+
+
+So, after the code, x0 contains the correct 16-bit value to use for
+the decoder, and Y:DMA_r_state contains the upper two bits that
+should be OR:ed together with the next fetched value.
+
+
+For your example words, I think it will work like this:
+
+&gt;<i>From CPU: $abcd, $1234, $9876
+</I>
+To DSP: $af34, $48d2, $61d8
+
+Note that the top 2 bits from the first 16-bit word are lost here.
+For this reason, I think that our DSP player always sent $0000
+as first value. That first $0000 would then contain the two lowest
+bits from the next value.
+
+The last 16-bit word ($61d8) also assumes that the two extra bits
+are zero in this example, but in reality it depends on what comes
+after it.
+
+Compare the bit strings:
+
+&gt;<i>From CPU:
+</I>abcd12349876  = 101010111100110100010010001101001001100001110110
+
+To DSP:
+af3448d261d8  = 101011110011010001001000110100100110000111011000
+
+
+I hope this helps you. I've tried hatari a bit, and think you are doing
+a great job!
+
+
+Regards,
+
+Tomas
+
+
+On Fri, Jan 21, 2011 at 13:09, LAURENT SALLAFRANQUE
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at arkea.com</A>&gt; wrote:
+&gt;<i> Hi Tomas,
+</I>&gt;<i>
+</I>&gt;<i> I've spent some time on the DSP MPEG audio layer 2 player a few days ago to let it run under Hatari emulator.
+</I>&gt;<i>
+</I>&gt;<i> Actually, it doesn't work because transfers between DMA and DSP (crossbar) are using a non documented function.
+</I>&gt;<i> (A melt between handshake and non-handshake mode at the same time).
+</I>&gt;<i>
+</I>&gt;<i> From what I understand, datas are shifted while sent from the DMA play to the DSP receive transfer.
+</I>&gt;<i>
+</I>&gt;<i> In the DSP code, I can read :
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &#160; &#160; &#160; &#160;; Read 16 bits from DMA and
+</I>&gt;<i> &#160; &#160; &#160; &#160;; perform special bit-shifting
+</I>&gt;<i> &#160; &#160; &#160; &#160;; to compensate for read skewness.
+</I>&gt;<i> &#160; &#160; &#160; &#160;bset &#160; &#160;#4,X:&lt;&lt;M_PCD &#160; &#160; &#160; &#160;; Start frame sync.
+</I>&gt;<i> _wait &#160; jclr &#160; &#160;#7,X:&lt;&lt;M_SR,_wait &#160; ; RDF
+</I>&gt;<i> &#160; &#160; &#160; &#160;bclr &#160; &#160;#4,X:&lt;&lt;M_PCD &#160; &#160; &#160; &#160;; Stop frame sync.
+</I>&gt;<i> &#160; &#160; &#160; &#160;movep &#160; X:&lt;&lt;M_RX,A
+</I>&gt;<i>
+</I>&gt;<i> &#160; &#160; &#160; &#160;lsr &#160; &#160; A
+</I>&gt;<i> &#160; &#160; &#160; &#160;lsr &#160; &#160; A &#160; &#160; &#160; &#160;Y:DMA_r_state,x0
+</I>&gt;<i> &#160; &#160; &#160; &#160;or &#160; &#160; &#160;x0,A &#160; &#160; #&gt;$010000,x1
+</I>&gt;<i> &#160; &#160; &#160; &#160;lsr &#160; &#160; A
+</I>&gt;<i> &#160; &#160; &#160; &#160;move &#160; &#160;A1,x0
+</I>&gt;<i> &#160; &#160; &#160; &#160;mpy &#160; &#160; x0,x1,A &#160;#&gt;$ffff,x0
+</I>&gt;<i> &#160; &#160; &#160; &#160;and &#160; &#160; x0,A &#160; &#160; A0,Y:DMA_r_state
+</I>&gt;<i> &#160; &#160; &#160; &#160;move &#160; &#160;A1,x0
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> First 4 instructions are waiting a sync data on the SSI port.
+</I>&gt;<i> Last 8 instructions &quot;compensate&quot; an undocumented function.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I'd like to implement this undocumented transfer into Hatari's emulator to have the player running.
+</I>&gt;<i>
+</I>&gt;<i> Could anybody tell me (with an example if possible) what exactly happens on the real hardware for this transfer mode ?
+</I>&gt;<i>
+</I>&gt;<i> For example, if I want to transfer 3 words :
+</I>&gt;<i>
+</I>&gt;<i> $abcd
+</I>&gt;<i> $1234
+</I>&gt;<i> $9876
+</I>&gt;<i>
+</I>&gt;<i> how are they received via the SSI port before the special bit shifting ?
+</I>&gt;<i>
+</I>&gt;<i> I understand that &quot;A1&quot; register contains the original data which has just been decoded and DMA_r_state contains the &quot;A0&quot; part of the data which is used to decode the next transmitted data.
+</I>&gt;<i>
+</I>&gt;<i> Thanks in advance.
+</I>&gt;<i>
+</I>&gt;<i> PS : the one who wrote this is Tomas Berndtsson, &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">tomas at nocrew.org</A>&gt; from NoBrain/NoCrew
+</I>&gt;<i> I've emailed him, but if you know him or if you think you can help me here, this would be great.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Ce message et &#160;toutes les pieces jointes (ci-apres &#160;le &quot;message&quot;) sont
+</I>&gt;<i> confidentiels et etablis a l'intention exclusive de ses destinataires.
+</I>&gt;<i> Toute &#160;utilisation ou &#160;diffusion &#160;non autorisee &#160;est interdite. &#160; Tout
+</I>&gt;<i> message &#160;etant &#160;susceptible &#160;d'alteration, &#160;l'emetteur &#160;decline &#160;toute
+</I>&gt;<i> responsabilite au titre de &#160;ce message &#160;s'il a &#160;ete altere, deforme ou
+</I>&gt;<i> falsifie.
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;-----------------------------------
+</I>&gt;<i> This message and any &#160;attachments (the &quot;message&quot;) are confidential and
+</I>&gt;<i> intended &#160;solely &#160; for &#160;the &#160; addressees. &#160;Any &#160;unauthorised &#160; use &#160;or
+</I>&gt;<i> dissemination is prohibited. As e-mails are susceptible to alteration,
+</I>&gt;<i> the issuer shall &#160;not be &#160;liable for &#160;the &#160;message if altered, changed
+</I>&gt;<i> or falsified.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002862.html">[hatari-devel] MP2 question
+</A></li>
+	<LI>Next message: <A HREF="002874.html">[hatari-devel] MP2 question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2872">[ date ]</a>
+              <a href="thread.html#2872">[ thread ]</a>
+              <a href="subject.html#2872">[ subject ]</a>
+              <a href="author.html#2872">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

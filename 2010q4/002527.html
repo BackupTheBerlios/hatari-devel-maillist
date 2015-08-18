@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Additional debugger info functions for OS calls?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Additional%20debugger%20info%20functions%20for%20OS%20calls%3F&In-Reply-To=%3C201010122127.57882.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002534.html">
+   <LINK REL="Next"  HREF="002536.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Additional debugger info functions for OS calls?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Additional%20debugger%20info%20functions%20for%20OS%20calls%3F&In-Reply-To=%3C201010122127.57882.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Additional debugger info functions for OS calls?">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Oct 12 20:27:57 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002534.html">[hatari-devel] Tracing AES calls with the existing VDI code?
+</A></li>
+        <LI>Next message: <A HREF="002536.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd try)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2527">[ date ]</a>
+              <a href="thread.html#2527">[ thread ]</a>
+              <a href="subject.html#2527">[ subject ]</a>
+              <a href="author.html#2527">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I forgot to mention that adding AES tracing would need (like DSP tracing)
+changing the trace variable from 32- to 64-bit one as all bits are currently
+needed.  I thought Laurent was doing that, but it seems I'll do it. :-)
+
+
+Anyway, I was also thinking that now that:
+-  the debugger can break into OS calls
+- OS call opcode/name tables are already listed in the code for tracing
+
+the debugger &quot;info&quot; command could also be used to list tables of the OS
+(GEMDOS, BIOS, XBIOS, VDI, AES) call number/name pairs.  I don't want to add
+the names for TAB-completion because they could conflict with the actual
+function names.
+
+This would mean that disabling tracing wouldn't get rid of these opcode/name
+tables and code for listing them (currently it's built in only when tracing
+is enabled when configuring Hatari).
+
+
+For GEMDOS I was thinking that &quot;info gemdos&quot; could also show some Hatari
+internal GEMDOS HDD emulation information like DTA contents etc.  (I could
+also trivially make it so that giving non-zero argument to &quot;info gemdos&quot;
+would select either opcode table or HDD emu state output)
+
+
+Any objections on this?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002534.html">[hatari-devel] Tracing AES calls with the existing VDI code?
+</A></li>
+	<LI>Next message: <A HREF="002536.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd try)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2527">[ date ]</a>
+              <a href="thread.html#2527">[ thread ]</a>
+              <a href="subject.html#2527">[ subject ]</a>
+              <a href="author.html#2527">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

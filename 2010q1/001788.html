@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] LMC1992 and Microwire emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4BAA8FAE.3040404%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001786.html">
+   <LINK REL="Next"  HREF="001789.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] LMC1992 and Microwire emulation</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4BAA8FAE.3040404%40free.fr%3E"
+       TITLE="[hatari-devel] LMC1992 and Microwire emulation">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Mar 24 23:18:22 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001786.html">[hatari-devel] Demo regression between 1.3.1 and current version
+</A></li>
+        <LI>Next message: <A HREF="001789.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1788">[ date ]</a>
+              <a href="thread.html#1788">[ thread ]</a>
+              <a href="subject.html#1788">[ subject ]</a>
+              <a href="author.html#1788">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello David,
+
+I need a confirmation : in your code, you've added the following filter
+
+
+    if (dma.soundMode &amp; DMASNDMODE_MONO)
+    {
+        /* Mono 8-bit */
+
+        /* Apply anti-aliasing low pass filter ? (mono) */
+        if ( /* UseLowPassFilter &amp;&amp; */ (dma.soundMode == 3))
+        {
+            for (i = dma.frameStartAddr; i &lt;= dma.frameEndAddr; i++) {
+                pFrameStart[i] = DmaSnd_LowPassFilterMono(pFrameStart[i]);
+            }
+        }
+
+   ...
+
+
+The same for stereo
+
+But shouldn't the test be :
+
+        if ( /* UseLowPassFilter &amp;&amp; */ ((dma.soundMode &amp; 3) ==  3))
+
+I think you've forgotten the &amp;3 to filter the MONO or STEREO bits.
+Is it correct ?
+
+Regards
+
+Laurent
+
+
+
+David Savinkoff a &#233;crit :
+&gt;<i> Hi Laurent,
+</I>&gt;<i>
+</I>&gt;<i> This patch adds an anti-aliasing filter when the dma uses the 50066 Hz
+</I>&gt;<i> sample rate. The tone controls correctly use nAudioFrequency. I think
+</I>&gt;<i> the sound should be perfect, or at least better than it was before.
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001786.html">[hatari-devel] Demo regression between 1.3.1 and current version
+</A></li>
+	<LI>Next message: <A HREF="001789.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1788">[ date ]</a>
+              <a href="thread.html#1788">[ thread ]</a>
+              <a href="subject.html#1788">[ subject ]</a>
+              <a href="author.html#1788">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

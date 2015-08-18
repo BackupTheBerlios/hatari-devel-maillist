@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinAUE wide chars usage and what to do with it?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinAUE%20wide%20chars%20usage%20and%20what%20to%20do%20with%20it%3F&In-Reply-To=%3C201101172215.24920.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002820.html">
+   <LINK REL="Next"  HREF="002822.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinAUE wide chars usage and what to do with it?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinAUE%20wide%20chars%20usage%20and%20what%20to%20do%20with%20it%3F&In-Reply-To=%3C201101172215.24920.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] WinAUE wide chars usage and what to do with it?">oak at helsinkinet.fi
+       </A><BR>
+    <I>Mon Jan 17 21:15:24 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002820.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a	lot
+</A></li>
+        <LI>Next message: <A HREF="002822.html">[hatari-devel] WinAUE wide chars usage and what to do with it?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2821">[ date ]</a>
+              <a href="thread.html#2821">[ thread ]</a>
+              <a href="subject.html#2821">[ subject ]</a>
+              <a href="author.html#2821">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+(commenting just on the minor stuff)
+
+On maanantai 17 tammikuu 2011, LAURENT SALLAFRANQUE wrote:
+&gt;<i> I've probably removed too quickly some code that I should have kept
+</I>&gt;<i> from WinUae source to let hatari compile :
+</I>&gt;<i> - mainly in custom.c which is used for cycle_exact emulation
+</I>&gt;<i> - memory.c (for prefetch, I haven't understood yet what the new
+</I>&gt;<i>   parameters are for)
+</I>&gt;<i> - mmu.c (the c++ &quot;try/catch&quot; is probably not well implemented).
+</I>&gt;<i> I've kept on my disk the original source if someone need it.
+</I>&gt;<i> 
+</I>&gt;<i> I've always tried to keep in mind the following point : changing as
+</I>&gt;<i> little as possible the original Amiga code.
+</I>
+When counting number of separate modifications, most of them seem to
+be changing WinUAE wide character strings to ASCII strings.  If we want to
+significantly reduce the patch size, I think it would make sense just to
+define/typedef TCHAR as wchar_t and use wide characters instead of patching
+all strings in WinAUE.
+
+wchar_t and functions to convert wide chars are in C99 spec.  To convert
+such strings to ASCII[1], one can use wcstombs() and wcslen().   The code
+for this isn't very pretty and it requires --std=c99, but it works.
+
+[1] Actually to multibyte strings. I assume this means at least on Linux
+    UTF-8[2], not UTF-16 or UTF-32, so with the strings used in WinAUE they
+    should be same as ASCII (UTF-8 is same as ASCII for chars &lt;127).
+
+[2] This can be tested with the attached small program.  At least in Debian
+     Testing it works fine.
+
+
+&gt;<i> I don't know if WinUae's
+</I>&gt;<i> team has planed to make major changes in the main core part of their
+</I>&gt;<i> emulator in the next months, but maybe we can clean their code and adapt
+</I>&gt;<i> it to our needs. If we need to upgrade later, we can patch our code
+</I>&gt;<i> after applying &quot;diffs&quot; into their code and adapt the diffs into hatari.
+</I>&gt;<i> Anyway, the level of quality they reached may be suffisant for our own
+</I>&gt;<i> needs.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> For point b) :
+</I>&gt;<i> 
+</I>&gt;<i> I think we should first fix winUae'core to run at correct Atari's
+</I>&gt;<i> frequencies. Then, add again the pairing patch and the few Atari's
+</I>&gt;<i> specific code in newcpu.c For the pairing patch, does it apply also to
+</I>&gt;<i> the Falcon, or is it 68000 specific (as it impacts the cycles counting)
+</I>&gt;<i> ?
+</I>&gt;<i> 
+</I>&gt;<i> Then, test for any regression in the emulator (saving/restoring a
+</I>&gt;<i> snapshot, GUI param interface, command line options, ...).
+</I>
+I don't think there's any large isssues here.  You've already updated
+CPU core snapshot stuff, added System dialog for WinAUE and command
+line options for the new stuff.  Some of this could be fine tuned and it
+needs to be documented but I think that's it. :-)
+
+
+Btw. regarding save/restore, what's this UAE_NEWCPU_H stuff:
+---------
+#ifdef UAE_NEWCPU_H
+                regs.prefetch_pc = regs.pc + 128;
+#endif
+        }
+
+#ifdef UAE_NEWCPU_H
+        MemorySnapShot_Store(&amp;regs.prefetch, sizeof(regs.prefetch));  /* 
+prefetch */
+#else
+        uae_u32 prefetch_dummy;
+        MemorySnapShot_Store(&amp;prefetch_dummy, sizeof(prefetch_dummy));
+#endif
+--------
+?
+
+Is it used with the new WinUAE core, the current AUE core, some old AUE core
+we don't anymore use or Thomas' earlier aborted attempt at updating to
+WinAUE?
+
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: wchar-test.c
+Type: text/x-csrc
+Size: 652 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110117/e0bcc2b5/attachment.c">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110117/e0bcc2b5/attachment.c</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002820.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a	lot
+</A></li>
+	<LI>Next message: <A HREF="002822.html">[hatari-devel] WinAUE wide chars usage and what to do with it?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2821">[ date ]</a>
+              <a href="thread.html#2821">[ thread ]</a>
+              <a href="subject.html#2821">[ subject ]</a>
+              <a href="author.html#2821">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

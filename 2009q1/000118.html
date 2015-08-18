@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Ym / Dma mixing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3C498CA6F0.5060608%40freemind-tobe.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000117.html">
+   <LINK REL="Next"  HREF="000119.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Ym / Dma mixing</H1>
+    <B>Jean-Baptiste Berlioz</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3C498CA6F0.5060608%40freemind-tobe.com%3E"
+       TITLE="[hatari-devel] Ym / Dma mixing">jb.berlioz at freemind-tobe.com
+       </A><BR>
+    <I>Fri Feb  6 22:09:04 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000117.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+        <LI>Next message: <A HREF="000119.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#118">[ date ]</a>
+              <a href="thread.html#118">[ thread ]</a>
+              <a href="subject.html#118">[ subject ]</a>
+              <a href="author.html#118">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>1615.patch :
+previous mail
+
+1616.patch :
+Fix wav and ym recording.
+Move recording related procedures to audio.c
+
+
+
+Jean-Baptiste Berlioz wrote:
+&gt;<i> Hello,
+</I>&gt;<i> 
+</I>&gt;<i> Here is a patch that affects sound emulation and mixing.
+</I>&gt;<i> This is work in progress, it needs some cleanup, fixes and improvements.
+</I>&gt;<i> 
+</I>&gt;<i> I'm sending it for reviews, suggestions, tests and complete rejection :)
+</I>&gt;<i> 
+</I>&gt;<i> This is a quite large path sorry.
+</I>&gt;<i> 
+</I>&gt;<i> Commit message:
+</I>&gt;<i> &quot;&quot;&quot;
+</I>&gt;<i> Change the sound generation and mixing procedures.
+</I>&gt;<i> + Ym and Dma emulation are no longer dependant.
+</I>&gt;<i> + Samples are generated on demand when the SDL audio callback is triggered.
+</I>&gt;<i> + Mixing occurs in the SDL audio callback.
+</I>&gt;<i> + No more desync between SDL buffer and mixing buffer (no more mixing 
+</I>&gt;<i> buffer btw)
+</I>&gt;<i> + The SDL audio buffer size is frequency dependant (and small).
+</I>&gt;<i> + Dma samples are generated via linear interpolation (still not the best 
+</I>&gt;<i> method).
+</I>&gt;<i> + Sound is paused when exit confirmation is displayed.
+</I>&gt;<i> + Added some 4 pole filters (configurable).
+</I>&gt;<i> - Sound recording is broken (i'll fix it asap).
+</I>&gt;<i> - Ym register history can overflow.
+</I>&gt;<i> &quot;&quot;&quot;
+</I>&gt;<i> 
+</I>&gt;<i> Note the two last lines :)
+</I>&gt;<i> 
+</I>&gt;<i> One of the most important change is the way samples are generated in the 
+</I>&gt;<i> Ym emulation:
+</I>&gt;<i> 
+</I>&gt;<i> - Now, when a ym register is written, the affected sample number is 
+</I>&gt;<i> computed and the change is stored in a list.
+</I>&gt;<i> When the SDL audio callback needs samples, it calls the ym emulation, 
+</I>&gt;<i> and the ym emulation replay the history and generate the samples.
+</I>&gt;<i> 
+</I>&gt;<i> - The Dma sound generation is done the same way. The SDL audio callback 
+</I>&gt;<i> ask some samples to the Dma emulation (but there's no history).
+</I>&gt;<i> 
+</I>&gt;<i> This way, the ym and dma emulation are two independent things.
+</I>&gt;<i> 
+</I>&gt;<i> The mixing is done in the SDL audio callback, and everything related to 
+</I>&gt;<i> mixing was moved in audio.c (sound.c is for ym things only and dmasnd.c 
+</I>&gt;<i> is for dma things only).
+</I>&gt;<i> 
+</I>&gt;<i> Now i need to fix sound recording (storing the mixed samples in a 
+</I>&gt;<i> buffer), and i need to test and improve the ym registers history, when a 
+</I>&gt;<i> software is abusing the ym registers, it might overflow the history.
+</I>&gt;<i> 
+</I>&gt;<i> The next steps are:
+</I>&gt;<i> - fix sound recording (quite easy)
+</I>&gt;<i> - handle history overflow (need to write a test program)
+</I>&gt;<i> - improve the dma resampling and filtering (not too hard)
+</I>&gt;<i> - implement LMC sound filters (the good things for the end, always)
+</I>&gt;<i> 
+</I>&gt;<i> The patch has been exported by 'hg export' and can be imported by 'hg 
+</I>&gt;<i> import'.
+</I>&gt;<i> 
+</I>&gt;<i> Cheers,
+</I>&gt;<i> JB
+</I>&gt;<i> 
+</I>&gt;<i> PS: about 'improve the dma resampling', maybe *optionally* with a 
+</I>&gt;<i> configure flag we could use libsamplerate ?
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: soundmix.tar.gz
+Type: application/x-gzip
+Size: 16730 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090206/99a4eee4/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090206/99a4eee4/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000117.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+	<LI>Next message: <A HREF="000119.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#118">[ date ]</a>
+              <a href="thread.html#118">[ thread ]</a>
+              <a href="subject.html#118">[ subject ]</a>
+              <a href="author.html#118">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

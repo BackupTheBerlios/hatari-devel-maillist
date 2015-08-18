@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Pajor changes in DSP code
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Pajor%20changes%20in%20DSP%20code&In-Reply-To=%3C4D0E0C60.5010509%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002690.html">
+   <LINK REL="Next"  HREF="002693.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Pajor changes in DSP code</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Pajor%20changes%20in%20DSP%20code&In-Reply-To=%3C4D0E0C60.5010509%40free.fr%3E"
+       TITLE="[hatari-devel] Pajor changes in DSP code">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Dec 19 14:45:04 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002690.html">[hatari-devel] Pajor changes in DSP code
+</A></li>
+        <LI>Next message: <A HREF="002693.html">[hatari-devel] Pajor changes in DSP code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2691">[ date ]</a>
+              <a href="thread.html#2691">[ thread ]</a>
+              <a href="subject.html#2691">[ subject ]</a>
+              <a href="author.html#2691">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+&gt;<i>  I tested quite a few and almost anything worked fine except for these:
+</I>
+Thanks for the tests.
+If Thomas could tell us if this increases a bit DSP emulation for his 
+slow computer, it would be nice.
+Anyway, it must be better this way.
+
+&gt;<i>  * FlexTrax gives just black screen after it's startup picture. According to
+</I>&gt;<i>  the profile command, DSP loops here:
+</I>
+Can you send it to me ?
+
+&gt;<i>  &quot;E.K.O system&quot; screen updates freeze after a while although
+</I>&gt;<i>    music continues.
+</I>
+
+For EKO system, I already had some problems with this demo :
+- I think it works better with 32 Mhz (we'll have to fix this bug one day).
+- I've always had some bad sound distortion when the tridi ships are 
+displayed, but sound is great again when there's no tridi.
+   This can come from many explanations :
+   - DSP cycles are not accurate enough
+   - 68030 does a lot of muls, divs, movem or instructions that eat too 
+much cycles (more cycles than the crossbar needs) (a bus cycle emulation 
+will be necessary in this case). I suspect this problem occurs with many 
+falcon emulated programs.
+   - There's certainly one bug I still haven't found in the DSP code 
+(for example in the _ demo).
+
+
+&gt;<i>  * Lazer's Oergs gets stuck.
+</I>
+I'll have a look at this one.
+
+
+For sound issues, I'm pretty sure this is because of cycles (As I 
+explained just before).
+For the Falcon, the time clock is given by the CPU, but the DSP and the 
+crossbar (and the keyboard acia and the blitter) are independent.
+
+The Crossbar needs precise cycles to run (for the sound) (sometimes 60 
+cycles) and for data transfers between DSP and CPU.
+But if the 68030 does a &gt; 60 cycles instruction, there's a problem.
+And if the CPU does a &gt; 2*crossbar frequency (&gt; 120 cycles)  instruction 
+(like divs or muls) we loose some sound and everything becomes 
+unsynchronized.
+
+At least, the DSP should give the clock to the whole computer, but the 
+best would be to have an independent clock that would  send a signal 
+every cycle. Each componant (CPU, DSP, Crossbar, Blitter, ...) would 
+then wait the correct number of cycles before doing it's next 
+instruction, independently of the CPU. (I think MAME works like this).
+
+
+There's still some work for 2011 for the falcon emulation. ;)
+
+Regards,
+
+Laurent
+
+
+
+Le 18/12/2010 22:56, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On lauantai 18 joulukuu 2010, Laurent Sallafranque wrote:
+</I>&gt;<i>    
+</I>&gt;&gt;<i> I wanted to make a little break with newcpu, so I returned to DSP code.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've uploaded some big changes :
+</I>&gt;&gt;<i>      
+</I>&gt;<i> ...
+</I>&gt;<i>    
+</I>&gt;&gt;<i> All of these changes should result in a little more dsp speed.
+</I>&gt;&gt;<i> Thomas, can you test this and tell me if this speeds up your falcon ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've tested many dsp programs and didn't noticed any regression.
+</I>&gt;&gt;<i>      
+</I>&gt;<i> I tested quite a few and almost anything worked fine except for these:
+</I>&gt;<i>
+</I>&gt;<i> * FlexTrax gives just black screen after it's startup picture. According to
+</I>&gt;<i> the profile command, DSP loops here:
+</I>&gt;<i> 	025b:  0c025b         (06 cyc)  jmp p:0x025b
+</I>&gt;<i>
+</I>&gt;<i> And CPU loops here (&gt;99% of time):
+</I>&gt;<i> $02713c : 0838 0000 a202                       btst      #0,$ffffa202.w
+</I>&gt;<i> $027142 : 67f8                                 beq.s     $2713c
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> * Lazer's Oergs gets stuck.
+</I>&gt;<i>
+</I>&gt;<i> * &quot;E.K.O system&quot; screen updates freeze after a while although
+</I>&gt;<i>    music continues.
+</I>&gt;<i>
+</I>&gt;<i> Can you reproduce these issues?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Btw. Now that I have more powerful machine, when I have sound enabled with
+</I>&gt;<i> DSP emulation I can notice also sound issues (sound isn't anymore just
+</I>&gt;<i> noise).
+</I>&gt;<i>
+</I>&gt;<i> When I was trying H2O, I noticed that whenever the game goes to
+</I>&gt;<i> a next screen, music repeats for a while (and in general it sounds pretty
+</I>&gt;<i> bad), like some underfed playback buffer would be looped by the HW.
+</I>&gt;<i>
+</I>&gt;<i> EKO's &quot;Are you experienced&quot; music is also very skippy although there would
+</I>&gt;<i> seem to be enough CPU for Hatari (quarter of CPU is idle).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002690.html">[hatari-devel] Pajor changes in DSP code
+</A></li>
+	<LI>Next message: <A HREF="002693.html">[hatari-devel] Pajor changes in DSP code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2691">[ date ]</a>
+              <a href="thread.html#2691">[ thread ]</a>
+              <a href="subject.html#2691">[ subject ]</a>
+              <a href="author.html#2691">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

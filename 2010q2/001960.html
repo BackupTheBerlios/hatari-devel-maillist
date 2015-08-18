@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling support to Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3C4BDC6E96.6060604%40freemind-tobe.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001958.html">
+   <LINK REL="Next"  HREF="001961.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling support to Hatari debugger</H1>
+    <B>Jean-Baptiste Berlioz</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3C4BDC6E96.6060604%40freemind-tobe.com%3E"
+       TITLE="[hatari-devel] Profiling support to Hatari debugger">jb.berlioz at freemind-tobe.com
+       </A><BR>
+    <I>Sat May  1 20:10:30 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001958.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="001961.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1960">[ date ]</a>
+              <a href="thread.html#1960">[ thread ]</a>
+              <a href="subject.html#1960">[ subject ]</a>
+              <a href="author.html#1960">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eero Tamminen wrote:
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> I was thinking of adding profiling support to the Hatari debugger:
+</I>&gt;<i> --------
+</I>&gt;<i> 'profile' - profile which part of the code is most used
+</I>&gt;<i> Usage:  profile &lt;instruction count&gt; [show count]
+</I>&gt;<i>         Runs the emulation a given number of instructions and shows
+</I>&gt;<i>         which addresses were most used.
+</I>&gt;<i> --------
+</I>&gt;<i> 
+</I>&gt;<i> I was thinking of implementing most of this functionality outside of Hatari.
+</I>&gt;<i> 
+</I>&gt;<i> On the Hatari side this would enable SPCFLAG_DEBUGGER flag to catch
+</I>&gt;<i> every instruction and pass their PC address outside of Hatari.
+</I>&gt;<i> 
+</I>&gt;<i> An external program would then process the PC address information,
+</I>&gt;<i> count how many times each address is executed and at the end print
+</I>&gt;<i> out the most used addresses.
+</I>&gt;<i> 
+</I>&gt;<i> I was thinking that Hatari could directly invoke the external program
+</I>&gt;<i> and feed the data to it through its stdin to avoid huge intermediate
+</I>&gt;<i> files and to get the information immediately.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Future profiling functionality could be:
+</I>&gt;<i> * In addition to addresses, give how many cycles was spent at that address
+</I>&gt;<i>   so that the program can count which addresses spend most cycles.
+</I>&gt;<i> * Pass the loaded (code) symbols addresses to the external program.
+</I>&gt;<i>   With this it can list which functions were called most often and how
+</I>&gt;<i>   many times.
+</I>&gt;<i> 
+</I>&gt;<i> (With the additional information about subroutine returns, the external
+</I>&gt;<i> program might eventually be even able to construct call graphs[1], but
+</I>&gt;<i> I think that quite unlikely. :-))
+</I>&gt;<i> 
+</I>&gt;<i> Comments?
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> 
+</I>&gt;<i> [1] <A HREF="http://code.google.com/p/jrfonseca/wiki/Gprof2Dot">http://code.google.com/p/jrfonseca/wiki/Gprof2Dot</A>
+</I>&gt;<i>      <A HREF="http://code.google.com/p/vcgviewer/">http://code.google.com/p/vcgviewer/</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+This would be a fantastic feature :)
+
+Tob&#233;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001958.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="001961.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1960">[ date ]</a>
+              <a href="thread.html#1960">[ thread ]</a>
+              <a href="subject.html#1960">[ subject ]</a>
+              <a href="author.html#1960">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Suggestion about small additions for v1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3Calpine.DEB.1.10.1005131120380.3410%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002197.html">
+   <LINK REL="Next"  HREF="002149.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Suggestion about small additions for v1.4</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3Calpine.DEB.1.10.1005131120380.3410%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Suggestion about small additions for v1.4">ae at dhs.nu
+       </A><BR>
+    <I>Thu May 13 13:44:01 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002197.html">[hatari-devel] Using GL for Hatari output on OSX
+</A></li>
+        <LI>Next message: <A HREF="002149.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2085">[ date ]</a>
+              <a href="thread.html#2085">[ thread ]</a>
+              <a href="subject.html#2085">[ subject ]</a>
+              <a href="author.html#2085">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 13 May 2010, Eero Tamminen wrote:
+
+&gt;<i> I assumed it was slower than you would like it to be, not slower than it
+</I>&gt;<i> should be (as it works fine for me).  If you expect to be understood, you
+</I>&gt;<i> need to quantify your issues properly / be exact (give FPS numbers etc).
+</I>
+Ok, here we go again.
+
+Machine 1
+---------
+Macbook Pro
+OS X 10.6.3
+4 GB memory
+2.2 GHz Core2Duo
+Gforce 8600M 128MB 1440x900 60 Hz
+Hatari repo 12 may 2010
+
+Machine 2
+---------
+Hardware is the same as machine 1
+Ubuntu Linux 10.4 in VMware under OS X 10.6.3
+1280x720 window on OS X desktop
+
+Machine 3
+---------
+Mac Mini
+OS X 10.6.3
+2GB memory
+1.8 GHz Core2Duo
+Intel GMA 950 1920x1080 60 Hz and 50 Hz
+Hatari repo 12 may 2010
+
+Machine 4
+---------
+Fujitsu U9200
+Ubuntu Linux 9.10
+2GB memory
+2.2 GHz Core2Duo
+Intel GMA 965 1280x800 60 Hz
+Hatari repo 12 may 2010
+
+
+
+Test setup:
+
+Atari STe
+2 MB memory
+TOS 1.62
+Blitter ON
+More accurate CPU ON
+Frameskip 0
+
+Froggies Over The Fence main menu (<A HREF="http://pouet.net/prod.php?which=8936">http://pouet.net/prod.php?which=8936</A>)
+
+  ---------------------------------------
+|<i> Machine     | W1x | W2x | FS1x | FS2x |
+</I>|<i>=======================================|
+</I>|<i> Macbook Pro | 35% | 65% | 21%  | 23%  |
+</I>|<i>---------------------------------------|
+</I>|<i> VMware      | 19% | 20% | 18%  | 19%  |
+</I>|<i>---------------------------------------|
+</I>|<i> Mac Mini    | 31% | 76% | 15%  | 18%  |
+</I>|<i>---------------------------------------|
+</I>|<i> U9200       | 35% | 37% | 23%  | 26%  |
+</I>  ---------------------------------------
+
+W1x = Windowed mode 1x zoom
+W2x = Windowed mode 2x zoom
+FS1x = Fullscreen mode 1x zoom
+FS2x = Fullscreen mode 2x zoom
+
+So what conclusions we can draw from this is that running Hatari inside a 
+virtual machine with Ubuntu is (much) faster than running it native in OS 
+X. Both for windowed mode and fullscreen mode. This if anything should 
+make it pretty clear that something is not done perfectly in the OS X 
+rendering.
+
+I could do more tests with more machines, but I think this shows that 
+something is not working as it should.
+
+
+If we look at CPU useage increase between windowed 1x and 2x zoom:
+
+Macbook Pro : 1.86 times slower
+VMware      : 1.05 times slower
+Mac Mini    : 2.45 times slower
+U9200       : 1.06 times slower
+
+&gt;<i>From this we can see that the 2x zoom makes 5-6% difference in Ubuntu both 
+</I>on real ahrdware on virtualised inside VMware/OS X.
+The native OS X version slowes down a lot more.
+
+
+Next the comparison for fullscreen 1x and 2x zoom:
+
+Macbook Pro : 1.10 times slower
+VMware      : 1.06 times slower
+Mac Mini    : 1.20 times slower
+U9200       : 1.13 times slower
+
+And in fullscreen OS X is much more on par with the rest, I'd say the 
+differencies here are within the margin of error.
+
+
+Can you now belive that the OS X version of Hatari renders much too slow 
+in windowed mode?
+
+
+
+&gt;<i> Just to verify, even when running hatari with both &quot;--statusbar off&quot;
+</I>&gt;<i> and &quot;--drive-led off&quot; options, it's slow in windowed mode?
+</I>
+Yes, it doesn't matter as long as long as the HUD is not active. If the 
+HUD becomes active, it will slow down in OS X windowed mode only.
+
+
+&gt;<i> If your OS / SDL is limiting (Vsync()ing) window updates to your (LCD)
+</I>&gt;<i> monitor updates (60Hz?) and you ask the emulation to run at higher screen
+</I>&gt;<i> update frequency, things will *obviously* be slower than they should.
+</I>
+I don't ask it to be faster than the host screen frequency if vsync is 
+used, how could I? My host is either 60 or 50 Hz and the Atari ST/e is at 
+50 Hz. I don't do these tests in monochrome mode.
+
+
+
+&gt;&gt;<i> Wonderful, I knew this was coming, Hatari is fault free and the problem
+</I>&gt;&gt;<i> lies elsewhere, even though Hatari includes the &quot;elsewhere&quot; code.
+</I>&gt;<i>
+</I>&gt;<i> Jerome reported that it's not a problem for him.  Do you have different
+</I>&gt;<i> SDL or OSX version than him?
+</I>
+I don't know, and I'm really not good enough to code, profile or trace C.
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002197.html">[hatari-devel] Using GL for Hatari output on OSX
+</A></li>
+	<LI>Next message: <A HREF="002149.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2085">[ date ]</a>
+              <a href="thread.html#2085">[ thread ]</a>
+              <a href="subject.html#2085">[ subject ]</a>
+              <a href="author.html#2085">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

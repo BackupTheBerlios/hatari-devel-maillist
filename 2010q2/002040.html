@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005102211300.26510%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002039.html">
+   <LINK REL="Next"  HREF="002042.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005102211300.26510%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon May 10 22:35:06 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002039.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002042.html">[hatari-devel] Monochrome assert
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2040">[ date ]</a>
+              <a href="thread.html#2040">[ thread ]</a>
+              <a href="subject.html#2040">[ subject ]</a>
+              <a href="author.html#2040">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 10 May 2010, David Savinkoff wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> I was using TOS206us.IMG (60 Hz)
+</I>
+Hello,
+I understand better why we had such differences :)
+
+&gt;<i> the results below are for
+</I>&gt;<i> TOS206uk.IMG (50 Hz) &quot;desiredAudioSpec.samples = 0&quot;
+</I>&gt;<i> ALSA is used on my system.
+</I>
+I also made some tests with samples = 0 and I get more different results 
+than yours.
+
+For example, at 44100, I get :
+SoundBufferSize 940 SAMPLES_PER_FRAME 882 nGeneratedSamples 1822 , ActiveSndBufIdx 3409
+-&gt; same than when I use desiredAudioSpec.samples=1024
+
+but for 32000 Hz, I get :
+SoundBufferSize 2048 SAMPLES_PER_FRAME 640 nGeneratedSamples 2688 , ActiveSndBufIdx 13961
+-&gt; less data to send than 44100, but bigger SoundBufferSize ?!
+
+I have the feeling that if the sound card has native support for the 
+required freq, then it computes an optimized values, else you get a power 
+of 2 buffer size.
+
+
+&gt;<i> 44100 Hz
+</I>&gt;<i> SoundBufferSize 2048 SAMPLES_PER_FRAME 882 nGeneratedSamples 2930 , ActiveSndBufIdx 7026
+</I>SoundBufferSize 940 SAMPLES_PER_FRAME 882 nGeneratedSamples 1822 , ActiveSndBufIdx 3409
+
+&gt;<i> 32000 Hz
+</I>&gt;<i> SoundBufferSize 2048 SAMPLES_PER_FRAME 640 nGeneratedSamples 2688 , ActiveSndBufIdx 8832
+</I>SoundBufferSize 2048 SAMPLES_PER_FRAME 640 nGeneratedSamples 2688 , ActiveSndBufIdx 13961
+
+&gt;<i> 
+</I>&gt;<i> 25033 Hz
+</I>&gt;<i> SoundBufferSize 2048 SAMPLES_PER_FRAME 501 nGeneratedSamples 2549 , ActiveSndBufIdx 501
+</I>SoundBufferSize 801 SAMPLES_PER_FRAME 501 nGeneratedSamples 1302 , ActiveSndBufIdx 14367
+
+&gt;<i> 
+</I>&gt;<i> 22050 Hz
+</I>&gt;<i> SoundBufferSize 1024 SAMPLES_PER_FRAME 441 nGeneratedSamples 1465 , ActiveSndBufIdx 11705
+</I>SoundBufferSize 705 SAMPLES_PER_FRAME 441 nGeneratedSamples 1146 , ActiveSndBufIdx 10626
+
+&gt;<i> 
+</I>&gt;<i> 16000 Hz
+</I>&gt;<i> SoundBufferSize 1024 SAMPLES_PER_FRAME 320 nGeneratedSamples 1344 , ActiveSndBufIdx 11584
+</I>SoundBufferSize 1024 SAMPLES_PER_FRAME 320 nGeneratedSamples 1344 , ActiveSndBufIdx 6351
+
+&gt;<i> 
+</I>&gt;<i> SDL works as advertised, but SoundBufferSize is too big.
+</I>
+By &quot;advertised&quot;, do you mean you don't have delay at 11025 Hz when setting 
+&quot;desiredAudioSpec.samples = 0&quot; ?
+
+&gt;<i> Maybe hatari can calculate SoundBufferSize
+</I>
+I had a look at SDL's audio part. The size returned by SDL_OpenAudio is 
+directly computed by the alsa subsytem, which in turn gets its values by 
+calling the corresponding functions of the driver for the audio card.
+
+In your case, the computed values are much bigger than what I get.
+
+What do you see as a card/chip when you run alsamixer in a terminal ?
+(mine is Shuttle SN25P / VIA Technologies VIA1617A )
+
+I was thinking about integrating SDL's code into hatari to compute 
+desiredAudioSpec.samples for a 46 ms delay, but I need to be sure it's not 
+overriden by the alsa driver.
+If you set desiredAudioSpec.samples to 508 (=46 ms at 11 kHz) and then run 
+hatari at freq 11025, what output do you get in stderr ?
+
+Also, could you try to install sdl 1.2.14 to see if things change ?
+
+Thanks
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002039.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002042.html">[hatari-devel] Monochrome assert
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2040">[ date ]</a>
+              <a href="thread.html#2040">[ thread ]</a>
+              <a href="subject.html#2040">[ subject ]</a>
+              <a href="author.html#2040">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

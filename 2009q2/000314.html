@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mouse ungrab, palette?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20ungrab%2C%20palette%3F&In-Reply-To=%3Calpine.LMD.2.00.0906031001140.23163%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000313.html">
+   <LINK REL="Next"  HREF="000312.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mouse ungrab, palette?</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20ungrab%2C%20palette%3F&In-Reply-To=%3Calpine.LMD.2.00.0906031001140.23163%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Mouse ungrab, palette?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Jun  3 10:05:36 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000313.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+        <LI>Next message: <A HREF="000312.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#314">[ date ]</a>
+              <a href="thread.html#314">[ thread ]</a>
+              <a href="subject.html#314">[ subject ]</a>
+              <a href="author.html#314">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 3 Jun 2009, Thomas Huth wrote:
+
+&gt;<i> On Mon, 1 Jun 2009 23:37:05 +0200 (CEST)
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> On Tue, 2 Jun 2009, Eero Tamminen wrote:
+</I>&gt;&gt;&gt;<i> On Monday 01 June 2009, Thomas H. wrote:
+</I>&gt;&gt;&gt;&gt;<i> I never used that feature in Steem, and I never missed it yet.
+</I>&gt;&gt;&gt;&gt;<i> Would it be sufficient to write other color values to the color
+</I>&gt;&gt;&gt;&gt;<i> register with the help of the debugger? Something like &quot;w ff8240
+</I>&gt;&gt;&gt;&gt;<i> 0f 00&quot; ?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Seems so.  As the color registers are different for:
+</I>&gt;&gt;&gt;<i> - ST/e: 16x 12/16-bit entries, ff8240-&gt;ff8260
+</I>&gt;&gt;&gt;<i> - TT: 256x  12/16-bit entries, ff8400-&gt;ff8500
+</I>&gt;&gt;&gt;<i> -Falcon/Videl: 256x 24/32-bit entries, ff9800-&gt;ff9c00
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> But if you write to ff8240 for instance and go back to the demo,
+</I>&gt;&gt;<i> chances are high that the demo will change ff8240 on the next VBL, so
+</I>&gt;&gt;<i> the write to ff8240 will be lost, and you will see the altered color
+</I>&gt;&gt;<i> only for a blink of the eye, not very useful.
+</I>&gt;<i>
+</I>&gt;<i> Well, but as long as the program still changes the color registers, it
+</I>&gt;<i> is still displaying something on the screen... I think this feature
+</I>&gt;<i> would mainly be useful when a program changes all color registers
+</I>&gt;<i> permanently to black to conceal what it is doing.
+</I>&gt;<i>
+</I>
+In my case, I found this feature useful in steem to see what is happening 
+when removing left/right border to obtain hardscroll. In that case, the 
+first lines will be black and not the rest of the screen. But if you 
+change the palette, you will see that the first lines are in fact a 
+combination of different left/right borders removal.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000313.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+	<LI>Next message: <A HREF="000312.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#314">[ date ]</a>
+              <a href="thread.html#314">[ thread ]</a>
+              <a href="subject.html#314">[ subject ]</a>
+              <a href="author.html#314">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

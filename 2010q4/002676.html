@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Spec512 mode for med res
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Spec512%20mode%20for%20med%20res&In-Reply-To=%3C4CFC154E.6040401%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002675.html">
+   <LINK REL="Next"  HREF="002677.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Spec512 mode for med res</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Spec512%20mode%20for%20med%20res&In-Reply-To=%3C4CFC154E.6040401%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Spec512 mode for med res">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Dec  5 23:42:22 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002675.html">[hatari-devel] Spec512 mode for med res
+</A></li>
+        <LI>Next message: <A HREF="002677.html">[hatari-devel] Spec512 mode for med res
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2676">[ date ]</a>
+              <a href="thread.html#2676">[ thread ]</a>
+              <a href="subject.html#2676">[ subject ]</a>
+              <a href="author.html#2676">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 05/12/2010 23:12, Eero Tamminen a &#233;crit :
+
+&gt;<i> Btw. I noticed that you fixed also some screen offset issues.  Are you
+</I>&gt;<i> looking also into the &quot;Defence Force: Save The Eearth&quot;, DHS &quot;Cernit
+</I>&gt;<i> Trandafir&quot;&amp;  &quot;More or Less Zero&quot; screen offset issues ?
+</I>&gt;<i>
+</I>
+Yes, this was fixed in rev 3112 (shift 8 pixels to the left), but I 
+didn't explicitly list the fixed demos. This corrected demos using 224 
+bytes overscan on STE without hi/lo stabilizer (Save the earth, 
+DHS'ones, ...)
+As reported by Anders, I still need to improve emulation in the case 
+when hscroll is set to &gt; 0, as there're still some errors in the last 16 
+pixels of such lines.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002675.html">[hatari-devel] Spec512 mode for med res
+</A></li>
+	<LI>Next message: <A HREF="002677.html">[hatari-devel] Spec512 mode for med res
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2676">[ date ]</a>
+              <a href="thread.html#2676">[ thread ]</a>
+              <a href="subject.html#2676">[ subject ]</a>
+              <a href="author.html#2676">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [hatari-tracking] [Bug #17567] Execution of	given path
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Bhatari-tracking%5D%20%5BBug%20%2317567%5D%20Execution%20of%0A%09given%20path&In-Reply-To=%3C201010052126.24875.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="002447.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [hatari-tracking] [Bug #17567] Execution of	given path</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Bhatari-tracking%5D%20%5BBug%20%2317567%5D%20Execution%20of%0A%09given%20path&In-Reply-To=%3C201010052126.24875.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] [hatari-tracking] [Bug #17567] Execution of	given path">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Oct  5 20:26:24 CEST 2010</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="002447.html">[hatari-devel] [hatari-tracking] [Bug #17567] Execution of	given path
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2446">[ date ]</a>
+              <a href="thread.html#2446">[ thread ]</a>
+              <a href="subject.html#2446">[ subject ]</a>
+              <a href="author.html#2446">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I think for features it's better to discuss them on the developer
+mailing list and leave bug tracker for bugs.
+
+On Tuesday 05 October 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">admin at berlios.de</A> wrote:
+&gt;<i> Details: Another feature request -- command line (optionally GUI, too)
+</I>&gt;<i> options like
+</I>&gt;<i>
+</I>&gt;<i> hatari --exec $HOME/atari/projects/something/file.prg
+</I>
+As that's not an image, it needs GEMDOS hard disk emulation &amp; the program
+work with that (i.e. it cannot e.g. be a MiNT program).
+
+What this would use as a hard disk emulation directory, the last part of the
+path and current dir if no path is given?
+
+
+&gt;<i> or, if too complicated:
+</I>&gt;<i>
+</I>&gt;<i> hatari --exec 'c:\tools\file.prg' (i.e. path on mapped atari disk)
+</I>&gt;<i>
+</I>&gt;<i> Reason: now the development with Hatari is quite a pain, I can map a
+</I>&gt;<i> keyboard shortcuts for build actions but I can't actually _run_ the
+</I>&gt;<i> result. I have to always switch to hatari, click on file.prg and leave.
+</I>&gt;<i>
+</I>&gt;<i> For example, Atari800 provides such functionality and it's asskicking.
+</I>
+Does Atari800 have an OS and multiple versions of it? :-)
+
+As Hatari is a low level emulator, the problem is delaying the execution
+until the OS is ready for the program to run and inserting stuff inside
+the emulation.
+
+Thomas, do you see any feasible way to do that from inside Hatari?
+
+
+I think it's much easier to do/kludge from outside.  Attached is a shell
+script for that and desktop.inf file that it uses as a template.  Before
+using the script, modify it to point where you saved the INF file.
+
+Maybe Hatari installation should include a script like that?
+
+
+&gt;<i> Also, what about redirection of CON output? I'd kill for such a feature,
+</I>&gt;<i> i.e. have a possibility to see my text/debug messages on console. It's
+</I>&gt;<i> not hard probably as PRN and AUX is already here!
+</I>
+Hatari emulates printer and serial at hardware level and its the HW stuff
+that's being redirected.  PRN, AUX &amp; CON are higher level OS concepts.
+There's no separe CON hardware, screen is handled as pixels.  I.e. this will
+require OS level interception.
+
+Hatari already has support for VDI, GEMDOS, BIOS and XBIOS interception, but
+all of them require user to use additional options as each will have some
+drawback.  Which actual OS functions you're interested to redirect?
+
+GEMDOS Cconout() &amp; Cconws(), BIOS Bconout()?
+
+Note that this may have funny effects because also many other things could
+be using these and your host terminal's escape sequences and control
+characters most likely differ from Atari ones.  Filtering escape &amp; control
+characters would probably be a good idea with something like that.
+
+
+&gt;<i> For detailed info, follow this link:
+</I>&gt;<i> 
+</I><A HREF="http://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=17567&amp;group_id=10436">http://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=17567&amp;group_id=10436</A>
+
+
+	- Eero
+-------------- next part --------------
+#a000000
+#b001000
+#c7770007000600070055200505552220770557075055507703111302
+#d
+#Z 01 A:\TRACKER.PRG@
+#E D8 11
+#W 00 00 10 01 17 17 13 A:\*.*@
+#W 00 00 08 0B 1D 0D 00 @
+#W 00 00 0A 0F 1A 09 00 @
+#W 00 00 0E 01 1A 09 00 @
+#M 00 01 05 FF B FLOPPY@ @
+#M 00 00 05 FF A FLOPPY@ @
+#T 00 03 02 FF   SHREDDER@ @
+#F FF 04   @ *.*@
+#D FF 01   @ *.*@
+#P 03 04   @ *.*@
+#G 03 FF   *.APP@ @
+#G 03 FF   *.PRG@ @
+#P 03 FF   *.TTP@ @
+#F 03 04   *.TOS@ @
+#F 03 04   *.EXE@ @
+#F 03 04   *.COM@ @
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: hatari-tosrun.sh
+Type: application/x-shellscript
+Size: 1182 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20101005/c12b00b2/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20101005/c12b00b2/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="002447.html">[hatari-devel] [hatari-tracking] [Bug #17567] Execution of	given path
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2446">[ date ]</a>
+              <a href="thread.html#2446">[ thread ]</a>
+              <a href="subject.html#2446">[ subject ]</a>
+              <a href="author.html#2446">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

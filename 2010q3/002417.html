@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Using more GCC warnings?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Using%20more%20GCC%20warnings%3F&In-Reply-To=%3C201009190212.50311.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002416.html">
+   <LINK REL="Next"  HREF="002419.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Using more GCC warnings?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Using%20more%20GCC%20warnings%3F&In-Reply-To=%3C201009190212.50311.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Using more GCC warnings?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Sep 19 01:12:49 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002416.html">[hatari-devel] Using more GCC warnings?
+</A></li>
+        <LI>Next message: <A HREF="002419.html">[hatari-devel] Web page pointer to PASTI floppy image format
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2417">[ date ]</a>
+              <a href="thread.html#2417">[ thread ]</a>
+              <a href="subject.html#2417">[ subject ]</a>
+              <a href="author.html#2417">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 18 September 2010, Nicolas Pomar&#232;de wrote:
+&gt;<i> &gt; So I think &quot;-Wextra -Wno-unused-parameter&quot; is better.
+</I>&gt;<i>
+</I>&gt;<i> I would have the same opinion as Thomas on this, I really don't like
+</I>&gt;<i> when code gets crippled by some gcc's specific statements.
+</I>
+With above, no GCC specific things are needed in code.
+
+
+&gt;<i> &gt; With that the only warning comes from here:
+</I>&gt;<i> &gt; --------------
+</I>&gt;<i> &gt; In file included from ./hatari/src/xbios.c:19:
+</I>&gt;<i> &gt; ./hatari/src/includes/m68000.h: In function
+</I>&gt;<i> &gt; &#8216;M68000_AddCyclesWithPairing&#8217;: ./hatari/src/includes/m68000.h:263:
+</I>&gt;<i> &gt; warning: suggest braces around empty body in an &#8216;else&#8217; statement
+</I>&gt;<i> &gt; ---------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Maybe that could be fixed?
+</I>&gt;<i>
+</I>&gt;<i> I could add a {;} statement in the else, but as it doesn't produce
+</I>&gt;<i> warnings with the current flags, I'm not sure this is needed unless we
+</I>&gt;<i> change the flags.
+</I>
+That comes from warning -Wempty-body included into -Wextra.
+I'm not completely sure from what kind of coding errors would
+be indicated by an empty body which occurs in an if, else or do while
+statement...
+
+If you don't think it's important, that can be disabled too:
+	-Wextra -Wno-unused-parameter -Wno-empty-body
+
+After that the current code doesn't generate extra warnings.
+
+
+&gt;<i> &gt; Btw. there are also these:
+</I>&gt;<i> &gt; $ grep CMAKE_C_FLAGS $(find -name CMakeLists.txt)
+</I>&gt;<i> &gt; gui-sdl/CMakeLists.txt:set(CMAKE_C_FLAGS &quot;${CMAKE_C_FLAGS}
+</I>&gt;<i> &gt; -Wno-write-strings&quot;) uae-cpu/CMakeLists.txt:set(CMAKE_C_FLAGS
+</I>&gt;<i> &gt; &quot;${CMAKE_C_FLAGS} -Wno-unused -Wno-sign-compare -Wno-shadow&quot;)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Not checking for sign comparison can leave pretty hard to find bugs.
+</I>&gt;<i>
+</I>&gt;<i> Considering this is in uae cpu's emulation, I'm pretty sure this is for
+</I>&gt;<i> speed reason and to avoid unnecessary casts and that's there no bug
+</I>&gt;<i> caused by this. Trying to remove no-sign-compare and to fix all the code
+</I>&gt;<i> would certainly cause regression and require quite some time to fix.
+</I>
+I looked a bit into these warnings.  They are ones like this:
+./src/uae-cpu/cpuemu.c: In function &#8216;op_d179_5_ff&#8217;:
+./src/uae-cpu/cpuemu.c:66069: warning: comparison of promoted ~unsigned with 
+unsigned
+
+They seem to be coming from first having signed variables:
+      uae_s16 src = m68k_dreg(regs, srcreg);
+      uae_s16 dst = get_word(dsta);
+
+And then doing this with it:
+        SET_CFLG (((uae_u16)(~dst)) &lt; ((uae_u16)(src)));
+
+Which seems fine.
+
+(There are also 8 bit variants of this.)
+
+
+But it would be nice for sign-compare to be disabled in CMakeLists.txt
+only for cpuemu.c which is the only C-file generating warnings, and not
+for rest of C-files under uae-cpu/.
+
+
+Then another thing is that the disabling GCC flags in aue-cpu and gui-sdl
+subdirectories is done (unlike in the main CMakeLists.txt file) without
+checking whether GCC is actually used as compiler...  Somebody should
+fix that.
+
+
+&gt;&gt;<i> And at least on Unix, const strings go to a read-only memory section so
+</I>&gt;&gt;<i> trying to write into them would cause a segfault, so it would be nice
+</I>&gt;&gt;<i> to fix sdl-gui at some point too (currently it gives a huge amount of
+</I>&gt;&gt;<i> warnings for that) to find out the issues at compile time instead of
+</I>&gt;&gt;<i> run-time...
+</I>
+I'll look into this later.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002416.html">[hatari-devel] Using more GCC warnings?
+</A></li>
+	<LI>Next message: <A HREF="002419.html">[hatari-devel] Web page pointer to PASTI floppy image format
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2417">[ date ]</a>
+              <a href="thread.html#2417">[ thread ]</a>
+              <a href="subject.html#2417">[ subject ]</a>
+              <a href="author.html#2417">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

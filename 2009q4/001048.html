@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] HDD initialization oddities in Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20HDD%20initialization%20oddities%20in%20Hatari&In-Reply-To=%3C200912012303.57213.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001046.html">
+   <LINK REL="Next"  HREF="001050.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] HDD initialization oddities in Hatari</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20HDD%20initialization%20oddities%20in%20Hatari&In-Reply-To=%3C200912012303.57213.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] HDD initialization oddities in Hatari">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Dec  1 22:03:56 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001046.html">[hatari-devel] ACSI/DMA emulation issues, Test Unit Ready
+</A></li>
+        <LI>Next message: <A HREF="001050.html">[hatari-devel] TOS 3.06 and double click
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1048">[ date ]</a>
+              <a href="thread.html#1048">[ thread ]</a>
+              <a href="subject.html#1048">[ subject ]</a>
+              <a href="author.html#1048">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+With IDE (--ide-master &lt;image&gt;):
+------
+IDE: Opening /home/eerot/diskstuff/HDD-32MB.image
+IDE: Opening /home/eerot/hatari/src
+GEMDOS HDD emulation, C: &lt;-&gt; /home/eerot/diskstuff/GEMDOS-HD/C.
+GEMDOS HDD emulation, E: &lt;-&gt; /home/eerot/diskstuff/GEMDOS-HD/E.
+------
+
+With ACSI (--acsi &lt;image&gt;):
+-----
+Hard drive image /home/eero/down/st/diskstuff/HDD-32MB.image mounted.
+Drive Letter C is already mapped to HDD image (cannot map GEMDOS drive 
+to /home/eero/down/st/diskstuff/GEMDOS-HD/C).
+GEMDOS HDD emulation, E: &lt;-&gt; /home/eero/down/st/diskstuff/GEMDOS-HD/E.
+-----
+
+Questions &amp; comments:
+- Why IDE code tries to open current work directory?
+- Why opening GEMDOS C drive fails with ACSI although it works with IDE?
+
+
+Other notes:
+- All of IDE, ACSI and GEMDOS check the drive and do logging in different
+  place:
+----------
+        if (ConfigureParams.HardDisk.bUseHardDiskImage)
+        {
+                char *szHardDiskImage = 
+ConfigureParams.HardDisk.szHardDiskImage;
+                if (HDC_Init(szHardDiskImage))
+                        printf(&quot;Hard drive image %s mounted.\n&quot;, 
+szHardDiskImage);
+                else
+                        printf(&quot;Couldn't open HD file: %s, or no 
+partitions\n&quot;, szHardDiskImage);
+        }
+        Ide_Init();
+        GemDOS_Init();
+        if (ConfigureParams.HardDisk.bUseHardDiskDirectories)
+        {
+                GemDOS_InitDrives();
+        }
+---------
+- ASCI logging doesn't tell (remind user) what kind of hard drive image
+  was opened.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001046.html">[hatari-devel] ACSI/DMA emulation issues, Test Unit Ready
+</A></li>
+	<LI>Next message: <A HREF="001050.html">[hatari-devel] TOS 3.06 and double click
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1048">[ date ]</a>
+              <a href="thread.html#1048">[ thread ]</a>
+              <a href="subject.html#1048">[ subject ]</a>
+              <a href="author.html#1048">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

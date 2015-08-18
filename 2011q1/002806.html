@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mahabharata demo problem ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mahabharata%20demo%20problem%20%3F&In-Reply-To=%3C4D320A54.9010602%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002804.html">
+   <LINK REL="Next"  HREF="002807.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mahabharata demo problem ?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mahabharata%20demo%20problem%20%3F&In-Reply-To=%3C4D320A54.9010602%40free.fr%3E"
+       TITLE="[hatari-devel] Mahabharata demo problem ?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Jan 15 21:57:56 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002804.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+        <LI>Next message: <A HREF="002807.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2806">[ date ]</a>
+              <a href="thread.html#2806">[ thread ]</a>
+              <a href="subject.html#2806">[ subject ]</a>
+              <a href="author.html#2806">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've given a try to the patch.
+
+No regression found.
+Is it me, or is the screen between to screens in a demo are better with 
+the patch ?
+(I mean, between each demo screen, when resolution of screen size 
+change, it always took a little time (but visible and now, it seems to 
+have disapeared).
+
+For Videl, shouldn't horizontal size be read in
+     $FF8288 (word) : HDB - Horizontal Display Begin
+     $FF828A (word) : HDE - Horizontal Display End
+
+instead of     $FF8210 (word) : VWRAP - line width ?
+
+For vertical size, we read
+     $FF82A8 (word) : VDB - Vertical Display Begin
+     $FF82AA (word) : VDE - Vertical Display End
+
+
+I had compiled all the videl registers for when I would work on it.
+Here it is, perhaps it could be included as comment at top of the videl 
+file ?
+
+/*
+   It can run at 2 frequencies : 25 Mhz or 32 MHz
+
+   Hardware I/O registers:
+     $FF8006 (byte) : monitor type
+     $FF820E (word) : offset to next line
+     $FF8210 (word) : VWRAP - line width
+     $FF8260 (byte) : ST shift mode
+     $FF8265 (byte) : Horizontal scroll register
+     $FF8266 (word) : Falcon shift mode
+     $FF8280 (word) : HHC - Horizontal Hold Counter
+     $FF8282 (word) : HHT - Horizontal Hold Timer
+     $FF8284 (word) : HBB - Horizontal Border Begin
+     $FF8286 (word) : HBE - Horizontal Border End
+     $FF8288 (word) : HDB - Horizontal Display Begin
+     $FF828A (word) : HDE - Horizontal Display End
+     $FF828C (word) : HSS - Horizontal SS
+     $FF828E (word) : HFS - Horizontal FS
+     $FF8290 (word) : HEE - Horizontal EE
+     $FF82A0 (word) : VFC - Vertical Frequency Counter
+     $FF82A2 (word) : VFT - Vertical Frequency Timer
+     $FF82A4 (word) : VBB - Vertical Border Begin
+     $FF82A6 (word) : VBE - Vertical Border End
+     $FF82A8 (word) : VDB - Vertical Display Begin
+     $FF82AA (word) : VDE - Vertical Display End
+     $FF82AC (word) : VSS - Vertical SS
+     $FF82C0 (word) : VCO - Video control
+     $FF82C2 (word) : VMD - Video mode
+*/
+
+Regards
+
+Laurent
+
+
+
+Le 15/01/2011 21:30, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On lauantai 15 tammikuu 2011, Eero Tamminen wrote:
+</I>&gt;&gt;<i> Not unbounded sizes.  During the demo, 5120x200 and 5120x240
+</I>&gt;&gt;<i> sized resolutions are requested several times.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I think there could be some corner-case that Hatari Videl code isn't
+</I>&gt;&gt;<i> emulating.   Maybe the real HW clips large resolutions and like ST/STE
+</I>&gt;&gt;<i> does something &quot;unexpected&quot; when being requested funny resolution
+</I>&gt;&gt;<i> changes.
+</I>&gt;<i> Videl code does following:
+</I>&gt;<i>
+</I>&gt;<i> get width (register is scanline size in words):
+</I>&gt;<i>          (handleReadW(HW + 0x10)&amp;  0x03ff) * 16 / VIDEL_getScreenBpp();
+</I>&gt;<i>
+</I>&gt;<i> get bpp:
+</I>&gt;<i> ---------------------
+</I>&gt;<i>          int f_shift = handleReadW(HW + 0x66);
+</I>&gt;<i>          int st_shift = handleRead(HW + 0x60);
+</I>&gt;<i>          /* to get bpp, we must examine f_shift and st_shift.
+</I>&gt;<i>           * f_shift is valid if any of bits no. 10, 8 or 4
+</I>&gt;<i>           * is set. Priority in f_shift is: 10 &quot;&gt;&quot; 8&quot;&gt;&quot; 4, i.e.
+</I>&gt;<i>           * if bit 10 set then bit 8 and bit 4 don't care...
+</I>&gt;<i> 	...
+</I>&gt;<i>          if (f_shift&amp;  0x400)            /* Falcon: 2 colors */
+</I>&gt;<i>                  bits_per_pixel = 1;
+</I>&gt;<i>          else if (f_shift&amp;  0x100)       /* Falcon: hicolor */
+</I>&gt;<i>                  bits_per_pixel = 16;
+</I>&gt;<i> ---------------------
+</I>&gt;<i>
+</I>&gt;<i> If scanline register value is 320, and bpp gets set to 1 instead of 16:
+</I>&gt;<i> -&gt;  width = 5120
+</I>&gt;<i>
+</I>&gt;<i> And indeed when I traced changes in all of these registers:
+</I>&gt;<i> b (0xff8210).w ! (0xff8210).w :trace
+</I>&gt;<i> b (0xff8266).w ! (0xff8266).w :trace
+</I>&gt;<i> b (0xff8260).b ! (0xff8260).b :trace
+</I>&gt;<i>
+</I>&gt;<i> Whenever the window goes too wide, I see:
+</I>&gt;<i>    $ff8266 = $400
+</I>&gt;<i> 2. CPU breakpoint condition(s) matched 1 times.
+</I>&gt;<i> WARNING: too large screen size 5120x240 -&gt;  divided by 4x1!
+</I>&gt;<i>    $ff8266 = $100
+</I>&gt;<i>
+</I>&gt;<i> I.e. Falcon shifter control register 2-color mode bit is toggled, but
+</I>&gt;<i> nothing else.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I remember that monochrome toggling on color resolutions did something
+</I>&gt;<i> special on ST(e), maybe something similar should happen on Falcon's Videl?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> There's also this suspicious stuff in VIDEL_renderScreen():
+</I>&gt;<i>          if (since_last_change&gt;  2) {
+</I>&gt;<i>                  if (vw&gt;  0&amp;&amp;  vw != width) {
+</I>&gt;<i>                          Dprintf((&quot;CH width %d\n&quot;, width));
+</I>&gt;<i>                          width = vw;
+</I>&gt;<i>                          since_last_change = 0;
+</I>&gt;<i> ...
+</I>&gt;<i>         if (since_last_change == 3) {
+</I>&gt;<i>                  HostScreen_setWindowSize(width, height, bpp == 16 ? 16 : ...
+</I>&gt;<i>          }
+</I>&gt;<i>          if (since_last_change&lt;  4) {
+</I>&gt;<i>                  since_last_change++;
+</I>&gt;<i>                  return false;
+</I>&gt;<i>          }
+</I>&gt;<i>
+</I>&gt;<i> This function is called from Video_DrawScreen() which is called from
+</I>&gt;<i> Video_InterruptHandler_VBL() and on fullscreen switches.
+</I>&gt;<i>
+</I>&gt;<i> -&gt;  The resolution is changed 3 VBLs later than it actually happens and
+</I>&gt;<i>       rendering of Falcon screen content to the Hatari window is skipped
+</I>&gt;<i>       during this time.
+</I>&gt;<i>
+</I>&gt;<i> Everything seems to work fine if I remove that (see the attached patch).
+</I>&gt;<i>
+</I>&gt;<i> Thomas?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110115/a6923551/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110115/a6923551/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002804.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+	<LI>Next message: <A HREF="002807.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2806">[ date ]</a>
+              <a href="thread.html#2806">[ thread ]</a>
+              <a href="subject.html#2806">[ subject ]</a>
+              <a href="author.html#2806">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

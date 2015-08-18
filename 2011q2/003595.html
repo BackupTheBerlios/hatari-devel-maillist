@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger usage examples?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20usage%20examples%3F&In-Reply-To=%3C201106132243.16665.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003592.html">
+   <LINK REL="Next"  HREF="003609.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger usage examples?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20usage%20examples%3F&In-Reply-To=%3C201106132243.16665.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Debugger usage examples?">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jun 13 21:43:16 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003592.html">[hatari-devel] Debugger usage examples?
+</A></li>
+        <LI>Next message: <A HREF="003609.html">[hatari-devel] Debugger usage examples?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3595">[ date ]</a>
+              <a href="thread.html#3595">[ thread ]</a>
+              <a href="subject.html#3595">[ subject ]</a>
+              <a href="author.html#3595">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On maanantai 13 kes&#228;kuu 2011, Miro Krop&#225;&#269;ek wrote:
+&gt;<i> One idea from me - what about some real world example, for example what
+</I>&gt;<i> do you do when do you see a crashing demo - how to efficiently find the
+</I>&gt;<i> bug.
+</I>
+It depends on what kind of crash bug is in guestion...
+
+If demo just freezes, I think &quot;profile&quot; (or &quot;dspprofile&quot; for DSP) command
+is IMHO best way to find out what it's doing and where in the code.
+
+After that shows where code is running, one can disassemble those
+places to see what it actually does.
+
+If it's checking some register, then one could do e.g. register value
+change tracing.
+
+
+&gt;<i> Or how to make trainer into some game (I can't forget Jindroush's
+</I>&gt;<i> introduction to Atari800 debugger at Atariada party some years ago, he
+</I>&gt;<i> showed me how to crack nearly any game under one minute, really
+</I>&gt;<i> impressive).
+</I>
+That I don't have experience with, but I would assume that search
+(which debugger is currently missing) to be useful...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003592.html">[hatari-devel] Debugger usage examples?
+</A></li>
+	<LI>Next message: <A HREF="003609.html">[hatari-devel] Debugger usage examples?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3595">[ date ]</a>
+              <a href="thread.html#3595">[ thread ]</a>
+              <a href="subject.html#3595">[ subject ]</a>
+              <a href="author.html#3595">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

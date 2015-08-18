@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger crash changes / zeroing global variables
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2012q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20crash%20changes%20/%20zeroing%20global%20variables&In-Reply-To=%3C4F120C24.1050203%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004255.html">
+   <LINK REL="Next"  HREF="004257.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger crash changes / zeroing global variables</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20crash%20changes%20/%20zeroing%20global%20variables&In-Reply-To=%3C4F120C24.1050203%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Debugger crash changes / zeroing global variables">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jan 15 00:13:40 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004255.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+        <LI>Next message: <A HREF="004257.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4256">[ date ]</a>
+              <a href="thread.html#4256">[ thread ]</a>
+              <a href="subject.html#4256">[ subject ]</a>
+              <a href="author.html#4256">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 14/01/2012 23:43, Eero Tamminen wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On sunnuntai 15 tammikuu 2012, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;<i> (no time on my side to run mudflap option, but you can give it a try if
+</I>&gt;&gt;<i> you want, it's quite likely you get the same crash with TB2 demo)
+</I>&gt;<i>
+</I>&gt;<i> Could you send the demo to me (pouet.net links aren't working)?
+</I>&gt;<i>
+</I>
+I sent it in a separate mail
+
+&gt;<i> Where / in which order variables are placed in memory is compiler, its
+</I>&gt;<i> version and optimization level dependent.   Some compilers might put also
+</I>&gt;<i> zeroed variables to BSS.  With some other compilers, their versions or
+</I>&gt;<i> different compile options, more critical variables might be overwritten.
+</I>
+yes, of course. But in the end, I think the problem happens only with 
+TB2 specific timings, so even if variables are in different order, 
+unless a program does the same thing as TB2, then there should be no 
+problem.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004255.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+	<LI>Next message: <A HREF="004257.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4256">[ date ]</a>
+              <a href="thread.html#4256">[ thread ]</a>
+              <a href="subject.html#4256">[ subject ]</a>
+              <a href="author.html#4256">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Cebit93 demo seems to run well too (no more	screen update problems)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Cebit93%20demo%20seems%20to%20run%20well%20too%20%28no%0A%20more%09screen%20update%20problems%29&In-Reply-To=%3C4D40A7A0.4050202%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002904.html">
+   <LINK REL="Next"  HREF="002905.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Cebit93 demo seems to run well too (no more	screen update problems)</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Cebit93%20demo%20seems%20to%20run%20well%20too%20%28no%0A%20more%09screen%20update%20problems%29&In-Reply-To=%3C4D40A7A0.4050202%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Cebit93 demo seems to run well too (no more	screen update problems)">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Jan 27 00:00:48 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002904.html">[hatari-devel] Cebit93 demo seems to run well too (no more	screen update problems)
+</A></li>
+        <LI>Next message: <A HREF="002905.html">[hatari-devel] Cebit93 demo seems to run well too (no more	screen update problems)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2906">[ date ]</a>
+              <a href="thread.html#2906">[ thread ]</a>
+              <a href="subject.html#2906">[ subject ]</a>
+              <a href="author.html#2906">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 26/01/2011 23:50, Laurent Sallafranque a &#233;crit :
+
+&gt;<i> True again, but for VBL, HBL, and Videl, I think there should be 2 video.c
+</I>&gt;<i> The Videl code should embbed the whole hbl, vbl and display code (as I
+</I>&gt;<i> did for the crossbar, where I've recoded the DMA code).
+</I>&gt;<i>
+</I>&gt;<i> As for sound where we choose between ST dma or Crossbar code, video
+</I>&gt;<i> should choose between video.c (ST, STE, TT ?) and videl.c (Falcon).
+</I>&gt;<i>
+</I>&gt;<i> Like this, the HBL, and the VBL would be Videl specific and not
+</I>&gt;<i> &quot;disturbed&quot; by all the specific shifter particularities.
+</I>&gt;<i>
+</I>&gt;<i> That's why I'd like to rewrite everything.
+</I>&gt;<i>
+</I>
+You don't have to rewrite everything, just add a few hooks.
+
+Video_InterruptHandler_VBL can be kept ; you would just need to create a 
+&quot;Video_StartInterrupts_Falcon&quot; function that starts HBL/Timer B (or 
+whatever exist under videl).
+
+Then in Video_InterruptHandler_HBL() for example immediatly calls 
+Video_InterruptHandler_HBL_Falcon if machine == FALCON.
+
+Then all code just have to be changed in falcon/ files, which limits 
+possible regressions in ST/STE mode.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002904.html">[hatari-devel] Cebit93 demo seems to run well too (no more	screen update problems)
+</A></li>
+	<LI>Next message: <A HREF="002905.html">[hatari-devel] Cebit93 demo seems to run well too (no more	screen update problems)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2906">[ date ]</a>
+              <a href="thread.html#2906">[ thread ]</a>
+              <a href="subject.html#2906">[ subject ]</a>
+              <a href="author.html#2906">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

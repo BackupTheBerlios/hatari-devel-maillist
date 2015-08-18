@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [Crossbar emulation] : new infos, + some help needed (complement of infos)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5BCrossbar%20emulation%5D%20%3A%20new%20infos%2C%0A%20%2B%20some%20help%20needed%20%28complement%20of%20infos%29&In-Reply-To=%3C4ABA386A.209%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000739.html">
+   <LINK REL="Next"  HREF="000741.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [Crossbar emulation] : new infos, + some help needed (complement of infos)</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5BCrossbar%20emulation%5D%20%3A%20new%20infos%2C%0A%20%2B%20some%20help%20needed%20%28complement%20of%20infos%29&In-Reply-To=%3C4ABA386A.209%40free.fr%3E"
+       TITLE="[hatari-devel] [Crossbar emulation] : new infos, + some help needed (complement of infos)">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Sep 23 17:02:02 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000739.html">[hatari-devel] [Crossbar emulation] : new infos, + some help needed
+</A></li>
+        <LI>Next message: <A HREF="000741.html">[hatari-devel] [Crossbar emulation] : new infos,	+ some help needed (complement of infos)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#740">[ date ]</a>
+              <a href="thread.html#740">[ thread ]</a>
+              <a href="subject.html#740">[ subject ]</a>
+              <a href="author.html#740">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>In complement to my precedent mail :
+
+In Crossbar_StartDspXmitHandler(void), I've implemented the 2 possible 
+frequencies (you can replace the berlios code by this one ) :
+
+(You can easily comment / uncomment the first part or the second part of 
+this function.
+(I listen to willi's adventure sound for my tests with DSP).
+
+In the first case, sound is beautiful, but plays too fast
+In the second case, sound is crappy but plays at correct frequency.
+
+Any idea ?
+
+Regards
+
+Laurent
+
+
+
+/**
+ * start a DSP xmit &quot;interrupt&quot; at frequency parametered in the crossbar
+ */
+static void Crossbar_StartDspXmitHandler(void)
+{
+    Uint16 nCbSrc = IoMem_ReadWord(0xff8930);
+    int freq = 1;
+    int nFreq = 1;
+    int nClkDiv;
+
+    /* Sound is beautiful, but plays too fast */
+/*
+    if ((nCbSrc &amp; 0x60) == 0x00)
+    {
+        freq = 25175000 / Crossbar_DetectSampleRate();
+    }
+    else if ((nCbSrc &amp; 0x60) == 0x40)
+    {
+        freq = 32000000 / Crossbar_DetectSampleRate();
+    }
+
+    Int_AddRelativeInterrupt(CPU_FREQ/freq/256, INT_CPU_CYCLE, 
+INTERRUPT_DSPXMIT);
+*/
+
+
+    /* Sound is crappy, but plays at correct speed */
+
+    nClkDiv = 256 * ((IoMem_ReadByte(0xff8935) &amp; 0x0f) + 1);
+
+    if ((nCbSrc &amp; 0x60) == 0x00)
+    {
+        /* Internal 25.175 MHz clock */
+        nFreq = 25175000 / nClkDiv;
+        Int_AddRelativeInterrupt((8013000+nFreq/2)/nFreq/2, 
+INT_CPU_CYCLE, INTERRUPT_DSPXMIT);
+    }
+    else if ((nCbSrc &amp; 0x60) == 0x40)
+    {
+        /* Internal 32 MHz clock */
+        nFreq = 32000000 / nClkDiv;
+        Int_AddRelativeInterrupt((CPU_FREQ+nFreq/2)/nFreq/2, 
+INT_CPU_CYCLE, INTERRUPT_DSPXMIT);
+    }
+}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000739.html">[hatari-devel] [Crossbar emulation] : new infos, + some help needed
+</A></li>
+	<LI>Next message: <A HREF="000741.html">[hatari-devel] [Crossbar emulation] : new infos,	+ some help needed (complement of infos)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#740">[ date ]</a>
+              <a href="thread.html#740">[ thread ]</a>
+              <a href="subject.html#740">[ subject ]</a>
+              <a href="author.html#740">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

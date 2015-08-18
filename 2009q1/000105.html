@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] cycle precise blitter accesses
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cycle%20precise%20blitter%20accesses&In-Reply-To=%3CPine.LNX.4.64.0902012014060.2386%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000104.html">
+   <LINK REL="Next"  HREF="000103.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] cycle precise blitter accesses</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cycle%20precise%20blitter%20accesses&In-Reply-To=%3CPine.LNX.4.64.0902012014060.2386%40localhost%3E"
+       TITLE="[hatari-devel] cycle precise blitter accesses">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Feb  1 20:15:41 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000104.html">[hatari-devel] cycle precise blitter accesses
+</A></li>
+        <LI>Next message: <A HREF="000103.html">[hatari-devel] palette problem on fuzion cd 2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#105">[ date ]</a>
+              <a href="thread.html#105">[ thread ]</a>
+              <a href="subject.html#105">[ subject ]</a>
+              <a href="author.html#105">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 1 Feb 2009, Jean-Baptiste Berlioz wrote:
+
+&gt;<i> Hi Nicolas,
+</I>&gt;<i>
+</I>&gt;<i> BlitterVars.op_cycles is used internally to store the amount of cycles
+</I>&gt;<i> cumulated while the blitter is performing a single operation.
+</I>&gt;<i> After each operation, it is used to decrement PendingInterruptCount and
+</I>&gt;<i> trigger pending interrupts (Blitter_FlushCycles()).
+</I>&gt;<i> Basically, this is an optimization : instead of checking for pending
+</I>&gt;<i> interrupts each time the blitter consumes some cycles, it is delayed
+</I>&gt;<i> after the operation is finished (an operation takes between 4 and 12
+</I>&gt;<i> cycles).
+</I>&gt;<i>
+</I>&gt;<i> Now, if you look at Blitter_AddCycles(), you will notice that it
+</I>&gt;<i> increase nCyclesMainCounter, each time the blitter reads or writes to
+</I>&gt;<i> memory. Blitter_AddCycles() is called after each read or write, and
+</I>&gt;<i> always consume 4 cycles + nWaitStateCycles.
+</I>&gt;<i>
+</I>&gt;<i> That's why Cycles_GetCounterOnWriteAccess() when BusMode is
+</I>&gt;<i> BUS_MODE_BLITTER is only: &quot;nAddCycles = 4 + nWaitStateCycles;&quot;
+</I>&gt;<i>
+</I>&gt;<i> Note that Blitter_AddCycles(int) is always called with (4) as
+</I>&gt;<i> argument... Maybe it could be changed to Blitter_AddNop() without the
+</I>&gt;<i> argument since it's constant.
+</I>&gt;<i>
+</I>&gt;<i> Tob&#233;
+</I>
+
+Thanks for the explanation ; I saw it was working in &quot;real life&quot; demos, 
+but I missed the part where nCyclesMainCounter was updated :)
+
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000104.html">[hatari-devel] cycle precise blitter accesses
+</A></li>
+	<LI>Next message: <A HREF="000103.html">[hatari-devel] palette problem on fuzion cd 2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#105">[ date ]</a>
+              <a href="thread.html#105">[ thread ]</a>
+              <a href="subject.html#105">[ subject ]</a>
+              <a href="author.html#105">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

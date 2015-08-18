@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] IKBD clock year
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IKBD%20clock%20year&In-Reply-To=%3C201104210019.08039.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003355.html">
+   <LINK REL="Next"  HREF="003363.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] IKBD clock year</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IKBD%20clock%20year&In-Reply-To=%3C201104210019.08039.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] IKBD clock year">oak at helsinkinet.fi
+       </A><BR>
+    <I>Wed Apr 20 23:19:07 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003355.html">[hatari-devel] IKBD clock year
+</A></li>
+        <LI>Next message: <A HREF="003363.html">[hatari-devel] IKBD clock year
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3358">[ date ]</a>
+              <a href="thread.html#3358">[ thread ]</a>
+              <a href="subject.html#3358">[ subject ]</a>
+              <a href="author.html#3358">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 20 huhtikuu 2011, Thomas Huth wrote:
+&gt;<i> &gt; schrieb Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">oak at helsinkinet.fi</A>&gt;:
+</I>&gt;<i> &gt; &gt; &gt; I have just fixed it in CVS, so they are now respectively handled
+</I>&gt;<i> &gt; &gt; &gt; as 2000 to 2079. The range 80 to 99 is still handled as 1980 to
+</I>&gt;<i> &gt; &gt; &gt; 1999.
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; So my question is:
+</I>&gt;<i> &gt; &gt; &gt; Does Hatari return 0xb1 intentionally, or is this a bug ?
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; I think it's a bug.  Could you try the attached patch?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Looking at the comment that you've removed with your patch, this was
+</I>&gt;<i> &gt; not a bug in Hatari but the emulated behaviour of the real machine...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Have you tried your change with original TOS (without RTC)
+</I>
+No I hadn't.
+
+But I just added a command line option for RTC so that it's a bit easier to
+test (and can be changed from the debugger &amp; through control socket).
+
+
+&gt;<i> &gt; to see whether it still shows the correct date?
+</I>&gt;<i>
+</I>&gt;<i> I've just checked it ... and yes, at least TOS 2.06 now calculates the
+</I>&gt;<i> year wrongly,
+</I>
+Without RTC, both TOS 1.6 &amp; TOS 2 seem to get the date wrong, but TOS 3 &amp; 4
+get it right.
+
+Reverting the BCD calculation fixes the date only for TOS 2, not TOS 1.6.
+With RTC the date is fine also for all TOSes (at least for anything with 
+which xcontrol.acc works).
+
+Btw. Funnily, if I use &quot;--rtc off --machine st&quot;, xcontrol.acc bus errors on
+TOS 2 startup.  TOS 2 works fine with &quot;--rtc on --machine st&quot; and
+&quot;--rtc off --machine ste&quot; though.
+
+Clockly 2.37 shows time wrong regardless of how BCD is set.
+
+
+&gt;<i> new files get the timestamp 2039 instead of 2011.
+</I>
+File timestamps (at least on GEMDOS HD) were fine, I saw the issue only in
+xcontrol.acc.  What you do to get the timestamps wrong?
+
+And what about the earlier TOS versions, what would be the best way to test
+them?
+
+
+&gt;<i> So please revert your change!
+</I>
+Well, I think first somebody would need to test what happens on real HW.
+With TOS 2.06 or one of the other earlier TOSes if they now get the date
+wrong with Hatari.  Who knows, maybe it even differs with different ST
+models... :)
+
+(According to Vincent, Steem also sets the value to 0x11 instead of 0xb1,
+so that would then be wrong too...)
+
+
+If it turns out that the previous BCD conversion was more accurate one,
+the attached patch reverts the change and adds better comment about
+it + fixes BCD function to use SDL types like everything else.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: ikbd.diff
+Type: text/x-patch
+Size: 752 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110421/87a7830e/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110421/87a7830e/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003355.html">[hatari-devel] IKBD clock year
+</A></li>
+	<LI>Next message: <A HREF="003363.html">[hatari-devel] IKBD clock year
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3358">[ date ]</a>
+              <a href="thread.html#3358">[ thread ]</a>
+              <a href="subject.html#3358">[ subject ]</a>
+              <a href="author.html#3358">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

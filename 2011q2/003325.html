@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DMA sound improvements
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DMA%20sound%20improvements&In-Reply-To=%3C4DA2086E.6010107%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003318.html">
+   <LINK REL="Next"  HREF="003327.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DMA sound improvements</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DMA%20sound%20improvements&In-Reply-To=%3C4DA2086E.6010107%40free.fr%3E"
+       TITLE="[hatari-devel] DMA sound improvements">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Apr 10 21:43:42 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003318.html">[hatari-devel] DMA sound improvements
+</A></li>
+        <LI>Next message: <A HREF="003327.html">[hatari-devel] DMA sound improvements
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3325">[ date ]</a>
+              <a href="thread.html#3325">[ thread ]</a>
+              <a href="subject.html#3325">[ subject ]</a>
+              <a href="author.html#3325">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Nicolas,
+
+I was reading about your DMA patch.
+
+I think it would have been better to add a Sound_HBL_Update() function 
+in sound.c
+
+In this function, there would be a test like this :
+if falcon
+      call crossbar_update_hbl
+else
+      call dma_snd_update_hbl.
+
+Like this, I could use the hbl udpate too in crossbar.c
+
+The way you did it, falcon sound goes into dma_sound every HBL, and I 
+really wanted to separate dma_snd and crossbar code.
+(I think also that dma_snd should be renamed to STEDMA_snd, or something 
+like this to avoid confusion, as Falcon DMA sound is taken into account 
+into the crossbar code).
+
+Do you agree with both points ?
+
+Regards
+
+Laurent
+
+
+
+
+Le 07/04/2011 23:31, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Hello
+</I>&gt;<i>
+</I>&gt;<i> I committed a first round of patches that should improve sound quality 
+</I>&gt;<i> as well as accuracy.
+</I>&gt;<i>
+</I>&gt;<i>  - use fixed values for dma sound freqs ; on STE, clock for dma sound 
+</I>&gt;<i> (as well as fdc or ym2149) is not the result of dividing the main 32 
+</I>&gt;<i> Mhz clock, but it uses a separate dedicated 8 Mhz clock (also, 
+</I>&gt;<i> dividing by 160,320,... doesn't give the right value anyway)
+</I>&gt;<i>
+</I>&gt;<i>  - reorder / factorize some common code
+</I>&gt;<i>
+</I>&gt;<i>  - handle programs that write in the sample buffer at the same time 
+</I>&gt;<i> this buffer is played by the DMA
+</I>&gt;<i>
+</I>&gt;<i> This last point is audible in the demo &quot;Mental Hangover&quot; for example 
+</I>&gt;<i> (very noisy sound output) as well as in the game &quot;Power Up Plus&quot; 
+</I>&gt;<i> (nearly no sound at all).
+</I>&gt;<i>
+</I>&gt;<i> In order to fix this, I updated the code to work in a similar way to 
+</I>&gt;<i> DMA sound on a real STE. On STE, the DMA sound uses a small 8 bytes 
+</I>&gt;<i> FIFO to store the next bytes to be sent to the DAC at the requested 
+</I>&gt;<i> output freq (50066, 25033, ...).
+</I>&gt;<i> To keep this FIFO filled (you need approx 6.5 bytes per VBL at 50066 
+</I>&gt;<i> Hz stereo), the DMA sound has some bus accesses during the end of the 
+</I>&gt;<i> HBL (while the shifter doesn't need to read data to be displayed).
+</I>&gt;<i> During those accesses, the DMA sound will read as many bytes as 
+</I>&gt;<i> necessary to get 8 bytes in the FIFO.
+</I>&gt;<i>
+</I>&gt;<i> This means that once the DMA read some bytes at the current sample 
+</I>&gt;<i> frame address, you can immediatly write some new bytes in the sample 
+</I>&gt;<i> buffer before this address, those addresses won't be read until the 
+</I>&gt;<i> sample loops.
+</I>&gt;<i>
+</I>&gt;<i> So, even if it's more complex than using double buffer, it's completly 
+</I>&gt;<i> possible to have a single buffer replay routine that generates new 
+</I>&gt;<i> samples at the same time it plays the rest of the buffer (this is 
+</I>&gt;<i> similar to how some demos work at the video level, where they use only 
+</I>&gt;<i> one video buffer and use some synchronisation with $ff8209 to be sure 
+</I>&gt;<i> there's no &quot;conflict&quot; with the data the shifter will read next (the 
+</I>&gt;<i> game Enchanted Lands works this way due to RAM limit to use double 
+</I>&gt;<i> buffer for video)).
+</I>&gt;<i>
+</I>&gt;<i> To emulate this way of processing DMA sound bytes, I added the 
+</I>&gt;<i> function DmaSnd_HBL_Update and call this function on every HBL in 
+</I>&gt;<i> video.c. This way, we now &quot;read&quot; sample data at the same video 
+</I>&gt;<i> position that the DMA does on STE (in the case of Hatari, I don't 
+</I>&gt;<i> handle a real 8 bytes FIFO, but this difference should not be hearable).
+</I>&gt;<i>
+</I>&gt;<i> Instead of generating ~500 samples in one go per VBL (for 25066 Hz 
+</I>&gt;<i> sound), we now generate small chunks of samples at every HBL. The most 
+</I>&gt;<i> important for this to work is that the total number of bytes per VBL 
+</I>&gt;<i> remains the same (but whether we generate one big chunk in one go or 
+</I>&gt;<i> 100 smallers chunks doesn't matter).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Let me know if you here some regressions. I'm not sure a lot of 
+</I>&gt;<i> programs will benefit from this fix, as using single buffer instead of 
+</I>&gt;<i> double buffer when generating sample is rather rare.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I still have some other patches pending to increase accuracy as well 
+</I>&gt;<i> as fixing the audio/video synchro problem reported in &quot;More Or Less 
+</I>&gt;<i> Zero&quot;, but they require modifications to other parts than dmaSnd.c, so 
+</I>&gt;<i> it will take a little more time to clean.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> PS : Anders, regarding the DMA sound FIFO, you once told me that doing 
+</I>&gt;<i> a stop/start to change sample address was messing with the overscan 
+</I>&gt;<i> timing (because the DMA will try to read 8 bytes in one go), but have 
+</I>&gt;<i> you ever tried to play 50066 Hz stereo sound during an overscan in 
+</I>&gt;<i> loop mode ? I'd like to know if this breaks the timings (with 230 or 
+</I>&gt;<i> 224 bytes per line)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003318.html">[hatari-devel] DMA sound improvements
+</A></li>
+	<LI>Next message: <A HREF="003327.html">[hatari-devel] DMA sound improvements
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3325">[ date ]</a>
+              <a href="thread.html#3325">[ thread ]</a>
+              <a href="subject.html#3325">[ subject ]</a>
+              <a href="author.html#3325">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

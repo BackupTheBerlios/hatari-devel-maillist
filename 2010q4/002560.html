@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C201010222221.40666.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002559.html">
+   <LINK REL="Next"  HREF="002569.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C201010222221.40666.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Oct 22 21:21:40 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002559.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002569.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2560">[ date ]</a>
+              <a href="thread.html#2560">[ thread ]</a>
+              <a href="subject.html#2560">[ subject ]</a>
+              <a href="author.html#2560">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 22 October 2010, Laurent Sallafranque wrote:
+&gt;&gt;<i> * Is WinUAE CPU actually using C++ exceptions (it had try, throw&amp; 
+</I>&gt;&gt;<i> catch) (which would need to be emulated with variables)?
+</I>&gt;<i>
+</I>&gt;<i> I think I've changed the ones in cpummu.
+</I>&gt;<i> What do you mean here ?
+</I>
+I didn't read the code so carefully, are they using something that's C, but
+looks like C++, or actually using C++ exceptions (like it seemed)?
+
+Because if they're using real exceptions, I think they can happen in any of
+the called functionality within the try block and/or be catched at some
+higher level (if current level doesn't catch some particular exception). 
+I.e. getting that stuff right could be a bit trickier.
+
+Well, if you got all try/throw/catch already converted, it wasn't an
+overwhelming amount of places and can hopefully reviewed properly later once
+the new CPU core actually works to some extent... :)
+
+
+&gt;<i> &gt; * What's the problem with the large number of &quot;L&quot; changes, couldn't
+</I>&gt;<i> &gt; they be handled with some single define (&quot;#define L&quot;) in compat header?
+</I>&gt;<i> &gt; -      D(bug(L&quot;MMU: map transparent mapping of %08x\n&quot;, *ttr)); +     
+</I>&gt;<i> &gt; //D(bug(L&quot;MMU: map transparent mapping of %08x\n&quot;, *ttr));
+</I>&gt;<i>
+</I>&gt;<i> No, I think this would generate problems with lines of code like this one
+</I>&gt;<i> :
+</I>&gt;<i>
+</I>&gt;<i> readcpu.c:    { i_ASL, &quot;ASL&quot;  , &quot;&quot;},
+</I>&gt;<i>
+</I>&gt;<i> &quot;ASL&quot; would become &quot;AS&quot;
+</I>&gt;<i>
+</I>&gt;<i> Correct me if I'm wrong.
+</I>
+I think C pre-processor defines should be smarter (otherwise it we could
+replace cpp with sed), and only replace whole C-syntax identifiers, not
+arbitrary parts of them...
+
+(You could try it and check the pre-processor output.)
+
+
+&gt;<i> &gt; * cpu/custom.h - does that contain anything that would really be needed
+</I>&gt;<i> &gt;     by CPU emulation code?  If not, I guess it could be replaced just
+</I>&gt;<i> &gt; with an empty file with comment saying that it's there just to reduce
+</I>&gt;<i> &gt; changes to WinAUE sources.
+</I>&gt;<i>
+</I>&gt;<i> OK for this, but I think in this case that I should also include the
+</I>&gt;<i> whole .h (empty) files from uae that are needed for compiling (I've
+</I>&gt;<i> commented some of them).
+</I>
+I was mainly wondering whether the whole file is redundant and not just
+the commented out parts.
+
+
+&gt;<i> At opposite, if you don't mind, I can just comment the lines that
+</I>&gt;<i> contains .h includes we don't need.
+</I>&gt;<i> I don't think it would be a huge work to comment  them again after a
+</I>&gt;<i> major update.
+</I>
+Fine with me. :-)
+
+
+&gt;<i> &gt; * If you take some file directly from uae-cpu/, it would be preferably
+</I>&gt;<i> &gt; if it could be a separate commit from other winuae code modifications.
+</I>&gt;<i> &gt; Such file could, at least eventually, be in some directory common to
+</I>&gt;<i> &gt; both AUE&amp;  WinUAE code (at least maccess.h changes looked like this)
+</I>&gt;<i>
+</I>&gt;<i> You both have answered to this.
+</I>&gt;<i> So, should I keep the actual way of doing it or should I apply your
+</I>&gt;<i> above suggestion ?
+</I>
+If you could in future commit separately things that are taken from Hatari
+AUE code as-is and things that are other changes to WinAUE code, that would
+be nice.  It helps understanding the changes a bit more.
+
+
+&gt;<i> &gt; * cpu/sysconfig.h:
+</I>&gt;<i> &gt;    - AUE configuration things are OK
+</I>&gt;<i> &gt;    - system configuration defines (like STDC_HEADERS) shouldn't be
+</I>&gt;<i> &gt;      WinAUE specific, but be created by CMake, otherwise they will be
+</I>&gt;<i> &gt; wrong
+</I>&gt;<i>
+</I>&gt;<i> Eero, could you take some time to help me on this special file.
+</I>&gt;<i> I'm not the best one for system configuration defines.
+</I>
+I'm not that familiar with that side of CMake either...
+
+&gt;<i> If you could make the necessary changes in sysconfig.h file, this would
+</I>&gt;<i> be great.
+</I>
+But it seems that Hatari's system configuration comes from
+cmake/config-cmake.h and after configuring things with CMake
+the configuration is written to config.h in the Hatari root dir.
+
+Some of the defines used in sysconfig.h are things that in Hatari come from
+other places too, for example path separator comes from main.h (which
+includes config.h).
+
+
+First you could move things that aren't used anywhere to some other file
+(for reference).  I wrote a helper script to investigate this.  Run the
+attached script in cpu/ dir like this:
+	find-defines.sh sysconfig.h *.[ch]
+
+And it will tell which defines aren't used (a lot of them), and in which
+files the ones that are used are actually used.
+
+After re/moving those away, you could split the things that are related to
+system instead of to WinAUE configuration also into a separate file and for
+now just include it from sysconfig.h.   I, Thomas or Nicolas could then at
+some later point look how to integrate system stuff there with CMake &amp;
+config-cmake.h.
+
+
+&gt;&gt;<i> * cpu/cpummu.c - why remove &quot;static&quot;?
+</I>&gt;&gt;<i> -static struct mmu_atc_line atc_l2[2][ATC_L2_SIZE];
+</I>&gt;&gt;<i> +struct mmu_atc_line atc_l2[2][ATC_L2_SIZE];
+</I>&gt;<i>
+</I>&gt;<i> If I remove static, I get the following error :
+</I>&gt;<i>
+</I>&gt;<i> /home/laurent/Atari/hatari/src/cpu/cpummu.c:45: error: static
+</I>&gt;<i> declaration of &#8216;atc_l2&#8217; follows non-static declaration
+</I>&gt;<i> /home/laurent/Atari/hatari/src/cpu/cpummu.h:238: note: previous
+</I>&gt;<i> declaration of &#8216;atc_l2&#8217; was here
+</I>&gt;<i> /home/laurent/Atari/hatari/src/cpu/cpummu.c:253: warning: no previous
+</I>&gt;<i> prototype for &#8216;mmu_dump_atc&#8217;
+</I>
+You can remove it from the header, it's used only in cpummu.c file.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: find-defines.sh
+Type: application/x-shellscript
+Size: 997 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20101022/a5f641f2/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20101022/a5f641f2/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002559.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002569.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2560">[ date ]</a>
+              <a href="thread.html#2560">[ thread ]</a>
+              <a href="subject.html#2560">[ subject ]</a>
+              <a href="author.html#2560">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

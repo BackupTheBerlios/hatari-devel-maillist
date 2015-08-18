@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20immediately%20showing%20regs%20%26%20memdump%3F&In-Reply-To=%3C200903312343.40609.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000220.html">
+   <LINK REL="Next"  HREF="000222.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20immediately%20showing%20regs%20%26%20memdump%3F&In-Reply-To=%3C200903312343.40609.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Mar 31 22:43:40 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000220.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+        <LI>Next message: <A HREF="000222.html">[hatari-devel] Hatari debugger immediately showing regs &amp;	memdump?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#221">[ date ]</a>
+              <a href="thread.html#221">[ thread ]</a>
+              <a href="subject.html#221">[ subject ]</a>
+              <a href="author.html#221">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I was looking at some other emulators having GUI debuggers and noticed that
+they show immediately something.   Would it be fine if Hatari CLI debugger
+would when invoked dump registers &amp; mem also?
+
+It would look like this:
+========================
+D0: 00000073 D1: 00006aee D2: 00002300 D3: 00000020
+D4: 00000013 D5: 00000000 D6: 00000005 D7: 00000013
+A0: 00006aee A1: 0000a834 A2: 00fe1f2b A3: 000070f4
+A4: 0000889a A5: 00008664 A6: 00006646 A7: 0000662a
+USP=000061a0 ISP=0000662a MSP=00000000 VBR=00000000
+T=00 S=1 M=0 X=0 N=0 Z=0 V=0 C=0 IMASK=3
+FP0: 0 FP1: 0 FP2: 0 FP3: 0
+FP4: 0 FP5: 0 FP6: 0 FP7: 0
+N=0 Z=0 I=0 NAN=0
+prefetch 4e424e75
+00fdd43c: 4a40 6714 0c40 00c8 6716 TST.W D0
+next PC: 00fdd43e
+FDD43C: 4a 40 67 14 0c 40 00 c8 67 16 0c 40 00 c9 67 10   <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">J at g..</A>@<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">..g.. at ..g.</A>
+FDD44C: 2f 39 00 00 66 62 4e 75 42 67 3f 3c 00 4c 4e 41   /9..fbNuBg?&lt;.LNA
+FDD45C: 4e b9 00 fd ce 56 4e 68 48 e0 7f fe 4e 60 2c 79   N....VNhH...N`,y
+FDD46C: 00 00 a7 92 2c 6e 00 08 3c bc 00 01 2d 48 00 42   ....,n..&lt;...-H.B
+
+You have entered debug mode. Type c to continue emulation, h for help.
+----------------------------------------------------------------------
+&gt;<i> 
+</I>========================
+
+Patch is attached.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: debugui.diff
+Type: text/x-diff
+Size: 2288 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090331/2d0db4bf/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090331/2d0db4bf/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000220.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+	<LI>Next message: <A HREF="000222.html">[hatari-devel] Hatari debugger immediately showing regs &amp;	memdump?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#221">[ date ]</a>
+              <a href="thread.html#221">[ thread ]</a>
+              <a href="subject.html#221">[ subject ]</a>
+              <a href="author.html#221">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

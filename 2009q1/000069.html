@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Midi works fine (was: Midi support broken?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Midi%20works%20fine%20%28was%3A%20Midi%20support%20broken%3F%29&In-Reply-To=%3C200901210200.03132.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000048.html">
+   <LINK REL="Next"  HREF="000049.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Midi works fine (was: Midi support broken?)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Midi%20works%20fine%20%28was%3A%20Midi%20support%20broken%3F%29&In-Reply-To=%3C200901210200.03132.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Midi works fine (was: Midi support broken?)">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Jan 21 01:00:03 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000048.html">[hatari-devel] Midi works fine (was: Midi support broken?)
+</A></li>
+        <LI>Next message: <A HREF="000049.html">[hatari-devel] Midi support broken?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#69">[ date ]</a>
+              <a href="thread.html#69">[ thread ]</a>
+              <a href="subject.html#69">[ subject ]</a>
+              <a href="author.html#69">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 18 January 2009, Thomas Huth wrote:
+&gt;<i> &gt; I.e. The Hatari instances should open the fifos in same order, but
+</I>&gt;<i> &gt; because both open the output one first, I think they would deadlock.
+</I>&gt;<i>
+</I>&gt;<i> You're right, it blocks with a deadlock first, but you can overcome
+</I>&gt;<i> that lock by typing something like &quot;cat /tmp/midi1&quot;. Of course you have
+</I>&gt;<i> then to cancel the &quot;cat&quot; before the emulators exchange any data over
+</I>&gt;<i> the pipe...
+</I>
+I added a script for this to doc/ dir (and refer to it from alsa-midi.txt).
+See the attachment.
+
+Btw. Opening Hatari options dialog causes MIDI ring timeout at least when
+Midimaze initializes the game.  I wonder how well it would work over network
+&amp; larger latencies.
+
+
+&gt;<i> &gt; --midi-in (MIDI in file)
+</I>&gt;<i> &gt; --midi-out (MIDI out file)
+</I>&gt;<i> &gt; --rs232-in
+</I>&gt;<i> &gt; --rs232-out
+</I>&gt;<i>
+</I>&gt;<i> I think this is the cleaner solution. Not sure whether we should keep
+</I>&gt;<i> the old options in that case, too, but I would rather say to remove
+</I>&gt;<i> them.
+</I>
+Commited.
+
+
+&gt;<i> &gt; &gt; &gt; &gt; Midi_Init() has also minor issue that it:
+</I>&gt;<i> &gt; &gt; &gt; &gt; - doesn't check whether filename is empty before trying to open
+</I>&gt;<i> &gt; &gt; &gt; &gt;   MIDI in/out
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; Shouldn't that rather be handled by File_Open instead (which then
+</I>&gt;<i> &gt; &gt; &gt; should return a NULL pointer)?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; In the case midi file name is empty, it shouldn't be tried to be
+</I>&gt;<i> &gt; &gt; opened.
+</I>
+Required also change in file.c.  On command line I allow empty file name
+only for the midi input (setting --midi-out enables MIDI support with
+default midi input device file name, but such might not exist).
+
+&gt;<i> &gt; &gt; If there's an error (NULL) returned by Midi I/O file open, user
+</I>&gt;<i> &gt; &gt; should be notified with a dialog. I can add that.
+</I>&gt;<i>
+</I>&gt;<i> OK, that would be great.
+</I>
+Commited.
+
+I did thes two changes only for MIDI, are similar change relevant also for
+rs232?
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: local-hatari-midi-ring.sh
+Type: application/x-shellscript
+Size: 1058 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090121/3871d8cb/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090121/3871d8cb/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000048.html">[hatari-devel] Midi works fine (was: Midi support broken?)
+</A></li>
+	<LI>Next message: <A HREF="000049.html">[hatari-devel] Midi support broken?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#69">[ date ]</a>
+              <a href="thread.html#69">[ thread ]</a>
+              <a href="subject.html#69">[ subject ]</a>
+              <a href="author.html#69">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

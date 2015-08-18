@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New support for STE's 224 bytes overscan
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20support%20for%20STE%27s%20224%20bytes%20overscan&In-Reply-To=%3Calpine.LMD.2.00.0912072124550.31375%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001075.html">
+   <LINK REL="Next"  HREF="001088.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New support for STE's 224 bytes overscan</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20support%20for%20STE%27s%20224%20bytes%20overscan&In-Reply-To=%3Calpine.LMD.2.00.0912072124550.31375%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] New support for STE's 224 bytes overscan">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Dec  7 21:39:15 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001075.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+        <LI>Next message: <A HREF="001088.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1076">[ date ]</a>
+              <a href="thread.html#1076">[ thread ]</a>
+              <a href="subject.html#1076">[ subject ]</a>
+              <a href="author.html#1076">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 7 Dec 2009, Anders Eriksson wrote:
+
+&gt;<i> Question is how to solve this, previously Hatari have shown the 224 byte
+</I>&gt;<i> overscan fine if setting a new screen address each scanline. But with
+</I>&gt;<i> your new update (yes it works now, my friend had sent me the wrong
+</I>&gt;<i> version previously..) the left border displays garbage as you pointed out.
+</I>&gt;<i> How about showing the same amount of pixels as the 230 byte scanline and
+</I>&gt;<i> only adjust for the different total linewidth? Then there would be no ugly
+</I>&gt;<i> crap graphcis in the left or no black area to the left, and the demos
+</I>&gt;<i> would still run as intended.
+</I>&gt;<i>
+</I>&gt;<i> In fact that was my only concern to start with when reporting the
+</I>&gt;<i> linewidth bug 1.5 years ago :-)
+</I>
+Yes, I'm planning to resolve these 2 points :
+  - remove the left part with 16 pixels using 2 bitplanes
+  - center the screen to the left ; correct value seems to be ~8 pixels
+    earlier (when compared with a normal 160 bytes line).
+
+For the second point, I need to update the test program I sent you last 
+time to &quot;calibrate&quot; the exact shifting.
+
+In fact, what you propose (if I understand it correctly) would work
+if the screen contains only 224 bytes lines for example. But on STF 
+there're some screens mixing 230 and 160 bytes lines and in that case 
+centering each line on the screen is not good because graphics would not 
+be aligned (see the picture at the start of ULM's hidden screen in Oh 
+Crickey ... for an example).
+
+With 230 bytes overscan, you need in fact to shift the whole line 4 pixels 
+to the left to stay aligned with a 160 bytes lines and to work similarly 
+as a real ST (you would have a similar problem if you centered the line 
+when adding 16 pixels to left border on STE (by changing hscroll), gfx 
+would not be correctly aligned with a normal ST line).
+
+What I want to obtain is the same effect as you can see on the picture you 
+posted earlier : we can see that the 224 bytes screen is not &quot;centered&quot; 
+the same way as a 230 bytes one. So I must remove the 2 bitplanes on the 
+left, but I don't want the &quot;visible&quot; pixels to start at the same place.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001075.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+	<LI>Next message: <A HREF="001088.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1076">[ date ]</a>
+              <a href="thread.html#1076">[ thread ]</a>
+              <a href="subject.html#1076">[ subject ]</a>
+              <a href="author.html#1076">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

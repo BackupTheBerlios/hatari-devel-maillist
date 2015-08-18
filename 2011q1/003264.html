@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crosscompiling Hatari for GP2X Wiz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C201103292336.54026.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003247.html">
+   <LINK REL="Next"  HREF="003268.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crosscompiling Hatari for GP2X Wiz</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C201103292336.54026.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Crosscompiling Hatari for GP2X Wiz">oak at helsinkinet.fi
+       </A><BR>
+    <I>Tue Mar 29 22:36:53 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003247.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+        <LI>Next message: <A HREF="003268.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3264">[ date ]</a>
+              <a href="thread.html#3264">[ thread ]</a>
+              <a href="subject.html#3264">[ subject ]</a>
+              <a href="author.html#3264">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On maanantai 28 maaliskuu 2011, Matthias Arndt wrote:
+&gt;<i> &gt; That's similar to N800, so there shouldn't be any problem.
+</I>&gt;<i> 
+</I>&gt;<i> I just want to make sure we talk about the same functionality:
+</I>&gt;<i> 
+</I>&gt;<i> IF Button X on SDL_JOYSTICK(xy) IS PRESSED
+</I>&gt;<i>  SIMULATE ATARI KEYPRESS &lt;abc&gt;
+</I>&gt;<i> ENDIF
+</I>&gt;<i> 
+</I>&gt;<i> IF Button Y on SDL_JOYSTICK(xy) IS PRESSED
+</I>&gt;<i> SIMULATE HOST KEYPRESS &lt;abc&gt;  e.q. open GUI, quit emulator
+</I>&gt;<i> ENDIF
+</I>
+Oh, sorry, you were talking about mapping actual SDL joystick events
+to Atari keys.  For that there's no support in Hatari.
+
+It's such a rare case that I don't think it should be in the UI, but if you
+can cleanly add support for configuring it from the config file, it's
+inclusion to Hatari could be considered.
+
+
+Btw. On Nokia 770, N800 &amp; N810 there was this directional thing used for
+input focus navigation:
+	<A HREF="http://en.wikipedia.org/wiki/Nokia_770_Internet_Tablet">http://en.wikipedia.org/wiki/Nokia_770_Internet_Tablet</A>
+	<A HREF="http://en.wikipedia.org/wiki/N800">http://en.wikipedia.org/wiki/N800</A>
+	<A HREF="http://en.wikipedia.org/wiki/Nokia_N810">http://en.wikipedia.org/wiki/Nokia_N810</A>
+
+which could be used as a joystick, but it gave (arrow) key events.
+It's usability wasn't even close to a real joystick though.
+
+Does the GP2X give joy events for its joystick, or are they mapped to
+joystick events just inside the GP2X SDL library?
+
+
+&gt;<i> If so, how can I determine which event number I have to map as I only
+</I>&gt;<i> have the standard SDL_Joystick defines available which give numbers
+</I>&gt;<i> between 0 and 16.
+</I>
+Check doc/keymap-sample.txt on how to map the keys.
+
+Attached are Atari and SDL helper programs.
+
+(Hm, maybe I should add them under Hatari tests/-dir...)
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: keys.tar.gz
+Type: application/x-compressed-tar
+Size: 11398 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110329/12bea2fb/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110329/12bea2fb/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003247.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+	<LI>Next message: <A HREF="003268.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3264">[ date ]</a>
+              <a href="thread.html#3264">[ thread ]</a>
+              <a href="subject.html#3264">[ subject ]</a>
+              <a href="author.html#3264">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

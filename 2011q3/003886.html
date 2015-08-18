@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] usage of C datatypes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20usage%20of%20C%20datatypes&In-Reply-To=%3C201108060012.52334.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003885.html">
+   <LINK REL="Next"  HREF="003888.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] usage of C datatypes</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20usage%20of%20C%20datatypes&In-Reply-To=%3C201108060012.52334.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] usage of C datatypes">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Aug  5 23:12:52 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003885.html">[hatari-devel] usage of C datatypes
+</A></li>
+        <LI>Next message: <A HREF="003888.html">[hatari-devel] Golden YM Digi Sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3886">[ date ]</a>
+              <a href="thread.html#3886">[ thread ]</a>
+              <a href="subject.html#3886">[ subject ]</a>
+              <a href="author.html#3886">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 05 elokuu 2011, Matthias Arndt wrote:
+&gt;<i> For any non-SDL project I personally would use stdint.h indeed.
+</I>&gt;<i> But for SDL you need the SDL types anyway, and except for their
+</I>&gt;<i> different names, they achieve exactly the same ans stdint.h
+</I>
+cycInt.c uses stdint.h.
+
+SDL types were in use by the Hatari code before we &quot;switched&quot;
+to C99 that provides stdint.h.
+
+But Hatari has also a lot of code coming from many different places,
+see the end of the doc/authors.txt file.
+
+For code that originates in Hatari it makes sense to use the SDL types
+(as those are used also elsewhere in Hatari) where applicable.
+
+
+	- Eero
+
+
+&gt;<i> Matthias
+</I>&gt;<i> 
+</I>&gt;<i> Am Freitag, den 05.08.2011, 12:49 -0600 schrieb David Savinkoff:
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Why not use stdint.h? It is supported on all platforms and
+</I>&gt;<i> &gt; can be whipped up for defunct platforms that don't have it.
+</I>&gt;<i> &gt; *********************************************************************
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Aug 5, 2011 09:17:04 AM, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A> wrote:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Hello together,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I noticed that the Hatari code base does not use the SDL datatypes such
+</I>&gt;<i> &gt; as Uint16 wherever possible yet.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Would be a useful thing to check? i personally dislike using plain int
+</I>&gt;<i> &gt; datatypes.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; cheers,
+</I>&gt;<i> &gt; Matthias
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003885.html">[hatari-devel] usage of C datatypes
+</A></li>
+	<LI>Next message: <A HREF="003888.html">[hatari-devel] Golden YM Digi Sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3886">[ date ]</a>
+              <a href="thread.html#3886">[ thread ]</a>
+              <a href="subject.html#3886">[ subject ]</a>
+              <a href="author.html#3886">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Multiple%20GEMDOS%20HDD%2C%0A%09Enh.%20CPU%20MHZ%20select%20%26%20VC6%20Compatiblity&In-Reply-To=%3C20090204211519.1417e12f%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000136.html">
+   <LINK REL="Next"  HREF="000110.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Multiple%20GEMDOS%20HDD%2C%0A%09Enh.%20CPU%20MHZ%20select%20%26%20VC6%20Compatiblity&In-Reply-To=%3C20090204211519.1417e12f%40phineus%3E"
+       TITLE="[hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Feb  4 21:15:19 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000136.html">[hatari-devel] palette problem on fuzion cd 2
+</A></li>
+        <LI>Next message: <A HREF="000110.html">[hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#106">[ date ]</a>
+              <a href="thread.html#106">[ thread ]</a>
+              <a href="subject.html#106">[ subject ]</a>
+              <a href="author.html#106">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 3 Feb 2009 21:59:46 +0000
+Kenneth Kaufman &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">kvkconsultancy at hotmail.com</A>&gt; wrote:
+
+&gt;<i> I think i've submitted the patch correctly. If you could let me know
+</I>&gt;<i> if the Diff has been generated correctly since this is my first
+</I>&gt;<i> submission via the Unified Diff methodology and I may have missed a
+</I>&gt;<i> trick. Kind Regards,Vaughan 
+</I>
+ Hi Kenneth!
+
+Yes, the diff is a correct &quot;unified diff&quot;, but is has become very big.
+That's quite hard to read, and you've included _all_ changes at once,
+so it's a little bit difficult to track why you've changed certain
+pieces of the code. For future patches, please try submit one patch for
+every topic that you want to address, e.g. one patch for the GEMDOS HDD
+emulation, one patch for the VC6 compatibility, etc. (and by the way,
+Mercurial is a great tool to support this way of development: You check
+out your private copy of the Hatari repository, then you can work on
+one issue and when you're done you commit it to your local repository.
+Then you can work n the next topic etc. When you finally want to submit
+patches, Mercurial can generate them for you easily)
+
+Now, let's talk about the details of your patch (sorry, I've got lots
+of topics, please don't feel offended, that's just normal for Open
+Source development to talk about patches!):
+
+
+First, your patch tries to revert some things that have been
+changed in the repository lately, e.g. video.c and wavFormat.c ... I
+assume this happened because you've started your changes with Hatari
+1.2.0, but then later created the diff agains the tip development
+version... that's not good. For creating proper diffs, you always have
+to create the diff against the version where you started your
+development. So for future patches, simply always use the HG tip
+version!
+
+Then, there are the following lines in the patch:
+
+Only in my_hatari/src: Visual.Studio
+Only in my_hatari/src/includes: VisualStudioFix.c
+Only in my_hatari/src/includes: VisualStudioFix.h
+
+==&gt; You've created new files, but they are not part of the patch. You
+must tell the &quot;diff&quot; command to include new files, too (with the -N
+parameter).
+
+
+&gt;<i> Summary of Patch:
+</I>&gt;<i> -----------------
+</I>&gt;<i>  
+</I>&gt;<i> o Bug Fixes -
+</I>&gt;<i>  
+</I>&gt;<i> Corrects issues with existing GEM DOS HDD access (specific to folder
+</I>&gt;<i> navigation).
+</I>
+Could you please separate that part of the patch from the rest of your
+changes to gemdos.c, so that it is clear what is a bug fix and what is
+a new feature?
+
+&gt;<i> Updated Key Maps for English Atari Keyboards (may need to be provided
+</I>&gt;<i> as a Key Mapping file?). These values can be toggled at compilation
+</I>&gt;<i> time by compiler flag _ENGLISH_KEYBOARD.
+</I>
+Yes, that should rather go to a separate key mapping file - that's what
+they are good for.
+
+&gt;<i> o Mutliple GEM DOS HDD Support -
+</I>&gt;<i>  
+</I>&gt;<i> The folder you point to to be your HDD folder will be scanned for
+</I>&gt;<i> sub-folders (C, D, E etc) and each of those sub-folders will become
+</I>&gt;<i> an individual GEM DOS drive unit. If you &quot;skip&quot; a drive letter (say
+</I>&gt;<i> only including C and F) the intermidiate drive identifiers will be
+</I>&gt;<i> free for other devices. Also, the Install Devices option in GEM works
+</I>&gt;<i> accordingly.
+</I>
+That sounds very interesting, I need to have a closer look at this
+later... I just wonder if it wouldn't be better to make the
+location of the different drives fully configurable instead of mapping
+them to sub-folders in one parent folder (but that's maybe much more
+difficult to represent in the GUI).
+
+&gt;<i> o Variable MHZ setting - Added functionality to allows
+</I>&gt;<i> user to select a &quot;Custom&quot; MHZ processor speed up to 32768mhz.
+</I>
+That certainly does not work right. When nCpuFreqShift is bigger than
+2, the emulator might end up in an endless loop because the new cycle
+are shifted to 0.
+
+&gt;<i> o Visual Studio 6 Compatibility - 
+</I>
+You've got some strange changes in there, for example:
+
++#if defined(__WIN32__)
+ 		BlitterState.have_src = true;
++#else
++		BlitterState.have_src = true;
++#endif
+
+That seems to be nonsense. Please try to read over your patch again
+before you send them in, so that this does not happen.
+
+
+Then instead of doing this all over the place:
+
++#if !defined(__WIN32__)
++inline
++#endif
+
+I think it would be better to #define inline somewhere in a central
+header file (like config.h). I wonder why VC does not support
+inline functions? I've seen some code that does a
+&quot;#define inline __inline&quot; on VC6, maybe that's the trick?
+
+
+Then there a lot of these:
+
++#if !defined(__WIN32__)
++	#include &lt;unistd.h&gt;
++#endif
+
+Instead of using &quot; #if !defined(__WIN32__) &quot; here again, it might be a
+better idea to create a unistd.h file for VC6 and stick it somewhere
+where only VC6 can find it (maybe in the gui-win folder?)
+
+
+I'll try to incorporate some of your other changes to the repository
+(e.g. the definitions of variables at the beginning of the blocks)
+later, but it might take some days since I'm currently quite busy...
+
+ Regards,
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000136.html">[hatari-devel] palette problem on fuzion cd 2
+</A></li>
+	<LI>Next message: <A HREF="000110.html">[hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#106">[ date ]</a>
+              <a href="thread.html#106">[ thread ]</a>
+              <a href="subject.html#106">[ subject ]</a>
+              <a href="author.html#106">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

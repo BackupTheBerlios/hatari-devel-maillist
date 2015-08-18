@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crosscompiling Hatari for GP2X Wiz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C1301326806.2846.6.camel%40jll%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003240.html">
+   <LINK REL="Next"  HREF="003264.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crosscompiling Hatari for GP2X Wiz</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C1301326806.2846.6.camel%40jll%3E"
+       TITLE="[hatari-devel] Crosscompiling Hatari for GP2X Wiz">marndt at asmsoftware.de
+       </A><BR>
+    <I>Mon Mar 28 17:40:06 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003240.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+        <LI>Next message: <A HREF="003264.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3247">[ date ]</a>
+              <a href="thread.html#3247">[ thread ]</a>
+              <a href="subject.html#3247">[ subject ]</a>
+              <a href="author.html#3247">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Sonntag, den 27.03.2011, 20:59 +0300 schrieb Eero Tamminen:
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On sunnuntai 27 maaliskuu 2011, Matthias Arndt wrote:
+</I>&gt;<i> &gt; &gt; No need for that, just configure the keys in the Hatari configuration
+</I>&gt;<i> &gt; &gt; file.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Can it map joystick events (e.q. buttons)?
+</I>&gt;<i> 
+</I>&gt;<i> Specific key events have been supported &quot;forever&quot;.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; The target has no keyboard, just a joystick + stylus as SDL mouse.
+</I>&gt;<i> 
+</I>&gt;<i> That's similar to N800, so there shouldn't be any problem.
+</I>
+I just want to make sure we talk about the same functionality:
+
+IF Button X on SDL_JOYSTICK(xy) IS PRESSED
+ SIMULATE ATARI KEYPRESS &lt;abc&gt;
+ENDIF
+
+IF Button Y on SDL_JOYSTICK(xy) IS PRESSED
+SIMULATE HOST KEYPRESS &lt;abc&gt;  e.q. open GUI, quit emulator
+ENDIF
+
+If so, how can I determine which event number I have to map as I only
+have the standard SDL_Joystick defines available which give numbers
+between 0 and 16.
+
+
+&gt;<i> On sunnuntai 27 maaliskuu 2011, Matthias Arndt wrote:
+</I>&gt;<i> &gt; Am Sonntag, den 27.03.2011, 18:50 +0300 schrieb Eero Tamminen:
+</I>&gt;<i> &gt; I edited all tools for the Wiz toolchain now. within CmakeCache.txt
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; The Make itself fails with the buildcpu things:
+</I>&gt;<i> 
+</I>&gt;<i> You can change this:
+</I>&gt;<i> 	CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
+</I>&gt;<i> 
+</I>&gt;<i> To TRUE to see what it does.
+</I>
+I set it to true. The resulting makelog and the Cmake config in use is
+attached to this mail.
+
+Regards,
+Matthias
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: wiz-makelog.tgz
+Type: application/x-compressed-tar
+Size: 5654 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110328/bca53276/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110328/bca53276/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003240.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+	<LI>Next message: <A HREF="003264.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3247">[ date ]</a>
+              <a href="thread.html#3247">[ thread ]</a>
+              <a href="subject.html#3247">[ subject ]</a>
+              <a href="author.html#3247">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

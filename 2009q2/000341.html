@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CPU breakpoints and single-stepping
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3Calpine.LMD.2.00.0906071755010.27660%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000377.html">
+   <LINK REL="Next"  HREF="000348.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CPU breakpoints and single-stepping</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3Calpine.LMD.2.00.0906071755010.27660%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] CPU breakpoints and single-stepping">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jun  7 17:59:48 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000377.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+        <LI>Next message: <A HREF="000348.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#341">[ date ]</a>
+              <a href="thread.html#341">[ thread ]</a>
+              <a href="subject.html#341">[ subject ]</a>
+              <a href="author.html#341">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 7 Jun 2009, Thomas Huth wrote:
+
+&gt;<i>
+</I>&gt;<i> Hi all!
+</I>&gt;<i>
+</I>&gt;<i> I've added now (simple) breakpoint and single-stepping support.
+</I>&gt;<i> That's all what I need right now, so if you need more complex rules for
+</I>&gt;<i> breakpoints, feel free to implement it (but please try to keep the
+</I>&gt;<i> source code simple and understandable ;-)).
+</I>
+I agree with you, I think your implementation is setting some simple 
+bases/structures that we should keep.
+I would say that if we want to add more complex combination, than we just 
+need to replace :
+
+static Uint32 CpuBreakPoint[16];
+
+with
+
+static struct breakpoint CpuBreakPoint[16];
+
+and put all the &quot;intelligence&quot; in the handling of the 'struct breakpoint'.
+
+
+&gt;<i>
+</I>&gt;<i> On Sun, 7 Jun 2009 00:46:56 +0300
+</I>&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i>   - in your db example, don't specify an address, but make it
+</I>&gt;&gt;&gt;<i> optional by using a more generic approach using the name 'pc' ; so
+</I>&gt;&gt;&gt;<i> setting a breakpoint would not be &quot;db &lt;addr&gt;&quot; but &quot;db pc=&lt;addr&gt;&quot;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I like this because it gets rid of the separate single stepping
+</I>&gt;&gt;<i> debugger command and boolean.  Single stepping would then be just a
+</I>&gt;&gt;<i> condition for: pc = pc
+</I>&gt;<i>
+</I>&gt;<i> Well, but then you could only step one instruction. What if you want to
+</I>&gt;<i> skip 100 instructions? With my current implementation, this is
+</I>&gt;<i> possible...
+</I>
+Thomas, what about an alias for the special case of step 1 instruction ? 
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000377.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+	<LI>Next message: <A HREF="000348.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#341">[ date ]</a>
+              <a href="thread.html#341">[ thread ]</a>
+              <a href="subject.html#341">[ subject ]</a>
+              <a href="author.html#341">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

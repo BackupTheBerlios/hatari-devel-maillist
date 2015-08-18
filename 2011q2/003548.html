@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] some videl emulation news
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20some%20videl%20emulation%20news&In-Reply-To=%3C4DED4561.1000002%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003547.html">
+   <LINK REL="Next"  HREF="003549.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] some videl emulation news</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20some%20videl%20emulation%20news&In-Reply-To=%3C4DED4561.1000002%40corp.free.fr%3E"
+       TITLE="[hatari-devel] some videl emulation news">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jun  6 23:23:45 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003547.html">[hatari-devel] some videl emulation news
+</A></li>
+        <LI>Next message: <A HREF="003549.html">[hatari-devel] some videl emulation news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3548">[ date ]</a>
+              <a href="thread.html#3548">[ thread ]</a>
+              <a href="subject.html#3548">[ subject ]</a>
+              <a href="author.html#3548">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 06/06/2011 22:59, Laurent Sallafranque a &#233;crit :
+&gt;<i> OK for video.
+</I>&gt;<i>
+</I>&gt;<i> All these questions for DSP &lt; - &gt; 68030 synchro.
+</I>&gt;<i>
+</I>&gt;<i> As we use the 68030 as main clock, if we don't take into account all the
+</I>&gt;<i> waitstates (DMA sound, videl, ...) we can miss a lot of clockedges for
+</I>&gt;<i> the DSP speed, no ?
+</I>&gt;<i>
+</I>&gt;<i> The problem with falcon emu is (I think) that we need to be synchro
+</I>&gt;<i> between 68030 (main clock), DSP and crossbar.
+</I>&gt;<i> If the 68030 eats some waitstates because of sound DMA or Videl, I think
+</I>&gt;<i> we should take them into account for better synchro with the DSP and
+</I>&gt;<i> crossbar.
+</I>&gt;<i>
+</I>
+Yes, when there're wait state you need to count them in the cpu cycles 
+to run the dsp for the correct amount of time.
+
+&gt;<i> Maybe I think wrong and shouldn't worry about these cycles, but they
+</I>&gt;<i> seem to be &quot;time consuming&quot; (from Mikro's doc about stRam timings and
+</I>&gt;<i> 68030)
+</I>
+Depends on what kind of memory the 68030 is accessing. The &quot;normal&quot; (st 
+compatible ram) is using a 16 bits 16 MHz bus, and this will certainly 
+slow down the 68030 and make it run slower than it should if you have a 
+lot of RAM accesses.
+
+&gt;<i> If I try to take them into account, hatari becomes horribly slow.
+</I>
+But this is very complicated to take into account. Measuring wait state 
+requires a very precise emulation of all the clocks, and Hatari does not 
+have this, so maybe you're doing something wrong.
+
+Also, I'm not sure that waitstate emulation is the cause of some dsp &lt;-&gt; 
+cpu synchro : even on a falcon, the same code will not take the same 
+number of cycles, depending on the content of the cpu/data caches.
+
+So even a program on a real Falcon that would expect the dsp&lt;-&gt;cpu 
+synchronisation to work without any sync control is likely to fail 
+(unless you take the cache behaviour into account, which is more 
+complicated when coding in asm).
+That's why I think that for most programs, even a bad number of cycles 
+should not create so many bugs. There may be 2 or 3 general issues to 
+fix, but I don't think so many things need to be corrected.
+
+But at one point, I think that what is needed is someone who can code on 
+Falcon and provide some very simple programs for dsp/cpu that test one 
+particular aspect of the dsp emulation (or the videl part)
+Very simple test cases that can be ran on a real Falcon and easily 
+compared on Hatari.
+
+Trying to run a complete demo, with several dsp/cpu/videl techniques 
+used at the same time, makes it very hard to really isolate one single 
+problem and fix it, instead of combining many problems that can 
+sometimes influence each others.
+
+I had to do the same thing for shifter : at one point trying to debug 
+some particular demos was impossible and lead to a dead end. I wrote 
+about 20 simple cases to measure very simple (but very important!) 
+aspects, one at a time, by changing only one parameter at a time. And 
+nearly &quot;automatically&quot;, improving Hatari to pass these simple programs 
+make the corresponding demos run without any error.
+
+I don't want to sound pessimistic, but unless someone can help with some 
+real Falcon coding experiment in video/dsp fields and provide some very 
+simple test programs to show some non working aspects in Hatari, then I 
+think it will be very difficult to improve Falcon's emulation.
+
+So, any experiment Falcon coder (not me !) should raise his hand :)
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003547.html">[hatari-devel] some videl emulation news
+</A></li>
+	<LI>Next message: <A HREF="003549.html">[hatari-devel] some videl emulation news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3548">[ date ]</a>
+              <a href="thread.html#3548">[ thread ]</a>
+              <a href="subject.html#3548">[ subject ]</a>
+              <a href="author.html#3548">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

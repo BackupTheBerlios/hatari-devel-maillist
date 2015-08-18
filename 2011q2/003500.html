@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Twelve demo bombs with fast-forward and freezes	on Falcon?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Twelve%20demo%20bombs%20with%20fast-forward%20and%20freezes%0A%09on%20Falcon%3F&In-Reply-To=%3C201106010049.34198.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003499.html">
+   <LINK REL="Next"  HREF="003504.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Twelve demo bombs with fast-forward and freezes	on Falcon?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Twelve%20demo%20bombs%20with%20fast-forward%20and%20freezes%0A%09on%20Falcon%3F&In-Reply-To=%3C201106010049.34198.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Twelve demo bombs with fast-forward and freezes	on Falcon?">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue May 31 23:49:34 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003499.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?
+</A></li>
+        <LI>Next message: <A HREF="003504.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3500">[ date ]</a>
+              <a href="thread.html#3500">[ thread ]</a>
+              <a href="subject.html#3500">[ subject ]</a>
+              <a href="author.html#3500">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 01 kes&#228;kuu 2011, Laurent Sallafranque wrote:
+&gt;<i> I'd enjoy to reply, but I don't know how to break when the 68030 reads
+</I>&gt;<i> or write from/to $ff8901
+</I>
+That would be a bit tricky, but you can...
+
+&gt;<i> Any tips would be appreciate
+</I>
+* Disassemble around the PC address which caused the error.
+
+* Or trace io_read and/or io_write operations with --trace (you can enable
+  tracing at run-time from the debugger as it's going to give quite
+  a lot of output).
+
+
+	- Eero
+
+&gt;<i> Laurent
+</I>&gt;<i> 
+</I>&gt;<i> Le 31/05/2011 23:14, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; On keskiviikko 01 kes&#228;kuu 2011, Laurent Sallafranque wrote:
+</I>&gt;<i> &gt;&gt; Here are some examples taken from old threads :
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/pipermail/hatari-devel/2010q3/002307.html">https://lists.berlios.de/pipermail/hatari-devel/2010q3/002307.html</A>
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/pipermail/hatari-devel/2010q1/001232.html">https://lists.berlios.de/pipermail/hatari-devel/2010q1/001232.html</A>
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; There's also voice.prg
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt;     --&gt;  M68000 Bus Error writing at address $ff8901.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Are they doing byte, word or long access?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;&gt; I remember there were 2 or 3 more programs with the same problem, but
+</I>&gt;<i> &gt;&gt; I can't find them.
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt; 	- Eero
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003499.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?
+</A></li>
+	<LI>Next message: <A HREF="003504.html">[hatari-devel] Twelve demo bombs with fast-forward and freezes on Falcon?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3500">[ date ]</a>
+              <a href="thread.html#3500">[ thread ]</a>
+              <a href="subject.html#3500">[ subject ]</a>
+              <a href="author.html#3500">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3C4D245A68.3020206%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002743.html">
+   <LINK REL="Next"  HREF="002746.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3C4D245A68.3020206%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Jan  5 12:47:52 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002743.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002746.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2744">[ date ]</a>
+              <a href="thread.html#2744">[ thread ]</a>
+              <a href="subject.html#2744">[ subject ]</a>
+              <a href="author.html#2744">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 05/01/2011 08:02, David Savinkoff a &#233;crit :
+&gt;<i> Happy New Year All
+</I>&gt;<i>
+</I>&gt;<i> Hi Nicolas,
+</I>&gt;<i>
+</I>&gt;&gt;<i> I agree that changing the desired &quot;samples&quot; (with nSdlAudioBufferSize)
+</I>&gt;&gt;<i> will impact the latency and the rate at which SDL audio callbacks are
+</I>&gt;&gt;<i> made.
+</I>&gt;<i>
+</I>&gt;<i> Without my patch nSdlAudioBufferSize works to some extent on my
+</I>&gt;<i> system (slight improvement). With my patch... latency solved.
+</I>&gt;<i> BTW the number of samples delay may be constant, not the time
+</I>&gt;<i> delay. Faster sample rates have less delay.
+</I>&gt;<i>
+</I>&gt;<i> I'm of the opinion that hatari produces more samples than my
+</I>&gt;<i> sound system consumes, and hatari may produce fewer samples than
+</I>&gt;<i> your sound system consumes. Thus I get a MIXBUFFER_SIZE delay
+</I>&gt;<i> and you get a possible &quot;sample losing, zero delay&quot;. Note that
+</I>&gt;<i> both mine and your systems can lose samples. My system could
+</I>&gt;<i> lose samples after the delay gets huge, yours immediately.
+</I>&gt;<i> This is noticeable on my system when I use tos206uk.img (50Hz)
+</I>&gt;<i> vs tos206us.img (60Hz); tos206uk.img has no delays, tos206us.img
+</I>&gt;<i> has delays.
+</I>&gt;<i>
+</I>&gt;&gt;<i> With a shorter working buffer and a bigger delay than yours, it
+</I>&gt;&gt;<i> could be completely possible that we overwrite data currently being
+</I>&gt;&gt;<i> played by SDL by the new data being computed by Hatari in sound.c
+</I>&gt;<i>
+</I>&gt;<i> The patch simply prevents the buffer output pointer from getting too
+</I>&gt;<i> far behind the input pointer by controlling nSamplesToGenerate.
+</I>&gt;<i>
+</I>&gt;<i> -	nSamplesToGenerate = MIXBUFFER_SIZE - nGeneratedSamples;
+</I>&gt;<i> +	nSamplesToGenerate = (SoundBufferSize&lt;&lt;1) - nGeneratedSamples;
+</I>&gt;<i>
+</I>&gt;<i> (SoundBufferSize&lt;&lt;1) must be no greater than MIXBUFFER_SIZE or
+</I>&gt;<i> MixBuffer[MIXBUFFER_SIZE][2] will overflow. MIXBUFFER_SIZE must
+</I>&gt;<i> also be divisible by (SoundBufferSize&lt;&lt;1) without a remainder.
+</I>&gt;<i> Note that MIXBUFFER_SIZE in the code above is the Maximum possible
+</I>&gt;<i> value, not the only acceptable value.
+</I>&gt;<i>
+</I>&gt;<i> To address 'overwriting data currently being played by SDL':
+</I>&gt;<i>
+</I>&gt;<i> 1) A system that doesn't produce enough samples for SDL will not
+</I>&gt;<i> overwrite SDL.
+</I>&gt;<i> 2) A system that produces excessive samples for SDL will have a delay
+</I>&gt;<i> that gets smaller with a smaller working buffer, and will not overwrite
+</I>&gt;<i> SDL because Audio_CallBack(void *userdata, Uint8 *stream, int len)
+</I>&gt;<i> is in control.
+</I>&gt;<i> Both systems can lose samples when the working buffer MixBuffer[][]
+</I>&gt;<i> either underflows or overflows...(halts/wraps/overwrites/?). Thus the
+</I>&gt;<i> need to control nSamplesToGenerate.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Addressing a hidden real problem:
+</I>&gt;<i>
+</I>&gt;<i> If this patch doesn't break any systems, given hidden real problems or
+</I>&gt;<i> not, and fixes systems presenting excessive latency, then maybe this is
+</I>&gt;<i> the solution. Proving this patch wrong is easier than proving it right.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> *** Please try the patch to at least put it out of its misery ***
+</I>&gt;<i>
+</I>
+Hello,
+
+I don't say your patch doesn't work, it certainly works for you and I'm 
+sure it would work for me.
+Basically, it just decreases the number of sound buffer to approx 16 
+today (16384 / 1024) to sthg around 3 buffer.
+
+Hatari can't produce more or less samples than the sound system expects, 
+it's Hatari that choose the number of samples that must be produced and 
+the system should follow this, not the opposite.
+
+If hatari produced in my case less sample than my system consume, then 
+it would be completly hearable, with &quot;clicks&quot; on every VBL.
+
+The problem with this patch is that :
+
+  - we can verify it works on your machine, on mine and on everyone's on 
+the list. But we can't verify it works everywhere, so we have no real 
+way to validate it 100%.
+
+  - it addresses a problem that to me seems related to a faulty alsa 
+driver and/or SDL version.
+SDL 1.2.13 is 3 years old (!) and kernel 2.6.18 is 4 years old (!). Im' 
+sorry, but we can't make changes to Hatari to fix problem that could be 
+related to such old version
+
+
+I'm not against trying to find a way to fix this issue, but at least we 
+must first have similar environments (kernel/SDL) to compare. There 
+would be no point in patching Hatari for things that could have been 
+resolved already in newer version of kernel/SDL.
+
+Regards
+
+Nicolas
+
+&gt;<i>
+</I>&gt;<i> Thank You,
+</I>&gt;<i> David
+</I>&gt;<i>
+</I>&gt;<i> I'm using:
+</I>&gt;<i> CentOS 5.5
+</I>&gt;<i> pulseaudio-0.9.10
+</I>&gt;<i> SDL-1.2.13
+</I>&gt;<i> kernel-2.6.18
+</I>&gt;<i> Creative Live Drive IR (Sound Blaster) with dsp 56k sound
+</I>&gt;<i> pentium3 1GHz
+</I>&gt;<i>
+</I>&gt;<i> Will have to wait to migrate to CentOS 6.0, I can't compile SDL-1.2.14
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002743.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002746.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2744">[ date ]</a>
+              <a href="thread.html#2744">[ thread ]</a>
+              <a href="subject.html#2744">[ subject ]</a>
+              <a href="author.html#2744">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] EKO System and easter
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EKO%20System%20and%20easter&In-Reply-To=%3C4A4293D1.9090009%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000421.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] EKO System and easter</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EKO%20System%20and%20easter&In-Reply-To=%3C4A4293D1.9090009%40free.fr%3E"
+       TITLE="[hatari-devel] EKO System and easter">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Jun 24 23:00:01 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000421.html">[hatari-devel] EKO System and easter
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#423">[ date ]</a>
+              <a href="thread.html#423">[ thread ]</a>
+              <a href="subject.html#423">[ subject ]</a>
+              <a href="author.html#423">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thomas Huth a &#233;crit :
+&gt;<i> On Wed, 24 Jun 2009 09:51:55 +0200
+</I>&gt;<i> Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> The result is exactly the same than if I use &quot;with DSP&quot;
+</I>&gt;&gt;<i> At 16 Mhz, the demo freezes and image and sound are not synchronized
+</I>&gt;&gt;<i> At 32 Mhz, everything is synchronized (demo stops when DSP code
+</I>&gt;&gt;<i> should start, music continues to play).
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Ok, so this means that the timing problems are not related to the CPU :
+</I>&gt;<i> DSP ratio, right?
+</I>&gt;<i>   
+</I>I agree here.
+When I have a doubt with a program, I always try to change the 1:7 
+ratio, but it's never involved in the problem.
+I think this ratio is the max value that will always let run DSP 
+programs and CPU synchronized.
+
+The only thing we could optimize here is to calculate precisely the time 
+of each DSP instruction.
+But the result would let execute 6 DSP instructions instead of 7 for 1 
+CPU instruction.
+I don't think that it is the most important code to add for now.
+And optimization may not be there. There are some other parts of code to 
+optimize into DSP first.
+
+&gt;<i> Have a look at dmaSound.c ... I thing the frequency table should be
+</I>&gt;<i> fine...?
+</I>&gt;<i>   
+</I>
+They look fine to me too.
+&gt;&gt;<i> * The synchro (image/sound) is dependent of the &quot;processor speed&quot;.
+</I>&gt;&gt;<i>    There must be a timer somewhere which is not correctly computed
+</I>&gt;&gt;<i>    (In videl, or dma sound)
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Could be related to the VBL ... as I already mentioned in another mail,
+</I>&gt;<i> the Videl emulation does not emulate the screen timings right yet. VBL
+</I>&gt;<i> is always triggered in 50 Hz, no matter which refresh frequency is
+</I>&gt;<i> programmed into the Videl chip...
+</I>&gt;<i> Have I already mentioned that the Videl code needs a major rewrite one
+</I>&gt;<i> day? ;-)
+</I>&gt;<i>   
+</I>
+Ok for the major rewrite of Videl code. That's again a huge work to add 
+to the TODO list.
+
+Regards,
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000421.html">[hatari-devel] EKO System and easter
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#423">[ date ]</a>
+              <a href="thread.html#423">[ thread ]</a>
+              <a href="subject.html#423">[ subject ]</a>
+              <a href="author.html#423">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

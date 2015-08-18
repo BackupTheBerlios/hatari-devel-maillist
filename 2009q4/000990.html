@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Catching return from an exception?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Catching%20return%20from%20an%20exception%3F&In-Reply-To=%3C20091124200552.415e4dcd%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000989.html">
+   <LINK REL="Next"  HREF="000993.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Catching return from an exception?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Catching%20return%20from%20an%20exception%3F&In-Reply-To=%3C20091124200552.415e4dcd%40phineus%3E"
+       TITLE="[hatari-devel] Catching return from an exception?">huth at users.berlios.de
+       </A><BR>
+    <I>Tue Nov 24 20:05:52 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000989.html">[hatari-devel] Catching return from an exception?
+</A></li>
+        <LI>Next message: <A HREF="000993.html">[hatari-devel] Catching return from an exception?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#990">[ date ]</a>
+              <a href="thread.html#990">[ thread ]</a>
+              <a href="subject.html#990">[ subject ]</a>
+              <a href="author.html#990">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 23 Nov 2009 23:58:20 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On Monday 23 November 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;<i> &gt;&gt; I was thinking of adding some special support to the Hatari
+</I>&gt;<i> &gt;&gt; internal debugger for GEMDOS (and other exception) error handling.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; If I want to breakpoint on GEMDOS exception when it *returns* so
+</I>&gt;<i> &gt;&gt; that I can break on failed GEMDOS calls (i.e. D0 &lt; 0), what I
+</I>&gt;<i> &gt;&gt; should be checking to know that the code is returning from an
+</I>&gt;<i> &gt;&gt; exception?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I think it should be nearly doable with the current breakpoints
+</I>&gt;<i> &gt; code.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; gemdos, bios and xbios are using trap 1,14 and 15, and the
+</I>&gt;<i> &gt; corresponding opcodes are $4e41, $4e4e and $4e4f.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; So, you should check that the previous instruction was one of these
+</I>&gt;<i> &gt; opcodes and that d0 is &lt; 0.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Sthg like :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (pc-2).w = $4e41 &amp;&amp; d0&lt;0
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Only limitation is that current breakpoint code doesn't handle
+</I>&gt;<i> &gt; add/sub on register name. But if you add such possibilities, I
+</I>&gt;<i> &gt; think it would work.
+</I>
+One question, do you only want to break for real GEMDOS, or also for our
+fake GEMDOS harddisk emulation? In the latter case, your suggestion
+would not work because the trap is intercepted an some handler code in
+the cardridge space is executed instead.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000989.html">[hatari-devel] Catching return from an exception?
+</A></li>
+	<LI>Next message: <A HREF="000993.html">[hatari-devel] Catching return from an exception?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#990">[ date ]</a>
+              <a href="thread.html#990">[ thread ]</a>
+              <a href="subject.html#990">[ subject ]</a>
+              <a href="author.html#990">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

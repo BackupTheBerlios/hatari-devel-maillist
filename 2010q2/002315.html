@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Getting OS call opcode from stack?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Getting%20OS%20call%20opcode%20from%20stack%3F&In-Reply-To=%3C201006152102.19129.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002314.html">
+   <LINK REL="Next"  HREF="002323.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Getting OS call opcode from stack?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Getting%20OS%20call%20opcode%20from%20stack%3F&In-Reply-To=%3C201006152102.19129.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Getting OS call opcode from stack?">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Jun 15 20:02:18 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002314.html">[hatari-devel] Getting OS call opcode from stack?
+</A></li>
+        <LI>Next message: <A HREF="002323.html">[hatari-devel] Getting OS call opcode from stack?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2315">[ date ]</a>
+              <a href="thread.html#2315">[ thread ]</a>
+              <a href="subject.html#2315">[ subject ]</a>
+              <a href="author.html#2315">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 15 June 2010, Vincent Rivi&#232;re wrote:
+&gt;<i> Eero Tamminen wrote:
+</I>&gt;<i> &gt; - Why this checks the supervisor mode from word on top of the stack
+</I>&gt;<i> &gt;   register A7, instead of from the status register SR?
+</I>&gt;<i>
+</I>&gt;<i> When the CPU is in user mode and encounters a trap (or any other
+</I>&gt;<i> exception) it switches to supervisor mode. Thus, inside the trap
+</I>&gt;<i> handler, SR indicates always the supervisor mode.
+</I>&gt;<i> The word on the stack is a backup of SR before the trap. So it indicates
+</I>&gt;<i> the mode before the stack.
+</I>&gt;<i>
+</I>&gt;<i> &gt; - Why in user mode parameters are taken from USP and in supervisor mode
+</I>&gt;<i> &gt;   with an offset from A7?  Aren't the parameters always in place
+</I>&gt;<i> &gt; pointed by A7 and where it points just changing with supervisor mode?
+</I>&gt;<i>
+</I>&gt;<i> The trap parameters are always pushed on A7.
+</I>&gt;<i> If the trap is called from user mode, the CPU is switched to supervisor
+</I>&gt;<i> mode, the old A7 becomes available only trough the USP register, and A7
+</I>&gt;<i> is initialized with the supervisor stack pointer. On 68010+, a format
+</I>&gt;<i> word is pushed. Then PC and SR are pushed on the supervisor stack.
+</I>&gt;<i> If the trap is called from supervisor mode, the same thing happens, but
+</I>&gt;<i> no stack switch occurs.
+</I>&gt;<i>
+</I>&gt;<i> Thus, inside the trap handler, you must look at the parameters pushed on
+</I>&gt;<i> USP or A7 depending on the CPU mode of the caller.
+</I>
+Thanks!
+
+Hatari gemdos stuff is entered through some extra cartrigde assembly tricks,
+and taking above into account it seems clear that it's done within the trap
+handler.
+
+
+On looking at the Hatari UAE core, the Bios() &amp; Xbios() &amp; Vdi() intercept
+functions are called before the emulation switches to supervisor mode
+(if not already in it) and constructs the exception stack frame.
+
+I.e. these are not called within the trap handler and I guess then it's OK
+to use A7 directly?
+
+
+Debugger catches the trap when PC points to the trap instruction, so
+it's not executed yet and we're not within a trap handler.  So I guess
+it's OK to use A7 directly also in this case to find what's in stack?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002314.html">[hatari-devel] Getting OS call opcode from stack?
+</A></li>
+	<LI>Next message: <A HREF="002323.html">[hatari-devel] Getting OS call opcode from stack?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2315">[ date ]</a>
+              <a href="thread.html#2315">[ thread ]</a>
+              <a href="subject.html#2315">[ subject ]</a>
+              <a href="author.html#2315">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] More precise VBL delays
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20More%20precise%20VBL%20delays&In-Reply-To=%3C4D4EB168.8010407%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002989.html">
+   <LINK REL="Next"  HREF="002994.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] More precise VBL delays</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20More%20precise%20VBL%20delays&In-Reply-To=%3C4D4EB168.8010407%40corp.free.fr%3E"
+       TITLE="[hatari-devel] More precise VBL delays">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Feb  6 15:34:16 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002989.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002994.html">[hatari-devel] More precise VBL delays
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2992">[ date ]</a>
+              <a href="thread.html#2992">[ thread ]</a>
+              <a href="subject.html#2992">[ subject ]</a>
+              <a href="author.html#2992">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello
+
+I finally committed some improvements to Main_WaitOnVbl to better handle 
+sound synchronisation at 60 Hz.
+
+First of all, sorry to David for not including his patch directly, but 
+although I agree with the way this patch works, it has one major 
+drawback : it doesn't work if sound is turned off in Hatari :)
+
+I know most people are using sound, but still, I prefered to include a 
+patch that just rely on OS functions to get time/ sleep, with no 
+relation to other parts of Hatari (this works similarly in other 
+emulator, for example Vice for C64).
+
+So, 2 changes were made :
+
+1) all times are now computed in micro seconds instead of milliseconds. 
+By just doing this, we would now sleep for 17 ms instead of 16 ms before 
+when running at 60 Hz. This would give a 2% error instead of the 
+previous 4% (as the real sleep time should be 16.6666... ms)
+
+2) When nanosleep() and gettimeofday() are available at compilation 
+time, we use them instead of SDL_Delay and SDL_GetTicks. This means we 
+get microsec precision when reading time and nanosec precision 
+(theorically) when sleeping.
+
+nanosleep() and gettimeofday() are POSIX, so all conforming unixes 
+should have them (Linux and OSX for example).
+
+For Windows we're still using SDL functions, so we use milli sec, but 
+precision will still be improved by point 1) and there should be no 
+sound delay either when running at 60 Hz under Windows now.
+
+With the 60 Hz example, previous version was rounding each VBL at 16 ms, 
+so you got 960 ms sleep instead 1000 ms during one sec (4% error).
+
+With microsec computation and SDL_Delay / SDL_GetTicks, Hatari would now 
+repeat the following sequence of sleep : 17 17 16 17 17 16 ..
+
+
+If nanosleep is available, we can really sleep for the equivalent of 
+16.667 ms (instead of alternating sleeps of 16 and 17 ms)
+
+In the end, Hatari VBL precision should now be improved by more than 
+x1000 (we could do more by using nano sec for computation, but I'm not 
+sure this would be hearable)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002989.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002994.html">[hatari-devel] More precise VBL delays
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2992">[ date ]</a>
+              <a href="thread.html#2992">[ thread ]</a>
+              <a href="subject.html#2992">[ subject ]</a>
+              <a href="author.html#2992">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

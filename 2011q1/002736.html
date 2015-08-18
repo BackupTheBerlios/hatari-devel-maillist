@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling Hatari code with Valgrind
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind&In-Reply-To=%3C4D22572D.3060602%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002737.html">
+   <LINK REL="Next"  HREF="002738.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling Hatari code with Valgrind</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind&In-Reply-To=%3C4D22572D.3060602%40free.fr%3E"
+       TITLE="[hatari-devel] Profiling Hatari code with Valgrind">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Jan  4 00:09:33 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002737.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002738.html">[hatari-devel] Console I/O on Windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2736">[ date ]</a>
+              <a href="thread.html#2736">[ thread ]</a>
+              <a href="subject.html#2736">[ subject ]</a>
+              <a href="author.html#2736">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Eero,
+
+First, I wish an happy new year to you all.
+
+You're patch seems good to me, I think you can upload it.
+
+Regards
+
+Laurent
+
+
+Here
+
+Le 30/12/2010 00:27, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On keskiviikko 29 joulukuu 2010, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i> Thanks Eero to remind me valgrind, I forgot it.
+</I>&gt;&gt;<i> Can you also remind me the commands to use to analyse % of time each
+</I>&gt;&gt;<i> instruction takes ?
+</I>&gt;<i> First make sure you've configured CMake to produce a Hatari binary that is
+</I>&gt;<i> compiled so that it's both optimized and contains debug symbols (use
+</I>&gt;<i> RELWITHDEBINFO build type and change it also to use -O3 as RELEASE
+</I>&gt;<i> build type).
+</I>&gt;<i>
+</I>&gt;<i> Then just prefix the hatari command with &quot;valgrind --tool=callgrind&quot;.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> If you're interested just about the DSP side, it's better if you minimize
+</I>&gt;<i> the effect of display updates and sound&amp;  mic threading with options like:
+</I>&gt;<i> 	-z 1 --frameskips 8 --sound off --mic off
+</I>&gt;<i>
+</I>&gt;<i> And if you don't want the profile to contain TOS bootup&amp;  starting the DSP
+</I>&gt;<i> program, use a Hatari memory snapshot for profiling.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> After you've profiled long enough, use:
+</I>&gt;<i> 	callgrind_control --dump
+</I>&gt;<i>
+</I>&gt;<i> And close Hatari (closing Hatari seems to do something funny in SDL which
+</I>&gt;<i> make callgrind not to work properly at its exit so you need to use
+</I>&gt;<i> &quot;callgrind_control --dump&quot; instead).
+</I>&gt;<i>
+</I>&gt;<i> Then give the last/largest callgrind.out.* file to kcachgrind.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> In the Kcachegrind configuration dialog &quot;Annotations&quot; tab you can add
+</I>&gt;<i> Hatari source directories so that Kcachegrind can correctly show the sources
+</I>&gt;<i> annotated with profiling results.  This works only if you have debug symbols
+</I>&gt;<i> in the Hatari binary.
+</I>&gt;<i>
+</I>&gt;<i>  From the Kcachegrind output, besides callgraphs etc, it makes sense to check
+</I>&gt;<i> / sort by how much functions are:
+</I>&gt;<i> - called
+</I>&gt;<i> - use CPU themselves
+</I>&gt;<i> - use CPU cumulatively (with functions called from them)
+</I>&gt;<i>
+</I>&gt;<i> I.e. whether one could look into optimizing number of calls, the function
+</I>&gt;<i> itself, or what other functions it calls.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Attached is a screenshot of Kcachegrind output on 30l_coke.prg.
+</I>&gt;<i> With some other program the hotspots could be elsewhere, it's always
+</I>&gt;<i> good idea to profile several programs.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i> PS. Would the attached patch to dsp.c make sense?  The asm code GCC
+</I>&gt;<i> generates for it according to &quot;objdump -d&quot; changes&amp;  and is couple of
+</I>&gt;<i> lines shorter (doesn't use a register for &quot;i&quot; value), but I have no idea
+</I>&gt;<i> whether it's any faster in practice.  Anyway it would be too small to
+</I>&gt;<i> be visible e.g. in &quot;top&quot;.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110104/7a19ccc3/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110104/7a19ccc3/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002737.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002738.html">[hatari-devel] Console I/O on Windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2736">[ date ]</a>
+              <a href="thread.html#2736">[ thread ]</a>
+              <a href="subject.html#2736">[ subject ]</a>
+              <a href="author.html#2736">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Suggestion about small additions for v1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3C4BEE731A.50608%40wanadoo.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002136.html">
+   <LINK REL="Next"  HREF="002142.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Suggestion about small additions for v1.4</H1>
+    <B>Jerome Vernet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3C4BEE731A.50608%40wanadoo.fr%3E"
+       TITLE="[hatari-devel] Suggestion about small additions for v1.4">vernet.jerome at wanadoo.fr
+       </A><BR>
+    <I>Sat May 15 12:10:34 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002136.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002142.html">[hatari-devel] Building on OS X (was: Suggestion about small	additions for v1.4)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2137">[ date ]</a>
+              <a href="thread.html#2137">[ thread ]</a>
+              <a href="subject.html#2137">[ subject ]</a>
+              <a href="author.html#2137">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 15/05/10 10:47, Thomas H. a &#233;crit :
+&gt;<i>
+</I>&gt;<i> And how does line 169 (and the lines before) of your SDL_keyboard.h look like? My SDL_keyboard.h has only 122 lines ... so I guess this problem is related to your SDL 1.3 ?
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>/**
+  *  \brief Set the rectangle used to type Unicode text inputs.
+  *
+  *  \sa SDL_StartTextInput()
+  */
+extern DECLSPEC void SDLCALL SDL_SetTextInputRect(SDL_Rect *rect);
+
+I tried cmake -G Xcode and got exactly the same error with the XCode 
+project created.
+What I cannot understand is that the FrameWork have exactly the same 
+line, and it's working.
+
+I try to understand how cmake work, without success ;). The only thing I 
+can see is that I may need to add this to CMakeList.txt in hatari/src:
+
+# When building for OSX, define specific sources for gui and ressources
+if(ENABLE_OSX_BUNDLE)
+     set(GUIOSX_SOURCES
+         gui-osx/AlertHooks.m gui-osx/PrefsController.m gui-osx/Shared.m
+         gui-osx/CreateFloppyController.m gui-osx/SDLMain.m)
+     set_source_files_properties(${GUIOSX_SOURCES} PROPERTIES LANGUAGE C)
+     set(GUIOSX_RSRCS
+         gui-osx/Hatari.icns gui-osx/English.lproj gui-osx/French.lproj)
+endif(ENABLE_OSX_BUNDLE)
+
+I think this will build correctly with cmake.
+
+Jerome
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002136.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002142.html">[hatari-devel] Building on OS X (was: Suggestion about small	additions for v1.4)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2137">[ date ]</a>
+              <a href="thread.html#2137">[ thread ]</a>
+              <a href="subject.html#2137">[ subject ]</a>
+              <a href="author.html#2137">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

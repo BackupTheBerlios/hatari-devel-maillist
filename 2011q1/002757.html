@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling Hatari code with Valgrind
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind&In-Reply-To=%3C201101072352.45471.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002755.html">
+   <LINK REL="Next"  HREF="002770.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling Hatari code with Valgrind</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind&In-Reply-To=%3C201101072352.45471.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Profiling Hatari code with Valgrind">oak at helsinkinet.fi
+       </A><BR>
+    <I>Fri Jan  7 22:52:45 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002755.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+        <LI>Next message: <A HREF="002770.html">[hatari-devel] DSP togging (was: Profiling Hatari code with	Valgrind)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2757">[ date ]</a>
+              <a href="thread.html#2757">[ thread ]</a>
+              <a href="subject.html#2757">[ subject ]</a>
+              <a href="author.html#2757">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 07 tammikuu 2011, David Savinkoff wrote:
+&gt;<i> I've been playing with Falcon emulation and using 'top' on my slow
+</I>&gt;<i> system P3 1GHz. My opinion is that the dsp has been optimized so
+</I>&gt;<i> good that there are diminishing returns in optimizing it further.
+</I>&gt;<i> The problem is more in the rest of the falcon emulation. For example,
+</I>&gt;<i> when I run Fractal Flight with the dsp I get my system max'd, then
+</I>&gt;<i> when I switch the dsp to off or dummy my system is still max'd but
+</I>&gt;<i> the fractal flight continues at the same slow speed until there is no
+</I>&gt;<i> data for the screen. Removing the dsp effectively makes no speed
+</I>&gt;<i> difference!
+</I>
+That sounded very peculiar so I checked the code.
+
+Disabling DSP from the UI doesn't do anything unless you save that
+setting and restart Hatari, e.g. rebooting it isn't enough.  I.e. your
+observation isn't valid.
+
+
+That's because the code does this:
+----
+void DSP_UnInit(void)
+{
+#if ENABLE_DSP_EMU
+        if (ConfigureParams.System.nDSPType != DSP_TYPE_EMU)
+                return;
+----
+
+(DSP_UnInit() can be called only when DSP emulation is enabled,
+so above means that DSP will never be uninitialized.)
+
+
+&gt;<i> One other whacky bug I get with hatari is sometimes a key is repeating
+</I>&gt;<i> at boot time.
+</I>
+AFAIK that's a TOS issue, not Hatari one and it happens on real Atari
+machines too (I think it's been discussed on the MiNT mailing list).
+
+
+&gt;<i> I've noticed that when this happens while booting the falcon,
+</I>&gt;<i> the emulation gets severely loaded, and stays that way (not a
+</I>&gt;<i> dsp issue).
+</I>
+If you press key again, the repeating should stop.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002755.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+	<LI>Next message: <A HREF="002770.html">[hatari-devel] DSP togging (was: Profiling Hatari code with	Valgrind)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2757">[ date ]</a>
+              <a href="thread.html#2757">[ thread ]</a>
+              <a href="subject.html#2757">[ subject ]</a>
+              <a href="author.html#2757">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

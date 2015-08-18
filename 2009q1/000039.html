@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Potential bug with MSA disk images
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Potential%20bug%20with%20MSA%20disk%20images&In-Reply-To=%3C200901181834.37094.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000045.html">
+   <LINK REL="Next"  HREF="000043.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Potential bug with MSA disk images</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Potential%20bug%20with%20MSA%20disk%20images&In-Reply-To=%3C200901181834.37094.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Potential bug with MSA disk images">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jan 18 17:34:36 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000045.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+        <LI>Next message: <A HREF="000043.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#39">[ date ]</a>
+              <a href="thread.html#39">[ thread ]</a>
+              <a href="subject.html#39">[ subject ]</a>
+              <a href="author.html#39">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 18 January 2009, Matthias Arndt wrote:
+&gt;<i> Actually I already have an idea what coudl help but I have no idea how
+</I>&gt;<i> or where to implement it.
+</I>&gt;<i>
+</I>&gt;<i> That would mean: if the users choose &quot;Eject&quot; to call the proper sequence
+</I>&gt;<i> which will write all diskimage buffers back to their respective parent
+</I>&gt;<i> image file.
+</I>
+No, then one couldn't cancel the Options actions.
+
+It seems this issue was something I had overlooked when I made the large
+changes needed to get the disk operations cancellable in the Options dialog.
+
+Does the attached patch fix the issue?
+
+(It's not specific to MSA images, but concerns all floppy images.)
+
+
+
+Thomas, I haven't done any changes to how harddisk images are/were handled,
+but wouldn't that have the same issue?  I.e. before changing the harddisk
+image name in the actual configuration, the changes should be flushed to
+the disk image.  Are any changes buffered for harddisk and is there a way to
+force TOS to flush any buffers it might keep on them?
+
+
+	- Eero
+
+&gt;<i> Matthias
+</I>&gt;<i>
+</I>&gt;<i> Am Sonntag, den 18.01.2009, 10:26 +0100 schrieb Matthias Arndt:
+</I>&gt;<i> &gt; Hello team,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; by accident I discovered a potential issue with MSA disk images:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; a) Booted a utility disk image with a Bootsector writer
+</I>&gt;<i> &gt; b) Used the utiliy on disk A.MSA (all in drive A:)
+</I>&gt;<i> &gt; c) pushed &quot;Eject&quot; button in disk image dialogue
+</I>&gt;<i> &gt; d) inserted disk B.MSA (which was definitly different than A.MSA)
+</I>&gt;<i> &gt; e) resetted Hatari to get A.MSA loaded with the new bootsector
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; BUT: B.MSA was still inserted and was overwritten with the old A.MSA
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Ermmm, this sounds really dodgy to me :(
+</I>&gt;<i> &gt; Thank god I didn't loose anything important, just some game menus which
+</I>&gt;<i> &gt; are entirely replaceable from CDs...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; My Hatari version is a fresh Mercurial build from last week.
+</I>-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: eject-fix.diff
+Type: text/x-diff
+Size: 2454 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090118/450074db/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090118/450074db/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000045.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+	<LI>Next message: <A HREF="000043.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#39">[ date ]</a>
+              <a href="thread.html#39">[ thread ]</a>
+              <a href="subject.html#39">[ subject ]</a>
+              <a href="author.html#39">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

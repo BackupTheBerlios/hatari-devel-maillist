@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] mac OS X version for Hatari 1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20mac%20OS%20X%20version%20for%20Hatari%201.5&In-Reply-To=%3CCAEK_Ugid-HoBP9dG_7x6FOVnihM9BT1NpmvggtsZTSFAFCyV%3Dw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003699.html">
+   <LINK REL="Next"  HREF="003662.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] mac OS X version for Hatari 1.5</H1>
+    <B>Deniz Turkoglu</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20mac%20OS%20X%20version%20for%20Hatari%201.5&In-Reply-To=%3CCAEK_Ugid-HoBP9dG_7x6FOVnihM9BT1NpmvggtsZTSFAFCyV%3Dw%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] mac OS X version for Hatari 1.5">turkoglu.deniz at gmail.com
+       </A><BR>
+    <I>Tue Jul 12 22:56:41 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003699.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+        <LI>Next message: <A HREF="003662.html">[hatari-devel] No button in the UI for fast forward ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3701">[ date ]</a>
+              <a href="thread.html#3701">[ thread ]</a>
+              <a href="subject.html#3701">[ subject ]</a>
+              <a href="author.html#3701">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+On Tue, Jul 12, 2011 at 10:40 PM, Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On tiistai 12 hein&#228;kuu 2011, Deniz Turkoglu wrote:
+</I>&gt;&gt;&gt;<i> Which version of the readline your OSX has?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> /* &#160; &#160; &#160;$NetBSD: readline.h,v 1.23 2008/04/29 06:53:01 martin Exp $ &#160; &#160; */
+</I>&gt;&gt;<i> extern char &#160; &#160; &#160; &#160; &#160; &#160; *rl_readline_name;
+</I>&gt;<i>
+</I>&gt;<i> Oh, you don't have GNU readline, but a BSD one.
+</I>&gt;<i>
+</I>&gt;<i> Please file a bug against BSD, that its readline isn't 100% compatible with
+</I>&gt;<i> GNU readline it's trying to emulate (if that hasn't been fixed yet in BSD).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> &gt; I guess the OSX specific part of the patch could be applied.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It would be nice to remove other warnings while we are at it, so they
+</I>&gt;&gt;<i> aren't accidentally forgotten?
+</I>&gt;<i>
+</I>&gt;<i> As they happen only with non-standard readline &amp; old GCC version, I don't
+</I>&gt;<i> think code should be kludged for such things. &#160;The code itself is fine.
+</I>
+I meant the other warnings Nicolas said he would remove, such as
+unused vars, I haven't touched the ones that were already acknowledged
+by him.
+
+-deniz
+
+&lt;snip&gt;
+On Mon, Jul 11, 2011 at 12:04 PM, Nicolas Pomar&#232;de
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt; wrote:
+
+[ 26%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp_cpu.c.o
+/Users/solskogen/source/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_pm_4&#8217;:
+/Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: warning:
+&#8216;save_ly&#8217; may be used uninitialized in this function
+/Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: note:
+&#8216;save_ly&#8217; was declared here
+/Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: warning:
+&#8216;save_lx&#8217; may be used uninitialized in this function
+/Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: note:
+&#8216;save_lx&#8217; was declared here
+
+Laurent knows about those one, they're &quot;normal&quot;
+
+
+[ 30%] Building C object src/falcon/CMakeFiles/Falcon.dir/videl.c.o
+/Users/solskogen/source/hatari/src/falcon/videl.c: In function
+&#8216;VIDEL_ST_ShiftModeWriteByte&#8217;:
+/Users/solskogen/source/hatari/src/falcon/videl.c:214: warning:
+&#8216;video_mode&#8217; may be used uninitialized in this function
+/Users/solskogen/source/hatari/src/falcon/videl.c:214: warning:
+&#8216;line_width&#8217; may be used uninitialized in this function
+
+I think these are also intended.
+
+
+
+Linking C static library libFalcon.a
+/usr/bin/ranlib: file: libFalcon.a(microphone.c.o) has no symbols
+/usr/bin/ranlib: file: libFalcon.a(microphone.c.o) has no symbols
+
+I don't know, maybe OS X specific.
+
+
+[ 54%] Building C object src/CMakeFiles/hatari.dir/dmaSnd.c.o
+/Users/solskogen/source/hatari/src/dmaSnd.c:371: warning:
+&#8216;DmaSnd_FIFO_ReadByte&#8217; defined but not used
+/Users/solskogen/source/hatari/src/dmaSnd.c:389: warning:
+&#8216;DmaSnd_FIFO_ReadWord&#8217; defined but not used
+
+I will remove these soon, they're not used anymore.
+
+&lt;/snip&gt;
+
+&gt;<i>
+</I>&gt;<i> &#160; &#160; &#160; &#160;- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003699.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+	<LI>Next message: <A HREF="003662.html">[hatari-devel] No button in the UI for fast forward ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3701">[ date ]</a>
+              <a href="thread.html#3701">[ thread ]</a>
+              <a href="subject.html#3701">[ subject ]</a>
+              <a href="author.html#3701">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

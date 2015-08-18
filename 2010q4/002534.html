@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Tracing AES calls with the existing VDI code?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Tracing%20AES%20calls%20with%20the%20existing%20VDI%20code%3F&In-Reply-To=%3C201010160005.50864.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002533.html">
+   <LINK REL="Next"  HREF="002527.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Tracing AES calls with the existing VDI code?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Tracing%20AES%20calls%20with%20the%20existing%20VDI%20code%3F&In-Reply-To=%3C201010160005.50864.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Tracing AES calls with the existing VDI code?">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Oct 15 23:05:50 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002533.html">[hatari-devel] Tracing AES calls with the existing VDI code?
+</A></li>
+        <LI>Next message: <A HREF="002527.html">[hatari-devel] Additional debugger info functions for OS calls?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2534">[ date ]</a>
+              <a href="thread.html#2534">[ thread ]</a>
+              <a href="subject.html#2534">[ subject ]</a>
+              <a href="author.html#2534">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've now commited support for:
+- tracing AES calls
+- &quot;aes&quot;, &quot;vdi&quot; and &quot;gemdos&quot; subcommands to debugger &quot;info&quot; command
+
+If one gives a (non-zero) argument (&quot;info gemdos 1&quot;) for the aes/vdi/gemdos
+commands, they will output the opcode/name table for given OS trap.
+(This was very little extra code as the data itself was already  present for
+tracing.)
+
+Without argument (&quot;info gemdos&quot;), these will show information about
+the state of that part of OS:
+- Last used AES parameter block
+- Last used VDI parameter block
+- GEMDOS HDD emulation state (drive dirs, DTA contents and open files)
+
+Like the other &quot;info&quot; subcommand outputs (such as &quot;disasm&quot; and &quot;memdump&quot;),
+this information can be set with the &quot;lock&quot; command to be output whenever
+you enter the debugger.
+
+
+I've also added also &quot;:info&quot; flag to the breakpoints.  With that you can
+output any of the info/lock command items whenever such a breakpoint is hit,
+without need to drop into the debugger.
+
+This can be useful if you want to see extra output when one of the OS
+breakpoints is encountered.  Or if you're e.g. debugging something Videl
+related and have breakpoint on one of the HW registers, you can set it
+to dump out full videl contents (and continue) whenever breakpoint is
+triggered.
+
+For example, to get Videl info whenever contents of the given HW register
+change, use something like this:
+	lock videl
+	b &lt;HW reg address&gt; ! &lt;HW reg address&gt;  :info
+	cont
+
+
+On Thursday 14 October 2010, Eero Tamminen wrote:
+&gt;<i> &gt; &gt; Aditionally I thought to do these renamings:
+</I>&gt;<i> &gt; &gt; * VDI() -&gt;  VDI_AES_Entry()
+</I>&gt;<i> &gt; &gt; * VDI_Complete() -&gt;  VDI_AES_Complete()
+</I>&gt;<i> &gt; &gt; * VDI_OldPC -&gt;  VID_AES_OldPC
+</I>&gt;<i> &gt; &gt; * CART_VDI_OPCODE_ADDR -&gt;  CART_VDI_AES_OPCODE_ADDR
+</I>
+It was bad idea to use same opcode for catching completion of
+both AES &amp; VDI tracing.
+
+AES calls can be recursive and many of them call VDI functions,
+so that broke things.  Therefore tracing will now catch only
+entry to the Trap, not exit of it.
+
+I also changed the VDI code so that VDI_Complete() is called only
+for the (Open workstation) functions that need it, not for all VDI
+functions.
+
+
+&gt;<i> Renaming touches quite a few files:
+</I>
+-&gt; None of this was needed.
+
+
+&gt;<i> On Tuesday 12 October 2010, Eero Tamminen wrote:
+</I>&gt;<i> &gt; I forgot to mention that adding AES tracing would need (like DSP
+</I>&gt;<i> &gt; tracing) changing the trace variable from 32- to 64-bit one as all bits
+</I>&gt;<i> &gt; are currently needed.
+</I>
+Done.
+
+
+&gt;<i> &gt; the debugger &quot;info&quot; command could also be used to list tables of the OS
+</I>&gt;<i> &gt; (GEMDOS, BIOS, XBIOS, VDI, AES) call number/name pairs.
+</I>
+I can add BIOS &amp; XBIOS opcode stuff if there's also some state for them
+that could be show by default, like I do for aes/gemdos/vdi stuff.
+
+
+&gt;<i> I'll add separate bVdiIntercept flag similar to bBiosIntercept that will
+</I>&gt;<i> be used in newcpu.c so that AES &amp; VDI tracing can be done regardless of
+</I>&gt;<i> whether extended VDI resolutions are used (enabling extended VDI
+</I>&gt;<i> resolution will then just imply also bVdiIntercept=true).
+</I>
+In addition to extended VDI resolutions, enabling either AES or VDI
+tracing will automatically enable bVdiIntercept for the CPU emulation.
+I.e. there was no need for an extra command line option.
+
+I didn't do the same for BIOS intercepting because it does other things
+besides tracing:
+- CON: redirection to host console
+- enables XBios(255) for native Atari apps
+
+
+&gt;<i> &gt; &gt; Also, what this commented out code in VDI() is/was for:
+</I>&gt;<i> &gt; &gt; ----------
+</I>&gt;<i> &gt; &gt;          /*
+</I>&gt;<i> &gt; &gt;          OpCode = STMemory_ReadWord(Control);
+</I>&gt;<i> &gt; &gt;          // Check OpCode
+</I>&gt;<i> &gt; &gt;          // 8 - Text Font
+</I>&gt;<i> &gt; &gt;          if (OpCode==9)
+</I>&gt;<i> &gt; &gt;          {
+</I>&gt;<i> &gt; &gt;                  return true;
+</I>&gt;<i> &gt; &gt;          }
+</I>&gt;<i> &gt; &gt;          */
+</I>&gt;<i> &gt; &gt; ----------
+</I>&gt;<i>
+</I>&gt;<i> Opcode 9 is v_fillarea().
+</I>&gt;<i>
+</I>&gt;<i> &gt; &gt; Can it be removed?
+</I>
+I removed the code.  It's easy to add back if somebody provides
+a robust implemenation of accelerated VDI functions.  I think they suit
+Aranym's goals better than Hatari though.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002533.html">[hatari-devel] Tracing AES calls with the existing VDI code?
+</A></li>
+	<LI>Next message: <A HREF="002527.html">[hatari-devel] Additional debugger info functions for OS calls?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2534">[ date ]</a>
+              <a href="thread.html#2534">[ thread ]</a>
+              <a href="subject.html#2534">[ subject ]</a>
+              <a href="author.html#2534">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] cross compiling
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cross%20compiling&In-Reply-To=%3Calpine.LMD.2.00.1004161036390.29072%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001849.html">
+   <LINK REL="Next"  HREF="001851.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] cross compiling</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cross%20compiling&In-Reply-To=%3Calpine.LMD.2.00.1004161036390.29072%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] cross compiling">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Apr 16 10:42:54 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001849.html">[hatari-devel] cross compiling
+</A></li>
+        <LI>Next message: <A HREF="001851.html">[hatari-devel] cross compiling
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1850">[ date ]</a>
+              <a href="thread.html#1850">[ thread ]</a>
+              <a href="subject.html#1850">[ subject ]</a>
+              <a href="author.html#1850">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 16 Apr 2010, Christer Solskogen wrote:
+
+&gt;<i> The new configure system supports cross-compiling
+</I>&gt;<i> (--cross-compile-win32) to Windows. Have anyone tried it? If you have
+</I>&gt;<i> or do use it, could you post how you created your &quot;cross world&quot; with
+</I>&gt;<i> libsdl, portaudio and png?
+</I>
+
+Hello,
+
+I tried it, since I added this option myself :)
+
+Depending on your linux distribution, you should have some &quot;mingw&quot; 
+packages to install. In my case (under Mandriva), I installed 
+mingw32-binutils, mingw32-gcc, mingw32-libpng, mingw32-readline, 
+mingw32-w32api.
+
+Rule of thumb is  : run &quot;--cross-compile-win32&quot; and each time an error is 
+reported, look for a corresponding package for mingw in your distrib.
+
+In my case, sdl was not available, so I got the version from official 
+mingw site. Just installing this version (specifying the correct 
+destination path, so it goes in the usual cross compile path defined by 
+your mingw32-gcc package) was enough to cross compile and get a windows 
+binary.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001849.html">[hatari-devel] cross compiling
+</A></li>
+	<LI>Next message: <A HREF="001851.html">[hatari-devel] cross compiling
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1850">[ date ]</a>
+              <a href="thread.html#1850">[ thread ]</a>
+              <a href="subject.html#1850">[ subject ]</a>
+              <a href="author.html#1850">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

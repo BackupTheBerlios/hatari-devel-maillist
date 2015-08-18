@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] &quot;random&quot; array read in SDLGui_DoDialog()
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2012q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%22random%22%20array%20read%20in%20SDLGui_DoDialog%28%29&In-Reply-To=%3C201201180109.53792.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004264.html">
+   <LINK REL="Next"  HREF="004266.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] &quot;random&quot; array read in SDLGui_DoDialog()</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%22random%22%20array%20read%20in%20SDLGui_DoDialog%28%29&In-Reply-To=%3C201201180109.53792.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] &quot;random&quot; array read in SDLGui_DoDialog()">oak at helsinkinet.fi
+       </A><BR>
+    <I>Wed Jan 18 00:09:53 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004264.html">[hatari-devel] &quot;random&quot; array read in SDLGui_DoDialog()
+</A></li>
+        <LI>Next message: <A HREF="004266.html">[hatari-devel] python-ui build does not respect build path
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4265">[ date ]</a>
+              <a href="thread.html#4265">[ thread ]</a>
+              <a href="subject.html#4265">[ subject ]</a>
+              <a href="author.html#4265">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On tiistai 17 tammikuu 2012, Laurent Sallafranque wrote:
+&gt;<i> I've installed this patch and tested it.
+</I>&gt;<i> It works well, but I haven't seen any difference.
+</I>
+The wrong memory read issue doesn't have any use-visible symptoms,
+but if current_object is -1, actions on that might cause corruption
+of something before the dialog structure.
+
+But I was more interested on the current_object thing and why
+scrollbar handling needs that (to be static / persist over
+function calls).
+
+
+	- Eero
+
+
+&gt;<i> Laurent
+</I>&gt;<i> 
+</I>&gt;<i> Le 15/01/2012 22:56, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; On sunnuntai 15 tammikuu 2012, Eero Tamminen wrote:
+</I>&gt;<i> &gt;&gt; Btw. When testing with some other things, I got also once this:
+</I>&gt;<i> &gt;&gt; mudflap violation 1 (check/read): time=1326627178.463958 ptr=0x88e8d80
+</I>&gt;<i> &gt;&gt; size=4
+</I>&gt;<i> &gt;&gt; pc=0xb76d13bd
+</I>&gt;<i> &gt;&gt; location=`/home/eero/work/hatari/src/gui-sdl/sdlgui.c:741:6
+</I>&gt;<i> &gt;&gt; (SDLGui_DoDialog)'
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt;        /usr/lib/libmudflap.so.0(__mf_check+0x3d) [0xb76d13bd]
+</I>&gt;<i> &gt;&gt;        src/hatari(SDLGui_DoDialog+0x3db4) [0x8300e74]
+</I>&gt;<i> &gt;&gt;        src/hatari() [0x82eb21e]
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; Nearby object 1: checked region begins 1B after and ends 4B after
+</I>&gt;<i> &gt;&gt; mudflap object 0x9bd3e90:
+</I>&gt;<i> &gt;&gt; name=`/home/eero/work/hatari/src/falcon/nvram.c:56:14 nvram'
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; But I wasn't able to reproduce it / steps leading to it. :-/
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; It's really hard to reproduce, it (read access to incorrect memory)
+</I>&gt;<i> &gt; appears randomly when OKing options dialog, but I finally got it
+</I>&gt;<i> &gt; another time.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Gdb says:
+</I>&gt;<i> &gt; (gdb) bt
+</I>&gt;<i> &gt; ...
+</I>&gt;<i> &gt; #6  0xb77b63bd in __mf_check () from /usr/lib/libmudflap.so.0
+</I>&gt;<i> &gt; #7  0x08355714 in SDLGui_DoDialog (dlg=0x8e9dea0, pEventOut=0x0) at
+</I>&gt;<i> &gt; /home/eero/work/hatari/src/gui-sdl/sdlgui.c:686
+</I>&gt;<i> &gt; #8  0x0833ea9e in DlgAlert_ShowDlg (text=&lt;value optimized out&gt;) at
+</I>&gt;<i> &gt; /home/eero/work/hatari/src/gui-sdl/dlgAlert.c:163
+</I>&gt;<i> &gt; #9  0x08107599 in Dialog_DoProperty () at
+</I>&gt;<i> &gt; /home/eero/work/hatari/src/dialog.c:57
+</I>&gt;<i> &gt; ...
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Unfortunately it seems that Gdb doesn't give for reads the actual
+</I>&gt;<i> &gt; code line number, just the function entry line.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; After looking at the SDLGui_DoDialog() code and wondering what could
+</I>&gt;<i> &gt; be doing under/over/random array reads, I think the attahed patch
+</I>&gt;<i> &gt; might fix it.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I still wonder why current_object isn't set in the DoDialog main loop
+</I>&gt;<i> &gt; though.  Laurent?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 	- Eero
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; hatari-devel mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004264.html">[hatari-devel] &quot;random&quot; array read in SDLGui_DoDialog()
+</A></li>
+	<LI>Next message: <A HREF="004266.html">[hatari-devel] python-ui build does not respect build path
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4265">[ date ]</a>
+              <a href="thread.html#4265">[ thread ]</a>
+              <a href="subject.html#4265">[ subject ]</a>
+              <a href="author.html#4265">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new support for avi recording
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3C200910181514.28697.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000849.html">
+   <LINK REL="Next"  HREF="000854.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new support for avi recording</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3C200910181514.28697.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] new support for avi recording">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Oct 18 14:14:28 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000849.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000854.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#850">[ date ]</a>
+              <a href="thread.html#850">[ thread ]</a>
+              <a href="subject.html#850">[ subject ]</a>
+              <a href="author.html#850">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 18 October 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> On Sun, 18 Oct 2009, Eero Tamminen wrote:
+</I>&gt;<i> &gt;&gt;&gt; Shouldn't the recording FPS rate be then taken directly from the
+</I>&gt;<i> &gt;&gt;&gt; Hatari internal screen update frequency  (nScreenRefreshRate: 50, 60,
+</I>&gt;<i> &gt;&gt;&gt; 71Hz)?
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; This is what is done in most cases,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I see, &quot;AviRecordDefaultFps&quot; is used only when AVI recording is started
+</I>&gt;<i> &gt; immediately from main.c.  when doing it from the GUI,
+</I>&gt;<i> &gt; nScreenRefreshRate is used.
+</I>&gt;<i>
+</I>&gt;<i> This is because when recording is started from the command line, it could
+</I>&gt;<i> be possible the shifter is not already &quot;up&quot; and nScreenRefreshRate may
+</I>&gt;<i> not have a reasonable value yet. So I prefered using AviRecordDefaultFps
+</I>&gt;<i> in that case, which defaults to 50 Hz.
+</I>
+Ok, the manual page might mention that this is really useful only for
+bootup.
+
+
+&gt;<i> &gt; Btw. Should the AVI codec, cropping and file name be saved to the
+</I>&gt;<i> &gt; configuration file too?
+</I>&gt;<i>
+</I>&gt;<i> I didn't have time to do it, but it wouldn't hurt to add it to
+</I>&gt;<i> configuration.c to save the defaults prefs.
+</I>&gt;<i>
+</I>&gt;<i> Other things that could be useful (mentioned earlier I think) would be to
+</I>&gt;<i> have a file dialog to choose the name/directory of the avi file or the
+</I>&gt;<i> png/bmp file.
+</I>&gt;<i>
+</I>&gt;<i> And also a way to choose video codec in the gui (bmp or png, with
+</I>&gt;<i> optional compression level for png) would be great.
+</I>&gt;<i>
+</I>&gt;<i> So, if you or someone else feel like adding this .. :)
+</I>
+You could add specific items about this to todo.txt. :-)
+
+
+&gt;<i> &gt; Would it make sense to print a warning when this happens?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If (nScreenRefreshRate != avi-&gt;Fps &amp;&amp; nScreenRefreshRate !=
+</I>&gt;<i> &gt; avi-&gt;warnedRefreshRate) {
+</I>&gt;<i> &gt; 	Log_Printf(LOG_WARN, &quot;Screen Refresh Rate (%d) and AVI FPS (%d) don't
+</I>&gt;<i> &gt; match!\n&quot;, nScreenRefreshRate, avi-&gt;Fps);
+</I>&gt;<i> &gt; 	avi-&gt;warnedRefreshRate = nScreenRefreshRate;
+</I>&gt;<i> &gt; }
+</I>&gt;<i>
+</I>&gt;<i> Yes, why not ; or perhaps a message in the status bar that would be less
+</I>&gt;<i> intrusive than having to click on a dialog box ?
+</I>
+As it should be uncommon, I think it's enough to have only console printf.
+
+
+&gt;<i> &gt; Can't some demos also change the refresh rate (say Falcon ones)?
+</I>&gt;<i>
+</I>&gt;<i> I'm not sure such demos are common, but some old ST demos did this and
+</I>&gt;<i> sometimes included some 60 HZ screens (but I never saw demos mixing
+</I>&gt;<i> frequency on the same part)
+</I>
+Latter sounds good for [1].
+
+
+&gt;<i> &gt; In this case the warning about refresh rate change would be good so
+</I>&gt;<i> &gt; that one can better decide which refresh rate would be best to be used
+</I>&gt;<i> &gt; (after seeing what is used most and when the changes happen).
+</I>&gt;<i>
+</I>&gt;<i> The result would not be good anyway, such demos should be recorded in as
+</I>&gt;<i> many parts as we have different frequencies, then grouped/reencoded to a
+</I>&gt;<i> common fps using mencoder for example (Hatari alone would do a really
+</I>&gt;<i> poor job)
+</I>
+I think trying to manually start and stop Hatari at exactly the correct 
+places would be close to impossible.
+
+[1] Maybe in this case it would be then better to automatically stop
+recording and start a new one with a different name?  A bit like screenshots 
+do (maybe the code for that could be generalized for both?).
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000849.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000854.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#850">[ date ]</a>
+              <a href="thread.html#850">[ thread ]</a>
+              <a href="subject.html#850">[ subject ]</a>
+              <a href="author.html#850">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

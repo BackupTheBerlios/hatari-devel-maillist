@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] A new disassembler in Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20new%20disassembler%20in%20Hatari&In-Reply-To=%3CB761600F-4792-44B0-9CCA-D2DEB5922E10%40sarnau.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002651.html">
+   <LINK REL="Next"  HREF="002660.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] A new disassembler in Hatari</H1>
+    <B>Markus Fritze</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20new%20disassembler%20in%20Hatari&In-Reply-To=%3CB761600F-4792-44B0-9CCA-D2DEB5922E10%40sarnau.com%3E"
+       TITLE="[hatari-devel] A new disassembler in Hatari">my at sarnau.com
+       </A><BR>
+    <I>Sat Nov 20 01:39:05 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002651.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+        <LI>Next message: <A HREF="002660.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2652">[ date ]</a>
+              <a href="thread.html#2652">[ thread ]</a>
+              <a href="subject.html#2652">[ subject ]</a>
+              <a href="author.html#2652">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Nov 19, 2010, at 3:37 PM, Nicolas Pomar&#232;de wrote:
+
+&gt;<i> Regarding the asm output, I really prefer this new presentation, &quot;moveq&quot; or &quot;movem&quot; are really easier to read for example.
+</I>&gt;<i> 
+</I>&gt;<i> There're 2 cases I'm less used to :
+</I>&gt;<i> 
+</I>&gt;<i> 1) adding paranthesises aroung absolute addr
+</I>&gt;<i> 	lea       ($ffff8907).w,a0
+</I>&gt;<i> 	move.l    d0,($2134e).l
+</I>
+That is the new Motorola way...
+
+
+&gt;<i> I think it's more common to just have :
+</I>&gt;<i> 	lea       $ffff8907.w,a0
+</I>&gt;<i> 	move.l    d0,$2134e.l
+</I>
+This is what we used to use on the Atari.
+
+Change:
+
+static Diss68kOptions	options = doptOpcodesSmall | doptRegisterSmall | doptStackSP;
+
+to:
+
+static Diss68kOptions	options = doptOpcodesSmall | doptRegisterSmall | doptStackSP | doptNoBrackets;
+
+to get this behavior.
+
+
+Markus
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002651.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+	<LI>Next message: <A HREF="002660.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2652">[ date ]</a>
+              <a href="thread.html#2652">[ thread ]</a>
+              <a href="subject.html#2652">[ subject ]</a>
+              <a href="author.html#2652">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

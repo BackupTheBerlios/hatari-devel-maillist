@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Release list (was Demos tested today, some more demos tested)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Release%20list%20%28was%20Demos%20tested%20today%2C%0A%20some%20more%20demos%20tested%29&In-Reply-To=%3Calpine.LMD.2.00.1002270030280.24773%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001563.html">
+   <LINK REL="Next"  HREF="001566.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Release list (was Demos tested today, some more demos tested)</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Release%20list%20%28was%20Demos%20tested%20today%2C%0A%20some%20more%20demos%20tested%29&In-Reply-To=%3Calpine.LMD.2.00.1002270030280.24773%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Release list (was Demos tested today, some more demos tested)">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Feb 27 00:48:51 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001563.html">[hatari-devel] Demos tested today, some more demos tested
+</A></li>
+        <LI>Next message: <A HREF="001566.html">[hatari-devel] Hostscreen path -
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1565">[ date ]</a>
+              <a href="thread.html#1565">[ thread ]</a>
+              <a href="subject.html#1565">[ subject ]</a>
+              <a href="author.html#1565">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 27 Feb 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Saturday 27 February 2010, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i>  From my point of view, Hatari's falcon emulation is now quite mature,
+</I>&gt;&gt;<i> stable and robust.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> There are still some programs that don't work, but they're not the
+</I>&gt;&gt;<i> majority now.
+</I>&gt;<i>
+</I>&gt;<i> Btw. Your crossbar stuff is being finished and my debugger stuff is being
+</I>&gt;<i> also finished.  Do you have something larger still pending?
+</I>&gt;<i>
+</I>&gt;<i> I have a couple of Hatari bugs (not emulation) I'd like to look at and
+</I>&gt;<i> besides the debugger stuff I'm going to finish the Falcon window zooming
+</I>&gt;<i> &amp; fullscreen switching thing.  But those should be done within few weeks...
+</I>&gt;<i>
+</I>&gt;<i> Nicolas, would it be soon a time for a new Hatari release? :-)
+</I>
+I discussed this with thomas at one time, and march seemed a good date to 
+try to do a release.
+
+It might be a little early for me now, as there're a few things with 
+video/mfp I'd like to sort, but maybe we could try to target mid-april 
+(I'd also like to build a cross compiler chain under my linux box to be 
+able to compile windows binaries without having to boot under windows ; 
+adding a mingw-under-linux target to cmake would be nice too).
+
+So, what is everyone's list of things to finish in the next weeks ? Here's 
+a short list to start :
+
+  - ste's screen centering in 224 bytes overscan (nicolas)
+  - mfp delay (bolo, audio art, super hang on) (nicolas)
+  - clean makefiles in case some files are redundant with cmake (eero,
+    thomas ?)
+  - clean/fix some possible remaining issues in dsp/dma (I think lmc as
+    used in STE for volume control will not make it for 1.4) (laurent)
+  - X/Y scaling patch by eero ; I didn't really test this, it seems some
+    tests would be needed against a real falcon ?
+  - ...
+
+Any others ideas are welcome !
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001563.html">[hatari-devel] Demos tested today, some more demos tested
+</A></li>
+	<LI>Next message: <A HREF="001566.html">[hatari-devel] Hostscreen path -
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1565">[ date ]</a>
+              <a href="thread.html#1565">[ thread ]</a>
+              <a href="subject.html#1565">[ subject ]</a>
+              <a href="author.html#1565">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

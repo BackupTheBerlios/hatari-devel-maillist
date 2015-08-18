@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Some news
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20news&In-Reply-To=%3C4CAEED58.5090805%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002479.html">
+   <LINK REL="Next"  HREF="002482.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Some news</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20news&In-Reply-To=%3C4CAEED58.5090805%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Some news">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Oct  8 12:07:20 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002479.html">[hatari-devel] Some news
+</A></li>
+        <LI>Next message: <A HREF="002482.html">[hatari-devel] Some news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2480">[ date ]</a>
+              <a href="thread.html#2480">[ thread ]</a>
+              <a href="subject.html#2480">[ subject ]</a>
+              <a href="author.html#2480">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 08/10/2010 11:41, LAURENT SALLAFRANQUE a &#233;crit :
+&gt;&gt;&gt;<i> Wouwww, Mikro wrote me a mail ;)
+</I>&gt;<i>
+</I>&gt;&gt;<i> I'm really not sure how to interpret this, I write a lot of (probably not so
+</I>&gt;&gt;<i> meaningful ;-) emails to mailing lists! :)
+</I>&gt;<i>
+</I>&gt;<i> No, no, I said it in the good way. Having guys like you in the threads is a great pleasure. This help to improve emulation.
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i> And probably the exact cycle timing, and a better 68030 emulation, no ?
+</I>&gt;<i>
+</I>&gt;&gt;<i> Sure. I just wanted to point out if you bump into some brutal problems,
+</I>&gt;<i> don't mind ...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>  From what is said (MMU is the main and nearly only gain), I was just thinking about 2 ways for doing it :
+</I>&gt;<i>
+</I>&gt;<i> 1) start with WinUae Code and adapt every single patch from hatari into it.
+</I>&gt;<i> 2) just add the MMU code in our actual uae core.
+</I>&gt;<i>
+</I>&gt;<i> The first one would be closer to actual WinUae code but will generate a lot of probable regressions. If it is well done, futur WinUaE patchs should be easier to include (diff patchs for example, without r&#233;integrating everything each time)
+</I>&gt;<i>
+</I>&gt;<i> The second one let us start with a well tested and known UAE CPU in Hatari and just add the MMU code. As this UAE core is already patched for Atari's purposes, we would continue to diverge from the old branch. But word should be simpler and it would generate less regressions.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Some advise here before I start the main work ?
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>
+Hello,
+
+I think in the end, we will have to use winuae's core, because it can 
+solve problems even on STF/STE and would allow to remove some kludges we 
+added (such as sub cycles in movem when changing color registers, could 
+also help to emulate pairing in a &quot;real&quot; way, without using some list of 
+potential opcodes, ...).
+
+If MMU can be added in a rather &quot;simple&quot; way, I would say go for it, as 
+it will certainly be faster than integrating the whole winuae code, and 
+this could be a quick way to have MMU for falcon.
+
+But in the end, I think winuae's core will be needed for optimal sub 
+cycle emulation (which is also what it brought when emulating Amiga, by 
+doing DMA emulation every 2 cycles).
+
+To sum up what I see with winuae's core :
+  - lot of work to integrate
+  - small gains for STF/STE, I don't think it will help to run programs 
+that wouldn't run today, it would just &quot;clean&quot; some parts of the 
+emulator and remove some hardcoded cases.
+  - could help fixing some blitter cases where the cpu and the blitter 
+run at the same time (but won't come out of the box, lots of change in 
+Hatari's internal to make this work).
+  - MMU for the falcon
+  - others benefits for falcon ? (jit maybe, I don't know the working 
+state in winuae)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002479.html">[hatari-devel] Some news
+</A></li>
+	<LI>Next message: <A HREF="002482.html">[hatari-devel] Some news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2480">[ date ]</a>
+              <a href="thread.html#2480">[ thread ]</a>
+              <a href="subject.html#2480">[ subject ]</a>
+              <a href="author.html#2480">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

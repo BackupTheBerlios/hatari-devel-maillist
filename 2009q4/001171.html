@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel]  Mouse pointer problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%20Mouse%20pointer%20problem&In-Reply-To=%3C1759791350.11448651262176176547.JavaMail.root%40mail-zstore-1-a.gicm.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001173.html">
+   <LINK REL="Next"  HREF="001172.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel]  Mouse pointer problem</H1>
+    <B>LAURENT SALLAFRANQUE</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%20Mouse%20pointer%20problem&In-Reply-To=%3C1759791350.11448651262176176547.JavaMail.root%40mail-zstore-1-a.gicm.net%3E"
+       TITLE="[hatari-devel]  Mouse pointer problem">laurent.sallafranque at arkea.com
+       </A><BR>
+    <I>Wed Dec 30 13:29:36 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001173.html">[hatari-devel] DSP instruction cycles display
+</A></li>
+        <LI>Next message: <A HREF="001172.html">[hatari-devel] Mouse pointer problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1171">[ date ]</a>
+              <a href="thread.html#1171">[ thread ]</a>
+              <a href="subject.html#1171">[ subject ]</a>
+              <a href="author.html#1171">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hello Thomas,
+
+I don't agree with you here.
+
+It seems to me there's an offset with the mouse pointer when it first appears.
+
+As long as I &quot;recalibrate&quot; the mouse by moving the mouse pointer to each border of the screen, the mouse reacts perfectly.
+
+When I move the mouse pointer on the left border, it continues to &quot;move&quot; inside hatari for a few seconds before displaying the linux (or windows) pointer.
+
+The &quot;offset&quot; becomes null in this case and after, when I enter again into the hatari window, everything is OK.
+
+
+It looks as if the ST borders are taken into account when hatari starts in falcon mode for copmputing of the mouse pointer first position.
+
+Again, the mouse pointer works perfectly as long as I correct the first offset.
+No problem after.
+
+Perhaps I'm totally wrong here, if so, sorry about it.
+
+What is mouse grab supposed to do (AltGr + M)? 
+I've done the test under windows, but I detected to change.
+
+Regards,
+
+Laurent
+
+
+
+---&gt; Original answear bu Thomas &lt;----
+
+That's normal, and not a bug. Hatari can not now about the exact
+position of the ST mouse pointer, so it's quite impossible to always
+sync it with the mouse pointer from the host. Hatari only passes
+relative mouse movements to the emulated system, not absolute positions.
+To overcome this problem, simply activate the &quot;grab mouse&quot; mode (by
+pressing AltGr+m by default).
+
+ Thomas
+
+
+-- 
+Laurent Sallafranque
+CICM / groupe Arkea
+Domaine Ged/Archivage
+1 rue Louis Lichou
+29480 Le Relecq Kerhuon
+T&#233;l : 02 98 00 20 76
+
+--
+Ce message et  toutes les pieces jointes (ci-apres  le &quot;message&quot;) sont
+confidentiels et etablis a l'intention exclusive de ses destinataires.
+Toute  utilisation ou  diffusion  non autorisee  est interdite.   Tout
+message  etant  susceptible  d'alteration,  l'emetteur  decline  toute
+responsabilite au titre de  ce message  s'il a  ete altere, deforme ou
+falsifie.
+                -----------------------------------
+This message and any  attachments (the &quot;message&quot;) are confidential and
+intended  solely   for  the   addressees.  Any  unauthorised   use  or
+dissemination is prohibited. As e-mails are susceptible to alteration,
+the issuer shall  not be  liable for  the  message if altered, changed
+or falsified.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001173.html">[hatari-devel] DSP instruction cycles display
+</A></li>
+	<LI>Next message: <A HREF="001172.html">[hatari-devel] Mouse pointer problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1171">[ date ]</a>
+              <a href="thread.html#1171">[ thread ]</a>
+              <a href="subject.html#1171">[ subject ]</a>
+              <a href="author.html#1171">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

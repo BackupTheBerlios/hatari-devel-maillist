@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari debugger immediately showing regs &amp;	memdump?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20immediately%20showing%20regs%20%26%0A%09memdump%3F&In-Reply-To=%3C200904041319.49635.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000238.html">
+   <LINK REL="Next"  HREF="000229.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari debugger immediately showing regs &amp;	memdump?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20immediately%20showing%20regs%20%26%0A%09memdump%3F&In-Reply-To=%3C200904041319.49635.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari debugger immediately showing regs &amp;	memdump?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Apr  4 12:19:49 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000238.html">[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+</A></li>
+        <LI>Next message: <A HREF="000229.html">[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#228">[ date ]</a>
+              <a href="thread.html#228">[ thread ]</a>
+              <a href="subject.html#228">[ subject ]</a>
+              <a href="author.html#228">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 03 April 2009, Thomas Huth wrote:
+&gt;<i> &gt; I was looking at some other emulators having GUI debuggers and
+</I>&gt;<i> &gt; noticed that they show immediately something.   Would it be fine if
+</I>&gt;<i> &gt; Hatari CLI debugger would when invoked dump registers &amp; mem also?
+</I>[...]
+&gt;<i> Well, that could be helpful in some cases, but in some others, it also
+</I>&gt;<i> might be just annoying. For example, I often only want to see the
+</I>&gt;<i> disassembly at the current PC, so when the reg and memory dump
+</I>&gt;<i> &quot;pollutes&quot; the screen that would just be a waste of space and time.
+</I>&gt;<i>
+</I>&gt;<i> And by the way, are you using the debugger at all? I just wonder,
+</I>&gt;<i> since it does not make much sense to hex-dump the memory at the PC.
+</I>&gt;<i> You normally rather want to see the disassembly of that region.
+</I>
+Not yet, but I started to look into this DSP debugging thing Laurent
+suggested and though that dumping certain things always when invoking
+the debugger might be useful.
+
+I guess doing the other changes but leaving the calls to output functions
+commented out (and adding the DSP stubs) would be fine?
+
+One can then easily enable the line(s) for whather output he wants manually
+and re-compile Hatari.  Only annoying thing is that pressing the debugger
+key (Pause) again in Hatari window wouldn't continue the emulation after
+this info is dumped.  One needs to type &quot;c&quot; in console.
+
+Or maybe there should be a separate debug mode that would just dump the info
+and then continue emulation?  (then -D could take an argument for what it
+dumps whenever debugger key is pressed)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000238.html">[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+</A></li>
+	<LI>Next message: <A HREF="000229.html">[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#228">[ date ]</a>
+              <a href="thread.html#228">[ thread ]</a>
+              <a href="subject.html#228">[ subject ]</a>
+              <a href="author.html#228">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

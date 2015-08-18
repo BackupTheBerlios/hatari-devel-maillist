@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Some more demos that fail with 1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20more%20demos%20that%20fail%20with%201.4&In-Reply-To=%3C4DCEA003.6030308%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003427.html">
+   <LINK REL="Next"  HREF="003441.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Some more demos that fail with 1.4</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20more%20demos%20that%20fail%20with%201.4&In-Reply-To=%3C4DCEA003.6030308%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Some more demos that fail with 1.4">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat May 14 17:30:11 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003427.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+        <LI>Next message: <A HREF="003441.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3433">[ date ]</a>
+              <a href="thread.html#3433">[ thread ]</a>
+              <a href="subject.html#3433">[ subject ]</a>
+              <a href="author.html#3433">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 14/05/2011 14:32, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 23/03/2011 11:06, Anders Eriksson a &#233;crit :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Reading about a 1.5 release I thought I should post about a few demos
+</I>&gt;&gt;<i> that doesn't work in 1.4.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 1.
+</I>&gt;&gt;<i> BBS Intro 3 / Lynx
+</I>&gt;&gt;<i> <A HREF="http://files.dhs.nu/files_demo/lynxbbs3.zip">http://files.dhs.nu/files_demo/lynxbbs3.zip</A>
+</I>&gt;&gt;<i> <A HREF="http://pouet.net/prod.php?which=30934">http://pouet.net/prod.php?which=30934</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> a) Crashes with double buserror after intro logo
+</I>&gt;<i>
+</I>&gt;<i> Very strange, the demo crashes indeed (try to write at address $1) and
+</I>&gt;<i> goes back to gem, with the music still playing.
+</I>&gt;<i>
+</I>&gt;<i> I didn't find the cause for now, as it's STF demo (no blitter or dma
+</I>&gt;<i> sound), could be a cpu emulation problem, but very hard to track among
+</I>&gt;<i> the whole demo.
+</I>&gt;<i>
+</I>
+OK, I finally fixed it. The demo is using voluntarily some address 
+errors in the 3D routines (to avoid some costly checks, it's sometimes 
+more efficient to &quot;crash&quot; and handle the result with a custom address 
+error handler, instead of doing checks every time ; many optimized 3D 
+demos often use such techniques).
+
+JMP / JSR were not testing the new PC was even, which prevented the demo 
+from doing the expected exception.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003427.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+	<LI>Next message: <A HREF="003441.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3433">[ date ]</a>
+              <a href="thread.html#3433">[ thread ]</a>
+              <a href="subject.html#3433">[ subject ]</a>
+              <a href="author.html#3433">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

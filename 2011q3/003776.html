@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Conflicting mkdir?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conflicting%20mkdir%3F&In-Reply-To=%3C4E253DE3.10005%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003775.html">
+   <LINK REL="Next"  HREF="003779.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Conflicting mkdir?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conflicting%20mkdir%3F&In-Reply-To=%3C4E253DE3.10005%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Conflicting mkdir?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Jul 19 10:18:43 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003775.html">[hatari-devel] Conflicting mkdir?
+</A></li>
+        <LI>Next message: <A HREF="003779.html">[hatari-devel] EmuTOS GPL issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3776">[ date ]</a>
+              <a href="thread.html#3776">[ thread ]</a>
+              <a href="subject.html#3776">[ subject ]</a>
+              <a href="author.html#3776">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 19/07/2011 09:22, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On tiistai 19 hein&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;<i> Le 18/07/2011 22:50, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;&gt;<i> Where's the conflicting mkdir mentioned here:
+</I>&gt;&gt;&gt;<i> <A HREF="http://hg.berlios.de/repos/hatari/rev/3fd84456e225">http://hg.berlios.de/repos/hatari/rev/3fd84456e225</A>
+</I>&gt;&gt;&gt;<i> ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> winuae's sysdeps.h is defining
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> #define mkdir(x,y) mkdir(x)
+</I>&gt;<i>
+</I>&gt;<i> Why?
+</I>&gt;<i>
+</I>&gt;<i> Any hatari code using mkdir is already defining it:
+</I>&gt;<i> ---------
+</I>&gt;<i> $ grep mkdir $(find . -name '*.[ch]')
+</I>&gt;<i> ./Visual.Studio/VisualStudioFix.h:      #ifndef mkdir
+</I>&gt;<i> ./Visual.Studio/VisualStudioFix.h:      #define mkdir(name,mode)
+</I>&gt;<i> _mkdir(name)
+</I>&gt;<i> ./src/cpu/sysdeps.h:#define mkdir(x,y) mkdir(x)
+</I>&gt;<i> ./src/cpu/sysdeps.h:#define mkdir(a,b) mkdir(a)
+</I>&gt;<i> ./src/cpu/sysdeps.h:#define mkdir(a,b) mkdir(a)
+</I>&gt;<i> ./src/cpu/sysdeps.h:#define mkdir(x,y) mkdir(x)
+</I>&gt;<i> ./src/cpu/sysdeps.h:#define mkdir posixemu_mkdir
+</I>&gt;<i> ./src/cpu/sysdeps.h:extern int mkdir (const TCHAR *, int);
+</I>&gt;<i> ./src/gemdos.c:#if defined(WIN32)&amp;&amp;  !defined(mkdir)
+</I>&gt;<i> ./src/gemdos.c:#define mkdir(name,mode) mkdir(name)
+</I>&gt;<i> ./src/gemdos.c: if (mkdir(psDirPath, 0755) == 0)
+</I>&gt;<i> ./src/paths.c:#if defined(WIN32)&amp;&amp;  !defined(mkdir)
+</I>&gt;<i> ./src/paths.c:#define mkdir(name,mode) mkdir(name)
+</I>&gt;<i> ./src/paths.c:                  if (mkdir(sHatariHomeDir, 0755) != 0)
+</I>&gt;<i> ---------
+</I>&gt;<i>
+</I>&gt;<i> Only gemdos.c and paths.c are using mkdir, and those are
+</I>&gt;<i> defining it themselves.
+</I>&gt;<i>
+</I>&gt;<i> sysdedps.h actually seems to be defining it several times,
+</I>&gt;<i> 3 times for windows...  Shouldn't those be removed instead
+</I>&gt;<i> or all defines moved to some common header that checks for
+</I>&gt;<i> WIN32?
+</I>
+I don't know where this comes from ; maybe those are some specific 
+WinUAE macros needed to compile WinUAE under windows. But it's sure that 
+from Hatari, the cpu emulation should have no need for IO calls such as 
+fread, close, mkdir, ...
+
+Well, I guess it was never cleaned before because no one tried to build 
+Hatari for Windows with WinUAE cpu enabled :(
+
+The problem is that when you build WinUAE cpu, WIN32 define is not set, 
+although many system calls are Windows specific, so you get a conflict 
+between the &quot;official&quot; windows define and their replacements that were 
+added by Laurent to compile windows code under linux using gcc.
+
+
+&gt;&gt;<i> but if you cross compile to build a windows binary, you get a conflict
+</I>&gt;&gt;<i> with mkdir from winnt.h which takes only one parameter.
+</I>&gt;<i>
+</I>&gt;<i> Why that conflicts, all the defines are mapping mkdir calls to one
+</I>&gt;<i> parameter?
+</I>
+See above ; you can install mingw if you want to test it yourself.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003775.html">[hatari-devel] Conflicting mkdir?
+</A></li>
+	<LI>Next message: <A HREF="003779.html">[hatari-devel] EmuTOS GPL issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3776">[ date ]</a>
+              <a href="thread.html#3776">[ thread ]</a>
+              <a href="subject.html#3776">[ subject ]</a>
+              <a href="author.html#3776">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

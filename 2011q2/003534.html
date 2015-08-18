@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Execution history debugger command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201106060036.38545.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003529.html">
+   <LINK REL="Next"  HREF="003524.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Execution history debugger command</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201106060036.38545.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Execution history debugger command">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jun  5 23:36:38 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003529.html">[hatari-devel] Execution history debugger command
+</A></li>
+        <LI>Next message: <A HREF="003524.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3534">[ date ]</a>
+              <a href="thread.html#3534">[ thread ]</a>
+              <a href="subject.html#3534">[ subject ]</a>
+              <a href="author.html#3534">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 03 kes&#228;kuu 2011, Deniz Turkoglu wrote:
+&gt;<i> I haven't done thrift(facebook) but I have done protobuf (google),
+</I>&gt;<i> they are similar and both needs a lib. I also was skeptical to this
+</I>&gt;<i> idea first but once I wrote the code-generation for the services I
+</I>&gt;<i> noticed how clean it made the overall API. Especially when we need to
+</I>&gt;<i> expose a complicated interface like a debugger and want to extend the
+</I>&gt;<i> functionality easily, I believe these protocols would work nicely.
+</I>
+With what they could help with?  Bindings are useful if one needs to deal
+with structs, or serialize objects, but there are no such things involved.
+
+The remote API isn't complex.  It's a bit wide, but very shallow and all
+the types are strings, so bindings generation for it sounds pointless.
+The main thing in &quot;designing&quot; (basically it has just evolved) the remote
+API is to minimize the code needed for it.  Command line options and 
+debugger already parse ASCII strings, so that's what the remote API uses.
+
+
+Conditional breakpoints can be complex, but they're (and will be) parsed
+as ASCII strings, so that doesn't have any effect on the complexity of
+the remote API.
+
+Some complexity will arrive if the remote API needs to be changed to be
+two-way instead of the current one-way (e.g. to handle errors for manually
+specifified breakpoint), but again, that's not really something where
+bindings will help.  It will be complexity at the client end, not in
+&quot;protocol&quot;.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003529.html">[hatari-devel] Execution history debugger command
+</A></li>
+	<LI>Next message: <A HREF="003524.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3534">[ date ]</a>
+              <a href="thread.html#3534">[ thread ]</a>
+              <a href="subject.html#3534">[ subject ]</a>
+              <a href="author.html#3534">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

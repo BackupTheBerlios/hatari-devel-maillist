@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] video.c happily overwriting Hatari memory and	crashing (when user uses border pixel values &lt; 16)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20video.c%20happily%20overwriting%20Hatari%20memory%20and%0A%09crashing%20%28when%20user%20uses%20border%20pixel%20values%20%3C%2016%29&In-Reply-To=%3C201003172322.05286.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001775.html">
+   <LINK REL="Next"  HREF="001709.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] video.c happily overwriting Hatari memory and	crashing (when user uses border pixel values &lt; 16)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20video.c%20happily%20overwriting%20Hatari%20memory%20and%0A%09crashing%20%28when%20user%20uses%20border%20pixel%20values%20%3C%2016%29&In-Reply-To=%3C201003172322.05286.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] video.c happily overwriting Hatari memory and	crashing (when user uses border pixel values &lt; 16)">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Mar 17 22:22:04 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001775.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+        <LI>Next message: <A HREF="001709.html">[hatari-devel] video.c happily overwriting Hatari memory and crashing (when user uses border pixel values &lt; 16)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1707">[ date ]</a>
+              <a href="thread.html#1707">[ thread ]</a>
+              <a href="subject.html#1707">[ subject ]</a>
+              <a href="author.html#1707">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I was getting this crash in video.c on Falcon emulation after applying
+the BorderPixels patch (from another mail which affects ST/e borders
+handling):
+--------
+Program received signal SIGSEGV, Segmentation fault.
+[Switching to Thread 0xb79c96b0 (LWP 4444)]
+0xb7c67727 in memset () from /lib/i686/cmov/libc.so.6
+(gdb) bt
+#0  0xb7c67727 in memset () from /lib/i686/cmov/libc.so.6
+#1  0x0808001f in Video_InterruptHandler_HBL () at video.c:1862
+#2  0x08087d39 in m68k_go (may_quit=1) at newcpu.c:1754
+#3  0x0806bf04 in M68000_Start () at m68000.c:228
+---------
+
+Crash happens on this line:
+                        memset(pSTScreen,0,SCREENBYTES_LEFT-2);
+
+includes/screen.h:
+#define SCREENBYTES_LEFT    (nBorderPixelsLeft/2)  /* Bytes for left border 
+*/
+
+
+After reading the code, I think the issue comes from the patch zeroing
+nBorderPixels* screen.c variables when borders aren't enabled and memset()
+getting -2 as count as result.   It's not a bug in the patch, the patch just
+reveals an existing bug in video.c.
+
+
+In the current code nBorderPixels* variables values come from configuration
+values and are truncated down to something divisable by 16.  If user happens
+to set this to 15 or smaller, Hatari can crash.
+
+Even worse is this in video.c:
+memset ( pSTScreen, 0, SCREENBYTES_LEFT-BORDERBYTES_LEFT_2_STE+4 );
+memcpy ( pSTScreen+SCREENBYTES_LEFT-BORDERBYTES_LEFT_2_STE+4, 
+pVideoRaster+VideoOffset+4, BORDERBYTES_LEFT_2_STE-4 );
+
+Or:
+memset(pSTScreen,0,SCREENBYTES_LEFT-4*2);
+memcpy(pSTScreen+SCREENBYTES_LEFT-4*2, pVideoRaster, 4*2);
+
+These will result in video.c overwriting 16 bytes before pSTScreen.
+
+Needs to be fixed before release...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001775.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+	<LI>Next message: <A HREF="001709.html">[hatari-devel] video.c happily overwriting Hatari memory and crashing (when user uses border pixel values &lt; 16)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1707">[ date ]</a>
+              <a href="thread.html#1707">[ thread ]</a>
+              <a href="subject.html#1707">[ subject ]</a>
+              <a href="author.html#1707">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

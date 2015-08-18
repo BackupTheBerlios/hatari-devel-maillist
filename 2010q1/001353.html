@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100125212931.52b527b8%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001351.html">
+   <LINK REL="Next"  HREF="001259.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100125212931.52b527b8%40phineus%3E"
+       TITLE="[hatari-devel] CMake build system">huth at users.berlios.de
+       </A><BR>
+    <I>Mon Jan 25 21:29:31 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001351.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001259.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1353">[ date ]</a>
+              <a href="thread.html#1353">[ thread ]</a>
+              <a href="subject.html#1353">[ subject ]</a>
+              <a href="author.html#1353">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 25 Jan 2010 22:05:42 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On Monday 25 January 2010, Thomas Huth wrote:
+</I>&gt;<i> &gt; Sorry, but this will only cause confusion. If we announce mic input
+</I>&gt;<i> &gt; support on the one hand, and then let the user run into this
+</I>&gt;<i> &gt; oh-by-the-way-the-autoconf-build-system-does-not-support-portaudio
+</I>&gt;<i> &gt; problem ... no, that's not a good idea.
+</I>&gt;<i> 
+</I>&gt;<i> It doesn't even need to be in configure.ac.  It can be handled by
+</I>&gt;<i> putting pkg-config stuff from Makefile.cnf to Makefile.cnf.in
+</I>&gt;<i> directly.
+</I>
+But then you would break all OSes where pkg-config is not
+available... that's where this autoconf stuff was still useful for
+(beside from satifying the users who were just expecting to always run
+a configure script before compiling and installing new software).
+
+&gt;<i> Configure.ac update is needed only if you want user to be notified (at
+</I>&gt;<i> configure time) that lack of portaudio means missing Falcon mic
+</I>&gt;<i> support.
+</I>&gt;<i> 
+</I>&gt;<i> Anything else that's missing from configure.ac?
+</I>
+No, nothing I can think of right now. But I haven't looked into that
+since the last release...
+
+&gt;<i> &gt; (and I didn't talk about removing the old Makefiles yet). 
+</I>&gt;<i> 
+</I>&gt;<i> Now you scared me... :-)
+</I>
+Hehe, did I also tell you about my plans to convert the whole Hatari
+source code to C# ? ... nooo, just kidding :-)
+
+&gt;<i> I'll test &amp; update it for the next release (or earlier if somebody
+</I>&gt;<i> complains about it not working).  I added todo item about that to
+</I>&gt;<i> myself into Hatari todo list.
+</I>
+Great, thanks! Good luck with the M4 stuff - and I don't mean that
+sarcastically.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001351.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001259.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1353">[ date ]</a>
+              <a href="thread.html#1353">[ thread ]</a>
+              <a href="subject.html#1353">[ subject ]</a>
+              <a href="author.html#1353">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Problem in 20 years STe megademo (DHS	fullscreen) ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%2020%20years%20STe%20megademo%0A%20%28DHS%09fullscreen%29%20%3F&In-Reply-To=%3C4D1FAD8C.1020300%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002733.html">
+   <LINK REL="Next"  HREF="003228.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Problem in 20 years STe megademo (DHS	fullscreen) ?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%2020%20years%20STe%20megademo%0A%20%28DHS%09fullscreen%29%20%3F&In-Reply-To=%3C4D1FAD8C.1020300%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Problem in 20 years STe megademo (DHS	fullscreen) ?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Jan  1 23:41:16 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002733.html">[hatari-devel] Problem in 20 years STe megademo (DHS	fullscreen) ?
+</A></li>
+        <LI>Next message: <A HREF="003228.html">[hatari-devel] Mac OS X compilation problem (was: Problem in 20 years STe megademo)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2734">[ date ]</a>
+              <a href="thread.html#2734">[ thread ]</a>
+              <a href="subject.html#2734">[ subject ]</a>
+              <a href="author.html#2734">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 01/01/2011 22:43, Deniz Turkoglu a &#233;crit :
+&gt;<i> On Tue, Dec 21, 2010 at 11:35 PM, Eero Tamminen&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">oak at helsinkinet.fi</A>&gt;  wrote:
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On tiistai 21 joulukuu 2010, Anders Eriksson wrote:
+</I>&gt;&gt;&gt;<i> hg clone <A HREF="http://hg.berlios.de/repos/hatari">http://hg.berlios.de/repos/hatari</A>
+</I>&gt;&gt;&gt;<i> cd hatari
+</I>&gt;&gt;&gt;<i> cmake -G Xcode .
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Opening the Xcode project, select release / i386, hit build.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> /Users/ae/hatari/src/gui-osx/PrefsController.m:614:0
+</I>&gt;&gt;&gt;<i> /Users/ae/hatari/src/gui-osx/PrefsController.m:614: error: 'CNF_SCREEN'
+</I>&gt;&gt;&gt;<i> has no member named 'bCaptureChange'
+</I>&gt;&gt;&gt;<i> /Users/ae/hatari/src/gui-osx/PrefsController.m:825:0
+</I>&gt;&gt;&gt;<i> /Users/ae/hatari/src/gui-osx/PrefsController.m:825: error: 'CNF_SCREEN'
+</I>&gt;&gt;&gt;<i> has no member named 'bCaptureChange'
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I removed that variable when I added the AVI GUI stuff as it's not used
+</I>&gt;&gt;<i> (hasn't been since Nicolas added the AVI recording).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Patches to fix this in OSX code are welcome.
+</I>&gt;<i>
+</I>&gt;<i> Hi all,
+</I>&gt;<i>
+</I>&gt;<i> I had contacted Thomas some time ago and he had recommended me to the
+</I>&gt;<i> join the list. I finally had the time to quickly go through the
+</I>&gt;<i> sources and I made a patch for this, available at
+</I>&gt;<i> <A HREF="http://www.mediafire.com/?oagy83g58m2piik">http://www.mediafire.com/?oagy83g58m2piik</A>
+</I>&gt;<i>
+</I>&gt;<i> I had to edit the nib file so the patch looks rather bigger than what
+</I>&gt;<i> it really is. I fixed the compilation problem, updated the string in
+</I>&gt;<i> dialog and made the menu item (record / stop record) work as record
+</I>&gt;<i> sound does, with a save dialog. I tried to clean up the code a bit as
+</I>&gt;<i> well but I am sure there is still some space for improvement :)
+</I>&gt;<i>
+</I>&gt;<i> -deniz
+</I>
+Hello,
+
+thanks for the patch. Could some other OSX users apply/test it and give 
+some feedback ?
+
+I can't test it myself, but if it's OK for other users, I will apply the 
+patch to source tree.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002733.html">[hatari-devel] Problem in 20 years STe megademo (DHS	fullscreen) ?
+</A></li>
+	<LI>Next message: <A HREF="003228.html">[hatari-devel] Mac OS X compilation problem (was: Problem in 20 years STe megademo)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2734">[ date ]</a>
+              <a href="thread.html#2734">[ thread ]</a>
+              <a href="subject.html#2734">[ subject ]</a>
+              <a href="author.html#2734">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

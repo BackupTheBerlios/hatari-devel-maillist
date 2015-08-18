@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New problem with GullBach demo (Aura falcon demo)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20problem%20with%20GullBach%20demo%20%28Aura%20falcon%20demo%29&In-Reply-To=%3C20090718155055.7f0c951e%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000501.html">
+   <LINK REL="Next"  HREF="000454.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New problem with GullBach demo (Aura falcon demo)</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20problem%20with%20GullBach%20demo%20%28Aura%20falcon%20demo%29&In-Reply-To=%3C20090718155055.7f0c951e%40phineus%3E"
+       TITLE="[hatari-devel] New problem with GullBach demo (Aura falcon demo)">th.huth at gmx.de
+       </A><BR>
+    <I>Sat Jul 18 15:50:55 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000501.html">[hatari-devel] Interrupt assert triggered by video.c
+</A></li>
+        <LI>Next message: <A HREF="000454.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#486">[ date ]</a>
+              <a href="thread.html#486">[ thread ]</a>
+              <a href="subject.html#486">[ subject ]</a>
+              <a href="author.html#486">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 09 Jul 2009 09:28:35 +0200
+Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+&gt;<i> 
+</I>&gt;<i> when I run the Gullback demo from Aura (falcon, DSP), I get the 
+</I>&gt;<i> following error :
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> M68000 Bus Error at address $ff8e21.
+</I>&gt;<i> M68000 Bus Error at address $ff8400.
+</I>&gt;<i> hatari: int.c:392: Int_AddRelativeInterruptWithOffset: Assertion 
+</I>&gt;<i> `CycleTime &gt;= 0' failed.
+</I>&gt;<i> Abandon
+</I>
+Hm, I just ran this demo on my computer, but I was not able to
+reproduce this error...
+Is it reproducible on your system?
+
+On Fri, 10 Jul 2009 10:53:18 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+&gt;<i>
+</I>&gt;&gt;<i> From the trace, it seems the assert is showing a bug that is not
+</I>&gt;&gt;<i> related to video.c but was already present in dmasnd.c  
+</I>&gt;<i>
+</I>&gt;<i> Ok, this isn't properly validating the values it reads from ST RAM:
+</I>&gt;<i> ----------------
+</I>&gt;<i> static void DmaSnd_StartNewFrame(void)
+</I>&gt;<i> {
+</I>&gt;<i>        int nCyclesForFrame;
+</I>&gt;<i>
+</I>&gt;<i>        nFrameStartAddr = (IoMem[0xff8903] &lt;&lt; 16) | (IoMem[0xff8905] &lt;&lt;
+</I>&gt;<i>        8) | (IoMem[0xff8907] &amp; ~1);
+</I>&gt;<i>        nFrameEndAddr = (IoMem[0xff890f] &lt;&lt; 16) | (IoMem[0xff8911] &lt;&lt;
+</I>&gt;<i>        8) | (IoMem[0xff8913] &amp; ~1);
+</I>&gt;<i>
+</I>&gt;<i>        FrameCounter = 0;
+</I>&gt;<i>        nFrameLen = nFrameEndAddr - nFrameStartAddr;
+</I>[...]
+&gt;<i>        Int_AddRelativeInterrupt(nCyclesForFrame, INT_CPU_CYCLE, 
+</I>&gt;<i>INTERRUPT_DMASOUND);
+</I>&gt;<i>}
+</I>&gt;<i> ----------------
+</I>
+You're right. I've added now a check for valid frames there.
+
+&gt;<i> Laurent/Thomas, what happens / should happen on real Falcon if DMA
+</I>&gt;<i> sound frame start and end mismatch?
+</I>
+Good question... maybe the sound plays &quot;for ever&quot; until it loops the 24
+bit counter?
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000501.html">[hatari-devel] Interrupt assert triggered by video.c
+</A></li>
+	<LI>Next message: <A HREF="000454.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#486">[ date ]</a>
+              <a href="thread.html#486">[ thread ]</a>
+              <a href="subject.html#486">[ subject ]</a>
+              <a href="author.html#486">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

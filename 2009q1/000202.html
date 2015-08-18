@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] little question about hg
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20little%20question%20about%20hg&In-Reply-To=%3C200903192314.58112.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000199.html">
+   <LINK REL="Next"  HREF="000203.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] little question about hg</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20little%20question%20about%20hg&In-Reply-To=%3C200903192314.58112.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] little question about hg">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Mar 19 22:14:57 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000199.html">[hatari-devel] TT Emulation
+</A></li>
+        <LI>Next message: <A HREF="000203.html">[hatari-devel] little question about hg
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#202">[ date ]</a>
+              <a href="thread.html#202">[ thread ]</a>
+              <a href="subject.html#202">[ subject ]</a>
+              <a href="author.html#202">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 19 March 2009, Eero Tamminen wrote:
+&gt;<i> &gt; I've just got a little question :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I've seen that you're commited all my commits again. Is there something
+</I>&gt;<i> &gt; I do wrong or I misunderstood ?
+</I>&gt;<i> &gt; Just tell me, I'll correct if necessary.
+</I>&gt;<i>
+</I>&gt;<i> No, it's just merge if you've done the push before I've pushed my
+</I>&gt;<i> changes.
+</I>
+If you don't want to see merges, you can put following to ~/.hgrc:
+--------
+[defaults]
+log = -M
+incoming = -M
+outgoing = -M
+--------
+
+
+Hm.  While reading about Gnome Svn -&gt; Git transition, I noticed a comment
+about push vs. fetch.  Hg has fetch command too:
+--------------
+$ hg help fetch
+hg fetch [SOURCE]
+
+Pull changes from a remote repository, merge new changes if needed.
+
+    This finds all changes from the repository at the specified path
+    or URL and adds them to the local repository.
+
+    If the pulled changes add a new head, the head is automatically
+    merged, and the result of the merge is committed.  Otherwise, the
+    working directory is updated to include the new changes.
+
+    When a merge occurs, the newly pulled changes are assumed to be
+    &quot;authoritative&quot;.  The head of the new changes is used as the first
+    parent, with local changes as the second.  To switch the merge
+    order, use --switch-parent.
+--------------
+
+Maybe this doesn't move the repo head between my and Thomas' hg pushes, like
+using pull+merge does.  Thomas, do you know?
+
+
+My Hg is missing[1] &quot;rebase&quot;[2] command that Git has, so there's still the
+extra merge commit.
+
+[1] Well, at the end of last year HG got an extension for this, but I'm
+running an older Hg version.
+
+[2] rebase = updating your current repo to same state as remote repo after
+fetch/pull instead of needing merge+commit.
+
+Some more info on what's rebasing in distributed version control systems
+like Mercurial, and when not to use it:
+<A HREF="http://blog.bitquabit.com/2008/11/25/rebasing-mercurial/">http://blog.bitquabit.com/2008/11/25/rebasing-mercurial/</A>
+<A HREF="http://failex.blogspot.com/2008/09/what-is-cascading-rebase.html">http://failex.blogspot.com/2008/09/what-is-cascading-rebase.html</A>
+<A HREF="http://stackoverflow.com/questions/539062/what-are-your-experiences-using-the-new-hg-rebase-command">http://stackoverflow.com/questions/539062/what-are-your-experiences-using-the-new-hg-rebase-command</A>
+<A HREF="http://kerneltrap.org/Linux/Git_Management">http://kerneltrap.org/Linux/Git_Management</A>
+
+
+&gt;<i> If you use &quot;hg view&quot;, it looks a bit clearer. :-)
+</I>
+
+	- Eero
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000199.html">[hatari-devel] TT Emulation
+</A></li>
+	<LI>Next message: <A HREF="000203.html">[hatari-devel] little question about hg
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#202">[ date ]</a>
+              <a href="thread.html#202">[ thread ]</a>
+              <a href="subject.html#202">[ subject ]</a>
+              <a href="author.html#202">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Could you all test this on hatari falcon new core and real hardware please ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Could%20you%20all%20test%20this%20on%20hatari%20falcon%20new%20core%0A%20and%20real%20hardware%20please%20%3F&In-Reply-To=%3C4E54B25D.6070408%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003981.html">
+   <LINK REL="Next"  HREF="003957.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Could you all test this on hatari falcon new core and real hardware please ?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Could%20you%20all%20test%20this%20on%20hatari%20falcon%20new%20core%0A%20and%20real%20hardware%20please%20%3F&In-Reply-To=%3C4E54B25D.6070408%40free.fr%3E"
+       TITLE="[hatari-devel] Could you all test this on hatari falcon new core and real hardware please ?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Aug 24 10:12:13 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003981.html">[hatari-devel] GEMBench results for TT &amp; Falcon modes
+</A></li>
+        <LI>Next message: <A HREF="003957.html">[hatari-devel] Could you all test this on hatari falcon new core and real hardware please ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3949">[ date ]</a>
+              <a href="thread.html#3949">[ thread ]</a>
+              <a href="subject.html#3949">[ subject ]</a>
+              <a href="author.html#3949">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm currently trying to improve 68030-&gt; DSP synchro and 68030 cycles and 
+dsp cycles.
+
+For this, I wrote a little prg that does some NOP loops in 68030 and add 
+1 to a register in the DSP.
+After 100 loops, I get the dsp result of the adds.
+I do the same with 500 loops, 1000 loops and 10000 loops.
+
+My goal is to compare the results from hatari with the real hardware 
+results.
+I've tried to stop as many timers as possible.
+
+The hatari results (on my computer) are :
+
+100 loops     : $96
+500 loops     : $2ac
+1000 loops   : $546
+10000 loops : $3426
+
+On my falcon, I get :
+100 loops     : $b9
+500 loops     : $5df
+1000 loops   : $706
+10000 loops : $75a4
+
+I've tried in different resolutions, it doesn't seem (at first glance) 
+to change the results.
+I've also noticed that my hatari results are constant if I try many 
+times, but the Falcon results are close but not constants after each try.
+
+ From me, on the 68030 side :
+     a 68030 NOP is 4 cycles, so, for 100 NOPs, 400 cycles at 16 Mhz.
+
+On the DSP side :
+      p:005a  200050         (02 cyc)  add y0,a
+      p:005b  0c005a         (04 cyc)  jmp p:$005a
+
+In theory, the formula for the result of the adds should be : 100 (loop) 
+* 4 (cycles fo NOP) * 2 (32 Mhz) / 6 (DSP cycles for the add+jmp).
+
+So, I should get :
+
+100 NOP      : add = $85
+500 NOP      : add = $29a
+1 000 NOP   : add = $535
+10 000 NOP : add = $3415
+
+These results are really close to the Hatari results, but far from my 
+real falcon results.
+
+Would it be possible for Falcon gurus here to try this little prg on 
+their hardware and tell me their results ?
+Also if you detect something wrong with this code, it would help.
+Maybe I forget some parameters in my formula, ....
+
+(If you can't get the zip, just send me a mail, and I'll send the zip).
+
+Best regards,
+
+Laurent
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: hatari2.dbg.zip
+Type: application/x-zip-compressed
+Size: 4704 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110824/13be16d6/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110824/13be16d6/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003981.html">[hatari-devel] GEMBench results for TT &amp; Falcon modes
+</A></li>
+	<LI>Next message: <A HREF="003957.html">[hatari-devel] Could you all test this on hatari falcon new core and real hardware please ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3949">[ date ]</a>
+              <a href="thread.html#3949">[ thread ]</a>
+              <a href="subject.html#3949">[ subject ]</a>
+              <a href="author.html#3949">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

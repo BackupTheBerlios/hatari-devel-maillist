@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Long mail : new cpu cores + 2 questions.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Long%20mail%20%3A%20new%20cpu%20cores%20%2B%202%20questions.&In-Reply-To=%3C4EAEFEDA.9020103%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004137.html">
+   <LINK REL="Next"  HREF="004139.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Long mail : new cpu cores + 2 questions.</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Long%20mail%20%3A%20new%20cpu%20cores%20%2B%202%20questions.&In-Reply-To=%3C4EAEFEDA.9020103%40free.fr%3E"
+       TITLE="[hatari-devel] Long mail : new cpu cores + 2 questions.">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Oct 31 21:02:34 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004137.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+        <LI>Next message: <A HREF="004139.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4138">[ date ]</a>
+              <a href="thread.html#4138">[ thread ]</a>
+              <a href="subject.html#4138">[ subject ]</a>
+              <a href="author.html#4138">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks a lot Mikro.
+
+This last explanation is clear like cristal.
+I have something to play with now :)
+
+
+ &gt; Another nice thing about timing is you don't need to worry about 
+misaligned longs, they are always &quot;misaligned&quot;, because you read them in 
+two bus cycles.
+
+Is it still true if the data is misaligned on a byte ?
+
+Don't the cpu reads the lower part of the 1st word, then the 2nd word, 
+then the upper part of the 3rd word ?
+
+Regards
+
+Laurent
+
+
+Le 31/10/2011 17:48, Miro Krop&#225;c(ek a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i>     Ok, but as the 68030 is the main clock of the emulator, it needs
+</I>&gt;<i>     to be accurate (sound, DSP, video, ... are based on the CPU cycles).
+</I>&gt;<i>
+</I>&gt;<i> Sure! Nobody says you should drop the 68030 clock! But remember, the 
+</I>&gt;<i> bus clock is in direct relationship with the 68030 CPU, it's not like 
+</I>&gt;<i> separate entities.
+</I>&gt;<i>
+</I>&gt;<i>     Just for a start (before the full file): how many cycles should
+</I>&gt;<i>     these instructions take on the Falcon ?
+</I>&gt;<i>
+</I>&gt;<i>     NOP (2 or 4 cycles) ?
+</I>&gt;<i>
+</I>&gt;<i> 68030 UM: 2(0/0/0) 2(0/1/0)
+</I>&gt;<i>
+</I>&gt;<i> (total number of cycles) - (number of bus activity cycles) = (number 
+</I>&gt;<i> of internal cycles)
+</I>&gt;<i>
+</I>&gt;<i> Cache case: 2 - 0*2 = 2
+</I>&gt;<i> Non-cache case: 2 - 1*2 = 0
+</I>&gt;<i>
+</I>&gt;<i> Once we have this number (internal cycles), we can re-calculate the 
+</I>&gt;<i> bus activity (4 clock cycles for 1 bus cycle plus split every 
+</I>&gt;<i> instruction for byte+word and long access, since these numbers differ 
+</I>&gt;<i> on Falcon 16-bit bus):
+</I>&gt;<i>
+</I>&gt;<i> Cache case: 2 + 0*4 = 2 cycles (no prefetch, no data, the number of 
+</I>&gt;<i> cycles stays)
+</I>&gt;<i> Non-cache case: 0 + 1*4 = 4 cycles (instruction prefetch = 1 bus access),
+</I>&gt;<i>
+</I>&gt;<i>     MOVE.W D0,D1
+</I>&gt;<i>     MOVE.L D0,D1
+</I>&gt;<i>
+</I>&gt;<i>   2(0/0/0) 2(0/1/0) (MOVE Rn,Dn)
+</I>&gt;<i> Same as NOP, no bus access for data
+</I>&gt;<i>
+</I>&gt;<i>     MOVE.W D0,(A0)
+</I>&gt;<i>     MOVE.L D0,(A0)
+</I>&gt;<i>
+</I>&gt;<i> 3(0/0/1) 4(0/1/1)
+</I>&gt;<i>
+</I>&gt;<i> Falcon numbers for the word variant:
+</I>&gt;<i> Cache: 1 + 1*4 = 5
+</I>&gt;<i> Non-cache: 0 + 1*4 + 1*4 = 8
+</I>&gt;<i>
+</I>&gt;<i> Falcon numbers for the long variant:
+</I>&gt;<i> Cache: 1 + 2*4 = 9
+</I>&gt;<i> Non-cache: 0 + 1*4 (instruction prefetch) + 2*4 (long write) = 12
+</I>&gt;<i>
+</I>&gt;<i>     MOVE.W (A0), D0
+</I>&gt;<i>     MOVE.L (A0), D0
+</I>&gt;<i>
+</I>&gt;<i> I'm lazy, sorry :) But it's about the same, again and again. We'are 
+</I>&gt;<i> &quot;lucky&quot; the data cache is write-trough, no need to worry about writes, 
+</I>&gt;<i> they always take the same number of cycles.
+</I>&gt;<i>
+</I>&gt;<i> Another nice thing about timing is you don't need to worry about 
+</I>&gt;<i> misaligned longs, they are always &quot;misaligned&quot;, because you read them 
+</I>&gt;<i> in two bus cycles.
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> MiKRO / Mystic Bytes
+</I>&gt;<i> <A HREF="http://mikro.atari.org">http://mikro.atari.org</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20111031/4dd04b1d/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20111031/4dd04b1d/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004137.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+	<LI>Next message: <A HREF="004139.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4138">[ date ]</a>
+              <a href="thread.html#4138">[ thread ]</a>
+              <a href="subject.html#4138">[ subject ]</a>
+              <a href="author.html#4138">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

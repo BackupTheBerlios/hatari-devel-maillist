@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP debugging and breakpoints
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3C4A284907.6080509%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000321.html">
+   <LINK REL="Next"  HREF="000323.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP debugging and breakpoints</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3C4A284907.6080509%40free.fr%3E"
+       TITLE="[hatari-devel] DSP debugging and breakpoints">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Fri Jun  5 00:21:59 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000321.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+        <LI>Next message: <A HREF="000323.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#322">[ date ]</a>
+              <a href="thread.html#322">[ thread ]</a>
+              <a href="subject.html#322">[ subject ]</a>
+              <a href="author.html#322">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I won't change anything into debuggui.c for a few days (I'm not at home 
+for 3 days).
+
+You can change everything you want here.
+
+For DSP breakpoint, I thought at something like :
+
+if (dsp_breakPoint == DSP_GetPC())  //DSP_GetPC() is already implemented 
+into dsp.c
+    //go to debug mode
+}
+
+The dsp_breakPoint would be set as suggested Eero : a new debug command
+dbp &lt;adress&gt;           // dbp = dsp breakPoint
+
+
+
+PS : I just realized that this won't work, as we execute 7 DSP 
+instructions for 1 68030 instruction.
+We wouldn't detect that we executes the DSP instruction at adress 
+&lt;dsp_breakPoint&gt;
+
+Regards,
+
+Laurent
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+&gt;<i> On Thu, 4 Jun 2009, Thomas Huth wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> On Thu, 4 Jun 2009 23:37:35 +0300
+</I>&gt;&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">oak at helsinkinet.fi</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> On Thursday 04 June 2009, Laurent Sallafranque wrote:
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> My question was : if the code arrives at the adress of my
+</I>&gt;&gt;&gt;&gt;<i> breakpoint, I'd like hatari to go automaticaly to the debugger mode
+</I>&gt;&gt;&gt;&gt;<i> (exactly as if I had pressed the &quot;pause&quot; key, but automatically).
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> Two alternatives:
+</I>&gt;&gt;&gt;<i> 1. DSP emu calls the debugger by itself (DebugUI())
+</I>&gt;&gt;&gt;<i> 2. DSP emu sets &quot;breakpoint triggered&quot; condition and returns
+</I>&gt;&gt;&gt;<i>     back from DSP emu and Debug UI will then be called from the Hatari
+</I>&gt;&gt;&gt;<i>     main code
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thomas, what the SPCFLAG_BRK, SPCFLAG_TRACE &amp; SPCFLAG_DOTRACE etc
+</I>&gt;&gt;&gt;<i> stuff in the UAE core is for?
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> Since we do not have breakpoint support for the normal 68k CPU yet,
+</I>&gt;&gt;<i> there is also no infrastructure available yet which could easily be
+</I>&gt;&gt;<i> used to implement breakpoint support for DSP. The SPCFLAG defines are
+</I>&gt;&gt;<i> used for something different.
+</I>&gt;&gt;<i> Sigh, is anybody working on the debugui.c code right now? If not, I
+</I>&gt;&gt;<i> think I'll have a try, the incomplete debugger has really become a
+</I>&gt;&gt;<i> bigger restraint during the past months...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thomas
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Well, I had some idea about implementing some better debug features, such 
+</I>&gt;<i> as breakpoints and single stepping, but I must admit I really don't have 
+</I>&gt;<i> enough time to do it at the moment.
+</I>&gt;<i>
+</I>&gt;<i> But as I wrote in an older post, I think that in order to add more 
+</I>&gt;<i> advanced debug features without dropping performance in normal case, we 
+</I>&gt;<i> could create a new flag SPCFLAG_DEBUG for example.
+</I>&gt;<i>
+</I>&gt;<i> This way we can rapidly check in the main 68000 run loop if some special 
+</I>&gt;<i> behaviours must be tested.
+</I>&gt;<i> This flag would allow a first stage &quot;filtering&quot; before testing for more 
+</I>&gt;<i> complex case.
+</I>&gt;<i>
+</I>&gt;<i> for example :
+</I>&gt;<i>
+</I>&gt;<i> we already have this code in m68k_run_1 :
+</I>&gt;<i>
+</I>&gt;<i>          if (regs.spcflags) {
+</I>&gt;<i>              if (do_specialties ())
+</I>&gt;<i>                  return;
+</I>&gt;<i>          }
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> we could modify do_specialties to test for breakpoint/single stepping 
+</I>&gt;<i> rather easily :
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> static int do_specialties (void)
+</I>&gt;<i> {
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i>    if (regs.spcflags &amp; SPCFLAG_DEBUG) {
+</I>&gt;<i>
+</I>&gt;<i>      if ( CheckForBreakpoint ( m68k_getpc() ) )
+</I>&gt;<i>      {
+</I>&gt;<i>        DebugUI();
+</I>&gt;<i>      }
+</I>&gt;<i>
+</I>&gt;<i>      else if ( CheckForSingleStep() )
+</I>&gt;<i>      {
+</I>&gt;<i>        DebugUI();
+</I>&gt;<i>      }
+</I>&gt;<i>
+</I>&gt;<i>      ...
+</I>&gt;<i>
+</I>&gt;<i>    }
+</I>&gt;<i> ...
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> and when parsing hatari argument for example, we would set SPCFLAG_DEBUG 
+</I>&gt;<i> if breakpoint arguments are given and/or single stepping is given.
+</I>&gt;<i>
+</I>&gt;<i> Just some possible thoughts to start, this of course require some more 
+</I>&gt;<i> code to work.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000321.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+	<LI>Next message: <A HREF="000323.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#322">[ date ]</a>
+              <a href="thread.html#322">[ thread ]</a>
+              <a href="subject.html#322">[ subject ]</a>
+              <a href="author.html#322">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

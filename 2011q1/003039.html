@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Fwd: Falcon memory
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fwd%3A%20Falcon%20memory&In-Reply-To=%3C4D5991F2.5070907%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003065.html">
+   <LINK REL="Next"  HREF="003040.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Fwd: Falcon memory</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fwd%3A%20Falcon%20memory&In-Reply-To=%3C4D5991F2.5070907%40free.fr%3E"
+       TITLE="[hatari-devel] Fwd: Falcon memory">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Feb 14 21:34:58 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003065.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+        <LI>Next message: <A HREF="003040.html">[hatari-devel] Fwd: Falcon memory
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3039">[ date ]</a>
+              <a href="thread.html#3039">[ thread ]</a>
+              <a href="subject.html#3039">[ subject ]</a>
+              <a href="author.html#3039">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've finished to make some tests with the memory.
+
+It seems that only bits 1, 4 and 5 are used by the TOS on boot to 
+determine the amount of memory.
+Thomas, I'll base the final patch on your doc, as it seems to be the 
+most complete and the most realistic explanation.
+
+Just before I commit, do you prefer me to only include 1 Meg, 4 megs and 
+14 Megs or should I add also 512 Ko, 2 Mo and 8 Mo ? (As it seems 
+possible with TOS 4.04 to have all these memory size) ?
+
+
+Here is  the result of my tests :
+
+$ffff8006 MM-BB --B-
+
+
+Bits 5, 4, 1 (BBB)
+
+00 = 512 Ko
+02 = 1024
+10 = 2048
+12 = 4096
+20 = 8192
+22 = 14366
+30 = Illegal
+32 = Illegal
+
+
+Here is an extract of the TOS booting sequence :
+
+//Get Falcon memory
+MOVE.W $ffff8006,D0
+
+LSR.W #$00000008,D0
+LSR.B #$00000001,D0
+MOVE.B D0,D1
+
+//Get bit 1 of register $ffff8206.b
+AND.B #$01,D1
+
+//Get bits 4 and 5 of register $ffff8206.b
+LSR.B #$00000002,D0
+AND.B #$06,D0
+OR.B D0,D1
+
+//Compute memory size
+MOVE.L #$00080000,D0
+ASL.L D1,D0
+CMP.B #$05,D1
+BNE.B #$00000006 == $00E00164 (T)
+
+// ?
+MOVE.L D0,D5
+LEA.L $00000400,A4
+MOVE.L D5,D4
+SUB.L A4,D4
+LSR.L #$00000008,D4
+SUB.L #$00000001,D4
+LEA.L $00000200,A5
+MOVE.L #$00000000,D0
+MOVEA.L D0,A0
+MOVE.L #$00000000,D1
+MOVEA.L D1,A1
+MOVE.L #$00000000,D2
+MOVEA.L D2,A2
+MOVE.L #$00000000,D3
+MOVEA.L D3,A3
+
+// Loop on memory test
+LEA.L (A4, $0100) == $00000500,A4
+MOVEM.L D0-D3/A0-A3,-(A4)
+MOVEM.L D0-D3/A0-A3,-(A4)
+MOVEM.L D0-D3/A0-A3,-(A4)
+MOVEM.L D0-D3/A0-A3,-(A4)
+MOVEM.L D0-D3/A0-A3,-(A4)
+MOVEM.L D0-D3/A0-A3,-(A4)
+MOVEM.L D0-D3/A0-A3,-(A4)
+MOVEM.L D0-D3/A0-A3,-(A4)
+ADDA.L A5,A4
+DBF .W D4,#$ffdc == $00E0018A (F)
+
+....
+This loops seems to repeat for each slice of memory.
+
+Regards,
+
+Laurent Sallafranque
+Groupe Arkea
+RPCAS Informatique
+1 rue Louis Lichou
+29480 Le Relecq Kerhuon
+T&#233;l : 02 98 00 20 76
+
+
+--
+Ce message et  toutes les pieces jointes (ci-apres  le &quot;message&quot;) sont
+confidentiels et etablis a l'intention exclusive de ses destinataires.
+Toute  utilisation ou  diffusion  non autorisee  est interdite.   Tout
+message  etant  susceptible  d'alteration,  l'emetteur  decline  toute
+responsabilite au titre de  ce message  s'il a  ete altere, deforme ou
+falsifie.
+                 -----------------------------------
+This message and any  attachments (the &quot;message&quot;) are confidential and
+intended  solely   for  the   addressees.  Any  unauthorised   use  or
+dissemination is prohibited. As e-mails are susceptible to alteration,
+the issuer shall  not be  liable for  the  message if altered, changed
+or falsified.
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003065.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+	<LI>Next message: <A HREF="003040.html">[hatari-devel] Fwd: Falcon memory
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3039">[ date ]</a>
+              <a href="thread.html#3039">[ thread ]</a>
+              <a href="subject.html#3039">[ subject ]</a>
+              <a href="author.html#3039">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

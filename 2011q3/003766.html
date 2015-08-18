@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Last checks before releasing 1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3C4E2453A2.9080406%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003765.html">
+   <LINK REL="Next"  HREF="003767.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Last checks before releasing 1.5</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3C4E2453A2.9080406%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Last checks before releasing 1.5">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jul 18 17:39:14 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003765.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+        <LI>Next message: <A HREF="003767.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3766">[ date ]</a>
+              <a href="thread.html#3766">[ thread ]</a>
+              <a href="subject.html#3766">[ subject ]</a>
+              <a href="author.html#3766">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 18/07/2011 17:17, Anders Eriksson a &#233;crit :
+
+&gt;<i> Stream #0.1: Audio: pcm_s16le, 50066 Hz, 2 channels, s16, 1602 kb/s
+</I>&gt;<i>
+</I>&gt;<i> [mov @ 0x10101cc00] WARNING codec timebase is very high. If duration is
+</I>&gt;<i> too long,
+</I>&gt;<i> file may not be playable by quicktime. Specify a shorter timebase
+</I>&gt;<i> or choose different container.
+</I>&gt;<i>
+</I>&gt;<i> Output #0, mov, to 'demo.mov':
+</I>&gt;<i> Metadata:
+</I>&gt;<i> encoder : Lavf52.103.0
+</I>&gt;<i> Stream #0.0: Video: png, rgb24, 832x552, q=2-31, 839745117.00 tbn, 50.05
+</I>&gt;<i> tbc
+</I>&gt;<i> Stream #0.1: Audio: pcm_s16le, 50066 Hz, 2 channels, 1602 kb/s
+</I>&gt;<i> Stream mapping:
+</I>&gt;<i> Stream #0.0 -&gt; #0.0
+</I>&gt;<i> Stream #0.1 -&gt; #0.1
+</I>&gt;<i> Press [q] to stop encoding
+</I>&gt;<i>
+</I>&gt;<i> FATAL error, file duration too long for timebase, this file will not be
+</I>&gt;<i> playable with quicktime. Choose a different timebase or a different
+</I>&gt;<i> container format
+</I>&gt;<i> frame= 805 fps= 0 q=-1.0 Lsize= 9036kB time=16.06 bitrate=4608.0kbits/s
+</I>&gt;<i> video:5879kB audio:3141kB global headers:0kB muxing overhead 0.172186%
+</I>&gt;<i>
+</I>
+Thanks for the trace ; although the values I used are perfectly valid in 
+avi, it seems mov doesn't allow such high values.
+
+In the avi header, I store :
+  - fps = 50.053 &lt;&lt; 24
+  - fps_scale = 1 &lt;&lt; 24
+
+fps_scale is the same as time base ; it allows to express floating 
+number as the division between fps and fps_scale. The bigger fps_scale 
+is, the more precision you're simulating.
+
+ From ffmpeg sources, I see the 1st warning appears if &quot;track-&gt;timescale 
+ &gt; 100000&quot; ; as I use 1 &lt;&lt; 24 = 16 million, this is much higher than 
+what ffpmeg expects.
+
+So, solution is to use a lower value for fps_scale in the avi header.
+
+In avi_record.c, can you try changing lines 966/967 :
+        AviParams.Fps = Fps;
+        AviParams.Fps_scale = Fps_scale;
+with :
+        AviParams.Fps = Fps &gt;&gt; 8;
+        AviParams.Fps_scale = Fps_scale &gt;&gt; 8;
+
+This way fps_scale should be 65536 and you should not get warnings / 
+errors. If it doesn't work, try higher values 9, 10, ...
+
+If it works, I will update the sources accordingly.
+
+&gt;&gt;<i> From the command line, add &quot;--avi-fps=50&quot; to force the value written
+</I>&gt;&gt;<i> into the avi header to 50 Hz.
+</I>&gt;&gt;<i> Or in the [video] section of hatari.cfg, change AviRecordFps=0 to
+</I>&gt;&gt;<i> AviRecordFps=50 for example.
+</I>&gt;<i>
+</I>&gt;<i> Thanks, this made my day. Adding it to the configureation file worked a
+</I>&gt;<i> treat. :)
+</I>
+Another solution is to add '-r 50' to ffmpeg, this should force the 
+frame rate and ignore the timebase (I haven't tested this).
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003765.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+	<LI>Next message: <A HREF="003767.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3766">[ date ]</a>
+              <a href="thread.html#3766">[ thread ]</a>
+              <a href="subject.html#3766">[ subject ]</a>
+              <a href="author.html#3766">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

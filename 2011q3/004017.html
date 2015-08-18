@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Old vs New CPU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Old%20vs%20New%20CPU&In-Reply-To=%3CCAN5rfbSaKTxYWFhGk0S42Z4KR2qEbpPPm_2ooeNgtLNXV%3DR_aQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004016.html">
+   <LINK REL="Next"  HREF="004018.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Old vs New CPU</H1>
+    <B>Miro Krop&#225;&#269;ek</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Old%20vs%20New%20CPU&In-Reply-To=%3CCAN5rfbSaKTxYWFhGk0S42Z4KR2qEbpPPm_2ooeNgtLNXV%3DR_aQ%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Old vs New CPU">miro.kropacek at gmail.com
+       </A><BR>
+    <I>Fri Sep 30 11:11:55 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004016.html">[hatari-devel]  Old vs New CPU
+</A></li>
+        <LI>Next message: <A HREF="004018.html">[hatari-devel] Old vs New CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4017">[ date ]</a>
+              <a href="thread.html#4017">[ thread ]</a>
+              <a href="subject.html#4017">[ subject ]</a>
+              <a href="author.html#4017">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Laurent,
+
+first, my huge apologies, I totally overlooked the file you had sent me! So
+my answer is yes, the format is ok, if you manage to create complete text
+(adressing modes etc) from the Motorola PDF (be sure you use this as a
+source, various text files floating around are not always 100% correct!),
+hopefully I manage to make a script which recalculates the numbers for
+Falcon timing.
+
+For example, could you explain me in a few words how to read the numbers
+&gt;<i> from the file I've sent you ?
+</I>&gt;<i>
+</I>&gt;<i> cache     : x(y,z,t)
+</I>&gt;<i> non cache : a(b,c,d)
+</I>&gt;<i>
+</I>&gt;<i> how should I use these x y z t values ?
+</I>&gt;<i>
+</I>&gt;<i> And what are the 2 numbers before ?
+</I>&gt;<i>
+</I>Those two numbers (not included in your example, right?) are head and tail
+values, i.e. how much the instruction overlap with the next and previous
+one. For example:
+
+i1: cycles = 3, h = 2, tail = 1
+i2: cycles = 4, h = 2, tail = 0
+i3: cycles = 2, h = 1, tail = 0
+
+in normal case, the instructions would take 3 + 4 + 2 = 9 cycles. But we
+see, there is some overlapping: tail1 and head2 cut down 1 cycle
+(min(tail[n-1],head[n])) but unfortunately, tail2 and head3 cut down zero
+cycles (min(tail2,head3) = min(0,1) = 0). So thanks to the tail/head
+mechanism, we've saved 1 cycle and the overall execution time is going to be
+8 cycles.
+
+y, z, t and b, c, d values represent the bus activity: data read,
+instruction prefetch and data write. Cache and non-cache means if the value
+is already in the data or instruction cache. Obvious case is the instruction
+prefetch, once it is in a cache, it takes zero cycles.
+
+The whole idea / purpose of this conversion we are talking about is to
+calculate the number of internal cycles (i.e. the 'raw' CPU activity,
+without any bus access). We get this number as:
+
+(total number of cycles) - (number of bus activity cycles) = (number of
+internal cycles)
+
+Once we have this number (internal cycles), we can re-calculate the bus
+activity (4 clock cycles for 1 bus cycle plus split every instruction for
+byte+word and long access, since these numbers differ on Falcon 16-bit bus).
+
+Btw all this math is nicely explained in 68030 UM, the paragraph above
+specially on a page 11-25. Plus, I've tried to explain this calculation also
+in my document about this, I'm so sorry it isn't that clear :)
+
+-- 
+MiKRO / Mystic Bytes
+<A HREF="http://mikro.atari.org">http://mikro.atari.org</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110930/b91bdd7f/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110930/b91bdd7f/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004016.html">[hatari-devel]  Old vs New CPU
+</A></li>
+	<LI>Next message: <A HREF="004018.html">[hatari-devel] Old vs New CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4017">[ date ]</a>
+              <a href="thread.html#4017">[ thread ]</a>
+              <a href="subject.html#4017">[ subject ]</a>
+              <a href="author.html#4017">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Suggestion about small additions for v1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3Calpine.LMD.2.00.1005112029100.16378%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002050.html">
+   <LINK REL="Next"  HREF="002052.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Suggestion about small additions for v1.4</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3Calpine.LMD.2.00.1005112029100.16378%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Suggestion about small additions for v1.4">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue May 11 20:37:56 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002050.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002052.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2051">[ date ]</a>
+              <a href="thread.html#2051">[ thread ]</a>
+              <a href="subject.html#2051">[ subject ]</a>
+              <a href="author.html#2051">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 11 May 2010, Matthias Arndt wrote:
+
+&gt;<i> Hello together,
+</I>&gt;<i>
+</I>&gt;<i> i can only agree that all those features would only help and nothing would be 
+</I>&gt;<i> lost. I personally don't need the refresh option but if it was there, noone 
+</I>&gt;<i> would get hurt.
+</I>&gt;<i>
+</I>&gt;<i> The HUD with saving the virtual floppy light to screenshots buged me aswell.
+</I>&gt;<i>
+</I>&gt;<i> I'm with you, these suggestions are great and would only make Hatari a better 
+</I>&gt;<i> piece of software.
+</I>&gt;<i>
+</I>&gt;<i> cheers,
+</I>&gt;<i> Matthias
+</I>&gt;<i>
+</I>
+I'm not against some modifications if everybody agree, but we need more 
+coders ; I'm personnaly not interested in coding UI stuffs, and regarding 
+OS X interface some volunteers are always welcome.
+
+I barely have time to fix the things I know, thomas has said it 
+would have very few involvment recently, Laurent had some limited time, 
+David gave a very useful help for dsp/filter, Eero improved debuger and 
+other interfaces, but in the end we're quite short on man power :(
+
+Regarding 1.4, I think only severe bugs will be fixed, else we will never 
+release. It's always possible to do other release laters, see who can 
+contribute what, ...
+
+For now, only things that should go in 1.4 are fixes for monochrome assert 
+and a solution/explanation to the sound delay problem (+other fix if they 
+get reported now).
+
+Improvments/new features will be in next release (there's no point in 
+postponing 1.4 if no one can take care of this feature now)
+
+Regards
+
+Nicolas
+
+
+
+&gt;<i> Anders Eriksson schrieb:
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> there are a few small things in Hatari that annoys me (and more people as 
+</I>&gt;&gt;<i> I've learnt) that could perhaps be fixed for v1.4. These are not 
+</I>&gt;&gt;<i> complicated things and I guess they could be quick to implement.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 1. Today you can either have the statusbar on, which is a cludge and looks 
+</I>&gt;&gt;<i> crappy, especially in fullscreen. Or you can have a HUD instead of the 
+</I>&gt;&gt;<i> statusbar.  The problem with the HUD is that
+</I>&gt;&gt;<i>   a) it appears on screenshots and
+</I>&gt;&gt;<i>   b) it slows down Hatari on OS X -A LOT- when it's active (yep, that green 
+</I>&gt;&gt;<i> little square makes Hatari ten times slower when it's visible)
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Can we have an option so we can disable both statusbar and HUD, pretty 
+</I>&gt;&gt;<i> please?
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 2. Multiple configurations easily accessible. Today I have a custom written 
+</I>&gt;&gt;<i> tool especially for Hatari to load it with different config files easily. 
+</I>&gt;&gt;<i> To go in and select a new configfile via fileselector isn't what I call 
+</I>&gt;&gt;<i> easily accessible. It would be ace to have this feature directly under the 
+</I>&gt;&gt;<i> OS X dropdown (as with insert-floppy).
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 3. When creating a new floppy-image, an alert asking if we want to mount it 
+</I>&gt;&gt;<i> to drive a or b would be very nice (especially in the OS X gui).
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 4. Then we have the usual long-term request of using the current resolution 
+</I>&gt;&gt;<i> and refreshrate instead of changing it when going to fullscreen. I realise 
+</I>&gt;&gt;<i> this is probably a bigger task, but never the less it would be so nice to 
+</I>&gt;&gt;<i> have. The problems with todays approach are
+</I>&gt;&gt;<i>    a) The monitor takes time to resync for each fullscreen toggle
+</I>&gt;&gt;<i>    b) Virtual desktops in OS X stops working (you can't have Hatari in 
+</I>&gt;&gt;<i> fullscreen and switch to another virtual desktop, without un-fullscreening 
+</I>&gt;&gt;<i> Hatari first)
+</I>&gt;&gt;<i>    c) Hatari does not honour the current refresh rate when switching 
+</I>&gt;&gt;<i> resolution, so if you have a nice 50 Hz screen (perfect when running ST/STe 
+</I>&gt;&gt;<i> stuff in Hatari) it will change to something else in fullscreen.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Thanks for reading.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> -- 
+</I>&gt;&gt;<i> Anders Eriksson
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+</I>&gt;<i> PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+</I>&gt;&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002050.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002052.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2051">[ date ]</a>
+              <a href="thread.html#2051">[ thread ]</a>
+              <a href="subject.html#2051">[ subject ]</a>
+              <a href="author.html#2051">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

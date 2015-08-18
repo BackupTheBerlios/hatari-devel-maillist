@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari options?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20options%3F&In-Reply-To=%3C201103022226.47924.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003130.html">
+   <LINK REL="Next"  HREF="003141.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari options?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20options%3F&In-Reply-To=%3C201103022226.47924.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari options?">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Mar  2 21:26:47 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003130.html">[hatari-devel] Hatari options?
+</A></li>
+        <LI>Next message: <A HREF="003141.html">[hatari-devel] Hatari options?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3140">[ date ]</a>
+              <a href="thread.html#3140">[ thread ]</a>
+              <a href="subject.html#3140">[ subject ]</a>
+              <a href="author.html#3140">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I commited the --desktop option and splitting of the display options
+under different headings.
+
+On keskiviikko 02 maaliskuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 01/03/2011 22:51, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt;&gt; I agree with adding most options you put, except :
+</I>&gt;<i> &gt;&gt; 	--cpu-exact
+</I>&gt;<i> &gt;&gt; 	--addr24  (typo : you put 42-bit mode in the man)
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; The names of the options are from Laurent's earlier WinUAE changes,
+</I>&gt;<i> &gt; in the patch I just moved then under their own heading in options
+</I>&gt;<i> &gt; output + fixed their descriptions to conform better with other options
+</I>&gt;<i> &gt; descriptions.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; These options have been in Hatari code since last November when Laurent
+</I>&gt;<i> &gt; added WinAUE code.  :-)
+</I>&gt;<i> 
+</I>&gt;<i> Yes, I agree that WinUae's code has variables for these behaviours, but
+</I>&gt;<i> I think it's too soon to decide how to name them on the command line.
+</I>
+Moving them under their own heading + having pre-liminary documentation
+in manual page shouldn't hurt as long as both will eventually be fixed...
+
+(I think it's official only when it goes to manual.html as updating that is
+more annoying due to the required ugly HTML tables. :))
+
+
+&gt;&gt;&gt;<i> With WinUAE, there're many more modes than just cpu-exact : better
+</I>&gt;&gt;&gt;<i> prefetch, better exceptions, better cycle for micro code, so adding a
+</I>&gt;&gt;&gt;<i> bool option will not be enough.
+</I>&gt;&gt;&gt;<i> 
+</I>&gt;&gt;&gt;<i> Also we already have a &quot;--compatible&quot; option ; I think it would not be
+</I>&gt;&gt;&gt;<i> clear for the user what is the effect of &quot;exact&quot; compared to
+</I>&gt;&gt;&gt;<i> &quot;compatible&quot; (in theory, if the cpu emulation is &quot;compatible&quot; with
+</I>&gt;&gt;&gt;<i> real cpu, then it should be &quot;exact&quot;).
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> I was thinking that &quot;--cycle-exact&quot; would have been better option
+</I>&gt;&gt;<i> name, at least based on its description. :-)
+</I>
+What if I would pre-liminarily change --cpu-exact to --cycle-exact?
+
+And what if I would also shorten the --sound-buffer-size option to
+--sound-buffer?  Currently it and its description doesn't fit to 80 columns.
+
+(Unfortunately --sound-buffer-size was already in v1.4.0 release so it would
+be an API change.  I don't think it widely used though, anybody needing it
+should have set it to config file &amp; forgotten about it. :-))
+
+ 
+&gt;<i> &gt; I've understood that the  (by default enabled) &quot;--compatible&quot; option is
+</I>&gt;<i> &gt; supposed also to make the old UAE core also (more) cycle exact.
+</I>&gt;<i> &gt; What that option actually does with the WinAUE core?
+</I>&gt;<i> 
+</I>&gt;<i> AFAIR, it does better prefetch accuracy and better cycle counting.
+</I>
+I'll add that to the description in the manual page.
+
+
+&gt;<i> But
+</I>&gt;<i> WinUAE has another more advanced mode (cycle exact) where each 68000
+</I>&gt;<i> instruction is split in 2 or 4 cycles &quot;sub instruction&quot; to update all
+</I>&gt;<i> hardware components every 2 or 4 cycles (whereas today we update
+</I>&gt;<i> hardware only at the end of the whole 68000 instruction).
+</I>&gt;<i> 
+</I>&gt;<i> I need to dig into the code some day to refresh my memory and make a
+</I>&gt;<i> list of all possible modes with their uae's equivalents.
+</I>
+Ok, I'll be waiting for that then. :-)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003130.html">[hatari-devel] Hatari options?
+</A></li>
+	<LI>Next message: <A HREF="003141.html">[hatari-devel] Hatari options?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3140">[ date ]</a>
+              <a href="thread.html#3140">[ thread ]</a>
+              <a href="subject.html#3140">[ subject ]</a>
+              <a href="author.html#3140">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

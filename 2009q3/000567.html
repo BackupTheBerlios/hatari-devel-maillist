@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari interrupts still assert, if VDI mode is used
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20interrupts%20still%20assert%2C%0A%20if%20VDI%20mode%20is%20used&In-Reply-To=%3Calpine.LMD.2.00.0908101006110.29290%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000564.html">
+   <LINK REL="Next"  HREF="000569.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari interrupts still assert, if VDI mode is used</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20interrupts%20still%20assert%2C%0A%20if%20VDI%20mode%20is%20used&In-Reply-To=%3Calpine.LMD.2.00.0908101006110.29290%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Hatari interrupts still assert, if VDI mode is used">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Aug 10 10:09:17 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000564.html">[hatari-devel] Hatari interrupts still assert, if VDI mode is used
+</A></li>
+        <LI>Next message: <A HREF="000569.html">[hatari-devel] DSP stack problems (overflow / underflow)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#567">[ date ]</a>
+              <a href="thread.html#567">[ thread ]</a>
+              <a href="subject.html#567">[ subject ]</a>
+              <a href="author.html#567">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 10 Aug 2009, Thomas Huth wrote:
+
+&gt;<i> On Sun, 9 Aug 2009 21:37:39 +0200 (CEST)
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Some tests were required to not change HBL / Timer B interrupt when
+</I>&gt;&gt;<i> frequency is changed.
+</I>&gt;&gt;<i> Fix committed, no more crash for me.
+</I>&gt;<i>
+</I>&gt;<i> Great! That means we're pretty close for being ready for
+</I>&gt;<i> the release :-) Unfortunately I am quite busy this week, so the new
+</I>&gt;<i> release might be delayed until the weekend... (also got to test Eero's
+</I>&gt;<i> debugger changes first)
+</I>
+OK, on the other hand, I'll be on holydays from 15 to 29 august, so I hope 
+there won't be other stopper until next week end, as I won't be able to do 
+anything during 2 weeks.
+
+&gt;<i>
+</I>&gt;&gt;<i> By the way, is frequency change between 50/60 Hz really possible ? I
+</I>&gt;&gt;<i> don't think we need to handle this, so I could add in
+</I>&gt;&gt;<i> Video_Sync_WriteByte :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  	if (bUseVDIRes)
+</I>&gt;&gt;<i>  		return;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Does it looks reasonable ?
+</I>&gt;<i>
+</I>&gt;<i> 50/60 Hz change does not make sense in VDI mode. You can certainly add
+</I>&gt;<i> the two lines above!
+</I>
+Will do (it was already the case for the resolution change)
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000564.html">[hatari-devel] Hatari interrupts still assert, if VDI mode is used
+</A></li>
+	<LI>Next message: <A HREF="000569.html">[hatari-devel] DSP stack problems (overflow / underflow)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#567">[ date ]</a>
+              <a href="thread.html#567">[ thread ]</a>
+              <a href="subject.html#567">[ subject ]</a>
+              <a href="author.html#567">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

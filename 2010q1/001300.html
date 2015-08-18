@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Improved%20host%20long%20filename%20support%20for%20Hatari%0A%09GEMDOS%20Emulation%2C%20please%20TEST%21&In-Reply-To=%3C201001210014.46287.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001280.html">
+   <LINK REL="Next"  HREF="001301.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Improved%20host%20long%20filename%20support%20for%20Hatari%0A%09GEMDOS%20Emulation%2C%20please%20TEST%21&In-Reply-To=%3C201001210014.46287.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!">oak at helsinkinet.fi
+       </A><BR>
+    <I>Wed Jan 20 23:14:46 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001280.html">[hatari-devel] Cmake warnings
+</A></li>
+        <LI>Next message: <A HREF="001301.html">[hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1300">[ date ]</a>
+              <a href="thread.html#1300">[ thread ]</a>
+              <a href="subject.html#1300">[ subject ]</a>
+              <a href="author.html#1300">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Attached is the latest patch for the improved long name support.
+It applies on top of the latest Hatari repository code.
+
+I'm going to commit it in couple of days to Hatari repository unless
+somebody has objections to it.  The main thing I would like to be tested
+is whether it works on something else than Linux/Unix, e.g. Windows.
+
+George, could you check Windows side?
+
+
+Improvements it provides over current Hatari GEMDOS emulation's
+cruder long host filename support are:
+
+* Renaming something like HDDRIVER.PRG to HDDRIVER.PR works properly.
+   (Current GEMDOS code tries always long match and if *.PRG is write
+   protected, rename fails, my code tries first exact match)
+
+* Supports also long directory names, not just long file names.
+
+* Illegal GEMDOS characters are converted to '@' _and_ matched correctly
+  when Atari programs try later to find the files with these names from
+  the emulated drive.
+
+* In general one should now be able to have any kind of long filenames in
+  GEMDOS directories without them   breaking Atari fileselector, desktop
+  etc.
+
+
+Earlier version of the patch forced all callers of the host name search to
+have FILENAME_MAX sized buffer (or it asserted).  As changing everything
+that could get into that function would have made this patch much larger,
+I changed it to handle shorter buffers.
+
+It will also alert user with a Dialog if host filename won't fit to given
+buffer so that user can either:
+* Ask us to fix it, or
+* Move GEMDOS emu dir higher in the directory hierarchy to shorten
+  the host paths
+
+Instead of GEMDOS file operations just mysteriously not working properly
+if the host paths were too long for the provided buffers (like can happen
+with current code).  Currently buffers for this are 256 chars long, so it's
+unlikely that many would have bumbed into this issue, though.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: gemdos-long-filenames4.diff
+Type: text/x-diff
+Size: 21535 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100121/32d74b86/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100121/32d74b86/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001280.html">[hatari-devel] Cmake warnings
+</A></li>
+	<LI>Next message: <A HREF="001301.html">[hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1300">[ date ]</a>
+              <a href="thread.html#1300">[ thread ]</a>
+              <a href="subject.html#1300">[ subject ]</a>
+              <a href="author.html#1300">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

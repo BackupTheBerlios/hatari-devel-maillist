@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issues with IDE/ACSI emulation and HD Driver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20IDE/ACSI%20emulation%20and%20HD%20Driver&In-Reply-To=%3C200911151752.50908.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000904.html">
+   <LINK REL="Next"  HREF="000907.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issues with IDE/ACSI emulation and HD Driver</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20IDE/ACSI%20emulation%20and%20HD%20Driver&In-Reply-To=%3C200911151752.50908.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Issues with IDE/ACSI emulation and HD Driver">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Nov 15 16:52:50 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000904.html">[hatari-devel] Issues with IDE/ACSI emulation and HD Driver
+</A></li>
+        <LI>Next message: <A HREF="000907.html">[hatari-devel] Issues with IDE/ACSI emulation and HD Driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#906">[ date ]</a>
+              <a href="thread.html#906">[ thread ]</a>
+              <a href="subject.html#906">[ subject ]</a>
+              <a href="author.html#906">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 15 November 2009, Uwe Seimet wrote:
+&gt;<i> Also not my email with the code fragment for WIN_FORMAT. This fragment
+</I>&gt;<i> is most likely everything that's needed. It works basically the same as
+</I>&gt;<i> writing sectors with a particular pattern, but from an applications
+</I>&gt;<i> (i.e. drivers's) perspective that's what formatting actually does.
+</I>
+Thanks, I'll try it.
+
+
+&gt;<i> &gt; &gt; For me booting from an IDE drive image in Falcon-compatible mode with
+</I>&gt;<i> &gt; &gt; an original TOS 4.04 works fine.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I think that works because TOS 4 supports IDE (but HD Driver doesn't
+</I>&gt;<i> &gt; work in Hatari with TOS 4).  So I'm mainly interested about why it
+</I>&gt;<i> &gt; doesn't work with the ACSI mode...
+</I>&gt;<i>
+</I>&gt;<i> Yes, exactly, see my comment above.
+</I>&gt;<i>
+</I>&gt;<i> But nevertheless I can boot from an IDE image with TOS 4.04 and HDDRIVER,
+</I>&gt;<i> i.e. I could not observe anything wrong with HDDRIVER/Hatari/TOS 4.
+</I>
+Oh, you meant it it works in Hatari.
+
+
+&gt;<i> What exactly is your problem? Note that when using HDRIVER with TOS 4.04
+</I>&gt;<i> you must ensure that the CPU is at least an 68030, i.e. you must enable
+</I>&gt;<i> the 68040 setting.
+</I>
+I didn't know about the 68040 trick.  It indeed works.  Why that works with
+HD Driver instead of the 020+FPU that's enabled by Hatari Falcon mode
+normally?
+
+The difference from 020 to 030 is MMU (and extra data cache) and from 030 to 
+040 FPU being on the same die (and slower on some operations).
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000904.html">[hatari-devel] Issues with IDE/ACSI emulation and HD Driver
+</A></li>
+	<LI>Next message: <A HREF="000907.html">[hatari-devel] Issues with IDE/ACSI emulation and HD Driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#906">[ date ]</a>
+              <a href="thread.html#906">[ thread ]</a>
+              <a href="subject.html#906">[ subject ]</a>
+              <a href="author.html#906">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

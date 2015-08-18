@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crosscompiling Hatari for GP2X Wiz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C4D935F4A.4030102%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003267.html">
+   <LINK REL="Next"  HREF="003275.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crosscompiling Hatari for GP2X Wiz</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C4D935F4A.4030102%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Crosscompiling Hatari for GP2X Wiz">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Mar 30 18:50:18 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003267.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+        <LI>Next message: <A HREF="003275.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3270">[ date ]</a>
+              <a href="thread.html#3270">[ thread ]</a>
+              <a href="subject.html#3270">[ subject ]</a>
+              <a href="author.html#3270">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 30/03/2011 18:35, Matthias Arndt a &#233;crit :
+&gt;<i> First I want to apologize! I was certainly overreacting here but my main
+</I>&gt;<i> point is still valid that the code should be more optional and backward
+</I>&gt;<i> compatible.
+</I>&gt;<i>
+</I>
+hi
+
+
+Note that it's possible to make some libraries optional, and we already 
+do this for portaudio for example, but it's much harder to support 
+various version of the same library.
+
+At one point, it's not possible to maintain several code paths in Hatari 
+to handle too old versions.
+
+For example, SDL 1.2.10 is already 5 years old, trying to stay 
+compatible with such old version at the expense of adding #ifdef or 
+things like that will just make the code harder to read and to maintain 
+(especially if only few people are able to test such setups with old 
+libraries).
+
+Hatari can try to adapt as possible to various libraries, but at one 
+point, it's also up to the user to update its building environment (even 
+if crosscompiling libraries for more exotic system is not an easy task).
+
+We can have options to use more or less ressources when emulating on 
+lower end system, so that the result remains smooth, but being backward 
+compatible with old versions of libraries doesn't seem a good option to me.
+
+regards
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003267.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+	<LI>Next message: <A HREF="003275.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3270">[ date ]</a>
+              <a href="thread.html#3270">[ thread ]</a>
+              <a href="subject.html#3270">[ subject ]</a>
+              <a href="author.html#3270">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

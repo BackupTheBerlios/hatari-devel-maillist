@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Extended VDI screen in Falcon mode
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Extended%20VDI%20screen%20in%20Falcon%20mode&In-Reply-To=%3C201108270056.42653.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003964.html">
+   <LINK REL="Next"  HREF="003969.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Extended VDI screen in Falcon mode</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Extended%20VDI%20screen%20in%20Falcon%20mode&In-Reply-To=%3C201108270056.42653.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Extended VDI screen in Falcon mode">oak at helsinkinet.fi
+       </A><BR>
+    <I>Fri Aug 26 23:56:42 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003964.html">[hatari-devel] Extended VDI screen in Falcon mode
+</A></li>
+        <LI>Next message: <A HREF="003969.html">[hatari-devel] Extended VDI screen in Falcon mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3966">[ date ]</a>
+              <a href="thread.html#3966">[ thread ]</a>
+              <a href="subject.html#3966">[ subject ]</a>
+              <a href="author.html#3966">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On torstai 25 elokuu 2011, Vincent Rivi&#232;re wrote:
+&gt;<i> Hatari has a very nice feature: Extended VDI screen.
+</I>&gt;<i> It works fine with both TOS and EmuTOS in ST mode.
+</I>
+I'm interested, what do you use it for?  :-)
+
+What resolution and number of planes?
+
+
+&gt;<i> However, it crashes in Falcon mode, with both TOS 4.04 and EmuTOS.
+</I>
+Hatari crashes or TOS crashes?
+
+Seems to work for 1 &amp; 2 planes both for TOS 3 &amp; 4 and EmuTOS,
+at least enough to get me to desktop.  Colors are wrong though.
+
+On TOS 4 &amp; EmuTOS, TOS bombs if I use too large resolution for
+4 planes.  Using 320x200 @ 4 planes seems to work fine with
+EmuTOS &amp; TOS4.
+
+(Note that you may need to specify a bit more memory when using
+larger resolutions with more planes. <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">1280x960 at 4</A> = 600kB.)
+
+
+&gt;<i> Is it the official status of this feature ?
+</I>
+It's not really tested that much with something else than ST.
+
+Falcon/TT Videl code can handle larger resolutions and has
+arbitrary integer zooming support so the VDI mode is not
+really needed there.
+
+I've assumed that the crash issues are bugs in TOS.
+
+
+&gt;<i> And would you need special support in EmuTOS to support extended VDI
+</I>&gt;<i> screen sizes in Falcon mode ?
+</I>
+* HBL/Timer B are not emulated in VDI mode.
+
+* MFP Timer B counter is set to 1.
+
+* Videl isn't reset with VDI screen.
+
+* VDI screen enables VDI call interception (it &quot;shouldn't&quot;
+  affect anything, but Uwe has reported that it changes
+  clipping in one of his programs).
+
+
+I wonder whether this effects it:
+------
+void Video_ShifterMode_WriteByte(void)
+{
+        if (ConfigureParams.System.nMachineType == MACHINE_TT)
+        {
+                TTRes = IoMem_ReadByte(0xff8260) &amp; 7;
+                IoMem_WriteByte(0xff8262, TTRes);           /* Copy to TT 
+shifter mode register */
+        }
+        
+        if (ConfigureParams.System.nMachineType == MACHINE_FALCON)
+                VIDEL_ST_ShiftModeWriteByte();
+
+        if (/*!bUseHighRes &amp;&amp;*/ !bUseVDIRes)                /* Don't store 
+if hi-res and don't store if VDI resolution */
+        {
+                VideoShifterByte = IoMem[0xff8260] &amp; 3;         /* We only 
+care for lower 2-bits */
+                if ( VideoShifterByte == 3 )                    /* 3 is not 
+a valid resolution, use low res instead */
+                {
+                        VideoShifterByte = 0;
+                        IoMem_WriteByte(0xff8260,0);
+                }
+                Video_WriteToShifter(VideoShifterByte);
+                Video_SetHBLPaletteMaskPointers();
+                *pHBLPaletteMasks &amp;= 0xff00ffff;
+                /* Store resolution after palette mask and set resolution 
+write bit: */
+                *pHBLPaletteMasks |= (((Uint32)VideoShifterByte|0x04)&lt;&lt;16);
+        }
+}
+------
+
+
+And I noticed this in video.c:
+-----
+static void Video_ColorReg_WriteWord(Uint32 addr)
+{
+        if (!bUseHighRes &amp;&amp; !bUseVDIRes)               /* Don't store if hi-
+res or VDI resolution */
+------
+
+Maybe this might explain some of the color problems?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003964.html">[hatari-devel] Extended VDI screen in Falcon mode
+</A></li>
+	<LI>Next message: <A HREF="003969.html">[hatari-devel] Extended VDI screen in Falcon mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3966">[ date ]</a>
+              <a href="thread.html#3966">[ thread ]</a>
+              <a href="subject.html#3966">[ subject ]</a>
+              <a href="author.html#3966">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

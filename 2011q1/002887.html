@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New CPU and falcon emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20CPU%20and%20falcon%20emulation&In-Reply-To=%3CAANLkTimV-Xz9sDuiEX20ZxYsfKHLe4qaevDMzbMf2oAp%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002886.html">
+   <LINK REL="Next"  HREF="002889.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New CPU and falcon emulation</H1>
+    <B>Miro Krop&#225;&#269;ek</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20CPU%20and%20falcon%20emulation&In-Reply-To=%3CAANLkTimV-Xz9sDuiEX20ZxYsfKHLe4qaevDMzbMf2oAp%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] New CPU and falcon emulation">miro.kropacek at gmail.com
+       </A><BR>
+    <I>Wed Jan 26 15:01:56 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002886.html">[hatari-devel] New CPU  and falcon emulation
+</A></li>
+        <LI>Next message: <A HREF="002889.html">[hatari-devel] New CPU and falcon emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2887">[ date ]</a>
+              <a href="thread.html#2887">[ thread ]</a>
+              <a href="subject.html#2887">[ subject ]</a>
+              <a href="author.html#2887">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+how do I activate this new code? It's done by default?
+
+On Wed, Jan 26, 2011 at 3:00 PM, Laurent Sallafranque &lt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I've done a lot of tests. I've got better results now than I had with the
+</I>&gt;<i> older core.
+</I>&gt;<i> For me, this new core is adopted ;)
+</I>&gt;<i>
+</I>&gt;<i> More programs are working, and I haven't seen any regression for now.
+</I>&gt;<i> Sound is globally better (there sre still some glitches sometimes).
+</I>&gt;<i>
+</I>&gt;<i> I've included the new run_dsp code.
+</I>&gt;<i> If I want to let run BOUND2, BOUND3 and ROT3DBMP, I can add a &quot;+3&quot; to this
+</I>&gt;<i> line in dsp_run:
+</I>&gt;<i>        save_cycles += nHostCycles * 2; // + 3 if we want bound2.prg,
+</I>&gt;<i> bound3.prg and rot3dBMP to work properly
+</I>&gt;<i>
+</I>&gt;<i> I won't add the &quot;+3&quot; for now, as it may hide another problem.
+</I>&gt;<i>
+</I>&gt;<i> I've adapted the algo tomas from nocrew explained me for MP2 player.
+</I>&gt;<i> Sound is now correctly transmitted from DMA to DSP_receive.
+</I>&gt;<i> But the music plays a lot too fast (I don't know why for now).
+</I>&gt;<i>
+</I>&gt;<i> Synchro between CPU and DSP are still the main problem to solve I think.
+</I>&gt;<i> Videl is the other one. I'll give it a try now, as I think it's the only
+</I>&gt;<i> component that is not emulated at all.
+</I>&gt;<i>
+</I>&gt;<i> Maybe Videl improvement will increase falcon emulation compatibility (for
+</I>&gt;<i> HBL and VBL sync for example).
+</I>&gt;<i> Anyway, it'll allow more demos to work.
+</I>&gt;<i>
+</I>&gt;<i> So, except if you think there's something more urgent to finish, I'll enter
+</I>&gt;<i> in videl emulation.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+
+
+-- 
+MiKRO / Mystic Bytes
+<A HREF="http://mikro.atari.org">http://mikro.atari.org</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110126/d3213909/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110126/d3213909/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002886.html">[hatari-devel] New CPU  and falcon emulation
+</A></li>
+	<LI>Next message: <A HREF="002889.html">[hatari-devel] New CPU and falcon emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2887">[ date ]</a>
+              <a href="thread.html#2887">[ thread ]</a>
+              <a href="subject.html#2887">[ subject ]</a>
+              <a href="author.html#2887">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

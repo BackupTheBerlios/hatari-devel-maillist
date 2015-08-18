@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mahabharata demo problem ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mahabharata%20demo%20problem%20%3F&In-Reply-To=%3C201101152230.21207.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002803.html">
+   <LINK REL="Next"  HREF="002806.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mahabharata demo problem ?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mahabharata%20demo%20problem%20%3F&In-Reply-To=%3C201101152230.21207.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Mahabharata demo problem ?">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sat Jan 15 21:30:21 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002803.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+        <LI>Next message: <A HREF="002806.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2804">[ date ]</a>
+              <a href="thread.html#2804">[ thread ]</a>
+              <a href="subject.html#2804">[ subject ]</a>
+              <a href="author.html#2804">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 15 tammikuu 2011, Eero Tamminen wrote:
+&gt;<i> Not unbounded sizes.  During the demo, 5120x200 and 5120x240
+</I>&gt;<i> sized resolutions are requested several times.
+</I>&gt;<i> 
+</I>&gt;<i> I think there could be some corner-case that Hatari Videl code isn't
+</I>&gt;<i> emulating.   Maybe the real HW clips large resolutions and like ST/STE
+</I>&gt;<i> does something &quot;unexpected&quot; when being requested funny resolution
+</I>&gt;<i> changes.
+</I>
+Videl code does following:
+
+get width (register is scanline size in words):
+        (handleReadW(HW + 0x10) &amp; 0x03ff) * 16 / VIDEL_getScreenBpp();  
+
+get bpp:
+---------------------
+        int f_shift = handleReadW(HW + 0x66);                                   
+        int st_shift = handleRead(HW + 0x60);                                   
+        /* to get bpp, we must examine f_shift and st_shift.                    
+         * f_shift is valid if any of bits no. 10, 8 or 4                       
+         * is set. Priority in f_shift is: 10 &quot;&gt;&quot; 8 &quot;&gt;&quot; 4, i.e.                 
+         * if bit 10 set then bit 8 and bit 4 don't care...                     
+	...
+        if (f_shift &amp; 0x400)            /* Falcon: 2 colors */                  
+                bits_per_pixel = 1;                                             
+        else if (f_shift &amp; 0x100)       /* Falcon: hicolor */                   
+                bits_per_pixel = 16;   
+---------------------
+
+If scanline register value is 320, and bpp gets set to 1 instead of 16:
+-&gt; width = 5120
+
+And indeed when I traced changes in all of these registers:
+b (0xff8210).w ! (0xff8210).w :trace
+b (0xff8266).w ! (0xff8266).w :trace
+b (0xff8260).b ! (0xff8260).b :trace
+
+Whenever the window goes too wide, I see:
+  $ff8266 = $400
+2. CPU breakpoint condition(s) matched 1 times.
+WARNING: too large screen size 5120x240 -&gt; divided by 4x1!
+  $ff8266 = $100
+
+I.e. Falcon shifter control register 2-color mode bit is toggled, but
+nothing else.
+
+
+I remember that monochrome toggling on color resolutions did something
+special on ST(e), maybe something similar should happen on Falcon's Videl?
+
+
+There's also this suspicious stuff in VIDEL_renderScreen():
+        if (since_last_change &gt; 2) {                                            
+                if (vw &gt; 0 &amp;&amp; vw != width) {    
+                        Dprintf((&quot;CH width %d\n&quot;, width));                      
+                        width = vw;                                             
+                        since_last_change = 0;
+...
+       if (since_last_change == 3) {                                           
+                HostScreen_setWindowSize(width, height, bpp == 16 ? 16 : ...
+        }                                                                       
+        if (since_last_change &lt; 4) {
+                since_last_change++;
+                return false;
+        }
+
+This function is called from Video_DrawScreen() which is called from
+Video_InterruptHandler_VBL() and on fullscreen switches.
+
+-&gt; The resolution is changed 3 VBLs later than it actually happens and
+     rendering of Falcon screen content to the Hatari window is skipped
+     during this time.
+
+Everything seems to work fine if I remove that (see the attached patch).
+ 
+Thomas?
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: videl-change.diff
+Type: text/x-patch
+Size: 1694 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110115/8de5760f/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110115/8de5760f/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002803.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+	<LI>Next message: <A HREF="002806.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2804">[ date ]</a>
+              <a href="thread.html#2804">[ thread ]</a>
+              <a href="subject.html#2804">[ subject ]</a>
+              <a href="author.html#2804">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

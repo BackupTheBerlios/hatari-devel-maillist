@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] IDE in ST/STE mode?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20in%20ST/STE%20mode%3F&In-Reply-To=%3C200904012331.56243.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000223.html">
+   <LINK REL="Next"  HREF="000226.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] IDE in ST/STE mode?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20in%20ST/STE%20mode%3F&In-Reply-To=%3C200904012331.56243.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] IDE in ST/STE mode?">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Apr  1 22:31:56 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000223.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+        <LI>Next message: <A HREF="000226.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#224">[ date ]</a>
+              <a href="thread.html#224">[ thread ]</a>
+              <a href="subject.html#224">[ subject ]</a>
+              <a href="author.html#224">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 01 April 2009, Thomas Huth wrote:
+&gt;<i> I guess the problem is that both parties try to allocate drive C: and
+</I>&gt;<i> since GEMDOS HD emulation is done at a higher level, it disguises the
+</I>&gt;<i> IDE emulation.
+</I>
+Oh, you mean IDE emulation doesn't update &quot;nNumDrives&quot; for GEMDOS emulation.
+
+
+&gt;<i> For the ACSI code, there's some magic in hdc.c which parses the
+</I>&gt;<i> partition table on the HD image (see HDC_GetInfo), so the GEMDOS
+</I>&gt;<i> drive letter can be mapped after the ACSI partitions.
+</I>
+I took a look at that, but it's lacking a lot of things:
+- Doesn't support extended (XGM) partitions
+- Doesn't support ICD partition table format
+  (8 additional partition entries on root sector)
+- Doesn't support MSDOS partition table
+  (supported by several HD drivers)
+
+
+&gt;<i> But this code  does not exist for the IDE layer yet,
+</I>
+I think the partition counting code could be shared between the two
+(mbr.c?).
+
+Here's code I found for counting ICD partition table entries and GEM
+(FAT16 &lt;16MB), BGM (FAT16) &amp; and XGM partitions from AHDI partition
+tables:
+<A HREF="http://ftp.gnu.org/tmp/linux-libre-fsf2_2.6.28/linux-2.6.28/fs/partitions/atari.c">http://ftp.gnu.org/tmp/linux-libre-fsf2_2.6.28/linux-2.6.28/fs/partitions/atari.c</A>
+<A HREF="http://www.mail-archive.com/debian-bugs-dist%40lists.debian.org/msg442686.html">http://www.mail-archive.com/debian-bugs-dist%40lists.debian.org/msg442686.html</A>
+
+This supports extended partitions, but doesn't support ICD partition table:
+<A HREF="http://ftp.netbsd.org/pub/NetBSD/NetBSD-5_RC/src/sys/arch/atari/stand/tostools/chg_pid/chg_pid.c">http://ftp.netbsd.org/pub/NetBSD/NetBSD-5_RC/src/sys/arch/atari/stand/tostools/chg_pid/chg_pid.c</A>
+
+(i.e. there's enough example code.)
+
+Some documentation on HD drivers I found here:
+<A HREF="http://www.freelists.org/post/steem/steem-New-to-the-Steem-Engine,20">http://www.freelists.org/post/steem/steem-New-to-the-Steem-Engine,20</A>
+
+
+The DOS MBR is explained here:
+	<A HREF="http://en.wikipedia.org/wiki/Master_boot_record">http://en.wikipedia.org/wiki/Master_boot_record</A>
+
+For that it's enough to support only primary partitions like EmuTOS does
+I think.
+
+
+The hard thing is knowing what's supported on the TOS side though:
+- EmuTOS supporting only DOS MBR, or (also)
+- HD driver supporting only old AHDI MBR / GEM partitions, or
+- HD driver supporting also new AHDI MBR (BGM &amp; XGM partitions), or
+- HD driver supporting (also) ICD partition table format
+- No EmuTOS or HD driver
+
+Because if that's guessed wrong, either GEMDOS emu goes over a partition,
+or there's a partition &quot;gap&quot;.
+
+How that could be solved?
+
+
+Maybe by getting rid of the ACSI &amp; IDE partition counting code completely
+and just requiring user to specify partition offset for GEMDOS drives when
+using them with ACSI or IDE emulation?
+
+Then the TOS connected drives mask setting could be changed to something
+like this:
+------------
+        GemdosDrive = ConfigureParams.HardDisk.FirstDirPartition - 'A';
+        /* clear GEMDOS drive and above bits from the mask */
+        ConnectedDriveMask = STMemory_ReadLong(0x4c2);
+        ConnectedDriveMask &amp;= (1 &lt;&lt; GemdosDrive) - 1;
+        /* Add current GEMDOS drive bits and set mask */
+        for (i = 0; i &lt; nNumGemdosDrives; i++)
+        {
+                ConnectedDriveMask |= (1 &lt;&lt; (GemdosDrive + i));
+        }
+        STMemory_WriteLong(0x4c2, ConnectedDriveMask);
+---------------
+
+By default ConfigureParams.HardDisk.FirstDirPartition would be 'C'.
+
+The corresponding command line option could be something like:
+  --first-drive &lt;letter&gt;  First harddrive for directory/ies (C-Z, default C)
+
+Option for Kenneth's multiple GEMDOS emu drives patch could then be:
+  --harddrives &lt;dir&gt;  Emulate &lt;dir&gt; subdirectories as harddisk drives
+
+
+&gt;<i> so there is a conflict when using IDE and GEMDOS at the same time.
+</I>
+But ACSI &amp; IDE should work together?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000223.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+	<LI>Next message: <A HREF="000226.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#224">[ date ]</a>
+              <a href="thread.html#224">[ thread ]</a>
+              <a href="subject.html#224">[ subject ]</a>
+              <a href="author.html#224">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] A new disassembler in Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20new%20disassembler%20in%20Hatari&In-Reply-To=%3C4CE70A2A.1070706%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002647.html">
+   <LINK REL="Next"  HREF="002652.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] A new disassembler in Hatari</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20new%20disassembler%20in%20Hatari&In-Reply-To=%3C4CE70A2A.1070706%40corp.free.fr%3E"
+       TITLE="[hatari-devel] A new disassembler in Hatari">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Nov 20 00:37:14 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002647.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+        <LI>Next message: <A HREF="002652.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2651">[ date ]</a>
+              <a href="thread.html#2651">[ thread ]</a>
+              <a href="subject.html#2651">[ subject ]</a>
+              <a href="author.html#2651">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 18/11/2010 23:32, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 18/11/2010 02:41, Markus Fritze a &#233;crit :
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> With a bit delay (work...) here is the new 68k disassembler. I've
+</I>&gt;&gt;<i> written it from scratch and tested it against IDA Pro (BTW: which has
+</I>&gt;&gt;<i> a BUNCH of bugs in 68k). It is plain drop-in: add the ZIP'd source to
+</I>&gt;&gt;<i> the project and remove the old m68k_disasm() routine from newcpu.c (as
+</I>&gt;&gt;<i> well as the leftovers from the old one).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If you want: add the symbol files from Symbols.zip to the .hatari
+</I>&gt;&gt;<i> folder to get symbols (and more detailed ones for the TOS 3.06 and 4.04)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The disassembler can be fully configured via Diss68kOptions and
+</I>&gt;&gt;<i> optionCPUTypeMask as well the TAB settings. Check the beginning of the
+</I>&gt;&gt;<i> source. Somebody might want to add this to the preferences of Hatari.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The disassembler is able to deal with any 68k CPU (68000...68060,
+</I>&gt;&gt;<i> CPU32, FPU and PMMU) and should detect illegal opcodes based on the
+</I>&gt;&gt;<i> CPU mask.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Enjoy,
+</I>&gt;&gt;<i> Markus
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> thanks a lot for your work, this looks really nice !
+</I>&gt;<i>
+</I>&gt;<i> I will add this to Hatari, along with an option to choose between
+</I>&gt;<i> current uae's disassembler and your new one.
+</I>&gt;<i>
+</I>&gt;<i> I have a few errors when compiling with current Hatari gcc's flags, but
+</I>&gt;<i> this should be easy to fix.
+</I>&gt;<i>
+</I>&gt;<i> I will commit the resulting files once they compile so anyone can try it.
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>
+Hello,
+
+I committed the required changes to integrate your work in Hatari.
+
+As you can see, I had to change a few lines to avoid errors/warnings 
+when compiling with our flags (this may depend on th egcc version used 
+too). Maybe you can backport them to your code in case you plan to use 
+it in some other project.
+
+Remaining harmless warnings are :
+
+68kDisass.c: In function 'Disass68kEA': 
+
+68kDisass.c:821:6: attention : suggest explicit braces to avoid 
+ambiguous 'else'
+68kDisass.c: In function 'Disass68k_loop':
+68kDisass.c:2381:15: attention : array subscript is above array bounds
+
+At line 23811, I see your &quot;extending&quot; the string, which is ok since the 
+buffer is 1024 bytes, but gcc is detecting the index was computed from 
+strlen and gives a warning ; maybe there's a way to write this in a 
+different way ?
+
+
+Regarding the integration, I replaced calls to m68k_disasm by Disasm 
+with a new parameter DISASM_ENGINE_UAE or DISASM_ENGINE_EXT.
+
+This parameter (as well as the other options available in your code) 
+could of course be stored using some settings in hatari.cfg (Eero, if 
+you fell like doing it ?)
+
+While doing this, I saw breakcond.c is using stderr instead of 
+debugOutput ; Eero, is this normal ?
+
+
+Regarding the asm output, I really prefer this new presentation, &quot;moveq&quot; 
+or &quot;movem&quot; are really easier to read for example.
+
+There're 2 cases I'm less used to :
+
+1) adding paranthesises aroung absolute addr
+	lea       ($ffff8907).w,a0
+	move.l    d0,($2134e).l
+
+I think it's more common to just have :
+	lea       $ffff8907.w,a0
+	move.l    d0,$2134e.l
+
+I checked that devpac handled both notations, but could it be possible 
+to not add paranthesises around absolute addresses ?
+
+2) adding .l suffix after address
+	jsr       ($1ec50).l
+	move.w    d1,($212ec).l
+
+As most common case is to have 32 bit addr, could you remove the .l when 
+the address is 32 bit, and just add a .w when the address is a short 16 
+bit one ?
+
+08b8 0001 820a         bclr      #1,$ffff820a.w  -&gt; short addr mode
+
+
+What do you think ?
+
+
+PS : I didn't modify winuae's newcpu.c in cpu/ for now, we can change 
+this cosmetic points later.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002647.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+	<LI>Next message: <A HREF="002652.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2651">[ date ]</a>
+              <a href="thread.html#2651">[ thread ]</a>
+              <a href="subject.html#2651">[ subject ]</a>
+              <a href="author.html#2651">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Videl strange behaviour in Hatari fullscrenn
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Videl%20strange%20behaviour%20in%20Hatari%20fullscrenn&In-Reply-To=%3C4DAB625C.7020109%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003342.html">
+   <LINK REL="Next"  HREF="003348.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Videl strange behaviour in Hatari fullscrenn</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Videl%20strange%20behaviour%20in%20Hatari%20fullscrenn&In-Reply-To=%3C4DAB625C.7020109%40free.fr%3E"
+       TITLE="[hatari-devel] Videl strange behaviour in Hatari fullscrenn">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Apr 17 23:57:48 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003342.html">[hatari-devel] DMA sound improvements
+</A></li>
+        <LI>Next message: <A HREF="003348.html">[hatari-devel] Videl strange behaviour in Hatari fullscrenn
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3347">[ date ]</a>
+              <a href="thread.html#3347">[ thread ]</a>
+              <a href="subject.html#3347">[ subject ]</a>
+              <a href="author.html#3347">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've tried a little program called : overscan.prg
+It has a set.prg (set overscan) and reset.prg (back to bordered display).
+
+If I click on set.prg, Hatari window grows from 640*400 to 768*480) 
+which is OK
+But the desktop only displays 640*480 pixels. The right side and the 
+bottom side are full white.
+
+If I move the mouse from pixels 640 to 768 (X axis), I still see it 
+normally.
+If I maximize a window, it maximizes to 640*400, but if I move the 
+window to the right, and I can click in the &quot;white area&quot; on the right, I 
+can open the correct folder (which is not displayed, but is activable).
+
+The same for the Y axis from pixel 400 to 480.
+
+
+I've put some displays everywhere, all screen sizes are 768*480.
+videl no zoom renderer computes 768 pixels (I'm running 8 bpp).
+
+
+Last test : if I selest set.prg (go to overscan), then I refresh Atari's 
+video, by switching to 40 colums and back to 80 colums for example, I've 
+got a full 768*480 desktop.
+
+Is it the same behaviour on a real falcon (need to switch video to 
+&quot;refresh&quot; the desktop, or have we got a &quot;non refreshed variable&quot; in 
+hatari that is only refreshed after a &quot;video change from the desktop&quot; ?
+
+Regards
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003342.html">[hatari-devel] DMA sound improvements
+</A></li>
+	<LI>Next message: <A HREF="003348.html">[hatari-devel] Videl strange behaviour in Hatari fullscrenn
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3347">[ date ]</a>
+              <a href="thread.html#3347">[ thread ]</a>
+              <a href="subject.html#3347">[ subject ]</a>
+              <a href="author.html#3347">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

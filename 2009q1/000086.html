@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Control.c does not compile...
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Control.c%20does%20not%20compile...&In-Reply-To=%3C1233171723.6658.1.camel%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000083.html">
+   <LINK REL="Next"  HREF="000087.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Control.c does not compile...</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Control.c%20does%20not%20compile...&In-Reply-To=%3C1233171723.6658.1.camel%40localhost%3E"
+       TITLE="[hatari-devel] Control.c does not compile...">marndt at asmsoftware.de
+       </A><BR>
+    <I>Wed Jan 28 20:42:03 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000083.html">[hatari-devel] [hatari-users] Hatari version 1.2.0
+</A></li>
+        <LI>Next message: <A HREF="000087.html">[hatari-devel] Control.c does not compile...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#86">[ date ]</a>
+              <a href="thread.html#86">[ thread ]</a>
+              <a href="subject.html#86">[ subject ]</a>
+              <a href="author.html#86">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello team,
+
+I just got a fresh snapshot from Mercurial with hg pull and hg update,
+and it does not compile.
+
+Make run is as follows:
+
+gcc -g -Wmissing-prototypes -Wstrict-prototypes -Wsign-compare
+-Wbad-function-cast -Wcast-qual  -Wpointer-arith -Wall -Wwrite-strings
+-O3 -I/usr/include/libpng12   -DHAVE_LIBPNG=1   -DHAVE_X11=1  -I..
+-I./includes -Iuae-cpu -I./falcon -DCONFDIR=\&quot;/etc\&quot; -I/usr/include/SDL
+-D_REENTRANT -DENABLE_DSP_EMU=1  -c -o control.o control.c
+control.c: In Funktion &#187;Control_SetSocket&#171;:
+control.c:433: Warnung: &#220;bergabe des Arguments 2 von &#187;connect&#171; von
+inkompatiblem Zeigertyp
+control.c:454:24: Fehler: SDL_config.h: No such file or directory
+make[1]: *** [control.o] Fehler 1
+make[1]: Verlasse Verzeichnis '/home/marndt/src/hatari/src'
+make: *** [all] Fehler 2
+[ error ]
+
+
+Any ideas?
+
+cheers,
+Matthias
+
+PS: How can I test the new IDE support?
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000083.html">[hatari-devel] [hatari-users] Hatari version 1.2.0
+</A></li>
+	<LI>Next message: <A HREF="000087.html">[hatari-devel] Control.c does not compile...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#86">[ date ]</a>
+              <a href="thread.html#86">[ thread ]</a>
+              <a href="subject.html#86">[ subject ]</a>
+              <a href="author.html#86">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

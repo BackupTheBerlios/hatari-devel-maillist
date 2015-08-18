@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Main_GetTicks really useful ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Main_GetTicks%20really%20useful%20%3F&In-Reply-To=%3C4D45BCDD.40304%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002958.html">
+   <LINK REL="Next"  HREF="002960.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Main_GetTicks really useful ?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Main_GetTicks%20really%20useful%20%3F&In-Reply-To=%3C4D45BCDD.40304%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Main_GetTicks really useful ?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jan 30 20:32:45 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002958.html">[hatari-devel] STE dmaSnd.c with better sound
+</A></li>
+        <LI>Next message: <A HREF="002960.html">[hatari-devel] Main_GetTicks really useful ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2959">[ date ]</a>
+              <a href="thread.html#2959">[ thread ]</a>
+              <a href="subject.html#2959">[ subject ]</a>
+              <a href="author.html#2959">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Eero,
+
+while looking at main.c and means of improving precision for VBL delay, 
+I looked at Main_GetTicks and I don't understand why you added this 
+function (rev #1840) ; you use it instead of SDL_GetTicks if time() is 
+available, but I don't see where's the gain ?
+
+Looking at SDL sources, SDL_GetTicks is using gettimeofday under unixes, 
+which is even more precise than time() (nano vs micro, but in the end 
+it's rounded to micro by SDL) and you don't need to do the math 
+with_SC_CLK_TCK.
+
+So, what is the added value of this function ? All other parts of the 
+code are using SDL_GetTicks for micro sec precision.
+
+Could you replace calls to Main_GetTicks by SDL_GetTicks and remove the 
+function if you have no opposition to this ?
+
+
+Also, looking at the debug print you added to measure fast forward, they 
+only appear in the console when doing a pause, is this intented ?
+
+For example, press alt+x several times to go normal/fast mode : nothing 
+is printed. Then press 'pause' and SPEED line is printed.
+Press alt+x again several times and nothing is printed until you press 
+pause again.
+
+Is this the intended behaviour to print these stats only when doing 
+pause ? That's fine with me if it's the case, I'm just wondering.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002958.html">[hatari-devel] STE dmaSnd.c with better sound
+</A></li>
+	<LI>Next message: <A HREF="002960.html">[hatari-devel] Main_GetTicks really useful ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2959">[ date ]</a>
+              <a href="thread.html#2959">[ thread ]</a>
+              <a href="subject.html#2959">[ subject ]</a>
+              <a href="author.html#2959">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

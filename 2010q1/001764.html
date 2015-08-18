@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake floppy target
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20floppy%20target&In-Reply-To=%3C201003211753.25167.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001761.html">
+   <LINK REL="Next"  HREF="001810.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake floppy target</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20floppy%20target&In-Reply-To=%3C201003211753.25167.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] CMake floppy target">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Mar 21 16:53:25 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001761.html">[hatari-devel] CMake floppy target
+</A></li>
+        <LI>Next message: <A HREF="001810.html">[hatari-devel] CMake floppy target
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1764">[ date ]</a>
+              <a href="thread.html#1764">[ thread ]</a>
+              <a href="subject.html#1764">[ subject ]</a>
+              <a href="author.html#1764">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 21 March 2010, Thomas Huth wrote:
+&gt;<i> &gt; CMake stuff doesn't work for me properly yet (and I'm not completely
+</I>&gt;<i> &gt; happy with the defaults it uses).  I guess we'll see after Hatari 1.4
+</I>&gt;<i> &gt; release whether there are others with similar issues.
+</I>&gt;<i>
+</I>&gt;<i> Any chance that you can figure out the problem with hatari.1.gz ?
+</I>
+If I in this generated Makefile:
+	doc/CMakeFiles/manpages.dir/build.make
+
+I change this line:
+	doc/CMakeFiles/manpages: ../doc/hatari.1.gz
+to:
+	doc/CMakeFiles/manpages: doc/hatari.1.gz
+
+Everything works fine because that's actually the target that generates
+the .gz file.  As to why CMake decided to use a broken rule, I don't know.
+
+
+Although this makes the build fail, I'm actually more worried about the
+64-bit LFS issue and CMake not using sdl-config and using what SDL providers
+think right for SDL[1], but instead hardcoding some other compiler options.
+
+sdl-config uses _GNU_SOURCE which is kind of ugly, but still...
+
+The 64-bit LFS issue comes from CMake not defining &quot;_LARGEFILE64_SOURCE&quot;
+(which gets set with _GNU_SOURCE), only &quot;_LARGEFILE_SOURCE&quot;.  See my
+earlier mails to Nicolas.
+
+
+&gt;<i> You are the only one so far who ran into this problem, so maybe it's just
+</I>&gt;<i> the cmake version of your Debian that is too old...?
+</I>&gt;<i> (By the way, I am using &quot;cmake version 2.6-patch 4&quot;)
+</I>
+&quot;cmake version 2.6-patch 0&quot; doesn't seem that much older and it's the one
+that's included into Debian stable...
+
+-&gt; I don't think CMake to be mature enough to be the only build option.
+(Mature meaning that all popular Linux distros have fully working versions
+of it etc.)
+
+Debian testing seems to be having CMake 2.8:
+	<A HREF="http://packages.debian.org/squeeze/cmake">http://packages.debian.org/squeeze/cmake</A>
+
+There's a chance that testing has turned into new Debian stable by the time
+we're considering releasing Hatari 1.5.  But one never knows with Debian
+releases...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001761.html">[hatari-devel] CMake floppy target
+</A></li>
+	<LI>Next message: <A HREF="001810.html">[hatari-devel] CMake floppy target
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1764">[ date ]</a>
+              <a href="thread.html#1764">[ thread ]</a>
+              <a href="subject.html#1764">[ subject ]</a>
+              <a href="author.html#1764">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

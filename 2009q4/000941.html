@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] 030 option for Hatari?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20030%20option%20for%20Hatari%3F&In-Reply-To=%3C20091121133615.77fbe22e%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000940.html">
+   <LINK REL="Next"  HREF="000942.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] 030 option for Hatari?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20030%20option%20for%20Hatari%3F&In-Reply-To=%3C20091121133615.77fbe22e%40phineus%3E"
+       TITLE="[hatari-devel] 030 option for Hatari?">huth at users.berlios.de
+       </A><BR>
+    <I>Sat Nov 21 13:36:15 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000940.html">[hatari-devel] 030 option for Hatari?
+</A></li>
+        <LI>Next message: <A HREF="000942.html">[hatari-devel] 030 option for Hatari?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#941">[ date ]</a>
+              <a href="thread.html#941">[ thread ]</a>
+              <a href="subject.html#941">[ subject ]</a>
+              <a href="author.html#941">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 21 Nov 2009 12:26:30 +0100
+Thomas Huth &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">th.huth at gmx.de</A>&gt; wrote:
+
+&gt;<i> On Mon, 16 Nov 2009 20:06:18 +0100
+</I>&gt;<i> Uwe Seimet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">Uwe.Seimet at seimet.de</A>&gt; wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; &gt; The cookie jar is set by TOS, not by Hatari, so we don't have any
+</I>&gt;<i> &gt; &gt; direct influence on that. So the only option would be to improve
+</I>&gt;<i> &gt; &gt; the CPU emulation core. Does anybody know what TOS 4.0x is doing
+</I>&gt;<i> &gt; &gt; to distinguish an 68030 from a 68020 ?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I would expect an MMU command $Fxxx. Is it possible to configure
+</I>&gt;<i> &gt; Hatari to display all unknown CPU opcodes it finds?
+</I>&gt;<i> 
+</I>&gt;<i> You can add some debugging printfs to Exception() in new-cpu.c to see
+</I>&gt;<i> the illegal opcode and Line-F exceptions ... I tried it, but did not
+</I>&gt;<i> see any obvious CPU tests yet...
+</I>
+Finally found the code that sets up the _CPU cookie:
+
+00e003b4:  LEA.L $00000980,A0
+00e003ba:  MOVE.L A0,$000005a0
+00e003be:  MOVE.L #$5f435055,(A0)+
+00e003c4:  MOVE.L #$00000000,D1		; 68000
+00e003c6:  MOVEA.W #$0010,A2
+00e003ca:  MOVEA.L (A2),A3
+00e003cc:  MOVEA.L A7,A1
+00e003ce:  MOVE.L #$00e003f8,(A2)
+00e003d4:  MVSR2.B D0
+00e003d6:  MOVE.L #$0000000a,D1		; 68010
+00e003d8:  EXT.B D0
+00e003da:  MOVE.L #$00000014,D1		; 68020
+00e003dc:  MOVEC2.L #$0002
+00e003e0:  BSET.L #$0009,D0
+00e003e4:  MOVE2C.L #$0002
+00e003e8:  MOVEC2.L #$0002
+00e003ec:  BCLR.L #$0009,D0
+00e003f0:  BEQ.B #$00000006 == 00e003f8
+00e003f2:  MOVE.L #$0000001e,D1		; 68030
+00e003f4:  MOVE2C.L #$0002
+00e003f8:  MOVEA.L A1,A7
+00e003fa:  MOVE.L A3,(A2)
+00e003fc:  MOVE.L D1,(A0)+
+
+That means, TOS uses some bits in the CACR register for differentiating
+between 68020 and 68030. I've changed the source code in newcpu.c a
+little bit, so that TOS now detects a 68030 CPU when cpulevel==3.
+Please test if this works better with HD driver now.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000940.html">[hatari-devel] 030 option for Hatari?
+</A></li>
+	<LI>Next message: <A HREF="000942.html">[hatari-devel] 030 option for Hatari?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#941">[ date ]</a>
+              <a href="thread.html#941">[ thread ]</a>
+              <a href="subject.html#941">[ subject ]</a>
+              <a href="author.html#941">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

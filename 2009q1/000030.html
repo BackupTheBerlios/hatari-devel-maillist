@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Midi support broken?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Midi%20support%20broken%3F&In-Reply-To=%3C20090116232931.39a14e8e%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000026.html">
+   <LINK REL="Next"  HREF="000031.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Midi support broken?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Midi%20support%20broken%3F&In-Reply-To=%3C20090116232931.39a14e8e%40phineus%3E"
+       TITLE="[hatari-devel] Midi support broken?">th.huth at gmx.de
+       </A><BR>
+    <I>Fri Jan 16 23:29:31 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000026.html">[hatari-devel] Midi support broken?
+</A></li>
+        <LI>Next message: <A HREF="000031.html">[hatari-devel] Midi support broken?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#30">[ date ]</a>
+              <a href="thread.html#30">[ thread ]</a>
+              <a href="subject.html#30">[ subject ]</a>
+              <a href="author.html#30">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 13 Jan 2009 23:40:42 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> However, I've tried to get the MIDI networking working (using either
+</I>&gt;<i> m.o.c. or midimaze) and that fails.  Midimaze says &quot;midi-ring boo boo&quot;
+</I>&gt;<i> and moc just freezes when connecting.
+</I>
+ACIA GPIP emulation was still missing... please update and try again.
+I've successfully tested MIDIMaze and Oxyd 2 so far...
+
+&gt;<i> I've tried this with:
+</I>&gt;<i> $ socat -b1 PIPE:hatari1.pipe  PIPE:hatari2.pipe &amp;
+</I>&gt;<i> $&#160;hatari --midi hatari1.pipe &amp;
+</I>&gt;<i> $&#160;hatari --midi hatari2.pipe &amp;
+</I>
+That does not seem to work because socat seems to echo the characters
+in PIPE-mode when one end is opened in both, read and write mode.
+
+But you can do the following - it works for me:
+
+socat PTY,raw,echo=0,link=/tmp/midi1 PTY,raw,echo=0,link=/tmp/midi2
+hatari --midi /tmp/midi1 &amp;
+hatari --midi /tmp/midi2 &amp;
+
+&gt;<i> And with:
+</I>&gt;<i> $ socat -b1 -v -x PIPE:hatari1-out.pipe PIPE:hatari2-in.pipe
+</I>&gt;<i> $ socat -b1 -v -x PIPE:hatari2-out.pipe PIPE:hatari1-in.pipe
+</I>&gt;<i> $&#160;hatari &amp;
+</I>&gt;<i> $&#160;hatari &amp;
+</I>&gt;<i> (and connecting the midi I/O appropriately.)
+</I>
+That could work, but you then could also use two normal named pipes
+instead, which you can create with the &quot;mkfifo&quot; command.
+
+&gt;<i> PS. Midi_Init seems to be called only at startup, from main.c, not
+</I>&gt;<i> after changing the files from the internal GUI.
+</I>
+Ok, thanks for the hint, that's fixed now.
+
+&gt;<i> And from command line one cannot give separate input and output
+</I>&gt;<i> files (needed for making a midi ring?).
+</I>
+That could be useful, can you add such options?
+Shall the normal --midi option then be removed?
+
+&gt;<i> Midi_Init() has also minor issue that it:
+</I>&gt;<i> - doesn't check whether filename is empty before trying to open
+</I>&gt;<i>   MIDI in/out
+</I>
+Shouldn't that rather be handled by File_Open instead (which then
+should return a NULL pointer)?
+
+&gt;<i> - it disables midi if either in or out file opening fails
+</I>&gt;<i> I.e. both need to have valid filenames or Midi's disabled.  I don't
+</I>&gt;<i> think it's so serious that Midi input opening fails.
+</I>
+Ok, right, you might have a MIDI device which is output only, too.
+I've changed the code now so that failures here are not considered as
+fatal anymore.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000026.html">[hatari-devel] Midi support broken?
+</A></li>
+	<LI>Next message: <A HREF="000031.html">[hatari-devel] Midi support broken?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#30">[ date ]</a>
+              <a href="thread.html#30">[ thread ]</a>
+              <a href="subject.html#30">[ subject ]</a>
+              <a href="author.html#30">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

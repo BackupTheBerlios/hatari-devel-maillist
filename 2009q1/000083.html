@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [hatari-users] Hatari version 1.2.0
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Bhatari-users%5D%20Hatari%20version%201.2.0&In-Reply-To=%3C200901251518.47357.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000085.html">
+   <LINK REL="Next"  HREF="000086.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [hatari-users] Hatari version 1.2.0</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Bhatari-users%5D%20Hatari%20version%201.2.0&In-Reply-To=%3C200901251518.47357.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] [hatari-users] Hatari version 1.2.0">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jan 25 14:18:47 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000085.html">[hatari-devel] Joystick slows Hatari mouse pointer
+</A></li>
+        <LI>Next message: <A HREF="000086.html">[hatari-devel] Control.c does not compile...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#83">[ date ]</a>
+              <a href="thread.html#83">[ thread ]</a>
+              <a href="subject.html#83">[ subject ]</a>
+              <a href="author.html#83">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 25 January 2009, Christer Solskogen wrote:
+&gt;<i> I removed Makefile*, and ran 'hg up' again. Now it says:
+</I>&gt;<i> &#160; gcc -g -Wmissing-prototypes -Wstrict-prototypes -Wsign-compare
+</I>&gt;<i> -Wbad-function-cast -Wcast-qual &#160;-Wpointer-arith -Wall -Wwrite-strings
+</I>&gt;<i> -O2 -I/usr/X11/include/libpng12 &#160; -DHAVE_LIBPNG=1 -I/opt/local/include
+</I>&gt;<i> &#160; -DHAVE_X11=1 &#160;-I.. -I./includes -Iuae-cpu -I./falcon
+</I>&gt;<i> -DCONFDIR=\&quot;/etc\&quot; -I/opt/local/include/SDL -D_GNU_SOURCE=1
+</I>&gt;<i> -D_THREAD_SAFE -DENABLE_DSP_EMU=1 &#160;-c -o control.o control.c
+</I>&gt;<i>
+</I>&gt;<i> pkg-config --libs x11 gives me this:
+</I>&gt;<i> -L/opt/local/lib -lX11 -lXau -lXdmcp
+</I>
+What about &quot;pkg-config --cflags x11&quot;? &#160;Do you have the includes too?
+
+
+On Sunday 25 January 2009, Thomas Huth wrote:
+&gt;<i> Looks like HAVE_X11 has been defined accidentially on your system (it
+</I>&gt;<i> shouldn't be defined on Mac OS X). Could you check your config.h ?
+</I>
+I think I know what's the problem is. &#160;Christer has X11 devel stuff
+installed, but his version of SDL doesn't include support for X11.
+
+On my system:
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#include &lt;SDL_syswm.h&gt;
+
+Header includes the X stuff sd the X video driver has been configured
+into SDL.
+
+I guess I need to add:
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#include &lt;SDL_config.h&gt;
+
+and:
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#ifdef SDL_VIDEO_DRIVER_X11
+
+To control.c, see attached patch.
+
+I guess HAVE_X11 is still needed at least for checking whether the -lX11 is
+needed.
+
+
+&gt;<i> &gt;&gt; There is no configure script in the mercurial repo, how do i create
+</I>&gt;<i> &gt;&gt; it?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (You need &quot;configure&quot; if you don't want to edit config.h manually
+</I>&gt;<i> &gt; for your environment.)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &#160;From the configure.ac:
+</I>&gt;<i> &gt; ----------
+</I>&gt;<i> &gt; # To create all necessary files for configure, use:
+</I>&gt;<i> &gt; # &#160; aclocal&amp;&amp; &#160;autoheader&amp;&amp; &#160;automake --add-missing --copy&amp;&amp; &#160;autoconf
+</I>&gt;<i> &gt; # Later on you can use &quot;autoreconf -i&quot; after updating this file.
+</I>&gt;<i> &gt; ----------
+</I>&gt;<i>
+</I>&gt;<i> thanks.
+</I>&gt;<i> running configure gives me this:
+</I>&gt;<i> ./configure: line 3997: syntax error near unexpected token
+</I>&gt;<i> `$SDL_VERSION,' ./configure: line 3997: `AM_PATH_SDL($SDL_VERSION, :,'
+</I>
+AM_PATH_SDL is defined in sdl.m4, that should have been installed by your
+SDL package. &#160;Normally it's located in /usr/share/aclocal/sdl.m4, do you
+have that? &#160;If you have it (in this or other location where configure should
+find it), then your SDL installation has broken sdl.m4 macro file.
+
+If sdl.m4 missing from SDL package can be normal occurrence i.e. something
+that should be supported by Hatari configure, I guess Thomas need to look
+into changing Hatari configure.ac just to use sdl-config (or check first
+whether AM_PATH_SDL is defined). :-/
+
+
+&gt;<i> even if i'm able to so the following:
+</I>&gt;<i> tenderheart:hatari solskogen$ sdl-config --version
+</I>&gt;<i> 1.2.13
+</I>
+I have Debian Lenny:
+$&#160;sdl-config --version
+1.2.12
+
+
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: sdl-x11.diff
+Type: text/x-diff
+Size: 300 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090125/9611472a/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090125/9611472a/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000085.html">[hatari-devel] Joystick slows Hatari mouse pointer
+</A></li>
+	<LI>Next message: <A HREF="000086.html">[hatari-devel] Control.c does not compile...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#83">[ date ]</a>
+              <a href="thread.html#83">[ thread ]</a>
+              <a href="subject.html#83">[ subject ]</a>
+              <a href="author.html#83">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

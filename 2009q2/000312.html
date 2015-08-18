@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mouse ungrab, palette?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20ungrab%2C%20palette%3F&In-Reply-To=%3C20090603092124.2827a5bf%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000314.html">
+   <LINK REL="Next"  HREF="000315.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mouse ungrab, palette?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20ungrab%2C%20palette%3F&In-Reply-To=%3C20090603092124.2827a5bf%40phineus%3E"
+       TITLE="[hatari-devel] Mouse ungrab, palette?">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Jun  3 09:21:24 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000314.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+        <LI>Next message: <A HREF="000315.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#312">[ date ]</a>
+              <a href="thread.html#312">[ thread ]</a>
+              <a href="subject.html#312">[ subject ]</a>
+              <a href="author.html#312">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 2 Jun 2009 00:17:34 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Maybe it's better to have the default color register values as
+</I>&gt;<i> something one can dump from a file to memory.  And maybe there could
+</I>&gt;<i> be a directory like &quot;debug&quot;, &quot;data&quot; or &quot;debug-data&quot; which contains
+</I>&gt;<i> these kind of dumps and README with quick instructions / reason for
+</I>&gt;<i> using them?
+</I>
+I think it should normally be enough to change color 0 when you want to
+see whether there is something on the screen at all or not.
+Maybe it is also better to wait until somebody really, really needs this
+feature and implements it in a useful way...? I mean, we talking about
+a feature that nobody really missed until now, nobody urgently needs
+right now, and we don't have a clear opinion how it should be done...
+There are more important things to do for the emulator, so let's better
+focus on these!
+
+&gt;<i> PS. I noticed something strange in Videl code. ioMemTabFalcon.c:
+</I>&gt;<i>        { 0xff9800, 0x400, IoMem_ReadWithoutInterception,
+</I>&gt;<i>            VIDEL_ColorRegsWrite },   /* Falcon Videl palette */
+</I>&gt;<i> 
+</I>&gt;<i> 0xff9800 + 0x400 = 0xff9c00.
+</I>&gt;<i> 
+</I>&gt;<i> However, in videl.c:
+</I>&gt;<i> 	#define VIDEL_COLOR_REGS_BEGIN  0xff9800
+</I>&gt;<i> 	#define VIDEL_COLOR_REGS_END    0xffa200
+</I>&gt;<i> 
+</I>&gt;<i> (latter define isn't used though.)
+</I>
+Each palette entry is 4 bytes long, though it contains only 18
+valid bits which define the color. So 256 * 4 = 0x400.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000314.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+	<LI>Next message: <A HREF="000315.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#312">[ date ]</a>
+              <a href="thread.html#312">[ thread ]</a>
+              <a href="subject.html#312">[ subject ]</a>
+              <a href="author.html#312">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

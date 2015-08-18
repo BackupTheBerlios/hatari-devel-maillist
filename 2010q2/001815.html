@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] STE DMA Sound, new approach
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20DMA%20Sound%2C%20new%20approach&In-Reply-To=%3Calpine.LMD.2.00.1004010029230.8665%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="001816.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] STE DMA Sound, new approach</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20DMA%20Sound%2C%20new%20approach&In-Reply-To=%3Calpine.LMD.2.00.1004010029230.8665%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] STE DMA Sound, new approach">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Apr  1 01:32:36 CEST 2010</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="001816.html">[hatari-devel] Alert : big problem with DSP emulation and Eko	System demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1815">[ date ]</a>
+              <a href="thread.html#1815">[ thread ]</a>
+              <a href="subject.html#1815">[ subject ]</a>
+              <a href="author.html#1815">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 24 Mar 2010, Laurent Sallafranque wrote:
+
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> I've rewritten dmasnd.c (see attached file)
+</I>&gt;<i> You can temporary replace the actual file by this one.
+</I>&gt;<i>
+</I>&gt;<i> With these changes, powerUp game plays sound in STE mode too.
+</I>&gt;<i>
+</I>&gt;<i> The problem with this game is that Dma sound is 1 word length:
+</I>&gt;<i>
+</I>&gt;<i> DMA start address: 0x0001593e   DMA end address: 0x00015940
+</I>&gt;<i> DMA start address: 0x0001593e   DMA end address: 0x00015940
+</I>&gt;<i> DMA start address: 0x0001593e   DMA end address: 0x00015940
+</I>&gt;<i> DMA start address: 0x0001593e   DMA end address: 0x00015940
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i> Coders here play the Dma sound 1 word by one word.
+</I>&gt;<i> So, SoundUpdate() is called everytime.
+</I>&gt;<i> When SoundUpdate is called for a big amount of values (after a VBL for 
+</I>&gt;<i> example),
+</I>&gt;<i> we've lost all the sound values.
+</I>&gt;<i>
+</I>&gt;<i> I've rewritten the dma emulation as I did for the crossbar.
+</I>&gt;<i> It now copies data in &quot;realtime&quot;.
+</I>&gt;<i> I use an internal cycint.c interrupt for each data.
+</I>&gt;<i> I bufferize the data read in dma.sndBuffer
+</I>&gt;<i>
+</I>&gt;<i> I take into account the endFrame and the DMA current position in
+</I>&gt;<i> real time too.
+</I>&gt;<i>
+</I>&gt;<i> If DMA stops playing, the internal timer continues and a 0 value goes into 
+</I>&gt;<i> the buffer.
+</I>&gt;<i> Like this, the LMC1992 mixer is still correct.
+</I>&gt;<i> Sound is only updated after each VBL.
+</I>&gt;<i>
+</I>&gt;<i> I think this is the good way to do it, it takes everything into account.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> BUT : the internal timer is relative to 68000 CPU cycles.
+</I>&gt;<i> I've got the same problem than with crossbar sound.
+</I>&gt;<i> The sound is noisy (also for sound that was correctly played before).
+</I>&gt;<i>
+</I>&gt;<i> This internal cycint is perfect for display (as display is completely 
+</I>&gt;<i> dependent of cpu cycles),
+</I>&gt;<i> but is not OK for independent components that need exact cycles precision
+</I>&gt;<i> (crossbar, dsp, lmc1992, dma or acia keyboard)
+</I>&gt;<i>
+</I>&gt;<i> Any idea on how to improve this ?
+</I>&gt;<i> (This would improve crossbar sound too)
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>
+Hello,
+
+I agree with the approach where data should be copied during the vbl, else 
+you might loose some data if end-start is smaller than the number of 
+sample per vbl (as determined by the dma freq).
+
+In fact, there's a similar need in ym2149 : volumes can be modulated (to 
+play sample or simulate sid effect). In that case, the current ym buffer 
+for the vbl is updated each time a write is made to an ym register. So if 
+there're only change every vbl, we build the ym sound buffer at the end of 
+the vbl, else the sound buffer is partially updated each time a register 
+is modified.
+
+What I fear if you use a timer, is that it will take quite more cpu cycle 
+by always using a timer (which is quite costy in cycint.c), even in some 
+situation where it's not needed.
+So, I think there should be at least 2 cases :
+
+  1) dma_end - dma_start &gt; sample per vbl : in that case, you don't need an 
+internal timer, you can just copy ( dma_current - dma_start ) samples at 
+the end of the vbl and add these samples to the current sound buffer.
+
+  2) dma_end - dma_start &lt; sample per vbl : in that case, you could use a 
+timer that triggers after the equivalent of ( dma_end - dma_start ) 
+samples were supposed to be processed by the dma (taking dma freq into 
+account). Extreme case is of course when dma_end - dma_start = 2 and in 
+that case timer will be started at the equivalent of dma freq.
+
+
+Most demos/games are using case 1) : dma samples are computed for the next 
+vbl and played in one go (else this would need some mfp/dma interrupt on 
+STE to &quot;refill&quot; the dma, which is not the simplest way to play sound). So, 
+we should keep a case that handle this with as little cpu penalty as 
+possible.
+
+In the case of 2), I think a way to avoid a timer could be to detect if 
+some write accesses are made to the ram between dma_start and dma_end.
+
+Here, I see 2 cases also :
+  - If no write are made, then you can copy at the end of the vbl as many 
+time as needed the bytes in ram between dma_start and dma_end (since this 
+area was not written to, there's no risk that some sound values will be 
+overwritten by others)
+
+  - each time a write is made : fill hatari's output sound buffer up to the 
+point where the write was made. This should take into account the dma 
+freq. If another write is made, determine how many cpu cycles elapsed 
+since the last sound buffer's update and depending on this determine how 
+many bytes should be added to the sound buffer. These bytes will the one 
+between dma_prev_addr and dma_cur_addr, &quot;resampled&quot; to hatari's output 
+freq.
+
+In fact, if we want to be accurate, case 2) should always be used instead 
+of case 1), because even if we know &quot;dma_end - dma_start &gt; sample per 
+vbl&quot;, this doesn't mean that the cpu is not writing to this dma area 
+*while* the sound is played.
+
+This is a much more complicated method, but I think it's the most accurate 
+one and would not be that costly, because in the end the demo/game will 
+certainly only write ~1000 samples per vbl (at 50 kHz), which means the 
+&quot;update dma sound buffer&quot; would be called 1000 times (which is not that 
+much when compared to some STF demo that plays 15 or 20 Khz samples).
+
+In the end, this method is even very close to the one used for ym2149 :
+  - in ym2149, update the sound buffer each time an ym reg between 0 and 13 
+is modified (and complete the buffer at the end of the vbl)
+
+  - in dma mode, update the sound buffer each time the memory is modified 
+between dma_start and dma_end (and complete the buffer at the end of the 
+vbl)
+
+
+Well, as I type this long mail, I agree that using a timer in cycint.c 
+running at the current dma freq timer might be a simpler solution to 
+implement, and it would work with cases 1) and 2) too.
+Let's ignore what I wrote above :)
+
+But I don't really agree cycint.c timers are not precise enough : we can 
+have a timer every 4 cpu cycles, which is 2 Mhz, so this should be enough 
+to simulate a 50 Khz dma freq, even if this is not an integer multiple.
+
+So, maybe the noisy sound is due to a precision/rounding problem in the 
+interrupt handler for the dma sound (from an electronic point of view, 
+even the ste has the same primary clock that is divided to give the cpu or 
+the dma sound clock, and the sound is ok).
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="001816.html">[hatari-devel] Alert : big problem with DSP emulation and Eko	System demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1815">[ date ]</a>
+              <a href="thread.html#1815">[ thread ]</a>
+              <a href="subject.html#1815">[ subject ]</a>
+              <a href="author.html#1815">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

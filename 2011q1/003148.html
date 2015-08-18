@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] A few feature requests and observations.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20few%20feature%20requests%20and%20observations.&In-Reply-To=%3C201103042243.49509.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003147.html">
+   <LINK REL="Next"  HREF="003151.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] A few feature requests and observations.</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20few%20feature%20requests%20and%20observations.&In-Reply-To=%3C201103042243.49509.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] A few feature requests and observations.">oak at helsinkinet.fi
+       </A><BR>
+    <I>Fri Mar  4 21:43:49 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003147.html">[hatari-devel] A few feature requests and observations.
+</A></li>
+        <LI>Next message: <A HREF="003151.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3148">[ date ]</a>
+              <a href="thread.html#3148">[ thread ]</a>
+              <a href="subject.html#3148">[ subject ]</a>
+              <a href="author.html#3148">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 04 maaliskuu 2011, Thomas Huth wrote:
+&gt;<i> schrieb Zombie Ryushu &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">zombie_ryushu at yahoo.com</A>&gt;:
+</I>&gt;<i> &gt; Hatari lacks a &quot;Quick Exit&quot; feature (where one can exit the emulator
+</I>&gt;<i> &gt; just by pressing escape.) This makes it very difficult to conform to
+</I>&gt;<i> &gt; the orthodoxy of most emulators.
+</I>&gt;<i> 
+</I>&gt;<i> You can easily configure this in the ~/.hatari/hatari.cfg file: Set
+</I>&gt;<i> bConfirmQuit = FALSE and set the keyQuit settings to the key of your
+</I>&gt;<i> choice.
+</I>
+These don't need to be set in the system default configuration, one can have
+a separate configuration file that contains only the options that you want
+to override from the default config.  You can specify your own config with
+--configfile option.
+
+
+If you want to send Hatari commands or change its configuration while it's
+running, you can send them using Hatari's command socket, specified with
+the --control-socket option.  Try hconsole.py to see how that works.
+
+
+The latest (not yet released) version of Hatari has also support (hack) for
+running programs directly with Hatari just with &quot;hatari dir/some.prg&quot;.
+Almost any program that doesn't need to  be run from the auto/ -folder seems
+to be working fine with it.
+
+Related to this, there's also tools/hatari-tos-register.sh init script you
+can use to register Hatari as a handler for Atari programs.  After running
+that you can start Atari programs directly from your Linux desktop.
+This of course assumes that Hatari's configured for the Atari type
+(ST/STE/TT/Falcon) that the Atari program that you clicked expects,
+but if you know what you do, you can get around that too.
+
+
+Finally, if you want to embed Hatari window inside Arcade launcher UI,
+see the hatariui.py for PyGtk code on how to do it using Gtk Plug/Socket
+widget and hatari.py for what environment variable you need to set for
+Hatari to embed itself into your program.
+
+Note: The embedding is done in a slightly unorthodoxly as embedding support
+is slightly broken in both SDL and Gtk.  SDL's own embedding support
+disables keyboard input (as can be verified from SDL sources), so embedding
+support is built directly into Hatari itself.  And Gtk steals keys from the
+embedded window unless you disable that in the surrounding Gtk widgets
+(= you cannot have keyboard shortcuts in your own program if you want keys
+to work in the embedded program).  That happens at least for embedded
+programs that don't implement full XEmbed protocol...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003147.html">[hatari-devel] A few feature requests and observations.
+</A></li>
+	<LI>Next message: <A HREF="003151.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3148">[ date ]</a>
+              <a href="thread.html#3148">[ thread ]</a>
+              <a href="subject.html#3148">[ subject ]</a>
+              <a href="author.html#3148">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

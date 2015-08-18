@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issues after restoring a memory snapshot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20after%20restoring%20a%20memory%20snapshot&In-Reply-To=%3C1405193333.1482953.1296230797959.JavaMail.root%40mail-zstore-1-a.gicm.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002955.html">
+   <LINK REL="Next"  HREF="002926.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issues after restoring a memory snapshot</H1>
+    <B>LAURENT SALLAFRANQUE</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20after%20restoring%20a%20memory%20snapshot&In-Reply-To=%3C1405193333.1482953.1296230797959.JavaMail.root%40mail-zstore-1-a.gicm.net%3E"
+       TITLE="[hatari-devel] Issues after restoring a memory snapshot">laurent.sallafranque at arkea.com
+       </A><BR>
+    <I>Fri Jan 28 17:06:38 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002955.html">[hatari-devel] Hatari CPU frequency shifter issue
+</A></li>
+        <LI>Next message: <A HREF="002926.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2925">[ date ]</a>
+              <a href="thread.html#2925">[ thread ]</a>
+              <a href="subject.html#2925">[ subject ]</a>
+              <a href="author.html#2925">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+&gt;<i> Btw. why DMA sound isn't reseted for Falcon emulation, only Crossbar?
+</I>&gt;<i> Does Crossbar replace DmaSnd.c stuff completely?
+</I>
+Yes, absolutely.
+Have a look at sound.c in Sound_GenerateSamples() function.
+
+I've included a fork here :
+	if (ConfigureParams.System.nMachineType == MACHINE_FALCON)
+
+Where I call the crossbar (which takes everything into account, also DMA sound).
+
+Dmasound.c is STE/TT specific
+
+Except if I've forgotten something, crossbar functions are also called after a reset and everytime it's needed for falcon emulation.
+I've completely forked the sound for the Falcon needs.
+(That's what I'd like to do now for the video).
+
+I've just saved crossbar AND dmasound in the snapshot, also in falcon mode (as dma_sound parameters are not used).
+This avoid adding more code for nothing.
+
+
+(And why Crossbar sound has reset function, but no init function?)
+
+I'll have a closer look at this one, maybe it's a problem.
+
+Regards
+
+Laurent
+
+--
+Ce message et  toutes les pieces jointes (ci-apres  le &quot;message&quot;) sont
+confidentiels et etablis a l'intention exclusive de ses destinataires.
+Toute  utilisation ou  diffusion  non autorisee  est interdite.   Tout
+message  etant  susceptible  d'alteration,  l'emetteur  decline  toute
+responsabilite au titre de  ce message  s'il a  ete altere, deforme ou
+falsifie.
+                -----------------------------------
+This message and any  attachments (the &quot;message&quot;) are confidential and
+intended  solely   for  the   addressees.  Any  unauthorised   use  or
+dissemination is prohibited. As e-mails are susceptible to alteration,
+the issuer shall  not be  liable for  the  message if altered, changed
+or falsified.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002955.html">[hatari-devel] Hatari CPU frequency shifter issue
+</A></li>
+	<LI>Next message: <A HREF="002926.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2925">[ date ]</a>
+              <a href="thread.html#2925">[ thread ]</a>
+              <a href="subject.html#2925">[ subject ]</a>
+              <a href="author.html#2925">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

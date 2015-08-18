@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP and FRACTAL
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20and%20FRACTAL&In-Reply-To=%3C49E20CB4.9060802%40wanadoo.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000251.html">
+   <LINK REL="Next"  HREF="000255.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP and FRACTAL</H1>
+    <B>Jerome Vernet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20and%20FRACTAL&In-Reply-To=%3C49E20CB4.9060802%40wanadoo.fr%3E"
+       TITLE="[hatari-devel] DSP and FRACTAL">vernet.jerome at wanadoo.fr
+       </A><BR>
+    <I>Sun Apr 12 17:45:56 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000251.html">[hatari-devel] DSP and FRACTAL
+</A></li>
+        <LI>Next message: <A HREF="000255.html">[hatari-devel] DSP and FRACTAL
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#252">[ date ]</a>
+              <a href="thread.html#252">[ thread ]</a>
+              <a href="subject.html#252">[ subject ]</a>
+              <a href="author.html#252">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>There is two macro to define : DSP_EMULATION and ENABLE_DSP_EMU in the 
+sources.... The first one is used in dsp.c and was not set anywhere. May 
+be it should be the same macro ?
+
+Anyway, -DDSP_EMULATION make FRACTAL working in DSP mode. The Xcode 
+Project need to be updated with the -DENABLE_DSP_EMU and DSP_EMULATION 
+replaced by ENABLE_DSP_EMU.
+
+
+Jerome
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000251.html">[hatari-devel] DSP and FRACTAL
+</A></li>
+	<LI>Next message: <A HREF="000255.html">[hatari-devel] DSP and FRACTAL
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#252">[ date ]</a>
+              <a href="thread.html#252">[ thread ]</a>
+              <a href="subject.html#252">[ subject ]</a>
+              <a href="author.html#252">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

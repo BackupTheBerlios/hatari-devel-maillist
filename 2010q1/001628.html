@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Alive demo (fun industries) works well now
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Alive%20demo%20%28fun%20industries%29%20works%20well%20now&In-Reply-To=%3C201003042330.34689.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001622.html">
+   <LINK REL="Next"  HREF="001642.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Alive demo (fun industries) works well now</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Alive%20demo%20%28fun%20industries%29%20works%20well%20now&In-Reply-To=%3C201003042330.34689.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Alive demo (fun industries) works well now">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Mar  4 22:30:34 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001622.html">[hatari-devel] Alive demo (fun industries) works well now
+</A></li>
+        <LI>Next message: <A HREF="001642.html">[hatari-devel] Alive demo (fun industries) works well now
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1628">[ date ]</a>
+              <a href="thread.html#1628">[ thread ]</a>
+              <a href="subject.html#1628">[ subject ]</a>
+              <a href="author.html#1628">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I checked now Toons' Yepyha demo which has most strange screen sizes.
+
+It uses video mode 0 (doesn't toggle any of the bits), but in Hatari
+it occasionally switches to 192x2 pixel sized screen.
+
+When looking at the Videl registers when this happens:
+$FF82A2 : VFT - Vertical Frequency Timer   : 0271
+$FF82A4 : VBB - Vertical Border Begin      : 0265
+$FF82A6 : VBE - Vertical Border End        : 002f
+$FF82A8 : VDB - Vertical Display Begin     : 0145
+$FF82AA : VDE - Vertical Display End       : 0147
+
+The value used by Hatari for calculating screen height: VDE - VDB = 2.
+Can this really be true?
+
+I just noticed following in Aura's Videl doc:
+------------------
+$FFFF82A8 [R/W] W _____A9876543210  Vertical Display Begin (VDB)
+
+On which halfline should  begin  gfx  display.  If  VDB  &gt;  VFT,  no display 
+is present. If VDB &gt; VDE, display is present from VDB to VFT.
+
+$FFFF82AA [R/W] W _____A9876543210  Vertical Display End (VDE)
+
+On which halfline should end gfx display. If  VDE &lt; VFT, no display is 
+present. If VDE &lt; VDB, display is present from VDE to VFT.
+------------------
+
+VFT - VDB = 300 which would be fine width except that VDB &lt; VDE.
+
+And from what I've seen of the register values, this is always true:
+	VDE &lt; VFT,
+although according to Aura's doc it would mean that no display is
+present...?
+
+
+	- Eero
+
+
+On Thursday 04 March 2010, Eero Tamminen wrote:
+&gt;<i> I've tried this demo to see whether my video mode bits based scaling
+</I>&gt;<i> patch helps (attached).  While the patch helps with desktop RGB &amp; VGA
+</I>&gt;<i> resolution changes (except for something funny Hatari does at bootup) and
+</I>&gt;<i> should fix the fullscreen/non-fullscreen switching, it doesn't help with
+</I>&gt;<i> the above discussed issue (in that demo, or with the &quot;Terrorize your
+</I>&gt;<i> soul&quot; demo).
+</I>&gt;<i>
+</I>&gt;<i> When I took the VIDEL registers every Alive demo changed time video mode:
+</I>&gt;<i> 	lock videl
+</I>&gt;<i> 	b ($FF82C2).w ! ($FF82C2).w
+</I>&gt;<i>
+</I>&gt;<i> I noticed that what the demo does is:
+</I>&gt;<i> * toggling the double line video mode (VMD) bit on RGB monitor[1]...
+</I>&gt;<i> * change line width between these:
+</I>&gt;<i> $FF8210 : VWRAP - line width               : 00a0
+</I>&gt;<i> $FF8210 : VWRAP - line width               : 0140
+</I>&gt;<i> * change display start and end between these:
+</I>&gt;<i> $FF8288 : HDB - Horizontal Display Begin   : 0003
+</I>&gt;<i> $FF828A : HDE - Horizontal Display End     : 009b
+</I>&gt;<i> $FF8288 : HDB - Horizontal Display Begin   : 02ba
+</I>&gt;<i> $FF828A : HDE - Horizontal Display End     : 0089
+</I>&gt;<i>
+</I>&gt;<i> Latter seemed strange, how the first HDB can be smaller than
+</I>&gt;<i> the corresponding HDE value?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> [1] videl.c does this in VIDEL_getScreenHeight() regardless of monitor
+</I>&gt;<i> type: int yres = vde - vdb;
+</I>&gt;<i>         if (!(vmode &amp; 0x02))            // interlace
+</I>&gt;<i>                 yres &gt;&gt;= 1;
+</I>&gt;<i>         if (vmode &amp; 0x01)               // double
+</I>&gt;<i>                 yres &gt;&gt;= 1;
+</I>&gt;<i>
+</I>&gt;<i> Should the double line bit be ignored with RGB monitor?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> VIDEL_getScreenWidth() checks just line width, it doesn't take into
+</I>&gt;<i> account: - horizontal display beginning and end, is line width really
+</I>&gt;<i> enough? - quarter/half pixel video mode setting although yres takes into
+</I>&gt;<i> account double/interlace mode settings.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> TYS demo was also toggling double line mode on RGB monitor...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Any comments / advise?
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001622.html">[hatari-devel] Alive demo (fun industries) works well now
+</A></li>
+	<LI>Next message: <A HREF="001642.html">[hatari-devel] Alive demo (fun industries) works well now
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1628">[ date ]</a>
+              <a href="thread.html#1628">[ thread ]</a>
+              <a href="subject.html#1628">[ subject ]</a>
+              <a href="author.html#1628">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

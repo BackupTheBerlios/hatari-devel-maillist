@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] evaluate.c headers missing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20evaluate.c%20headers%20missing&In-Reply-To=%3C200910230059.30906.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000878.html">
+   <LINK REL="Next"  HREF="000883.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] evaluate.c headers missing</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20evaluate.c%20headers%20missing&In-Reply-To=%3C200910230059.30906.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] evaluate.c headers missing">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Oct 22 23:59:30 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000878.html">[hatari-devel] evaluate.c headers missing
+</A></li>
+        <LI>Next message: <A HREF="000883.html">[hatari-devel] evaluate.c headers missing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#879">[ date ]</a>
+              <a href="thread.html#879">[ thread ]</a>
+              <a href="subject.html#879">[ subject ]</a>
+              <a href="author.html#879">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 22 October 2009, Matthias Arndt wrote:
+&gt;<i> Am Donnerstag, den 22.10.2009, 23:24 +0300 schrieb Eero Tamminen:
+</I>&gt;<i> &gt; &gt; I'd prefer to commit a patch for Makefile.cnf.in etc. to add
+</I>&gt;<i> &gt; &gt; -std=gnu9x to the CFLAGS where needed...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; As to GNU stuff, how you could e.g. compile gemdos.c (which has been
+</I>&gt;<i> &gt; using the alphasort() &amp; scandir() unix functions for years) earlier?
+</I>&gt;<i>
+</I>&gt;<i> With the defaults that have been set for ages. I've been compiling
+</I>&gt;<i> nearly every CVS and HG change set since v0.05 or so...
+</I>&gt;<i> slighty differing versions of SDL and gcc ofcourse due to Linux
+</I>&gt;<i> distribution changes.
+</I>
+I mean, if it's worked for you earlier, just setting --std=c99 shouldn't
+suddenly disable something you already had on the command line.
+
+I digged a bit into this and it seems to be &quot;sdl-config --cflags&quot; which gets
+the -D_GNU_SOURCE=1 to the compiler options through SDL_CFLAGS.
+
+And in &quot;./src/gui-sdl/Makefile&quot; there's this:
+  CFLAGS += $(INCFLAGS) $(SDL_CFLAGS) -Wno-write-strings
+
+So, how your compilation can miss it?
+
+
+	- Eero
+
+PS.  This might not work on Windows / with MinGW because:
+  Makefile-MinGW.cnf:SDL_CFLAGS ?= -I/mingw/include/SDL
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000878.html">[hatari-devel] evaluate.c headers missing
+</A></li>
+	<LI>Next message: <A HREF="000883.html">[hatari-devel] evaluate.c headers missing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#879">[ date ]</a>
+              <a href="thread.html#879">[ thread ]</a>
+              <a href="subject.html#879">[ subject ]</a>
+              <a href="author.html#879">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

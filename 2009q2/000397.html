@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Conditional breakpoint code, please comment!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C4A3BF528.4060005%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000391.html">
+   <LINK REL="Next"  HREF="000387.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Conditional breakpoint code, please comment!</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C4A3BF528.4060005%40free.fr%3E"
+       TITLE="[hatari-devel] Conditional breakpoint code, please comment!">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Fri Jun 19 22:29:28 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000391.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+        <LI>Next message: <A HREF="000387.html">[hatari-devel] DSP code disassembler in range addresses mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#397">[ date ]</a>
+              <a href="thread.html#397">[ thread ]</a>
+              <a href="subject.html#397">[ subject ]</a>
+              <a href="author.html#397">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+&gt;&gt;&gt;<i> The .w means nothing in DSP, as you always access to DSP memory
+</I>&gt;&gt;&gt;<i> (internal or external) in word size (24 bits).
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i>
+</I>&gt;<i> Why when writing to R* &amp; N* registers in the DSP_Disasm_SetRegister()
+</I>&gt;<i> function you limited writes to 16-bits in dsp.c?  Because the offset cannot
+</I>&gt;<i> be larger (although dsp_core struct uses Uint32 for this and other
+</I>&gt;<i> registers except PC)?
+</I>&gt;<i> For some registers you used even bitmasks that have holes...?
+</I>&gt;<i>   
+</I>No, in DSP, memory and registers are 2 completly different things.
+
+1) Memory
+
+Memory is 32Ko word sized. (a dsp word is always 24 bits).
+Memory goes from $0 to $FFFF (Yes, I know it's 64 Ko, let me explain).
+
+DSP contains 3 internal RAM
+
+X internal RAM : 0 -&gt; FF
+Y internal RAM : 0 -&gt; FF
+P internal RAM : 0 -&gt; 1FF
+
+DSP also contains 2 internal ROMS
+X internal ROM : FF -&gt; 1FF
+Y internal ROM : FF -&gt; 1FF
+
+DSP contains 2 peripheral datas area
+X peripheral : FFC0 -&gt; FFFF
+Y peripheral : FFC0 -&gt; FFFF
+
+DSP contains also a 32K external ram
+
+P memory is mapped on the 32 K of this ram (the upper 32K addresses are 
+identical to the lower 32 K) (it's a 32k shadow memory)
+
+Y memory is a 16K area and is mapped from 0 to 3fff in P memory
+X memory is a 16K area and is mapped from 4000 to 7fff in P memory.
+
+So, if you write to address x:300, x:4300, x:8300, x:c300, p:4300, 
+p:c300, you write to the exactly same addresses. The same for y memory.
+But if you write to x:0 (internal DSP Ram), or x:4000 (external RAM), 
+these are 2 different rams.
+
+
+2) Registers
+
+Registers are not in memory, they're not used to access to memory except 
+R0-R7 registers.
+
+A and B are 2 56 bits registers.
+A is composed of A2 (8 bits), A1 (24 bits) and A0 (24 bits).
+B is composed of B2 (8 bits), B1 (24 bits) and B0 (24 bits).
+
+X and Y are two 48 bits registers.
+
+X is composed of X1 (24 bits) and X0 (24 bits).
+Y is composed of Y1 (24 bits) and Y0 (24 bits).
+
+R0-R7 are 16 bits registers
+N0-N7 are 16 bits registers
+M0-M7 are 16 bits registers
+
+LA and LC are 16 bits registers.
+
+SR register is used to keep the state of the DSP (carry bit, overflow 
+bit, ...) This register contains holes (not all the bits are used to 
+keep informations, the unused bits must be 0).
+
+
+A move x:(R6) reads the value of register R6 (a 16 bits value), then 
+reads at address (R6) in x memory the 24 bits value.
+
+R0-R7 are 16 bits registers because DSP memory is ranged from $0 to 
+$ffff (16 bits).
+The datas contained in memory are 24 bits ranged.
+
+
+&gt;<i> (although dsp_core struct uses Uint32 for this and other
+</I>&gt;<i> registers except PC)?
+</I>
+
+Yes, Patrice chose to code the registers in a array.
+So he used a Uint32 because of the 24 bits registers. That's why we 
+apply masks for the 16 bits and less registers.
+
+Hope this helps (if not, don't hesitate to ask).
+
+Regards,
+
+Laurent
+
+ 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000391.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+	<LI>Next message: <A HREF="000387.html">[hatari-devel] DSP code disassembler in range addresses mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#397">[ date ]</a>
+              <a href="thread.html#397">[ thread ]</a>
+              <a href="subject.html#397">[ subject ]</a>
+              <a href="author.html#397">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

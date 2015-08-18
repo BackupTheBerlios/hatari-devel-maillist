@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Keep Desktop Resolution option for ST/E mode?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Keep%20Desktop%20Resolution%20option%20for%20ST/E%20mode%3F&In-Reply-To=%3C201107302327.15005.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003858.html">
+   <LINK REL="Next"  HREF="003890.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Keep Desktop Resolution option for ST/E mode?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Keep%20Desktop%20Resolution%20option%20for%20ST/E%20mode%3F&In-Reply-To=%3C201107302327.15005.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Keep Desktop Resolution option for ST/E mode?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Jul 30 22:27:14 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003858.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+        <LI>Next message: <A HREF="003890.html">[hatari-devel] Keep Desktop Resolution option for ST/E mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3859">[ date ]</a>
+              <a href="thread.html#3859">[ thread ]</a>
+              <a href="subject.html#3859">[ subject ]</a>
+              <a href="author.html#3859">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On tiistai 19 hein&#228;kuu 2011, Eero Tamminen wrote:
+&gt;<i> On tiistai 19 hein&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;<i> &gt; After trying it, in fact I'm not really convinced by the usefulness of
+</I>&gt;<i> &gt; this option in STF/STE mode : in my case, Hatari has zoom x2 (approx
+</I>&gt;<i> &gt; 836x576 pixels) and my OS is 1280x1024.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; When pressing F11, Hatari windows goes to top left, which leaves a lot
+</I>&gt;<i> &gt; of black area around, and with no offence intended, if no one told me
+</I>&gt;<i> &gt; before what to expect, I would have thought it was a bug. Calling an
+</I>&gt;<i> &gt; option &quot;fullscreen&quot; and filling the rest of the screen with black
+</I>&gt;<i> &gt; without actually zooming the Hatari's screen seems of little use to me.
+</I>
+Attached is an updated patch.
+
+It centers the ST/E screen to the desktop resolution, I tested that it
+works with the VDI mode and unlike previous patch, it shows statusbar also
+in fullscreen and doesn't cause statusbar assert if one does a ST reset
+in fullscreen...
+
+Additionally, if you use &quot;-z 1&quot; in windowed mode, it will use the 2x zoom
+for the ST/E screen in fullscreen instead of 1x zoom if there's space for
+2x screen.
+
+
+&gt;<i> &gt; Put a black wallpaper on your PC desktop and you will basically get the
+</I>&gt;<i> &gt; same result.
+</I>&gt;<i> 
+</I>&gt;<i> I agree that it's ugly, but it's not completely without use,
+</I>&gt;<i> at least for some people.
+</I>&gt;<i> 
+</I>&gt;<i> On OSX windowed mode is apparently very slow, so fullscreen helps.
+</I>&gt;<i> 
+</I>&gt;<i> Fullscreen also takes a grab and F11 is easier to press than AltGr+M.
+</I>&gt;<i> 
+</I>&gt;<i> However, the current fullscreen resolution switch causes pause &amp; music
+</I>&gt;<i> skip + messes up multimonitor setup.
+</I>&gt;<i>
+</I>&gt;<i> &gt; I agree that with extended resolution in TT/Falcon or VDI mode it can
+</I>&gt;<i> &gt; be useful if it really fills the screen, but for STF/STE, I think it
+</I>&gt;<i> &gt; adds more confusion than it solves problem.
+</I>&gt;<i> 
+</I>&gt;<i> So, maybe have it just as command line &amp; config option that isn't
+</I>&gt;<i> on by default?
+</I>
+Any comments on adding these?
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: st-res.diff
+Type: text/x-patch
+Size: 2163 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110730/2d5e7583/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110730/2d5e7583/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003858.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+	<LI>Next message: <A HREF="003890.html">[hatari-devel] Keep Desktop Resolution option for ST/E mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3859">[ date ]</a>
+              <a href="thread.html#3859">[ thread ]</a>
+              <a href="subject.html#3859">[ subject ]</a>
+              <a href="author.html#3859">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

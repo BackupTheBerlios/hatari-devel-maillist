@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Using more GCC warnings?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Using%20more%20GCC%20warnings%3F&In-Reply-To=%3C201009180020.04875.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002406.html">
+   <LINK REL="Next"  HREF="002413.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Using more GCC warnings?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Using%20more%20GCC%20warnings%3F&In-Reply-To=%3C201009180020.04875.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Using more GCC warnings?">oak at helsinkinet.fi
+       </A><BR>
+    <I>Fri Sep 17 23:20:04 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002406.html">[hatari-devel] New FileSelector
+</A></li>
+        <LI>Next message: <A HREF="002413.html">[hatari-devel] Using more GCC warnings?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2412">[ date ]</a>
+              <a href="thread.html#2412">[ thread ]</a>
+              <a href="subject.html#2412">[ subject ]</a>
+              <a href="author.html#2412">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I was contemplating adding few more warning options to Hatari
+GCC compilation flags:
+--- a/CMakeLists.txt    Sat Sep 18 00:09:34 2010 +0300
++++ b/CMakeLists.txt    Sat Sep 18 00:19:17 2010 +0300
+@@ -175,7 +175,8 @@
+-       set(CMAKE_C_FLAGS &quot;-Wall -Wwrite-strings -Wsign-compare 
+${CMAKE_C_FLAGS}&quot;)
++       set(CMAKE_C_FLAGS &quot;-Wall -Wextra -Wwrite-strings ${CMAKE_C_FLAGS}&quot;)
++       set(CMAKE_C_FLAGS &quot;-Wformat-security -DFORTIFY_SOURCE=2 
+${CMAKE_C_FLAGS}
+
+See:
+<A HREF="http://wiki.debian.org/Hardening#DEBBUILDHARDENINGFORMAT.28gcc.2BAC8-g.2B-.2B--Wformat-Wformat-security.29">http://wiki.debian.org/Hardening#DEBBUILDHARDENINGFORMAT.28gcc.2BAC8-g.2B-.2B--Wformat-Wformat-security.29</A>
+
+(-Wextra already include -Wsign-compare check and -Wall includes -Wformat.)
+
+
+I already fixed couple of things this complains about, but quite a few
+functions would need after -Wextra to be explicitly declared as not using
+all of the arguments given to them.  What do you think of adding stuff like
+this:
+
+--- a/src/includes/main.h       Sat Sep 18 00:09:34 2010 +0300
++++ b/src/includes/main.h       Sat Sep 18 00:13:08 2010 +0300
+@@ -24,10 +24,16 @@
++/*
++ * Portable wrappers around useful GCC extensions, see:
++ *   <A HREF="http://blog.rlove.org/2005/10/with-little-help-from-your-compiler.html">http://blog.rlove.org/2005/10/with-little-help-from-your-compiler.html</A>
++ */
+ #if __GNUC__ &gt;= 3
++# define __unused       __attribute__ ((unused))
+ # define likely(x)      __builtin_expect (!!(x), 1)
+ # define unlikely(x)    __builtin_expect (!!(x), 0)
+ #else
++# define __unused       /* no unused */
+--- a/src/debug/debugInfo.c     Sat Sep 18 00:09:34 2010 +0300
++++ b/src/debug/debugInfo.c     Sat Sep 18 00:13:08 2010 +0300
+@@ -569,7 +569,7 @@
+-static void DebugInfo_Default(Uint32 dummy)
++static void DebugInfo_Default(Uint32 dummy __unused)
+
+?
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002406.html">[hatari-devel] New FileSelector
+</A></li>
+	<LI>Next message: <A HREF="002413.html">[hatari-devel] Using more GCC warnings?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2412">[ date ]</a>
+              <a href="thread.html#2412">[ thread ]</a>
+              <a href="subject.html#2412">[ subject ]</a>
+              <a href="author.html#2412">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

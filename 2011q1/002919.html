@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mahabharata demo problem ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mahabharata%20demo%20problem%20%3F&In-Reply-To=%3C201101272316.32800.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002809.html">
+   <LINK REL="Next"  HREF="002787.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mahabharata demo problem ?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mahabharata%20demo%20problem%20%3F&In-Reply-To=%3C201101272316.32800.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Mahabharata demo problem ?">oak at helsinkinet.fi
+       </A><BR>
+    <I>Thu Jan 27 22:16:32 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002809.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+        <LI>Next message: <A HREF="002787.html">[hatari-devel] DSP optimization?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2919">[ date ]</a>
+              <a href="thread.html#2919">[ thread ]</a>
+              <a href="subject.html#2919">[ subject ]</a>
+              <a href="author.html#2919">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 15 tammikuu 2011, Eero Tamminen wrote:
+&gt;<i> Whenever the window goes too wide, I see:
+</I>&gt;<i>   $ff8266 = $400
+</I>&gt;<i> 2. CPU breakpoint condition(s) matched 1 times.
+</I>&gt;<i> WARNING: too large screen size 5120x240 -&gt; divided by 4x1!
+</I>&gt;<i>   $ff8266 = $100
+</I>&gt;<i> 
+</I>&gt;<i> I.e. Falcon shifter control register 2-color mode bit is toggled,
+</I>&gt;<i> but nothing else.
+</I>
+I got interested from how many places and at which VBL/HBL value this
+register is modified.
+
+In the results below, the new register value is first, then the information
+about CPU &amp; DSP PC registers etc at the time that value was set.  The
+warning (for $400 value) happens sometime after that when it's time to
+redrawn the screen &amp; Videl code checks whether screen needs to be resized.
+
+-------------
+b (0xff8266).w ! (0xff8266).w :info
+...
+  $ff8266 = $400
+1. CPU breakpoint condition(s) matched 1 times.
+
+CPU=$1ccd4, VBL=3287, FrameCycles=111412, HBL=219, LineCycles=160, DSP=$20e
+WARNING: too large screen size 5120x240 -&gt; divided by 4x1!
+  $ff8266 = $100
+1. CPU breakpoint condition(s) matched 2 times.
+
+CPU=$1ccdc, VBL=3296, FrameCycles=20112, HBL=39, LineCycles=300, DSP=$49
+  $ff8266 = $400
+1. CPU breakpoint condition(s) matched 3 times.
+
+CPU=$1ccd4, VBL=4224, FrameCycles=119436, HBL=235, LineCycles=56, DSP=$49
+WARNING: too large screen size 5120x200 -&gt; divided by 4x1!
+  $ff8266 = $100
+1. CPU breakpoint condition(s) matched 4 times.
+
+CPU=$1ccdc, VBL=4231, FrameCycles=86980, HBL=171, LineCycles=112, DSP=$49
+  $ff8266 = $400
+1. CPU breakpoint condition(s) matched 5 times.
+
+CPU=$1ccd4, VBL=5135, FrameCycles=63728, HBL=125, LineCycles=228, DSP=$49
+WARNING: too large screen size 5120x240 -&gt; divided by 4x1!
+  $ff8266 = $100
+1. CPU breakpoint condition(s) matched 6 times.
+
+CPU=$1ccdc, VBL=5324, FrameCycles=38644, HBL=76, LineCycles=36, DSP=$49
+  $ff8266 = $400
+1. CPU breakpoint condition(s) matched 7 times.
+
+CPU=$1ccd4, VBL=6056, FrameCycles=87708, HBL=172, LineCycles=332, DSP=$49
+WARNING: too large screen size 5120x200 -&gt; divided by 4x1!
+  $ff8266 = $100
+1. CPU breakpoint condition(s) matched 8 times.
+
+CPU=$1ccdc, VBL=6071, FrameCycles=67260, HBL=132, LineCycles=204, DSP=$49
+  $ff8266 = $400
+1. CPU breakpoint condition(s) matched 9 times.
+
+CPU=$1ccd4, VBL=6978, FrameCycles=10476, HBL=20, LineCycles=316, DSP=$49
+WARNING: too large screen size 5120x200 -&gt; divided by 4x1!
+  $ff8266 = $100
+1. CPU breakpoint condition(s) matched 10 times.
+
+CPU=$1ccdc, VBL=6984, FrameCycles=100048, HBL=196, LineCycles=480, DSP=$49
+  $ff8266 = $400
+1. CPU breakpoint condition(s) matched 11 times.
+
+CPU=$1ccd4, VBL=9058, FrameCycles=47744, HBL=93, LineCycles=500, DSP=$49
+WARNING: too large screen size 5120x240 -&gt; divided by 4x1!
+  $ff8266 = $100
+1. CPU breakpoint condition(s) matched 12 times.
+
+CPU=$1ccdc, VBL=9067, FrameCycles=3104, HBL=6, LineCycles=56, DSP=$49
+  $ff8266 = $400
+1. CPU breakpoint condition(s) matched 13 times.
+
+CPU=$1ccd4, VBL=9998, FrameCycles=58752, HBL=115, LineCycles=332, DSP=$49
+WARNING: too large screen size 5120x200 -&gt; divided by 4x1!
+  $ff8266 = $100
+1. CPU breakpoint condition(s) matched 14 times.
+
+CPU=$1ccdc, VBL=10012, FrameCycles=131288, HBL=258, LineCycles=224, DSP=$49
+  $ff8266 = $400
+1. CPU breakpoint condition(s) matched 15 times.
+
+CPU=$1ccd4, VBL=11826, FrameCycles=83484, HBL=164, LineCycles=172, DSP=$49
+WARNING: too large screen size 5120x240 -&gt; divided by 4x1!
+  $ff8266 = $100
+1. CPU breakpoint condition(s) matched 16 times.
+----------------
+
+The addresses are the ones included to the disassembly I already sent.
+
+Miro, is there anything that catches your eye in regards to VBL/HBL etc?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002809.html">[hatari-devel] Mahabharata demo problem ?
+</A></li>
+	<LI>Next message: <A HREF="002787.html">[hatari-devel] DSP optimization?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2919">[ date ]</a>
+              <a href="thread.html#2919">[ thread ]</a>
+              <a href="subject.html#2919">[ subject ]</a>
+              <a href="author.html#2919">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

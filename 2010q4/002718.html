@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Fire button freezes Hatari in the Downfall game
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fire%20button%20freezes%20Hatari%20in%20the%20Downfall%20game&In-Reply-To=%3C201012282045.39368.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002716.html">
+   <LINK REL="Next"  HREF="002704.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Fire button freezes Hatari in the Downfall game</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fire%20button%20freezes%20Hatari%20in%20the%20Downfall%20game&In-Reply-To=%3C201012282045.39368.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Fire button freezes Hatari in the Downfall game">oak at helsinkinet.fi
+       </A><BR>
+    <I>Tue Dec 28 19:45:39 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002716.html">[hatari-devel] Fire button freezes Hatari in the Downfall game
+</A></li>
+        <LI>Next message: <A HREF="002704.html">[hatari-devel] Personal question : pb with CMake
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2718">[ date ]</a>
+              <a href="thread.html#2718">[ thread ]</a>
+              <a href="subject.html#2718">[ subject ]</a>
+              <a href="author.html#2718">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 24 joulukuu 2010, Nicolas Pomar&#232;de wrote:
+&gt;&gt;<i> Ok, I've fixed it now: As expected, the problem was not due to the
+</I>&gt;&gt;<i> delay value there, but something different:
+</I>&gt;&gt;<i> Since it continually issued this command during the title screen,
+</I>&gt;&gt;<i> Hatari continually tried to put three bytes into the internal keyboard
+</I>&gt;&gt;<i> buffer. But the game did not consume the bytes as fast as issuing the
+</I>&gt;&gt;<i> command,
+</I>
+Does that happen also in real ST?
+
+
+&gt;&gt;<i> so it finally flooded our Keyboard.Buffer ... in the end, we
+</I>&gt;&gt;<i> could not put the whole packet into the buffer anymore, and the game
+</I>&gt;&gt;<i> hang due to these incomplete answers.
+</I>
+Hatari Keyboard buffer size seems to be 1024 bytes (and input buffer size
+8 bytes).  What the real HW buffer sizes are?
+
+
+&gt;&gt;<i> To avoid this situation, I've put a check to only execute this command
+</I>&gt;&gt;<i> if there is enough space left in our Keyboard.Buffer!
+</I>&gt;<i> 
+</I>&gt;<i> Interesting, I wonder what a real ikbd does on an ST ?
+</I>&gt;<i> Does the ikbd stop sending bytes because it detects the 68000 has not
+</I>&gt;<i> read the already sent bytes, or does it continuously send the bytes too
+</I>&gt;<i> and they overwrite the last byte sent previously ?
+</I>
+Or does it work like ring buffer so that newest packets overwrite oldest
+ones?
+
+(if packets are of fixed size, I would assume this to be the case, but with
+variable sized packets, it would need to keep track of of all of them to
+avoid broken packages.)
+
+
+	- Eero
+
+PS. I updated ikbd.c a bit, I noticed some things that weren't used outside
+of it &amp; could be static.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002716.html">[hatari-devel] Fire button freezes Hatari in the Downfall game
+</A></li>
+	<LI>Next message: <A HREF="002704.html">[hatari-devel] Personal question : pb with CMake
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2718">[ date ]</a>
+              <a href="thread.html#2718">[ thread ]</a>
+              <a href="subject.html#2718">[ subject ]</a>
+              <a href="author.html#2718">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

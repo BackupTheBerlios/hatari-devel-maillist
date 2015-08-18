@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Ym / Dma mixing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3C20090208125511.75cd6270%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000128.html">
+   <LINK REL="Next"  HREF="000140.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Ym / Dma mixing</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3C20090208125511.75cd6270%40phineus%3E"
+       TITLE="[hatari-devel] Ym / Dma mixing">th.huth at gmx.de
+       </A><BR>
+    <I>Sun Feb  8 12:55:11 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000128.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+        <LI>Next message: <A HREF="000140.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#134">[ date ]</a>
+              <a href="thread.html#134">[ thread ]</a>
+              <a href="subject.html#134">[ subject ]</a>
+              <a href="author.html#134">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 07 Feb 2009 13:32:43 +0100
+Jean-Baptiste Berlioz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">jb.berlioz at freemind-tobe.com</A>&gt; wrote:
+
+&gt;<i> &gt; Some Falcon games / demos that run with 50 kHz DMA sound have
+</I>&gt;<i> &gt; really, really bad sound quality. I guess this is due to the
+</I>&gt;<i> &gt; downsampling to 44.1 kHz. So a proper sample rate convertion
+</I>&gt;<i> &gt; function could be helpful here. So I really would not mind to add
+</I>&gt;<i> &gt; an additional autoconf test for this.
+</I>&gt;<i> 
+</I>&gt;<i> Resampling from sample rate N to sample rate other then (int*N)
+</I>&gt;<i> always introduce wrong frequencies.
+</I>&gt;<i> libsamplerate provide either fast or accurate methods, so it can be
+</I>&gt;<i> used on all computers by selecting the right method. If the library
+</I>&gt;<i> is not available, then i can code a fast linear interpolation.
+</I>
+Just another idea: Maybe we should also simply offer more frequencies
+to the user than just 11kHz, 22kHz and 44.1Khz ...
+Many soundcards can also run fine a 48kHz, maybe even 50kHz? I think
+there are even some high-end soundcards that offer frequencies up
+to 96kHz, so they might support 50kHz, too? With 50kHz there won't be
+any downsampling problems anymore...
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000128.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+	<LI>Next message: <A HREF="000140.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#134">[ date ]</a>
+              <a href="thread.html#134">[ thread ]</a>
+              <a href="subject.html#134">[ subject ]</a>
+              <a href="author.html#134">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

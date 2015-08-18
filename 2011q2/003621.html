@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Default configuration file
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Default%20configuration%20file&In-Reply-To=%3C20110619194157.7056d6ad%40think43%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003577.html">
+   <LINK REL="Next"  HREF="003581.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Default configuration file</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Default%20configuration%20file&In-Reply-To=%3C20110619194157.7056d6ad%40think43%3E"
+       TITLE="[hatari-devel] Default configuration file">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Jun 19 19:41:57 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003577.html">[hatari-devel] Default configuration file
+</A></li>
+        <LI>Next message: <A HREF="003581.html">[hatari-devel] 5 more falcon games tested
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3621">[ date ]</a>
+              <a href="thread.html#3621">[ thread ]</a>
+              <a href="subject.html#3621">[ subject ]</a>
+              <a href="author.html#3621">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Sat, 11 Jun 2011 19:59:38 +0300
+schrieb Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt;:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On lauantai 11 kes&#228;kuu 2011, Christer Solskogen wrote:
+</I>&gt;<i> &gt; I don't know if this it intentional or not, but I noticed this when
+</I>&gt;<i> &gt; I installed hatari on a new machine:
+</I>&gt;<i> &gt; Configuration file /etc/hatari.cfg not found.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I think it's a bit odd that it looks for hatari.cfg in /etc, when I
+</I>&gt;<i> &gt; installed hatari in /usr/local (I did not specify a prefix)
+</I>&gt;<i> &gt; - The question is if it really looks for a configuration file
+</I>&gt;<i> &gt; in /etc or that it just say it does,
+</I>&gt;<i> 
+</I>&gt;<i> That's what the CMakeLists.txt seems to unconditionally set,
+</I>&gt;<i> regardless of prefix:
+</I>&gt;<i> ---
+</I>&gt;<i> add_definitions(-DCONFDIR=\&quot;/etc\&quot;)
+</I>&gt;<i> ---
+</I>&gt;<i> 
+</I>&gt;<i> It's a regression from Hatari v1.4.  Thomas, could you look at it?
+</I>
+Right, it's a small regression compared to the behaviour of the old
+automake configuration script.
+
+&gt;<i> As Hatari itself doesn't install any cfg file, it's not a problem for
+</I>&gt;<i> file installs, just locating the global config file.
+</I>
+... so the question is whether the position of the _global_
+configuration file should be configurable, too, or whether global
+configuration files should always got to /etc ... ?
+
+The right location of the etc directory seems to be a mess, according
+to the Linux Filesystem Hierarchy Standard, there's also /etc/opt for
+software that is installed into /opt, and /etc/local for software that
+is installed into /usr/local ...
+
+&gt;<i> &gt; but what it really do is to search for in in $prefix/etc.
+</I>&gt;<i> 
+</I>&gt;<i> It's a bit more complicated.  If $prefix is empty, prefix should
+</I>&gt;<i> default to /usr.  If prefix is /usr, conf should be in /etc.  Only
+</I>&gt;<i> when prefix isn't /usr, conf should be in $prefix/etc. (And that's
+</I>&gt;<i> only Linux/Unix...)
+</I>
+And you have to take into account that Hatari is a relocatable package,
+so you can specify prefix=/usr/local during build-time, for example,
+but when you install the package later, it can also go to /opt/hatari
+instead! (That's why we have the BIN2DATADIR stuff in the sources).
+
+So when you say that putting the global configuration file into /etc
+only is not enough, you've got to add some code that determines the
+prefix at runtime, then checks whether it's in /usr, /usr/local, /opt
+or somewhere else, and then either uses /etc, /usr/local/etc (or
+/etc/local), /etc/opt or $prefix/etc as configuration directory.
+
+Quite a mess for a global configuration file that we do not use at all
+in most cases, isn't it? And I think implementing the above search
+algorithm would rather confuse the users, too, instead of helping them.
+So IMHO the current behaviour is good enough already, /etc is a well
+known location for global configuration files, and there is of course
+always the possibility to add a configuration file in the ~/.hatari/
+home directory, too.
+
+It's just a little bit ugly that Hatari spills out the &quot;Configuration
+file xy not found&quot; message each time you start the emulator. Maybe we
+should change that to a debug log message instead?
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003577.html">[hatari-devel] Default configuration file
+</A></li>
+	<LI>Next message: <A HREF="003581.html">[hatari-devel] 5 more falcon games tested
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3621">[ date ]</a>
+              <a href="thread.html#3621">[ thread ]</a>
+              <a href="subject.html#3621">[ subject ]</a>
+              <a href="author.html#3621">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

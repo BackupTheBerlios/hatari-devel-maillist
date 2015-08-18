@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005101952030.24643%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002034.html">
+   <LINK REL="Next"  HREF="002033.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005101952030.24643%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon May 10 19:55:59 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002034.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002033.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2035">[ date ]</a>
+              <a href="thread.html#2035">[ thread ]</a>
+              <a href="subject.html#2035">[ subject ]</a>
+              <a href="author.html#2035">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 10 May 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Monday 10 May 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;<i> I'm using SDL 1.2.14, I don't know if this matters. Are you using alsa as
+</I>&gt;&gt;<i> your main sound system ? Maybe your sound card'specific driver has some
+</I>&gt;&gt;<i> limitation and doesn't advertise some parameters needed by alsa/sdl ?
+</I>&gt;<i>
+</I>&gt;<i> I think David's using here also CentOS which is pretty obsolete in regards
+</I>&gt;<i> to what packages it has (as its tracking latest version of RHEL).  For
+</I>&gt;<i> example SDL on it seems to be v1.2.10:
+</I>&gt;<i> 	<A HREF="http://mirror.centos.org/centos/5/os/SRPMS/">http://mirror.centos.org/centos/5/os/SRPMS/</A>
+</I>
+David is using 1.2.13, but perhaps the changes to the latest api in 1.2.14 
+could explain the differences we get when sdl computes &quot;size&quot; after 
+initializing sound.
+As david said he would try to compile sdl 1.2.14 from sources, it could be 
+interesting to see his results.
+
+
+&gt;<i> I guess to try ALSA on CentOS, David would need to use:
+</I>&gt;<i> 	SDL_AUDIODRIVER=alsa hatari
+</I>
+I think SDL detects this automatically, as alsa is david's audio system.
+
+Nicolas
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> PS. I just noticed that SDL had last month switched to Mercurial:
+</I>&gt;<i> 	<A HREF="http://www.libsdl.org/news.php">http://www.libsdl.org/news.php</A>
+</I>&gt;<i> :-)
+</I>
+I saw that, they even talk about a 1.3 version that would include better 
+opengl integration.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002034.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002033.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2035">[ date ]</a>
+              <a href="thread.html#2035">[ thread ]</a>
+              <a href="subject.html#2035">[ subject ]</a>
+              <a href="author.html#2035">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

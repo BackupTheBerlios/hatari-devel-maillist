@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Strange CPU cycles
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Strange%20CPU%20cycles&In-Reply-To=%3C4B83D531.4040709%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001522.html">
+   <LINK REL="Next"  HREF="001524.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Strange CPU cycles</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Strange%20CPU%20cycles&In-Reply-To=%3C4B83D531.4040709%40free.fr%3E"
+       TITLE="[hatari-devel] Strange CPU cycles">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Feb 23 14:16:33 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001522.html">[hatari-devel] Strange CPU cycles
+</A></li>
+        <LI>Next message: <A HREF="001524.html">[hatari-devel] Strange CPU cycles
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1523">[ date ]</a>
+              <a href="thread.html#1523">[ thread ]</a>
+              <a href="subject.html#1523">[ subject ]</a>
+              <a href="author.html#1523">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE> &gt; (I think this is already working like this)
+
+Yes it is. But during these 144 cycles, DSP could be waiting a data from 
+CPU that it would have received at cycle 50 (for exxample) on the real 
+Falcon.
+
+ &gt; Latest winuae has a cycle exact mode for the 68000 / A500 mode, where 
+every cycle goes to bus or copper or blitter ...
+
+Is it much slower than the older version with cpu as  master clock ?
+
+They've also included the 68030 MMU whick lacks in hatari.
+
+Regards
+
+Laurent
+
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+&gt;<i> On Tue, 23 Feb 2010, Laurent Sallafranque wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've added the following spy in the code :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> /**
+</I>&gt;&gt;<i> * Run DSP for certain cycles
+</I>&gt;&gt;<i> */
+</I>&gt;&gt;<i> void DSP_Run(int nHostCycles)
+</I>&gt;&gt;<i> {
+</I>&gt;&gt;<i> #if ENABLE_DSP_EMU
+</I>&gt;&gt;<i>    /* Cycles emulation is just a rough approximation by now.
+</I>&gt;&gt;<i>     * (to be tuned ...) */
+</I>&gt;&gt;<i>    int i = nHostCycles * 2 + 2;
+</I>&gt;&gt;<i>    int dsp_cycle = 0;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>    if (i &gt; 50)
+</I>&gt;&gt;<i>        fprintf(stderr, &quot;%d i\n&quot;, i);
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've started a demo. From Falcon boot to demo running ,I've got many
+</I>&gt;&gt;<i> 68030 instructions that are &gt; 50 cycles :
+</I>&gt;&gt;<i> ...
+</I>&gt;&gt;<i> 86 i
+</I>&gt;&gt;<i> 86 i
+</I>&gt;&gt;<i> 258 i
+</I>&gt;&gt;<i> 82 i
+</I>&gt;&gt;<i> 54 i
+</I>&gt;&gt;<i> 274 i
+</I>&gt;&gt;<i> 82 i
+</I>&gt;&gt;<i> 54 i
+</I>&gt;&gt;<i> 262 i
+</I>&gt;&gt;<i> 82 i
+</I>&gt;&gt;<i> 54 i
+</I>&gt;&gt;<i> 270 i
+</I>&gt;&gt;<i> 82 i
+</I>&gt;&gt;<i> 54 i
+</I>&gt;&gt;<i> 270 i
+</I>&gt;<i>
+</I>&gt;<i> It's possible to have instruction &gt; 50 cycles, those are certainly 
+</I>&gt;<i> some exceptions (when interrupts occur for example). The timings used 
+</I>&gt;<i> are those for a 68000, 68030 version might be a little faster, but I 
+</I>&gt;<i> don't think this is a cause, exceptions don't happen that often in the 
+</I>&gt;<i> end (when compared to a 32 Mhz cpu total number of cycles)
+</I>&gt;<i>
+</I>&gt;<i> You can try to print &quot;OpcodeName[OpcodeFamily]&quot; as %s (see m68000.h 
+</I>&gt;<i> for example) to see what kind of instruction is above 50 for example.
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This is just a small copy of what I get in real.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> How is it possible that a 68030 takes 258 cycles ?
+</I>&gt;&gt;<i> As DSP code and crossbar code are relative to CPU cycles, it looks
+</I>&gt;&gt;<i> strange for me.
+</I>&gt;<i>
+</I>&gt;<i> Current code doesn't allow to run cpu/dsp in synchronous mode where 
+</I>&gt;<i> the bus would be the &quot;master&quot; clock, not the cpu (such a mode could be 
+</I>&gt;<i> possible, but it would be *extremely* slower because each cpu 
+</I>&gt;<i> instruction would have to be splitted into 2 cycles and every 2 cycles 
+</I>&gt;<i> we could need to check if next bus acces should go to cpu or blitter 
+</I>&gt;<i> or dma sound or ...).
+</I>&gt;<i>
+</I>&gt;<i> Latest winuae has a cycle exact mode for the 68000 / A500 mode, where 
+</I>&gt;<i> every cycle goes to bus or copper or blitter ...
+</I>&gt;<i>
+</I>&gt;<i> In our case, as cpu is the master clock this means that if the cpu 
+</I>&gt;<i> needs 144 cycles for an instruction, then you should execute the 
+</I>&gt;<i> equivalent number of 144 cpu cycles for the dsp (so for example you 
+</I>&gt;<i> process 60 consecutive dsp instructions) and then you return to the 
+</I>&gt;<i> cpu emulation (I think this is already working like this)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001522.html">[hatari-devel] Strange CPU cycles
+</A></li>
+	<LI>Next message: <A HREF="001524.html">[hatari-devel] Strange CPU cycles
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1523">[ date ]</a>
+              <a href="thread.html#1523">[ thread ]</a>
+              <a href="subject.html#1523">[ subject ]</a>
+              <a href="author.html#1523">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

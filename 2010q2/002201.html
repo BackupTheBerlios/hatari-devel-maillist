@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari performance issue on OSX
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20performance%20issue%20on%20OSX&In-Reply-To=%3C4BFEA3F4.5040905%40wanadoo.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002265.html">
+   <LINK REL="Next"  HREF="002199.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari performance issue on OSX</H1>
+    <B>Jerome Vernet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20performance%20issue%20on%20OSX&In-Reply-To=%3C4BFEA3F4.5040905%40wanadoo.fr%3E"
+       TITLE="[hatari-devel] Hatari performance issue on OSX">vernet.jerome at wanadoo.fr
+       </A><BR>
+    <I>Thu May 27 18:55:16 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002265.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+        <LI>Next message: <A HREF="002199.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2201">[ date ]</a>
+              <a href="thread.html#2201">[ thread ]</a>
+              <a href="subject.html#2201">[ subject ]</a>
+              <a href="author.html#2201">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 27/05/10 00:19, Eero Tamminen a &#233;crit :
+&gt;<i>
+</I>&gt;<i> Btw. I had forgotten that OSX is using 32-bit screen, so there's more
+</I>&gt;<i> overhead than on my system from the conversion as it needs to deal
+</I>&gt;<i> with more data (I'm running 16-bit myself).  That doesn't seem to grow
+</I>&gt;<i> so much though.
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>Here is what I found:
+
+&gt;<i>/  The Right Thing (tm) to do is letting SDL select color depth (ie. set
+</I>/&gt;/  bitsperpixel to 0 in SDL_SetVideoMode()), then convert all surfaces to
+/&gt;/  that depth with SDL_DisplayFormat(). Anything else will cause nasty
+/&gt;/  overhead if the environment does not match perfectly. You should also
+/&gt;/  check if you're using hardware surfaces correctly, if any.
+
+May be it can help ? The last point (SDL_HWSURFACE) doesn't help. I tried to force bpp to 0. Looks like it's better (and working in Falcon mode), but not sure.
+
+
+Jerome
+/
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100527/c7de407e/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100527/c7de407e/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002265.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+	<LI>Next message: <A HREF="002199.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2201">[ date ]</a>
+              <a href="thread.html#2201">[ thread ]</a>
+              <a href="subject.html#2201">[ subject ]</a>
+              <a href="author.html#2201">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

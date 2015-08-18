@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Rainbow2 multimedia patch accepted before release ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Rainbow2%20multimedia%20patch%20accepted%20before%20release%20%3F&In-Reply-To=%3C1316733566.3347284.1310992384009.JavaMail.root%40mail-zstore-1-a.gicm.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003762.html">
+   <LINK REL="Next"  HREF="003764.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Rainbow2 multimedia patch accepted before release ?</H1>
+    <B>LAURENT SALLAFRANQUE</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Rainbow2%20multimedia%20patch%20accepted%20before%20release%20%3F&In-Reply-To=%3C1316733566.3347284.1310992384009.JavaMail.root%40mail-zstore-1-a.gicm.net%3E"
+       TITLE="[hatari-devel] Rainbow2 multimedia patch accepted before release ?">laurent.sallafranque at arkea.com
+       </A><BR>
+    <I>Mon Jul 18 14:33:04 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003762.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+        <LI>Next message: <A HREF="003764.html">[hatari-devel] Rainbow2 multimedia patch accepted before release ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3763">[ date ]</a>
+              <a href="thread.html#3763">[ thread ]</a>
+              <a href="subject.html#3763">[ subject ]</a>
+              <a href="author.html#3763">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've worked with rainbow2 multimedia for Falcon.
+
+With old cpu, it won't work, as there's no MMU emulation.
+With the new cpu, it looped forever waiting a synchro from videl.
+
+I've added a small patch in video.c and now it works perfectly well for me.
+
+This patch is &quot;natural&quot; with the actual video emulation (all done by video.c). 
+It increases VFC (Vertical Frequency Counter) after each HBL and resets it at each VBL.
+
+I will have to remove it when I upload the real Videl emulation.
+
+Here is the patch :
+
+in void Video_InterruptHandler_HBL ( void )
+
++	if (ConfigureParams.System.nMachineType == MACHINE_FALCON) {
++		/* Videl Vertical counter increase */
++		IoMem_WriteByte(0xff82a0, IoMem_ReadByte(0xff82a0)+1);
++	}
+
+
+in void Video_InterruptHandler_VBL ( void )
+
++	if (ConfigureParams.System.nMachineType == MACHINE_FALCON) {
++		/* Videl Vertical counter reset */
++		IoMem_WriteByte(0xff82a0, 0);
++	}
+
+
+Do you think I can upload it now (before the V1.5 release) or should I wait after it to upload this patch ?
+
+Regards
+
+Laurent
+
+--
+Ce message et  toutes les pieces jointes (ci-apres  le &quot;message&quot;) sont
+confidentiels et etablis a l'intention exclusive de ses destinataires.
+Toute  utilisation ou  diffusion  non autorisee  est interdite.   Tout
+message  etant  susceptible  d'alteration,  l'emetteur  decline  toute
+responsabilite au titre de  ce message  s'il a  ete altere, deforme ou
+falsifie.
+                -----------------------------------
+This message and any  attachments (the &quot;message&quot;) are confidential and
+intended  solely   for  the   addressees.  Any  unauthorised   use  or
+dissemination is prohibited. As e-mails are susceptible to alteration,
+the issuer shall  not be  liable for  the  message if altered, changed
+or falsified.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003762.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+	<LI>Next message: <A HREF="003764.html">[hatari-devel] Rainbow2 multimedia patch accepted before release ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3763">[ date ]</a>
+              <a href="thread.html#3763">[ thread ]</a>
+              <a href="subject.html#3763">[ subject ]</a>
+              <a href="author.html#3763">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

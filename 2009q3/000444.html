@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Conditional breakpoint code, please comment!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3Calpine.LMD.2.00.0907041707310.23925%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000442.html">
+   <LINK REL="Next"  HREF="000465.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Conditional breakpoint code, please comment!</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3Calpine.LMD.2.00.0907041707310.23925%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Conditional breakpoint code, please comment!">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Jul  4 17:17:50 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000442.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+        <LI>Next message: <A HREF="000465.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#444">[ date ]</a>
+              <a href="thread.html#444">[ thread ]</a>
+              <a href="subject.html#444">[ subject ]</a>
+              <a href="author.html#444">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 4 Jul 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;&gt;<i> On Friday 03 July 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;&gt;<i> I committed a change to handle addresses between 0xff8000 and 0xffffff.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> In the case of indirect addresses, I also added a mask to only keep the
+</I>&gt;&gt;&gt;<i> 24 lower bits of the address (when checking value and reading memory).
+</I>&gt;&gt;&gt;<i> This way $ffff820a is also recognized as io mem $ff820a (which is the
+</I>&gt;&gt;&gt;<i> same in the 68000).
+</I>&gt;<i>
+</I>&gt;<i> Btw. Why the masking is done both when checking breakpoints:
+</I>&gt;<i> --------------------------------
+</I>&gt;<i> @@ -102,6 +102,8 @@
+</I>&gt;<i>  */
+</I>&gt;<i> static Uint32 BreakCond_ReadSTMemory(Uint32 addr, const bc_value_t
+</I>&gt;<i> *bc_value)
+</I>&gt;<i> {
+</I>&gt;<i> +	addr &amp;= 0x00ffffff;				/* use a 24 bit address */
+</I>&gt;<i> +
+</I>&gt;<i> 	switch (bc_value-&gt;bits) {
+</I>&gt;<i> 	case 32:
+</I>&gt;<i> 		return STMemory_ReadLong(addr);
+</I>&gt;<i> --------------------------------
+</I>&gt;<i>
+</I>&gt;<i> And when parsing them:
+</I>&gt;<i> --------------------------------
+</I>&gt;<i> @@ -301,7 +303,9 @@
+</I>&gt;<i> 		EXITFUNC((&quot;-&gt; true (DSP)\n&quot;));
+</I>&gt;<i> 		return true;
+</I>&gt;<i> 	}
+</I>&gt;<i> -	if ((addr &gt; STRamEnd &amp;&amp; addr &lt; 0xe00000) || addr &gt; 0xff0000) {
+</I>&gt;<i> +
+</I>&gt;<i> +	addr &amp;= 0x00ffffff;				/* use a 24 bit address */
+</I>&gt;<i> +	if ((addr &gt; STRamEnd &amp;&amp; addr &lt; 0xe00000) || (addr &gt;= 0xff0000 &amp;&amp; addr &lt;
+</I>&gt;<i> 0xff8000)) {
+</I>&gt;<i> --------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Why parsing stage shouldn't give a warning if given address is &gt; 0x00ffffff?
+</I>&gt;<i> (user probably mistyped it and masking it would be misleading?)
+</I>&gt;<i>
+</I>
+When parsing, we should check only for the lowest 24 bit of the address,
+as done in the 68000, since bits 24-31 are ignored anyway.
+
+In fact, we could consider that the address needs a warning if bit 23 (0 
+or 1) is not correctly extended to bit 24-31 in case those bits are not 
+all 0 or all 1.
+
+So, valid addresses without warning would be :
+  $00ff820a, $ffff820a, $00123456
+
+And valid addresses with a warning would be :
+  $0fff820a, $f0ff820a, $55ff820a, $ff123456, $07123456
+
+sthg like :
+
+   bit23 = ( address &gt;&gt; 23 ) &amp; 1;
+   highbyte = ( address &gt;&gt; 24 ) &amp; 255;
+
+   if ( ( bit23==0 &amp;&amp; highbyte!=0 ) || ( bit23==1 &amp;&amp; highbyte!=0xff ) )
+     print_warning ( address );
+
+With this, we're reaching the limit of the refinement we can make :)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000442.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+	<LI>Next message: <A HREF="000465.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#444">[ date ]</a>
+              <a href="thread.html#444">[ thread ]</a>
+              <a href="subject.html#444">[ subject ]</a>
+              <a href="author.html#444">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

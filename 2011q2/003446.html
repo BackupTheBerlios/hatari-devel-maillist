@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Regression when restoring desktop.inf
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Regression%20when%20restoring%20desktop.inf&In-Reply-To=%3C201105180022.44529.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003445.html">
+   <LINK REL="Next"  HREF="003447.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Regression when restoring desktop.inf</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Regression%20when%20restoring%20desktop.inf&In-Reply-To=%3C201105180022.44529.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Regression when restoring desktop.inf">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue May 17 23:22:44 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003445.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+        <LI>Next message: <A HREF="003447.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3446">[ date ]</a>
+              <a href="thread.html#3446">[ thread ]</a>
+              <a href="subject.html#3446">[ subject ]</a>
+              <a href="author.html#3446">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On tiistai 17 toukokuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 17/05/2011 21:38, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; With TOS 1.02&amp;  1.04 it happens both with latest *and* v1.4.0 version
+</I>&gt;<i> &gt; of Hatari, _both_ with floppy images and with Gemdos HD emu.
+</I>&gt;<i> 
+</I>&gt;<i> Not in my case, It works fine with tos 1.02 and 1.04
+</I>
+What if you try non-French TOS?
+
+(I don't have French TOS I could try)
+
+
+&gt;<i> &gt; As with TOS 1.00, 1.62, 2.06, 3.06 KaosTos med-rez is restored fine,
+</I>&gt;<i> &gt; are you sure it's not a TOS 1.02/1.04 issue instead of Hatari one?
+</I>&gt;<i> 
+</I>&gt;<i> I just made the test again : no disk image in A or B, only gemdos hd emu
+</I>&gt;<i>   - run hatari 1.4 5 times : desktop is correctly restored in med res :
+</I>&gt;<i> OK - run hatari dev 5 times : desktop is badly restored to low res : BAD
+</I>
+Only with HD, not with floppy image?
+
+
+&gt;<i> - run hatari 1.4 again : desktop is restored to med red : OK
+</I>&gt;<i> 
+</I>&gt;<i> This is with the exact same hd directory.
+</I>&gt;<i> 
+</I>&gt;<i> So, I really think there's a problem there. If I got time, I will try to
+</I>&gt;<i> bisect using mercurial and see where this comes from.
+</I>
+When tracing what happens:
+ $ hatari --bios-intercept --trace gemdos,xbios --tos tos162de.img -d .
+...
+GEMDOS Fopen(&quot;DESKTOP.INF&quot;, 0x0)
+GEMDOS: DESKTOP.INF -&gt; host: /home/eero/work/hatari/build/test/DESKTOP.INF
+-&gt; FD 0 (read-only)
+GEMDOS Fread(64, 4192, 0xf0ca)
+GEMDOS Fclose(64)
+GEMDOS Dsetdrv(0x2)
+XBIOS 64 (Blitmode)
+GEMDOS call 0x49 (Mfree)
+GEMDOS call 0x19 (Dgetdrv)
+GEMDOS Dsetdrv(0x2)
+GEMDOS Dsetdrv(0x2)
+XBIOS 4 (Getrez)
+XBIOS 5 (Setscreen)
+XBIOS 6 (Setpalette)
+XBIOS 0 (Initmous)
+
+And then doing the same with TOS 1.04, the only difference is that TOS 1.04
+is missing  the XBios Setscreen() call that sets the screen to medium
+resolution.  Tos 1.00 and 1.02 had similar difference.
+
+I.e. Desktop file is succesfully read, so I don't think this could be
+HD emulation related...?   Or do you get some other result from tracing?
+
+
+&gt;<i> &gt; PS. Have you already heard of the x86 emulator in JavaScript
+</I>&gt;<i> &gt; (from the author of Qemu):
+</I>&gt;<i> &gt; 	<A HREF="http://bellard.org/jslinux/">http://bellard.org/jslinux/</A>
+</I>...
+&gt;<i> more or less, haven't tried it ;
+</I>
+Me neither (Debian stable Chrome is too old), but collegue at work
+demonstrated it.  ;-)
+
+
+&gt;<i> but maybe it could compile hatari in
+</I>&gt;<i> x86 / js and run it from the browser :)
+</I>
+It doesn't emulate a display, just serial, so Hatari wouldn't work, but
+STonC might.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003445.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+	<LI>Next message: <A HREF="003447.html">[hatari-devel] Regression when restoring desktop.inf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3446">[ date ]</a>
+              <a href="thread.html#3446">[ thread ]</a>
+              <a href="subject.html#3446">[ subject ]</a>
+              <a href="author.html#3446">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

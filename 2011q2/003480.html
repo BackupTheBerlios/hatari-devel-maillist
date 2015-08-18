@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Compiling Hatari with Clang (from LLVM project)	and the resulting signed comparison warnings
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compiling%20Hatari%20with%20Clang%20%28from%20LLVM%20project%29%0A%09and%20the%20resulting%20signed%20comparison%20warnings&In-Reply-To=%3C201105232319.58642.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003478.html">
+   <LINK REL="Next"  HREF="003460.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Compiling Hatari with Clang (from LLVM project)	and the resulting signed comparison warnings</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compiling%20Hatari%20with%20Clang%20%28from%20LLVM%20project%29%0A%09and%20the%20resulting%20signed%20comparison%20warnings&In-Reply-To=%3C201105232319.58642.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Compiling Hatari with Clang (from LLVM project)	and the resulting signed comparison warnings">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon May 23 22:19:58 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003478.html">[hatari-devel] Compiling Hatari with Clang (from LLVM project) and the resulting signed comparison warnings
+</A></li>
+        <LI>Next message: <A HREF="003460.html">[hatari-devel] LLVM static analyzer output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3480">[ date ]</a>
+              <a href="thread.html#3480">[ thread ]</a>
+              <a href="subject.html#3480">[ subject ]</a>
+              <a href="author.html#3480">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On maanantai 23 toukokuu 2011, Thomas Huth wrote:
+&gt;<i> schrieb Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt;:
+</I>&gt;<i> &gt; (And a huge amount of unused variables &amp; argument warnings from
+</I>&gt;<i> &gt; uae-cpu/cpuemu.c.)
+</I>&gt;<i> 
+</I>&gt;<i> We've got some CMake magic in src/uae-cpu/CMakeLists.txt to disable
+</I>&gt;<i> these warnings when compiling with GCC:
+</I>&gt;<i> 
+</I>&gt;<i> # Generated cpuemu.c contains a lot of warnings we don't really care
+</I>&gt;<i> about... if(CMAKE_COMPILER_IS_GNUCC)
+</I>&gt;<i> set(CMAKE_C_FLAGS &quot;${CMAKE_C_FLAGS} -Wno-sign-compare -Wno-shadow&quot;)
+</I>&gt;<i> set(CMAKE_C_FLAGS &quot;${CMAKE_C_FLAGS} -Wno-unused-variable
+</I>&gt;<i> -Wno-unused-label&quot;) endif(CMAKE_COMPILER_IS_GNUCC)
+</I>&gt;<i> 
+</I>&gt;<i> I guess this is not triggered for clang anymore?
+</I>
+Never was.   I had to manually add &quot;-Wall -Wextra -Wno-unused-parameter&quot; to
+CMake compiler flags get Clang to spit warnings. :-)
+
+
+&gt;<i> Is there an easy way to detect clang with cmake?
+</I>
+Apparently that support doesn't work very well with Clang as it's recognized
+wrong by CMake:
+<A HREF="http://www.cmake.org/pipermail/cmake/2010-October/040461.html">http://www.cmake.org/pipermail/cmake/2010-October/040461.html</A>
+
+
+&gt;<i> Then you could enhance this if-statement...
+</I>
+Maybe for Hatari v1.6.  By that time BSD might have switched to Clang
+as its default compiler, it already can build BSD for x86:
+	<A HREF="http://wiki.freebsd.org/BuildingFreeBSDWithClang">http://wiki.freebsd.org/BuildingFreeBSDWithClang</A>
+
+So somebody might even contribute the patch for Hatari CMakefile.txt. :-)
+
+
+While the Hatari version produced by Clang seems to be working OK, I'm
+mainly interested about its static analyzer part which isn't something one
+would be using every day, so temporary hacks for it should be fine for
+now...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003478.html">[hatari-devel] Compiling Hatari with Clang (from LLVM project) and the resulting signed comparison warnings
+</A></li>
+	<LI>Next message: <A HREF="003460.html">[hatari-devel] LLVM static analyzer output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3480">[ date ]</a>
+              <a href="thread.html#3480">[ thread ]</a>
+              <a href="subject.html#3480">[ subject ]</a>
+              <a href="author.html#3480">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

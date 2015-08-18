@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mouse ungrab, palette?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20ungrab%2C%20palette%3F&In-Reply-To=%3C200905312235.40280.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000297.html">
+   <LINK REL="Next"  HREF="000305.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mouse ungrab, palette?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20ungrab%2C%20palette%3F&In-Reply-To=%3C200905312235.40280.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Mouse ungrab, palette?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun May 31 21:35:39 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000297.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+        <LI>Next message: <A HREF="000305.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#304">[ date ]</a>
+              <a href="thread.html#304">[ thread ]</a>
+              <a href="subject.html#304">[ subject ]</a>
+              <a href="author.html#304">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 25 May 2009, Eero Tamminen wrote:
+&gt;<i> I was reading through Steem features and noticed that it releases mouse
+</I>&gt;<i> grab when the emulation is paused.  Now that we have pause button,
+</I>&gt;<i> wouldn't ungrabbing make sense also for Hatari?
+</I>&gt;<i>
+</I>&gt;<i> I've never used mouse grabbing myself (if mouse is a problem, I use
+</I>&gt;<i> fullscreen) so I'd like somebody who actually uses the grabbing to
+</I>&gt;<i> answer...
+</I>
+Attached is a patch that:
+
+* adds --grab command line option for enabling mouse grabbing also
+  from command line:
+  - earlier it could be done only from a shortcut, this feature needed some
+    changes also to screen.c
+  - at least when doing general Hatari testing, it's useful to have grab
+   active immediately. This way e.g. the space press to dismiss the memory
+   check is sure to go where it should and the mouse click to start the test
+   program (or open drive window) doesn't so easily miss the Hatari
+   window...
+
+* ungrabs mouse when Hatari is paused (and regrabs when unpaused)
+
+Anybody have objections on commiting it?
+
+
+&gt;<i> There's also a feature to change Steem palette.  This can be used to see
+</I>&gt;<i> whether there's actually something on screen.  Would that be useful for
+</I>&gt;<i> Hatari too, e.g. for debugging DSP issues?  And how it should work?
+</I>
+Any comments on the feature of forcing the default palette?
+
+Or ideas how to implement it?  I think 16 first colors would be enough and
+there could be a keyboard shortcut (e.g. Altgr+p) that forces the default
+palette.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: grab.diff
+Type: text/x-diff
+Size: 3348 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090531/0a3e5a74/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090531/0a3e5a74/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000297.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+	<LI>Next message: <A HREF="000305.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#304">[ date ]</a>
+              <a href="thread.html#304">[ thread ]</a>
+              <a href="subject.html#304">[ subject ]</a>
+              <a href="author.html#304">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling Hatari code with Valgrind
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind&In-Reply-To=%3C201101052247.28939.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002741.html">
+   <LINK REL="Next"  HREF="002750.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling Hatari code with Valgrind</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind&In-Reply-To=%3C201101052247.28939.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Profiling Hatari code with Valgrind">oak at helsinkinet.fi
+       </A><BR>
+    <I>Wed Jan  5 21:47:28 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002741.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+        <LI>Next message: <A HREF="002750.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2749">[ date ]</a>
+              <a href="thread.html#2749">[ thread ]</a>
+              <a href="subject.html#2749">[ subject ]</a>
+              <a href="author.html#2749">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On tiistai 04 tammikuu 2011, Laurent Sallafranque wrote:
+&gt;<i> I've given a closer look at the 2 valgring png's that Eero sent us
+</I>&gt;<i> (30lcoke and wildfire).
+</I>&gt;<i> I've seen that dsp_update_e_u_n_z() is one of the most often called
+</I>&gt;<i> functions.
+</I>&gt;<i> (nearly every other DSP instruction). If you cumulate all the calls, it
+</I>&gt;<i> takes a certain time.
+</I>
+Those programs were very simple 4kB ones so that bottleneck isn't
+necessarily the worst or common one DSP has...
+
+I think it would be best first to collect list of programs which make Hatari
+to use most CPU (or e.g. skip most frames if CPU is at max) and profile
+those to see whether there are common bottlenecks.
+
+Has anybody noticed some DSP utilizing Falcon programs to tax Hatari
+more than other such programs?
+
+
+The Julia fractal part in the beginning of wildfire.prg is pretty bad, it
+uses 90% of CPU even on my new computer and causes autoframeskip of 2
+even when I have sound disabled and use &quot;-z 1&quot; option to minimize screen
+redraws.
+
+
+&gt;<i> I've given it a full rewrite. Can somebody test it and see if this
+</I>&gt;<i> increases speed again ?
+</I>
+Not really noticeably for these two demos.  I think the larger CPU usage
+spike at the end of Julia fractal in wildfire.prg isn't as bad as earlier,
+but otherwise it seems to be &lt;1% difference.
+
+(I think branches are more expensive than simple calculation operations,
+than may explain why it didn't help noticeably.)
+
+
+Best would be if you use a memory snapshot and the Hatari timing
+functionality (--run-vbls option + very large frameskip with fast-forward)
+for checking speedup.
+
+
+&gt;<i> I wish all these updates accelerates DSP a little for slower computers.
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002741.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+	<LI>Next message: <A HREF="002750.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2749">[ date ]</a>
+              <a href="thread.html#2749">[ thread ]</a>
+              <a href="subject.html#2749">[ subject ]</a>
+              <a href="author.html#2749">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

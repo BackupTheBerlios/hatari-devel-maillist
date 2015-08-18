@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new support for avi recording
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Calpine.LMD.2.00.0910181251220.22968%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000848.html">
+   <LINK REL="Next"  HREF="000850.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new support for avi recording</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Calpine.LMD.2.00.0910181251220.22968%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] new support for avi recording">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Oct 18 13:07:32 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000848.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000850.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#849">[ date ]</a>
+              <a href="thread.html#849">[ thread ]</a>
+              <a href="subject.html#849">[ subject ]</a>
+              <a href="author.html#849">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 18 Oct 2009, Eero Tamminen wrote:
+
+&gt;&gt;&gt;<i> Shouldn't the recording FPS rate be then taken directly from the Hatari
+</I>&gt;&gt;&gt;<i> internal screen update frequency  (nScreenRefreshRate: 50, 60, 71Hz)?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This is what is done in most cases,
+</I>&gt;<i>
+</I>&gt;<i> I see, &quot;AviRecordDefaultFps&quot; is used only when AVI recording is started
+</I>&gt;<i> immediately from main.c.  when doing it from the GUI, nScreenRefreshRate
+</I>&gt;<i> is used.
+</I>
+This is because when recording is started from the command line, it could 
+be possible the shifter is not already &quot;up&quot; and nScreenRefreshRate may not 
+have a reasonable value yet. So I prefered using AviRecordDefaultFps in 
+that case, which defaults to 50 Hz.
+
+&gt;<i> Btw. Should the AVI codec, cropping and file name be saved to the
+</I>&gt;<i> configuration file too?
+</I>
+I didn't have time to do it, but it wouldn't hurt to add it to 
+configuration.c to save the defaults prefs.
+
+Other things that could be useful (mentioned earlier I think) would be to 
+have a file dialog to choose the name/directory of the avi file or the 
+png/bmp file.
+
+And also a way to choose video codec in the gui (bmp or png, with optional 
+compression level for png) would be great.
+
+So, if you or someone else feel like adding this .. :)
+
+
+&gt;<i>
+</I>&gt;<i> Would it make sense to print a warning when this happens?
+</I>&gt;<i>
+</I>&gt;<i> If (nScreenRefreshRate != avi-&gt;Fps &amp;&amp; nScreenRefreshRate !=
+</I>&gt;<i> avi-&gt;warnedRefreshRate) {
+</I>&gt;<i> 	Log_Printf(LOG_WARN, &quot;Screen Refresh Rate (%d) and AVI FPS (%d) don't
+</I>&gt;<i> match!\n&quot;, nScreenRefreshRate, avi-&gt;Fps);
+</I>&gt;<i> 	avi-&gt;warnedRefreshRate = nScreenRefreshRate;
+</I>&gt;<i> }
+</I>
+Yes, why not ; or perhaps a message in the status bar that would be less 
+intrusive than having to click on a dialog box ?
+
+&gt;<i>
+</I>&gt;<i> Can't some demos also change the refresh rate (say Falcon ones)?
+</I>
+I'm not sure such demos are common, but some old ST demos did this and 
+sometimes included some 60 HZ screens (but I never saw demos mixing 
+frequency on the same part)
+
+&gt;<i> In this case the warning about refresh rate change would be good so that one
+</I>&gt;<i> can better decide which refresh rate would be best to be used (after seeing
+</I>&gt;<i> what is used most and when the changes happen).
+</I>
+The result would not be good anyway, such demos should be recorded in as 
+many parts as we have different frequencies, then grouped/reencoded to a 
+common fps using mencoder for example (Hatari alone would do a really 
+poor job)
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000848.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000850.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#849">[ date ]</a>
+              <a href="thread.html#849">[ thread ]</a>
+              <a href="subject.html#849">[ subject ]</a>
+              <a href="author.html#849">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

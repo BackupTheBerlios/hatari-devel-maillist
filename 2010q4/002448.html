@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Executing program with Hatari (was: [Bug #17567]	...)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Executing%20program%20with%20Hatari%20%28was%3A%20%5BBug%20%2317567%5D%0A%09...%29&In-Reply-To=%3C201010052315.55618.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002447.html">
+   <LINK REL="Next"  HREF="002449.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Executing program with Hatari (was: [Bug #17567]	...)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Executing%20program%20with%20Hatari%20%28was%3A%20%5BBug%20%2317567%5D%0A%09...%29&In-Reply-To=%3C201010052315.55618.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Executing program with Hatari (was: [Bug #17567]	...)">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Oct  5 22:15:55 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002447.html">[hatari-devel] [hatari-tracking] [Bug #17567] Execution of	given path
+</A></li>
+        <LI>Next message: <A HREF="002449.html">[hatari-devel] Executing program with Hatari (was: [Bug #17567]	...)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2448">[ date ]</a>
+              <a href="thread.html#2448">[ thread ]</a>
+              <a href="subject.html#2448">[ subject ]</a>
+              <a href="author.html#2448">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 05 October 2010, Miro Kropacek wrote:
+&gt;&gt;<i> What this would use as a hard disk emulation directory, the last part
+</I>&gt;&gt;<i> of the path and current dir if no path is given?
+</I>&gt;<i>
+</I>&gt;<i> This is one way, but it's possible to do it even simpler.
+</I>&gt;<i>
+</I>&gt;<i> Does Atari800 have an OS and multiple versions of it? :-)
+</I>&gt;<i>
+</I>&gt;<i> Actually, it does. It's even worse, it has plethora of 3rd party DOSes as
+</I>&gt;<i> disk support is not built-in. So, how it works you ask? Pretty simple, as
+</I>&gt;<i> every OS has support for bootstrapping from some device. So you
+</I>&gt;<i> essentially create such device media (diskette or hard disk) and
+</I>&gt;<i> *bootstrap* from it (everything done in memory of course, no physical
+</I>&gt;<i> file is created). So, the simplest solution for this task is to create
+</I>&gt;<i> MSA in memory, copy needed file(s) there and install bootstrap code
+</I>&gt;<i> (bootloader) for execution. Simple and efficient. Decision, what to use
+</I>&gt;<i> for let's say 10 MB files, custom MSA size or harddisk image, I leave up
+</I>&gt;<i> to you as you've got far better knowledge what's possible :)
+</I>
+Creating disk images from directory contents is a bit problematic:
+- Given directory may have extra stuff
+- Floppy image size is limited to couple of megs, whereas
+- Hard disk image needs a HD driver and (as can be seen from Hatari manual
+  HD section) there's no single solution that would be suitable for all
+  TOS versions
+- Creating images needs extra tools (mtools) which people might
+  not have installed and creating large images is slow
+- If the program that is run creates files that you would like to
+  access afterwards, getting them from disk image (especially
+  HD image) is pretty complicated
+
+So I think GEMDOS emulation is better solution.  You can check Hatari's
+&quot;zip2st.sh&quot; and &quot;atari-hd-image.sh&quot; scripts for complications on creating
+disk images.
+
+
+&gt;<i> As Hatari is a low level emulator, the problem is delaying the execution
+</I>&gt;<i>
+</I>&gt;<i> &gt; until the OS is ready for the program to run and inserting stuff inside
+</I>&gt;<i> &gt; the emulation.
+</I>&gt;<i>
+</I>&gt;<i> Nope, you just make cold-boot everytime ;) This is how its done on
+</I>&gt;<i> Atari800 -- it's bootstrapping after all.
+</I>
+I meant that the OS needs to boot before program can be run.
+Programs may need OS services (e.g. GEM) to work.
+
+
+&gt;<i> Thomas, do you see any feasible way to do that from inside Hatari?
+</I>&gt;<i>
+</I>&gt;<i> What about my proposal?
+</I>
+Basically it's the same thing as what the script I did does except it
+adds also the complication of creating a disk image.
+
+I was thinking that if Hatari could create the INF file virtually, then
+the program could be in a read-only directory, e.g. on CD.
+
+Thomas?
+
+
+&gt;&gt;<i> I think it's much easier to do/kludge from outside.  Attached is a shell
+</I>&gt;&gt;<i> script for that and desktop.inf file that it uses as a template. 
+</I>&gt;&gt;<i> Before using the script, modify it to point where you saved the INF
+</I>&gt;&gt;<i> file.
+</I>&gt;<i>
+</I>&gt;<i> This is a neat idea!  It's nearly perfect (I can use it immediately) but
+</I>&gt;<i> requires additional handling (existing directory structure, 
+</I>
+You don't need any extra directory, you can run it from the directory
+where you are. Hatari GEMDOS emulation doesn't care if the directory
+has extra files, it truncates &amp; converts all files names to legal GEMDOS
+file names for TOS.
+
+Or if you want program to be run from a subdirectory, not be at the root
+of the emulated drive, the script might take an additional directory
+argument.
+
+
+&gt;<i> access rights for write, ...)
+</I>
+I considered creating a temporary directory where the INF file and
+program would be copied, but that would work badly in case:
+- if program would need extra files, or
+- if script would copy the whole dir, but that would have extra files
+  (say your DVD ISO image collection)
+- source files would have funny access rights on which the program
+  depends on
+- If you want the files program writes to be available afterwards
+
+
+New version of the script checks that creating the temporary INF file
+succeeded and complains if it didn't.
+
+
+&gt;<i> but on the other hand let user to freely use any 
+</I>&gt;<i> additional input files (my solution would require to manually select file
+</I>&gt;<i> structure on our MSA/HDD image, making it even worse in case of
+</I>&gt;<i> subdirectories).
+</I>&gt;<i>
+</I>&gt;<i> Maybe Hatari installation should include a script like that?
+</I>&gt;<i>
+</I>&gt;<i> Yes, any mention about this possibility is certainly useful!
+</I>
+OK, this requires it to install INF files to the system and that place
+to be stored to the script when the script is installed.
+
+
+Hatari package for Linux distros could then even register a Linux
+binfmt_misc handler that invokes Hatari automatically when one clicks on
+an Atari binary.  (Like some people have done with Wine and Window programs
+or Java VM and Java programs.)
+
+
+&gt;<i> &gt; GEMDOS Cconout() &amp; Cconws(), BIOS Bconout()?
+</I>&gt;<i>
+</I>&gt;<i> GEMDOS is perfectly fine, it's about text being printed by normal
+</I>&gt;<i> programs, I doubt any printf-like code will use something from BIOS.
+</I>&gt;<i>
+</I>&gt;<i> Note that this may have funny effects because also many other things
+</I>&gt;<i> could
+</I>&gt;<i>
+</I>&gt;<i> &gt; be using these and your host terminal's escape sequences and control
+</I>&gt;<i> &gt; characters most likely differ from Atari ones.  Filtering escape &amp;
+</I>&gt;<i> &gt; control characters would probably be a good idea with something like
+</I>&gt;<i> &gt; that.
+</I>&gt;<i>
+</I>&gt;<i> This isn't that critical. Can be added later, if needed at all.
+</I>
+It might be nice for the cases when the messages disappear too fast to read
+them.  Unfortunately it seems that e.g. EmuTOS messages cannot be catched
+this way[1].
+
+[1]&#160;You can check what OS calls are being used by tracing:
+- enabled &quot;--bios-intercept&quot; and use &quot;--trace bios,xbios&quot;
+- enable GEMDOS HD emulation and use &quot;--trace gemdos&quot;
+- enable extended VDI resolution emulation and use &quot;--trace vdi&quot;
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: hatari-tosrun.sh
+Type: application/x-shellscript
+Size: 1320 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20101005/9bff1e7b/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20101005/9bff1e7b/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002447.html">[hatari-devel] [hatari-tracking] [Bug #17567] Execution of	given path
+</A></li>
+	<LI>Next message: <A HREF="002449.html">[hatari-devel] Executing program with Hatari (was: [Bug #17567]	...)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2448">[ date ]</a>
+              <a href="thread.html#2448">[ thread ]</a>
+              <a href="subject.html#2448">[ subject ]</a>
+              <a href="author.html#2448">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

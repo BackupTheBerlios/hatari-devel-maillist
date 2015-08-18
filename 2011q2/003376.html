@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari crashes with Mental Hangover demo
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20crashes%20with%20Mental%20Hangover%20demo&In-Reply-To=%3C4DBC457E.4030008%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003373.html">
+   <LINK REL="Next"  HREF="003378.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari crashes with Mental Hangover demo</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20crashes%20with%20Mental%20Hangover%20demo&In-Reply-To=%3C4DBC457E.4030008%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Hatari crashes with Mental Hangover demo">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Apr 30 19:23:10 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003373.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+        <LI>Next message: <A HREF="003378.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3376">[ date ]</a>
+              <a href="thread.html#3376">[ thread ]</a>
+              <a href="subject.html#3376">[ subject ]</a>
+              <a href="author.html#3376">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 30/04/2011 18:46, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> When looking at the fdc.c, it obviously doesn't do any address validation
+</I>&gt;<i> before scribling over Hatari process memory with &quot;a random&quot; offset it got
+</I>&gt;<i> from the emulated Atari program.
+</I>
+Yes, I saw that at that time, when I looked for what was causing the 
+boot sector to misbehave.
+
+&gt;<i> However, I'm not sure whether the right thing is to mask the FDC DMA address
+</I>&gt;<i> to a valid address, just ignore requests with invalid address or raise an
+</I>&gt;<i> exception?
+</I>
+I think the right thing is to call STMemory_ValidArea. In the case where 
+memory region is not valid correct fix would be to ensure &quot;addr&quot; is 
+masked to 24 bits and if one part of the region from &quot;addr&quot; to &quot;addr + 
+len&quot; is not a valid region, then each address should be masked to not be 
+outside of the ram.
+
+In that rare case, I think it would be better to use a &quot;for&quot; loop 
+instead of memcpy.
+
+For example sthg like :
+
+for ( i=0 ; i&lt;nRetLen ; i++ )
+{
+   dest = nDmaAddr+i;
+   dest = dest % CURRENT_SIZE_OF_RAM
+   (char *)STRam[dest] = (char *)retbuf[ i ];
+}
+
+
+&gt;<i> The attached patch logs&amp;  ignores invalid FDC DMA addresses used in fdc.c
+</I>&gt;<i> and hdc.c.  This fixes the Hatari crash, but the demo doesn't work so I
+</I>&gt;<i> guess the address should be masked instead...?
+</I>&gt;<i>
+</I>
+That's not related to masking the address ; have you run the demo 
+without enabling the RTC and without HD emulation as I wrote in another 
+thread ? Unless you do that, the demo will never boot, the boot sector 
+is buggy.
+
+&gt;<i>
+</I>&gt;<i> Btw. Second patch does some code cleanup by removing from fdc.h header
+</I>&gt;<i> anything that doesn't doesn't need to be there + sets functions only used
+</I>&gt;<i> within fdc.c as static.  Is it OK to commit it?
+</I>
+Seems OK for me.
+
+Nicolas
+
+
+&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i> PS. While doing the patches, I noticed:
+</I>&gt;<i> $ grep HDCSectorCount $(find . -type f)
+</I>&gt;<i> ./hdc.h:extern short int HDCSectorCount;
+</I>&gt;<i> ./hdc.c:short int HDCSectorCount;
+</I>&gt;<i> ./hdc.c:       fprintf(hdlogFile, &quot;HDC sector count: 0x%x\n&quot;,
+</I>&gt;<i> HDCSectorCount);
+</I>&gt;<i> ./fdc.c:       HDCSectorCount = 0;
+</I>&gt;<i> ./fdc.c:               DMAStatus_ff8606rd |= (HDCSectorCount)?0x2:0;
+</I>&gt;<i> /* HDC */
+</I>&gt;<i> ./fdc.c:               DiskControllerByte = HDCSectorCount;
+</I>&gt;<i>
+</I>&gt;<i> What's the point in sector count that's never non-zero?
+</I>
+What do you mean exactly ?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003373.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+	<LI>Next message: <A HREF="003378.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3376">[ date ]</a>
+              <a href="thread.html#3376">[ thread ]</a>
+              <a href="subject.html#3376">[ subject ]</a>
+              <a href="author.html#3376">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

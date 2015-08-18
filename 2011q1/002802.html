@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP optimization?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20optimization%3F&In-Reply-To=%3C4D31F65A.6050700%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002798.html">
+   <LINK REL="Next"  HREF="002793.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP optimization?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20optimization%3F&In-Reply-To=%3C4D31F65A.6050700%40free.fr%3E"
+       TITLE="[hatari-devel] DSP optimization?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Jan 15 20:32:42 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002798.html">[hatari-devel] DSP optimization?
+</A></li>
+        <LI>Next message: <A HREF="002793.html">[hatari-devel] DSP optimization?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2802">[ date ]</a>
+              <a href="thread.html#2802">[ thread ]</a>
+              <a href="subject.html#2802">[ subject ]</a>
+              <a href="author.html#2802">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm still doing the tests.
+
+callgrind_control  --dump returns me
+
+No active callgrind runs detected.
+[Detection can fail on some systems; to work around this,
+  specify the working directory of a callgrind run with '-w']
+
+
+If I try with &quot;-w .&quot; option, it never stops.
+I don't know what's wrong.
+
+
+Anyway, also if there's no gain in Eero's optimisation (which I'll 
+verify with valgrind), I really prefer the way code is written in his 
+patch (I thought about something similar a few month ago).
+
+For me, this patch should be committed. (I wish I can send the valgrind 
+results tonight).
+
+Regards,
+
+Laurent
+
+
+Le 15/01/2011 16:07, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On lauantai 15 tammikuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;&gt;<i> Now that Hatari DSP code doesn't anymore track Aranym, could we change
+</I>&gt;&gt;&gt;<i> the dsp_core to be a static array like CPU core data is?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Accessing the core through a pointer is a small overhead in about
+</I>&gt;&gt;&gt;<i> everything DSP does and we don't gain anything from it as Hatari will
+</I>&gt;&gt;&gt;<i> never emulate more than one DSP at the time (like AFAIK has been the
+</I>&gt;&gt;&gt;<i> idea with the Aranym DSP code).
+</I>&gt;&gt;<i> on contrary to what it may look, it's not obvious that such patch would
+</I>&gt;&gt;<i> make things faster.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> For example on 680xx cpu, &quot;address register indirect with displacement&quot;
+</I>&gt;&gt;<i> is faster than &quot;absolute long&quot;, which means &quot;move.l 12(a5),d0&quot; is faster
+</I>&gt;&gt;<i> than &quot;move.l $75120,d0&quot;.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I don't know for recent cpu (x86, arm or others), but it's also possible
+</I>&gt;&gt;<i> you get similar results (harder to measure with moderm
+</I>&gt;&gt;<i> pipeline/reordering).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It would need to be profiled to see if there's a real different between
+</I>&gt;&gt;<i> dereferencing a pointer or accessing directly the memory address, but I
+</I>&gt;&gt;<i> don't think the gain would be noticable on CPU that would benefit from
+</I>&gt;&gt;<i> it, and it could even be negative on 680x0 cpu or others cpu.
+</I>&gt;<i> Attached are modified dsp*.[ch] files for anybody who wants to test.
+</I>&gt;<i>
+</I>&gt;<i> (Diff to them is almost as large the files.)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i> Because I have multiple cores which are frequency scaled, it's not so
+</I>&gt;<i> easy for me to see the difference.  I'm not sure whether even this
+</I>&gt;<i> (as root of course):
+</I>&gt;<i> ---
+</I>&gt;<i> for cpu in /sys/devices/system/cpu/*/cpufreq/scaling_governor; do
+</I>&gt;<i> 	echo &quot;performance&quot;&gt;  $cpu;
+</I>&gt;<i> done
+</I>&gt;<i> ---
+</I>&gt;<i> Would guarantee enough things?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110115/ea4ad47d/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110115/ea4ad47d/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002798.html">[hatari-devel] DSP optimization?
+</A></li>
+	<LI>Next message: <A HREF="002793.html">[hatari-devel] DSP optimization?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2802">[ date ]</a>
+              <a href="thread.html#2802">[ thread ]</a>
+              <a href="subject.html#2802">[ subject ]</a>
+              <a href="author.html#2802">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

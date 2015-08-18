@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Wii port
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wii%20port&In-Reply-To=%3C260bb65e0901191700m625d0682v528532662a6a76d9%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000064.html">
+   <LINK REL="Next"  HREF="000068.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Wii port</H1>
+    <B>Yohanes Nugroho</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wii%20port&In-Reply-To=%3C260bb65e0901191700m625d0682v528532662a6a76d9%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Wii port">yohanes at gmail.com
+       </A><BR>
+    <I>Tue Jan 20 02:00:21 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000064.html">[hatari-devel] Wii port
+</A></li>
+        <LI>Next message: <A HREF="000068.html">[hatari-devel] Wii port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#67">[ date ]</a>
+              <a href="thread.html#67">[ thread ]</a>
+              <a href="subject.html#67">[ subject ]</a>
+              <a href="author.html#67">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, Jan 20, 2009 at 3:52 AM, Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> I'd suggest using much older Hatari version on phone (although those
+</I>&gt;<i> versions lack a lot of features in later Hatari) with following settings:
+</I>&gt;<i> - frameskip 2
+</I>&gt;<i> - no zooming
+</I>&gt;<i> - no borders
+</I>&gt;<i> - more compatible CPU option disabled
+</I>&gt;<i> - spec512 support disabled
+</I>&gt;<i> - sound at 11Khz or disabled
+</I>&gt;<i>
+</I>&gt;<i> (Except for sound emulation, more accurate HW emulation in Hatari versions
+</I>&gt;<i> is slower as it does more.)
+</I>
+Ok, I might continue the port, but probably not now.
+
+&gt;&gt;<i>
+</I>&gt;&gt;<i> two things:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - currently the hmsa build system is a bit broken. It tries to use
+</I>&gt;&gt;<i> some objects generated from the cross compiler with objects generated
+</I>&gt;&gt;<i> from native compiler. It produces an error.
+</I>&gt;<i>
+</I>&gt;<i> Could you mail a build log of with these errors?
+</I>
+I hope this will be enough
+
+make -C tools/hmsa/
+make[1]: Entering directory `/home/yohanes/workingdir/wii/hatari/tools/hmsa'
+cc -g -O -Wall -I../.. -I../../src/includes -I../../src/uae-cpu
+-I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT hmsa.o floppy.o
+../../src/msa.o ../../src/dim.o ../../src/st.o ../../src/file.o
+../../src/unzip.o ../../src/zip.o -lz -o hmsa
+/usr/bin/ld: ../../src/msa.o: Relocations in generic ELF (EM: 20)
+/usr/bin/ld: ../../src/msa.o: Relocations in generic ELF (EM: 20)
+/usr/bin/ld: ../../src/msa.o: Relocations in generic ELF (EM: 20)
+/usr/bin/ld: ../../src/msa.o: Relocations in generic ELF (EM: 20)
+/usr/bin/ld: ../../src/msa.o: Relocations in generic ELF (EM: 20)
+/usr/bin/ld: ../../src/msa.o: Relocations in generic ELF (EM: 20)
+/usr/bin/ld: ../../src/msa.o: Relocations in generic ELF (EM: 20)
+/usr/bin/ld: ../../src/msa.o: Relocations in generic ELF (EM: 20)
+/usr/bin/ld: ../../src/msa.o: Relocations in generic ELF (EM: 20)
+/usr/bin/ld: ../../src/msa.o: Relocations in generic ELF (EM: 20)
+/usr/bin/ld: ../../src/msa.o: Relocations in generic ELF (EM: 20)
+../../src/msa.o: could not read symbols: File in wrong format
+collect2: ld returned 1 exit status
+make[1]: *** [hmsa] Error 1
+make[1]: Leaving directory `/home/yohanes/workingdir/wii/hatari/tools/hmsa'
+make: *** [all] Error 2
+
+&gt;<i>
+</I>&gt;&gt;<i> - If I build for target, WII doesn't have a command console, and thus
+</I>&gt;&gt;<i> such tool is useless. The same will be true for Symbian and most
+</I>&gt;&gt;<i> mobile devices. Should there be a way to disable building hmsa
+</I>&gt;<i>
+</I>&gt;<i> Well, there could be an UI built on top of it (maybe with Python available
+</I>&gt;<i> for Symbian), so it's not necessarily complete useless. :-)
+</I>
+yes, can do that for Symbian, but Wii is single process only, so to
+make it useful, someone has to make a GUI for that.
+
+&gt;<i> +# Executable for Wii
+</I>&gt;<i> +hatari.dol : $(ALLOBJS)
+</I>&gt;<i> +       $(CC) $(LDFLAGS) $(ALLOBJS) $(SDL_LIBS) $(LIBS) -o hatari.elf
+</I>&gt;<i> +       elf2dol hatari.elf hatari.dol
+</I>&gt;<i> --------------------
+</I>
+ok, that will be fine
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Btw. The ifneq/ifdef name should also be something that people can
+</I>&gt;<i> recognize.  What is GEKKO?  A &quot;WII_COMPILER&quot;?
+</I>
+I think its a code name or something. All the open source Wii
+libraries and source codes uses the GEKKO.
+
+&gt;&gt;<i> yes, it is not wii specific, but for now, I don't know where to put it
+</I>&gt;&gt;<i> (there is no file that can be used as generic compatibility layer).
+</I>&gt;<i>
+</I>&gt;<i> The file includes scandir(), alphasort(), chmod(), rmdir() function.
+</I>&gt;<i>
+</I>&gt;<i> First two are actually already in included into Hatari in scandir.c file.
+</I>&gt;<i> As your implementations for the the other two are dummies, I guess you could
+</I>&gt;<i> put them also to the same scandir.[ch] files files, surrounded by
+</I>&gt;<i> appropriate functionality ifdefs.
+</I>
+ok
+
+&gt;&gt;<i> This is a temporary solution for displaying the error message. The
+</I>&gt;&gt;<i> correct way will be to make a dialog box that shows the error message,
+</I>&gt;&gt;<i> instead of putting the error to the console.
+</I>&gt;<i>
+</I>&gt;<i> If perror() is used instead of a function that potentially shows a dialog
+</I>&gt;<i> depending on --alert-level), the message's not supposed to be seen by normal
+</I>&gt;<i> users, only by developers who run Hatari from console.
+</I>
+Ok, i can remove that. It was only used for debugging (I didn't know
+then about the prefix fat3:/ that must be used).
+
+-- 
+Regards
+Yohanes
+<A HREF="http://tinyhack.com/freewarelist/s603rd/">http://tinyhack.com/freewarelist/s603rd/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000064.html">[hatari-devel] Wii port
+</A></li>
+	<LI>Next message: <A HREF="000068.html">[hatari-devel] Wii port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#67">[ date ]</a>
+              <a href="thread.html#67">[ thread ]</a>
+              <a href="subject.html#67">[ subject ]</a>
+              <a href="author.html#67">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] MiNT and Hatari drives
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MiNT%20and%20Hatari%20drives&In-Reply-To=%3C200903042357.45329.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000190.html">
+   <LINK REL="Next"  HREF="000200.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] MiNT and Hatari drives</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MiNT%20and%20Hatari%20drives&In-Reply-To=%3C200903042357.45329.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] MiNT and Hatari drives">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Mar  4 22:57:45 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000190.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+        <LI>Next message: <A HREF="000200.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#194">[ date ]</a>
+              <a href="thread.html#194">[ thread ]</a>
+              <a href="subject.html#194">[ subject ]</a>
+              <a href="author.html#194">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 28 February 2009, Thomas Huth wrote:
+&gt;<i> &gt; Mtools seems to have &quot;MTOOLS_NO_VFAT=1&quot; configuration option for that.
+</I>&gt;<i>
+</I>&gt;<i> Cool, I was search for such an option when I wrote the zip2st.sh
+</I>&gt;<i> script... but I did not expect an environment variable, that's why I
+</I>&gt;<i> didn't find that.
+</I>
+Oh, I thought it could be set only in the configuration file, I hadn't
+expect it to work as environment variable either.  :-)
+
+This made the HD-image creation script also nicer (now commited to
+repository).
+
+The problem is that although it seems to initially work for smaller images
+with EmuTOS:
+- If I remove something from the HD partition within the emulation,
+  EmuTOS starts showing bogus disk size (too large)[1]
+- TOS/HDDriver demo recognizes it only in --ide mode, but for
+  some reason hddriver.prg triggers Hatari debugger twice
+  (even when -D isn't used)
+- TOS/Cecile bombs with the resulting image
+
+[1] But I've had other problems with EmuTOS even for harddisk
+partitioning etc done using Atari programs, so it could be
+an EmuTOS bug.
+
+Could you test it a bit and see if there are any obvious issues?
+The debugger issue is strange.
+
+
+&gt;<i> I've also applied this to zip2st.sh now and it works very well!
+</I>
+I did some additional changes to it (more user friendliness).
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000190.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+	<LI>Next message: <A HREF="000200.html">[hatari-devel] MiNT and Hatari drives
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#194">[ date ]</a>
+              <a href="thread.html#194">[ thread ]</a>
+              <a href="subject.html#194">[ subject ]</a>
+              <a href="author.html#194">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

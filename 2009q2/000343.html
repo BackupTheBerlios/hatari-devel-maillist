@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP debugging and breakpoints
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3Calpine.LMD.2.00.0906071800090.27660%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000337.html">
+   <LINK REL="Next"  HREF="000344.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP debugging and breakpoints</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3Calpine.LMD.2.00.0906071800090.27660%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] DSP debugging and breakpoints">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jun  7 18:19:37 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000337.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+        <LI>Next message: <A HREF="000344.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#343">[ date ]</a>
+              <a href="thread.html#343">[ thread ]</a>
+              <a href="subject.html#343">[ subject ]</a>
+              <a href="author.html#343">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 7 Jun 2009, Eero Tamminen wrote:
+
+&gt;&gt;&gt;<i> And clearing breakpoint(s) could then be done with just:
+</I>&gt;&gt;&gt;<i> 	db
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> If one wants multiple breakpoints, they would need to be given by ORing
+</I>&gt;&gt;&gt;<i> the conditions:
+</I>&gt;&gt;&gt;<i> 	pc = 575443 ||&#160;pc 345567
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I think we could have a command 'bl' that lists all breakpoint with its
+</I>&gt;&gt;<i> index number.
+</I>&gt;<i>
+</I>&gt;<i> I.e. they would need to be stored also in the ascii format...
+</I>
+Not necessarily, you could also &quot;parse&quot; the breakpoint structure and 
+generate the corresponding breakpoint ; this would not be exactly what the 
+user typed, but it should give the same result.
+
+&gt;<i>
+</I>&gt;&gt;<i> Then we could have a command 'br' to remove one specific breakpoint from
+</I>&gt;&gt;<i> the list (and optionally reorder all index numbers)
+</I>&gt;<i>
+</I>&gt;<i> I think for the beginning everything would be cleared.  I'm not so convinced
+</I>&gt;<i> of need for &quot;multiple&quot; breakpoints, see my comment on OR chaining below.
+</I>
+Well, I'm convinced of it :) At least I use it extensivily in steem. Note 
+that breakpoint should not be seen as only stop on PC, but also as the 
+possibilty to stop when an address contain a certain value (very useful to 
+debug sync/freq changes in fullscreen).
+
+&gt;&gt;<i>
+</I>&gt;&gt;<i> Only the left side should be enough. I think we need boolean AND, so
+</I>&gt;&gt;<i> maybe using '&amp;' and '&amp;&amp;' is enough to separate bitwise/boolean meaning ?
+</I>&gt;<i>
+</I>&gt;<i> If bitwise '&amp;' is needed only on the left side, the boolean AND can be
+</I>&gt;<i> also '&amp;' (shorter to type :-)).
+</I>
+Yes, but keeping the same distinction as in C with &amp; and &amp;&amp; is nice for 
+the user too, even if in C the distinction could also be removed most of 
+the time.
+
+&gt;&gt;&gt;&gt;<i> (a1).w = d1 : stop if the 16 bits pointed by a0 are the same as the 16
+</I>&gt;&gt;&gt;&gt;<i> lower bits of register d0.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> So the mask should affect both sides?  Wouldn't it be more logical
+</I>&gt;&gt;&gt;<i> for the comparison operation then?
+</I>&gt;&gt;&gt;<i>  ( a1 ) =w d1
+</I>&gt;&gt;&gt;<i> ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I would say we use the smallest mask of both side, so (a1).w=d1.b would
+</I>&gt;&gt;<i> compare only 8 bits. I find the =w a little strange to read ; I think
+</I>&gt;&gt;<i> adding .b .w .l after the register is closer to what a 68000 coder would
+</I>&gt;&gt;<i> use when coding in asm.
+</I>&gt;<i>
+</I>&gt;<i> If it can be specified only for the operator, that makes the parsing easier.
+</I>&gt;<i> It also makes it more explicit for the user what's the size.  It could be
+</I>&gt;<i> with &quot;.&quot; though if that makes it clearer:
+</I>&gt;<i> 	( a1 ) =.w d1
+</I>&gt;<i>
+</I>&gt;<i> (Semantically it's more of a width for the comparison than value :-))
+</I>&gt;<i>
+</I>
+Well, my idea was in fact to associate always a mask to a &lt;value&gt;.
+That is a &lt;value&gt; is 32 bits (address or number), and the mask is also 32 
+bits.
+
+int Value;
+int ValueType;
+int ValueMask;
+
+If no mask or size is given, then ValueMask is $ffffff.
+Else ValueMask is SizeMask &amp; Mask.
+
+That's whay I was thinking about putting the size suffix in the &lt;value&gt; 
+and not in the &lt;condition&gt;, because in fact the SizeMask is a ValueMask.
+
+So : ($ff8209).b &amp; 3 would give :
+
+Value = $ff8209
+ValueType = ADDRESS
+ValueMask = $ff &amp; 3 = 3
+
+Then when comparing Value1 and Value2, we have CommonMask = Value1Mask &amp; 
+Value2Mask, and we compare ( Value1 &amp; CommonMask ) with ( Value2 &amp; 
+CommonMask).
+
+&gt;&gt;<i> Or stop at a given PC when it changed the color to $700 :
+</I>&gt;&gt;<i> pc=$1234 &amp;&amp; ($ff8240).w=$700
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> But the logical OR chaining is less useful, as it could be done with
+</I>&gt;&gt;<i> another different breakpoint.
+</I>&gt;<i>
+</I>&gt;<i> The problem with that is the ordering.   I mean, you could do this:
+</I>&gt;<i> 	(cond1 &amp;&amp; cond2) ||&#160;cond3
+</I>&gt;<i> but to get this:
+</I>&gt;<i> 	(cond1 ||&#160;cond2) &amp;&amp; cond3
+</I>&gt;<i> you would need to write it like this to get it properly ORed with separate
+</I>&gt;<i> breakpoints:
+</I>&gt;<i> 	(cond1 &amp;&amp; cond3) ||&#160;(cond2 &amp;&amp; cond3)
+</I>&gt;<i>
+</I>&gt;<i> At least for now I would like to avoid the additional code &amp; complexity of
+</I>&gt;<i> multiple breakpoints as the same can be achieved by conditions chaining.
+</I>&gt;<i> I would assume that normally one is debugging just one thing?
+</I>&gt;<i>
+</I>&gt;<i> If you're worried about typing, readline already makes it convenient to
+</I>&gt;<i> modify a breakpoint condition you gave earlier so I don't think that's an
+</I>&gt;<i> issue either.  You just give all the conditions you're interested about in
+</I>&gt;<i> an order that you want them to work.
+</I>
+As above, I really think that having different breakpoint is more useful 
+than chaining them with OR. Especially when you want to remove one of the 
+condition you're not interested in anymore, then you just remove the 
+corresponding breakpoint number.
+
+With the OR approach of only one breakpoint, you would need to retype the 
+whole line, and even with readline, I don't think it's the more convenient 
+way to reenter eveything.
+
+
+&gt;&gt;<i> Yes, and I think we can have a hard limit like 50 or so for the array
+</I>&gt;&gt;<i> size to avoid dynamic resizing or things like that. I think having
+</I>&gt;&gt;<i> dynamic memory allocation for breakpoint is a little overkill
+</I>&gt;<i>
+</I>&gt;<i> If you really need both condition chaining and multiple breakpoints, then
+</I>&gt;<i> it may be better done with dynamic allocations.  I hope condition chaining
+</I>&gt;<i> would be enough though...?
+</I>&gt;<i>
+</I>
+Well, for now, we could have some hard limits, for example max 16 
+breakpoints, and max 6 conditions chained with an AND in one breakpoint. 
+Breakpoints won't consume much ram in the end, so having some fixed limits 
+and some &quot;lost&quot; memory doesn't look like a problem to me.
+
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000337.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+	<LI>Next message: <A HREF="000344.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#343">[ date ]</a>
+              <a href="thread.html#343">[ thread ]</a>
+              <a href="subject.html#343">[ subject ]</a>
+              <a href="author.html#343">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

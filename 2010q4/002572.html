@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C201011020057.42128.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002571.html">
+   <LINK REL="Next"  HREF="002573.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C201011020057.42128.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Nov  1 23:57:42 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002571.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002573.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2572">[ date ]</a>
+              <a href="thread.html#2572">[ thread ]</a>
+              <a href="subject.html#2572">[ subject ]</a>
+              <a href="author.html#2572">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 02 November 2010, Laurent Sallafranque wrote:
+&gt;<i> I've uploaded some files.
+</I>&gt;<i> This just let newcpu.c to compile.
+</I>
+Defining &quot;L&quot; empty didn't work?
+
+
+&gt;<i> Next step is fpp.c to compile.
+</I>...
+&gt;<i> I think there'll be soon 2 problems :
+</I>&gt;<i>
+</I>&gt;<i> 1) We'll need to adapt all these files to our own needs.
+</I>&gt;<i> So compatibility with original files will decrease (I think at newcpu.c
+</I>&gt;<i> file for example).
+</I>&gt;<i>
+</I>&gt;<i> 2) We'll need to change some parts of hatari's code that won't allow
+</I>&gt;<i> compatibility between oldcpu and newcpu (except if we include lot's of
+</I>&gt;<i> ifdefs but code may become too heavy and horrible to read).
+</I>&gt;<i>
+</I>&gt;<i> I think at old variable &quot;cpu_level&quot; used in hatari's GUI for example.
+</I>&gt;<i> It seems that this variable doesn't exist anymore and is replaced by :
+</I>&gt;<i> cpu_model
+</I>&gt;<i> So, we'll have to modify the GUI to allow new cpus, mmus, ..., or create
+</I>&gt;<i> a new directory for new parameters, or stop the old branch, ...
+</I>
+cpu_level variable is used by UAE CPU emulation, Hatari itself uses
+cpu_level only in two places:
+./m68000.c:     changed_prefs.cpu_level = ConfigureParams.System.nCpuLevel;
+./gemdos.c:             if (currprefs.cpu_level &gt; 0)
+
+Otherwise it uses value from the ConfigureParams.System struct.  I think
+mapping that to whatever WinAUE uses should be fairly isolated in Hatari
+code...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002571.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002573.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2572">[ date ]</a>
+              <a href="thread.html#2572">[ thread ]</a>
+              <a href="subject.html#2572">[ subject ]</a>
+              <a href="author.html#2572">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

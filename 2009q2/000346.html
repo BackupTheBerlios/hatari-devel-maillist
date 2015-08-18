@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP debugging and breakpoints
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3Calpine.LMD.2.00.0906071916450.27660%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000344.html">
+   <LINK REL="Next"  HREF="000339.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP debugging and breakpoints</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3Calpine.LMD.2.00.0906071916450.27660%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] DSP debugging and breakpoints">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jun  7 19:24:02 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000344.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+        <LI>Next message: <A HREF="000339.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#346">[ date ]</a>
+              <a href="thread.html#346">[ thread ]</a>
+              <a href="subject.html#346">[ subject ]</a>
+              <a href="author.html#346">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 7 Jun 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Sunday 07 June 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;&gt;&gt;<i> I think we could have a command 'bl' that lists all breakpoint with
+</I>&gt;&gt;&gt;&gt;<i> its index number.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I.e. they would need to be stored also in the ascii format...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Not necessarily, you could also &quot;parse&quot; the breakpoint structure and
+</I>&gt;&gt;<i> generate the corresponding breakpoint ; this would not be exactly what
+</I>&gt;&gt;<i> the user typed, but it should give the same result.
+</I>&gt;<i>
+</I>&gt;<i> It could be done much more conveniently when parsing the string.
+</I>&gt;<i> (at the same time it could output errors so that they point out *where*
+</I>&gt;<i> in the string the error is.)
+</I>
+I may have misexpressed myself ; the string must be parsed first, to build 
+the corresponding breakpoint structure and report errors.
+
+But if we later want to print the ascii representation of the structure, 
+we can do it on the fly (but we could also save the input text, that would 
+only be a few bytes anyway).
+
+
+&gt;<i> Is the convenience the main point or them being independent from
+</I>&gt;<i> each other?
+</I>&gt;<i>
+</I>&gt;<i> If the independency, then I guess the break conditions would need
+</I>&gt;<i> to state whether the next condition continues the breakpoint (with
+</I>&gt;<i> AND) or is it a separate breakpoint.  That would avoid having multiple
+</I>&gt;<i> levels of structures for breakpoints, but all code dealing with them
+</I>&gt;<i> needs to handle it.
+</I>&gt;<i>
+</I>
+The independancy ; when specifying breakpoints from the command line, we 
+could do :
+
+./hatari -bp 'pc=1234 &amp;&amp; d0=1' -bp 'pc=4567' -bp 'pc=7845'
+
+This would create 3 breakpoints (thus using entries 0, 1 and 2 in 
+CpuBreakPoint[]), the first one would be a 2 conditions breakpoint, while 
+the 2 others ones would have only one condition (on a maximum of 6 
+conditions per breakpoint for example)
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000344.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+	<LI>Next message: <A HREF="000339.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#346">[ date ]</a>
+              <a href="thread.html#346">[ thread ]</a>
+              <a href="subject.html#346">[ subject ]</a>
+              <a href="author.html#346">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Repo version not building out of the box on Xcode
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Repo%20version%20not%20building%20out%20of%20the%20box%20on%20Xcode&In-Reply-To=%3C201004181741.20166.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001866.html">
+   <LINK REL="Next"  HREF="001872.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Repo version not building out of the box on Xcode</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Repo%20version%20not%20building%20out%20of%20the%20box%20on%20Xcode&In-Reply-To=%3C201004181741.20166.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Repo version not building out of the box on Xcode">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Apr 18 16:41:20 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001866.html">[hatari-devel] Repo version not building out of the box on Xcode
+</A></li>
+        <LI>Next message: <A HREF="001872.html">[hatari-devel] Repo version not building out of the box on Xcode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1868">[ date ]</a>
+              <a href="thread.html#1868">[ thread ]</a>
+              <a href="subject.html#1868">[ subject ]</a>
+              <a href="author.html#1868">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 18 April 2010, Anders Eriksson wrote:
+&gt;<i> I just wanted to inform that the hg repo version of Hatari does not build
+</I>&gt;<i> on Xcode without modifications.
+</I>...
+&gt;<i> These are the three errors I get:
+</I>&gt;<i>
+</I>&gt;<i> ~/hatari/src/gui-osx/PrefsController.m:606: error: 'CNF_SCREEN' has no
+</I>&gt;<i> member named 'bZoomLowRes' ~/hatari/src/gui-osx/PrefsController.m:785:
+</I>&gt;<i> error: 'CNF_SCREEN' has no member named 'bZoomLowRes'
+</I>
+Somebody needs to change this also to use max zoomed size variables instead
+of the obsolete/removed 'bZoomLowRes' one.
+
+I just updated the PyGtk Hatari UI, and the Hatari manual section on
+the SDL options GUI for this:
+<A HREF="http://hg.berlios.de/repos/hatari/raw-file/tip/doc/manual.html#The">http://hg.berlios.de/repos/hatari/raw-file/tip/doc/manual.html#The</A> Hatari 
+Screen Dialog
+
+This is how the SDL options dialog looked like in v1.3.1:
+<A HREF="http://hg.berlios.de/repos/hatari/raw-file/9fb9dc477e75/doc/manual.html#The">http://hg.berlios.de/repos/hatari/raw-file/9fb9dc477e75/doc/manual.html#The</A> 
+Screen Dialog
+
+
+&gt;<i> ~/hatari/src/gui-osx/SDLMain.m:446: error: 'poseAsClass:' is unavailable
+</I>&gt;<i> (declared at
+</I>&gt;<i> /Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Foundation.frame
+</I>&gt;<i>work/Headers/NSObject.h:127)
+</I>
+Thomas commented on this on 23rd of January:
+--------
+This seems to be an issue with the code that we've inherited from SDL... 
+seems to be a problem in the current SDL code, too:
+
+<A HREF="http://article.gmane.org/gmane.comp.lib.sdl/44284">http://article.gmane.org/gmane.comp.lib.sdl/44284</A>
+
+Dunno how to fix that, especially since I still have an old version of Mac 
+OS X where this still works fine... I'll leave that up to a Mac OS X guru 
+for fixing.
+--------
+
+(Guru could be referring to S&#233;bastien (clafou), who according to authors.txt
+originally wrote the OSX GUI.)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001866.html">[hatari-devel] Repo version not building out of the box on Xcode
+</A></li>
+	<LI>Next message: <A HREF="001872.html">[hatari-devel] Repo version not building out of the box on Xcode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1868">[ date ]</a>
+              <a href="thread.html#1868">[ thread ]</a>
+              <a href="subject.html#1868">[ subject ]</a>
+              <a href="author.html#1868">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

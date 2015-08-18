@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Usign 2 cpu cores for Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Usign%202%20cpu%20cores%20for%20Hatari&In-Reply-To=%3C4D6E9C67.9080108%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003138.html">
+   <LINK REL="Next"  HREF="003145.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Usign 2 cpu cores for Hatari</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Usign%202%20cpu%20cores%20for%20Hatari&In-Reply-To=%3C4D6E9C67.9080108%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Usign 2 cpu cores for Hatari">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Mar  2 20:37:11 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003138.html">[hatari-devel] Usign 2 cpu cores for Hatari
+</A></li>
+        <LI>Next message: <A HREF="003145.html">[hatari-devel] A few feature requests and observations.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3139">[ date ]</a>
+              <a href="thread.html#3139">[ thread ]</a>
+              <a href="subject.html#3139">[ subject ]</a>
+              <a href="author.html#3139">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 02/03/2011 20:10, Matthias Arndt a &#233;crit :
+&gt;<i> Am Mittwoch, den 02.03.2011, 19:30 +0100 schrieb Nicolas Pomar&#232;de:
+</I>&gt;&gt;<i> Le 02/03/2011 19:25, Miro Krop&#225;&#269;ek a &#233;crit :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>      much too complicated to put both cores in one binary, too much
+</I>&gt;&gt;&gt;<i>      conflicting functions/variables, not worth the effort.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Shared libraries (one for WinUAE, one for old UAE) wouldn't solve it? If
+</I>&gt;&gt;&gt;<i> not, what about namespaces? No one says Hatari must be pure C, some C++
+</I>&gt;&gt;&gt;<i> help wouldn't hurt for sure ;)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> That's what I say : too much work :)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Also, shared lib wouldn't work directly, because both cpus use different
+</I>&gt;&gt;<i> api/variables.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Anyway, there will be no point in keeping th old uae core once the new
+</I>&gt;&gt;<i> one fully replaces it, except dor debugging purpose, but in that case
+</I>&gt;&gt;<i> it's easy for developers to change cpu at compile time.
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> maybe more work for the start but a lot of benefit. Other projects could
+</I>&gt;<i> use a well developed CPU core with much less hazzle.
+</I>&gt;<i>
+</I>&gt;<i> But as I for myself won't be able to invest the time, I can hardly force
+</I>&gt;<i> anyone to do the hard job.
+</I>&gt;<i>
+</I>&gt;<i> But as a fact: it woudl have benefits - and imho the libs should have no
+</I>&gt;<i> need for C++. There is nothing missing in C, or the other way around:
+</I>&gt;<i> what would be the true benefit of using C++?
+</I>&gt;<i>
+</I>&gt;<i> Matthias
+</I>
+Unfortunatelly, libification of the cpu core will be of little interest 
+regarding performance. The more abstraction/API you need to add to have 
+a reusable cpu core, the slower it will get.
+
+They're also many parts of the code of hatari that need to be integrated 
+into the cpu core to get good performance and specific behaviour 
+reagarding cycles/exception/memory addressing/...
+
+WinUAE / UAE are already usable in any project you like, people who 
+really want to code an emulator will know how to use them (although it 
+might take some time), but cpu emulation of a complex chip such as the 
+680xx family is not a task targeted to non-technical people anyway.
+
+I don't see any benefit in doing this in Hatari (not for us, and not for 
+other projects)
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003138.html">[hatari-devel] Usign 2 cpu cores for Hatari
+</A></li>
+	<LI>Next message: <A HREF="003145.html">[hatari-devel] A few feature requests and observations.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3139">[ date ]</a>
+              <a href="thread.html#3139">[ thread ]</a>
+              <a href="subject.html#3139">[ subject ]</a>
+              <a href="author.html#3139">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

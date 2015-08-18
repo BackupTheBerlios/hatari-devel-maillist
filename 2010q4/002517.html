@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Unable to latest hg on Mac OS X again...
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Unable%20to%20latest%20hg%20on%20Mac%20OS%20X%20again...&In-Reply-To=%3C201010102342.27887.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002516.html">
+   <LINK REL="Next"  HREF="002518.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Unable to latest hg on Mac OS X again...</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Unable%20to%20latest%20hg%20on%20Mac%20OS%20X%20again...&In-Reply-To=%3C201010102342.27887.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Unable to latest hg on Mac OS X again...">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Oct 10 22:42:27 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002516.html">[hatari-devel] Unable to latest hg on Mac OS X again...
+</A></li>
+        <LI>Next message: <A HREF="002518.html">[hatari-devel] Unable to latest hg on Mac OS X again...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2517">[ date ]</a>
+              <a href="thread.html#2517">[ thread ]</a>
+              <a href="subject.html#2517">[ subject ]</a>
+              <a href="author.html#2517">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 10 October 2010, Christer Solskogen wrote:
+&gt;<i> &gt; I think i added screen.h to SDLmain.m for the PALETTE error.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I have a lot of change that wasn't merged in the repo. But they may
+</I>&gt;<i> &gt; have broken build for MacOsX 10.4.
+</I>&gt;<i>
+</I>&gt;<i> Added them.
+</I>...
+&gt;<i> [ 45%] Building C object src/CMakeFiles/hatari.dir/gui-osx/SDLMain.m.o
+</I>&gt;<i> cd /Users/solskogen/source/hatari/src &amp;&amp; /usr/bin/gcc
+</I>&gt;<i> -DCONFDIR=\&quot;/etc\&quot; -Wcast-qual -Wbad-function-cast -Wpointer-arith
+</I>&gt;<i> -Wmissing-prototypes -Wstrict-prototypes -Wall -Wwrite-strings
+</I>&gt;<i> -Wsign-compare -Wextra -Wno-unused-parameter -Wno-empty-body
+</I>&gt;<i> -Wformat-security -O3 -DNDEBUG -I/Users/solskogen/source/hatari
+</I>&gt;<i> -I/Users/solskogen/source/hatari/src/includes
+</I>&gt;<i> -I/Users/solskogen/source/hatari/src/debug
+</I>&gt;<i> -I/Users/solskogen/source/hatari/src/falcon
+</I>&gt;<i> -I/Users/solskogen/source/hatari/src/uae-cpu -I/opt/local/include/SDL
+</I>&gt;<i> -I/usr/X11R6/include   -o CMakeFiles/hatari.dir/gui-osx/SDLMain.m.o
+</I>&gt;<i> -c /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m
+</I>&gt;<i> In file included from
+</I>&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:21:
+</I>&gt;<i> /Users/solskogen/source/hatari/src/includes/video.h:123: error:
+</I>&gt;<i> &#8216;HBL_PALETTE_LINES&#8217; undeclared here (not in a function)
+</I>
+It needs to be before include for video.h.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002516.html">[hatari-devel] Unable to latest hg on Mac OS X again...
+</A></li>
+	<LI>Next message: <A HREF="002518.html">[hatari-devel] Unable to latest hg on Mac OS X again...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2517">[ date ]</a>
+              <a href="thread.html#2517">[ thread ]</a>
+              <a href="subject.html#2517">[ subject ]</a>
+              <a href="author.html#2517">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

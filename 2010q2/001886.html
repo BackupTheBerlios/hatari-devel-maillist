@@ -1,0 +1,391 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Problem in falcon mode ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%20falcon%20mode%20%3F&In-Reply-To=%3C4BCF0A99.4030509%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001885.html">
+   <LINK REL="Next"  HREF="001887.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Problem in falcon mode ?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20in%20falcon%20mode%20%3F&In-Reply-To=%3C4BCF0A99.4030509%40free.fr%3E"
+       TITLE="[hatari-devel] Problem in falcon mode ?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Apr 21 16:24:25 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001885.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+        <LI>Next message: <A HREF="001887.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1886">[ date ]</a>
+              <a href="thread.html#1886">[ thread ]</a>
+              <a href="subject.html#1886">[ subject ]</a>
+              <a href="author.html#1886">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok, I've sold my cmake problem by installing Gcc-c++ package.
+
+Cmake compiles well now.
+
+But when I try make, it doesn't compile (and there are some warnings) :
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent at OrdiLolo</A>:~/Atari/hatari$ make
+Scanning dependencies of target Floppy
+[ 1%] Building C object src/CMakeFiles/Floppy.dir/dim.c.o
+[ 2%] Building C object src/CMakeFiles/Floppy.dir/msa.c.o
+[ 3%] Building C object src/CMakeFiles/Floppy.dir/st.c.o
+[ 4%] Building C object src/CMakeFiles/Floppy.dir/zip.c.o
+/home/laurent/Atari/hatari/src/zip.c: In function &#8216;ZIP_FreeFentries&#8217;:
+/home/laurent/Atari/hatari/src/zip.c:201: warning: cast to pointer from 
+integer of different size
+Linking C static library libFloppy.a
+[ 4%] Built target Floppy
+Scanning dependencies of target build68k
+[ 5%] Building C object src/uae-cpu/CMakeFiles/build68k.dir/build68k.c.o
+Linking C executable build68k
+[ 5%] Built target build68k
+[ 6%] Generating cpudefs.c
+Scanning dependencies of target gencpu
+[ 7%] Building C object src/uae-cpu/CMakeFiles/gencpu.dir/gencpu.c.o
+[ 8%] Building C object src/uae-cpu/CMakeFiles/gencpu.dir/readcpu.c.o
+[ 8%] Building C object src/uae-cpu/CMakeFiles/gencpu.dir/cpudefs.c.o
+Linking C executable gencpu
+[ 8%] Built target gencpu
+[ 9%] Generating cpuemu.c, cpustbl.c
+Scanning dependencies of target UaeCpu
+[ 10%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/cpudefs.c.o
+[ 11%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/cpuemu.c.o
+[ 12%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/cpustbl.c.o
+[ 13%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/hatari-glue.c.o
+[ 14%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/memory.c.o
+[ 15%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/newcpu.c.o
+[ 15%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/readcpu.c.o
+[ 16%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/fpp.c.o
+Linking C static library libUaeCpu.a
+[ 17%] Built target UaeCpu
+Scanning dependencies of target Debug
+[ 18%] Building C object src/debug/CMakeFiles/Debug.dir/log.c.o
+[ 19%] Building C object src/debug/CMakeFiles/Debug.dir/debugui.c.o
+/home/laurent/Atari/hatari/src/debug/debugui.c: In function 
+&#8216;DebugUI_EvaluateExpressions&#8217;:
+/home/laurent/Atari/hatari/src/debug/debugui.c:239: warning: field width 
+should have type &#8216;int&#8217;, but argument 4 has type &#8216;long int&#8217;
+[ 20%] Building C object src/debug/CMakeFiles/Debug.dir/breakcond.c.o
+[ 21%] Building C object src/debug/CMakeFiles/Debug.dir/debugcpu.c.o
+[ 21%] Building C object src/debug/CMakeFiles/Debug.dir/debugInfo.c.o
+[ 22%] Building C object src/debug/CMakeFiles/Debug.dir/debugdsp.c.o
+[ 23%] Building C object src/debug/CMakeFiles/Debug.dir/evaluate.c.o
+[ 24%] Building C object src/debug/CMakeFiles/Debug.dir/symbols.c.o
+Linking C static library libDebug.a
+[ 24%] Built target Debug
+Scanning dependencies of target Falcon
+[ 25%] Building C object src/falcon/CMakeFiles/Falcon.dir/crossbar.c.o
+[ 26%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp.c.o
+[ 27%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp_core.c.o
+[ 27%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp_cpu.c.o
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_jsset_pp&#8217;:
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c:909: warning: array 
+subscript is above array bounds
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_jsclr_pp&#8217;:
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c:909: warning: array 
+subscript is above array bounds
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_btst_pp&#8217;:
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c:909: warning: array 
+subscript is above array bounds
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_jset_pp&#8217;:
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c:909: warning: array 
+subscript is above array bounds
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_jclr_pp&#8217;:
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c:909: warning: array 
+subscript is above array bounds
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_bchg_pp&#8217;:
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c:909: warning: array 
+subscript is above array bounds
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_bset_pp&#8217;:
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c:909: warning: array 
+subscript is above array bounds
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_bclr_pp&#8217;:
+/home/laurent/Atari/hatari/src/falcon/dsp_cpu.c:909: warning: array 
+subscript is above array bounds
+[ 28%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp_disasm.c.o
+[ 29%] Building C object src/falcon/CMakeFiles/Falcon.dir/hostscreen.c.o
+[ 30%] Building C object src/falcon/CMakeFiles/Falcon.dir/microphone.c.o
+[ 31%] Building C object src/falcon/CMakeFiles/Falcon.dir/nvram.c.o
+[ 32%] Building C object src/falcon/CMakeFiles/Falcon.dir/videl.c.o
+Linking C static library libFalcon.a
+[ 32%] Built target Falcon
+Scanning dependencies of target GuiSdl
+[ 33%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgAbout.c.o
+[ 33%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgAlert.c.o
+[ 34%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgDevice.c.o
+[ 35%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgFileSelect.c.o
+[ 36%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgFloppy.c.o
+[ 37%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgHardDisk.c.o
+[ 38%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgJoystick.c.o
+[ 39%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgKeyboard.c.o
+[ 39%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgMain.c.o
+[ 40%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgMemory.c.o
+[ 41%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgNewDisk.c.o
+[ 42%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgRom.c.o
+[ 43%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgScreen.c.o
+[ 44%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgSound.c.o
+[ 45%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgSystem.c.o
+[ 45%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/sdlgui.c.o
+Linking C static library libGuiSdl.a
+[ 45%] Built target GuiSdl
+Scanning dependencies of target hatari
+[ 46%] Building C object src/CMakeFiles/hatari.dir/audio.c.o
+[ 46%] Building C object src/CMakeFiles/hatari.dir/avi_record.c.o
+[ 47%] Building C object src/CMakeFiles/hatari.dir/bios.c.o
+[ 48%] Building C object src/CMakeFiles/hatari.dir/blitter.c.o
+[ 49%] Building C object src/CMakeFiles/hatari.dir/cart.c.o
+[ 50%] Building C object src/CMakeFiles/hatari.dir/cfgopts.c.o
+[ 51%] Building C object src/CMakeFiles/hatari.dir/configuration.c.o
+[ 52%] Building C object src/CMakeFiles/hatari.dir/options.c.o
+[ 52%] Building C object src/CMakeFiles/hatari.dir/createBlankImage.c.o
+[ 53%] Building C object src/CMakeFiles/hatari.dir/change.c.o
+[ 54%] Building C object src/CMakeFiles/hatari.dir/control.c.o
+[ 55%] Building C object src/CMakeFiles/hatari.dir/cycInt.c.o
+[ 56%] Building C object src/CMakeFiles/hatari.dir/cycles.c.o
+[ 57%] Building C object src/CMakeFiles/hatari.dir/dialog.c.o
+[ 58%] Building C object src/CMakeFiles/hatari.dir/dmaSnd.c.o
+[ 58%] Building C object src/CMakeFiles/hatari.dir/fdc.c.o
+[ 59%] Building C object src/CMakeFiles/hatari.dir/file.c.o
+[ 60%] Building C object src/CMakeFiles/hatari.dir/floppy.c.o
+[ 61%] Building C object src/CMakeFiles/hatari.dir/gemdos.c.o
+[ 62%] Building C object src/CMakeFiles/hatari.dir/hd6301_cpu.c.o
+[ 63%] Building C object src/CMakeFiles/hatari.dir/hdc.c.o
+[ 64%] Building C object src/CMakeFiles/hatari.dir/ide.c.o
+[ 64%] Building C object src/CMakeFiles/hatari.dir/ikbd.c.o
+[ 65%] Building C object src/CMakeFiles/hatari.dir/ioMem.c.o
+[ 66%] Building C object src/CMakeFiles/hatari.dir/ioMemTabST.c.o
+[ 67%] Building C object src/CMakeFiles/hatari.dir/ioMemTabSTE.c.o
+[ 68%] Building C object src/CMakeFiles/hatari.dir/ioMemTabTT.c.o
+[ 69%] Building C object src/CMakeFiles/hatari.dir/ioMemTabFalcon.c.o
+[ 70%] Building C object src/CMakeFiles/hatari.dir/joy.c.o
+[ 70%] Building C object src/CMakeFiles/hatari.dir/keymap.c.o
+[ 71%] Building C object src/CMakeFiles/hatari.dir/m68000.c.o
+[ 72%] Building C object src/CMakeFiles/hatari.dir/main.c.o
+[ 73%] Building C object src/CMakeFiles/hatari.dir/midi.c.o
+[ 74%] Building C object src/CMakeFiles/hatari.dir/memorySnapShot.c.o
+[ 75%] Building C object src/CMakeFiles/hatari.dir/mfp.c.o
+[ 76%] Building C object src/CMakeFiles/hatari.dir/paths.c.o
+[ 76%] Building C object src/CMakeFiles/hatari.dir/psg.c.o
+[ 77%] Building C object src/CMakeFiles/hatari.dir/printer.c.o
+[ 78%] Building C object src/CMakeFiles/hatari.dir/resolution.c.o
+[ 79%] Building C object src/CMakeFiles/hatari.dir/rs232.c.o
+/home/laurent/Atari/hatari/src/rs232.c:57: error: static declaration of 
+&#8216;cfmakeraw&#8217; follows non-static declaration
+/usr/include/termios.h:77: note: previous declaration of &#8216;cfmakeraw&#8217; was 
+here
+make[2]: *** [src/CMakeFiles/hatari.dir/rs232.c.o] Erreur 1
+make[1]: *** [src/CMakeFiles/hatari.dir/all] Erreur 2
+make: *** [all] Erreur 2
+
+
+
+Regards
+
+Laurent
+
+
+Laurent Sallafranque a &#233;crit :
+&gt;<i> Yes, I'm running a video with vlc to test the sound when the problem 
+</I>&gt;<i> occurs.
+</I>&gt;<i>
+</I>&gt;<i> I've just tried to compile with cmake instead of make to see if this 
+</I>&gt;<i> change anything.
+</I>&gt;<i>
+</I>&gt;<i> Here is my result. May this help ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent at OrdiLolo</A>:~/Atari/hatari$ cmake .
+</I>&gt;<i> -- The C compiler identification is GNU
+</I>&gt;<i> -- The CXX compiler identification is unknown
+</I>&gt;<i> -- Check for working C compiler: /usr/bin/gcc
+</I>&gt;<i> -- Check for working C compiler: /usr/bin/gcc -- works
+</I>&gt;<i> -- Detecting C compiler ABI info
+</I>&gt;<i> -- Detecting C compiler ABI info - done
+</I>&gt;<i> CMake Error: your CXX compiler: &quot;CMAKE_CXX_COMPILER-NOTFOUND&quot; was not 
+</I>&gt;<i> found. Please set CMAKE_CXX_COMPILER to a valid compiler path or name.
+</I>&gt;<i> -- Looking for include files CMAKE_HAVE_PTHREAD_H
+</I>&gt;<i> -- Looking for include files CMAKE_HAVE_PTHREAD_H - found
+</I>&gt;<i> -- Looking for pthread_create in pthreads
+</I>&gt;<i> -- Looking for pthread_create in pthreads - not found
+</I>&gt;<i> -- Looking for pthread_create in pthread
+</I>&gt;<i> -- Looking for pthread_create in pthread - found
+</I>&gt;<i> -- Found Threads: TRUE
+</I>&gt;<i> -- Found MATH: /usr/lib/libm.so
+</I>&gt;<i> -- Could NOT find READLINE (missing: READLINE_LIBRARY 
+</I>&gt;<i> READLINE_INCLUDE_DIR)
+</I>&gt;<i> -- Found ZLIB: /usr/lib/libz.so
+</I>&gt;<i> -- Found PNG: /usr/lib/libpng.so
+</I>&gt;<i> -- Looking for XOpenDisplay in /usr/lib/libX11.so;/usr/lib/libXext.so
+</I>&gt;<i> -- Looking for XOpenDisplay in /usr/lib/libX11.so;/usr/lib/libXext.so 
+</I>&gt;<i> - found
+</I>&gt;<i> -- Looking for gethostbyname
+</I>&gt;<i> -- Looking for gethostbyname - found
+</I>&gt;<i> -- Looking for connect
+</I>&gt;<i> -- Looking for connect - found
+</I>&gt;<i> -- Looking for remove
+</I>&gt;<i> -- Looking for remove - found
+</I>&gt;<i> -- Looking for shmat
+</I>&gt;<i> -- Looking for shmat - found
+</I>&gt;<i> -- Looking for IceConnectionNumber in ICE
+</I>&gt;<i> -- Looking for IceConnectionNumber in ICE - found
+</I>&gt;<i> -- Found X11: /usr/lib/libX11.so
+</I>&gt;<i> -- Found PORTAUDIO: /usr/lib/libportaudio.so
+</I>&gt;<i> -- Looking for Pa_GetDefaultInputDevice
+</I>&gt;<i> CMake Error at CMakeLists.txt:9 (ADD_EXECUTABLE):
+</I>&gt;<i> Target &quot;cmTryCompileExec&quot; links to item &quot; /usr/lib/libportaudio.so&quot; which
+</I>&gt;<i> has leading or trailing whitespace. This is now an error according to
+</I>&gt;<i> policy CMP0004.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> CMake Error: Internal CMake error, TryCompile generation of cmake failed
+</I>&gt;<i> -- Looking for Pa_GetDefaultInputDevice - not found
+</I>&gt;<i> -- Looking for include files HAVE_TERMIOS_H
+</I>&gt;<i> -- Looking for include files HAVE_TERMIOS_H - found
+</I>&gt;<i> -- Looking for include files HAVE_STRINGS_H
+</I>&gt;<i> -- Looking for include files HAVE_STRINGS_H - found
+</I>&gt;<i> -- Looking for include files HAVE_MALLOC_H
+</I>&gt;<i> -- Looking for include files HAVE_MALLOC_H - found
+</I>&gt;<i> -- Looking for include files HAVE_SDL_SDL_CONFIG_H
+</I>&gt;<i> -- Looking for include files HAVE_SDL_SDL_CONFIG_H - found
+</I>&gt;<i> -- Looking for include files HAVE_SYS_TIMES_H
+</I>&gt;<i> -- Looking for include files HAVE_SYS_TIMES_H - found
+</I>&gt;<i> -- Looking for include files HAVE_UNIX_DOMAIN_SOCKETS
+</I>&gt;<i> -- Looking for include files HAVE_UNIX_DOMAIN_SOCKETS - found
+</I>&gt;<i> -- Looking for cfmakeraw
+</I>&gt;<i> CMake Error at CMakeLists.txt:9 (ADD_EXECUTABLE):
+</I>&gt;<i> Target &quot;cmTryCompileExec&quot; links to item &quot; /usr/lib/libportaudio.so&quot; which
+</I>&gt;<i> has leading or trailing whitespace. This is now an error according to
+</I>&gt;<i> policy CMP0004.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> CMake Error: Internal CMake error, TryCompile generation of cmake failed
+</I>&gt;<i> -- Looking for cfmakeraw - not found
+</I>&gt;<i> -- Looking for setenv
+</I>&gt;<i> CMake Error at CMakeLists.txt:9 (ADD_EXECUTABLE):
+</I>&gt;<i> Target &quot;cmTryCompileExec&quot; links to item &quot; /usr/lib/libportaudio.so&quot; which
+</I>&gt;<i> has leading or trailing whitespace. This is now an error according to
+</I>&gt;<i> policy CMP0004.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> CMake Error: Internal CMake error, TryCompile generation of cmake failed
+</I>&gt;<i> -- Looking for setenv - not found
+</I>&gt;<i> -- Looking for select
+</I>&gt;<i> CMake Error at CMakeLists.txt:9 (ADD_EXECUTABLE):
+</I>&gt;<i> Target &quot;cmTryCompileExec&quot; links to item &quot; /usr/lib/libportaudio.so&quot; which
+</I>&gt;<i> has leading or trailing whitespace. This is now an error according to
+</I>&gt;<i> policy CMP0004.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> CMake Error: Internal CMake error, TryCompile generation of cmake failed
+</I>&gt;<i> -- Looking for select - not found
+</I>&gt;<i> -- Looking for posix_memalign
+</I>&gt;<i> CMake Error at CMakeLists.txt:9 (ADD_EXECUTABLE):
+</I>&gt;<i> Target &quot;cmTryCompileExec&quot; links to item &quot; /usr/lib/libportaudio.so&quot; which
+</I>&gt;<i> has leading or trailing whitespace. This is now an error according to
+</I>&gt;<i> policy CMP0004.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> CMake Error: Internal CMake error, TryCompile generation of cmake failed
+</I>&gt;<i> -- Looking for posix_memalign - not found
+</I>&gt;<i> -- Looking for memalign
+</I>&gt;<i> CMake Error at CMakeLists.txt:9 (ADD_EXECUTABLE):
+</I>&gt;<i> Target &quot;cmTryCompileExec&quot; links to item &quot; /usr/lib/libportaudio.so&quot; which
+</I>&gt;<i> has leading or trailing whitespace. This is now an error according to
+</I>&gt;<i> policy CMP0004.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> CMake Error: Internal CMake error, TryCompile generation of cmake failed
+</I>&gt;<i> -- Looking for memalign - not found
+</I>&gt;<i> -- Found PythonInterp: /usr/bin/python2.6
+</I>&gt;<i> -- Configuring incomplete, errors occurred!
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+</I>&gt;&gt;<i> On Wed, 21 Apr 2010, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hello,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I've tried hatari's latest release today, and when I launch in 
+</I>&gt;&gt;&gt;<i> falcon mode,
+</I>&gt;&gt;&gt;<i> I often have no sound.
+</I>&gt;&gt;&gt;<i> Worse, when I click on the &quot;close window&quot; cross (upper right of the 
+</I>&gt;&gt;&gt;<i> window screen), hatari doesn't close.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Does anybody have the same behaviour ?
+</I>&gt;&gt;&gt;<i> (sometimes, I get sound, but many times, no sound at startup).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Another strange thing : when I start hatari, at boot, it sometimes 
+</I>&gt;&gt;&gt;<i> displays about non accurate delays. (that's not all the time).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Regards
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Laurent
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> may be a silly question, but when this happens do you have sound in 
+</I>&gt;&gt;<i> linux for other apps ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Nicolas
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001885.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+	<LI>Next message: <A HREF="001887.html">[hatari-devel] Problem in falcon mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1886">[ date ]</a>
+              <a href="thread.html#1886">[ thread ]</a>
+              <a href="subject.html#1886">[ subject ]</a>
+              <a href="author.html#1886">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

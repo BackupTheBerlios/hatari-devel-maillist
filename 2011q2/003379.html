@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari crashes with Mental Hangover demo
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20crashes%20with%20Mental%20Hangover%20demo&In-Reply-To=%3C4DBC5521.5000708%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003378.html">
+   <LINK REL="Next"  HREF="003380.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari crashes with Mental Hangover demo</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20crashes%20with%20Mental%20Hangover%20demo&In-Reply-To=%3C4DBC5521.5000708%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Hatari crashes with Mental Hangover demo">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Apr 30 20:29:53 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003378.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+        <LI>Next message: <A HREF="003380.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3379">[ date ]</a>
+              <a href="thread.html#3379">[ thread ]</a>
+              <a href="subject.html#3379">[ subject ]</a>
+              <a href="author.html#3379">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 30/04/2011 20:16, Eero Tamminen a &#233;crit :
+&gt;<i>
+</I>&gt;<i> I was more of wondering whether the registers were now handled wrong and
+</I>&gt;<i> should they be somehow be masked to be handled correctly according to some
+</I>&gt;<i> documentation. That way the change would be isolated to single function.
+</I>&gt;<i>
+</I>&gt;<i> Compedium didn't mention anything.
+</I>
+I don't think the registers are not handled correctly.
+
+But in fact I think we should have some kind of &quot;DMA_memcpy&quot; that would 
+be used from FDC / HDC when we want to copy memory from Hatari to the 
+emulated RAM. This function would check each written byte is in ST RAM 
+or I/O space and would mask addresses to 24 bits.
+
+This way, we would have a common function to correctly copy data from 
+disk images to the emulated RAM or IO space.
+
+&gt;&gt;<i> That's not related to masking the address ; have you run the demo
+</I>&gt;&gt;<i> without enabling the RTC and without HD emulation as I wrote in another
+</I>&gt;&gt;<i> thread ? Unless you do that, the demo will never boot, the boot sector
+</I>&gt;&gt;<i> is buggy.
+</I>&gt;<i>
+</I>&gt;<i> Ah, right I forgot that.  So just ignoring invalid requests seems fine?
+</I>&gt;<i>
+</I>&gt;<i> (The good thing about vacation is that one forgets things, especially
+</I>&gt;<i> work related stuff, but also some other stuff. ;-))
+</I>
+In that case, ignoring is fine, because it's not the cause of the problem.
+But as above, it would be more correct to not ignore the request but 
+ensure each destination address is corrrecly handled to stay in the RAM 
+/ ROM / IO space of the emulated machine (even if writing in ROM should 
+have no effect, it should not be forbidden)
+
+&gt;<i>
+</I>&gt;&gt;&gt;<i> PS. While doing the patches, I noticed:
+</I>&gt;&gt;&gt;<i> $ grep HDCSectorCount $(find . -type f)
+</I>&gt;&gt;&gt;<i> ./hdc.h:extern short int HDCSectorCount;
+</I>&gt;&gt;&gt;<i> ./hdc.c:short int HDCSectorCount;
+</I>&gt;&gt;&gt;<i> ./hdc.c:       fprintf(hdlogFile, &quot;HDC sector count: 0x%x\n&quot;,
+</I>&gt;&gt;&gt;<i> HDCSectorCount);
+</I>&gt;&gt;&gt;<i> ./fdc.c:       HDCSectorCount = 0;
+</I>&gt;&gt;&gt;<i> ./fdc.c:               DMAStatus_ff8606rd |= (HDCSectorCount)?0x2:0;
+</I>&gt;&gt;&gt;<i> /* HDC */
+</I>&gt;&gt;&gt;<i> ./fdc.c:               DiskControllerByte = HDCSectorCount;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> What's the point in sector count that's never non-zero?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What do you mean exactly ?
+</I>&gt;<i>
+</I>&gt;<i>  From above you can see that &quot;HDCSectorCount&quot; can never get any other value
+</I>&gt;<i> than zero (unlike e.g. FDCSectorCountRegister which seems to be used for
+</I>&gt;<i> similar purpose).  So what's the point in having that variable?
+</I>&gt;<i>
+</I>&gt;<i> hdc.c code gets the HDC sector count with this macro, it doesn't use
+</I>&gt;<i> the variable:
+</I>&gt;<i> #define HD_SECTORCOUNT(a) (a.command[4]&amp;  0xFF)        /* get sector count
+</I>&gt;<i> */
+</I>&gt;<i>
+</I>&gt;<i> How the fdc.c&amp;  hdc.c interact is quite ugly as fdc.c uses hdc.c variables
+</I>&gt;<i> directly instead of there being HDC_* functions for this stuff:
+</I>
+Well, I can't speak for hdc.c, I never touched this part of the code. I 
+guess it comes from Thomas and he certainly wanted to use the same logic 
+in hdc.c than in fdc.c, which could explain some unused variables in the 
+end.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003378.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+	<LI>Next message: <A HREF="003380.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3379">[ date ]</a>
+              <a href="thread.html#3379">[ thread ]</a>
+              <a href="subject.html#3379">[ subject ]</a>
+              <a href="author.html#3379">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

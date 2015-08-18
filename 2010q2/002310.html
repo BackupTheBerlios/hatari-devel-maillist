@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Enabling Mudflap in CMake (was: Makefile	removal?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Enabling%20Mudflap%20in%20CMake%20%28was%3A%20Makefile%0A%09removal%3F%29&In-Reply-To=%3C201006141538.04465.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002307.html">
+   <LINK REL="Next"  HREF="002317.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Enabling Mudflap in CMake (was: Makefile	removal?)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Enabling%20Mudflap%20in%20CMake%20%28was%3A%20Makefile%0A%09removal%3F%29&In-Reply-To=%3C201006141538.04465.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Enabling Mudflap in CMake (was: Makefile	removal?)">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jun 14 14:38:04 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002307.html">[hatari-devel] Makefiles removal?
+</A></li>
+        <LI>Next message: <A HREF="002317.html">[hatari-devel] Enabling Mudflap in CMake (was: Makefile removal?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2310">[ date ]</a>
+              <a href="thread.html#2310">[ thread ]</a>
+              <a href="subject.html#2310">[ subject ]</a>
+              <a href="author.html#2310">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 13 June 2010, Eero Tamminen wrote:
+&gt;<i> On Sunday 13 June 2010, Thomas Huth wrote:
+</I>&gt;<i> My guess is that this needs a new &quot;Mudflap/Pointer debugging&quot; build type
+</I>&gt;<i> for the Hatari CMakefile, as switching to it requires a full re-compile
+</I>&gt;<i> like switching from the Release to Debug build type does.
+</I>
+Hm.  DSP and other things are just options.  changing them should also
+trigger at least some rebuilding...
+
+
+&gt;<i> Option for this build type should be enabled only if:
+</I>&gt;<i> * a new enough GCC version is available (at least 4.x)
+</I>&gt;<i> * build target is x86 (AFAIK mudflap works currently only for x86)
+</I>
+It's also available for other architectures, but I've read some mails that
+it works currently properly only for x86, at least in GCC 4.3 or earlier.
+
+Maybe the x86 &amp; GCC check could be skipped and Mudflap check is enough
+though.  At least the Mudflap header with its functions should be visible
+only when new enough GCC is used (see below).
+
+
+&gt;<i> * libmudflap dev package is installed
+</I>
+At least in the Debian, these packages contain mf-runtime.h which provides
+the __mf_register() &amp; __mf_unregister() functions (that I used in couple of
+suitable places in Hatari code).
+
+That header is not in the normal include paths (it's in the GCC's own) and
+there's no pkg-config file for it.  But this include gets included
+automatically by GCC when one specifies the -fmudflapth / -fmudflap GCC
+option.
+
+I googled a bit and found out that Autotools using programs just check
+whether the compiler accepts mudflap compiler option.  That seems like an OK
+check for whether to offer users Mudflap option. The attached patch tries to
+do something similar.
+
+
+However, when I tried to debug[1] CMake problem of why it doesn't work
+correctly when invoked normally (doesn't find mudflap), but works fine
+(finds mudflap) when I ask it to produce debug output, it screwed up
+the permissions of all the files under my Hatari directory.
+
+Attached is the result.  I'd rather keep my distance from tools that work 
+this badly.
+
+Thomas, could you try the attached CMakeLists.txt file patch and tell why it
+doesn't work properly?
+
+
+&gt;<i> Also, I had the documentation on the Mudflap usage in
+</I>&gt;<i> Makefile-default.cnf (as it was developers only and I couldn't think of a
+</I>&gt;<i> better place), I guess something similar to this can now be put to the
+</I>&gt;<i> main CMakefile?
+</I>
+The attached patch does also this.
+
+
+	- Eero
+
+[1] These are the commands from the shell history that I run in &quot;build&quot;
+subdirectory (I removed the results between every call as otherwise it uses
+the cached values) before the mess:
+cmake ..
+cmake -Wdev
+cmake -Wdev ..
+cmake .. -Wdev
+cmake --graphviz=dep.dot --system-information=sys.txt --debug-trycompile --debug-output ..
+cmake --system-information sys.txt --debug-trycompile --debug-output ..
+cmake --debug-trycompile --debug-output ..
+
+If you're wondering what I was doing:
+* man page listed -Wdev option, but it wasn't accepted by CMake
+* --graphviz value was listed as needing '=', but --system-information not.
+So I was kind of wondering whether there are bugs in the manual page &amp; which
+way to give values is correct, or is CMake just inconsistent in addition to
+buggy.
+
+Btw. the --graphviz output is quite useless, it lists only deps to libs, not
+to source files...
+-------------- next part --------------
+ls: cannot access ../hmsa.diff: Permission denied
+ls: cannot access ../dmaSnd.c.apr18.patch: Permission denied
+ls: cannot access ../patches: Permission denied
+ls: cannot access ../icon.png.en: Permission denied
+ls: cannot access ../err.txt: Permission denied
+ls: cannot access ../cmake: Permission denied
+ls: cannot access ../tests: Permission denied
+ls: cannot access ../etc: Permission denied
+ls: cannot access ../config.h: Permission denied
+ls: cannot access ../.: Permission denied
+ls: cannot access ../.hg: Permission denied
+ls: cannot access ../Makefile: Permission denied
+ls: cannot access ../callgrind.out.4918: Permission denied
+ls: cannot access ../callgrind.out.6255: Permission denied
+ls: cannot access ../hataribuilds: Permission denied
+ls: cannot access ../gpl.txt: Permission denied
+ls: cannot access ../config-default.h: Permission denied
+ls: cannot access ../doc: Permission denied
+ls: cannot access ../CMakeLists.txt: Permission denied
+ls: cannot access ../png: Permission denied
+ls: cannot access ../Makefile-default.cnf: Permission denied
+ls: cannot access ../configure: Permission denied
+ls: cannot access ../bar: Permission denied
+ls: cannot access ../.hgtags: Permission denied
+ls: cannot access ../Visual.Studio: Permission denied
+ls: cannot access ../Makefile-default.cnf.orig: Permission denied
+ls: cannot access ../Makefile.cnf: Permission denied
+ls: cannot access ../python-ui: Permission denied
+ls: cannot access ../hatari-icon.png: Permission denied
+ls: cannot access ../..: Permission denied
+ls: cannot access ../readme.txt: Permission denied
+ls: cannot access ../pandem_p.st: Permission denied
+ls: cannot access ../build: Permission denied
+ls: cannot access ../pandem_p.msa: Permission denied
+ls: cannot access ../...tmp: Permission denied
+ls: cannot access ../tools: Permission denied
+ls: cannot access ../.hgignore: Permission denied
+ls: cannot access ../hatari.spec: Permission denied
+ls: cannot access ../Makefile-MinGW.cnf: Permission denied
+ls: cannot access ../src: Permission denied
+ls: cannot access ../website: Permission denied
+total 0
+d????????? ? ? ? ?                ? .
+d????????? ? ? ? ?                ? ..
+d????????? ? ? ? ?                ? bar
+d????????? ? ? ? ?                ? build
+-????????? ? ? ? ?                ? callgrind.out.4918
+-????????? ? ? ? ?                ? callgrind.out.6255
+d????????? ? ? ? ?                ? cmake
+-????????? ? ? ? ?                ? CMakeLists.txt
+-????????? ? ? ? ?                ? config-default.h
+-????????? ? ? ? ?                ? config.h
+-????????? ? ? ? ?                ? configure
+-????????? ? ? ? ?                ? dmaSnd.c.apr18.patch
+d????????? ? ? ? ?                ? doc
+-????????? ? ? ? ?                ? err.txt
+d????????? ? ? ? ?                ? etc
+-????????? ? ? ? ?                ? gpl.txt
+d????????? ? ? ? ?                ? hataribuilds
+-????????? ? ? ? ?                ? hatari-icon.png
+-????????? ? ? ? ?                ? hatari.spec
+d????????? ? ? ? ?                ? .hg
+-????????? ? ? ? ?                ? .hgignore
+-????????? ? ? ? ?                ? .hgtags
+-????????? ? ? ? ?                ? hmsa.diff
+-????????? ? ? ? ?                ? icon.png.en
+-????????? ? ? ? ?                ? Makefile
+-????????? ? ? ? ?                ? Makefile.cnf
+-????????? ? ? ? ?                ? Makefile-default.cnf
+-????????? ? ? ? ?                ? Makefile-default.cnf.orig
+-????????? ? ? ? ?                ? Makefile-MinGW.cnf
+-????????? ? ? ? ?                ? pandem_p.msa
+-????????? ? ? ? ?                ? pandem_p.st
+d????????? ? ? ? ?                ? patches
+d????????? ? ? ? ?                ? png
+d????????? ? ? ? ?                ? python-ui
+-????????? ? ? ? ?                ? readme.txt
+d????????? ? ? ? ?                ? src
+d????????? ? ? ? ?                ? tests
+-????????? ? ? ? ?                ? ...tmp
+d????????? ? ? ? ?                ? tools
+d????????? ? ? ? ?                ? Visual.Studio
+d????????? ? ? ? ?                ? website
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: CMakeLists.diff
+Type: text/x-diff
+Size: 1808 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100614/1654ca85/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100614/1654ca85/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002307.html">[hatari-devel] Makefiles removal?
+</A></li>
+	<LI>Next message: <A HREF="002317.html">[hatari-devel] Enabling Mudflap in CMake (was: Makefile removal?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2310">[ date ]</a>
+              <a href="thread.html#2310">[ thread ]</a>
+              <a href="subject.html#2310">[ subject ]</a>
+              <a href="author.html#2310">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

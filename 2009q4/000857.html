@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new support for avi recording
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3C200910182214.29904.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000856.html">
+   <LINK REL="Next"  HREF="000858.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new support for avi recording</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3C200910182214.29904.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] new support for avi recording">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Oct 18 21:14:29 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000856.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000858.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#857">[ date ]</a>
+              <a href="thread.html#857">[ thread ]</a>
+              <a href="subject.html#857">[ subject ]</a>
+              <a href="author.html#857">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 18 October 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> &gt; Is it possible to delay Avi recording starting until bootup has
+</I>&gt;<i> &gt; progressed enough that the refresh rate is stable (i.e. to detect that
+</I>&gt;<i> &gt; somehow)?
+</I>&gt;<i>
+</I>&gt;<i> Detecting this doesn't seem straightforward. But recording at 50 Hz
+</I>&gt;<i> while atari is at 60 Hz during the boot is not a problem in the end,
+</I>&gt;<i> because during the time atari boots at 60 Hz, only a white still image is
+</I>&gt;<i> displayed.
+</I>&gt;<i>
+</I>&gt;<i> So, when playing the avi, you will only see a white image at the
+</I>&gt;<i> beginning, and you won't be able to see any problem, because this image
+</I>&gt;<i> doesn't &quot;move&quot;, so it's not possible to see thata few frames don't have
+</I>&gt;<i> the exact fps (a white screen at 50 Hz looks the same as a white 60 Hz
+</I>&gt;<i> screen).
+</I>
+The &quot;problem&quot; I was trying to solve was needing to give the --avi-fps option
+in bootup case.  But I guess most people will start it from the GUI anyway
+as recording the bootup would just slow down things &amp; waste disk...
+
+Maybe AviRecordDefaultFps should be zero by default and main.c complain
+if it's not set (with --avi-fps) when --avirecord is used?
+
+Or --avirecord option itself should require giving the FPS value instead of
+there being separate --avi-fps option?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000856.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000858.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#857">[ date ]</a>
+              <a href="thread.html#857">[ thread ]</a>
+              <a href="subject.html#857">[ subject ]</a>
+              <a href="author.html#857">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

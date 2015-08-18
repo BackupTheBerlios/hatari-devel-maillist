@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Improved right border with 224 bytes overscan + hscroll
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Improved%20right%20border%20with%20224%20bytes%20overscan%20%2B%0A%20hscroll&In-Reply-To=%3C4D07DDEF.6040701%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002687.html">
+   <LINK REL="Next"  HREF="002681.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Improved right border with 224 bytes overscan + hscroll</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Improved%20right%20border%20with%20224%20bytes%20overscan%20%2B%0A%20hscroll&In-Reply-To=%3C4D07DDEF.6040701%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Improved right border with 224 bytes overscan + hscroll">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Dec 14 22:13:19 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002687.html">[hatari-devel] Improved right border with 224 bytes overscan + hscroll
+</A></li>
+        <LI>Next message: <A HREF="002681.html">[hatari-devel] CMake warnings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2688">[ date ]</a>
+              <a href="thread.html#2688">[ thread ]</a>
+              <a href="subject.html#2688">[ subject ]</a>
+              <a href="author.html#2688">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 14/12/2010 21:05, Anders Eriksson a &#233;crit :
+&gt;<i> On Tue, 14 Dec 2010, Eero Tamminen wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> The extra pixels were on middle of the last line, not at borders.
+</I>&gt;&gt;<i> I guess Anders needs to comment on this one. :-)
+</I>&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> Hatari shows 276 lines, while a real Atari show 274, so you will see two
+</I>&gt;<i> scanlines garabage in some programs with Hatari.
+</I>&gt;<i>
+</I>
+Hello,
+
+to be more precise on this, I used some values by Paulo Simoes in a post 
+on atari-forum about what should be shown by emulators :
+
+&quot;With a single 60/50 switch you can get 46 lines of lower border bitmap.
+Flix from DF says in his document that you can get 2 lines more with a 
+second 60/50 switch. I never tested that and will not do so as those 
+lines ar not really interesting as you can not see them on most of the 
+monitors/TVs.
+Now depending on the demos, you can get some bad results if you show the 
+complete 46 lines of the lower border as you may be displaying parts 
+that were not supposed to be shown or are not visible with most 
+monitors/TVs.
+For example, the Overscan Demos uses 45 lines of the lower border 
+because for a long time i believed that was the correct value, then i 
+tested it by reading the final video address and foun out that i had in 
+fact 46 with my machine. So if you display 46 lines you will see some 
+garbage pixels on the last line.
+[...]
+My advice is then to use 400x276 for SainT&quot;
+
+So, I chose to display 47 lines in the bottom border (which gives 
+29+200+47 = 276). Maybe there're really 1 or 2 lines less on STE than on 
+STF.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002687.html">[hatari-devel] Improved right border with 224 bytes overscan + hscroll
+</A></li>
+	<LI>Next message: <A HREF="002681.html">[hatari-devel] CMake warnings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2688">[ date ]</a>
+              <a href="thread.html#2688">[ thread ]</a>
+              <a href="subject.html#2688">[ subject ]</a>
+              <a href="author.html#2688">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

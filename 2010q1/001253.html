@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Big problems with bus error on Falcon
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Big%20problems%20with%20bus%20error%20on%20Falcon&In-Reply-To=%3C201001170118.00067.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001234.html">
+   <LINK REL="Next"  HREF="001265.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Big problems with bus error on Falcon</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Big%20problems%20with%20bus%20error%20on%20Falcon&In-Reply-To=%3C201001170118.00067.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Big problems with bus error on Falcon">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jan 17 00:17:59 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001234.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+        <LI>Next message: <A HREF="001265.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1253">[ date ]</a>
+              <a href="thread.html#1253">[ thread ]</a>
+              <a href="subject.html#1253">[ subject ]</a>
+              <a href="author.html#1253">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 16 January 2010, Thomas H. wrote:
+&gt;<i> &gt; &gt; This is address 0xff800A.  According to docs it's unassigned.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; That's why I'm asking myself that on the real computer, reading (or
+</I>&gt;<i> &gt; writing to) an unasigned area does not generate a bus error as it does
+</I>&gt;<i> &gt; on hatari. (it's just a guess, I have no clue).
+</I>&gt;<i>
+</I>&gt;<i> Most unassigned adresses cause an bus error on real hardware, however
+</I>&gt;<i> certain memory regions do not and simply &quot;ignore&quot; the access. I think
+</I>&gt;<i> this depends on the address decoder of the corresponding hardware area.
+</I>&gt;<i>
+</I>&gt;<i> &gt; &gt; Another strange thing : the game conquest stops with a bus error at
+</I>&gt;<i> &gt; &gt; address $ff8901.
+</I>
+I found by accident one more.
+
+I had based on previous experiments thought that MiNT only boots from
+a real HDD image, not from GEMDOS drive.  However, I accidentally started
+a GEMDOS dir that had MiNT in it and it actually booted, kind of (MiNT
+started, XaAES didn't), when I copied the mint.cnf to a floppy.
+
+Main issue is that it thinks it's booting from A: although its booting from 
+C: GEMDOS drive.  Thomas, any idea what could be an issue?
+
+
+The thing relevant to this discussion is this (with GEMDOS tracing):
+GEMDOS Dsetpath(&quot;\mint\1-16-cur&quot;)
+GEMDOS: \mint\1-16-cur -&gt; 
+host: /home/eero/down/st/diskstuff/GEMDOS-HD/C/mint/1-16-cur
+GEMDOS call 0x9 (Cconws)
+M68000 Bus Error at address $fffa31.
+GEMDOS call 0x9 (Cconws)
+...
+
+$fffa30-$fffa3f is also one of the unassigned areas in my documentation.
+
+
+	- Eero
+
+PS. Another interesting thing was that MiNT seems at boot read the (ini or 
+cnf) file byte at the time...
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001234.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+	<LI>Next message: <A HREF="001265.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1253">[ date ]</a>
+              <a href="thread.html#1253">[ thread ]</a>
+              <a href="subject.html#1253">[ subject ]</a>
+              <a href="author.html#1253">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

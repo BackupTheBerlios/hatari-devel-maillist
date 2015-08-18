@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crosscompiling Hatari for GP2X Wiz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C1301243988.11867.4.camel%40jll%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003235.html">
+   <LINK REL="Next"  HREF="003240.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crosscompiling Hatari for GP2X Wiz</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C1301243988.11867.4.camel%40jll%3E"
+       TITLE="[hatari-devel] Crosscompiling Hatari for GP2X Wiz">marndt at asmsoftware.de
+       </A><BR>
+    <I>Sun Mar 27 18:39:48 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003235.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+        <LI>Next message: <A HREF="003240.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3238">[ date ]</a>
+              <a href="thread.html#3238">[ thread ]</a>
+              <a href="subject.html#3238">[ subject ]</a>
+              <a href="author.html#3238">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Sonntag, den 27.03.2011, 18:50 +0300 schrieb Eero Tamminen:
+&gt;<i> &gt; How can I control which actuall gcc compiler is used?
+</I>&gt;<i> &gt; I basically need to tweak a few compile settings:
+</I>&gt;<i> &gt; - use a different GNU Toolchain (for the main compile)
+</I>&gt;<i> &gt; - disable a lot of PC specific libs (AVI, audio recording, etc.)
+</I>&gt;<i> &gt; - inject my own defines into the build to de/activate functionalities
+</I>&gt;<i> 
+</I>&gt;<i> Just edit the CMake configuration variables with ccmake (ncurses UI).
+</I>&gt;<i> 
+</I>&gt;<i> Or edit it (CMakeCache.txt I think) directly with text editor.
+</I>
+I edited all tools for the Wiz toolchain now. within CmakeCache.txt
+
+
+The Make itself fails with the buildcpu things:
+[18:38:34] <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at jll</A>: ~/src/hatari/wiz 
+$ make
+[  4%] Built target Floppy
+[ 11%] Built target Falcon
+[ 11%] Built target build68k
+Linking C executable gencpu
+CMakeFiles/gencpu.dir/readcpu.c.o: In function `read_table68k':
+readcpu.c:(.text+0x13dc): undefined reference to `n_defs68k'
+readcpu.c:(.text+0x13e0): undefined reference to `defs68k'
+collect2: ld returned 1 exit status
+make[2]: *** [src/uae-cpu/gencpu] Fehler 1
+make[1]: *** [src/uae-cpu/CMakeFiles/gencpu.dir/all] Fehler 2
+make: *** [all] Fehler 2
+
+
+I think the wrong files are compiled with the target gcc here:
+
+[18:36:40] <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at jll</A>: ~/src/hatari/wiz 
+$ file ./src/uae-cpu/CMakeFiles/gencpu.dir/readcpu.c.o
+./src/uae-cpu/CMakeFiles/gencpu.dir/readcpu.c.o: ELF 32-bit LSB
+relocatable, ARM, version 1, not stripped
+
+Otherwise some other C files seem to get properly build with the target
+gcc:
+
+[18:36:57] <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at jll</A>: ~/src/hatari/wiz 
+$ file ./src/CMakeFiles/Floppy.dir/msa.c.o
+./src/CMakeFiles/Floppy.dir/msa.c.o: ELF 32-bit LSB relocatable, ARM,
+version 1, not stripped
+
+Matthias
+
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003235.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+	<LI>Next message: <A HREF="003240.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3238">[ date ]</a>
+              <a href="thread.html#3238">[ thread ]</a>
+              <a href="subject.html#3238">[ subject ]</a>
+              <a href="author.html#3238">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

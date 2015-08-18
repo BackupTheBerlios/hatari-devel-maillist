@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] IDE &amp; EmuTOS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20%26%20EmuTOS&In-Reply-To=%3C201001202101.49391.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001291.html">
+   <LINK REL="Next"  HREF="001331.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] IDE &amp; EmuTOS</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20%26%20EmuTOS&In-Reply-To=%3C201001202101.49391.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] IDE &amp; EmuTOS">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Jan 20 20:01:49 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001291.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+        <LI>Next message: <A HREF="001331.html">[hatari-devel] IDE &amp; EmuTOS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1293">[ date ]</a>
+              <a href="thread.html#1293">[ thread ]</a>
+              <a href="subject.html#1293">[ subject ]</a>
+              <a href="author.html#1293">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 20 January 2010, Thomas Huth wrote:
+&gt;<i> &gt; The bdrv_read() errors seem to be coming only(?) when I use EmuTOS.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I guess it's a bug in EmuTOS.
+</I>&gt;<i>
+</I>&gt;<i> That's strange - EmuTOS does not have IDE support at all!
+</I>
+Well, Cecile at least sees the Hatari IDE disk after this:
+hatari --machine falcon --tos etos512k.img --ide-master HDD-16MB.image 
+cecile.st
+
+(Cecile icons are just black though.)
+
+&quot;IDE&quot; &amp; &quot;Partition&quot; dialogs work and &quot;Valider&quot; (OKing) the selections
+doesn't produce errors from Cecile or Hatari.  It doesn't ask whether I want
+to perform this potentially dangerous operation though, so it's possible
+that this is (also) a bug in Cecile and it actually doesn't do anything.
+
+After this clicking &quot;Installer&quot;, selecting Hatari IDE disk and first
+partition gives huge amount of stuff like this from Hatari:
+--------
+...
+IDE bdrv_read error: (0 != 512 length) at sector 20004421!
+IDE bdrv_read error: (0 != 512 length) at sector 20004422!
+IDE bdrv_read error: (0 != 512 length) at sector 20004423!
+...
+IDE bdrv_read error: (0 != 512 length) at sector 20006205!
+Bus error wput at 00400000
+M68000 Bus Error at address $400000.
+---------
+And EmuTOS panics.
+
+Note that if I do this on an already formatted &amp; working IDE HD image, this
+doesn't happen.  It happens only for an unformatted HD image (one created
+with dd'ing /dev/zero as explained in Hatari manual).
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001291.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+	<LI>Next message: <A HREF="001331.html">[hatari-devel] IDE &amp; EmuTOS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1293">[ date ]</a>
+              <a href="thread.html#1293">[ thread ]</a>
+              <a href="subject.html#1293">[ subject ]</a>
+              <a href="author.html#1293">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Latest Hatari HG version gets stuck sometimes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Latest%20Hatari%20HG%20version%20gets%20stuck%20sometimes&In-Reply-To=%3Calpine.LMD.2.00.0907171335270.17227%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000481.html">
+   <LINK REL="Next"  HREF="000483.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Latest Hatari HG version gets stuck sometimes</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Latest%20Hatari%20HG%20version%20gets%20stuck%20sometimes&In-Reply-To=%3Calpine.LMD.2.00.0907171335270.17227%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Latest Hatari HG version gets stuck sometimes">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Jul 17 13:37:51 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000481.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+        <LI>Next message: <A HREF="000483.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#482">[ date ]</a>
+              <a href="thread.html#482">[ thread ]</a>
+              <a href="subject.html#482">[ subject ]</a>
+              <a href="author.html#482">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 17 Jul 2009, Thomas Huth wrote:
+
+&gt;<i> On Fri, 17 Jul 2009 00:38:06 +0200 (CEST)
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> While trying to fix another demo, I tried to restore a fresh snapshot
+</I>&gt;&gt;<i> and was lucky enough to get the reported crash problem when restoring
+</I>&gt;&gt;<i> it :)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This is with the latest head sources, so with the sequence :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>          Video_ClearOnVBL();
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>          Video_StartInterrupts(PendingCyclesOver);
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>          ShortCut_ActKey();
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I get the same wrong value for LineCycle in ConvertPosition, but this
+</I>&gt;&gt;<i> is due to a wrong value of nHBL. My value is 53, but this is the
+</I>&gt;&gt;<i> first line of the VBL, it should be 0 !
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Adding
+</I>&gt;&gt;<i>  	fprintf ( stderr, &quot;capt %d\n&quot; , nHBL );
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> at the end of Video_MemorySnapShot_Capture, I can see that the
+</I>&gt;&gt;<i> restored value for nHBL is indeed 53. So the problem is in the saved
+</I>&gt;&gt;<i> snapshot.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thomas, do you know how this is possible ? I thought snapshots were
+</I>&gt;&gt;<i> captured only during the VBL handler, which means nHBL should be 0
+</I>&gt;&gt;<i> and saved this way.
+</I>&gt;<i>
+</I>&gt;<i> I don't know ... nHBL should always be cleared on Video_ClearOnVBL !?!
+</I>&gt;<i> How did you create the snapshot (shortcut? GUI? Python-UI?)?
+</I>&gt;<i> Can you somehow reproduce such faulty snapshots? Then you could add an
+</I>&gt;<i> assert(nHBL == 0) to Video_MemorySnapShot_Capture to analyse the
+</I>&gt;<i> problem with gdb.
+</I>&gt;<i>
+</I>
+Yes, it should be cleared by Video_ClearOnVBL.
+But perhaps the snapshot procedure can interrupt hatari at another place 
+than in the VBL ? In my case, I used the gui, F12, then save snapshot.
+
+I wasn't able to reproduce, but I will add some debug traces to see if I 
+can trigger it again.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000481.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+	<LI>Next message: <A HREF="000483.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#482">[ date ]</a>
+              <a href="thread.html#482">[ thread ]</a>
+              <a href="subject.html#482">[ subject ]</a>
+              <a href="author.html#482">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

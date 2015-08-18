@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CE593F7.8070307%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002642.html">
+   <LINK REL="Next"  HREF="002649.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CE593F7.8070307%40free.fr%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Nov 18 22:00:39 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002642.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002649.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2644">[ date ]</a>
+              <a href="thread.html#2644">[ thread ]</a>
+              <a href="subject.html#2644">[ subject ]</a>
+              <a href="author.html#2644">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+You're right there.
+
+When I included the WINUAE cpu code into hatari, I choose not to include 
+memory.c and memory.h, but keep our code instead.
+I just added the needed variables.
+
+But I've just forgotten to include the corresponding code (shame on me ;)
+
+This gives me another question :
+
+The missing code includes some more functions to add.
+But some of them differs from hatari memory.c and amiga memory.cpp.
+
+For example,
+
+Our hatari memory.c code:
+
+/* A dummy bank that only contains zeros */
+
+static uae_u32 dummy_lget(uaecptr addr)
+{
+     if (illegal_mem)
+     write_log (&quot;Illegal lget at %08lx\n&quot;, (long)addr);
+
+     return 0;
+}
+
+
+Amiga WinUae's newcpu.cpp code:
+
+
+static uae_u32 REGPARAM2 dummy_lget (uaecptr addr)
+{
+#ifdef JIT
+     special_mem |= S_READ;
+#endif
+     if (currprefs.illegal_mem)
+         dummylog (0, addr, 4, 0, 0);
+     return dummy_get (addr, 4);
+}
+
+
+static uae_u32 dummy_get (uaecptr addr, int size)
+{
+     uae_u32 v;
+     if (currprefs.cpu_model &gt;= 68020)
+         return NONEXISTINGDATA;
+     v = (regs.irc &lt;&lt; 16) | regs.irc;
+     if (size == 4) {
+         ;
+     } else if (size == 2) {
+         v &amp;= 0xffff;
+     } else {
+         v = (addr &amp; 1) ? (v &amp; 0xff) : ((v &gt;&gt; 8) &amp; 0xff);
+     }
+#if 0
+     if (addr &gt;= 0x10000000)
+         write_log (L&quot;%08X %d = %08x\n&quot;, addr, size, v);
+#endif
+     return v;
+}
+
+
+Do you know if the difference comes from:
+
+1) older uae_cpu core which didn't implement this code (better 
+management of memory) ?
+2) unuseful code cleaned for hatari's purpose ?
+3) Amiga specific code ?
+4) other reasons ?
+
+Should I be closer to Amiga's memory code or add the minimum in our 
+actual hatari's code ?
+
+Regards,
+
+
+Laurent
+
+
+Le 18/11/2010 08:41, Thomas Huth a &#233;crit :
+&gt;<i> On Wed, 17 Nov 2010 17:22:05 +0100
+</I>&gt;<i> Laurent Sallafranque&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;  wrote:
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>&gt;&gt;<i> Last point, I'm not that sure that my yesterday's patch is good, as
+</I>&gt;&gt;<i> it always return 0.
+</I>&gt;&gt;<i> Maybe it's this patch that generates all the problems.
+</I>&gt;&gt;<i>      
+</I>&gt;<i> I think that patch was the wrong way for a solution.
+</I>&gt;<i> Have a look at get_wordi at the end of memory.h, it uses wordgeti()
+</I>&gt;<i> which is defined like this:
+</I>&gt;<i>
+</I>&gt;<i> #define wordgeti(addr) (call_mem_get_func(get_mem_bank(addr).wgeti, addr))
+</I>&gt;<i>
+</I>&gt;<i> As you can see, it accesses the wgeti field of the corresponding memory
+</I>&gt;<i> bank. But when you now look at the memory bank definition in memory.c,
+</I>&gt;<i> you'll see that the corresponding field is not set!
+</I>&gt;<i>
+</I>&gt;<i> So please to try to complete the memory bank definitions first, and I
+</I>&gt;<i> am pretty sure the &quot;--compatible true&quot; mode will also work, e.g.:
+</I>&gt;<i>
+</I>&gt;<i> static addrbank ROMmem_bank =
+</I>&gt;<i> {
+</I>&gt;<i>      ROMmem_lget, ROMmem_wget, ROMmem_bget,
+</I>&gt;<i>      ROMmem_lput, ROMmem_wput, ROMmem_bput,
+</I>&gt;<i>      ROMmem_xlate, ROMmem_check,
+</I>&gt;<i>      // The following fields were missing:
+</I>&gt;<i>      NULL, &quot;ROM&quot;,
+</I>&gt;<i>      ROMmem_lget, ROMmem_wget, 0
+</I>&gt;<i> };
+</I>&gt;<i>
+</I>&gt;<i> I haven't tried it yet, but I am pretty sure that this is the main
+</I>&gt;<i> problem here.
+</I>&gt;<i>
+</I>&gt;<i>   Regards,
+</I>&gt;<i>    Thomas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002642.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002649.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2644">[ date ]</a>
+              <a href="thread.html#2644">[ thread ]</a>
+              <a href="subject.html#2644">[ subject ]</a>
+              <a href="author.html#2644">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

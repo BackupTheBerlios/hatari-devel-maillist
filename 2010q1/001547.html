@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] I'm lucky ;) K.prg  is working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3C4B863D95.4070800%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001555.html">
+   <LINK REL="Next"  HREF="001548.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] I'm lucky ;) K.prg  is working</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3C4B863D95.4070800%40free.fr%3E"
+       TITLE="[hatari-devel] I'm lucky ;) K.prg  is working">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Feb 25 10:06:29 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001555.html">[hatari-devel] 2 more commands in debugger
+</A></li>
+        <LI>Next message: <A HREF="001548.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1547">[ date ]</a>
+              <a href="thread.html#1547">[ thread ]</a>
+              <a href="subject.html#1547">[ subject ]</a>
+              <a href="author.html#1547">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+After some more tests, I arrive to this conclusion : K.prg is not 
+related to a cycles timing problem but to a do_specialties() problem.
+
+Just to help, I've added the different tests I realized with some comments.
+
+K.PRG uses the Graoumpf tracker code to play a GT2 module (on the screen 
+where we have the crash).
+Graoumpf Tracker uses a special level 6 interrupt from DSP to COMBEL in 
+real falcon, MFP in hatari.
+
+Extract of MFP code :
+
+/**
+ * Check 'pending' registers to see if any MFP interrupts need servicing.
+ * Request interrupt if necessary.
+ * @return true if at least one MFP interrupt was allowed, else return 
+false.
+ */
+bool MFP_CheckPendingInterrupts(void)
+{
+    int    InterruptPossible;
+
+    /* Handle Falcon DSP interrupt. Note: This interrupt is not wired to
+     * the MFP on a real Falcon, we just handle it with the SPCFLAG_MFP
+     * to avoid taking care of another special flag in the CPU core! */
+    if (bDspHostInterruptPending &amp;&amp; regs.intmask &lt; 6)
+    {
+        M68000_Exception(IoMem_ReadByte(0xffa203)*4, 
+M68000_EXC_SRC_INT_DSP);
+        bDspHostInterruptPending = false;
+        return true;
+    }
+
+
+Now the tests :
+
+TEST 1 :
+
+I've returned to version N-1 (before latest Nicolas' patch). K.PRG 
+doesn't run.
+
+    if (regs.spcflags) {
+        if (do_specialties ())
+            return;
+    }
+
+    /* Run DSP 56k code if necessary */
+    if (bDspEnabled) {
+        DSP_Run( cycles );
+    }
+
+
+TEST 2 :
+
+If I invert the 2 blocks, it runs well :
+
+    /* Run DSP 56k code if necessary */
+    if (bDspEnabled) {
+        DSP_Run( cycles );
+    }
+
+    if (regs.spcflags) {
+        if (do_specialties ())
+            return;
+    }
+
+
+
+TEST 3 :
+
+If I save cycles before calling (do_specialties(), K.PRG doesn't run.
+
+    save_cycles = cycles;
+
+    if (regs.spcflags) {
+        if (do_specialties ())
+            return;
+    }
+
+    /* Run DSP 56k code if necessary */
+    if (bDspEnabled) {
+        DSP_Run( save_cycles );
+    }
+
+
+
+TEST 4 :
+
+I've added a printf before the return.
+Code never goes to the return, except when I quit Hatari.
+The problem is not here.
+
+     if (regs.spcflags) {
+        if (do_specialties ()) {
+            fprintf(stderr, &quot;RETURN \n&quot;);
+            return;
+        }
+    }
+
+
+TEST 5 :
+
+I've added a test if cycles != save_cycles.
+It never happens.
+
+===&gt; do_specialties() doesn't change the cycles value.
+
+    save_cycles = cycles;
+
+    if (regs.spcflags) {
+        if (do_specialties ())
+            return;
+    }
+
+    /* Run DSP 56k code if necessary */
+    if (bDspEnabled) {
+        if (save_cycles != cycles)
+            fprintf (stderr, &quot;Before : %d\t\t After : %d\n&quot;, cycCounter, 
+cycles);
+
+        DSP_Run( save_cycles );
+    }
+
+
+TEST 6 : (to get some more infos)
+
+I've added a printf  regs.spcflags.
+I get Only these values :
+
+During falcon boot :
+256
+512
+516
+768
+4
+
+On the falcon desktop:
+768 -&gt; when I move the mouse, or after a certain time
+
+When I launch K.prg
+256
+512
+768
+4  ---&gt; only once
+
+When I quit hatari:
+16 --&gt; only once.
+
+
+
+Hope this helps to understand the problem.
+
+Regards
+
+Laurent
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001555.html">[hatari-devel] 2 more commands in debugger
+</A></li>
+	<LI>Next message: <A HREF="001548.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1547">[ date ]</a>
+              <a href="thread.html#1547">[ thread ]</a>
+              <a href="subject.html#1547">[ subject ]</a>
+              <a href="author.html#1547">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

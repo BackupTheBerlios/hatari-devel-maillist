@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger address base
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20address%20base&In-Reply-To=%3Calpine.LMD.2.00.0907302234430.20444%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000532.html">
+   <LINK REL="Next"  HREF="000537.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger address base</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20address%20base&In-Reply-To=%3Calpine.LMD.2.00.0907302234430.20444%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Debugger address base">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Jul 30 22:39:16 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000532.html">[hatari-devel] Debugger address base
+</A></li>
+        <LI>Next message: <A HREF="000537.html">[hatari-devel] Debugger address base
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#533">[ date ]</a>
+              <a href="thread.html#533">[ thread ]</a>
+              <a href="subject.html#533">[ subject ]</a>
+              <a href="author.html#533">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 30 Jul 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Thursday 30 July 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;<i> On Thu, 30 Jul 2009, Eero Tamminen wrote:
+</I>&gt;&gt;&gt;<i> On my part AFAIK no, unless you come up with some other issues with
+</I>&gt;&gt;&gt;<i> the new debugger stuff. :-)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I used it lately, and I think it's strange now that addresses used after
+</I>&gt;&gt;<i> 'd' or 'm' commands are decimal. Is it possible to make hexa the default
+</I>&gt;&gt;<i> for addresses use with 'd', 'm' and other commands involving an address,
+</I>&gt;<i>
+</I>&gt;<i> So that would be &quot;a&quot;, &quot;d&quot;, &quot;l&quot;, &quot;m&quot;, &quot;s&quot;, &quot;w&quot;, &quot;da&quot;, &quot;dd&quot;, &quot;dm&quot; commands
+</I>&gt;<i> i.e. switching about all commands back to hex?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> but to keep decimal as the default type for &quot;content&quot; value ?
+</I>&gt;<i>
+</I>&gt;<i> Hm.  I find it more natural &amp; faster to enter data as hex...  There can be
+</I>&gt;<i> much more content to enter and if debugger accepts all bases for &quot;content&quot;,
+</I>&gt;<i> one would then need to add '$' for all values.  But I guess one could use
+</I>&gt;<i> &quot;l&quot;(oad)  if there's more data...
+</I>
+I guess it depends, I sometimes also feels it more useful to enter data as 
+hex and sometimes as decimal. As you say, defaulting to hex is not a 
+problem, but we need to define a prefix to force the value to decimal.
+
+&gt;<i>
+</I>&gt;<i> Anyway, I think it might be better to have an option for forcing all numbers
+</I>&gt;<i> lacking prefix to be interpreted in certain number base.  The new &quot;value&quot;
+</I>&gt;<i> command could for example accept special &quot;dec&quot;, &quot;hex&quot; and &quot;bin&quot; argument for
+</I>&gt;<i> switching this.  The debugger prompt could show this mode.
+</I>&gt;<i>
+</I>&gt;<i> In the config file this option could be named e.g. NumberInputBase.  But
+</I>&gt;<i> what should be the prefix used for decimal numbers when non-the prefixed
+</I>&gt;<i> input is being interpreted as hex or binary?
+</I>&gt;<i>
+</I>
+Yes, that's what I wondered too :) Maybe we could use '+' or '#' ?
+
+&gt;<i>
+</I>&gt;&gt;<i> So to write $1234 at adress $20000, you would use :
+</I>&gt;&gt;<i> w 20000 $12 $34
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> And to set D0 to $1234 :
+</I>&gt;&gt;<i> r D0=$1234
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What do others think ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000532.html">[hatari-devel] Debugger address base
+</A></li>
+	<LI>Next message: <A HREF="000537.html">[hatari-devel] Debugger address base
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#533">[ date ]</a>
+              <a href="thread.html#533">[ thread ]</a>
+              <a href="subject.html#533">[ subject ]</a>
+              <a href="author.html#533">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

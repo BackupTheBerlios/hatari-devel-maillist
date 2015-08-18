@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] IDE in ST/STE mode?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20in%20ST/STE%20mode%3F&In-Reply-To=%3C200903312145.24848.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000218.html">
+   <LINK REL="Next"  HREF="000220.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] IDE in ST/STE mode?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20in%20ST/STE%20mode%3F&In-Reply-To=%3C200903312145.24848.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] IDE in ST/STE mode?">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Mar 31 20:45:24 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000218.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+        <LI>Next message: <A HREF="000220.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#219">[ date ]</a>
+              <a href="thread.html#219">[ thread ]</a>
+              <a href="subject.html#219">[ subject ]</a>
+              <a href="author.html#219">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 31 March 2009, Kenneth Kaufman wrote:
+&gt;<i> I've managed to get the IDE drive support to allow the AHDI
+</I>&gt;<i> driver to recognise the IDE hard disk but i've not managed to figure out
+</I>&gt;<i> how the system gets the logical hard disk drive representation of the IDE
+</I>&gt;<i> or AHDI drive to show up? Is TOS handling this?
+</I>
+And HD driver I guess.
+
+
+&gt;<i> Then theres the:
+</I>&gt;<i> InternalDTAs - GEM?
+</I>
+GEMDOS.
+
+
+&gt;<i> As far as I can figure so far, GEMDOS HDD is the only drive unit not
+</I>&gt;<i> managed directly by TOS.
+</I>
+Right.  IDE/ACSI drives are emulated at the HW level.  For GEMDOS drives,
+Hatari hooks into GEMDOS within the emulation.
+
+
+If you e.g. use something like:
+	hatari -m --tos etos512k.img -d test/ --acsi hd.img
+
+And hd.img has only one partition, you will see the ACSI drive partition as
+C: and GEMDOS dir as D:.
+
+(EmuTOS doesn't require a HD driver for HD images with DOS partition table)
+
+
+However, there's something funny with the IDE &amp; GEMDOS drive interaction
+in current Hatari (not one having you GEMDOS drives patch).  For testing
+your patch with the HD image stuff, you could use the ASCI emulation.
+
+
+Thomas, if I give both IDE and GEMDOS drives + a floppy image with a HD
+driver, EmuTOS skips running the auto/-stuff from the floppy.  And running
+the driver manually after boot doesn't work either.  This is with Cecile.
+
+If I use TOS 1.4, boot happens from a floppy, and IDE driver recognizes the 
+hard disk, but only GEMDOS drive gets mounted by TOS.  This is with HD
+driver.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000218.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+	<LI>Next message: <A HREF="000220.html">[hatari-devel] IDE in ST/STE mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#219">[ date ]</a>
+              <a href="thread.html#219">[ thread ]</a>
+              <a href="subject.html#219">[ subject ]</a>
+              <a href="author.html#219">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

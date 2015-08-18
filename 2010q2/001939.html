@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari asserts that should be fixed for the	release
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20asserts%20that%20should%20be%20fixed%20for%20the%0A%09release&In-Reply-To=%3C201004272230.14737.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001935.html">
+   <LINK REL="Next"  HREF="002138.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari asserts that should be fixed for the	release</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20asserts%20that%20should%20be%20fixed%20for%20the%0A%09release&In-Reply-To=%3C201004272230.14737.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari asserts that should be fixed for the	release">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Apr 27 21:30:14 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001935.html">[hatari-devel] Hatari asserts that should be fixed for the	release
+</A></li>
+        <LI>Next message: <A HREF="002138.html">[hatari-devel] Hatari asserts that should be fixed for the	release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1939">[ date ]</a>
+              <a href="thread.html#1939">[ thread ]</a>
+              <a href="subject.html#1939">[ subject ]</a>
+              <a href="author.html#1939">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 18 April 2010, Eero Tamminen wrote:
+&gt;<i> 2) Start Hatari with e.g. TOS 1.4 and something like this:
+</I>&gt;<i> 	./hatari -m -d includes/ --mount-changes no
+</I>&gt;<i>
+</I>&gt;<i>   Open drive C: and drag a file within the window so that the GEM
+</I>&gt;<i>   data copy dialog opens.  Enable fast-forward.
+</I>&gt;<i>
+</I>&gt;<i> Then wait and within about 5 minutes Hatari should in both cases die to
+</I>&gt;<i> this assert:
+</I>&gt;<i> hatari: cycInt.c:377: CycInt_AddRelativeInterruptWithOffset: Assertion
+</I>&gt;<i> `CycleTime &gt;= 0' failed.
+</I>
+If you use also &quot;--fast-forward yes&quot;, you should be able to get
+this assert faster.
+
+
+For reference, here's the info I got on this in January:
+---------
+hatari: cycInt.c:377: CycInt_AddRelativeInterruptWithOffset: Assertion 
+`CycleTime &gt;= 0' failed.
+
+Program received signal SIGABRT, Aborted.
+[Switching to Thread 0xb79ad6b0 (LWP 3913)]
+0xb7f7e424 in __kernel_vsyscall ()
+(gdb) bt
+#0  0xb7f7e424 in __kernel_vsyscall ()
+#1  0xb7c26640 in raise () from /lib/i686/cmov/libc.so.6
+#2  0xb7c28018 in abort () from /lib/i686/cmov/libc.so.6
+#3  0xb7c1f5be in __assert_fail () from /lib/i686/cmov/libc.so.6
+#4  0x08053fe6 in CycInt_AddRelativeInterruptWithOffset (CycleTime=-24,
+    CycleType=1, Handler=INTERRUPT_VIDEO_ENDLINE, CycleOffset=0)
+    at cycInt.c:377
+#5  0x08054017 in CycInt_AddRelativeInterrupt (CycleTime=-24, CycleType=1,
+    Handler=INTERRUPT_VIDEO_ENDLINE) at cycInt.c:337
+#6  0x0807e16c in Video_InterruptHandler_EndLine () at video.c:1609
+#7  0x08087179 in m68k_go (may_quit=1) at newcpu.c:1751
+#8  0x0806b444 in M68000_Start () at m68000.c:228
+...
+(gdb) up
+#6  0x0807e16c in Video_InterruptHandler_EndLine () at video.c:1609
+1609                    CycInt_AddRelativeInterrupt ( LineTimerBCycle - 
+LineCycles + nCyclesPerLine,
+(gdb) print LineTimerBCycle
+$1 = 188
+(gdb) print LineCycles
+$2 = 436
+(gdb) print nCyclesPerLine
+$3 = 224
+(gdb) print LineTimerBCycle - LineCycles + nCyclesPerLine
+$4 = -24
+     ^^^
+
+Other video state:
+(gdb) info locals
+FrameCycles = 436
+HblCounterVideo = 1
+LineCycles = 436
+PendingCycles = 24
+(gdb) print nHBL
+$6 = 0
+(gdb) print nScanlinesPerFrame
+$7 = 501
+(gdb) print STRam[0xfffa03]
+$10 = 4 '\004'
+(gdb) print STRam[0xfffa03] &amp; ( 1 &lt;&lt; 3 )
+$11 = 0
+---------
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001935.html">[hatari-devel] Hatari asserts that should be fixed for the	release
+</A></li>
+	<LI>Next message: <A HREF="002138.html">[hatari-devel] Hatari asserts that should be fixed for the	release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1939">[ date ]</a>
+              <a href="thread.html#1939">[ thread ]</a>
+              <a href="subject.html#1939">[ subject ]</a>
+              <a href="author.html#1939">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

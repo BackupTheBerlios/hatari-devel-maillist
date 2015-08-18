@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari patches for bitplane conversion
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C752526d20907220101q5db3b9dcn86b4cdf78f4e5797%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000502.html">
+   <LINK REL="Next"  HREF="000504.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari patches for bitplane conversion</H1>
+    <B>K&#229;re Andersen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C752526d20907220101q5db3b9dcn86b4cdf78f4e5797%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Hatari patches for bitplane conversion">kareandersen at gmail.com
+       </A><BR>
+    <I>Wed Jul 22 10:01:58 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000502.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+        <LI>Next message: <A HREF="000504.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#503">[ date ]</a>
+              <a href="thread.html#503">[ thread ]</a>
+              <a href="subject.html#503">[ subject ]</a>
+              <a href="author.html#503">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, Jul 22, 2009 at 9:34 AM, Thomas Huth&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">huth at users.berlios.de</A>&gt; wrote:
+&gt;<i> On Tue, 21 Jul 2009 16:22:27 +0200
+</I>&gt;<i> K&#229;re Andersen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">kareandersen at gmail.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Ok, I am no expert on Intel architecture, but I can tell you this
+</I>&gt;&gt;<i> much: 2MB cache does not mean 2MB that you can freely fill up with
+</I>&gt;&gt;<i> whatever code and data you wish.
+</I>&gt;<i>
+</I>&gt;<i> Sure, but since these screen buffers are linear in memory, they should
+</I>&gt;<i> be copied also quite fast with RAM burst mode.
+</I>
+Yes sure, but still.... It can be done better. So why not do that then? :)
+
+&gt;&gt;<i> &gt; I also don't think that this problem is related to CPU caches -
+</I>&gt;&gt;<i> &gt; since it does not occur on Linux or Windows with modern CPUs! The
+</I>&gt;&gt;<i> &gt; problem must have something to do with Mac OS X exclusively.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> That is not what I have been saying at all. What I am saying is, this
+</I>&gt;&gt;<i> new code fits better - that is all.
+</I>&gt;<i>
+</I>&gt;<i> And all I am trying to do is to squash false rumors like &quot;Hatari does
+</I>&gt;<i> not work right on modern CPUs&quot;, which might quickly rise when some
+</I>&gt;<i> people read this thread. Believe me, it's often quite hard to get rid
+</I>&gt;<i> of such reputations, there were similar things in the past...
+</I>
+Hatari works quite right on modern CPUs. Because they are hellishly
+fast anyway :) And still, we can make it even better...
+
+&gt;<i> Ok, so we agree that the performance problems on Mac OS X are likely
+</I>&gt;<i> not caused by modern CPU caches, so let's stop this topic and focus on
+</I>&gt;<i> the real culprit (maybe Eero's LED fix already helps?).
+</I>
+
+Indeed! Things are already looking up, I just compiled a new version
+from Hg that seems to fly here! Mono troubles are still there tho, but
+I am confident we can weed that out fairly quick now... This is pri 1
+for me at the moment.
+
+&gt;&gt;<i> Again, this is the case, like I have tried to explain before: SDL on
+</I>&gt;&gt;<i> OS X is crap due to compositing. But helping it suck a bit less when
+</I>&gt;&gt;<i> it does not hurt the other platforms cant be a bad thing, can it?
+</I>&gt;<i>
+</I>&gt;<i> Ok, but how do you help the SDL with your new code? Yes, I know, it
+</I>&gt;<i> fits better in your cache, but that does not affect the SDL, does it?
+</I>&gt;<i> I mean, if the bottleneck is the SDL screen update, why do you affect
+</I>&gt;<i> it with your code that does not call any SDL function at all? That's
+</I>&gt;<i> why I asked you to do some additional tests recently...
+</I>
+Well, not doing the conversion back and forth to 8-bit certainly helps
+:<i>) The rest (vsync, memcmp() etc) is still to come...
+</I>
+&gt;<i> By the way, do you also have these performance problems in fullscreen
+</I>&gt;<i> mode?
+</I>
+Nope. Except for the new Monochrome problem, which is still there.
+Like said, fullscreen SDL bypasses compositing. Or so i read
+somewhere...
+
+&gt;&gt;<i> &gt;&gt; &gt; &gt; * On platforms where SDL updates don't incur Vsync, the screen
+</I>&gt;&gt;<i> &gt;&gt; &gt; &gt; updates could be done so that screen-blitting is skipped for
+</I>&gt;&gt;<i> &gt;&gt; &gt; &gt; lines that haven't changed.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; How do you want to detect that SDL feature? Hard-coding it with
+</I>&gt;&gt;<i> &gt; #ifdefs is a bad idea, IMHO.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I guess there are several ways to do this, including the check for
+</I>&gt;&gt;<i> hardware surfaces. The safest way should nevertheless be to do a bit
+</I>&gt;&gt;<i> of profiling on buffer creation (that is, program start _and_ screen
+</I>&gt;&gt;<i> mode changes). You can do a wait for vsync, and see how much time will
+</I>&gt;&gt;<i> pass in between. If its shorter than a given threshold, say 50Hz, then
+</I>&gt;&gt;<i> you dont have any vsync...
+</I>&gt;<i>
+</I>&gt;<i> Ok, but that might render the code more complex again, not sure if this
+</I>&gt;<i> fits your goal to make it easier... ;-)
+</I>
+There are always tradeoffs...
+
+&gt;&gt;<i> A similar test is already done to get fine
+</I>&gt;&gt;<i> granularity cycle timing (and the comments about OS X in that part of
+</I>&gt;&gt;<i> the code are wrong mind you - we have HPET just as much as linux do).
+</I>&gt;<i>
+</I>&gt;<i> I don't know about HPET in general, but SDL_Delay at least has a
+</I>&gt;<i> granularity of 10 ms on Mac OS X. (Though it might have changed with
+</I>&gt;<i> recent versions of Mac OS X and the SDL... when I wrote that code, this
+</I>&gt;<i> was still Mac OS X 10.2 or 10.3).
+</I>
+I think HPET arrived in 10.3, but that does not really matter - its there now :)
+
+/K&#229;re - running a much faster Hatari this time around - On OS X - On
+Modern Hardware(tm) :D
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000502.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+	<LI>Next message: <A HREF="000504.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#503">[ date ]</a>
+              <a href="thread.html#503">[ thread ]</a>
+              <a href="subject.html#503">[ subject ]</a>
+              <a href="author.html#503">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

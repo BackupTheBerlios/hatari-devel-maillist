@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Some news
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20news&In-Reply-To=%3CAANLkTi%3D4ihkpBi837x0SRZz8r%2B%2BNRYgqYjLaFZPzU%3DL0%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002464.html">
+   <LINK REL="Next"  HREF="002473.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Some news</H1>
+    <B>Miro Kropacek</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20news&In-Reply-To=%3CAANLkTi%3D4ihkpBi837x0SRZz8r%2B%2BNRYgqYjLaFZPzU%3DL0%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Some news">miro.kropacek at gmail.com
+       </A><BR>
+    <I>Thu Oct  7 01:10:47 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002464.html">[hatari-devel] Some news
+</A></li>
+        <LI>Next message: <A HREF="002473.html">[hatari-devel] Some news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2466">[ date ]</a>
+              <a href="thread.html#2466">[ thread ]</a>
+              <a href="subject.html#2466">[ subject ]</a>
+              <a href="author.html#2466">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i>
+</I>&gt;<i> I've started to integrate the latest WinUae code to hatari.
+</I>&gt;<i> Like this, we'll have a better 680x0 emulation, a much better 68030 (with
+</I>&gt;<i> MMU) and why not, a 68060 (if we want to emulate the ct60 cards and be able
+</I>&gt;<i> to see some recent demos).
+</I>&gt;<i>
+</I>As I'm both Amiga user and CT60 coder, I add my 2 cents here.
+
+1. No 060 demo I know uses any of 060 instructions, move16 is the max you
+can get from non-030 code and even this is rare (it's more effective to use
+movem for such tasks, i.e. 060 coders ignore move16). This applies to both
+Amiga and Atari. Try to run any 060-based production in Hatari -- if you
+increase RAM to 64 MB, you'll run it fine. In fact, many 060 coders use
+current Hatari for their development ;-)
+
+2. Maybe it's just me but I was actually never able to run an 060 demo in
+68060 mode in WinUAE ;-) Every 060 demo I ran was with 020+FPU
+configuration.
+
+So I guess the MMU is the only benefit you get here.
+
+-- 
+MiKRO / Mystic Bytes
+<A HREF="http://mikro.atari.org">http://mikro.atari.org</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20101007/8f8454c6/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20101007/8f8454c6/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002464.html">[hatari-devel] Some news
+</A></li>
+	<LI>Next message: <A HREF="002473.html">[hatari-devel] Some news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2466">[ date ]</a>
+              <a href="thread.html#2466">[ thread ]</a>
+              <a href="subject.html#2466">[ subject ]</a>
+              <a href="author.html#2466">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

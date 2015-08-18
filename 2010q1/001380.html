@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Raimbow2 problem : seems to be a big problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Raimbow2%20problem%20%3A%20seems%20to%20be%20a%20big%20problem&In-Reply-To=%3C4B62091A.8090100%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001379.html">
+   <LINK REL="Next"  HREF="001382.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Raimbow2 problem : seems to be a big problem</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Raimbow2%20problem%20%3A%20seems%20to%20be%20a%20big%20problem&In-Reply-To=%3C4B62091A.8090100%40free.fr%3E"
+       TITLE="[hatari-devel] Raimbow2 problem : seems to be a big problem">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Jan 28 23:00:58 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001379.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+        <LI>Next message: <A HREF="001382.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1380">[ date ]</a>
+              <a href="thread.html#1380">[ thread ]</a>
+              <a href="subject.html#1380">[ subject ]</a>
+              <a href="author.html#1380">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>1. breakpoint 'pc = $2e752' conditions matched.
+
+CPU=$2e752, VBL=104038, FrameCycles=73842, HBL=145, LineCycles=182, 
+DSP=$7ec9
+  c
+Returning to emulation...
+
+11 bombs. After the 11 bombs, hatari return to the desktop without any 
+more message.
+I have never reached the breakpoint 2 (instruction at address $2e752 is 
+bombing)
+
+4 conditional CPU breakpoints:
+  1: pc = $2e752
+  2: pc = $2e758
+  3: pc = $2e75a
+  4: pc = $2e75c
+
+Regards,
+
+Laurent
+
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+&gt;<i> On Thu, 28 Jan 2010, Laurent Sallafranque wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> The program stops with 11 bombs when it reachs this part of code.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> could you try to put a breakpoint at 0002e752, 0002e758, 0002e75a and 
+</I>&gt;<i> 0002e75c to see after exactly which instruction you get the 11 bombs ?
+</I>&gt;<i>
+</I>&gt;<i> If you're in debugger mode, this should even bring you to the debug 
+</I>&gt;<i> console.
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+</I>&gt;&gt;&gt;<i> On Wed, 27 Jan 2010, Laurent Sallafranque wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Hello,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I've traced and disassembled Raimbow2.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Here is what I get :
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Raimbow2 Trace taken from hatari : d $2e74a
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> 0002e74a: 22c0 4e7a 0802 22c0 f011 MOVE.L D0,(A1)+
+</I>&gt;&gt;&gt;&gt;<i> 0002e74c: 4e7a 0802 22c0 f011 0a00 MOVEC2.L #$0802
+</I>&gt;&gt;&gt;&gt;<i> 0002e750: 22c0 f011 0a00 5849 f011 MOVE.L D0,(A1)+
+</I>&gt;&gt;&gt;&gt;<i> 0002e752: f011 0a00 5849 f011 0e00 ILLEGAL.L
+</I>&gt;&gt;&gt;&gt;<i> 0002e754: 0a00 5849 f011 0e00 5849 EOR.B #$49,D0
+</I>&gt;&gt;&gt;&gt;<i> 0002e758: f011 0e00 5849 33f8 0484 ILLEGAL.L
+</I>&gt;&gt;&gt;&gt;<i> 0002e75a: 0e00 5849 33f8 0484 0008 ILLEGAL.L
+</I>&gt;&gt;&gt;&gt;<i> 0002e75c: 5849 33f8 0484 0008 1be4 ADDA.W #$00000004,A1
+</I>&gt;&gt;&gt;&gt;<i> 0002e75e: 33f8 0484 0008 1be4 6100 MOVE.W $00000484,$00081be4
+</I>&gt;&gt;&gt;&gt;<i> 0002e766: 6100 005e 08b8 0001 0484 BSR.W #$005e == 0002e7c6
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Some instructions are not always correctly disasembled and give 
+</I>&gt;&gt;&gt;<i> 'ILLEGAL' instead of the real instruction.
+</I>&gt;&gt;&gt;<i> For example, I think f011 could be a line-f exception (but I don't 
+</I>&gt;&gt;&gt;<i> have the list of possible values) (I already noticed that line-a and 
+</I>&gt;&gt;&gt;<i> line-f are not printed as such)
+</I>&gt;&gt;&gt;<i> Also 0e00 could be a &quot;moves.b something&quot; (from the 680xx motorola 
+</I>&gt;&gt;&gt;<i> doc, this doesn't look like a valid addressing mode though).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Note that the fact that the disassembly shows &quot;illegal&quot; doesn't mean 
+</I>&gt;&gt;&gt;<i> this will create an illegal instruction, you have to run it for real 
+</I>&gt;&gt;&gt;<i> to see what it gives, disassembly can be misleading.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Raimbow2 disassembled with Desert Drain :
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> move.l      D0,(A1)+
+</I>&gt;&gt;&gt;&gt;<i> movec.l     SFC,D0
+</I>&gt;&gt;&gt;&gt;<i> move.l      D0,(A1)+
+</I>&gt;&gt;&gt;&gt;<i> movec.l     DFC,D0
+</I>&gt;&gt;&gt;&gt;<i> move.l      D0,(A1)+
+</I>&gt;&gt;&gt;&gt;<i> movec.l     CACR,D0
+</I>&gt;&gt;&gt;&gt;<i> move.l      D0,(A1)+
+</I>&gt;&gt;&gt;&gt;<i> movec.l     CAAR,D0
+</I>&gt;&gt;&gt;&gt;<i> move.l      D0,(A1)+
+</I>&gt;&gt;&gt;&gt;<i> pmove       tt0,(A1)
+</I>&gt;&gt;&gt;&gt;<i> addq.w      #4,A1
+</I>&gt;&gt;&gt;&gt;<i> pmove       tt1,(A1)
+</I>&gt;&gt;&gt;&gt;<i> addq.w      #4,A1
+</I>&gt;&gt;&gt;&gt;<i> move.w      $484.w,B_53A10 ;conterm
+</I>&gt;&gt;&gt;&gt;<i> bsr.w       T_5F2
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> It seems something is not well emulated in 68030.
+</I>&gt;&gt;&gt;&gt;<i> MMU code ?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Regards
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Laurent
+</I>&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001379.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+	<LI>Next message: <A HREF="001382.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1380">[ date ]</a>
+              <a href="thread.html#1380">[ thread ]</a>
+              <a href="subject.html#1380">[ subject ]</a>
+              <a href="author.html#1380">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

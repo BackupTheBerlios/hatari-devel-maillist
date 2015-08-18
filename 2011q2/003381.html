@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari crashes with Mental Hangover demo
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20crashes%20with%20Mental%20Hangover%20demo&In-Reply-To=%3C4DBC8024.1050404%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003380.html">
+   <LINK REL="Next"  HREF="003382.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari crashes with Mental Hangover demo</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20crashes%20with%20Mental%20Hangover%20demo&In-Reply-To=%3C4DBC8024.1050404%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Hatari crashes with Mental Hangover demo">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Apr 30 23:33:24 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003380.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+        <LI>Next message: <A HREF="003382.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3381">[ date ]</a>
+              <a href="thread.html#3381">[ thread ]</a>
+              <a href="subject.html#3381">[ subject ]</a>
+              <a href="author.html#3381">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 30/04/2011 22:09, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On lauantai 30 huhtikuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;<i> But in fact I think we should have some kind of &quot;DMA_memcpy&quot; that would
+</I>&gt;&gt;<i> be used from FDC / HDC when we want to copy memory from Hatari to the
+</I>&gt;&gt;<i> emulated RAM. This function would check each written byte is in ST RAM
+</I>&gt;&gt;<i> or I/O space and would mask addresses to 24 bits.
+</I>&gt;<i>
+</I>&gt;<i> I added stMemory_SafeCopy() function.
+</I>
+OK for this function, but I'm not sure you should return false when 
+memory is not completly valid ; on a real ST, I think the DMA writes 
+data to the dest pointer wherever it points and always successes (except 
+that if you write to ROM for example, the dma writes would have no effect).
+
+I think it would be better to always return true and don't set return 
+code to HD_STATUS_ERROR in hdc.c  (this would need to be tested on real 
+hardware, but I don't recall I already saw cases where dma failed 
+because of the dest address).
+
+
+&gt;<i>
+</I>&gt;&gt;<i> This way, we would have a common function to correctly copy data from
+</I>&gt;&gt;<i> disk images to the emulated RAM or IO space.
+</I>&gt;<i>
+</I>&gt;<i> Half of the potentially unsafe operations are fread()s&amp;  fwrite()s to STRam,
+</I>&gt;<i> not just memcpy()s...  See e.g. gemdos.c which I've fixed earlier or the new
+</I>&gt;<i> hdc.c changes.
+</I>
+Yes, to be correct we would need some similar checks to ensure we wrap 
+to the start of the RAM once we reach the end of the RAM when 
+reading/writing.
+Unless we encounter bugs due to this, I'm not sure this is a top 
+priority to handle this case.
+
+
+&gt;<i>
+</I>&gt;&gt;<i> In that case, ignoring is fine, because it's not the cause of the
+</I>&gt;&gt;<i> problem. But as above, it would be more correct to not ignore the
+</I>&gt;&gt;<i> request but ensure each destination address is corrrecly handled to stay
+</I>&gt;&gt;<i> in the RAM / ROM / IO space of the emulated machine (even if writing in
+</I>&gt;&gt;<i> ROM should have no effect, it should not be forbidden)
+</I>&gt;<i>
+</I>&gt;<i> The check in stMemory.h is:
+</I>&gt;<i> -------------
+</I>&gt;<i> static inline bool STMemory_ValidArea(Uint32 addr, int size)
+</I>&gt;<i> {
+</I>&gt;<i>          if (size&gt;= 0&amp;&amp;  addr+size&lt;  0xff0000&amp;&amp;
+</I>&gt;<i>              (addr+size&lt;  STRamEnd || addr&gt;= 0xe00000))
+</I>&gt;<i>          {
+</I>&gt;<i>                  return true;
+</I>&gt;<i>          }
+</I>&gt;<i>          return false;
+</I>&gt;<i> }
+</I>&gt;<i> -------------
+</I>&gt;<i>
+</I>&gt;<i> stMemory_SafeCopy() copies only bytes that above states to be valid, it
+</I>&gt;<i> ignores bytes going to invalid addresses. (As I don't see what it e.g.
+</I>&gt;<i> should do to bytes between STRamEnd and 0xe00000.)
+</I>
+I agree for byte between end of ram and IO space, but you should take 
+into account the fact that the RAM is &quot;mirrored&quot; when you only have 0.5 
+MB or 1 MB out of 4 MB.
+
+I think the function should &quot;wrap&quot; when addr &gt; STRamEnd, not just ignore 
+the write.
+For example, on a 512 KB ST, if DMA writes $1000 bytes to addr $7ff00, 
+it will reach up to $81f00, which in fact becomes addresses 0 to $1f00. 
+So in the end, the DMA really write to $7ff00-$7ffff and to 0-$1eff
+
+If addr &lt; 4 MB, addr should become addr % CURRENT_RAM_SIZE ; above 4 MB, 
+write should be ignored (this might be different on ST (TT ? Falcon ? 
+Mega ST ?) with up to 16 MB of RAM)
+
+Well, anyway I'm not sure any program is relying on this to willingly 
+write data with DMA on a boundary of the RAM.
+At least stMemory_SafeCopy will prevent crash in Hatari itself which is 
+already a godd thing.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003380.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+	<LI>Next message: <A HREF="003382.html">[hatari-devel] Hatari crashes with Mental Hangover demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3381">[ date ]</a>
+              <a href="thread.html#3381">[ thread ]</a>
+              <a href="subject.html#3381">[ subject ]</a>
+              <a href="author.html#3381">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

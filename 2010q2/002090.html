@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005131426230.14493%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002084.html">
+   <LINK REL="Next"  HREF="002141.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005131426230.14493%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu May 13 14:44:25 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002084.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002141.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2090">[ date ]</a>
+              <a href="thread.html#2090">[ thread ]</a>
+              <a href="subject.html#2090">[ subject ]</a>
+              <a href="author.html#2090">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 13 May 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Thursday 13 May 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;&gt;<i> Integers should be prefixed with &quot;n&quot; in the configuration file:
+</I>&gt;&gt;&gt;<i> 	<A HREF="http://hg.berlios.de/repos/hatari/rev/2e758ee7de3e">http://hg.berlios.de/repos/hatari/rev/2e758ee7de3e</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> this is ugly :)
+</I>&gt;<i>
+</I>&gt;<i> Agree, but...
+</I>&gt;<i>
+</I>&gt;&gt;<i> Really, what does it add for someone reading the config file to have 'b',
+</I>&gt;&gt;<i> 'sz', 'n' prefixed to all names ? I really don't like this notation, I
+</I>&gt;&gt;<i> know it's a legacy from the original winston project, but as we once
+</I>&gt;&gt;<i> discussed I think we should not enforce this coding style for new
+</I>&gt;&gt;<i> variables (and all keys shortcuts doesn't respect it for a long time :) )
+</I>&gt;<i>
+</I>&gt;<i> 1) naming should be consistent.
+</I>
+But it should also have a real meaning ; here we're sticking to this 
+convention just because it exists, not because it's useful. So we add more 
+variables with this naming scheme and then it justify not to change it 
+because too many variables are already like this.
+
+Let's say we have 50 variables today in the config file with prefix, and 
+that in the near future with various emulation improvements/changes we 
+need to add 60 new variables, then I think it could be legitimate to say 
+we can allow a transition and not enforce adding a prefix to each 
+variable.
+
+&gt;<i>
+</I>&gt;<i> 2) Hatari UI uses[1] the prefix for converting the string from the
+</I>&gt;<i>    configuration file to a correct type when it reads the configuration.
+</I>
+&gt;<i>From the code in config.py, text_to_value tries to convert text to int, if 
+</I>this works it's an int, if it fails it's a string, so the name/prefix of 
+the variable is not used (and I think that's the correct way to do it)
+
+Then in value_to_text, there's an assert to check the prefix is in the 
+variable's name, but since the variable is already stored in python's 
+memory, using valtype seems enough to me to decide how &quot;value&quot; should be 
+printed to the configuration file.
+
+&gt;<i> [1] being Python code, it cannot use/share Hatari's own C-code for
+</I>&gt;<i> specifying and reading the configuration variable types files and I don't
+</I>&gt;<i> want to duplicate more information than absolutely necessary.
+</I>
+&gt;<i> Same would of course apply if somebody would write Hatari UI in Ruby /
+</I>&gt;<i> Perl / Lisp / you-name-it.  One possibility would be to create a library out
+</I>&gt;<i> of the configuration file reading and then wrap that into a native Python
+</I>&gt;<i> extension for the Python/Gtk Hatari UI, but that would be 100x more work
+</I>&gt;<i> for zero(?) benefit.  Extensions to interpreted languages are a major
+</I>&gt;<i> pain when trying to cross-compile something.
+</I>
+Not in perl, perl is not a typed language (although you can fake some 
+classes/objects), neither is lisp (I know it's just an example :) )
+
+For all those other languages, you could try to atoi() the value as you do 
+in python and decide on the resulting type this way. If the user needs to 
+change the value through the UI, then you know the type int or string and 
+you can check that only numbers are entered if type is int.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002084.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002141.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2090">[ date ]</a>
+              <a href="thread.html#2090">[ thread ]</a>
+              <a href="subject.html#2090">[ subject ]</a>
+              <a href="author.html#2090">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

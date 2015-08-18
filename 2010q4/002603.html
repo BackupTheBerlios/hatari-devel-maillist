@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CD52977.5070908%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002611.html">
+   <LINK REL="Next"  HREF="002614.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CD52977.5070908%40corp.free.fr%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Nov  6 11:09:59 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002611.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002614.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2603">[ date ]</a>
+              <a href="thread.html#2603">[ thread ]</a>
+              <a href="subject.html#2603">[ subject ]</a>
+              <a href="author.html#2603">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 06/11/2010 10:30, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> I still have very few linking problems to fix before starting to let run
+</I>&gt;<i> the new core.
+</I>&gt;<i> There's still the big problem in cpu core (see my precedent help message).
+</I>&gt;<i>
+</I>&gt;<i> Actually, I upload little changes to share with you my work.
+</I>&gt;<i> But when we'll want to update WinUae core later (if needed), I think
+</I>&gt;<i> it'll be hard to know what was changed.
+</I>&gt;<i>
+</I>&gt;<i> Is there a way to remove all the intermediate uploads to keep only
+</I>&gt;<i> - first winUae original code
+</I>&gt;<i> - first working Harati's fixes and changes
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>
+Hello, I'm not sure it's possible to remove intermediate commits, but 
+knowing the revision number when winuae code was uploaded and knowing 
+the working revision number, hg can do a diff between these 2 specific 
+revision.
+
+Another approach is to keep the original winuae source (let's say it's 
+2.3.0). When Winuae 2.3.1 is released, do a diff between 2.3.1 and 2.3.0 
+and try to apply this diff to Hatari's code.
+
+It's possible the diff will conflict, but hopefully changes will be 
+minimal and it could be solved by hand.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002611.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002614.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2603">[ date ]</a>
+              <a href="thread.html#2603">[ thread ]</a>
+              <a href="subject.html#2603">[ subject ]</a>
+              <a href="author.html#2603">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

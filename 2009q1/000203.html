@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] little question about hg
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20little%20question%20about%20hg&In-Reply-To=%3C20090320174352.13286c4f%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000202.html">
+   <LINK REL="Next"  HREF="000209.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] little question about hg</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20little%20question%20about%20hg&In-Reply-To=%3C20090320174352.13286c4f%40phineus%3E"
+       TITLE="[hatari-devel] little question about hg">huth at users.berlios.de
+       </A><BR>
+    <I>Fri Mar 20 17:43:52 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000202.html">[hatari-devel] little question about hg
+</A></li>
+        <LI>Next message: <A HREF="000209.html">[hatari-devel] DSP emulation and sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#203">[ date ]</a>
+              <a href="thread.html#203">[ thread ]</a>
+              <a href="subject.html#203">[ subject ]</a>
+              <a href="author.html#203">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 19 Mar 2009 23:14:57 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Hm.  While reading about Gnome Svn -&gt; Git transition, I noticed a
+</I>&gt;<i> comment about push vs. fetch.  Hg has fetch command too:
+</I>&gt;<i> --------------
+</I>&gt;<i> $ hg help fetch
+</I>&gt;<i> hg fetch [SOURCE]
+</I>&gt;<i> 
+</I>&gt;<i> Pull changes from a remote repository, merge new changes if needed.
+</I>&gt;<i> 
+</I>&gt;<i>     This finds all changes from the repository at the specified path
+</I>&gt;<i>     or URL and adds them to the local repository.
+</I>&gt;<i> 
+</I>&gt;<i>     If the pulled changes add a new head, the head is automatically
+</I>&gt;<i>     merged, and the result of the merge is committed.  Otherwise, the
+</I>&gt;<i>     working directory is updated to include the new changes.
+</I>&gt;<i> 
+</I>&gt;<i>     When a merge occurs, the newly pulled changes are assumed to be
+</I>&gt;<i>     &quot;authoritative&quot;.  The head of the new changes is used as the first
+</I>&gt;<i>     parent, with local changes as the second.  To switch the merge
+</I>&gt;<i>     order, use --switch-parent.
+</I>&gt;<i> --------------
+</I>&gt;<i> 
+</I>&gt;<i> Maybe this doesn't move the repo head between my and Thomas' hg
+</I>&gt;<i> pushes, like using pull+merge does.  Thomas, do you know?
+</I>
+No, I also haven't tried that yet.
+
+&gt;<i> My Hg is missing[1] &quot;rebase&quot;[2] command that Git has, so there's
+</I>&gt;<i> still the extra merge commit.
+</I>
+With the latest mercurial, you can even do &quot;hg pull --rebase&quot; after
+enabling the rebase extension in the ~/.hgrc file! That's pretty nice!
+
+&gt;<i> [1] Well, at the end of last year HG got an extension for this, but
+</I>&gt;<i> I'm running an older Hg version.
+</I>
+Installing a new HG from the the sources is not difficult at all. I did
+that a couple of times already.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000202.html">[hatari-devel] little question about hg
+</A></li>
+	<LI>Next message: <A HREF="000209.html">[hatari-devel] DSP emulation and sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#203">[ date ]</a>
+              <a href="thread.html#203">[ thread ]</a>
+              <a href="subject.html#203">[ subject ]</a>
+              <a href="author.html#203">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

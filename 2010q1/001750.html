@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New Monitor/Window options dialog feedback?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20Monitor/Window%20options%20dialog%20feedback%3F&In-Reply-To=%3C201003211156.53783.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001747.html">
+   <LINK REL="Next"  HREF="001753.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New Monitor/Window options dialog feedback?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20Monitor/Window%20options%20dialog%20feedback%3F&In-Reply-To=%3C201003211156.53783.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] New Monitor/Window options dialog feedback?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Mar 21 10:56:53 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001747.html">[hatari-devel] New Monitor/Window options dialog feedback?
+</A></li>
+        <LI>Next message: <A HREF="001753.html">[hatari-devel] New Monitor/Window options dialog feedback?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1750">[ date ]</a>
+              <a href="thread.html#1750">[ thread ]</a>
+              <a href="subject.html#1750">[ subject ]</a>
+              <a href="author.html#1750">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 20 March 2010, Jerome Vernet wrote:
+&gt;<i> &gt; I think I've now handled all the issues Thomas raised below.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Does it now work e.g. more robustly in regards to available display
+</I>&gt;<i> &gt; resolutions than what we had previously?  Also on OSX?
+</I>&gt;<i>
+</I>&gt;<i> I was able to set a max doubled resolution (1280x896) greater than the
+</I>&gt;<i> real max resolution (1280x800) on my mac, causing a crash will toggling
+</I>&gt;<i> to full screen.
+</I>
+Thanks for checking this out!
+
+It's not a crash as such, but an abort because SDL couldn't find suitable
+video mode.  But it can be pretty bad for user if he's saved that config, so
+this definitely needs to be fixed.
+
+On Linux this seems to happen only for fullscreen, normal window sizes can
+be arbitrarily large.
+
+
+I added code to check largest available resolution and to limit the user
+provided maximum resolution to that.  It's checked on each screen size
+change as it depends on the fullscreen flag.
+
+To make this functionality available both for ST/STe stuff from screen.c and
+to Falcon/TT stuff from hostscreen.c, I needed to split it into a separate
+file, but Makefiles should catch that.
+
+I'd like this to be checked a bit more too as it was a bit larger change:
+	<A HREF="http://hg.berlios.de/repos/hatari/rev/db1c0fd41108">http://hg.berlios.de/repos/hatari/rev/db1c0fd41108</A>
+
+
+&gt;<i> I really cannot undestand how this Max Doubled resolution work. It do
+</I>&gt;<i> something even on Mac OsX. For example, I've put 1024x768. Falcon Low
+</I>&gt;<i> RES show in a bigger windows than High Res, is it normal ?
+</I>
+After doing the aspect correction (doubling), Hatari zooms the Falcon
+resolution as close to the specified max resolution as it can.
+
+However, as it's using integer zooming factors, it's possible that smaller
+resolution is scaled physically larger (when it matches better the
+resolution when zoomed).  On CRT monitors used on Atari's, the monitor would
+take care that the resolution always &quot;fills&quot; the whole screen.  With integer
+scaling that's not always possible.
+
+If you want to see resolutions as non-zoomed, set max zoom so small
+that things aren't zoomed (easiest with &quot;--zoom 1&quot;).
+
+
+I wonder whether there should now be a checkbox for &quot;Disable Zooming&quot;...?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001747.html">[hatari-devel] New Monitor/Window options dialog feedback?
+</A></li>
+	<LI>Next message: <A HREF="001753.html">[hatari-devel] New Monitor/Window options dialog feedback?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1750">[ date ]</a>
+              <a href="thread.html#1750">[ thread ]</a>
+              <a href="subject.html#1750">[ subject ]</a>
+              <a href="author.html#1750">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

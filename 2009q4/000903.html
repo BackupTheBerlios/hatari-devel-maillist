@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] GEMDOS mount issues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20mount%20issues&In-Reply-To=%3C200911151608.41689.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000907.html">
+   <LINK REL="Next"  HREF="000905.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] GEMDOS mount issues</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20mount%20issues&In-Reply-To=%3C200911151608.41689.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] GEMDOS mount issues">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Nov 15 15:08:41 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000907.html">[hatari-devel] Issues with IDE/ACSI emulation and HD Driver
+</A></li>
+        <LI>Next message: <A HREF="000905.html">[hatari-devel] GEMDOS mount issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#903">[ date ]</a>
+              <a href="thread.html#903">[ thread ]</a>
+              <a href="subject.html#903">[ subject ]</a>
+              <a href="author.html#903">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 15 November 2009, Uwe Seimet wrote:
+&gt;<i> There is an item on my wish list concerning the AUTO folder of GEMDOS
+</I>&gt;<i> drives: Is there any way to tell hatari the order these files are
+</I>&gt;<i> started? A real Atari uses the physical file order, but for GEMDOS
+</I>&gt;<i> drives there is no physical order. In order to have any control at all
+</I>&gt;<i> on the order of starting files located in the AUTO folder it might be
+</I>&gt;<i> useful if hatari would find/start the oldest (or newest) files first.
+</I>&gt;<i>
+</I>&gt;<i> This way one could influence the startup order by modfying timestamps.
+</I>
+On quick glance, gemdos.c seems to be alphasorting the directory contents.
+Maybe you could just add an ordering prefix to the files?
+
+
+&gt;<i> &gt; * When invoking a large copy, I see messages like this being output by
+</I>&gt;<i> &gt;  Hatari:
+</I>&gt;<i> &gt;	no path for /home/eero//GEMDOS-HD/E/mint/1-16-cur/./..
+</I>&gt;<i> &gt;	no path for /home/eero//GEMDOS-HD/E/tools/./*.*
+</I>
+After using Hatari debugger &quot;trace gemdos&quot; command:
+
+GEMDOS Fsetdta(0x5470e)
+GEMDOS Fsfirst(&quot;.\*.*&quot;, 0x37)
+no path for /home/eero/down/st/diskstuff/GEMDOS-HD/E/auto/./*.*
+conv .\*.* -&gt; /home/eero/down/st/diskstuff/GEMDOS-HD/E/auto/./*.*
+GEMDOS Fsnext()
+GEMDOS Fsnext()
+GEMDOS Fsnext()
+GEMDOS Fsnext()
+GEMDOS Fsnext()
+GEMDOS Fsetdta(0xe594)
+GEMDOS call 0x49
+GEMDOS Fsetdta(0xe594)
+GEMDOS Fsfirst(&quot;E:\*.*&quot;, 0x3f)
+conv E:\*.* -&gt; /home/eero/down/st/diskstuff/GEMDOS-HD/E/*.*
+
+GEMDOS Fsetdta(0x5473a)
+GEMDOS call 0x49
+GEMDOS Dsetpath(&quot;.\..&quot;)
+no path for /home/eero/down/st/diskstuff/GEMDOS-HD/E/driver/xdd/audio/./..
+didn't find 
+filename /home/eero/down/st/diskstuff/GEMDOS-HD/E/driver/xdd/audio/./..
+conv .\.. -&gt; /home/eero/down/st/diskstuff/GEMDOS-HD/E/driver/xdd/audio/./..
+GEMDOS Fsnext()
+GEMDOS Dsetpath(&quot;DSP56K&quot;)
+
+So it seems that the path handling isn't initially handling &quot;.\&quot; prefix
+right by removing it, but after converting the slashes and checking
+the paths normally, it actually works.
+
+To me it seems that the message is actually redundant.  Let's see what
+happens after I handle the prefix.
+
+
+&gt;<i> On my Linux box I regularly get these messages:
+</I>&gt;<i>
+</I>&gt;<i> no path for /home/us/TT.hatari/C/etc/passwd
+</I>&gt;<i> no path for /home/us/TT.hatari/C/etc/passwd
+</I>&gt;<i> no path for /home/us/TT.hatari/C/etc/group
+</I>&gt;<i> no path for /home/us/TT.hatari/C/etc/group
+</I>
+But your case seems different, can you provide trace logs?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000907.html">[hatari-devel] Issues with IDE/ACSI emulation and HD Driver
+</A></li>
+	<LI>Next message: <A HREF="000905.html">[hatari-devel] GEMDOS mount issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#903">[ date ]</a>
+              <a href="thread.html#903">[ thread ]</a>
+              <a href="subject.html#903">[ subject ]</a>
+              <a href="author.html#903">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

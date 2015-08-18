@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C982567168.20100117185933%40hol.gr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001331.html">
+   <LINK REL="Next"  HREF="001258.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>George Nakos</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C982567168.20100117185933%40hol.gr%3E"
+       TITLE="[hatari-devel] CMake build system">ggn at hol.gr
+       </A><BR>
+    <I>Sun Jan 17 17:59:33 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001331.html">[hatari-devel] IDE &amp; EmuTOS
+</A></li>
+        <LI>Next message: <A HREF="001258.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1256">[ date ]</a>
+              <a href="thread.html#1256">[ thread ]</a>
+              <a href="subject.html#1256">[ subject ]</a>
+              <a href="author.html#1256">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Thomas,
+
+Sunday, January 17, 2010, 4:14:29 PM, you wrote:
+
+&gt;&gt;&gt;<i> Dunno really. Something has to be in my PATH? Ideas?
+</I>
+&gt;&gt;<i> Maybe try to quote the name of the generator like this:
+</I>
+&gt;&gt;<i> cmake -G &quot;MSYS Makefiles&quot;
+</I>
+&gt;&gt;<i> Without the quotes, the shell might pass two string parameters
+</I>&gt;&gt;<i> instead of one string, causing cmake not to recognize the generator name.
+</I>
+&gt;<i> Retarded as it sounds, the above worked.
+</I>
+&gt;<i> However,  I'm  now  stuck  trying  to  get it to find some libs. I ran
+</I>&gt;<i> cmake-gui as it's a bit easier giving it the paths that way.
+</I>
+&gt;<i> So far it asked me for:
+</I>
+&gt;<i> - sdl (I provided the paths/files needed)
+</I>&gt;<i> - zlib (idem)
+</I>&gt;<i> - libpng (don't have it installed)
+</I>&gt;<i> - readline
+</I>&gt;<i> - portaudio
+</I>
+&gt;<i> At  this point I'd like to say that hatari builds fine with my current
+</I>&gt;<i> setup  (well,  hmsa stubbornly refuses to build, but that's been going
+</I>&gt;<i> on  for  a  couple of years now - something to do with the location of
+</I>&gt;<i> zlib?  I  never  investigated further). I suppose I can install libpng
+</I>&gt;<i> and satisfy the dependencies.
+</I>
+&gt;<i> But what's the deal with portaudio? I was never required to have it on
+</I>&gt;<i> my machine? Maybe it's something that's needing to be left out in this
+</I>&gt;<i> build? And I seem to remember some workarounds for readline as well.
+</I>
+Small  update  here:  I  installed  libpng,  and I found that readline
+exists  for mingw, so I installed that too. Finally portaudio suggests
+that  it  can  be  compiled  for  windows,  so  I  tried  that  and it
+successfully built (configure/make/make install).
+
+However CMake failed while parsing the following lines:
+
+check_function_exists(cfmakeraw HAVE_CFMAKERAW)
+check_function_exists(setenv HAVE_SETENV)
+check_function_exists(select HAVE_SELECT)
+
+The error message CMake gave me was:
+
+Unknown CMake command &quot;check_function_exists&quot;.
+
+In the end I commented out the lines (as it was mentioned that they're
+optional), and cmake finally produced the makefiles.
+
+After  that  I typed make and the project built. However, while trying
+to link the binary in the end, it failed miserably. Most of the errors
+seem portaudio related. (while configuring portaudio it mentioned that
+there won't be C++ bindings. I suppose this is the problem?)
+
+An excerpt from the console:
+
+CMakeFiles/hatari.dir/file.c.obj:file.c:(.text+0x2b4): undefined reference to `<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">select at 20</A>'
+c:/msys/1.0/local/lib/libportaudio.a(pa_win_util.o): In function `PaUtil_GetTime':
+C:\msys\1.0\home\Administrator\portaudio/src/os/win/pa_win_util.c:146: undefined reference to `<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">timeGetTime at 0</A>'
+c:/msys/1.0/local/lib/libportaudio.a(pa_win_wmme.o): In function `QueryInputWaveFormatEx':
+C:\msys\1.0\home\Administrator\portaudio/src/hostapi/wmme/pa_win_wmme.c:528: undefined reference to `<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">waveInOpen at 24</A>'
+C:\msys\1.0\home\Administrator\portaudio/src/hostapi/wmme/pa_win_wmme.c:544: undefined reference to `<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">waveInGetErrorTextA at 12</A>'
+...
+[snip]
+
+
+P.S.  I  wanted  to  give portaudio a shot to see if it could cure the
+awful 1-sec delay the audio has in relation to the video.
+
+-- 
+Best regards,
+ George                            mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ggn at hol.gr</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001331.html">[hatari-devel] IDE &amp; EmuTOS
+</A></li>
+	<LI>Next message: <A HREF="001258.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1256">[ date ]</a>
+              <a href="thread.html#1256">[ thread ]</a>
+              <a href="subject.html#1256">[ subject ]</a>
+              <a href="author.html#1256">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

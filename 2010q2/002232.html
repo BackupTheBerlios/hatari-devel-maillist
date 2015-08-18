@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP debug reworked
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debug%20reworked&In-Reply-To=%3Calpine.LMD.2.00.1005302234050.15291%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002144.html">
+   <LINK REL="Next"  HREF="001976.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP debug reworked</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debug%20reworked&In-Reply-To=%3Calpine.LMD.2.00.1005302234050.15291%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] DSP debug reworked">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun May 30 22:42:18 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002144.html">[hatari-devel] DSP debug reworked
+</A></li>
+        <LI>Next message: <A HREF="001976.html">[hatari-devel] Berlios is down ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2232">[ date ]</a>
+              <a href="thread.html#2232">[ thread ]</a>
+              <a href="subject.html#2232">[ subject ]</a>
+              <a href="author.html#2232">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 16 May 2010, Eero Tamminen wrote:
+
+&gt;<i> The interrupt handling is earlier already about the heaviest thing in Hatari
+</I>&gt;<i> for ST emulation on my 32-bit machine (about the same as the m86k emulation
+</I>&gt;<i> itself).  Maybe it's because of 64-bit stuff there? :-)
+</I>
+Maybe, but due to the required precision we can't avoid using 64 bits 
+there, or MFP and CPU won't be able to get perfectly in sync regarding 
+cycle counting.
+
+&gt;&gt;<i> I'm not sure we require such a level of detail to split log macros
+</I>&gt;&gt;<i> between video, sound, ...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Current code basically does :
+</I>&gt;&gt;<i>  	if (LogTraceFlags &amp; level)
+</I>&gt;&gt;<i>  		{ print ... }
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> new possible methods :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   1) set LogTraceFlags to Uint64 -&gt; nothing else to change, we now have
+</I>&gt;&gt;<i> 64 bits to play with and the test remains fast (apart from dealing with
+</I>&gt;&gt;<i> 64 bits int)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   2) have a global variable LogTraceOn = true or false and some
+</I>&gt;&gt;<i> additional Uint32 to store flags (LogTraceFlags1, LogTraceFlags2, ...)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> with 2), code could become :
+</I>&gt;&gt;<i>  	if ( LogTraceOn )
+</I>&gt;&gt;<i>  	{
+</I>&gt;&gt;<i>  		if ( level matches LogTraceFlags1 level
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  			|| level matches LogTraceFlags2 )
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  			{ print ... }
+</I>&gt;&gt;<i>  	}
+</I>&gt;<i>
+</I>&gt;<i> None of above is necessary with what I proposed.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> If we would e.g. decide that video.c trace would have its own flags
+</I>&gt;<i> variable, we would have just:
+</I>&gt;<i>
+</I>&gt;<i> in log.h additional define:
+</I>&gt;<i> #define LOG_VIDEO_TRACE(level, args...) \
+</I>&gt;<i>        if (unlikely(LogTraceVideoFlags &amp; level)) fprintf(TraceFile, args)
+</I>&gt;<i>
+</I>&gt;<i> And in video.c repace LOG_TRACE with LOG_VIDEO_TRACE.
+</I>&gt;<i>
+</I>&gt;<i> Only complication would be in log.c log options parsing because it would
+</I>&gt;<i> need to set bits in different flag variables.
+</I>&gt;<i>
+</I>
+But what you propose is just what I would like to avoid : replacing all 
+LOG_TRACE everywhere with LOG_XXX_TRACE. I'm not sure we need to have one 
+variable per component (cpu, video, blitter, sound, ...)
+
+&gt;<i>
+</I>&gt;&gt;<i> problem is : how do we compare *rapidly* the value of level with several
+</I>&gt;&gt;<i> LogTraceFlagsX variables ?
+</I>&gt;<i>
+</I>&gt;<i> Trivially. :-)
+</I>
+Not if you just modify log.c/.h and don't replace LOG_TRACE by 
+LOG_VIDEO_TRACE for example (to avoid changing all actual LOG call syntax 
+in all source files).
+
+&gt;<i>
+</I>&gt;&gt;<i> I would go for 1st solution, as it requires nearly no changes ; or any
+</I>&gt;&gt;<i> other solution that doesn't require to modify all the sources files that
+</I>&gt;&gt;<i> have LOG_TRACE calls (only modifications should go to log.c / log.h) as
+</I>&gt;&gt;<i> this would come to commit nearly the whole source tree, which is quite
+</I>&gt;&gt;<i> overkill and not really readable.
+</I>&gt;<i>
+</I>&gt;<i> I guess the 64-bit thing could be tried first and if it seems to be causing
+</I>&gt;<i> performance issue (would be hard to see though because with macros it's not
+</I>&gt;<i> centralized to single place), then use separate flag variables.
+</I>
+In case it causes performance issue, the user can still disable logging at 
+compile time. But this should be tried first anyway on a real case.
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002144.html">[hatari-devel] DSP debug reworked
+</A></li>
+	<LI>Next message: <A HREF="001976.html">[hatari-devel] Berlios is down ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2232">[ date ]</a>
+              <a href="thread.html#2232">[ thread ]</a>
+              <a href="subject.html#2232">[ subject ]</a>
+              <a href="author.html#2232">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

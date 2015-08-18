@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] So, do you have a planned release date for 1.5.0?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20So%2C%20do%20you%20have%20a%20planned%20release%20date%20for%201.5.0%3F&In-Reply-To=%3C4D85FA4F.301%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003168.html">
+   <LINK REL="Next"  HREF="003181.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] So, do you have a planned release date for 1.5.0?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20So%2C%20do%20you%20have%20a%20planned%20release%20date%20for%201.5.0%3F&In-Reply-To=%3C4D85FA4F.301%40corp.free.fr%3E"
+       TITLE="[hatari-devel] So, do you have a planned release date for 1.5.0?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Mar 20 13:59:59 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003168.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+        <LI>Next message: <A HREF="003181.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3180">[ date ]</a>
+              <a href="thread.html#3180">[ thread ]</a>
+              <a href="subject.html#3180">[ subject ]</a>
+              <a href="author.html#3180">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 15/03/2011 22:32, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On maanantai 14 maaliskuu 2011, Laurent Sallafranque wrote:
+</I>
+&gt;&gt;<i> If we want a new release, we'll have to deliver 2 exes, as compatibility
+</I>&gt;&gt;<i> with Falcon is better with the new core.
+</I>&gt;<i>
+</I>&gt;<i> If we would do a release now, I don't see why there would need to be two
+</I>&gt;<i> binaries.   As long as there aren't regressions for the old AUE, we can ship
+</I>&gt;<i> just that and then switch to new Core in next release after that (in 2012?).
+</I>&gt;<i> This way there would be enough time to make sure it works well enough.
+</I>&gt;<i>
+</I>
+Hello
+
+Well, we can always ship a &quot;hatari_experimental_falcon.exe&quot; for the 
+Windows release (as Windows people are not always aware of how to 
+compile exe from the sources), but for the rest of the users, we'll just 
+keep old CPU core as default when using ./configure and we could add 
+some infos in the release note to explain how to build the more recent 
+cpu core for falcon emulation.
+
+
+&gt;<i>
+</I>&gt;<i> We've had Hatari releases within 2-10 month intervals and it's already
+</I>&gt;<i> 9 months since last release.
+</I>&gt;<i>
+</I>&gt;<i> IMHO there are enough features, usability enhancements and bug fixes
+</I>&gt;<i> for a new release with:
+</I>&gt;<i> - Spec512 med-res mode
+</I>&gt;<i> - The &quot;hack&quot; to run Atari binaries directly with Hatari
+</I>&gt;<i> - Fixes to DMA sound issues on low frequencies&amp;  sound latency issue
+</I>&gt;<i> - Memory state&amp;  restore fixes
+</I>&gt;<i> - AVI recording usability improvements
+</I>&gt;<i> - Your SDL file selector improvement
+</I>&gt;<i> - Improvements&amp;  fixes to resolution change handling
+</I>&gt;<i> - New dissassembler
+</I>&gt;<i> - Profiling support
+</I>&gt;<i> - DSP/Videl/Crossbar/AES/VDI tracing support
+</I>&gt;<i> - Possibility to set breakpoints for OS functions
+</I>&gt;<i> - TOS text output to console with --bios-intercept
+</I>&gt;<i> etc.
+</I>&gt;<i>
+</I>&gt;<i> I would propose that we have new release within a month.
+</I>&gt;<i>
+</I>&gt;<i> Nicolas, what do you think?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+I also think a few improvements were made that would validate a new 
+release. Most changes are small, but it's a fact that apart from Falcon 
+emulation, Hatari now has a very good compatibility for STF/STE, so 
+we're likely to have smaller incremental release in the future.
+
+On my todo list, I have some fixes for dma audio/video synchronization 
+(as reported by Evil / DHS in More Or Less Zero) as well as some 
+precision improvements for ym sound. Code for that is already written, I 
+need to integrate it and commit it.
+
+I'd like also to improve the first/last 16 pixels in STE mode when 
+overscan + hscroll are enabled (color 0 is sometimes shown in Hatari, 
+while it wouldn't be seen on a real STE). This would complete the video 
+changes I already made for STE since 1.4 was released.
+
+Regarding a release date, I'd rather have a target around May in order 
+to be able to complete the above tasks (maybe it will be ready before).
+
+&gt;&gt;<i> In my next list :
+</I>&gt;&gt;<i> - continue to improve new CPU compatibility
+</I>&gt;&gt;<i> - videl emulation
+</I>&gt;<i>
+</I>&gt;<i> IMHO these could go to next release after v1.5.
+</I>
+Regarding videl, any improvements will go in 1.5 as it should work with 
+old CPU core. But I think we should not postpone v1.5 release because of 
+Falcon's parts, else it will take much too long before a new release.
+
+We'll release 1.5 with the current state of Falcon's emulation (except 
+if there're some real regressions in Falcon mode : we should fix them 
+before releasing)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003168.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+	<LI>Next message: <A HREF="003181.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3180">[ date ]</a>
+              <a href="thread.html#3180">[ thread ]</a>
+              <a href="subject.html#3180">[ subject ]</a>
+              <a href="author.html#3180">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

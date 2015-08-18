@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Improved%20host%20long%20filename%20support%20for%20Hatari%0A%09GEMDOS%20Emulation%2C%20please%20TEST%21&In-Reply-To=%3C201001231229.07087.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001304.html">
+   <LINK REL="Next"  HREF="001302.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Improved%20host%20long%20filename%20support%20for%20Hatari%0A%09GEMDOS%20Emulation%2C%20please%20TEST%21&In-Reply-To=%3C201001231229.07087.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Jan 23 11:29:06 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001304.html">[hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!
+</A></li>
+        <LI>Next message: <A HREF="001302.html">[hatari-devel] State of BerliOS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1309">[ date ]</a>
+              <a href="thread.html#1309">[ thread ]</a>
+              <a href="subject.html#1309">[ subject ]</a>
+              <a href="author.html#1309">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 22 January 2010, George Nakos wrote:
+&gt;<i> Thursday, January 21, 2010, 12:33:38 AM, you wrote:
+</I>&gt;<i> &gt;&gt; Attached is the latest patch for the improved long name support.
+</I>&gt;<i> &gt;&gt; It applies on top of the latest Hatari repository code.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; I'm going to commit it in couple of days to Hatari repository unless
+</I>&gt;<i> &gt;&gt; somebody has objections to it.  The main thing I would like to be
+</I>&gt;<i> &gt;&gt; tested is whether it works on something else than Linux/Unix, e.g.
+</I>&gt;<i> &gt;&gt; Windows.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; George, could you check Windows side?
+</I>&gt;<i>
+</I>&gt;<i> I  just  managed  to  get  the patch working and compiled a version of
+</I>&gt;<i> hatari with that.
+</I>
+Thanks for testing!
+
+Could somebody test it also on OSX too before I commit it?
+(And maybe also EGCC &amp; Wii &amp; Windows Visual Studio)
+
+My main worry is whether it compiles.  Opendir/readdir/closedir are common
+Unix functions but not yet in POSIX.  Scandir() is similar function and for
+some platforms there seems to be a scandir() implementation in
+src/scandir.c[1].
+
+
+	- Eero
+
+[1] I could actually get completely rid of scandir if needed, it's use in
+current code is nefficient because one cannot give any data (void*) that
+scandir should pass to the filter function like on many similar functions
+that accept callbacks.  I.e. filtering in gemdos emulation functions 
+currently using scandir actually has to be done after scandir has scanned
+&amp; allocated data for all files in a dir.  Better replacement for scandir()
+for GEMDOS emulation could be done using opendir/readdir/closedir.
+
+In my new code the scanning can be slower than with scandir (because
+it does more), but _only_ when the file is not found.  If there's an exact
+(case insensitive) match for requested filename, it's much more efficient.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001304.html">[hatari-devel] Improved host long filename support for Hatari	GEMDOS Emulation, please TEST!
+</A></li>
+	<LI>Next message: <A HREF="001302.html">[hatari-devel] State of BerliOS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1309">[ date ]</a>
+              <a href="thread.html#1309">[ thread ]</a>
+              <a href="subject.html#1309">[ subject ]</a>
+              <a href="author.html#1309">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

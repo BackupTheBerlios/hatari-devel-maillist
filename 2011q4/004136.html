@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Long mail : new cpu cores + 2 questions.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Long%20mail%20%3A%20new%20cpu%20cores%20%2B%202%20questions.&In-Reply-To=%3C4EAEC9FA.4060502%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004135.html">
+   <LINK REL="Next"  HREF="004137.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Long mail : new cpu cores + 2 questions.</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Long%20mail%20%3A%20new%20cpu%20cores%20%2B%202%20questions.&In-Reply-To=%3C4EAEC9FA.4060502%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Long mail : new cpu cores + 2 questions.">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Oct 31 17:16:58 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004135.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+        <LI>Next message: <A HREF="004137.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4136">[ date ]</a>
+              <a href="thread.html#4136">[ thread ]</a>
+              <a href="subject.html#4136">[ subject ]</a>
+              <a href="author.html#4136">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 31/10/2011 16:44, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A> a &#233;crit :
+&gt;<i> Hi Mikro,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i> But in the motorola 68030 doc, I can read :
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i> Bcc (Taken) 6 0 6(0/0/0) 8(0/2/0)
+</I>&gt;&gt;&gt;<i> Bcc.B (Not Taken) 4 0 4(0/0/0) 4(0/1/0)
+</I>&gt;&gt;&gt;<i> Bcc.W (Not Taken) 6 0 6(0/0/0) 6(0/1/0)
+</I>&gt;&gt;&gt;<i> Bcc.L (Not Taken) 6 0 6(0/0/0) 8(0/2/0)
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i> It's in the file I've sent to Mikro, maybe he could confirm this.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Honestly, I've never measured branch cycles (who cares, they are only on the end of the loop :)) but you see how it's possible -- head is 6 cycles, so in case you find a nice instruction+addressing mode with such overlap, you can have really zero cycles instruction.
+</I>&gt;<i>
+</I>&gt;<i> I agree, but there's not any head/tail mechanism for now in the new winuae core.
+</I>&gt;<i> I can add it (I'd like to do it).
+</I>&gt;<i> But again, it'll derive from winuae code.
+</I>&gt;<i> Maybe it's time to derivate anyway.
+</I>&gt;<i> But you seem to tell that the most important is the falcon bus, not the processor instructions cycles for now (in a second time for better accuracy ?)
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i> I think the 68020 and 68030 CPU's in WinUae are not complete nor accurate.
+</I>&gt;<i> There's quite good, but not perfect.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Actually, it's all you need. We're in a little bit delicate situation because we've got the DSP and no sync in some loops but in most cases, you need only the bus cycles to get right.
+</I>&gt;<i>
+</I>&gt;<i> Ok, but as the 68030 is the main clock of the emulator, it needs to be accurate (sound, DSP, video, ... are based on the CPU cycles).
+</I>&gt;<i>
+</I>&gt;<i> Let's say I write a program that plays DMA sound.
+</I>&gt;<i> I do a DIV loop forever in the main code (DMA plays the music).
+</I>&gt;<i> Hatari will render it badly, as the div is given as 46, 70 or 90 cycles, but this is a maximum (it's frequently much less).
+</I>&gt;<i> DMA won't play the correct number of samples, Video won't compute the VBL correctly.
+</I>&gt;<i> (I agree videl is still not here).
+</I>&gt;<i>
+</I>&gt;<i> The same is all instructions are approximatives. And, as you say, the same if bus cycles are not right.
+</I>&gt;<i>
+</I>
+I agree that using the cpu as the main clock is an approximation, but I 
+think it should be tested and would give correct result in &gt;95% of the 
+cases.
+
+Of course, a div would mess with the timings, but practically, are there 
+many demos/programs that use the DSP with div/mul while communicating 
+with the DSP ? I really doubt it, because even on a real falcon, the div 
+would not take the same amount of cycles, so it would be very hard to 
+have a cpu&lt;-&gt;dsp link with no sync with such instructions.
+
+Let's be pragmatic, I think there're a lot of program that can be fixed 
+without needing absolute cycles count (on Falcon, cycles vary with cache 
+too, and I don't think 100% of demos take the cache into account, yet, 
+they still work).
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas, if you have any idea on how to take into account the falcon bus nicely, I'd be interrested to uderstand all of this better (it's hard for me to understand this for now).
+</I>
+This would add some complexity in the code, but moreover, it would slow 
+down everything in huge amount.
+
+In order to simulate proper bus cycle, you would need to split every 
+680x0 instruction in &quot;micro code&quot; taking 2 or 4 cycles each, and each 4 
+cycles for example, call &quot;videl_update_bus&quot; and &quot;dsp_update_bus&quot;.
+
+This means that you &quot;refresh&quot; DSP/videl/dma/floppy several time per 
+68000 instruction to check if each component needs to update its state 
+(depending on how many cycles elapsed).
+
+WinUAE already has such a mode in 68000, where DMA cycles are shared 
+exactly during each instruction.
+
+But even then, this would not solve the &quot;div&quot; problem : as long as you 
+don't know the exact cycles for a div, your code can eventually unsync 
+with the dsp, no matter how the bus is handled.
+
+The problem is that div is one of the most complex arithmetic operation 
+at the cpu level ; it took a lot of time to Ijor to reverse the 68000's 
+algo, and I guess the 68030 can be as complex (and I don't think we will 
+find some doc on this, it's certainly covered by some patents and not 
+publicly available)
+
+I'm really convinced that very few demos/programs need a &quot;sub 
+instruction&quot; bus behaviour ; a correct cycle count can be needed in some 
+case, but updating each component every 2 or 4 cycles should not be 
+necessary.
+
+I would vote against forking winuae's code too much, unless any 
+modification comes with a very simple test program that can be compiled 
+and run on a real Falcon and Hatari and give reproductible results.
+
+I really think this is the key to proper Falcon emulation : some very 
+simple test programs must be written to analyse very precise point, 
+unless this is done, I really think emulation will not evolve correctly.
+
+This is not a critic to the work you made, I know it's complex matter, 
+but it's just I don't see any other solution.
+Additionaly, I don't have any falcon experience (and not a lot of spare 
+time at the moment), so I'm afraid I can't help with this point.
+
+Combining dsp + videl + cpu is too hard to analyse properly as a whole.
+
+What would be great would be some very small program (such as the first 
+simple program you usually write when you learn asm or a new computer) 
+and check if those programs run the same under Hatari and a Falcon.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004135.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+	<LI>Next message: <A HREF="004137.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4136">[ date ]</a>
+              <a href="thread.html#4136">[ thread ]</a>
+              <a href="subject.html#4136">[ subject ]</a>
+              <a href="author.html#4136">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

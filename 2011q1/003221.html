@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] FYI: new --desktop option
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C201103252359.38293.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003213.html">
+   <LINK REL="Next"  HREF="003223.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] FYI: new --desktop option</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C201103252359.38293.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] FYI: new --desktop option">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Mar 25 22:59:38 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003213.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+        <LI>Next message: <A HREF="003223.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3221">[ date ]</a>
+              <a href="thread.html#3221">[ thread ]</a>
+              <a href="subject.html#3221">[ subject ]</a>
+              <a href="author.html#3221">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 25 maaliskuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> In STF/STE, I want to add support soon for non-multiple of 16 pixels in
+</I>&gt;<i> borders ; this would allow to better mimic the behaviour seen in
+</I>&gt;<i> overscan line during the hi/lo res switches (this will require some
+</I>&gt;<i> changes in convert/*c functions)
+</I>&gt;<i>
+</I>&gt;<i> In order to get the same results as a real ST (if the user wants to), I
+</I>&gt;<i> think we should have separate settings for left/right border and
+</I>&gt;<i> top/bottom border (on a real ST, the displayed area is not necessarily
+</I>&gt;<i> centered, so these values could be different).
+</I>
+How much they can differ from center, 16 pixels?  128 pixels?
+
+
+&gt;<i> Code is not ready on my side yet, but I will add such support soon in
+</I>&gt;<i> video.c / screen.c to really fine tune the first/last 16 pixels of each
+</I>&gt;<i> overscan line, so If you're ready to refactor the panel, maybe it could
+</I>&gt;<i> be good to include those concepts now.
+</I>
+IMHO it's best to do this just by blanking the extra pixels.  While windows
+can have arbitrary widths, fullscreen resolutions cannot, they're always
+aligned.
+
+
+&gt;<i> In fact, I wonder if we could have 2 sections : STF/STE and Falcon/TT
+</I>...
+&gt;<i> In STF/STE, I think it would be better to have
+</I>&gt;<i>   - displayed pixels in left/right/top/bottom border
+</I>&gt;<i>   - double X or double Y for low res
+</I>&gt;<i>   - double Y for med res
+</I>
+There are currently no options for these in Hatari.
+
+Borders calculation is internal to Screen_SetResolution() function, low
+resolution supports only doubling in both resolutions and med-rez always
+doubles Y.
+
+I.e. only separate size setting in ST/STE/screen.c is whether to double
+low-res.
+
+(By selecting TV as monitor, as a special effect &amp; slight speedup, every
+other line would be drawn as blank.)
+
+
+&gt;<i> (this is similar to what Steem does and I find it easier to understand
+</I>&gt;<i> that current &quot;max zoomed win&quot; that includes both the zoom factor and the
+</I>&gt;<i> border size.
+</I>
+Why user would want to specify each border width separately?
+If all borders fit into his monitor, why he would want to see less of them?
+
+AFAIK the only reason to have the border size options was being able to
+avoid Hatari trying to force a too large resolution and Hatari aborting
+because that fails.  Because if user had happened to save those settings,
+Hatari died every time it was started and it was forever unusable unless
+user knew to remove ~/.hatari/hatari.sav file...
+
+Hatari getting the maximum resolution from Desktop size or user specifying
+the max desired resolution directly is much superior way to do that than 
+user needing to hit the correct resolution size by calculating each border
+value separately while keeping in mind their maximum values, that they can
+be doubled etc.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003213.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+	<LI>Next message: <A HREF="003223.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3221">[ date ]</a>
+              <a href="thread.html#3221">[ thread ]</a>
+              <a href="subject.html#3221">[ subject ]</a>
+              <a href="author.html#3221">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Ym / Dma mixing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3C498DA679.6000808%40freemind-tobe.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000127.html">
+   <LINK REL="Next"  HREF="000112.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Ym / Dma mixing</H1>
+    <B>Jean-Baptiste Berlioz</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3C498DA679.6000808%40freemind-tobe.com%3E"
+       TITLE="[hatari-devel] Ym / Dma mixing">jb.berlioz at freemind-tobe.com
+       </A><BR>
+    <I>Sat Feb  7 16:19:21 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000127.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+        <LI>Next message: <A HREF="000112.html">[hatari-devel] Mercurial &amp; Diffs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#131">[ date ]</a>
+              <a href="thread.html#131">[ thread ]</a>
+              <a href="subject.html#131">[ subject ]</a>
+              <a href="author.html#131">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;&gt;&gt;<i> Why do you use RecordSoundRegs in Sound_WriteReg
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>         RecordSoundRegs[reg] = data &amp; SoundRegsMask[reg];
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> and not directly SoundRegs (which is already masked).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Not a lot of bytes, but why using another copy of SoundRegs instead of
+</I>&gt;&gt;&gt;<i> referencing it directly in the record functions as today ?
+</I>&gt;&gt;<i> There's one copy (SoundRegs) to emulate the Ym, and one copy
+</I>&gt;&gt;<i> (RecordSoundRegs) for recording .ym files.
+</I>&gt;<i> 
+</I>&gt;<i> Yes, but since they contain the same values, why not considering that the 
+</I>&gt;<i> ym core is providing an array that can be read by other modules without 
+</I>&gt;<i> doing another copy ?
+</I>
+No they don't.
+SoundRegs are updated when the history is replayed - when a SDL audio 
+callback occurs.
+RecordSoundRegs are updated in real-time, and are dumped at each vbl to 
+the .ym file.
+
+VBL != SDL audio callback.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000127.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+	<LI>Next message: <A HREF="000112.html">[hatari-devel] Mercurial &amp; Diffs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#131">[ date ]</a>
+              <a href="thread.html#131">[ thread ]</a>
+              <a href="subject.html#131">[ subject ]</a>
+              <a href="author.html#131">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

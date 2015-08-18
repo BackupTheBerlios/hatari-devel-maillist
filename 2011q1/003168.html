@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] So, do you have a planned release date for 1.5.0?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20So%2C%20do%20you%20have%20a%20planned%20release%20date%20for%201.5.0%3F&In-Reply-To=%3C201103152332.40029.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003166.html">
+   <LINK REL="Next"  HREF="003180.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] So, do you have a planned release date for 1.5.0?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20So%2C%20do%20you%20have%20a%20planned%20release%20date%20for%201.5.0%3F&In-Reply-To=%3C201103152332.40029.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] So, do you have a planned release date for 1.5.0?">oak at helsinkinet.fi
+       </A><BR>
+    <I>Tue Mar 15 22:32:39 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003166.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+        <LI>Next message: <A HREF="003180.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3168">[ date ]</a>
+              <a href="thread.html#3168">[ thread ]</a>
+              <a href="subject.html#3168">[ subject ]</a>
+              <a href="author.html#3168">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On maanantai 14 maaliskuu 2011, Laurent Sallafranque wrote:
+&gt;<i> &gt;  I'd say a new release is going to be quite a long way still off[1], at
+</I>&gt;<i> &gt;  least half a year.  This mainly depends on how much Laurent has time
+</I>&gt;<i> &gt;  as he's driving the WinAUE core fixing&amp;  integration.
+</I>&gt;<i> 
+</I>&gt;<i> I think Nicolas could also give the ST part a try.
+</I>&gt;<i> 
+</I>&gt;<i> I had a very little time these days. (Too much work and real life things
+</I>&gt;<i> to do).
+</I>
+Considering this...
+
+&gt;<i> I wish I'll have more time to work on this these next weeks.
+</I>&gt;<i> 
+</I>&gt;<i> If we want a new release, we'll have to deliver 2 exes, as compatibility
+</I>&gt;<i> with Falcon is better with the new core.
+</I>
+If we would do a release now, I don't see why there would need to be two
+binaries.   As long as there aren't regressions for the old AUE, we can ship
+just that and then switch to new Core in next release after that (in 2012?).
+This way there would be enough time to make sure it works well enough.
+
+
+We've had Hatari releases within 2-10 month intervals and it's already
+9 months since last release.
+
+IMHO there are enough features, usability enhancements and bug fixes
+for a new release with:
+- Spec512 med-res mode
+- The &quot;hack&quot; to run Atari binaries directly with Hatari
+- Fixes to DMA sound issues on low frequencies &amp; sound latency issue
+- Memory state &amp; restore fixes
+- AVI recording usability improvements
+- Your SDL file selector improvement
+- Improvements &amp; fixes to resolution change handling
+- New dissassembler
+- Profiling support
+- DSP/Videl/Crossbar/AES/VDI tracing support
+- Possibility to set breakpoints for OS functions
+- TOS text output to console with --bios-intercept
+etc.
+
+I would propose that we have new release within a month.
+
+Nicolas, what do you think?
+
+
+&gt;<i> In my shortlist, I have :
+</I>&gt;<i> - finish to integrate DSP debugging (disasm + memory + registers)
+</I>
+This would be nice to have before release and I would need to fix
+the profiler cycle counting.
+
+There's a know issue with colors on fullscreen switch on OSX, but that
+was already in v1.4, so it's not a regression.
+
+Only regression I know about is the VDI clipping one reported by
+Uwe, but as there's no SW with which I could test it, I guess that
+needs to be left unfixed.  At least it's balanced by the new Hatari
+facilities to debug such issues. :-)
+
+Documentation:
+-  would need to mention how to configure/build new core from sources
+  for those that want to experiment with it, and
+- compatibility list should list which features require WinAUE core
+  (DSP MP2 player / anything marked for v1.5 :-)).
+
+
+&gt;<i> - try to add MMU traces
+</I>&gt;<i> 
+</I>&gt;<i> In my next list :
+</I>&gt;<i> - continue to improve new CPU compatibility
+</I>&gt;<i> - videl emulation
+</I>
+IMHO these could go to next release after v1.5.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003166.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+	<LI>Next message: <A HREF="003180.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3168">[ date ]</a>
+              <a href="thread.html#3168">[ thread ]</a>
+              <a href="subject.html#3168">[ subject ]</a>
+              <a href="author.html#3168">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

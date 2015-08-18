@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] FYI: new --desktop option
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C4D904AC7.90304%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003245.html">
+   <LINK REL="Next"  HREF="003256.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] FYI: new --desktop option</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C4D904AC7.90304%40corp.free.fr%3E"
+       TITLE="[hatari-devel] FYI: new --desktop option">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Mar 28 10:45:59 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003245.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+        <LI>Next message: <A HREF="003256.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3246">[ date ]</a>
+              <a href="thread.html#3246">[ thread ]</a>
+              <a href="subject.html#3246">[ subject ]</a>
+              <a href="author.html#3246">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 28/03/2011 00:09, Eero Tamminen a &#233;crit :
+
+&gt;&gt;<i> Yes, but that's why I'm planning to add support for Y too.
+</I>&gt;<i>
+</I>&gt;<i> Why, on real Atari the resolution is always fullscreen, isn't it?
+</I>
+Well, we can't really compare ; the display is 200 lines, but with 
+interlaced video mode on CRT.
+Today, Hatari doubles Y so that in the end a high res screen takes the 
+same surface on the emulator's screen as a med res screen.
+
+But technically, the shifter only displays 200 lines, and you get the 
+feeling of a Y-stretched image due to the interlacing on a TV.
+
+Now, if you'd like to record a video of a med res screen, it would be 
+more efficient to record it without doubling Y (and then double Y while 
+playing the video if you like).
+
+In a more general way, if we want to handle one day some kind of filters 
+to zoom x2 or x3, we need to have a non-zoomed image as source, so 
+having a parameter to double Y could be useful.
+
+
+&gt;&gt;<i> The user might want it or not, so he can change the value as he likes,
+</I>&gt;&gt;<i> but from the point of view of :
+</I>&gt;&gt;<i>    - maximum emulation accuracy
+</I>&gt;&gt;<i>    - developping demos under Hatari as close as possible as a real ST
+</I>&gt;<i>
+</I>&gt;<i> Why showing full borders on screen would prevent that, wouldn't on real
+</I>&gt;<i> machine/monitor one anyway see some extra pixels?
+</I>
+I don't really understand what you mean.
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i>    - recording videos that match the result of a real ST
+</I>&gt;<i>
+</I>&gt;<i> What if user instead could specify for the video recording either how wide
+</I>&gt;<i> the borders are or how many pixels will be cut from borders....?
+</I>
+You can hide some parts of the borders (ie crop) the image while 
+recording (in fact it's already implemented in my avirecord.c and it's 
+used to remove tthe status bar for example), but you can't increase the 
+border to see missing pixels.
+
+An overscan line is max 460 pixels, with 48 pixels in left border. This 
+leaves approx 92 pixels for right border (minus hi/lo stabilizer).
+
+Today, we only render 320+48+48 pixels in the internal video buffer ; 
+what I'd like to do is to always render 460 pixels and then extract a 
+part of those 460 pixels to copy it to the SDL buffer (using convert/*c 
+functions), depending on the size of the border chosen by the user.
+
+So the cropping would happen during the internal buffer -&gt; sdl conversion.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003245.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+	<LI>Next message: <A HREF="003256.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3246">[ date ]</a>
+              <a href="thread.html#3246">[ thread ]</a>
+              <a href="subject.html#3246">[ subject ]</a>
+              <a href="author.html#3246">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

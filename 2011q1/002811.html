@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20%28bad%29Patch%20but%20sound%20quality%20increased%20a%0A%20lot&In-Reply-To=%3C4D32E0BF.5030908%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002860.html">
+   <LINK REL="Next"  HREF="002812.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon (bad)Patch but sound quality increased a lot</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20%28bad%29Patch%20but%20sound%20quality%20increased%20a%0A%20lot&In-Reply-To=%3C4D32E0BF.5030908%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Falcon (bad)Patch but sound quality increased a lot">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jan 16 13:12:47 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002860.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+        <LI>Next message: <A HREF="002812.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2811">[ date ]</a>
+              <a href="thread.html#2811">[ thread ]</a>
+              <a href="subject.html#2811">[ subject ]</a>
+              <a href="author.html#2811">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 15/01/2011 15:00, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> I don't run falcon demos that often, so could you tell if the demos
+</I>&gt;&gt;<i> fully works up to the end without your proposed patch ? If it stops,
+</I>&gt;&gt;<i> can you tell me where so I can be sure to really work on the same bases.
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Without the patch, Eko_System crashes after 2 effect.
+</I>&gt;<i>
+</I>&gt;<i> First, there's the little presentation.
+</I>&gt;<i> Then, there's a tridi transparent gouraud ball (which doesn't display
+</I>&gt;<i> without the patch)
+</I>&gt;<i> Then, a little tridi word.
+</I>&gt;<i>
+</I>&gt;<i> Then 3d Gouraud fruits (apple, lemon, ...) (Demo crash here without the
+</I>&gt;<i> patch).
+</I>&gt;<i>
+</I>&gt;<i> With my patch (I mean not the latest proposition you told me to try), it
+</I>&gt;<i> runs to the end.
+</I>&gt;<i>
+</I>
+Hello,
+
+I add some time to make a few tests, and I think some things are wrong 
+in current approach and they appear in more complex demos like eko system.
+
+As you say, removing the last call to DSP_Run as I proposed stops the 
+first gouraud ball from displaying.
+The problem is that if I add :
+
+                 if ( Cycles_GetCounter(CYCLES_COUNTER_CPU) != 0 )
+                         fprintf ( stderr , &quot;cpu count!=0\n&quot; );
+
+before calling this last DSP_Run, you will see that there're very few 
+prints, which is what I expected because the 2 calls added above should 
+already run the dsp for the needed cycles (so DSP_Run will be called 
+with a parameter &quot;0&quot;).
+
+What this means and is confirmed when looking at DSP_Run is that DSP_Run 
+is calling dsp56k_execute_instruction() at least once, even if 
+nHostCycles==0, which is not possible on a real falcon, you can't 
+execute more dsp instructions if the cpu (which is bound to the master 
+clock) did not have an increase in cycle counter.
+
+So, at first sthg like :
+
+         if (nHostCycles == 0)
+                 return;
+
+should be added to the start of DSP_Run. But this is not enough as the 
+demos still doesn't work correctly.
+I need to make more tests, but I have the feeling that the &quot;- 
+save_cycles + 1&quot; and the &quot;save_cycles = cycles&quot; at the end are not correct.
+
+save_cycles will be &lt;=0, if it's &lt;0, it means the dsp executed 1 more 
+instruction that it should between the time allowed by the cpu. So, on 
+next call, you should execute 1 less instruction and as save_cycle&lt;0, 
+the line should be more like :
+
+Sint32 cycles = nHostCycles * ( DSP_FREQ / CPU_FREQ ) + save_cycles + 1;
+
+But then, I don't see why a &quot;+ 1&quot; ? Once we test nHostCycles==0, we know 
+DSP_FREQ=CPU_FREQ*4, so there should be no rounding error.
+
+These are just some quick traces I made, I need to spend more time on 
+this to correctly fix it. But in the meantime, I don't think it's useful 
+to commit the patch to m68k_run1, the bases are not stable enough and 
+this would not correct the real source of the problem (but in the end, I 
+agree DSP_Run should be called more often in m68k_run1)
+
+Regards
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002860.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+	<LI>Next message: <A HREF="002812.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2811">[ date ]</a>
+              <a href="thread.html#2811">[ thread ]</a>
+              <a href="subject.html#2811">[ subject ]</a>
+              <a href="author.html#2811">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

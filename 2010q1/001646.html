@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Extended video mode
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Extended%20video%20mode&In-Reply-To=%3C201003092243.24433.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001645.html">
+   <LINK REL="Next"  HREF="001652.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Extended video mode</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Extended%20video%20mode&In-Reply-To=%3C201003092243.24433.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Extended video mode">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Mar  9 21:43:23 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001645.html">[hatari-devel] Extended video mode
+</A></li>
+        <LI>Next message: <A HREF="001652.html">[hatari-devel] Extended video mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1646">[ date ]</a>
+              <a href="thread.html#1646">[ thread ]</a>
+              <a href="subject.html#1646">[ subject ]</a>
+              <a href="author.html#1646">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 09 March 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ghst at ghstwlf.com</A> wrote:
+&gt;<i> I am looking in to extending the resolution of my atari st to someting
+</I>&gt;<i> like, 1280x1024 or even bigger. I want to do this by a small mod to the
+</I>&gt;<i> cardrige port by adding WE in some way. Now I am curios how Hatari does
+</I>&gt;<i> its extended grafics mode. I have tried to read the code but I can't make
+</I>&gt;<i> any sens of it. Please tell me. //P&#228;r
+</I>
+I took a quick look at it.
+
+Hatari's own cartridge code adds CPU opcode that goes into VDI code.
+
+The CPU startup code (in hatari-glue.c) sets the LineA variables according
+to the VDI resolution.
+
+newcpu.c has following code:
+    /* Intercept VDI exception (Trap #2 with D0 = 0x73) */
+    if (ExceptionSource == M68000_EXC_SRC_CPU)
+      {
+        if(bUseVDIRes &amp;&amp; nr == 0x22 &amp;&amp; regs.regs[0] == 0x73)
+        {
+          if(!VDI())
+          {
+            /* Set 'PC' as address of 'VDI_OPCODE' illegal instruction
+             * This will call OpCode_VDI after completion of Trap call!
+             * Use to modify return structure from VDI */
+            VDI_OldPC = currpc;
+            currpc = CART_VDI_OPCODE_ADDR;
+          }
+        }
+
+OpCode_VDI() function in vdi.c modifies VDI variables according to set VDI
+resolution when the VDI call completes.
+
+video.c has checks to skip lot of stuff when VDI mode is used and screen.c
+just blits the Atari screen memory to the Hatari window.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001645.html">[hatari-devel] Extended video mode
+</A></li>
+	<LI>Next message: <A HREF="001652.html">[hatari-devel] Extended video mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1646">[ date ]</a>
+              <a href="thread.html#1646">[ thread ]</a>
+              <a href="subject.html#1646">[ subject ]</a>
+              <a href="author.html#1646">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] So, do you have a planned release date for 1.5.0?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20So%2C%20do%20you%20have%20a%20planned%20release%20date%20for%201.5.0%3F&In-Reply-To=%3C4D865E96.6030007%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003185.html">
+   <LINK REL="Next"  HREF="003190.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] So, do you have a planned release date for 1.5.0?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20So%2C%20do%20you%20have%20a%20planned%20release%20date%20for%201.5.0%3F&In-Reply-To=%3C4D865E96.6030007%40free.fr%3E"
+       TITLE="[hatari-devel] So, do you have a planned release date for 1.5.0?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Mar 20 21:07:50 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003185.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+        <LI>Next message: <A HREF="003190.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3186">[ date ]</a>
+              <a href="thread.html#3186">[ thread ]</a>
+              <a href="subject.html#3186">[ subject ]</a>
+              <a href="author.html#3186">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 20/03/2011 20:24, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 20/03/2011 19:53, Eero Tamminen a &#233;crit :
+</I>&gt;<i>
+</I>&gt;&gt;<i> Anything for the STE PowerUp game STE music? :-)
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I didn't remember this one ; what's was wrong, so I can see if I can 
+</I>&gt;<i> reproduce ?
+</I>
+For this one, the problem is that sound frame start and sound frame end 
+are 4 bytes length.
+So, the values change too often for our actual code.
+
+I tried a long time ago to code the Ste DMA sound as I did for the 
+crossbar, this game worked better but it generated a lot of regressions.
+I think the only way to have it working is to have a cycle_exact cpu.
+
+
+
+ &gt; I tested several Falcon demos using DSP with the old core and it 
+seems thatseveral have regressed (at least couple EKO's&amp;  Lazer's demos, 
+Hmmm demo).
+&gt;&gt;<i> I guess the reason is that how timings are done has changed in DSP_Run()
+</I>&gt;&gt;<i> from what was in v1.4.  How that gets called is different between the 
+</I>&gt;&gt;<i> CPU
+</I>&gt;&gt;<i> cores too:
+</I>&gt;&gt;<i> ----
+</I>&gt;&gt;<i> $ grep DSP_Run uae-cpu/*.c
+</I>&gt;&gt;<i> uae-cpu/newcpu.c:       DSP_Run( 
+</I>&gt;&gt;<i> Cycles_GetCounter(CYCLES_COUNTER_CPU) );
+</I>&gt;&gt;<i> uae-cpu/newcpu.c:       DSP_Run( 
+</I>&gt;&gt;<i> Cycles_GetCounter(CYCLES_COUNTER_CPU) );
+</I>&gt;&gt;<i> $ grep DSP_Run cpu/*.c
+</I>&gt;&gt;<i> cpu/newcpu.c:                       DSP_Run(cpu_cycles* 2 / CYCLE_UNIT);
+</I>&gt;&gt;<i> cpu/newcpu.c:               DSP_Run(cpu_cycles* 2 / CYCLE_UNIT);
+</I>&gt;&gt;<i> cpu/newcpu.c:               DSP_Run(cpu_cycles* 2 / CYCLE_UNIT);
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent, is there something you could do for this?
+</I>&gt;<i>
+</I>
+The difference is in newcpu.c, but also in dsp.c.
+The 68030 instructions are really more precise with the new core.
+The difference is really noticeable with music quality for example.
+
+It's not only DSP that is impacted, but also the crossbar (and many 
+timings are related both to DSP and crossbar).
+
+
+&gt;<i> This way of counting cycles should be equivalent. The main difference 
+</I>&gt;<i> is that old cpu doesn't have correct cpu cycle for 68030 instruction 
+</I>&gt;<i> (it uses 68000 timings) whereas new core has correct 68030 cycle 
+</I>&gt;<i> counting.
+</I>&gt;<i> So, this is not fixable with old cpu core. This is clearly an example 
+</I>&gt;<i> of things that will only work with new core, nothing we can do about 
+</I>&gt;<i> this (without loosing a lot of time by duplicating 2 dsp cores).
+</I>&gt;<i>
+</I>&gt;<i> I wouldn't call these &quot;regressions&quot; in that case, because it was more 
+</I>&gt;<i> or less working by luck with old cpu core : dsp code was tailored to 
+</I>&gt;<i> make the demo works with a bad cycle counting. Now that we have 
+</I>&gt;<i> correct timing in new cpu core, dsp was adjusted to work in the 
+</I>&gt;<i> &quot;correct&quot; way.
+</I>&gt;<i>
+</I>&gt;<i> I don't think we need to &quot;maintain&quot; DSP with old cpu core, regressions 
+</I>&gt;<i> will happen, but huge improvements will happen too with new cpu core
+</I>&gt;<i> -&gt; dsp issues with only old cpu core should now be discarded/ignored 
+</I>&gt;<i> if the programs work with new cpu core.
+</I>&gt;<i>
+</I>
+I agree totally here.
+
+
+&gt;<i>
+</I>&gt;&gt;<i> PS. WinUAE's core doesn't have DSP_Run() calls in all m68k_run_* 
+</I>&gt;&gt;<i> functions,
+</I>&gt;&gt;<i> should it have (at least in few more of them)?
+</I>
+No, not for now.
+
+m68k_run_1 is 68000 only, so no DSP needed
+m68k_run_1_ce is cycle exact for 68000 only (not working at all for 
+now), no DSP needed
+m68k_run_jit is not working too
+
+m68k_run_mmu040 runs well with DSP (only MMU opcodes don't work for now ;)
+m68k_run_2ce is cycle exact for 68020+ processors (doesn't work for now)
+m68k_run_2p is prefetch mode for 68020+ processors. Works with DSP. The 
+best falcon mode for now
+m68k_run_2 is 68020+ emulation (no prefetch, no mmu, no cycle exact). 
+Works with DSP.
+
+
+&gt;<i> Some m68k_run_* functions are not supposed to be called in Falcon 
+</I>&gt;<i> mode, so this could be normal. Anyway, we can unify this latter when 
+</I>&gt;<i> all other cpu issues are fixed.
+</I>&gt;<i>
+</I>
+Regards
+
+Laurent
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003185.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+	<LI>Next message: <A HREF="003190.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3186">[ date ]</a>
+              <a href="thread.html#3186">[ thread ]</a>
+              <a href="subject.html#3186">[ subject ]</a>
+              <a href="author.html#3186">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

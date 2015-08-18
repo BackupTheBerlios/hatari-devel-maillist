@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fseek%20bug%20with%2064%20bit%20OS%20%2864%20bit%20longs%29&In-Reply-To=%3C200911221950.27997.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000978.html">
+   <LINK REL="Next"  HREF="000982.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fseek%20bug%20with%2064%20bit%20OS%20%2864%20bit%20longs%29&In-Reply-To=%3C200911221950.27997.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Nov 22 18:50:27 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000978.html">[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+</A></li>
+        <LI>Next message: <A HREF="000982.html">[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#980">[ date ]</a>
+              <a href="thread.html#980">[ thread ]</a>
+              <a href="subject.html#980">[ subject ]</a>
+              <a href="author.html#980">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 22 November 2009, Uwe Seimet wrote:
+&gt;<i> thank you, with this patch the Pure debugger now works on 64 bit and 32
+</I>&gt;<i> bit Linux platforms.
+</I>&gt;<i>
+</I>&gt;<i> &gt; What programs are using negative from-the-end-of-file seeks on Atari
+</I>&gt;<i> &gt; with which this could be tested for whether they now work better with
+</I>&gt;<i> &gt; GEMDOS mode (even on 32-bits)?
+</I>&gt;<i>
+</I>&gt;<i> I think there are not many programs using Fseek. Anyway, the Pure
+</I>&gt;<i> debugger uses Fseek mode 0 and 2, so at least these two mode can be
+</I>&gt;<i> considered working now.
+</I>
+Ok, I pushed it to repository.  Thanks for testing!
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000978.html">[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+</A></li>
+	<LI>Next message: <A HREF="000982.html">[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#980">[ date ]</a>
+              <a href="thread.html#980">[ thread ]</a>
+              <a href="subject.html#980">[ subject ]</a>
+              <a href="author.html#980">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Some more demos that fail with 1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20more%20demos%20that%20fail%20with%201.4&In-Reply-To=%3C201103252317.22122.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003218.html">
+   <LINK REL="Next"  HREF="003220.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Some more demos that fail with 1.4</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20more%20demos%20that%20fail%20with%201.4&In-Reply-To=%3C201103252317.22122.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Some more demos that fail with 1.4">oak at helsinkinet.fi
+       </A><BR>
+    <I>Fri Mar 25 22:17:22 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003218.html">[hatari-devel] trivial OSX gui update needed
+</A></li>
+        <LI>Next message: <A HREF="003220.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3219">[ date ]</a>
+              <a href="thread.html#3219">[ thread ]</a>
+              <a href="subject.html#3219">[ subject ]</a>
+              <a href="author.html#3219">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 23 maaliskuu 2011, Anders Eriksson wrote:
+&gt;<i> 3.
+</I>&gt;<i> RGB Plasma / Omega
+</I>&gt;<i> <A HREF="http://files.dhs.nu/files_demo/omplasma.zip">http://files.dhs.nu/files_demo/omplasma.zip</A>
+</I>&gt;<i> <A HREF="http://pouet.net/prod.php?which=28031">http://pouet.net/prod.php?which=28031</A>
+</I>
+Wow, this is really nice plasma. :-)
+
+
+&gt;<i> 5.
+</I>&gt;<i> Bird Mad Girl Show / Fraggles
+</I>&gt;<i> <A HREF="http://pacidemo.planet-d.net/archives/BIRDMAD.ZIP">http://pacidemo.planet-d.net/archives/BIRDMAD.ZIP</A>
+</I>&gt;<i> <A HREF="http://pouet.net/prod.php?which=18720">http://pouet.net/prod.php?which=18720</A>
+</I>&gt;<i> 
+</I>&gt;<i> a) Crashes with double bus error at boot
+</I>
+Download doesn't work?
+
+
+I checked some long time ago tested STE demos which had been reported to
+have issues:
+
+* Pixel Twin's Mental Hangover actually crashes Hatari:
+   <A HREF="http://www.pouet.net/prod.php?which=11181">http://www.pouet.net/prod.php?which=11181</A>
+
+Valgrind says:
+==4016== Invalid write of size 1
+==4016==    at 0x40264DC: memset (mc_replace_strmem.c:602)
+==4016==    by 0x80D18DC: Video_InterruptHandler_HBL (video.c:1942)
+==4016==    by 0x810CB30: m68k_go (newcpu.c:1758)
+==4016==    by 0x80B3A33: M68000_Start (m68000.c:241)
+==4016==    by 0x80B4823: main (main.c:773)
+==4016==  Address 0x4981d00 is 0 bytes after a block of size 614,400 alloc'd
+==4016==    at 0x4023F50: malloc (vg_replace_malloc.c:236)
+==4016==    by 0x80C2E81: Screen_Init (screen.c:517)
+==4016==    by 0x80B46C9: main (main.c:585)
+
+(when it gets 4 bytes past the screen buffer, Hatari crashes)
+
+
+* Songs of the Unexpected gets double bus error after playing the first song
+   in the main demo for a while:
+	<A HREF="http://www.pouet.net/prod.php?which=22398">http://www.pouet.net/prod.php?which=22398</A>
+
+
+* Aura's Hifidelity dreams seems now fine:
+	<A HREF="http://www.pouet.net/prod.php?which=996">http://www.pouet.net/prod.php?which=996</A>
+
+
+* As does Hemoroids Necrosys (it's music is something truly
+  horrible though):
+	<A HREF="http://www.pouet.net/prod.php?which=14395">http://www.pouet.net/prod.php?which=14395</A>
+
+
+* Delirious 3 crashes on startup:
+  <A HREF="http://www.pouet.net/prod.php?which=21347">http://www.pouet.net/prod.php?which=21347</A>
+
+
+* Once the actual demo starts:
+  <A HREF="http://www.pouet.net/prod.php?which=15437">http://www.pouet.net/prod.php?which=15437</A>
+
+  Bad taste dies to:
+  Your Atari program just did something terribly stupid:
+  VoidMem_xlate($533b0aa5)
+
+
+* Automation Banafisk seems to work:
+  <A HREF="http://www.atarimania.com/demo-atari-st-bananfisk-demo_23369.html">http://www.atarimania.com/demo-atari-st-bananfisk-demo_23369.html</A>
+
+* Parallax screen by Flash works now
+
+
+* AFL pro fooball doesn't anymore freeze on startup:
+  <A HREF="../2010q2/002284.html">http://lists.berlios.de/pipermail/hatari-devel/2010q2/002284.html</A>
+
+  But there's some screen update/color issue between the game halves
+  (when running a demo game) when panels from top &amp; bottom are scrolled
+  towards screen center.
+
+
+* GGN's Kuovadis game (Daleks clone) dies at startup after screen goes blank
+  and it tries to scan disk for mods.  I'm not sure where I got the program,
+  GGN's page seems to be missing a link:
+	<A HREF="http://users.hol.gr/~ggn/">http://users.hol.gr/~ggn/</A>
+ 
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003218.html">[hatari-devel] trivial OSX gui update needed
+</A></li>
+	<LI>Next message: <A HREF="003220.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3219">[ date ]</a>
+              <a href="thread.html#3219">[ thread ]</a>
+              <a href="subject.html#3219">[ subject ]</a>
+              <a href="author.html#3219">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

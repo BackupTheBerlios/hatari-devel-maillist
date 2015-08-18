@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] gcc warnings during compilation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20gcc%20warnings%20during%20compilation&In-Reply-To=%3C201003162051.02386.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001688.html">
+   <LINK REL="Next"  HREF="001664.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] gcc warnings during compilation</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20gcc%20warnings%20during%20compilation&In-Reply-To=%3C201003162051.02386.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] gcc warnings during compilation">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Mar 16 19:51:02 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001688.html">[hatari-devel] gcc warnings during compilation
+</A></li>
+        <LI>Next message: <A HREF="001664.html">[hatari-devel] updates to cmake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1689">[ date ]</a>
+              <a href="thread.html#1689">[ thread ]</a>
+              <a href="subject.html#1689">[ subject ]</a>
+              <a href="author.html#1689">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 16 March 2010, Vincent Rivi&#232;re wrote:
+&gt;<i> Beware, when you compile with -O3 GCC does as much inlining as possible,
+</I>&gt;<i> and normally this warning occurs when GCC is really generating some
+</I>&gt;<i> useful code to access an array out of range.
+</I>
+I get the same warnings also with -O2 if I set read_memory() as inline,
+good thing we don't do that. :-)
+
+
+&gt;<i> However, it seems there are several GCC bugs related to this warning.
+</I>&gt;<i> Especially this report, fixed in future version 4.5:
+</I>&gt;<i> <A HREF="http://gcc.gnu.org/bugzilla/show_bug.cgi?id=36902">http://gcc.gnu.org/bugzilla/show_bug.cgi?id=36902</A>
+</I>
+That bug sounded like gcc would be giving warnings about things that are
+actually dead code/branches also in future and that the v4.5 fix would be
+only about pushing the warnings slightly further along the optimization
+passes (after one that checks constants), not general support for
+(re-)checking them after all optimization passes have been done.
+
+But I'm not even completely sure from the commit whether this fixes our
+constant comparison case, or just constants in switch cases:
+	<A HREF="http://gcc.gnu.org/bugzilla/show_bug.cgi?id=36902#c34">http://gcc.gnu.org/bugzilla/show_bug.cgi?id=36902#c34</A>
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001688.html">[hatari-devel] gcc warnings during compilation
+</A></li>
+	<LI>Next message: <A HREF="001664.html">[hatari-devel] updates to cmake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1689">[ date ]</a>
+              <a href="thread.html#1689">[ thread ]</a>
+              <a href="subject.html#1689">[ subject ]</a>
+              <a href="author.html#1689">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

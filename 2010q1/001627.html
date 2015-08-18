@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari version string?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20version%20string%3F&In-Reply-To=%3Calpine.LMD.2.00.1003042152150.3603%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001625.html">
+   <LINK REL="Next"  HREF="001630.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari version string?</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20version%20string%3F&In-Reply-To=%3Calpine.LMD.2.00.1003042152150.3603%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Hatari version string?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Mar  4 21:53:51 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001625.html">[hatari-devel] Hatari version string?
+</A></li>
+        <LI>Next message: <A HREF="001630.html">[hatari-devel] Videl code and registers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1627">[ date ]</a>
+              <a href="thread.html#1627">[ thread ]</a>
+              <a href="subject.html#1627">[ subject ]</a>
+              <a href="author.html#1627">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 4 Mar 2010, Thomas Huth wrote:
+
+&gt;<i> On Thu, 4 Mar 2010 21:12:15 +0200
+</I>&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I wonder whether there should be a single global variable
+</I>&gt;&gt;<i> for Hatari version.  If one happens to compile different parts
+</I>&gt;&gt;<i> of Hatari at different times, one gets different dates from
+</I>&gt;&gt;<i> different places using the current define:
+</I>&gt;&gt;<i> ----------
+</I>&gt;&gt;<i> $ grep PROG_NAME *.c */*.c
+</I>&gt;&gt;<i> avi_record.c:   Len = snprintf ( InfoString , sizeof ( InfoString ) ,
+</I>&gt;&gt;<i> &quot;%s - the Atari ST, STE, TT and Falcon emulator&quot; , PROG_NAME ) + 1;
+</I>&gt;&gt;<i> main.c: Log_Printf(LOG_INFO, PROG_NAME &quot;, compiled on:  &quot; __DATE__ &quot;,
+</I>&gt;&gt;<i> &quot; __TIME__ &quot;\n&quot;);
+</I>&gt;&gt;<i> options.c:      printf(&quot;\n&quot; PROG_NAME
+</I>&gt;&gt;<i> screen.c:       SDL_WM_SetCaption(PROG_NAME, &quot;Hatari&quot;);
+</I>&gt;&gt;<i> gui-sdl/dlgAbout.c:     { SGTEXT, 0, 0, 13,1, 12,1, PROG_NAME },
+</I>&gt;&gt;<i> includes/main.h:#define PROG_NAME &quot;Hatari devel (&quot; __DATE__ &quot;)&quot;
+</I>&gt;&gt;<i> includes/main.<A HREF="h://#define">h://#define</A> PROG_NAME &quot;Hatari v1.3.1&quot;
+</I>&gt;&gt;<i> ----------
+</I>&gt;<i>
+</I>&gt;<i> Since this affects the development version only, I think it is not a
+</I>&gt;<i> big issue. It would be ugly if it would affect the public release
+</I>&gt;<i> version, though.
+</I>
+I agree, having different dates in various .o file doesn't look like a 
+problem to me, and for every release we will do a &quot;make clean&quot; before, so 
+they will all be the same in the end.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001625.html">[hatari-devel] Hatari version string?
+</A></li>
+	<LI>Next message: <A HREF="001630.html">[hatari-devel] Videl code and registers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1627">[ date ]</a>
+              <a href="thread.html#1627">[ thread ]</a>
+              <a href="subject.html#1627">[ subject ]</a>
+              <a href="author.html#1627">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

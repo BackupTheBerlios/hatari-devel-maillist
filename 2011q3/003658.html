@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New STE DMA audio emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C4E17EFA8.6020409%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003654.html">
+   <LINK REL="Next"  HREF="003665.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New STE DMA audio emulation</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C4E17EFA8.6020409%40free.fr%3E"
+       TITLE="[hatari-devel] New STE DMA audio emulation">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Jul  9 08:05:28 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003654.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+        <LI>Next message: <A HREF="003665.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3658">[ date ]</a>
+              <a href="thread.html#3658">[ thread ]</a>
+              <a href="subject.html#3658">[ subject ]</a>
+              <a href="author.html#3658">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+ &gt; is this demo supposed to work with the old uae core ? For me when the 
+intro starts, the sound is really noisy with new sound code or with old 
+one (bad in both cases).
+
+It &quot;works&quot;, but it sounds good only with the new core.
+
+
+ &gt; Do you know another demo where sound would be worse with the new 
+sound code ? (preferably one that doesn't need the winuae cpu core to 
+work).
+
+I've done some tests with many demos and games.
+It many case, sound is &quot;OK&quot; (means not always perfect, but at least good 
+to listen.
+
+Amanita seems to regressed a little in quality (beams works perfect). 
+both use the MP2  player.
+Some pure DMA sound (like mouse.prg) work well.
+
+Some sound &quot;modtrack&quot; still give good sound.
+
+I think I've tested &quot;the only one that seems to have regressed a little&quot; :)
+
+There's still something to do for Falcon sound to improve it anyway.
+
+
+Regards
+
+Laurent
+
+PS : in order to have the code  in dmasnd.c looking the same, shouldn't 
+you create a FIFO struct, add all the FIFO variables into it and just 
+add the structure into save/restore memory ?
+
+
+
+Le 06/07/2011 23:31,
+&gt;<i> Do you know another demo where sound would be worse with the new sound 
+</I>&gt;<i> code ? (preferably one that doesn't need the winuae cpu core to work).
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> For the Falcon part, there's a possibility to compute VBL cycles
+</I>&gt;&gt;<i> precisely :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> A screen (VBL) in the videl is composed of a certain amount of 
+</I>&gt;&gt;<i> halflines.
+</I>&gt;&gt;<i> And we know the number of Videl cycles of a halfline.
+</I>&gt;<i>
+</I>&gt;<i> I'm not sure this is necessary, for Falcon clocks_timings.c uses :
+</I>&gt;<i>
+</I>&gt;<i> SamplesPerVBL = ( ((Sint64)AudioFreq) &lt;&lt; 28 ) / ScreenRefreshRate
+</I>&gt;<i>
+</I>&gt;<i> This is then used in sound.c in SoundUpdate(). So, this should be the 
+</I>&gt;<i> same value than with the previous sound.c version.
+</I>&gt;<i>
+</I>&gt;<i> Cycles per VBL is not necessary to render sound, AudioFreq / 
+</I>&gt;<i> ScreenRefresh Rate should give 882 samples per VBL at 441000 Hz, which 
+</I>&gt;<i> is very close to the real hardware (even if not perfect).
+</I>&gt;<i>
+</I>&gt;<i> Maybe I left some bugs somewhere, but I would need some more demos 
+</I>&gt;<i> that don't sound OK now to compare ; do you have some more ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> So, I can add a function that would return the number of cycles for a
+</I>&gt;&gt;<i> Falcon VBL.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It would be something like :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> VBL_cycles = (HHT+2) * 2 * VFT
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> // HHT = number of cycles minus 2 per halfline
+</I>&gt;&gt;<i> // VFT = number of halflines per screen
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If Videl clock is 32 Mhz,
+</I>&gt;&gt;<i> VBL_cycles /=2
+</I>&gt;&gt;<i> else
+</I>&gt;&gt;<i> VBL_cycles = VBL_cycles / (25/16)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It's what I've started to implement in the Videl emulation.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Like this, we would have a correct value for Falcon VBL cycles and this
+</I>&gt;&gt;<i> could improve music, no ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Nicolas, do you agree here ? How could I call this for Falcon crossbar
+</I>&gt;&gt;<i> sound ? (maybe a function in videl.c that would return cycles in vbl ?)
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Theorically, this would increase accuracy, but considering that the 
+</I>&gt;<i> current value of 882 = 44100 / 500 is not perfect and the real value 
+</I>&gt;<i> should be between 881 and 882 samples per VBL, we're talking here of 
+</I>&gt;<i> less than 0.1 % error with the current method.
+</I>&gt;<i>
+</I>&gt;<i> So I don't think it's a good idea to change this now, we should first 
+</I>&gt;<i> fix the 50 % error (or more) we sometimes hear when sound is really bad.
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003654.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+	<LI>Next message: <A HREF="003665.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3658">[ date ]</a>
+              <a href="thread.html#3658">[ thread ]</a>
+              <a href="subject.html#3658">[ subject ]</a>
+              <a href="author.html#3658">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

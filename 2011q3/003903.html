@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] EmuTOS screen
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EmuTOS%20screen&In-Reply-To=%3C20110812221143.75ea2d00%40think43%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003848.html">
+   <LINK REL="Next"  HREF="003835.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] EmuTOS screen</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EmuTOS%20screen&In-Reply-To=%3C20110812221143.75ea2d00%40think43%3E"
+       TITLE="[hatari-devel] EmuTOS screen">huth at users.berlios.de
+       </A><BR>
+    <I>Fri Aug 12 22:11:43 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003848.html">[hatari-devel] EmuTOS screen
+</A></li>
+        <LI>Next message: <A HREF="003835.html">[hatari-devel] Updated archive for Windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3903">[ date ]</a>
+              <a href="thread.html#3903">[ thread ]</a>
+              <a href="subject.html#3903">[ subject ]</a>
+              <a href="author.html#3903">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Fri, 29 Jul 2011 10:03:18 +0200
+schrieb Vincent Rivi&#232;re &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">vincent.riviere at freesbee.fr</A>&gt;:
+
+&gt;<i> Thomas Huth wrote:
+</I>&gt;<i> &gt; For some reason, EmuTOS crashes when I disable the memvalid patches
+</I>&gt;<i> &gt; in Hatari. Seems like the memchk function in EmuTOS somehow fails to
+</I>&gt;<i> &gt; detect the right memory size... that needs some more
+</I>&gt;<i> &gt; investigation ...
+</I>&gt;<i> 
+</I>&gt;<i> The EmuTOS memory detection routines work well on real STe, Steem,
+</I>&gt;<i> ARAnyM, so they should be almost OK, but who knows...
+</I>
+I now read through the memory test of EmuTOS, and I think I
+understood the problem. The memory test of EmuTOS relies on some
+bank mirroring of the real hardware, which is not emulated in Hatari
+yet (and probable in a couple of other emulators). The problem only
+occurs for memory configurations &lt; 4 MB which require two memory banks,
+i.e. 512 kB and 1 MB.
+Since this might be a problem on multiple emulators, I've added another
+sanity memory check there, so that the memory init now also works when
+the emulator does not support the bank mirroring.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003848.html">[hatari-devel] EmuTOS screen
+</A></li>
+	<LI>Next message: <A HREF="003835.html">[hatari-devel] Updated archive for Windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3903">[ date ]</a>
+              <a href="thread.html#3903">[ thread ]</a>
+              <a href="subject.html#3903">[ subject ]</a>
+              <a href="author.html#3903">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

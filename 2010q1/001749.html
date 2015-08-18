@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] LMC1992 and Microwire emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C12075126.428871.1269160403610.JavaMail.nitido%40priv-edtnes95%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001746.html">
+   <LINK REL="Next"  HREF="001752.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] LMC1992 and Microwire emulation</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C12075126.428871.1269160403610.JavaMail.nitido%40priv-edtnes95%3E"
+       TITLE="[hatari-devel] LMC1992 and Microwire emulation">dsavnkff at telus.net
+       </A><BR>
+    <I>Sun Mar 21 09:33:23 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001746.html">[hatari-devel] Some Hatari Bugs ?
+</A></li>
+        <LI>Next message: <A HREF="001752.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1749">[ date ]</a>
+              <a href="thread.html#1749">[ thread ]</a>
+              <a href="subject.html#1749">[ subject ]</a>
+              <a href="author.html#1749">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100321/53f74237/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100321/53f74237/attachment.html</A>&gt;
+-------------- next part --------------
+**************************************************************
+Part 1 Bugs
+**************************************************************
+SAMPLES_PER_FRAME and YM_REPLAY_FREQ Bugs:
+
+
+[hatari-4ea11a28275f]$ find .  -print0 | xargs -0 grep nAudioFrequency
+./src/audio.c:int nAudioFrequency = 44100;              /* Sound playback frequency */     *** Note nAudioFrequency initialization ***
+./src/audio.c:  desiredAudioSpec.freq = nAudioFrequency;
+./src/audio.c:  if (nNewFrequency != nAudioFrequency)
+./src/audio.c:          nAudioFrequency = nNewFrequency;                                   *** nAudioFrequency changed ***
+./src/sound.c:#define SAMPLES_PER_FRAME  ((nAudioFrequency+35)/nScreenRefreshRate)         *** OOPS! Compile time / Run time problem ***
+./src/sound.c:#define YM_REPLAY_FREQ   nAudioFrequency                                     *** OOPS! Compile time / Run time problem ***
+./src/sound.c:          int SamplePerVbl = nAudioFrequency / nScreenRefreshRate;
+./src/dmaSnd.c: FreqRatio = (Uint32)(DmaSnd_DetectSampleRate() / (double)nAudioFrequency * 65536.0);
+./src/falcon/crossbar.c:                crossbar.microphone_ADC_is_started = Microphone_Start((int)nAudioFrequency);
+./src/falcon/crossbar.c:        crossbar.frequence_ratio = (Uint32)((Crossbar_DetectSampleRate(25) / (double)nAudioFrequency) * (double)DECIMAL_PRECISION);
+./src/falcon/crossbar.c:        crossbar.frequence_ratio2 = (Uint32)(((double)nAudioFrequency / Crossbar_DetectSampleRate(25)) * (double)DECIMAL_PRECISION);
+./src/includes/audio.h:extern int nAudioFrequency;
+
+
+**************************************************************
+
+Furthermore, it appears that the Bass and Treble use 'nAudioFrequency'
+for the sample rate. Thus, 'DmaSnd_Init_Bass_and_Treble_Tables()'
+should be using whatever other host-computer sample rates are
+supported (44100 Hz etc), not 50066 Hz and 25033 Hz.
+
+This means that the code after the following comment in dmaSnd.c will
+be simplified: (line number 435)
+
+	/* Apply LMC1992 sound modifications (Bass and Treble) 
+	   The tone control's sampling frequency must be a least 25033 Hz to sound good. 
+	   Thus the 12517Hz DAC samples should be doubled before being sent to the tone controls. 
+	   IIRfilter() is called twice with the same data at 12517Hz DAC. 
+	   IIRfilter() is called four times with the same data at 6258Hz DAC. 
+	*/
+
+***************************************************************
+Part 2 Patches
+***************************************************************
+
+
+The non-critical patch explanations (see patches):
+
+In sound.c
+YM_ATARI_CLOCK is 2000000 but it is (CPU_FREQ / 4) in the schematics.
+
+
+In dmaSnd.c
+CPU_FREQ can be used in several places as an int.
+
+Also, -12dB is 16462 from the table, but -12 dB is very close
+to being 65536/4 = 16384 = 2^14 which can be shifted.
+
+The code after:
+    case 2:
+            /* DMA sound only */
+multiplies DMA sound by 256, whereas, in other cases by 128...
+This will make the DMA sound louder when it is not mixed.
+
+
+
+**************************************************************
+Part 3 Discusssion
+**************************************************************
+
+As for converting floats to ints; Maybe floats are ok. They
+can simplify code to the point of where it is more efficient
+on computers since the 486 era.
+What platforms will have problems? 
+
+
+Maybe interleave Dma_Snd_IIRfilterL() and Dma_Snd_IIRfilterR()
+to hope the compiler uses SIMD instructions or finds other
+optimizations automatically?
+
+**************************************************************
+
+
+
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: dmaSnd.c.patch
+Type: application/octet-stream
+Size: 2588 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100321/53f74237/attachment.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100321/53f74237/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: sound.c.patch
+Type: application/octet-stream
+Size: 385 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100321/53f74237/attachment-0001.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100321/53f74237/attachment-0001.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001746.html">[hatari-devel] Some Hatari Bugs ?
+</A></li>
+	<LI>Next message: <A HREF="001752.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1749">[ date ]</a>
+              <a href="thread.html#1749">[ thread ]</a>
+              <a href="subject.html#1749">[ subject ]</a>
+              <a href="author.html#1749">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

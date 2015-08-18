@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3C1289045.519982.1295396332516.JavaMail.nitido%40priv-edtnes95%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002834.html">
+   <LINK REL="Next"  HREF="002836.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3C1289045.519982.1295396332516.JavaMail.nitido%40priv-edtnes95%3E"
+       TITLE="[hatari-devel] Slow sound buffer">dsavnkff at telus.net
+       </A><BR>
+    <I>Wed Jan 19 01:18:52 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002834.html">[hatari-devel] Fwd:  WinUae cycles and DSP
+</A></li>
+        <LI>Next message: <A HREF="002836.html">[hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2835">[ date ]</a>
+              <a href="thread.html#2835">[ thread ]</a>
+              <a href="subject.html#2835">[ subject ]</a>
+              <a href="author.html#2835">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Jan 18, 2011, Nicolas Pomar&#232;de &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt; wrote: 
+
+Le 18/01/2011 23:20, David Savinkoff a &#233;crit :
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Main_WaitOnVbl() waits on each emulated VBL to synchronize the real
+</I>&gt;<i> time with the emulated ST. This now has less rounding error but
+</I>&gt;<i> probably doesn't make a difference unless it is taken advantage of.
+</I>&gt;<i>
+</I>&gt;<i> Your question about dma sound raised some issues with:
+</I>&gt;<i> #define SAMPLES_PER_FRAME  ((nAudioFrequency+35)/nScreenRefreshRate)
+</I>&gt;<i> Furthermore, I changed it (in sound.c) to:
+</I>&gt;<i> #define...((nAudioFrequency + d_nAudioFrequency)/nScreenRefreshRate)
+</I>&gt;<i> I have to use a different variable to do the frequency offset.
+</I>&gt;<i>
+</I>&gt;<i> It looks like nAudioFrequency+35 is meant to give more samples per
+</I>&gt;<i> frame at lower sample frequencies, but doing this will mess with
+</I>&gt;<i> FreqRatio in dmaSnd.c
+</I>&gt;<i>
+</I>&gt;<i> David
+</I>
+OK, that's what I thought. Also, can you tell more about the /86 and 
+/-86 you use ? What is the origin of this value of 86 ?
+
+Nicolas
+
+**************************************************
+Hi,
+
+I just tested (more thoroughly) a new patch without frequency
+offsetting, and with (nAudioFrequency+35) replaced with
+(nAudioFrequency). This improvement is enough for me to
+believe (nAudioFrequency+35) 'is' the problem.
+
+(nAudioFrequency/86 + nAudioFrequency) increases the sample rate
+by 20/100 of a semitone, or 20 cents, or 1.16%
+
+The synchronization is so good now, that 10 cents would be better;
+or maybe we can just 'slip in' or 'swallow' a sample once in a while
+to keep the buffer centered. If the buffer gets grossly offset, maybe
+it can be reset.
+
+More that could be cleaned in sound.c:
+./src/sound.c:#define SAMPLES_PER_FRAME  ((nAudioFrequency+35)/nScreenRefreshRate)
+./src/sound.c:          int SamplePerVbl = nAudioFrequency / nScreenRefreshRate;
+
+To:
+/src/sound.c:#define SAMPLES_PER_FRAME  (nAudioFrequency/nScreenRefreshRate)
+/src/sound.c:          int SamplePerVbl = ...Removed?...
+
+David
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: hatari.sound.sync.new.patch
+Type: application/octet-stream
+Size: 4652 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110118/867257bd/attachment.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110118/867257bd/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002834.html">[hatari-devel] Fwd:  WinUae cycles and DSP
+</A></li>
+	<LI>Next message: <A HREF="002836.html">[hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2835">[ date ]</a>
+              <a href="thread.html#2835">[ thread ]</a>
+              <a href="subject.html#2835">[ subject ]</a>
+              <a href="author.html#2835">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

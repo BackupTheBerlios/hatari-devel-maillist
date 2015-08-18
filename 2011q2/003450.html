@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Filters utilized more effectively
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Filters%20utilized%20more%20effectively&In-Reply-To=%3C4DD3B049.5030502%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003449.html">
+   <LINK REL="Next"  HREF="003455.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Filters utilized more effectively</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Filters%20utilized%20more%20effectively&In-Reply-To=%3C4DD3B049.5030502%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Filters utilized more effectively">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed May 18 13:40:57 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003449.html">[hatari-devel] Filters utilized more effectively
+</A></li>
+        <LI>Next message: <A HREF="003455.html">[hatari-devel] Things still to be done before Hatari v1.5 release?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3450">[ date ]</a>
+              <a href="thread.html#3450">[ thread ]</a>
+              <a href="subject.html#3450">[ subject ]</a>
+              <a href="author.html#3450">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 18/05/2011 09:19, David Savinkoff a &#233;crit :
+&gt;<i> I checked a STE schematic and found a 8.010613 MHz crystal associatied with
+</I>&gt;<i> dma sound. To find the actual sampling rate frequency you would divide
+</I>&gt;<i> 8.010613 MHz / 50066 Hz and get 160.0010586026445092, but 160.0015..
+</I>&gt;<i> is not an integer value (the hardware divider is going to be 160). So now you
+</I>&gt;<i> divide 8.010613 MHz / 160 and get 50066.33125 Hz for the sampling rate.
+</I>&gt;<i>
+</I>&gt;<i> Thus, 50066.33125 Hz is 'nominally' 50066 Hz; by Atari literature.
+</I>&gt;<i>
+</I>&gt;<i> But, crystals are usually accurate to about 100 parts per million 'and'
+</I>&gt;<i> are pullable (by changing the parallel or series capacitor) by even more.
+</I>&gt;<i>
+</I>&gt;<i> So, +/- 100ppm at 8.010613 MHz is: +/- 801 Hz
+</I>&gt;<i> (and pullable by a few times 100ppm)
+</I>&gt;<i>
+</I>&gt;<i> If a crystal and capacitor on an STE result in a clock frequency of
+</I>&gt;<i> 8.010613 MHz +/- 801 Hz, then the Sampling frequency will be within
+</I>&gt;<i> the range of 50061.325 and 50071.338 Hz.
+</I>
+Hello
+
+I agree, but you're mixing the measured output on a real STE with the 
+theorical hardware values from the documentation. Hatari is not 
+&quot;analog&quot;, all the computations are based on the fixed theorical values 
+of each components, so Hatari is a kind a &quot;ideal&quot; Atari.
+
+
+&gt;<i> Furthermore (and beside the point) Hatari has this:
+</I>&gt;<i> #define CPU_FREQ   8012800
+</I>&gt;<i> ..which when divided by 160 'would on real hardware' be 50080 Hz for the
+</I>&gt;<i> sampling rate.
+</I>
+cpu_freq is not the same as the FCLK used on STE. On STE cpu freq can 
+change if you connect a video genlock for example, because the shifter 
+will need to get its input master freq (approx 32 Mhz) from the external 
+source. In that case, using cpu_freq/160 would be wrong.
+
+Anyway, Hatari doesn't work at a master clock level, as an approximation 
+it uses the cpu as its master clock (which is not the case in real ST) 
+and adapt other components to work this way (Hatari only has 1 &quot;input 
+clock&quot; not several as on real hardware).
+
+&gt;<i>
+</I>&gt;<i> All of this makes for a justifiable argument that 50000 Hz through 50100 Hz
+</I>&gt;<i> are realistic sampling rates on a real Atari STE (and Hatari). I believe
+</I>&gt;<i> CPU_FREQ / 160 is better, because a real STE does it this way.
+</I>
+I don't agree. The fact that a real Atari doesn't precisely output at 
+the requested freq is not a reason to allow more freq on Hatari. Due to 
+its &quot;digital&quot; nature Hatari really outputs at 50066 Hz (minus some 
+rounding errors).
+
+What is important is to emulate the requested freq (25033, 50066, ...), 
+not to emulate the measured freq we could have on several STE models 
+(due to different PLL, components, ...).
+
+If an Atari's program has only 4 theorical values to choose from, I 
+don't see why we should allow more frequencies in the emulator.
+
+We're emulating based on values from the doc, we don't try to simulate 
+some possible cristal's errors or things like that.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003449.html">[hatari-devel] Filters utilized more effectively
+</A></li>
+	<LI>Next message: <A HREF="003455.html">[hatari-devel] Things still to be done before Hatari v1.5 release?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3450">[ date ]</a>
+              <a href="thread.html#3450">[ thread ]</a>
+              <a href="subject.html#3450">[ subject ]</a>
+              <a href="author.html#3450">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

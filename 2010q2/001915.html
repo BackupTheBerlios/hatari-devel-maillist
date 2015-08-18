@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Linking with readline (was: Problem in falcon	mode ?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Linking%20with%20readline%20%28was%3A%20Problem%20in%20falcon%0A%09mode%20%3F%29&In-Reply-To=%3C201004250146.12195.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001914.html">
+   <LINK REL="Next"  HREF="001916.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Linking with readline (was: Problem in falcon	mode ?)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Linking%20with%20readline%20%28was%3A%20Problem%20in%20falcon%0A%09mode%20%3F%29&In-Reply-To=%3C201004250146.12195.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Linking with readline (was: Problem in falcon	mode ?)">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Apr 25 00:46:11 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001914.html">[hatari-devel] Linking with readline (was: Problem in falcon mode ?)
+</A></li>
+        <LI>Next message: <A HREF="001916.html">[hatari-devel] Linking with readline (was: Problem in falcon	mode ?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1915">[ date ]</a>
+              <a href="thread.html#1915">[ thread ]</a>
+              <a href="subject.html#1915">[ subject ]</a>
+              <a href="author.html#1915">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 25 April 2010, David Savinkoff wrote:
+&gt;<i> On my system, readline needs ncurses or curses or termcap as a
+</I>&gt;<i> dependency. Probably readline 'will' work without the aforementioned.
+</I>&gt;<i> However, the linker finds unresolved symbols later in the compilation
+</I>&gt;<i> and bails. So, if readline is not used, everything works. If readline is
+</I>&gt;<i> used without one of the aforementioned dependencies 'a lot' fails
+</I>&gt;<i> because readline notably (see INSTALL notes) offers the functionality
+</I>&gt;<i> of curses, and is linked into 'a lot' without its assumed dependency.
+</I>
+Please provide build logs with these errors.
+
+I don't believe CentOS would just have that broken readline library
+(then even &quot;ldd&quot; call on your readline library wouldn't find all the libs).
+
+
+&gt;<i> The patch attempts to link readline's dependency, - on systems that
+</I>&gt;<i> fail the first 'check_function_exists', wherever readline is linked.
+</I>&gt;<i> Another solution would be to suppress the unresolved symbols error.
+</I>&gt;<i> Another solution would be to do nothing because this problem has been
+</I>&gt;<i> properly solved. I'm curious to know if hatari compiles with cmake
+</I>&gt;<i> on fedora 12. I'll bet it works because it &quot;can't not ?!&quot;.
+</I>&gt;<i>
+</I>&gt;<i> In the course of chiseling at this one, I found a 'whitespace' error
+</I>&gt;<i> in FindPortAudio.cmake. This may be the problem Laurent had
+</I>&gt;<i> with portaudio.
+</I>
+Thomas commited a fix to portaudio CMake file, could you pull the latest
+sources and test whether they build better?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001914.html">[hatari-devel] Linking with readline (was: Problem in falcon mode ?)
+</A></li>
+	<LI>Next message: <A HREF="001916.html">[hatari-devel] Linking with readline (was: Problem in falcon	mode ?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1915">[ date ]</a>
+              <a href="thread.html#1915">[ thread ]</a>
+              <a href="subject.html#1915">[ subject ]</a>
+              <a href="author.html#1915">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

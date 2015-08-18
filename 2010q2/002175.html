@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari performance issue on OSX
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20performance%20issue%20on%20OSX&In-Reply-To=%3Calpine.DEB.1.10.1005250837360.2933%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002173.html">
+   <LINK REL="Next"  HREF="002178.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari performance issue on OSX</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20performance%20issue%20on%20OSX&In-Reply-To=%3Calpine.DEB.1.10.1005250837360.2933%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Hatari performance issue on OSX">ae at dhs.nu
+       </A><BR>
+    <I>Tue May 25 08:58:39 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002173.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+        <LI>Next message: <A HREF="002178.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2175">[ date ]</a>
+              <a href="thread.html#2175">[ thread ]</a>
+              <a href="subject.html#2175">[ subject ]</a>
+              <a href="author.html#2175">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 24 May 2010, Eero Tamminen wrote:
+
+&gt;<i> On Monday 17 May 2010, Eero Tamminen wrote:
+</I>&gt;&gt;<i> On Thursday 13 May 2010, Anders Eriksson wrote:
+</I>&gt;&gt;&gt;<i> | Machine     | W1x | W2x | FS1x | FS2x |
+</I>&gt;&gt;&gt;<i> |=======================================|
+</I>&gt;&gt;&gt;<i> | Macbook Pro | 35% | 65% | 21%  | 23%  |
+</I>&gt;&gt;&gt;<i> |---------------------------------------|
+</I>&gt;&gt;&gt;<i> | VMware      | 19% | 20% | 18%  | 19%  |
+</I>&gt;&gt;&gt;<i> |---------------------------------------|
+</I>&gt;&gt;&gt;<i> | Mac Mini    | 31% | 76% | 15%  | 18%  |
+</I>&gt;&gt;&gt;<i> |---------------------------------------|
+</I>&gt;&gt;&gt;<i> | U9200       | 35% | 37% | 23%  | 26%  |
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>   ---------------------------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> W1x = Windowed mode 1x zoom
+</I>&gt;&gt;&gt;<i> W2x = Windowed mode 2x zoom
+</I>&gt;&gt;&gt;<i> FS1x = Fullscreen mode 1x zoom
+</I>&gt;&gt;&gt;<i> FS2x = Fullscreen mode 2x zoom
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What the percentage is?  Whole system CPU usage?  Hatari CPU usage?
+</I>&gt;&gt;<i> I guess these numbers are with the slowed down Hatari?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What are the numbers when you set frame skip to 1?
+</I>&gt;<i>
+</I>&gt;<i> Anders, could you check how that affects the numbers?
+</I>
+
+Hi, I spent a couple of hours doing that testing, and I've not been 
+willing to make it once again (I even installed Ubuntu just for it).
+
+The only thing I checked was the Hatari process, nothing else. So what 
+WindowServer in OS X or X11 in Ubuntu did I don't know. But from the 
+numbers it's quite clear that the scaling from 1x zoom to 2x zoom is 
+marginal on the Hatari process in Ubuntu, both virtual and on actual 
+hardware while on OS X it's killing the machine.
+
+So I will try it again on my Macbook Pro only (I can't spend forever 
+convincing you that something is very slow on blitting graphics).
+
+
+Here are the results with frameskip 1:
+
+First of all, the HUD doesn't slow down the emulation as before.
+
+w1x  25%
+w2x  34%
+fs1x 22%
+fs2x 24%
+
+Less graphics to blit, less extra overhead in window mode comapred to 
+fullscreen. Like I've said all the time.
+
+
+&gt;&gt;<i> Try enable compositing on Linux and see whether you get the same effect
+</I>&gt;&gt;<i> as what happens on OSX.
+</I>&gt;<i> My HW is too old to work with compositing and I'm not sure whether WMware
+</I>&gt;<i> (nowadays) support OpenGL either, but you could test it on your U9200.
+</I>&gt;<i> Or did you already have compositing (Desktop GL effects) enabled on it or
+</I>&gt;<i> your WMware Ubuntu installation?
+</I>
+I think this is on by default, I have not changed any setup. OpenGL is 
+available in VMware since a long time. The U9200 I borrowed from work just 
+for doing this test and I don't have it available any longer.
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002173.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+	<LI>Next message: <A HREF="002178.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2175">[ date ]</a>
+              <a href="thread.html#2175">[ thread ]</a>
+              <a href="subject.html#2175">[ subject ]</a>
+              <a href="author.html#2175">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

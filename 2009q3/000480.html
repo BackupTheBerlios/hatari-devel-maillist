@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Latest Hatari HG version gets stuck sometimes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Latest%20Hatari%20HG%20version%20gets%20stuck%20sometimes&In-Reply-To=%3Calpine.LMD.2.00.0907170028140.8532%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000458.html">
+   <LINK REL="Next"  HREF="000481.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Latest Hatari HG version gets stuck sometimes</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Latest%20Hatari%20HG%20version%20gets%20stuck%20sometimes&In-Reply-To=%3Calpine.LMD.2.00.0907170028140.8532%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Latest Hatari HG version gets stuck sometimes">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Jul 17 00:38:06 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000458.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+        <LI>Next message: <A HREF="000481.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#480">[ date ]</a>
+              <a href="thread.html#480">[ thread ]</a>
+              <a href="subject.html#480">[ subject ]</a>
+              <a href="author.html#480">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 9 Jul 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+
+&gt;<i> On Thu, 9 Jul 2009, Thomas Huth wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> On Wed, 8 Jul 2009 23:32:19 +0200
+</I>&gt;&gt;<i> Thomas Huth &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">huth at users.berlios.de</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On Wed, 8 Jul 2009 21:06:15 +0300
+</I>&gt;&gt;&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Saving memory state from a freshly booted &amp; idle GEM and then
+</I>&gt;&gt;&gt;&gt;<i> restoring it with the --memstate option is 100% sure way to trigger
+</I>&gt;&gt;&gt;&gt;<i> the issue for me.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> OK, I can reproduce the problem this way. However, I currently don't
+</I>&gt;&gt;&gt;<i> have a clue how to fix it...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Phew, just found and fixed this bug. The problem was introduced with
+</I>&gt;&gt;<i> changeset f3051bd6f969 where the place of the call to
+</I>&gt;&gt;<i> Video_StartInterrupts() was changed in the VBL function.
+</I>&gt;&gt;<i> After the change, the VBL function basically looked like this:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> void Video_InterruptHandler_VBL ( void )
+</I>&gt;&gt;<i> {
+</I>&gt;&gt;<i> 	Int_AcknowledgeInterrupt();
+</I>&gt;&gt;<i> 	...
+</I>&gt;&gt;<i> 	ShortCut_ActKey();
+</I>&gt;&gt;<i> 	...
+</I>&gt;&gt;<i> 	Video_StartInterrupts(PendingCyclesOver);
+</I>&gt;&gt;<i> }
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> AcknowledgeInterrupt() disabled the VBL Int in int.c.
+</I>&gt;&gt;<i> ShortCut_ActKey() is where we load &amp; save memory snapshots.
+</I>&gt;&gt;<i> Video_StartInterrupts() enables the VBL Int in int.c again.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So with that order the VBL Int was disabled in the memory snapshots.
+</I>&gt;&gt;<i> As long as you used F12 or AltGr+l for loading memory snapshots,
+</I>&gt;&gt;<i> this did not matter since StartInterrupts() re-launched the VBL.
+</I>&gt;&gt;<i> But as soon as you used the --memstate option, the VBL was never
+</I>&gt;&gt;<i> started again.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've fixed the problem now by moving ShortCut_ActKey down, after the
+</I>&gt;&gt;<i> Video_StartInterrupts() function call (like it was before the change).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Note that this fix only works for new memory snapshots, since the
+</I>&gt;&gt;<i> disabled VBL is stored in the file of faulty snapshots.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thomas
+</I>&gt;<i>
+</I>&gt;<i> Well done, I didn't pay attention to the fact that snapshot was saved in
+</I>&gt;<i> the vbl and order mattered in that case.
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>
+While trying to fix another demo, I tried to restore a fresh snapshot and 
+was lucky enough to get the reported crash problem when restoring it :)
+
+This is with the latest head sources, so with the sequence :
+
+         Video_ClearOnVBL();
+
+         Video_StartInterrupts(PendingCyclesOver);
+
+         ShortCut_ActKey();
+
+I get the same wrong value for LineCycle in ConvertPosition, but this is 
+due to a wrong value of nHBL. My value is 53, but this is the first line 
+of the VBL, it should be 0 !
+
+Adding
+ 	fprintf ( stderr, &quot;capt %d\n&quot; , nHBL );
+
+at the end of Video_MemorySnapShot_Capture, I can see that the restored 
+value for nHBL is indeed 53. So the problem is in the saved snapshot.
+
+Thomas, do you know how this is possible ? I thought snapshots were 
+captured only during the VBL handler, which means nHBL should be 0 and 
+saved this way.
+
+In that case, this creates an approx 53*512=27136 cycles offset and all 
+following calculations go wrong, leading to a crash because the assert 
+will detect a &lt;0 number of cycles when adding an int.
+
+This case is similar to what reported Eero with his crash logs.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000458.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+	<LI>Next message: <A HREF="000481.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#480">[ date ]</a>
+              <a href="thread.html#480">[ thread ]</a>
+              <a href="subject.html#480">[ subject ]</a>
+              <a href="author.html#480">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

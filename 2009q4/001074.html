@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New support for STE's 224 bytes overscan
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20support%20for%20STE%27s%20224%20bytes%20overscan&In-Reply-To=%3Calpine.LMD.2.00.0912072027070.31375%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001073.html">
+   <LINK REL="Next"  HREF="001075.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New support for STE's 224 bytes overscan</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20support%20for%20STE%27s%20224%20bytes%20overscan&In-Reply-To=%3Calpine.LMD.2.00.0912072027070.31375%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] New support for STE's 224 bytes overscan">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Dec  7 20:36:52 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001073.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+        <LI>Next message: <A HREF="001075.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1074">[ date ]</a>
+              <a href="thread.html#1074">[ thread ]</a>
+              <a href="subject.html#1074">[ subject ]</a>
+              <a href="author.html#1074">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 7 Dec 2009, Anders Eriksson wrote:
+
+&gt;&gt;<i> You mean on STE the screen is shifted to the left (not to the right) ?
+</I>&gt;&gt;<i> Else I don't understand how the far right pixels would be more visible.
+</I>&gt;<i>
+</I>&gt;<i> Phu, how should I explain this..
+</I>&gt;<i>
+</I>&gt;<i> I mean that the STe 224 byte overscan is shifted to the right, look at
+</I>&gt;<i> this picture I threw together:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://ae.dhs.nu/pics/overscans.jpg">http://ae.dhs.nu/pics/overscans.jpg</A>
+</I>&gt;<i>
+</I>&gt;<i> The pictures are taken with a PAL capture machine from a real STe output.
+</I>
+Pictures are better than a thousand words :)
+In fact, we're talking about the same result. I misexpressed myself, 
+picture is shifted to the right, and the rightmost pixels are not masked 
+by the stabiliser (which creates a black bar and alter some bitplanes), so 
+they are &quot;more&quot; visible.
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> How do you count 416 pixels ? 224 bytes would give 448 pixels, and as the
+</I>&gt;&gt;<i> first 16 are background ones, this would leave 432. Do you count only
+</I>&gt;&gt;<i> usable pixels ? (I count 8 pixels per bytes, even if the hi/lo switch are
+</I>&gt;&gt;<i> sometimes adding some black bars or things like that).
+</I>&gt;<i>
+</I>&gt;<i> Yes I count usable pixels, and as my understanding have always been that
+</I>&gt;<i> the traditional 230 byte overscan makes 416 usable pixels. Then when
+</I>&gt;<i> comparing to the 224 byte overscan, the same amount of usable pixels are
+</I>&gt;<i> available (look at the picture linked to above, you'll see that what the
+</I>&gt;<i> 224 byte overscan misses at the left, it gains at the right).
+</I>&gt;<i>
+</I>&gt;<i> There might be a misunderstanding though - that there in fact are not 416
+</I>&gt;<i> usable pixels on a 230 byte overscan line, then my calculations are not
+</I>&gt;<i> correct, but I also wonder why Hatari would then display graphics that are
+</I>&gt;<i> not displayed correct on a real ST/e.
+</I>
+Well, Hatari displays the &quot;logical&quot; representation of the video RAM, but 
+it doesn't take into account the artefacts due to the hi/lo res switch. 
+That's why I count a theorical value of 460 pixels, but some of them are 
+altered by the hi res switch (so they're in a mixed state where you can 
+use/change them, but the color is not correctly displayed).
+
+
+&gt;&gt;<i> But on real ST, you wouldn't change the color outside the visible area,
+</I>&gt;&gt;<i> or you wouldn't see the colors there too. Do you mean something that would
+</I>&gt;&gt;<i> use Hatari in a way a nomal ST can't be used ?
+</I>&gt;<i>
+</I>&gt;<i> Yes! As I said, for _coding_ fullscreens, plasmas etc, not watching them
+</I>&gt;<i> :)
+</I>
+OK, that's another matter, but I already thought about sthg like that that 
+would display an additional area on the side with some pixels/colors 
+indicating the state of the line (overscan, scroll, ...).
+No time to code this now, but maybe later :)
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001073.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+	<LI>Next message: <A HREF="001075.html">[hatari-devel] New support for STE's 224 bytes overscan
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1074">[ date ]</a>
+              <a href="thread.html#1074">[ thread ]</a>
+              <a href="subject.html#1074">[ subject ]</a>
+              <a href="author.html#1074">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

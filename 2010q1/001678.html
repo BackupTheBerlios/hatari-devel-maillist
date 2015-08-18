@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] updates to cmake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20updates%20to%20cmake%20build%20system&In-Reply-To=%3C435129986.20100315102445%40hol.gr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001672.html">
+   <LINK REL="Next"  HREF="001679.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] updates to cmake build system</H1>
+    <B>George Nakos</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20updates%20to%20cmake%20build%20system&In-Reply-To=%3C435129986.20100315102445%40hol.gr%3E"
+       TITLE="[hatari-devel] updates to cmake build system">ggn at hol.gr
+       </A><BR>
+    <I>Mon Mar 15 09:24:45 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001672.html">[hatari-devel] updates to cmake build system
+</A></li>
+        <LI>Next message: <A HREF="001679.html">[hatari-devel] updates to cmake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1678">[ date ]</a>
+              <a href="thread.html#1678">[ thread ]</a>
+              <a href="subject.html#1678">[ subject ]</a>
+              <a href="author.html#1678">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Npomarede,
+
+Sunday, March 14, 2010, 2:08:50 PM, you wrote:
+
+&gt;<i> On Sat, 13 Mar 2010, George Nakos wrote:
+</I>
+&gt;<i> Hello,
+</I>
+&gt;<i> Do you have &quot;windres&quot; installed with mingw ?
+</I>
+Check.
+
+&gt;<i> If so, could you try to run : cmake -DCMAKE_RC_COMPILER=windres .
+</I>
+&gt;<i> It seems cmake under windows is using some env var based on visual studio
+</I>&gt;<i> and doesn't default to windres.
+</I>
+
+After  quite some fiddling around and remembering what I did last time
+when cmake worked (with Thomas' cmakefiles), this is the command I ran
+on the hatari root dir:
+
+$ cmake -G &quot;MSYS Makefiles&quot; -DCMAKE_RC_COMPILER=windres
+
+That  spawned  a torrent of whining, since it couldn't find some paths
+and  files. So back to cmake-gui I went, supplied some paths etc. Then
+went  into  the  binaries folder (called &quot;binaries&quot;), and this is what
+happened:
+
+$ make
+Scanning dependencies of target Floppy
+[  1%] Building C object src/CMakeFiles/Floppy.dir/dim.c.obj
+[  2%] Building C object src/CMakeFiles/Floppy.dir/msa.c.obj
+[  3%] Building C object src/CMakeFiles/Floppy.dir/st.c.obj
+...
+[snip]
+...
+[ 40%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp_cpu.c.obj
+c:/msys/1.0/home/Administrator/hatari/src/falcon/dsp_cpu.c: In function 'dsp_jsset_pp':
+c:/msys/1.0/home/Administrator/hatari/src/falcon/dsp_cpu.c:909: warning: array subscript is above array bounds
+c:/msys/1.0/home/Administrator/hatari/src/falcon/dsp_cpu.c: In function 'dsp_jsclr_pp':
+c:/msys/1.0/home/Administrator/hatari/src/falcon/dsp_cpu.c:909: warning: array subscript is above array bounds
+c:/msys/1.0/home/Administrator/hatari/src/falcon/dsp_cpu.c: In function 'dsp_btst_pp':
+c:/msys/1.0/home/Administrator/hatari/src/falcon/dsp_cpu.c:909: warning: array subscript is above array bounds
+c:/msys/1.0/home/Administrator/hatari/src/falcon/dsp_cpu.c: In function 'dsp_jset_pp':
+c:/msys/1.0/home/Administrator/hatari/src/falcon/dsp_cpu.c:909: warning: array subscript is above array bounds
+c:/msys/1.0/home/Administrator/hatari/src/falcon/dsp_cpu.c: In function 'dsp_jclr_pp':
+c:/msys/1.0/home/Administrator/hatari/src/falcon/dsp_cpu.c:909: warning: array subscript is above array bounds
+c:/msys/1.0/home/Administrator/hatari/src/falcon/dsp_cpu.c: In function 'dsp_bchg_pp':
+c:/msys/1.0/home/Administrator/hatari/src/falcon/dsp_cpu.c:909: warning: array subscript is above array bounds
+[ 41%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp_disasm.c.obj
+...
+[snip]
+...
+[ 55%] Building C object src/CMakeFiles/hatari.dir/cycInt.c.obj
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c: In function 'CycInt_UpdateInterrupt':
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:279: warning: unknown conversion type character 'l' in format
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:279: warning: too many arguments for format
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c: In function 'CycInt_AddAbsoluteInterrupt':
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:325: warning: unknown conversion type character 'l' in format
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:325: warning: format '%d' expects type 'int', but argument 5 has type 'Sint64'
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:325: warning: too many arguments for format
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c: In function 'CycInt_AddRelativeInterruptWithOffset':
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:390: warning: unknown conversion type character 'l' in format
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:390: warning: format '%d' expects type 'int', but argument 5 has type 'Sint64'
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:390: warning: too many arguments for format
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c: In function 'CycInt_RemovePendingInterrupt':
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:412: warning: unknown conversion type character 'l' in format
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:412: warning: format '%d' expects type 'int', but argument 5 has type 'Sint64'
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:412: warning: too many arguments for format
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c: In function 'CycInt_ResumeStoppedInterrupt':
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:432: warning: unknown conversion type character 'l' in format
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:432: warning: format '%d' expects type 'int', but argument 5 has type 'Sint64'
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:432: warning: too many arguments for format
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c: In function 'CycInt_FindCyclesPassed':
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:463: warning: unknown conversion type character 'l' in format
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:463: warning: unknown conversion type character 'l' in format
+c:/msys/1.0/home/Administrator/hatari/src/cycInt.c:463: warning: too many arguments for format
+[ 56%] Building C object src/CMakeFiles/hatari.dir/cycles.c.obj
+...
+[snip]
+...
+[ 72%] Building C object src/CMakeFiles/hatari.dir/main.c.obj
+c:/msys/1.0/home/Administrator/hatari/src/main.c:93:3: warning: #warning &quot;times() function missing, using inaccurate SDL_GetTicks() instead.&quot;
+c:/msys/1.0/home/Administrator/hatari/src/main.c: In function 'SDL_main':
+c:/msys/1.0/home/Administrator/hatari/src/main.c:653: warning: implicit declaration of function 'Win_OpenCon'
+[ 73%] Building C object src/CMakeFiles/hatari.dir/midi.c.obj
+...
+[snip]
+...
+[ 95%] Building C object src/CMakeFiles/hatari.dir/gui-win/opencon.c.obj
+Linking C executable hatari.exe
+c:/mingw/bin/../lib/gcc/mingw32/4.4.1/../../../libmingw32.a(main.o):main.c:(.text+0xd2): undefined reference to `<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">WinMain at 16</A>'
+collect2: ld returned 1 exit status
+make[2]: *** [src/hatari.exe] Error 1
+make[1]: *** [src/CMakeFiles/hatari.dir/all] Error 2
+make: *** [all] Error 2
+
+
+
+Now  I'm  pretty  sure  that the <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">winmain at 16</A> and win_opencon() problems
+were addressed by Thomas, and I had it working fully. Alas, this broke
+after  a  few updates, and for the life of me, I can't remember how it
+was fixed in the first place.
+
+I  must  also mention that SDLMAIN_LIBRARY isn't set (because I simply
+don't  know  the  filename!),  as  well  as PORTAUDIO, MATH, READLINE.
+Everything else seems to be set.
+
+
+
+-- 
+Best regards,
+ George                            mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ggn at hol.gr</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001672.html">[hatari-devel] updates to cmake build system
+</A></li>
+	<LI>Next message: <A HREF="001679.html">[hatari-devel] updates to cmake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1678">[ date ]</a>
+              <a href="thread.html#1678">[ thread ]</a>
+              <a href="subject.html#1678">[ subject ]</a>
+              <a href="author.html#1678">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

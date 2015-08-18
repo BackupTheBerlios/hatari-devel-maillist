@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari VDI mode colors issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20VDI%20mode%20colors%20issue&In-Reply-To=%3C20090814173927.75225ff3%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000583.html">
+   <LINK REL="Next"  HREF="000585.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari VDI mode colors issue</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20VDI%20mode%20colors%20issue&In-Reply-To=%3C20090814173927.75225ff3%40phineus%3E"
+       TITLE="[hatari-devel] Hatari VDI mode colors issue">huth at users.berlios.de
+       </A><BR>
+    <I>Fri Aug 14 17:39:27 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000583.html">[hatari-devel] Hatari VDI mode colors issue
+</A></li>
+        <LI>Next message: <A HREF="000585.html">[hatari-devel] Hatari VDI mode colors issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#584">[ date ]</a>
+              <a href="thread.html#584">[ thread ]</a>
+              <a href="subject.html#584">[ subject ]</a>
+              <a href="author.html#584">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 14 Aug 2009 09:34:16 +0200
+&quot;Thomas H.&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">th.huth at gmx.de</A>&gt; wrote:
+
+&gt;<i> &gt; Thomas, maybe you have an idea what colors are used when in vdi
+</I>&gt;<i> &gt; mode.
+</I>&gt;<i> 
+</I>&gt;<i> As far as I can tell, the problem is that in VDI mode, the code does
+</I>&gt;<i> not call Video_StoreFirstLinePalette() anymore - it was called from
+</I>&gt;<i> the HBL function, but since I've disabled HBLs in VDI mode, this does
+</I>&gt;<i> not happen anymore. So HBLPalettes does not get initialized
+</I>&gt;<i> correctly, and Screen_CreatePalette() then sets the wrong colors.
+</I>&gt;<i> Since HBLPalettes is also set in Video_ColorReg_WriteWord() if
+</I>&gt;<i> bUseHighRes was &quot;false&quot;, the colors were still fine in non-monochrome
+</I>&gt;<i> modes. But since this function is only used in ST &amp; STE mode, the
+</I>&gt;<i> colors might still be wrong when running VDI resolution in Falcon and
+</I>&gt;<i> TT mode (I haven't tried it yet).
+</I>&gt;<i> 
+</I>&gt;<i> One possible fix could be to call StoreFirstLinePalette() from the
+</I>&gt;<i> VBL function when running in VDI resolution mode. I'll try that
+</I>&gt;<i> tomorrow (don't have time today)...
+</I>
+I came back a little bit earlier from work today, so I had the
+possibility to have a look at the problem again.
+I was right, calling StoreFirstLinePalette() from the VBL handler fixes
+the problem, so this should be fixed now in the current hg version.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000583.html">[hatari-devel] Hatari VDI mode colors issue
+</A></li>
+	<LI>Next message: <A HREF="000585.html">[hatari-devel] Hatari VDI mode colors issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#584">[ date ]</a>
+              <a href="thread.html#584">[ thread ]</a>
+              <a href="subject.html#584">[ subject ]</a>
+              <a href="author.html#584">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

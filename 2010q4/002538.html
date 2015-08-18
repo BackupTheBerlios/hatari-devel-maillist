@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Redirecting CON: to console
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Redirecting%20CON%3A%20to%20console&In-Reply-To=%3C201010162333.28380.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002498.html">
+   <LINK REL="Next"  HREF="002484.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Redirecting CON: to console</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Redirecting%20CON%3A%20to%20console&In-Reply-To=%3C201010162333.28380.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Redirecting CON: to console">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Oct 16 22:33:28 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002498.html">[hatari-devel] Redirecting CON: to console
+</A></li>
+        <LI>Next message: <A HREF="002484.html">[hatari-devel] Redirecting CON: to console
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2538">[ date ]</a>
+              <a href="thread.html#2538">[ thread ]</a>
+              <a href="subject.html#2538">[ subject ]</a>
+              <a href="author.html#2538">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 09 October 2010, Anders Eriksson wrote:
+&gt;&gt;<i> Second feature is about making virtual newdesk.inf, specify there
+</I>&gt;&gt;<i> autorun program so someone like me can assign some keyboard shortcut
+</I>&gt;&gt;<i> for running hatari in specified host directory and run a just-compiled
+</I>&gt;&gt;<i> demo directly in emulator, without a need to click in desktop etc.
+</I>
+I think this is very convenient for testing different demos etc, especially
+when one's testing different fixes to Hatari itself.  That's why I was so
+interested on implementing it...
+
+I.e. it's most convenient for testing different programs whereas your
+use-case is about testing the same program.
+
+
+&gt;<i> just wanted to share how I do it. Instead of doing complex build systems
+</I>&gt;<i> or intercommunication between IDE&lt;&gt;Hatari
+</I>&gt;<i> I simply run a CLI shell on the Atari side with a one letter alias to
+</I>&gt;<i> run the binary. 
+</I>
+&quot;hconsole&quot; doesn't listen to commands except from its stdin, otherwise
+you could tell it to insert that one letter alias to Hatari at the end of
+your Eclipse Makefile. :-)
+
+(I might at some point add also a &quot;command fifo&quot; where one can echo
+requests to it.)
+
+
+&gt;<i> A little example of building+running a demo:
+</I>&gt;<i> <A HREF="http://ae.dhs.nu/pics/hataridev.mp4">http://ae.dhs.nu/pics/hataridev.mp4</A>
+</I>&gt;<i>
+</I>&gt;<i> Eclipse IDE, VASM to build, Mupfel as Atari shell and I think it's
+</I>&gt;<i> quicker than start up a new Hatari + TOS bootup..
+</I>
+Sure, that's much simpler. :-)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002498.html">[hatari-devel] Redirecting CON: to console
+</A></li>
+	<LI>Next message: <A HREF="002484.html">[hatari-devel] Redirecting CON: to console
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2538">[ date ]</a>
+              <a href="thread.html#2538">[ thread ]</a>
+              <a href="subject.html#2538">[ subject ]</a>
+              <a href="author.html#2538">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

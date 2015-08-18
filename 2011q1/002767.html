@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP external Memory timings fixed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20external%20Memory%20timings%20fixed&In-Reply-To=%3C4D2CD5AE.3090409%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002765.html">
+   <LINK REL="Next"  HREF="002762.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP external Memory timings fixed</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20external%20Memory%20timings%20fixed&In-Reply-To=%3C4D2CD5AE.3090409%40corp.free.fr%3E"
+       TITLE="[hatari-devel] DSP external Memory timings fixed">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Jan 11 23:11:58 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002765.html">[hatari-devel] DSP external Memory timings fixed
+</A></li>
+        <LI>Next message: <A HREF="002762.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2767">[ date ]</a>
+              <a href="thread.html#2767">[ thread ]</a>
+              <a href="subject.html#2767">[ subject ]</a>
+              <a href="author.html#2767">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 11/01/2011 22:45, Laurent Sallafranque a &#233;crit :
+&gt;<i> I've launched illusion once more.
+</I>&gt;<i> Perfect sound and I've watched the whole demo (until the end).
+</I>&gt;<i>
+</I>&gt;<i> Really strange behaviour.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+When you say you run demos 5 times, are you loading a memory snapshot or 
+really starting it from the start each time ?
+
+I have the feeling that some data are not always correctly saved, so 
+reloading a snapshot can mix current variables with variables from the 
+snapshot ; in the end, you don't get a perfectly restored snapshot.
+
+
+&gt;<i>
+</I>&gt;<i> Le 11/01/2011 22:37, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;<i> No, the 2nd patch doesn't change the problem with Aura Illusion Demo.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It's more Strange, I explain :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've started again from the latest Mercurial sources.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've launched 5 times illusion demo (I quit completely hatari between
+</I>&gt;&gt;<i> each try).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - 3 times, sound was horrible (I quit and reload hatari without waiting).
+</I>&gt;&gt;<i> - 1 time, sound was &quot;nearly perfect&quot; (some very little glitches
+</I>&gt;&gt;<i> sometimes), demo freezed near the beginning (flat 3d cubes)
+</I>&gt;&gt;<i> - 1 time, sound was perfect (no glitches). I can see the demo until
+</I>&gt;&gt;<i> the 3D Gouraud cubes (much more &quot;demo time&quot; than before).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So, I run the same program under hatari (without recompiling anything)
+</I>&gt;&gt;<i> and it doesn't react the same way each time.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I don't know what to think aboout this.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> (My second patch seemed better with Eko demos, I'll reverify again by
+</I>&gt;&gt;<i> launching them 5 or 6 times with and without patch)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Le 11/01/2011 22:20, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Aura's &quot;E.X.Illusion&quot;? Although later in the demo there's 40% free CPU,
+</I>&gt;&gt;&gt;&gt;<i> this has pretty horrible sound even tthen and eventually the demo gets
+</I>&gt;&gt;&gt;&gt;<i> (still) stuck for me.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Yes, I agree for the horrible sound.
+</I>&gt;&gt;&gt;<i> SO, PLEASE, try my second patch and tell me what you think of it .
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Regards
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Laurent
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002765.html">[hatari-devel] DSP external Memory timings fixed
+</A></li>
+	<LI>Next message: <A HREF="002762.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2767">[ date ]</a>
+              <a href="thread.html#2767">[ thread ]</a>
+              <a href="subject.html#2767">[ subject ]</a>
+              <a href="author.html#2767">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

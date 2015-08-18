@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] dsp trace instr
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20dsp%20trace%20instr&In-Reply-To=%3C4D85308C.10205%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003171.html">
+   <LINK REL="Next"  HREF="003179.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] dsp trace instr</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20dsp%20trace%20instr&In-Reply-To=%3C4D85308C.10205%40free.fr%3E"
+       TITLE="[hatari-devel] dsp trace instr">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Mar 19 23:39:08 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003171.html">[hatari-devel] dsp trace instr
+</A></li>
+        <LI>Next message: <A HREF="003179.html">[hatari-devel] dsp trace instr
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3176">[ date ]</a>
+              <a href="thread.html#3176">[ thread ]</a>
+              <a href="subject.html#3176">[ subject ]</a>
+              <a href="author.html#3176">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've reworked the DSP disasm and trace modes.
+It seems to work well now.
+I've tested it a lot, but don't hesitate to do some tests too.
+
+I've improved it at the same time :
+- no more stack messages (overflow or underflow) in disasm mode on RTI 
+and other instructions
+- illegal instruction become dc opcode in disasm mode
+- dc instructions are displayed with 0 cycles
+
+Now, you can mix trace mode and illegal mode as you want.
+
+I think there's no need to save the loop variable, neither the 
+isDsp_in_disasm_mode variable, as they're recomputed each time 
+dsp56k_disasm is called.
+
+
+2 questions :
+
+- Do you think that trace dsp_registers and trace dsp_memory should be 
+added to the debugguer or should they stay as DEFINES and recompilation 
+in dsp_cpu code ?
+
+
+- Is there a way to use the debugguer like this ?
+        db pc=$'value' and then trace the N next lines of DSP code
+
+DSP debugging sorts so many lines, I's like to be able to just display 
+the N next lines after pc = a value, or after a certain register reach a 
+value, ...
+
+
+Regards
+
+Laurent
+
+
+
+Le 17/03/2011 21:26, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On torstai 17 maaliskuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i> I've uploaded the DSP trace code in hatari.
+</I>&gt;&gt;<i> I've tried to optimize it enough to have hatari running normally when
+</I>&gt;&gt;<i> DSP isn't in use.
+</I>&gt;&gt;<i> DSP Trace mode is still slow when DSP runs (because of number of
+</I>&gt;&gt;<i> instructions).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It seems to run well, except in one case : if I start hatari with option
+</I>&gt;&gt;<i> --trace dsp_disasm and then I enter the dd command, it's broken.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> dd command works well if hatari is not in trace dsp_disasm mode.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'll try to improve this. Eero, maybe you could have a look too ?
+</I>&gt;<i> I think the problem is PC looping check.
+</I>&gt;<i>
+</I>&gt;<i> Does the attached (untested) patch help?
+</I>&gt;<i>
+</I>&gt;<i> It prints when looping is detected, resets the related variables
+</I>&gt;<i> when disasm init is called + calls the disasm init on disasm loop[1].
+</I>&gt;<i> (And makes the returned instruction string const char*.)
+</I>&gt;<i>
+</I>&gt;<i> [1] I wonder whether some of the stuff done in the loop could be
+</I>&gt;<i> moved outside the loop?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Do you think it absolutely need to be fixed before the release ?
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110319/ac67d37c/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110319/ac67d37c/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003171.html">[hatari-devel] dsp trace instr
+</A></li>
+	<LI>Next message: <A HREF="003179.html">[hatari-devel] dsp trace instr
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3176">[ date ]</a>
+              <a href="thread.html#3176">[ thread ]</a>
+              <a href="subject.html#3176">[ subject ]</a>
+              <a href="author.html#3176">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CPU breakpoints and single-stepping
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3Calpine.LMD.2.00.0906072253380.29842%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000347.html">
+   <LINK REL="Next"  HREF="000355.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CPU breakpoints and single-stepping</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3Calpine.LMD.2.00.0906072253380.29842%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] CPU breakpoints and single-stepping">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jun  7 22:58:28 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000347.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+        <LI>Next message: <A HREF="000355.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#352">[ date ]</a>
+              <a href="thread.html#352">[ thread ]</a>
+              <a href="subject.html#352">[ subject ]</a>
+              <a href="author.html#352">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 7 Jun 2009, Thomas Huth wrote:
+
+&gt;<i> On Sun, 7 Jun 2009 17:38:11 +0300
+</I>&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> I think I'll first add similar kind of breakpoints &amp; single stepping
+</I>&gt;&gt;<i> for DSP as you added for CPU and then start working on the break
+</I>&gt;&gt;<i> condition support (first as separate code debugUI).
+</I>&gt;<i>
+</I>&gt;<i> Well, I just had another idea: instead of re-creating such a complex
+</I>&gt;<i> framework for conditional breakpoints, why don't we simply use gdb
+</I>&gt;<i> instead? As far as I know, gdb can also connect to virtual machines (or
+</I>&gt;<i> external devices) through a stub. For example it is possible to use gdb
+</I>&gt;<i> with QEMU to debug the program that is running within QEMU (I never used
+</I>&gt;<i> this, though).
+</I>&gt;<i> gdb has already conditional breakpoints as far as I know, and a lot of
+</I>&gt;<i> other nice features - even source code debugging might be possible!
+</I>&gt;<i> Has anybody a clue what would have to be done to connect a 68k gdb to
+</I>&gt;<i> Hatari?
+</I>
+I don't know gdb, but wouldn't it be overkill for just the &quot;simple&quot; case 
+we want to use in hatari ? It's not like if we wanted to gain access to 
+complex C structure from the debugger, or pointers or thing like that.
+Well, at least in my case, I know that gdb would be too much for me and 
+that I wouldn't use 1/10 of its ability for what I need to do :)
+
+Source code debugging might be possible, but if you break into a paricular 
+demo/game, I'm afraid you won't have the asm source for it :)
+
+And this could also be a huge dependency to link hatari against gdb ?
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000347.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+	<LI>Next message: <A HREF="000355.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#352">[ date ]</a>
+              <a href="thread.html#352">[ thread ]</a>
+              <a href="subject.html#352">[ subject ]</a>
+              <a href="author.html#352">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari --sound option update?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20--sound%20option%20update%3F&In-Reply-To=%3C20090607125316.42e2474b%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000338.html">
+   <LINK REL="Next"  HREF="000368.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari --sound option update?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20--sound%20option%20update%3F&In-Reply-To=%3C20090607125316.42e2474b%40phineus%3E"
+       TITLE="[hatari-devel] Hatari --sound option update?">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Jun  7 12:53:16 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000338.html">[hatari-devel] GEMDOS HD emulation bug?
+</A></li>
+        <LI>Next message: <A HREF="000368.html">[hatari-devel] GEMDOS HD emulation bug?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#335">[ date ]</a>
+              <a href="thread.html#335">[ thread ]</a>
+              <a href="subject.html#335">[ subject ]</a>
+              <a href="author.html#335">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 7 Jun 2009 13:35:40 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> &gt; &gt; So, maybe the limits should come from the HW that Hatari emulates:
+</I>&gt;<i> &gt; &gt; - low: 6250 Hz
+</I>&gt;<i> 
+</I>&gt;<i> I see from:
+</I>&gt;<i> 	<A HREF="http://atari-ste.anvil-soft.com/html/devdocu4.htm">http://atari-ste.anvil-soft.com/html/devdocu4.htm</A>
+</I>&gt;<i> 
+</I>&gt;<i> That it's actually 6258 (i.e. closest 2-divisible with 50066).
+</I>
+Yes, that's also the frequency that you can find in the table at the
+beginning of dmaSnd.c.
+
+&gt;<i> &gt; &gt; - hi: 50000 Hz
+</I>&gt;<i> &gt; &gt; ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Yes, but use 50066 Hz as upper limit, this is the frequency that the
+</I>&gt;<i> &gt; STE uses.
+</I>&gt;<i> 
+</I>&gt;<i> Ok.  On quick googling:
+</I>&gt;<i> <A HREF="http://www.sarnau.info/atari:atari_tt030_hardware_reference_manual">http://www.sarnau.info/atari:atari_tt030_hardware_reference_manual</A>
+</I>&gt;<i> <A HREF="http://www.nic.funet.fi/pub/atari/doc/hard.txt">http://www.nic.funet.fi/pub/atari/doc/hard.txt</A>
+</I>&gt;<i> 
+</I>&gt;<i> TT &amp; Falcon seems to be using same DMA/rates.
+</I>
+You mean STE and TT use the same frequencies? Falcon frequencies are
+slightly different, the highest frequency is 49170 here.
+
+&gt;<i> So the current frequencies given in Hatari GUI are selected based on
+</I>&gt;<i> them being &quot;evenly&quot; divisible with:
+</I>&gt;<i> 1. CD-frequency: 44100 / 22050 / 11025 Hz
+</I>&gt;<i> 2. Better audio card max. 96000 Hz  freq: 48000 / 32000 / 16000 Hz
+</I>&gt;<i> 3. STE/TT/Falcon max frequency: 50066 / 250033 / ~12517 Hz
+</I>&gt;<i> ?
+</I>
+Right.
+
+&gt;<i> -&gt; I commited 6000 as the low limit that's directly divisible with
+</I>&gt;<i> 48/96kHz and a nice round number + 50066 for the high limit + added
+</I>&gt;<i> some explanations to docs.
+</I>
+Great, thanks!
+
+&gt;<i> Btw. Would it make sense to have the frequencies presented in the
+</I>&gt;<i> sound dialog arranged along above categorization:
+</I>&gt;<i> 	( ) 11025  ( ) 22050  ( ) 44100
+</I>&gt;<i> 	( ) 12000  ( ) 24000  ( ) 48000
+</I>&gt;<i> 	( ) 12517  ( ) 25033  ( ) 50066
+</I>&gt;<i> ?
+</I>
+I've seen some soundcards that support 32000 Hz as official frequency,
+but I've never seen a card that uses 12000 Hz yet. So I think we better
+keep the 32000 Hz there.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000338.html">[hatari-devel] GEMDOS HD emulation bug?
+</A></li>
+	<LI>Next message: <A HREF="000368.html">[hatari-devel] GEMDOS HD emulation bug?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#335">[ date ]</a>
+              <a href="thread.html#335">[ thread ]</a>
+              <a href="subject.html#335">[ subject ]</a>
+              <a href="author.html#335">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

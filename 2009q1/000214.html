@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP emulation and sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20emulation%20and%20sound&In-Reply-To=%3C20090325072504.1a1720d6%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000210.html">
+   <LINK REL="Next"  HREF="000211.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP emulation and sound</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20emulation%20and%20sound&In-Reply-To=%3C20090325072504.1a1720d6%40phineus%3E"
+       TITLE="[hatari-devel] DSP emulation and sound">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Mar 25 07:25:04 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000210.html">[hatari-devel] DSP emulation and sound
+</A></li>
+        <LI>Next message: <A HREF="000211.html">[hatari-devel] DSP emulation and sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#214">[ date ]</a>
+              <a href="thread.html#214">[ thread ]</a>
+              <a href="subject.html#214">[ subject ]</a>
+              <a href="author.html#214">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 23 Mar 2009 14:43:29 +0100
+LAURENT SALLAFRANQUE &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">LAURENT.SALLAFRANQUE at ARKEA.COM</A>&gt; wrote:
+
+&gt;<i> Thomas Huth a &#233;crit :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Basic DMA sound emulation is already done in dmaSnd.c ... I think it
+</I>&gt;<i> &gt; should be possible to extend this to work together with the crossbar
+</I>&gt;<i> &gt; code later.
+</I>&gt;<i> &gt;   
+</I>&gt;<i> Yes, I've add a look at dmasnd.c code yesterday. It seems there are 
+</I>&gt;<i> already things for falcon emulation, but not everything.
+</I>&gt;<i> Perharps the sound matrix could be added here ?
+</I>
+Yes, we could start adding the code there and if it gets too much we
+can still put it into a separate file.
+
+&gt;<i> &gt;&gt; Remark: the jack out could be played into SDL out sound. For the
+</I>&gt;<i> &gt;&gt; Jack in, we can code this later.
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; As far as I know, the SDL library does not support sound recording.
+</I>&gt;<i> &gt; So for sound input, we would require some other way to get it ...
+</I>&gt;<i> &gt; is there a portable library which provides this?
+</I>&gt;<i> &gt;   
+</I>&gt;<i> With a very fast search, I've found some programs or projects, but I 
+</I>&gt;<i> don't know if one of them is useful for our goal, I'll try to have a
+</I>&gt;<i> look.
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://www.allegro.cc/">http://www.allegro.cc/</A> and you can get the latest stable build from 
+</I>&gt;<i> <A HREF="http://alleg.sourceforge.net/">http://alleg.sourceforge.net/</A>
+</I>&gt;<i> Basically you'll get back a raw audio buffer in an easy to use format 
+</I>&gt;<i> and you can do anything to the audio that you could want, including
+</I>&gt;<i> play it back.
+</I>
+As far as I know, Allegro is a complete multimedia library, similar to
+SDL, so this is overkill, I think.
+
+&gt;<i> For recording and playback, cross platform, here's the one:
+</I>&gt;<i> <A HREF="http://www.portaudio.com/">http://www.portaudio.com/</A>
+</I>
+That sounds good! But ALSA support seems still to be under development.
+
+&gt;<i> And here's another one:
+</I>&gt;<i> <A HREF="http://www.music.mcgill.ca/~gary/rtaudio/">http://www.music.mcgill.ca/~gary/rtaudio/</A> 
+</I>&gt;<i>
+</I>&gt;<i> Audio processing stuff:
+</I>&gt;<i> <A HREF="http://clam.iua.upf.edu/">http://clam.iua.upf.edu/</A>
+</I>&gt;<i> <A HREF="http://ccrma.stanford.edu/software/stk/">http://ccrma.stanford.edu/software/stk/</A>
+</I>
+These are C++ libraries - which not fit very well to Hatari (C only)
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000210.html">[hatari-devel] DSP emulation and sound
+</A></li>
+	<LI>Next message: <A HREF="000211.html">[hatari-devel] DSP emulation and sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#214">[ date ]</a>
+              <a href="thread.html#214">[ thread ]</a>
+              <a href="subject.html#214">[ subject ]</a>
+              <a href="author.html#214">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

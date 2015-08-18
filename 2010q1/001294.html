@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] IDE &amp; gemdos HD emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20%26%20gemdos%20HD%20emulation&In-Reply-To=%3C201001202219.03616.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001305.html">
+   <LINK REL="Next"  HREF="001787.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] IDE &amp; gemdos HD emulation</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20%26%20gemdos%20HD%20emulation&In-Reply-To=%3C201001202219.03616.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] IDE &amp; gemdos HD emulation">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Jan 20 21:19:03 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001305.html">[hatari-devel] IDE HD emulation error handling
+</A></li>
+        <LI>Next message: <A HREF="001787.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1294">[ date ]</a>
+              <a href="thread.html#1294">[ thread ]</a>
+              <a href="subject.html#1294">[ subject ]</a>
+              <a href="author.html#1294">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 19 January 2010, Eero Tamminen wrote:
+&gt;<i> Manual used different programs for ACSI and IDE, it didn't say it was for
+</I>&gt;<i> a reason.  I'll add a comment about that (there seem to be also some
+</I>&gt;<i> other updates that need to be done for it).
+</I>
+Verified that what you said works for me and commited a major update to
+manual hard disk sections.
+
+
+&gt;<i> See my earlier &quot;Hatari asserts on video interrupts when running under
+</I>&gt;<i> monochrome&quot; mail.   It would seem to happen easier when using fast
+</I>&gt;<i> forward, but I cannot see in the related code anything that could affect
+</I>&gt;<i> these variables.   The assert always happens when there's some dialog on
+</I>&gt;<i> screen.
+</I>
+Any idea about this?  (might be more Nicolas' area though...)
+
+
+&gt;<i> &gt; So I tend to say: When you want to use GEMDOS HD emulation and ACSI/IDE
+</I>&gt;<i> &gt; disk images together, simply always configure your GEMDOS HD drive
+</I>&gt;<i> &gt; letters manually.
+</I>&gt;<i>
+</I>&gt;<i> Well, maybe I should then just remove this ACSI specific partition code
+</I>&gt;<i> from gemdos.c so that both ACSI and IDE work the same?
+</I>
+Do you see any possible downsides from removing that?  At least everything
+seems to be working fine with IDE without this, TOS finds the drives etc.
+
+E.g. stMemory.c ConnectedDriveMask uses emudrives array directly so
+I think I can safely remove anything related to nPartitions and nNumDrives
+variables.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001305.html">[hatari-devel] IDE HD emulation error handling
+</A></li>
+	<LI>Next message: <A HREF="001787.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1294">[ date ]</a>
+              <a href="thread.html#1294">[ thread ]</a>
+              <a href="subject.html#1294">[ subject ]</a>
+              <a href="author.html#1294">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP debugging and breakpoints
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3C200906052245.58607.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000322.html">
+   <LINK REL="Next"  HREF="000324.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP debugging and breakpoints</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3C200906052245.58607.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] DSP debugging and breakpoints">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Jun  5 21:45:58 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000322.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+        <LI>Next message: <A HREF="000324.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#323">[ date ]</a>
+              <a href="thread.html#323">[ thread ]</a>
+              <a href="subject.html#323">[ subject ]</a>
+              <a href="author.html#323">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 05 June 2009, Laurent Sallafranque wrote:
+&gt;<i> I won't change anything into debuggui.c for a few days (I'm not at home
+</I>&gt;<i> for 3 days).
+</I>&gt;<i>
+</I>&gt;<i> You can change everything you want here.
+</I>&gt;<i>
+</I>&gt;<i> For DSP breakpoint, I thought at something like :
+</I>&gt;<i>
+</I>&gt;<i> if (dsp_breakPoint == DSP_GetPC())  //DSP_GetPC() is already implemented
+</I>&gt;<i> into dsp.c
+</I>&gt;<i>     //go to debug mode
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> The dsp_breakPoint would be set as suggested Eero : a new debug command
+</I>&gt;<i> dbp &lt;adress&gt;           // dbp = dsp breakPoint
+</I>&gt;<i>
+</I>&gt;<i> PS : I just realized that this won't work, as we execute 7 DSP
+</I>&gt;<i> instructions for 1 68030 instruction.
+</I>&gt;<i> We wouldn't detect that we executes the DSP instruction at adress
+</I>&gt;<i> &lt;dsp_breakPoint&gt;
+</I>
+Attached patch implements DSP breakpoint and single stepping support.
+Does it look OK?
+
+I decided to use some gcc extensions to make sure that the effect of
+the breakpoint &amp; single step checks will be minimal as they have to be done
+to the time critical DSP_Run()[1].  For supporting those, please add
+the attached gcc_ext.h to the includes/-directory.
+
+[1] Or should the breakpoint be actually checked just after the DSP
+emulation executes the instruction &amp; updates the PC. but before interrupt
+etc updates in dsp56k_execute_instruction():
+        /* Process the PC */
+        dsp_postexecute_update_pc();
+
+        /* Process Interrupts */
+        dsp_postexecute_interrupts();
+
+        /* process peripherals On Chip components */
+        dsp_core_process_host_interface(dsp_core);
+        dsp_core_process_ssi_interface(dsp_core);
+?
+
+
+Btw. I thought a bit more about the register value conditions on breakpoints
+and they could actually be doable.  debugui.c could parse the condition
+string given to breakpoint or single step command:
+	db &lt;address&gt; [
+		&lt;register&gt; &lt;comparison&gt; &lt;value&gt;
+		[ | &lt;register&gt; &lt;comparison&gt; &lt;value&gt; ]
+		[ &amp; &lt;register&gt; &lt;comparison&gt; &lt;value&gt; ]
+	]
+		
+
+where condition could be one of these:
+	&lt;, &gt;, =, !
+
+like in:
+	db 01b4 A1 &gt; 1000 &amp; D0 = 20
+
+And give these to dsp.c DSP_AddBreakCondition() as:
+- register name
+- comparison operation
+- value
+(there of course should be DSP_ClearBreakConditions too).
+
+dsp.c can then convert the register name into a dsp_core struct offset /
+pointer and do the comparison everytime breakpoint is hit (or singlestep
+is in use) and call DebugUI only when they match.  You might even have
+chained conditions:
+------------------------------
+bool DSP_BreakConditionsMet(void)
+{
+	break_conditions_t *conditions = BreakConditions;
+	Uint32 regvalue;
+	bool hit = false;
+
+	if (!BreakConditionsCount) {
+		return true;
+	}
+	for (i = 0; i &lt; BreakConditionsCount; conditions++, i++) {
+	regvalue = *(conditions.register);
+	switch (conditions.comparison) {
+	case '&lt;':
+		hit = (regvalue &lt; conditions.value);
+		break;
+	case '&gt;':
+		hit = (regvalue &gt; conditions.value);
+		break;
+	case '=':
+		hit = (regvalue == conditions.value);
+		break;
+	case '!':
+		hit = (regvalue != conditions.value);
+		break;
+	}
+	join = conditions.join;
+	if (hit) {
+		/* &quot;or&quot; -&gt; any match is enough */
+		if (join == '|') {
+			return true;
+		}
+	} else {
+		/* &quot;and&quot; -&gt; everything must match */ 
+		if (join == '&amp;') {
+			return false;
+		}
+	}
+	return hit;
+}
+...
+if (DSP_BreakConditionsMet()) {
+	DebugUI();
+}
+----------------------
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: dsp-breakpoint.diff
+Type: text/x-diff
+Size: 3987 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090605/70556664/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090605/70556664/attachment.diff</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: gcc_ext.h
+Type: text/x-objchdr
+Size: 1347 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090605/70556664/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090605/70556664/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000322.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+	<LI>Next message: <A HREF="000324.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#323">[ date ]</a>
+              <a href="thread.html#323">[ thread ]</a>
+              <a href="subject.html#323">[ subject ]</a>
+              <a href="author.html#323">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

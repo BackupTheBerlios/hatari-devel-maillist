@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mouse ungrab, palette?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20ungrab%2C%20palette%3F&In-Reply-To=%3Calpine.LMD.2.00.0905312229560.19136%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000304.html">
+   <LINK REL="Next"  HREF="000306.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mouse ungrab, palette?</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mouse%20ungrab%2C%20palette%3F&In-Reply-To=%3Calpine.LMD.2.00.0905312229560.19136%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Mouse ungrab, palette?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun May 31 22:36:20 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000304.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+        <LI>Next message: <A HREF="000306.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#305">[ date ]</a>
+              <a href="thread.html#305">[ thread ]</a>
+              <a href="subject.html#305">[ subject ]</a>
+              <a href="author.html#305">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 31 May 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Monday 25 May 2009, Eero Tamminen wrote:
+</I>&gt;&gt;<i> I was reading through Steem features and noticed that it releases mouse
+</I>&gt;&gt;<i> grab when the emulation is paused.  Now that we have pause button,
+</I>&gt;&gt;<i> wouldn't ungrabbing make sense also for Hatari?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've never used mouse grabbing myself (if mouse is a problem, I use
+</I>&gt;&gt;<i> fullscreen) so I'd like somebody who actually uses the grabbing to
+</I>&gt;&gt;<i> answer...
+</I>&gt;<i>
+</I>&gt;<i> Attached is a patch that:
+</I>&gt;<i>
+</I>&gt;<i> * adds --grab command line option for enabling mouse grabbing also
+</I>&gt;<i>  from command line:
+</I>&gt;<i>  - earlier it could be done only from a shortcut, this feature needed some
+</I>&gt;<i>    changes also to screen.c
+</I>&gt;<i>  - at least when doing general Hatari testing, it's useful to have grab
+</I>&gt;<i>   active immediately. This way e.g. the space press to dismiss the memory
+</I>&gt;<i>   check is sure to go where it should and the mouse click to start the test
+</I>&gt;<i>   program (or open drive window) doesn't so easily miss the Hatari
+</I>&gt;<i>   window...
+</I>&gt;<i>
+</I>&gt;<i> * ungrabs mouse when Hatari is paused (and regrabs when unpaused)
+</I>&gt;<i>
+</I>&gt;<i> Anybody have objections on commiting it?
+</I>
+
+The idea looks fine to me.
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> There's also a feature to change Steem palette.  This can be used to see
+</I>&gt;&gt;<i> whether there's actually something on screen.  Would that be useful for
+</I>&gt;&gt;<i> Hatari too, e.g. for debugging DSP issues?  And how it should work?
+</I>&gt;<i>
+</I>&gt;<i> Any comments on the feature of forcing the default palette?
+</I>&gt;<i>
+</I>&gt;<i> Or ideas how to implement it?  I think 16 first colors would be enough and
+</I>&gt;<i> there could be a keyboard shortcut (e.g. Altgr+p) that forces the default
+</I>&gt;<i> palette.
+</I>&gt;<i>
+</I>
+Yes, this could be useful ; I sometimes uses this with steem, but it's 
+more useful to see the tricks that were used to code a particular demo 
+than to debug hatari :)
+
+The place to do it should be in the convert/*c files I think ; it could be 
+possible to intercept all writes to the color registers and replace them 
+with a different palette, but the problem is that some game/demos only set 
+the palette once and don't change it anymore, so you can't rely on the 
+fact that the io handler for color registers will be called.
+
+That's why I think the palette should be overridden when converting the ST 
+screen to the host screen in 8/16/32 bits, but this has the disadvantage 
+of adding some tests in these costly routines, so maybe this option should 
+be made compile time configurable.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000304.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+	<LI>Next message: <A HREF="000306.html">[hatari-devel] Mouse ungrab, palette?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#305">[ date ]</a>
+              <a href="thread.html#305">[ thread ]</a>
+              <a href="subject.html#305">[ subject ]</a>
+              <a href="author.html#305">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] potential GEMDOS issues? (fixed)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20potential%20GEMDOS%20issues%3F%20%28fixed%29&In-Reply-To=%3C200911281328.18050.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001021.html">
+   <LINK REL="Next"  HREF="001022.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] potential GEMDOS issues? (fixed)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20potential%20GEMDOS%20issues%3F%20%28fixed%29&In-Reply-To=%3C200911281328.18050.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] potential GEMDOS issues? (fixed)">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Nov 28 12:28:17 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001021.html">[hatari-devel] Problem with hatari dsp debugger (fixed)
+</A></li>
+        <LI>Next message: <A HREF="001022.html">[hatari-devel] Cocoa diffs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1020">[ date ]</a>
+              <a href="thread.html#1020">[ thread ]</a>
+              <a href="subject.html#1020">[ subject ]</a>
+              <a href="author.html#1020">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 24 November 2009, Eero Tamminen wrote:
+&gt;<i> On Monday 23 November 2009, Jerome Vernet wrote:
+</I>&gt;<i> &gt;&gt; Can you provide GEMDOS traces of the issues?
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Just:
+</I>&gt;<i> &gt;&gt; - press AltGr+Pause to enter Debugger
+</I>&gt;<i> &gt;&gt; - type &quot;trace gemdos&quot; (if you have readline enabled, TAB completes
+</I>&gt;<i> &gt;&gt; words) - type &quot;c&quot; to continue
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Then all calls going through GEMDOS emulation will be printed on
+</I>&gt;<i> &gt;&gt; console.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Which programs have this issue and in which exact use-cases?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I cannot remember exactly. I have some issue with the PureC fopen()
+</I>&gt;<i> &gt; (wich was reporting that the file does'nt exist). Also, with LatticeC,
+</I>&gt;<i> &gt; where the compiler can't find file.
+</I>
+I did some more testing and found the issue.  My previous change to
+Fcreate() was faulty.  The original code wasn't correct either, but my
+change made it worse for the programs as I had misunderstood the Atari
+documentation.
+
+When program asks the created file to be write protected, it still needs
+to be writable, the write-protect should come into effect only for
+further Fcreate()/Fopen() calls of that file, not for the file handle
+returned by the current Fcreate() call (as that would make it pretty
+useless after Freate() had truncated the file to zero length...).
+
+This is now fixed in the repository, please try the latest version and
+check whether it works better.
+
+For example ST-Zip should now store and restore files read-only state
+correctly under GEMDOS emulation.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001021.html">[hatari-devel] Problem with hatari dsp debugger (fixed)
+</A></li>
+	<LI>Next message: <A HREF="001022.html">[hatari-devel] Cocoa diffs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1020">[ date ]</a>
+              <a href="thread.html#1020">[ thread ]</a>
+              <a href="subject.html#1020">[ subject ]</a>
+              <a href="author.html#1020">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

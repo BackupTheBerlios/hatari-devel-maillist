@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Killing impact screen problem : I've found the	problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Killing%20impact%20screen%20problem%20%3A%20I%27ve%20found%20the%0A%09problem&In-Reply-To=%3C201002032231.02299.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001408.html">
+   <LINK REL="Next"  HREF="001411.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Killing impact screen problem : I've found the	problem</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Killing%20impact%20screen%20problem%20%3A%20I%27ve%20found%20the%0A%09problem&In-Reply-To=%3C201002032231.02299.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Killing impact screen problem : I've found the	problem">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Feb  3 21:31:01 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001408.html">[hatari-devel] Killing impact screen problem : I've found the	problem
+</A></li>
+        <LI>Next message: <A HREF="001411.html">[hatari-devel] Killing impact screen problem : I've found the problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1410">[ date ]</a>
+              <a href="thread.html#1410">[ thread ]</a>
+              <a href="subject.html#1410">[ subject ]</a>
+              <a href="author.html#1410">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 03 February 2010, Laurent Sallafranque wrote:
+&gt;<i> I've found the problem about Killing impact screen.
+</I>&gt;<i> It displays garbage.
+</I>&gt;<i>
+</I>&gt;<i> The problem is linked to address $ff8265 (Horizontal scroll register)
+</I>&gt;<i> which is not 0.
+</I>&gt;<i>
+</I>&gt;<i> In this case, the bitplanes are not correct.
+</I>&gt;<i>
+</I>&gt;<i> I've tried to modify the value of &quot; fvram_column &quot; in the
+</I>&gt;<i> Videl_bitplaneToChunky call.
+</I>&gt;<i> I've added 2.
+</I>&gt;<i>
+</I>&gt;<i> + Videl_bitplaneToChunky( fvram_column +2, vbpp, color );
+</I>&gt;<i>
+</I>&gt;<i> With this, hatari displays wrong (of course) because the 4 bitplanes are
+</I>&gt;<i> shifted.
+</I>&gt;<i> But in killing impact (in the game), the 4 bitplanes display correctly
+</I>&gt;<i> (horizontal scroll register is not 0).
+</I>&gt;<i> The main menu picture displays wrong (scroll register =0) which is OK.
+</I>&gt;<i>
+</I>&gt;<i> fvram_column comes from     &quot;Uint16 *fvram = (Uint16 *)
+</I>&gt;<i> Atari2HostAddr(atariVideoRAM);&quot;
+</I>&gt;<i>
+</I>&gt;<i> #define Atari2HostAddr(a) (&amp;STRam[a])
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I don't think that adding something like the following patch is a good
+</I>&gt;<i> idea:
+</I>&gt;<i>
+</I>&gt;<i> if (hscrolloffset !=0)
+</I>&gt;<i>    fvram +=2;
+</I>&gt;<i>
+</I>&gt;<i> Perhaps &quot;atariVideoRAM&quot; is the problem too ?
+</I>
+You can look into Video_CopyScreenLineColor() in video.c how it does STE HW
+scrolling.  Maybe Videl code isn't taking into account everything doe in 
+there?
+
+(I guess in the Videl case you can ignore the border handling code)
+
+Nicolas?
+
+
+&gt;<i> Any idea of how to correct this correctly.
+</I>
+I also wonder whether we really need always to use Videl drawing routines:
+       /* Now draw the screen! */
+        if (ConfigureParams.System.nMachineType == MACHINE_FALCON 
+&amp;&amp; !bUseVDIRes)
+        {
+                bScreenChanged = VIDEL_renderScreen();
+        }
+
+Couldn't we on Falcon &amp; TT use the ST/STE screen rendering when
+using ST/STE screen mode on them?  Those drawing routines handle
+scrolling etc fine.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001408.html">[hatari-devel] Killing impact screen problem : I've found the	problem
+</A></li>
+	<LI>Next message: <A HREF="001411.html">[hatari-devel] Killing impact screen problem : I've found the problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1410">[ date ]</a>
+              <a href="thread.html#1410">[ thread ]</a>
+              <a href="subject.html#1410">[ subject ]</a>
+              <a href="author.html#1410">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

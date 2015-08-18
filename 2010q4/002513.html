@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Using more GCC warnings?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Using%20more%20GCC%20warnings%3F&In-Reply-To=%3C201010102111.48255.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002492.html">
+   <LINK REL="Next"  HREF="002501.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Using more GCC warnings?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Using%20more%20GCC%20warnings%3F&In-Reply-To=%3C201010102111.48255.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Using more GCC warnings?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Oct 10 20:11:47 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002492.html">[hatari-devel] Using more GCC warnings?
+</A></li>
+        <LI>Next message: <A HREF="002501.html">[hatari-devel] Added winUae sources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2513">[ date ]</a>
+              <a href="thread.html#2513">[ thread ]</a>
+              <a href="subject.html#2513">[ subject ]</a>
+              <a href="author.html#2513">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 09 October 2010, Nicolas Pomar&#232;de wrote:
+&gt;<i> I see some new warnings now (using gcc 4.5.1) :
+</I>&gt;<i>
+</I>&gt;<i> [ 15%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/fpp.c.o
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> In file included from
+</I>&gt;<i> /home/npomarede/src/hatari-work/src/uae-cpu/fpp.c:28:0:
+</I>&gt;<i>
+</I>&gt;<i> /home/npomarede/src/hatari-work/src/uae-cpu/fpp-unknown.h: In function
+</I>&gt;<i> 'from_single':
+</I>&gt;<i> /home/npomarede/src/hatari-work/src/uae-cpu/fpp-unknown.h:59:10:
+</I>&gt;<i> attention : comparer des nombres flottants &#224; l'aide de == ou != n'est
+</I>&gt;<i> pas s&#251;r
+</I>&gt;<i> /home/npomarede/src/hatari-work/src/uae-cpu/fpp-unknown.h: In function
+</I>&gt;<i> 'from_exten':
+</I>&gt;<i> /home/npomarede/src/hatari-work/src/uae-cpu/fpp-unknown.h:100:13:
+</I>&gt;<i> attention : comparer des nombres flottants &#224; l'aide de == ou != n'est
+</I>&gt;<i> pas s&#251;r
+</I>
+Equality check is used just as an optimization for early exit, so I think
+that's fine.
+
+
+&gt;<i> /home/npomarede/src/hatari-work/src/uae-cpu/fpp.c: In function
+</I>&gt;<i> 'get_fpsr': /home/npomarede/src/hatari-work/src/uae-cpu/fpp.c:74:21:
+</I>&gt;<i> attention : comparer des nombres flottants &#224; l'aide de == ou != n'est pas
+</I>&gt;<i> s&#251;r /home/npomarede/src/hatari-work/src/uae-cpu/fpp.c: In function
+</I>&gt;<i> 'fpp_cond': /home/npomarede/src/hatari-work/src/uae-cpu/fpp.c:515:28:
+</I>&gt;<i> attention : comparer des nombres flottants &#224; l'aide de == ou != n'est pas
+</I>&gt;<i> s&#251;r
+</I>
+Float comparisons should be in general be of the less/greater than type 
+because floating point numbers operations are inaccurate.  I would assume
+that comparison against zero would be safer though.  And anyway I have no
+clue how these could be fixed better even if they have some issue...
+
+-&gt; I disable float equality warning.
+
+
+&gt;<i> [ 25%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgAlert.c.o
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> /home/npomarede/src/hatari-work/src/gui-sdl/dlgAlert.c: In function
+</I>&gt;<i> 'DlgAlert_Notice':
+</I>&gt;<i>
+</I>&gt;<i> /home/npomarede/src/hatari-work/src/gui-sdl/dlgAlert.c:186:30: attention
+</I>&gt;<i>
+</I>&gt;<i> : operation on 'alertdlg[6].w' may be undefined
+</I>
+This was real error in code, but it couldn't cause any issues. I'll fix it.
+
+
+&gt;<i> [ 41%] Building C object src/debug/CMakeFiles/Debug.dir/debugInfo.c.o
+</I>
+All debugInfo.c warnings are bogus.  GCC thinks that this kind of code:
+        /* DSP connexion */
+        switch ((IoMem_ReadWord(0xff8932) &gt;&gt; 5) &amp; 3) {
+                case 0 : strcpy(matrixDSP, &quot;OOXO&quot;); break;
+                case 1 : strcpy(matrixDSP, &quot;OXOO&quot;); break;
+                case 2 : strcpy(matrixDSP, &quot;XOOO&quot;); break;
+                case 3 : strcpy(matrixDSP, &quot;OOOX&quot;); break;
+        }
+
+Doesn't initialize matrixDSP although &quot;&amp;3&quot; can only produce values 0-3.
+
+I'd report reporting a bug agaist GCC if it already hasn't.  A bug about
+something like that (which Vincent pointed out on MiNT list) was supposed to
+be fixed already in GCC v4.5.
+
+
+&gt;<i> [ 38%] Building C object src/debug/CMakeFiles/Debug.dir/debugui.c.o
+</I>&gt;<i>
+</I>&gt;<i> /home/npomarede/src/hatari-work/src/debug/debugui.c: In function
+</I>&gt;<i> 'DebugUI_SetOptions':
+</I>&gt;<i> /home/npomarede/src/hatari-work/src/debug/debugui.c:347:2: attention :
+</I>&gt;<i> new qualifiers in middle of multi-level non-const cast are unsafe
+</I>
+&gt;<i> [ 70%] Building C object src/CMakeFiles/hatari.dir/main.c.o
+</I>&gt;<i>
+</I>&gt;<i> /home/npomarede/src/hatari-work/src/main.c: In function 'main':
+</I>&gt;<i> /home/npomarede/src/hatari-work/src/main.c:650:2: attention : new
+</I>&gt;<i> qualifiers in middle of multi-level non-const cast are unsafe
+</I>
+These are &quot;char *argv[]&quot; casts to &quot;const char **&quot; for option parsing.
+I don't see how I could get rid of them or your warning.
+
+GCC v4.3 doesn't give any warning for them.  It will, if I remove the cast
+and &quot;const char *[]&quot; cast is invalid...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002492.html">[hatari-devel] Using more GCC warnings?
+</A></li>
+	<LI>Next message: <A HREF="002501.html">[hatari-devel] Added winUae sources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2513">[ date ]</a>
+              <a href="thread.html#2513">[ thread ]</a>
+              <a href="subject.html#2513">[ subject ]</a>
+              <a href="author.html#2513">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

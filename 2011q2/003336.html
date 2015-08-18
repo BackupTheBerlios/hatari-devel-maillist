@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Little trace question :
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Little%20trace%20question%20%3A&In-Reply-To=%3C4DA4BA25.2080702%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003326.html">
+   <LINK REL="Next"  HREF="003337.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Little trace question :</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Little%20trace%20question%20%3A&In-Reply-To=%3C4DA4BA25.2080702%40free.fr%3E"
+       TITLE="[hatari-devel] Little trace question :">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Apr 12 22:46:29 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003326.html">[hatari-devel] Questions about DMA sound clock cycles and timers in	general
+</A></li>
+        <LI>Next message: <A HREF="003337.html">[hatari-devel] Little trace question :
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3336">[ date ]</a>
+              <a href="thread.html#3336">[ thread ]</a>
+              <a href="subject.html#3336">[ subject ]</a>
+              <a href="author.html#3336">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've done a trace of Lotus09 game.
+It loops forverer at startup.
+
+I can see a strange trace. (This appears many times, always at same HBL 
+line).
+
+
+I just want to be sure I read correctly the trace:
+
+cpu video_cyc=133568 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">472 at 262</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133580 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">484 at 262</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133584 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">488 at 262</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133596 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">500 at 262</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133600 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">504 at 262</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133612 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133104 at 264</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133616 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133108 at 264</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+cpu video_cyc=133628 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133120 at 264</A> : $e00d66 : 
+67f8                                 beq.s     $e00d60
+cpu video_cyc=133632 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">133124 at 264</A> : $e00d60 : b0b9 0000 
+0466                       cmp.l     $466,d0
+
+
+If I understand it well, it means that at video cycle 133600, I'm in HBL 
+262, my instruction should be 12 cycles.
+But next instruction is executed (133104 - 504) cycles later ? (2 HBL 
+later ?)
+
+If this is true, I think I've got a problem with something like 
+do_specialties.
+May this be an artefact of video.c (something that happends at HBL 262, 
+cycle 504) ?
+
+Regards
+
+Laurent
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003326.html">[hatari-devel] Questions about DMA sound clock cycles and timers in	general
+</A></li>
+	<LI>Next message: <A HREF="003337.html">[hatari-devel] Little trace question :
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3336">[ date ]</a>
+              <a href="thread.html#3336">[ thread ]</a>
+              <a href="subject.html#3336">[ subject ]</a>
+              <a href="author.html#3336">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Demo regression between 1.3.1 and	current	version
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%0A%09%3D%3Fiso-8859-1%3Fq%3FDemo_regression_between_1%3D2E3%3D2E1_a%3F%3D%0A%09%3D%3Fiso-8859-1%3Fq%3Fnd%3D09current%3D09version%3F%3D&In-Reply-To=%3C201004172207.28184.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001857.html">
+   <LINK REL="Next"  HREF="001844.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Demo regression between 1.3.1 and	current	version</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%0A%09%3D%3Fiso-8859-1%3Fq%3FDemo_regression_between_1%3D2E3%3D2E1_a%3F%3D%0A%09%3D%3Fiso-8859-1%3Fq%3Fnd%3D09current%3D09version%3F%3D&In-Reply-To=%3C201004172207.28184.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Demo regression between 1.3.1 and	current	version">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Apr 17 21:07:28 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001857.html">[hatari-devel] Demo regression between 1.3.1 and	current	version
+</A></li>
+        <LI>Next message: <A HREF="001844.html">[hatari-devel] Release schedule
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1858">[ date ]</a>
+              <a href="thread.html#1858">[ thread ]</a>
+              <a href="subject.html#1858">[ subject ]</a>
+              <a href="author.html#1858">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 17 April 2010, Eero Tamminen wrote:
+&gt;<i> As mentioned in the compatibility list, the last part doesn't work
+</I>&gt;<i> properly from hard disk.  It works fine from a floppy disk (image).
+</I>&gt;<i>
+</I>&gt;<i> &gt; &gt; Sound was crackling but the end scroller basically worked in the
+</I>&gt;<i> &gt; &gt; past. I will recheck later.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hmmm, Endpart seems better to me than before.
+</I>&gt;<i>
+</I>&gt;<i> AFAIK it worked fine already in Hatari v1.1.
+</I>
+Hm.  When the last part ends, Hatari gets double bus error:
+M68000 Bus Error at address $0.
+M68000 Bus Error at address $2.
+M68000 Bus Error at address $4.
+M68000 Bus Error at address $6.
+Bus error lput at 04d20012
+Bus error lput at 04d2000e
+Bus error wput at 04d2000c
+Bus error wput at 04d20004
+Bus error lput at 04d20006
+Bus error wput at 04d2000a
+Detected double bus error at address $4d2000e, PC=$e09664 =&gt; CPU halted!
+
+The logo behind the scrolltext seems also flickery when
+it expands and contracts.
+
+Did these happen also earlier?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001857.html">[hatari-devel] Demo regression between 1.3.1 and	current	version
+</A></li>
+	<LI>Next message: <A HREF="001844.html">[hatari-devel] Release schedule
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1858">[ date ]</a>
+              <a href="thread.html#1858">[ thread ]</a>
+              <a href="subject.html#1858">[ subject ]</a>
+              <a href="author.html#1858">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

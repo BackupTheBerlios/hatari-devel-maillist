@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Small test to run on STE
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20test%20to%20run%20on%20STE&In-Reply-To=%3C4EC18E6F.8090500%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004193.html">
+   <LINK REL="Next"  HREF="004186.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Small test to run on STE</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20test%20to%20run%20on%20STE&In-Reply-To=%3C4EC18E6F.8090500%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Small test to run on STE">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Nov 14 22:55:59 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004193.html">[hatari-devel] Little question with long cycles
+</A></li>
+        <LI>Next message: <A HREF="004186.html">[hatari-devel] [hatari-users] Video padding
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4182">[ date ]</a>
+              <a href="thread.html#4182">[ thread ]</a>
+              <a href="subject.html#4182">[ subject ]</a>
+              <a href="author.html#4182">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello
+
+I'm wondering if the video address on STE is masked depending on the RAM 
+size ; could someone with an STE runs this small program and tell me the 
+result of D0 and D1  (you need to be in supervisor mode) :
+
+	stop $2300
+	stop $2300
+	move.b  $ff8205,d0
+	move.b	#$ff,$ff8205
+	move.b	$ff8205,d1
+	move.b	d0,$ff8205
+
+This will briefly modify the video address high byte and restore it.
+But I'm wondering if you will read $ff after writing it to $ff8205, or 
+if it will be masked depending on the max size of 4 MB (and you would 
+read $03 for example).
+
+Anders maybe ? ;-)
+
+Thanks
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004193.html">[hatari-devel] Little question with long cycles
+</A></li>
+	<LI>Next message: <A HREF="004186.html">[hatari-devel] [hatari-users] Video padding
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4182">[ date ]</a>
+              <a href="thread.html#4182">[ thread ]</a>
+              <a href="subject.html#4182">[ subject ]</a>
+              <a href="author.html#4182">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

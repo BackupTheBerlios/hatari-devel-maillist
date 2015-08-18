@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] GEMDOS emulation,	what are the legal ST memory areas to write to?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20emulation%2C%0A%09what%20are%20the%20legal%20ST%20memory%20areas%20to%20write%20to%3F&In-Reply-To=%3C200911292021.55905.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001013.html">
+   <LINK REL="Next"  HREF="000984.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] GEMDOS emulation,	what are the legal ST memory areas to write to?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20emulation%2C%0A%09what%20are%20the%20legal%20ST%20memory%20areas%20to%20write%20to%3F&In-Reply-To=%3C200911292021.55905.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] GEMDOS emulation,	what are the legal ST memory areas to write to?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Nov 29 19:21:55 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001013.html">[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+</A></li>
+        <LI>Next message: <A HREF="000984.html">[hatari-devel] potential GEMDOS issues?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1037">[ date ]</a>
+              <a href="thread.html#1037">[ thread ]</a>
+              <a href="subject.html#1037">[ subject ]</a>
+              <a href="author.html#1037">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 27 November 2009, Thomas Huth wrote:
+&gt;<i> &gt; What would be a suitable error to return from Fsnext() and Fsfirst()
+</I>&gt;<i> &gt; when the address is invalid?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; GEMDOS_EBADRQ? (bad request)
+</I>&gt;<i> &gt; GEMDOS_ERANGE?  (bad range)
+</I>&gt;<i> &gt; GEMDOS_ERRROR?  (generic error)
+</I>&gt;<i>
+</I>&gt;<i> I opt for GEMDOS_EINTRN, but I think it does not really matter since
+</I>&gt;<i> original GEMDOS used neither of these codes.
+</I>&gt;<i>
+</I>&gt;<i> &gt; I guess in all cases they should log some warning to user like
+</I>&gt;<i> &gt; &quot;Fsetdta() failed due to invalid address 0x%x&quot;.
+</I>&gt;<i>
+</I>&gt;<i> That could certainly help debugging.
+</I>
+I've commited the DTA area checks + minor improvements to GEMDOS
+tracing and other messages.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001013.html">[hatari-devel] GEMDOS emulation, what are the legal ST memory areas to write to?
+</A></li>
+	<LI>Next message: <A HREF="000984.html">[hatari-devel] potential GEMDOS issues?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1037">[ date ]</a>
+              <a href="thread.html#1037">[ thread ]</a>
+              <a href="subject.html#1037">[ subject ]</a>
+              <a href="author.html#1037">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

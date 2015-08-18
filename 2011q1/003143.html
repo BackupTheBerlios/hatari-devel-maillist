@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari options?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20options%3F&In-Reply-To=%3C1299227105.4d70a1e168ddf%40imp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003142.html">
+   <LINK REL="Next"  HREF="003144.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari options?</H1>
+    <B>laurent.sallafranque at free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20options%3F&In-Reply-To=%3C1299227105.4d70a1e168ddf%40imp.free.fr%3E"
+       TITLE="[hatari-devel] Hatari options?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Fri Mar  4 09:25:05 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003142.html">[hatari-devel] Hatari options?
+</A></li>
+        <LI>Next message: <A HREF="003144.html">[hatari-devel] Hatari options?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3143">[ date ]</a>
+              <a href="thread.html#3143">[ thread ]</a>
+              <a href="subject.html#3143">[ subject ]</a>
+              <a href="author.html#3143">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I think there's are some things to fix before the options :
+
+
+First, the GUI :
+
+- I think it shouldn't be possible to select atari ST and still have DSP options
+selectable (the same for many parameters, like memory, blitter, ...).
+
+- choosing a computer should set and disable some parameters automatically +
+should disable some choice (ST and DSP or 14 Meg memory for example).
+
+- from the new core, MMU seems to be only usable with 68040(I'll try to let it
+run with a 68030 to see if this can work).
+
+- idem, I've commented an option in newcpu.c (they disabled the possibility to
+use better emulation with 24 bit memory).
+
+We need to stabilize completly the new core, see how we use it, and next, adapt
+the GUI and the option line.
+
+
+Second, the MMU :
+
+- before my hollidays, I did some changes to Hatari concerning MMU. It worked
+better, but not well. When I launched raimbow2 multimedia (it uses MMU), I had a
+illegal instruction on 4e7a (but this instruction is known in cpu31.c)
+
+I'll have to trace and debug this to let the MMU work (maybe the try/catch is
+guilty)
+
+
+Third, the &quot;cpu change on the fly bug) :
+
+With the new core, if I select in the GUI that I want to swap from a 68030 to a
+68040+MMU, the new CPU isn't taken into account.
+In this case, I was running in _run_2p and I whould have swapped to run_040mmu
+
+I remenber I had removed a parameter in the main loop of all the _run functions
+in newcpu.c (something like SPECIAL_MODE or SPECIAL_FLAG).
+With it, hatari never started. But I think my patch was wrong, it should be
+reintegrated and try to see from where the real problem was. (I'll check this
+next week).
+
+
+Fourth : Videl :
+
+I'll have a look at it after having fixed the precedent problems.
+
+Regards
+
+Laurent
+
+
+
+Selon Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt;:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On keskiviikko 02 maaliskuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;<i> &gt; I don't like the idea of changing existing options ;
+</I>&gt;<i>
+</I>&gt;<i> Ok, I'll leave the option names as-is and don't add WinAUE options to manual
+</I>&gt;<i> page.  However, the question I had was about the options grouping though.
+</I>&gt;<i>
+</I>&gt;<i> I was thinking that WinAUE specific options could be under their own
+</I>&gt;<i> heading, at least until it's more clear what they are and is the next
+</I>&gt;<i> release going to be using just WinAUE CPU core or also old UAE one.
+</I>&gt;<i>
+</I>&gt;<i> If they aren't under separate heading:
+</I>&gt;<i> - the MMU option should go under CPU as MMU is part of that.
+</I>&gt;<i> - FPU could be under either CPU or System as in 040 FPU is part of the CPU,
+</I>&gt;<i>   but on earlier CPU models it's a separate chip.
+</I>&gt;<i> - If addressing mode setting is needed, it could be under System I guess.
+</I>&gt;<i>
+</I>&gt;<i> (After that System section would have quite a lot of options, but I think
+</I>&gt;<i> keymap option would belong better under generic options.)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Btw. The reason why starting editing WinAUE options was that they were
+</I>&gt;<i> slightly broken.  They specified &quot;bool&quot; instead of &quot;&lt;bool&gt;&quot; (i.e. error
+</I>&gt;<i> handling for non- bool input values wouldn't work properly) and every option
+</I>&gt;<i> had explanation for what are the possible values for a bool option, although
+</I>&gt;<i> that's explained at the end of the Hatari usage output. :-)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i> PS. Has anybody tested the new --desktop (Falcon/TT specific) option yet?
+</I>&gt;<i>
+</I>&gt;<i> If your monitor / LCD is very slow at the resolution switches, it should
+</I>&gt;<i> give more pleasant Falcon experience with demos that change the resolution
+</I>&gt;<i> often.  I would just like to know does it work properly for everyone or has
+</I>&gt;<i> somebody encountered the problem I encountered once[1].  If yes, does that
+</I>&gt;<i> happen also for OSX or Windows...?
+</I>&gt;<i>
+</I>&gt;<i> [1] Black screen where only mouse worked fine despite killing Hatari from
+</I>&gt;<i> another console.  Getting rid of that issue requires X server &amp; X session
+</I>&gt;<i> restart.
+</I>&gt;<i>
+</I>&gt;<i> It seems like bug in my Linux desktop/X/Intel gfx driver. App that has been
+</I>&gt;<i> killed, that doesn't change resolution nor use 3D (which would bypasses X),
+</I>&gt;<i> shouldn't be able to do something like that.
+</I>&gt;<i>
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003142.html">[hatari-devel] Hatari options?
+</A></li>
+	<LI>Next message: <A HREF="003144.html">[hatari-devel] Hatari options?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3143">[ date ]</a>
+              <a href="thread.html#3143">[ thread ]</a>
+              <a href="subject.html#3143">[ subject ]</a>
+              <a href="author.html#3143">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

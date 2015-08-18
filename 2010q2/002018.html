@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005091916520.13139%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002016.html">
+   <LINK REL="Next"  HREF="002021.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005091916520.13139%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun May  9 19:28:11 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002016.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002021.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2018">[ date ]</a>
+              <a href="thread.html#2018">[ thread ]</a>
+              <a href="subject.html#2018">[ subject ]</a>
+              <a href="author.html#2018">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 8 May 2010, David Savinkoff wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> More bugs that can lead to buffer overflows and unexpected weirdness:
+</I>&gt;<i> 
+</I>&gt;<i> $ find .&#160; -print0 | xargs -0 grep SoundBufferSize
+</I>&gt;<i> ./src/audio.c:int SoundBufferSize = 1024;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; /* Size of sound buffer */
+</I>&gt;<i> ./src/audio.c:&#160; SoundBufferSize = desiredAudioSpec.size;&#160;&#160;&#160;&#160;&#160; /* May be different than the requested one! */
+</I>&gt;<i> ./src/audio.c:&#160; if (SoundBufferSize &gt; MIXBUFFER_SIZE/2)
+</I>&gt;<i> ./src/sound.c:&#160; nGeneratedSamples = SoundBufferSize + SAMPLES_PER_FRAME;
+</I>&gt;<i> ./src/sound.c:&#160; nGeneratedSamples = SoundBufferSize + SAMPLES_PER_FRAME;
+</I>&gt;<i> ./src/includes/audio.h:extern int SoundBufferSize;
+</I>&gt;<i> $ find .&#160; -print0 | xargs -0 grep SAMPLES_PER_FRAME
+</I>&gt;<i> ./src/sound.c:#define SAMPLES_PER_FRAME&#160; ((nAudioFrequency+35)/nScreenRefreshRate)
+</I>&gt;<i> ./src/sound.c:&#160; nGeneratedSamples = SoundBufferSize + SAMPLES_PER_FRAME;
+</I>&gt;<i> ./src/sound.c:&#160; nGeneratedSamples = SoundBufferSize + SAMPLES_PER_FRAME;
+</I>&gt;<i> ./src/sound.c:&#160; nSamplesPerFrame = SAMPLES_PER_FRAME;
+</I>&gt;<i> 
+</I>&gt;<i> Note that:
+</I>&gt;<i> 1) SoundBufferSize is in units of [bytes] but is initialized in [samples].
+</I>&gt;<i> 2) nGeneratedSamples = SoundBufferSize [bytes] + SAMPLES_PER_FRAME [samples];
+</I>&gt;<i>
+</I>
+Hi,
+
+indeed it seems that when we went from 8 bit mono do 16 bit stereo, 
+desiredAudioSpec.size was not converted back to sample.
+Theorically, this should only mean we get approx 5 frame delay instead of 
+2, which is not hearable in my case, but seems to be in your case.
+
+When sound is changed, I get :
+
+current version at 44.1 kHz :
+Sound_ResetBufferIndex SoundBufferSize 3760 SAMPLES_PER_FRAME 882 nGeneratedSamples 4642 , ActiveSndBufIdx 3901
+
+patched version at 44.1 kHz :
+Sound_ResetBufferIndex SoundBufferSize 940 SAMPLES_PER_FRAME 882 nGeneratedSamples 1822 , ActiveSndBufIdx 1554
+
+current version at 44.1 kHz :
+Sound_ResetBufferIndex SoundBufferSize 1408 SAMPLES_PER_FRAME 221 nGeneratedSamples 1629 , ActiveSndBufIdx 10708
+
+patched at 11 kHz :
+Sound_ResetBufferIndex SoundBufferSize 352 SAMPLES_PER_FRAME 221 nGeneratedSamples 573 , ActiveSndBufIdx 6857
+
+So, ActiveSndBufIdx is less &quot;ahead&quot; which means a shorter delay of approx 
+3 VBL for me.
+
+Can you apply this patch and see if it changes things for you (and give 
+the debug output at 11 kHz and 44 kHz) ?
+
+In case you still have a delay, does it disappear if you do a cold reset 
+of the Atari system ?
+
+
+--- ../../hatari-in/src/audio.c 2010-04-05 14:48:50.966965365 +0200
++++ ./audio.c   2010-05-09 19:14:42.046663260 +0200
+@@ -21,7 +21,7 @@
+  int nAudioFrequency = 44100;              /* Sound playback frequency */
+  bool bSoundWorking = false;               /* Is sound OK */
+  volatile bool bPlayingBuffer = false;     /* Is playing buffer? */
+-int SoundBufferSize = 1024;               /* Size of sound buffer */
++int SoundBufferSize = 1024 / 4;           /* Size of sound buffer */
+  int CompleteSndBufIdx;                    /* Replay-index into MixBuffer 
+*/
+
+
+@@ -121,6 +121,7 @@
+         }
+
+         SoundBufferSize = desiredAudioSpec.size;      /* May be different than the requested one! */
++       SoundBufferSize /= 4;                           /* bytes -&gt; samples (16 bit signed stereo -&gt; 4 bytes per sample) */
+         if (SoundBufferSize &gt; MIXBUFFER_SIZE/2)
+         {
+                 fprintf(stderr, &quot;Warning: Soundbuffer size is too big!\n&quot;);
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002016.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002021.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2018">[ date ]</a>
+              <a href="thread.html#2018">[ thread ]</a>
+              <a href="subject.html#2018">[ subject ]</a>
+              <a href="author.html#2018">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

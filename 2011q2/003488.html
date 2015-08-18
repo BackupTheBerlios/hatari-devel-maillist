@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Execution history debugger command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201105291703.37852.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003487.html">
+   <LINK REL="Next"  HREF="003490.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Execution history debugger command</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201105291703.37852.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Execution history debugger command">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun May 29 16:03:37 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003487.html">[hatari-devel] Execution history debugger command
+</A></li>
+        <LI>Next message: <A HREF="003490.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3488">[ date ]</a>
+              <a href="thread.html#3488">[ thread ]</a>
+              <a href="subject.html#3488">[ subject ]</a>
+              <a href="author.html#3488">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 29 toukokuu 2011, Eero Tamminen wrote:
+&gt;<i> On sunnuntai 29 toukokuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;<i> &gt; A lot of things can be added to Hatari regarding debugging, but we
+</I>&gt;<i> &gt; should stay consistent and focus mainly on emulation, I think the debug
+</I>&gt;<i> &gt; functions we have are largely enough (unless we have some feedbacks
+</I>&gt;<i> &gt; from users, which until there has not really been the case regarding
+</I>&gt;<i> &gt; the debug part).
+</I>&gt;<i> 
+</I>&gt;<i> That might be because Hatari hasn't had all features that native
+</I>&gt;<i> debuggers have (and because some people don't like using command line
+</I>&gt;<i> debugger)... :-)
+</I>
+And Hatari debugger not being &quot;marketed&quot;.
+
+(I've commented about it on EmuTOS &amp; MiNT mailing lists sometimes when there
+have been issues with which Hatari debugger might help, but I'm not on any
+of the Hatari forums where demo coders visit...)
+
+
+&gt;<i> &gt; There's a lot of potential things that can be made, but if it's just at
+</I>&gt;<i> &gt; the expense of code's growth and no one using it, I'm not sure it's
+</I>&gt;<i> &gt; interesting to add them just for the sake of doing it.
+</I>&gt;<i> 
+</I>&gt;<i> Well, I've actually been thinking of eventually adding most of Monst
+</I>&gt;<i> features to Hatari...  History is one of these features (and it's on todo
+</I>&gt;<i> list).
+</I>
+Attached is a patch of what a fairly complete history implementation would
+look like.
+
+After that, the remaining missing Monst features (besides the UI &amp; keyboard
+shortcuts) are:
+        - Single stepping that skips Traps, Line-A, Line-F. And one that
+          skips also BSRs and JSRs.  Run until RTS/RTE command
+        - Fill and copy memory command
+        - Search.  For bytes or strings (Monst supports also searching
+          instruction (subsets), but that's a bit too much to do)
+        - Command to run slowly
+          (could also be Hatari shortcut, not just debugger command)
+
+I can add them if somebody asks for them or when I need them myself.
+
+
+	- Eero
+
+PS. Having debugger in Hatari also allows things that aren't possible in
+native debugger due to their intrusiveness.
+
+With the debugger input files and breakpoint parsing it's also easy to
+automatically chain things, e.g. have one breakpoint that enables things and
+another that turns them off.  Native debugger is unlikely to be able to do
+things like that, at least if it needs to read those commands from
+files...
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: history.diff
+Type: text/x-patch
+Size: 13173 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110529/042c219a/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110529/042c219a/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003487.html">[hatari-devel] Execution history debugger command
+</A></li>
+	<LI>Next message: <A HREF="003490.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3488">[ date ]</a>
+              <a href="thread.html#3488">[ thread ]</a>
+              <a href="subject.html#3488">[ subject ]</a>
+              <a href="author.html#3488">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Raimbow2 problem : seems to be a big problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Raimbow2%20problem%20%3A%20seems%20to%20be%20a%20big%20problem&In-Reply-To=%3Calpine.LMD.2.00.1001282333140.12319%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001382.html">
+   <LINK REL="Next"  HREF="001389.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Raimbow2 problem : seems to be a big problem</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Raimbow2%20problem%20%3A%20seems%20to%20be%20a%20big%20problem&In-Reply-To=%3Calpine.LMD.2.00.1001282333140.12319%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Raimbow2 problem : seems to be a big problem">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Jan 28 23:53:33 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001382.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+        <LI>Next message: <A HREF="001389.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1385">[ date ]</a>
+              <a href="thread.html#1385">[ thread ]</a>
+              <a href="subject.html#1385">[ subject ]</a>
+              <a href="author.html#1385">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 28 Jan 2010, Thomas Huth wrote:
+
+&gt;<i> On Thu, 28 Jan 2010 21:22:15 +0100
+</I>&gt;<i> Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> The program stops with 11 bombs when it reachs this part of code.
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 11 bombs means unhandled Line-F exception. Unless you run in 68020 mode
+</I>&gt;<i> only and the program needs a FPU (then you should switch to 68030+FPU
+</I>&gt;<i> mode), this most likely means that the program needs the MMU which is
+</I>&gt;<i> not emulated yet.
+</I>&gt;<i>
+</I>&gt;<i> Thomas
+</I>
+Yes, this is MMU related. From the mc680xx manual, opcode F0xx is in that 
+case PMOVE ; PMOVE requires an additional word to define the mmu reg :
+
+&gt;<i> &gt; &gt; &gt; 0002e752: f011 0a00 5849 f011 0e00 ILLEGAL.L
+</I>&gt;<i> &gt; &gt; &gt; 0002e754: 0a00 5849 f011 0e00 5849 EOR.B #$49,D0
+</I>&gt;<i> &gt; &gt; &gt; 0002e758: f011 0e00 5849 33f8 0484 ILLEGAL.L
+</I>&gt;<i> &gt; &gt; &gt; 0002e75a: 0e00 5849 33f8 0484 0008 ILLEGAL.L
+</I>
+So, this is in fact :
+$f011 0a00 : pmove tt0,(a1)
+$f011 0e00 : pmove tt1,(a1)
+
+Clearly no support for this in current hatari ; winuae has recently added 
+preliminary support for mmu and support the pmove opcode.
+But as already said, moving hatari to winuae cpu core is a lot of work 
+(and a lot of regression to expect)
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001382.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+	<LI>Next message: <A HREF="001389.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1385">[ date ]</a>
+              <a href="thread.html#1385">[ thread ]</a>
+              <a href="subject.html#1385">[ subject ]</a>
+              <a href="author.html#1385">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] saving/restoring memory state from debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20saving/restoring%20memory%20state%20from%20debugger&In-Reply-To=%3C201002082331.47066.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001424.html">
+   <LINK REL="Next"  HREF="001433.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] saving/restoring memory state from debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20saving/restoring%20memory%20state%20from%20debugger&In-Reply-To=%3C201002082331.47066.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] saving/restoring memory state from debugger">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Feb  8 22:31:46 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001424.html">[hatari-devel] saving/restoring memory state from debugger
+</A></li>
+        <LI>Next message: <A HREF="001433.html">[hatari-devel] Invoking the Debuguer ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1430">[ date ]</a>
+              <a href="thread.html#1430">[ thread ]</a>
+              <a href="subject.html#1430">[ subject ]</a>
+              <a href="author.html#1430">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 08 February 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> while using the debugger, I wanted to reach a certain breakpoint, then
+</I>&gt;<i> save the exact content of Hatari at that point (to be able to reload it
+</I>&gt;<i> later using --memstate + lots of traces).
+</I>&gt;<i>
+</I>&gt;<i> This is not possible with current code, as I would need to return to
+</I>&gt;<i> emulation and quickly press F12 to save Hatari's memory state, which
+</I>&gt;<i> means 68000 would not be in the same state it was at the time of my
+</I>&gt;<i> breakpoint.
+</I>&gt;<i>
+</I>&gt;<i> Eero, could you add a &quot;savestate/loadstate&quot; (or whatever you prefer) to
+</I>&gt;<i> be able to take a memory snapshot of Hatari
+</I>
+Sure, I commited support for that.
+
+
+&gt;<i> (I'm not sure loading the memory state from the debugger is that useful,
+</I>&gt;<i> so maybe &quot;loadstate&quot; can be forgotten) ?
+</I>
+That was only few trivial lines more, so I added it for symmetry's sake. :-)
+
+
+Btw. the debugger has now also support for things like:
+	b pc &gt; pc
+
+Where it will replace the right side of the comparison with the current
+value of the expression (in this case, current value of PC) when the
+breakpoint is added.  '!' comparison will still track (output &amp; break on)
+changes to previous value, '&lt;', '&gt;' &amp; '=' will break based on the original
+value.
+
+For example if you want to track loop execution, use something like
+this:
+	trace cpu_disasm
+	b pc = pc
+	c
+and it will break once on each loop round.
+
+Whereas the first example (&quot;b pc&gt;pc&quot;) can be used to get out of the loop
+when it's given at the last instruction/branch.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001424.html">[hatari-devel] saving/restoring memory state from debugger
+</A></li>
+	<LI>Next message: <A HREF="001433.html">[hatari-devel] Invoking the Debuguer ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1430">[ date ]</a>
+              <a href="thread.html#1430">[ thread ]</a>
+              <a href="subject.html#1430">[ subject ]</a>
+              <a href="author.html#1430">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

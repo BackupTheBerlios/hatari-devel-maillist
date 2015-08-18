@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Moai demo as regressed a lot since hatari 1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Moai%20demo%20as%20regressed%20a%20lot%20since%20hatari%201.4&In-Reply-To=%3C4E1ED43B.3080805%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003727.html">
+   <LINK REL="Next"  HREF="003729.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Moai demo as regressed a lot since hatari 1.4</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Moai%20demo%20as%20regressed%20a%20lot%20since%20hatari%201.4&In-Reply-To=%3C4E1ED43B.3080805%40free.fr%3E"
+       TITLE="[hatari-devel] Moai demo as regressed a lot since hatari 1.4">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Jul 14 13:34:19 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003727.html">[hatari-devel] Moai demo as regressed a lot since hatari 1.4
+</A></li>
+        <LI>Next message: <A HREF="003729.html">[hatari-devel] Moai demo as regressed a lot since hatari 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3728">[ date ]</a>
+              <a href="thread.html#3728">[ thread ]</a>
+              <a href="subject.html#3728">[ subject ]</a>
+              <a href="author.html#3728">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>It's a bit what I think.
+
+If winuae emulates a 32 bits 68030, cycles are &quot;faster&quot; than on the real 
+hatari (16 bits bus).
+This may explain a part of the synch problems we encounter
+
+I've got some other demos that do as you did (synch DSP for each send 
+data but synch the 68030 only for the first receive data and then run 
+without synch):
+
+- underscore demo (in the 3d tubular labyrinth)
+- rot3dbmp
+- bound3
+- ...
+
+This is the key to a good falcon emu.
+
+And the 2 componants that are probably not well accurate are the 68030 
+(16 bits bus) and the Videl.
+(I think DSP cycles are correctly handled now, except perhaps a very few 
+ones or very special cases)
+
+And as the 68030 is the clock for the whole computer, it should be very 
+accurate.
+
+I asked once about the falcon's timings of exceptions :
+
+In newcpu.c :: Exception_normal(), I can read the following :
+
+       case 2: M68000_AddCycles(50); break;    /* Bus error */
+       case 3: M68000_AddCycles(50); break;    /* Address error */
+       case 4: M68000_AddCycles(34); break;    /* Illegal instruction */
+       case 5: M68000_AddCycles(38); break;    /* Div by zero */
+       case 6: M68000_AddCycles(40); break;    /* CHK */
+       case 7: M68000_AddCycles(34); break;    /* TRAPV */
+       case 8: M68000_AddCycles(34); break;    /* Privilege violation */
+       case 9: M68000_AddCycles(34); break;    /* Trace */
+       case 10: M68000_AddCycles(34); break;    /* Line-A - probably 
+wrong */
+       case 11: M68000_AddCycles(34); break;    /* Line-F - probably 
+wrong */
+       default:
+         /* FIXME: Add right cycles value for MFP interrupts and copro 
+exceptions ... */
+         if(nr &lt; 64)
+           M68000_AddCycles(4);            /* Coprocessor and unassigned 
+exceptions (???) */
+         else
+           M68000_AddCycles(44+12);        /* Must be a MFP or DSP 
+interrupt */
+         break;
+     }
+
+Are these timings still OK for a Falcon ?
+I think they're OK for an atari ST(e)
+
+Is access to memory always rounded to the next 4 cycles ?
+(saw in memory.c)
+
+The DMA (sound) and the videl super access mode (17 cycles to read 19 
+words at once if I'm right) stop the bus and generates WAITSTATES.
+
+In the case of the unsynched DSP-68030 demos, these extra cycles slows 
+down a little the 68030, which gives some time to the DSP to execute one 
+more instruction (sometimes).
+
+
+You see, there are plenties of explanations for the &quot;not enough acurate 
+Falcon&quot; emuation.
+
+And Maybe Nicolas's right : there's probably a very big problem hidden 
+somewhere we've not seen yet.
+But : ST emulation is quite accurate now (which means a certain amount 
+of quality has been reached in Hatari),
+         and  There are plenties of Falcon programs that run well (music 
++ sound), in different modes (video, DSP or not, DMA or not, ...)
+
+That's why I think now that programs with problems are those who need 
+accuracy.
+When I trace them, it's very often the DSP that is looping waiting a 
+data that came to early or progs that are running a bit too fast for the 
+68030, or ...
+
+
+(I except here Build in Obsolescence demo which have a real different 
+problem I still haven't found yet).
+
+
+Best regards,
+
+Laurent
+
+
+
+
+
+
+
+
+
+
+
+Le 14/07/2011 11:27, Miro Krop&#225;c(ek a &#233;crit :
+&gt;<i>
+</I>&gt;<i>     So, do you mean this demo could not run correctly on a real
+</I>&gt;<i>     &quot;stock&quot; Falcon with 68030 ? A 060 is really needed ?
+</I>&gt;<i>
+</I>&gt;<i> No, the opposite :) It runs well on real stock Falcon but it does not 
+</I>&gt;<i> on Falcon + CT60 because the CPU is just too fast (grabbing data from 
+</I>&gt;<i> DSP faster than DSP could provide it when playback is active). I 
+</I>&gt;<i> wanted to point out maybe your Hatari CPU emulation is also a bit 
+</I>&gt;<i> faster than it should.
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> MiKRO / Mystic Bytes
+</I>&gt;<i> <A HREF="http://mikro.atari.org">http://mikro.atari.org</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110714/956170c5/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110714/956170c5/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003727.html">[hatari-devel] Moai demo as regressed a lot since hatari 1.4
+</A></li>
+	<LI>Next message: <A HREF="003729.html">[hatari-devel] Moai demo as regressed a lot since hatari 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3728">[ date ]</a>
+              <a href="thread.html#3728">[ thread ]</a>
+              <a href="subject.html#3728">[ subject ]</a>
+              <a href="author.html#3728">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

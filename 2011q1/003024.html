@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] STE sound breakage with lower sound frequencies
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20sound%20breakage%20with%20lower%20sound%20frequencies&In-Reply-To=%3C4D582C8E.7000400%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003003.html">
+   <LINK REL="Next"  HREF="003025.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] STE sound breakage with lower sound frequencies</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20sound%20breakage%20with%20lower%20sound%20frequencies&In-Reply-To=%3C4D582C8E.7000400%40corp.free.fr%3E"
+       TITLE="[hatari-devel] STE sound breakage with lower sound frequencies">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Feb 13 20:10:06 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003003.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+        <LI>Next message: <A HREF="003025.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3024">[ date ]</a>
+              <a href="thread.html#3024">[ thread ]</a>
+              <a href="subject.html#3024">[ subject ]</a>
+              <a href="author.html#3024">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 08/02/2011 20:07, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On tiistai 08 helmikuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;<i> Le 07/02/2011 23:15, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;&gt;<i> I tried Utopos demo.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> If I use &quot;--sound 11025&quot; or &quot;--sound 16000&quot;, there's just a short
+</I>&gt;&gt;&gt;<i> &quot;dup&quot;[1] sound and then no sound at all.  With e.g. 22kHz or 48kHz,
+</I>&gt;&gt;&gt;<i> sound works fine for STE emulation too.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The issue happens also for Hatari from end of december and for Hatari
+</I>&gt;&gt;&gt;<i> v1.4. Keyclick on STE TOS works for Hatari v1.4 even at 11025Hz
+</I>&gt;&gt;&gt;<i> though.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Yes, I can reproduce similar issues ; not related to my latest changes,
+</I>&gt;&gt;<i> certainly there since a long time and specific to dma sound.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It seems that if Hatari starts with a too low freq then there's no sound
+</I>&gt;&gt;<i> (changing sound freq with F12 don't correct it). But if I start Hatari
+</I>&gt;&gt;<i> in default mode (44.1 kHz) in my case and change freq with F12 to 11025,
+</I>&gt;&gt;<i> I still get sound.
+</I>&gt;&gt;<i> Do you have the same behaviour ?
+</I>&gt;<i>
+</I>&gt;<i> Yes.  If I change the freq from options, there's no problem.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> So, it's not the freq change, but probably some inits based on the
+</I>&gt;&gt;<i> starting sound freq that are not correct.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'll try to give it a look later.
+</I>
+Hello,
+
+I found the cause of the problem, it's the bass/treble filter.
+
+In previous version of Hatari (1.4) it was only applied when DMA sound 
+was on, but in rev 3159 laurent applied the patch submitted by david to 
+also apply the filter when DMA sound is off too and only ym2149 is used 
+(-&gt; key sound under gem)
+
+This is the correct behaviour to apply the filter in all case, the 
+problem is that according to the comment by David &quot;The tone control's 
+sampling frequency must be at least 22050 Hz to sound good&quot;.
+It seems that at 16 kHz or less, it just sound empty in fact :)
+
+You can test this is the cause :
+1) in dmaSnd.c comment lines 355/356 to get key sound under gem again 
+when running &quot;./hatari --machine ste --sound 16000&quot;
+
+2) in dmaSnd.c comment lines 491/492 to get dma sound under utopos for 
+example when running &quot;./hatari --machine ste --sound 16000&quot;
+
+
+David, is there a way to have the filter behave better when sound freq 
+is less that 22050 Hz without changing too much code ?
+
+We could build other filter tables in DmaSnd_Init_Bass_and_Treble_Tables 
+for lower ouput freq, but I'm not sure this is necessary.
+
+Sound under 44 kHz is anyway rather ugly most of the time, so if no one 
+objects, I think I will add a change to apply IIR filters only for 
+&quot;quality&quot; output freq &gt;= 44 kHz. Applying filters to lower output freq 
+will just alter a sound that is already of poor quality (especially in 
+ym mode only).
+
+
+Nicolas
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003003.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+	<LI>Next message: <A HREF="003025.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3024">[ date ]</a>
+              <a href="thread.html#3024">[ thread ]</a>
+              <a href="subject.html#3024">[ subject ]</a>
+              <a href="author.html#3024">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

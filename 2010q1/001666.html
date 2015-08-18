@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New Monitor/Window options dialog feedback?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20Monitor/Window%20options%20dialog%20feedback%3F&In-Reply-To=%3C20100313182832.90080%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001662.html">
+   <LINK REL="Next"  HREF="001669.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New Monitor/Window options dialog feedback?</H1>
+    <B>Thomas H.</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20Monitor/Window%20options%20dialog%20feedback%3F&In-Reply-To=%3C20100313182832.90080%40gmx.net%3E"
+       TITLE="[hatari-devel] New Monitor/Window options dialog feedback?">th.huth at gmx.de
+       </A><BR>
+    <I>Sat Mar 13 19:28:32 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001662.html">[hatari-devel] New Monitor/Window options dialog feedback?
+</A></li>
+        <LI>Next message: <A HREF="001669.html">[hatari-devel] New Monitor/Window options dialog feedback?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1666">[ date ]</a>
+              <a href="thread.html#1666">[ thread ]</a>
+              <a href="subject.html#1666">[ subject ]</a>
+              <a href="author.html#1666">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE> Hi!
+
+&gt;<i> Datum: Fri, 12 Mar 2010 20:16:10 +0200
+</I>&gt;<i> Von: Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt;
+</I>&gt;<i> 
+</I>&gt;<i> Before I update the Hatari manual screenshots and description in the
+</I>&gt;<i> Screen
+</I>&gt;<i> dialog section for the new Monitor/Window options dialogs, I'd like you to
+</I>&gt;<i> use them a bit and tell whether they work as you'd expect.
+</I>&gt;<i> 
+</I>&gt;<i> I'm mainly interested on comments on removal of the Zoom checkbox and
+</I>&gt;<i> replacing it with the &quot;Max doubled&quot; option that gives you more control on
+</I>&gt;<i> what size TT &amp; Falcon resolutions come up.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> For ST/e low-res it does only doubling, for Falcon and TT resolutions it
+</I>&gt;<i> could zoom more if you give large enough resolution.  The zoom factor
+</I>&gt;<i> is an integer and I though &quot;doubling&quot; in this case tells better the effect
+</I>&gt;<i> of it.  If you disagree, feel free to propose something else as its
+</I>&gt;<i> name. :-)
+</I>&gt;<i> 
+</I>&gt;<i> (Or give any other comments on the new dialogs...)
+</I>
+I gave it a quick try, and noticed a couple of things:
+
+1) As I described earlier already, I dislike the word &quot;doubling&quot; here, since doubling only means scaling by factor 2. However, this does not apply for all Falcon resolutions.
+
+2) &quot;Window&quot; is also somewhat misleading. Hatari runs also on systems that do not have a window manager at all (e.g. Wii). I suggest to use &quot;Video&quot; or &quot;Host screen&quot; or something similar instead.
+
+3) The &quot;Max doubled&quot; resolution setting feels very unintuitive. It took me a while till a figured out that I now have to increase the horizontal resolution to 832 instead of 800 to enable zooming of ST low resolution (with borders). The normal Hatari users likely do not now about the resolution of the emulated system, so I guess they will be _very_ confused when they try to enable or disable the  zooming now. I suggest to add the &quot;Zoom low resolution&quot; checkbox again to avoid this confusing situation.
+
+Another idea: Instead of using &quot;Max doubled&quot; resolution setting, you could rename it to &quot;Preferred resolution&quot; or so, and then for ST/STE mode, you could use it to configure the border sizes in zoomed mode instead (i.e. the nWindowBorderPixels and nFullScreenBorderPixels settings). What do you think?
+
+ Thomas
+
+-- 
+GRATIS f&#252;r alle GMX-Mitglieder: Die maxdome Movie-FLAT!
+Jetzt freischalten unter <A HREF="http://portal.gmx.net/de/go/maxdome01">http://portal.gmx.net/de/go/maxdome01</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001662.html">[hatari-devel] New Monitor/Window options dialog feedback?
+</A></li>
+	<LI>Next message: <A HREF="001669.html">[hatari-devel] New Monitor/Window options dialog feedback?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1666">[ date ]</a>
+              <a href="thread.html#1666">[ thread ]</a>
+              <a href="subject.html#1666">[ subject ]</a>
+              <a href="author.html#1666">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

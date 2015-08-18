@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20%28bad%29Patch%20but%20sound%20quality%20increased%20a%20lot&In-Reply-To=%3C4D2CC8B5.3050905%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002767.html">
+   <LINK REL="Next"  HREF="002766.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon (bad)Patch but sound quality increased a lot</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20%28bad%29Patch%20but%20sound%20quality%20increased%20a%20lot&In-Reply-To=%3C4D2CC8B5.3050905%40free.fr%3E"
+       TITLE="[hatari-devel] Falcon (bad)Patch but sound quality increased a lot">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Jan 11 22:16:37 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002767.html">[hatari-devel] DSP external Memory timings fixed
+</A></li>
+        <LI>Next message: <A HREF="002766.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2762">[ date ]</a>
+              <a href="thread.html#2762">[ thread ]</a>
+              <a href="subject.html#2762">[ subject ]</a>
+              <a href="author.html#2762">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've generated a bad patch for Falcon DSP.
+
+With this patch, sound quality is really so much better with some demos.
+I've tested with EKO_System, Illusion demo, R U Experienced.
+
+It's what I thought. I need a precise 60 cycles clock for the SSI 
+tranfers (DSP &lt;-&gt; Crossbar).
+
+I've called DSP_Run inbetween each 68030 instruction cycles computing.
+With this, instead of having a 100 cycles instruction (1 big call to 
+crossbar and DSP), it generates more intermediate calls.
+My timers keep OK and sound is nice.
+
+I'm still sure that the 68030 as a clock for the Falcon is not good 
+enough (cycles are too long).
+
+Cycles ARE important in falcon emulation too (look at my previous patch, 
+DSP timings change let some demos run).
+FalcAmp and Crown of creation complain about &quot;bad timings&quot;, ...
+
+Any suggestion here ?
+
+Regards
+
+Laurent
+
+
+
+diff -r 1ea504dede73 src/uae-cpu/newcpu.c
+--- a/src/uae-cpu/newcpu.c    Tue Jan 11 21:08:35 2011 +0100
++++ b/src/uae-cpu/newcpu.c    Tue Jan 11 22:09:16 2011 +0100
+@@ -1737,6 +1737,13 @@
+          Cycles_SetCounter(CYCLES_COUNTER_CPU, 0);    /* to measure the 
+total number of cycles spent in the cpu */
+
+      M68000_AddCyclesWithPairing(cycles);
++
++    /* Run DSP 56k code if necessary */
++    if (bDspEnabled) {
++        DSP_Run( Cycles_GetCounter(CYCLES_COUNTER_CPU) );
++        Cycles_SetCounter(CYCLES_COUNTER_CPU, 0);    /* to measure the 
+total number of cycles spent in the cpu */
++    }
++
+      if (regs.spcflags &amp; SPCFLAG_EXTRA_CYCLES) {
+        /* Add some extra cycles to simulate a wait state */
+        unset_special(SPCFLAG_EXTRA_CYCLES);
+@@ -1744,6 +1751,12 @@
+        nWaitStateCycles = 0;
+      }
+
++    /* Run DSP 56k code if necessary */
++    if (bDspEnabled) {
++        DSP_Run( Cycles_GetCounter(CYCLES_COUNTER_CPU) );
++        Cycles_SetCounter(CYCLES_COUNTER_CPU, 0);    /* to measure the 
+total number of cycles spent in the cpu */
++    }
++
+  #if 0
+      while (PendingInterruptCount &lt;= 0 &amp;&amp; PendingInterruptFunction)
+        CALL_VAR(PendingInterruptFunction);
+@@ -1757,6 +1770,12 @@
+        {
+          CALL_VAR(PendingInterruptFunction);        /* call the 
+interrupt handler */
+          do_specialties_interrupt(false);        /* test if there's an 
+mfp/video interrupt and add non pending jitter */
++
++    /* Run DSP 56k code if necessary */
++    if (bDspEnabled) {
++        DSP_Run( Cycles_GetCounter(CYCLES_COUNTER_CPU) );
++        Cycles_SetCounter(CYCLES_COUNTER_CPU, 0);    /* to measure the 
+total number of cycles spent in the cpu */
++    }
+  #if 0
+            if ( regs.spcflags &amp; ( SPCFLAG_MFP | SPCFLAG_INT ) ) {    /* 
+only check mfp/video interrupts */
+              if (do_specialties ())            /* check if this latest 
+int has higher priority */
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002767.html">[hatari-devel] DSP external Memory timings fixed
+</A></li>
+	<LI>Next message: <A HREF="002766.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2762">[ date ]</a>
+              <a href="thread.html#2762">[ thread ]</a>
+              <a href="subject.html#2762">[ subject ]</a>
+              <a href="author.html#2762">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

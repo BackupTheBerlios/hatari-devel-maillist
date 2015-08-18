@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CPU breakpoints and single-stepping
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3Calpine.LMD.2.00.0906082058060.18334%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000358.html">
+   <LINK REL="Next"  HREF="000360.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CPU breakpoints and single-stepping</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3Calpine.LMD.2.00.0906082058060.18334%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] CPU breakpoints and single-stepping">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jun  8 21:06:59 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000358.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+        <LI>Next message: <A HREF="000360.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#359">[ date ]</a>
+              <a href="thread.html#359">[ thread ]</a>
+              <a href="subject.html#359">[ subject ]</a>
+              <a href="author.html#359">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 8 Jun 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Monday 08 June 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;&gt;&gt;&gt;<i> Btw.  What do you think of the issue of multiple breakpoints vs.
+</I>&gt;&gt;&gt;&gt;&gt;<i> multiple break conditions?
+</I>&gt;<i>
+</I>&gt;<i> Btw.  I was thinking that the conditional breakpoint checking will
+</I>&gt;<i> be quite a bit slower than normal address based breakpoints, so
+</I>&gt;<i> maybe we should have both?
+</I>
+Well, I think that as soon as you use breakpoint, you don't care about 
+speed anymore ; I'm only exagerating a little, but I really think that if 
+the user choose to use advanced debugging functions, he must have a 
+machine powerful enough to handle it, so splitting the code in 2 kinds of 
+breakpoints seems to be extra work not necessarily needed to me. But if 
+someone feels like doing it, why not :)
+
+&gt;<i>
+</I>&gt;<i> I.e. both CPU &amp; DSP could both be:
+</I>&gt;<i> - single-stepped
+</I>&gt;<i> - have separate (fast) address breakpoints
+</I>&gt;<i> - have separate (slow) conditional breakpoints
+</I>&gt;<i>
+</I>
+&gt;&gt;<i> I haven't tested it yet, but just looking at the way you handle multiple
+</I>&gt;&gt;<i> breakpoints, why storing the conditions &quot;flat&quot; in static bp_condition_t
+</I>&gt;&gt;<i> BreakConditions[16] with the help of BP_NEXT_NEW to mark the end of a
+</I>&gt;&gt;<i> breakpoint ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This seems a little difficult then to directly access breakpoint Nbr 5
+</I>&gt;&gt;<i> for example,
+</I>&gt;<i>
+</I>&gt;<i> The breakpoint manipulation for user doesn't matter speedwise, but
+</I>&gt;<i> checking functionality called for every instruction does.  I was thinking
+</I>&gt;<i> that it would be faster to check if it's all in one array (and it saves
+</I>&gt;<i> trivial amount of memory ;-)).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> and if you remove it, you have to rearrange BreakConditions[].
+</I>&gt;<i>
+</I>&gt;<i> Also with array of arrays you need to do memmove().
+</I>
+Well, setting NbConditions to 0 is enough to ignore the breakpoint, so we 
+could allow to keep the array with &quot;holes&quot; in it to avoid reordering 
+breakpoints index numbers
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> What about this structure to store breakpoints consisting of optionnaly
+</I>&gt;&gt;<i> many conditions :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> #define MAX_BREAKPOINTS 16
+</I>&gt;&gt;<i> #define MAX_COND_PER_BREAKPOINT 6
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> structure BreakPoint {
+</I>&gt;&gt;<i> bp_condition_t BreakPointConditions[ MAX_COND_PER_BREAKPOINT ];
+</I>&gt;&gt;<i> int NbConditions;
+</I>&gt;&gt;<i> }
+</I>&gt;&gt;<i> CpuBreakPoint[ MAX_BREAKPOINTS ];
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This way access to a given breakpoint is faster,
+</I>&gt;<i>
+</I>&gt;<i> In the CPU/DSP mainloop where the speed matters, you need to go through
+</I>&gt;<i> all of the breakpoints (but not necessarily through all conditions).
+</I>&gt;<i>
+</I>&gt;<i> I think whether array of arrays or a single array is faster depends on do
+</I>&gt;<i> you have more separate breakpoints (with array of arrays you have more
+</I>&gt;<i> code to go through in this case) or conditions with AND booleans
+</I>&gt;<i> (with single array you need to scan forward).
+</I>
+That's true ; but as I wrote above, I don't think that speed is an issue 
+when using the debugger (well, we don't want hatari to be 10 times slower 
+of course :) ) but I don't think the difference between a global array and 
+an array of arrays will make huge overall differences relative to hatari 
+global cpu ressource consumption.
+
+But let's be pragmatic, we can first see what result / speed penalty we 
+get with &quot;complex&quot; breakpoint and see if it's noticeable enough to add a 
+fester path for PC only breakpoint.
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000358.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+	<LI>Next message: <A HREF="000360.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#359">[ date ]</a>
+              <a href="thread.html#359">[ thread ]</a>
+              <a href="subject.html#359">[ subject ]</a>
+              <a href="author.html#359">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

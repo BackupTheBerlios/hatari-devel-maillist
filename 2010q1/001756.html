@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake floppy target
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20floppy%20target&In-Reply-To=%3C20100321133303.73aae923%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001751.html">
+   <LINK REL="Next"  HREF="001758.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake floppy target</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20floppy%20target&In-Reply-To=%3C20100321133303.73aae923%40phineus%3E"
+       TITLE="[hatari-devel] CMake floppy target">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Mar 21 13:33:03 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001751.html">[hatari-devel] CMake floppy target
+</A></li>
+        <LI>Next message: <A HREF="001758.html">[hatari-devel] CMake floppy target
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1756">[ date ]</a>
+              <a href="thread.html#1756">[ thread ]</a>
+              <a href="subject.html#1756">[ subject ]</a>
+              <a href="author.html#1756">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 21 Mar 2010 12:48:32 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> While testing CMake I noticed that it has a separate sub-target for
+</I>&gt;<i> Floppy stuff:
+</I>&gt;<i> Scanning dependencies of target Floppy
+</I>&gt;<i> [  1%] Building C object src/CMakeFiles/Floppy.dir/dim.c.o
+</I>&gt;<i> [  2%] Building C object src/CMakeFiles/Floppy.dir/msa.c.o
+</I>&gt;<i> [  3%] Building C object src/CMakeFiles/Floppy.dir/st.c.o
+</I>&gt;<i> [  4%] Building C object src/CMakeFiles/Floppy.dir/zip.c.o
+</I>&gt;<i> Linking C static library
+</I>&gt;<i> libFloppy.a                                            
+</I>&gt;<i> 
+</I>&gt;<i> I wonder why unzip.c isn't there.  It's needed by zip.c which is
+</I>&gt;<i> already included and it's needed by hmsa that links Floppy library:
+</I>
+unzip.c is not part of the floppy subsystem. It's generic zip
+uncompression functions. It is also used by other parts of Hatari, e.g.
+for loading zipped TOS ROM images.
+
+
+&gt;<i> Btw. Wouldn't it make sense to put these C files to a separate
+</I>&gt;<i> subdirectory and do the library also with normal Makefiles, not just
+</I>&gt;<i> with CMake?
+</I>
+Do you think that it still makes sense to spent this extra effort for
+the old Makefiles? We should really focus on _one_ build system, and
+soon get rid of this double maintenance.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001751.html">[hatari-devel] CMake floppy target
+</A></li>
+	<LI>Next message: <A HREF="001758.html">[hatari-devel] CMake floppy target
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1756">[ date ]</a>
+              <a href="thread.html#1756">[ thread ]</a>
+              <a href="subject.html#1756">[ subject ]</a>
+              <a href="author.html#1756">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

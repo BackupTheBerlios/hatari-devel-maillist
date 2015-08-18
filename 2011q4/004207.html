@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Head cycles : x + op head
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Head%20cycles%20%3A%20x%20%2B%20op%20head&In-Reply-To=%3C4ECA4EBF.9090501%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004206.html">
+   <LINK REL="Next"  HREF="004208.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Head cycles : x + op head</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Head%20cycles%20%3A%20x%20%2B%20op%20head&In-Reply-To=%3C4ECA4EBF.9090501%40free.fr%3E"
+       TITLE="[hatari-devel] Head cycles : x + op head">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Nov 21 14:14:39 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004206.html">[hatari-devel] Head cycles : x + op head
+</A></li>
+        <LI>Next message: <A HREF="004208.html">[hatari-devel] Head cycles : x + op head
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4207">[ date ]</a>
+              <a href="thread.html#4207">[ thread ]</a>
+              <a href="subject.html#4207">[ subject ]</a>
+              <a href="author.html#4207">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+ &gt; ... so I don't think it could be that cause of DSP/CPU sync problems.
+
+Yes I agree. I don't want to be cycle exact accurate on Falcon, it's 
+nearly not possible and it doesn't make sense as the 2 CPUs are working 
+in parallel.
+I'm just trying to be &quot;as close as possible&quot; to Falcon accuracy.
+
+For now, all instructions cycles in the 68030 ce CPU from WinUae are 2 
+cycles length. I think they've never finished this part of the code.
+If I use the generic CPU, the cycles are 68000 ones.
+As most demos and PRGs are running well with wrong timings, it means 
+that very few programs are accurate timings dependant on Falcon.
+But I think better timings will give better results.
+
+For the DIV, I asked me the same question about the spread of the 
+values. I'll try to check this from their program.
+I've never seen min time information in the 68030 doc (which would be 
+nice to have).
+
+Nevermind, I'll start with the max values and adjust later to better 
+values if necessary.
+
+Regards
+
+Laurent
+
+
+
+
+
+Le 21/11/2011 12:05, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 21/11/2011 11:35, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A> a &#233;crit :
+</I>&gt;<i>
+</I>&gt;&gt;<i> (DIV, MUL, ...).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've played around with gembench (they do a test with DIVU.W Dx, Dy 
+</I>&gt;&gt;<i> repeated a lot of time).
+</I>&gt;&gt;<i> Actually, I get 60% of the speed of a Falcon.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I can use this test to &quot;compute&quot; an average value instead of the max 
+</I>&gt;&gt;<i> value (which would be closer to reality).
+</I>&gt;&gt;<i> The best would be to have the exact algo of the instruction to 
+</I>&gt;&gt;<i> compute exact cycles (as it is done for the 68000), but nobody 
+</I>&gt;&gt;<i> replied me (I asked in DHS forum).
+</I>&gt;<i>
+</I>&gt;<i> Hello
+</I>&gt;<i>
+</I>&gt;<i> regarding the mul/div algo, I already replied you : I think this 
+</I>&gt;<i> information is not available outside of Motorola and certainly covered 
+</I>&gt;<i> by patents. So I think it's quite unlikely we have access to it.
+</I>&gt;<i>
+</I>&gt;<i> Regarding doing an average of the times returned by gembench, the 
+</I>&gt;<i> problem is that you don't know how those values are spread and if 
+</I>&gt;<i> they're truly random. If they're not (for example if gembench does 
+</I>&gt;<i> 100000 div with always the same values), you can't use that, it would 
+</I>&gt;<i> not be an average.
+</I>&gt;<i>
+</I>&gt;<i> If you want to use an average value, I think it would be simpler to 
+</I>&gt;<i> use (min time) + ( max time - min time ) / 2  (using min/max values 
+</I>&gt;<i> from the motorola doc).
+</I>&gt;<i>
+</I>&gt;<i> But anyway, I don't think mul/div is a real problem. Apart from the 
+</I>&gt;<i> &quot;ultimate&quot; accuracy goal, I doubt many programs rely on exact timings 
+</I>&gt;<i> for these (on ST, it was only useful in protections with video sync 
+</I>&gt;<i> code). This value is variable also on Falcon, so I don't think it 
+</I>&gt;<i> could be that cause of DSP/CPU sync problems.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004206.html">[hatari-devel] Head cycles : x + op head
+</A></li>
+	<LI>Next message: <A HREF="004208.html">[hatari-devel] Head cycles : x + op head
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4207">[ date ]</a>
+              <a href="thread.html#4207">[ thread ]</a>
+              <a href="subject.html#4207">[ subject ]</a>
+              <a href="author.html#4207">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

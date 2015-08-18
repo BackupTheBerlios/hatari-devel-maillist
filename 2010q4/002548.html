@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Catching trap exit?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Catching%20trap%20exit%3F&In-Reply-To=%3C4CBE014C.7000008%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002547.html">
+   <LINK REL="Next"  HREF="002552.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Catching trap exit?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Catching%20trap%20exit%3F&In-Reply-To=%3C4CBE014C.7000008%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Catching trap exit?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Oct 19 22:36:28 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002547.html">[hatari-devel] Catching trap exit?
+</A></li>
+        <LI>Next message: <A HREF="002552.html">[hatari-devel] Catching trap exit?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2548">[ date ]</a>
+              <a href="thread.html#2548">[ thread ]</a>
+              <a href="subject.html#2548">[ subject ]</a>
+              <a href="author.html#2548">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 19/10/2010 22:07, Eero Tamminen a &#233;crit :
+
+&gt;&gt;<i>    - you can have a simple step instruction that breaks each time PC is
+</I>&gt;&gt;<i> changed
+</I>&gt;<i>
+</I>&gt;<i> Do you mean shortcut for:
+</I>&gt;<i> 	b pc ! &quot;pc&quot; :once
+</I>&gt;<i> or for:
+</I>&gt;<i> 	c 1
+</I>&gt;<i> debugger command?
+</I>
+this should be for the case where you execute one opcode at (pc) then 
+stop, so I think it's more for &quot;c 1&quot;
+
+Your 1st example would not work for the following code :
+
+	move	#1567,d0
+.loop	dbf	d0,loop
+
+When pc = .loop, you will execute 1568 dbf, but pc won't change (from 
+the point of view of the debugger, it will change at the 68000 level), 
+so I think your 1set example will only break after the last dbf ?
+
+I think the correst &quot;step&quot; command should be the one that breaks 1568 times.
+
+&gt;&gt;<i>    - you can have a more elaborate step instruction that breaks after
+</I>&gt;&gt;<i> opcodes that changes PC by jumping elsewhere. This is handy to execute a
+</I>&gt;&gt;<i> sub routine / trap handler as a whole, without going step by step in the
+</I>&gt;&gt;<i> routine.
+</I>&gt;<i>
+</I>&gt;<i> Is the longest such instruction shorter than shortest such instruction?
+</I>
+?? Sorry, I don't understand what is &quot;such instruction&quot; ?
+
+&gt;<i>
+</I>&gt;<i> If yes, then a shortcut for this is enough:
+</I>&gt;<i> 	b pc&gt;  &quot;pc&quot;&amp;&amp;  pc&lt;  &quot;pc&lt;maxlen + 1&gt;&quot; :once
+</I>
+what is maxlen ? If it's the maximum size of a branch instruction, then 
+it won't work the way you propose.
+
+jsr $123456.l will take 6 bytes
+trap / bsr.s will take 2 bytes
+
+so if you encounter a bsr.s and add a breakpoint at pc+6, the following 
+code will fool your breakpoint :
+
+	bsr.s	routine		; 2 bytes
+	rts			; 2 bytes
+routine
+	nop			; 2 bytes
+	...
+	rts
+
+-&gt; this will break when reaching the nop, because it's at pc+4 (relative 
+to the bsr.s)
+
+The only safe way is to know how many byte take bsr.s/trap/jsr.l and at 
+a breakpoint at pc+opcode_length.
+
+&gt;<i>
+</I>&gt;<i> I quickly looked at these values but they didn't seem to match the next
+</I>&gt;<i> instruction address so I guess I was doing something wrong.  How you
+</I>&gt;<i> would get that value in Hatari C-code?
+</I>
+Have a look at m68k_do_rts in cpuemu.h :
+m68k_setpc(get_long(m68k_areg(regs, 7)));
+
+so get_long(m68k_areg(regs, 7)) is what you need to return from a non 
+exception branch (for exceptions, return pc is at 2(a7), so 
+get_long(m68k_areg(regs, 7)+2) will do the trick)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002547.html">[hatari-devel] Catching trap exit?
+</A></li>
+	<LI>Next message: <A HREF="002552.html">[hatari-devel] Catching trap exit?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2548">[ date ]</a>
+              <a href="thread.html#2548">[ thread ]</a>
+              <a href="subject.html#2548">[ subject ]</a>
+              <a href="author.html#2548">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

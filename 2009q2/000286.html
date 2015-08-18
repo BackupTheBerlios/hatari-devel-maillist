@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP debugging : actual point
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20%3A%20actual%20point&In-Reply-To=%3C4A10471E.8040007%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000283.html">
+   <LINK REL="Next"  HREF="000287.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP debugging : actual point</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20%3A%20actual%20point&In-Reply-To=%3C4A10471E.8040007%40free.fr%3E"
+       TITLE="[hatari-devel] DSP debugging : actual point">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun May 17 19:19:26 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000283.html">[hatari-devel] Black screen in Falcon emulation?
+</A></li>
+        <LI>Next message: <A HREF="000287.html">[hatari-devel] DSP debugging : actual point
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#286">[ date ]</a>
+              <a href="thread.html#286">[ thread ]</a>
+              <a href="subject.html#286">[ subject ]</a>
+              <a href="author.html#286">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+Actually, I'm searching to correct a big bug.
+I'm working with Motion demo
+- explot.prg
+- susie.prg
+- torus.prg
+
+All these demos result in visual glitches or freeze.
+
+I have no idea of where is the problem for now.
+I've got traces and sources from hatari debug, but there are more than 
+20 millions lines of code (hard to read).
+
+I'm also using lcov (great tool to profile the code).
+Just have to add :
+-g -fprofile-arcs -ftest-coverage
+Run hatari, then,
+lcov -c -o coverage.info --directory=./
+genhtml coverage.info
+
+then, you can see the code profile into your browser (load index.html).
+
+I think this bug is one of the latest to correct (I'd like to find it).
+Then, there'll just be to finalize the SSI receive data and optimize DSP 
+code a bit more (I have some ideas for that, but I'd like to finish the 
+debugging before).
+
+Do you know if somebody from Motion could give me the sources from the 
+Motion demo (to help me a little) ? Or if one of the people of this team 
+is still alive in atari world ?
+
+Do you know if it exists a DSP program that I could use as a benchmark 
+or a &quot;non regression&quot; test code ?
+
+Any ideas would be appreciate here.
+
+Regards,
+
+Laurent
+
+PS : I continue to search.
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000283.html">[hatari-devel] Black screen in Falcon emulation?
+</A></li>
+	<LI>Next message: <A HREF="000287.html">[hatari-devel] DSP debugging : actual point
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#286">[ date ]</a>
+              <a href="thread.html#286">[ thread ]</a>
+              <a href="subject.html#286">[ subject ]</a>
+              <a href="author.html#286">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

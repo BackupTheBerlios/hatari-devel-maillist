@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] LMC1992 and Microwire emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4B940E8D.7090501%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001633.html">
+   <LINK REL="Next"  HREF="001635.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] LMC1992 and Microwire emulation</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4B940E8D.7090501%40free.fr%3E"
+       TITLE="[hatari-devel] LMC1992 and Microwire emulation">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Mar  7 21:37:33 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001633.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+        <LI>Next message: <A HREF="001635.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1634">[ date ]</a>
+              <a href="thread.html#1634">[ thread ]</a>
+              <a href="subject.html#1634">[ subject ]</a>
+              <a href="author.html#1634">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I totally agree with you.
+
+The main problem is that I've only got a 520 STf.
+
+Another point, if we want to be accurate is the 8 cpu cycles interrupt 
+for the Microwire.
+If a 68000 instruction takes 50 cycles (for examples), we should detect 
+this and rotate the microwire mask 6 times instead of only one.
+
+Nicolas, you know how to do this better than me, could you add this 
+feature ?
+
+I'll try to have a look at the bass and treble algos during this time.
+
+Regards,
+
+Laurent
+
+
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+&gt;<i> On Sun, 7 Mar 2010, Laurent Sallafranque wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've added LMC1992 and Microwire emulation to hatari.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> For now, Master volume, left volume and right volume are emulated.
+</I>&gt;&gt;<i> Still to do : Bass and Treble.
+</I>&gt;&gt;<i> Does it need a FFT and FFT -1 transformation or are there specifics 
+</I>&gt;&gt;<i> algorythms for bass and treble ?
+</I>&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> I think we can find some pointers for this on the web, but this 
+</I>&gt;<i> certainly requires more computations than a simple filter (fft or 
+</I>&gt;<i> maybe some specific faster method ?)
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've done my tests with protracker Ste.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I think there's a problem anyway for both falcon volume table and ste 
+</I>&gt;&gt;<i> volume table :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've used a linear volume table to calculate values from the min to 
+</I>&gt;&gt;<i> the max.
+</I>&gt;&gt;<i> I think values should be calculated with a logarythmic algo.
+</I>&gt;&gt;<i> (There's only values in the volume_table to change, nothing else)
+</I>&gt;<i>
+</I>&gt;<i> for the ym2149, volume is clerly not linear and the table is 
+</I>&gt;<i> logarithmic, maybe you can use it as a starting point (there're only 
+</I>&gt;<i> 16 values, but you can deduce a similar table for 256 values)
+</I>&gt;<i>
+</I>&gt;&gt;<i> Do you agree ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Could somebody compare volume in protracker in hatari and on a real 
+</I>&gt;&gt;<i> ste ?
+</I>&gt;<i>
+</I>&gt;<i> The real solution would be to play a constant sample sound (square 
+</I>&gt;<i> wave consisting of values 127 and -127) at 50 kHz and then measure the 
+</I>&gt;<i> output voltage on the audio out pin of the ste for example. By doing 
+</I>&gt;<i> measures for 32 different volumes or so between 0 and max, this should 
+</I>&gt;<i> give the correct graph to extrapolate all values (that's the method 
+</I>&gt;<i> used to get the 16 volumes level of the ym2149)
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001633.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+	<LI>Next message: <A HREF="001635.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1634">[ date ]</a>
+              <a href="thread.html#1634">[ thread ]</a>
+              <a href="subject.html#1634">[ subject ]</a>
+              <a href="author.html#1634">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

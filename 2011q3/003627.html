@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New STE DMA audio emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C4E0ED22F.8090703%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003624.html">
+   <LINK REL="Next"  HREF="003628.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New STE DMA audio emulation</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C4E0ED22F.8090703%40free.fr%3E"
+       TITLE="[hatari-devel] New STE DMA audio emulation">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Jul  2 10:09:19 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003624.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+        <LI>Next message: <A HREF="003628.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3627">[ date ]</a>
+              <a href="thread.html#3627">[ thread ]</a>
+              <a href="subject.html#3627">[ subject ]</a>
+              <a href="author.html#3627">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Nicolas,
+
+Great Job.
+
+I have no time at the moment to test things or code for hatari.
+But I guess some of the things you implemented for the STE DMA should 
+also be applied to the falcon DMA.
+
+I mean the 64 bits precision and the 2*32 octets DMA buffer (one buffer 
+for DMA play and one for DMA Record) .
+
+I guess (without clue) that the Falcon DMA bahaves like the STE one (I 
+mean HBL refresh).
+
+Should I apply these changes ? (Falcon sound with DMA emulation is not 
+nice sometimes).
+
+Regards
+
+Laurent
+
+
+Le 01/07/2011 01:20, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Hello
+</I>&gt;<i>
+</I>&gt;<i> I just committed the result of my work on improving STE sound quality 
+</I>&gt;<i> during the last weeks.
+</I>&gt;<i>
+</I>&gt;<i> -&gt; go to the end of this mail if you're not interested in the 
+</I>&gt;<i> technical explanations :)
+</I>&gt;<i>
+</I>&gt;<i> To simplify, there were 2 kinds of problem :
+</I>&gt;<i>
+</I>&gt;<i>  - the number of samples to emulate per VBL was not precise enough ; 
+</I>&gt;<i> it was even wrong in fact.
+</I>&gt;<i>
+</I>&gt;<i>  - the dma audio internal work was not fully, most notably the 8 bytes 
+</I>&gt;<i> FIFO was missing, which is essential to a correct sound emulation
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> For the 1st point, the bad number of sample could be seen for example 
+</I>&gt;<i> in &quot;More or less zero&quot; by DHS. After the plasma and the spec512 image, 
+</I>&gt;<i> there should be a kind of white &quot;flash&quot; when the next screen start 
+</I>&gt;<i> which should be synchronised with a sound.
+</I>&gt;<i>
+</I>&gt;<i> The problem is that all sound emulation was based on the assumption 
+</I>&gt;<i> that the video runs at 50 Hz (PAL mode). But in fact this is wrong, a 
+</I>&gt;<i> real ST provides approx 50.053 VBL per sec ! (a VBL is 160256 cycles, 
+</I>&gt;<i> which is not an exact divider of the 8.021247 clock freq).
+</I>&gt;<i>
+</I>&gt;<i> In order to fix this, I added a new file clocks_timings.c ; the 
+</I>&gt;<i> purpose of this file is to put all the hardware's clocks informations 
+</I>&gt;<i> for all emulated Atari machines in a single file. This file then 
+</I>&gt;<i> provides some functions to compute the exact values of VBL per sec, 
+</I>&gt;<i> length of a VBL in micro sec, ...
+</I>&gt;<i>
+</I>&gt;<i> I went through the official schematics of all known Atari models in 
+</I>&gt;<i> order to describe the relation between all the clocks (some clocks are 
+</I>&gt;<i> derived from master clocks)
+</I>&gt;<i>
+</I>&gt;<i> Note that although the clock for each component is defined in this 
+</I>&gt;<i> file, it doesn't mean that changing it will have an effect on the 
+</I>&gt;<i> emulation (that's the plan for later versions at least) (for example, 
+</I>&gt;<i> changing cpu clock won't make the cpu go faster or slower)
+</I>&gt;<i>
+</I>&gt;<i> So for now, consider this file as a kind of improved documentation 
+</I>&gt;<i> with some useful wrappers for some video timings.
+</I>&gt;<i>
+</I>&gt;<i> Regarding the 50 Hz problem, it was previously admitted that when 
+</I>&gt;<i> emulating sound at 44100 Hz, this meant 44100/50=882 samples per VBL.
+</I>&gt;<i> With a real 50.053 VBL per sec value, you can see that the number of 
+</I>&gt;<i> sample per VBL is in fact ~881.066.
+</I>&gt;<i>
+</I>&gt;<i> Precision is very important, numbers should not be truncated, so all 
+</I>&gt;<i> computations are made with 64 bit integers, to emulate a 32 bit 
+</I>&gt;<i> integer part and a 32 bit fractional part.
+</I>&gt;<i>
+</I>&gt;<i> Those changes mainly applied to sound.c
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> For the 2nd point, it was the inner DMA audio emulation that needed 
+</I>&gt;<i> improvements. This was quite hearable in Hextracker by Paulo Simoes : 
+</I>&gt;<i> the sound was perturbated by some small &quot;clicks&quot; or some kinds of 
+</I>&gt;<i> background &quot;static&quot; noise that altered the expected result.
+</I>&gt;<i>
+</I>&gt;<i> At this point, emulating the 8 bytes FIFO used by the DMA audio was 
+</I>&gt;<i> necessary, as this gives seamless playback when using double buffer to 
+</I>&gt;<i> produce sound : the new buffer's address is enabled by turning DMA 
+</I>&gt;<i> audio off and on. the fact is that during the time DMA is off to 
+</I>&gt;<i> prepare the next buffer addresses, the sound is not disabled ! As long 
+</I>&gt;<i> as the FIFO has some bytes left, it produces sound even when DMA audio 
+</I>&gt;<i> is off.
+</I>&gt;<i>
+</I>&gt;<i> I wrote some small test programs to precisely measures how the DMA 
+</I>&gt;<i> audio FIFO is filled/emptied at each HBL (many thanks to Anders / Evil 
+</I>&gt;<i> for running these on his STE and sending me the results).
+</I>&gt;<i> Using those results, I was able to finetune Hatari's emulation and to 
+</I>&gt;<i> verify the DMA audio / FIFO are now behaving just like a real STE (for 
+</I>&gt;<i> example, after 50 VBL Hatari now only has a 0 or 2 bytes difference 
+</I>&gt;<i> with the measured number of bytes played at 50066 Hz on a real STE : 
+</I>&gt;<i> 50018 or 50020 instead of 50020 on a real STE).
+</I>&gt;<i> This certainly makes Hatari the most accurate emulator regarding STE 
+</I>&gt;<i> sound :) (Steem produces ~50152 bytes for the same test, haven't 
+</I>&gt;<i> tested with Saint)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The code I committed contains some debug traces and a lot of variables 
+</I>&gt;<i> need to be saved in the memory snapshot ; don't worry about this, I 
+</I>&gt;<i> will clean everything once I get enough feedback to consider the code 
+</I>&gt;<i> as stable.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Non tech part :
+</I>&gt;<i> ---------------
+</I>&gt;<i>
+</I>&gt;<i> Please test this new version with all your favorite STE programs. For 
+</I>&gt;<i> great results, don't forget to run Hextracker which gives really clear 
+</I>&gt;<i> output even with 7 voices or more. &quot;Amiga Demo 2&quot; by Leonard/Oxygene 
+</I>&gt;<i> now also has a very good sound output.
+</I>&gt;<i>
+</I>&gt;<i> I didn't have time to look at all the demos in the compatibilty list, 
+</I>&gt;<i> don't hesitate to test the ones known to have a bad sound and to 
+</I>&gt;<i> report the new results.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Regarding Hatari 1.5 release, I think this should now be very close. 
+</I>&gt;<i> Once I get enough confirmation that nothing is broken with this new 
+</I>&gt;<i> code, I will clean some unused parts, modify the memory snapshot 
+</I>&gt;<i> format to save those new structures (sorry, it won't be possible to 
+</I>&gt;<i> reload snapshot made with Hatari 1.4) and we should be good :)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> PS : could someone with OSX access add the 2 files clocks_timings.c/.h 
+</I>&gt;<i> to the project, else it might not compile anymore.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003624.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+	<LI>Next message: <A HREF="003628.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3627">[ date ]</a>
+              <a href="thread.html#3627">[ thread ]</a>
+              <a href="subject.html#3627">[ subject ]</a>
+              <a href="author.html#3627">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Steem debugger features not in Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Steem%20debugger%20features%20not%20in%20Hatari%20debugger&In-Reply-To=%3C201106072332.07084.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003554.html">
+   <LINK REL="Next"  HREF="003561.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Steem debugger features not in Hatari debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Steem%20debugger%20features%20not%20in%20Hatari%20debugger&In-Reply-To=%3C201106072332.07084.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Steem debugger features not in Hatari debugger">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Jun  7 22:32:07 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003554.html">[hatari-devel] Steem debugger features not in Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="003561.html">[hatari-devel] Exception debugging &amp; breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3556">[ date ]</a>
+              <a href="thread.html#3556">[ thread ]</a>
+              <a href="subject.html#3556">[ subject ]</a>
+              <a href="author.html#3556">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On tiistai 07 kes&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> &gt;&gt;&gt;     - Stack content display
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; Should be in the &quot;easy&quot; section I think, it's just a dump of the
+</I>&gt;<i> &gt;&gt; memory before the value pointed by A7.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; You mean it would be just:
+</I>&gt;<i> &gt; 	m &quot;a7&quot;
+</I>&gt;<i> &gt; ?
+</I>&gt;<i> 
+</I>&gt;<i> m &quot;a7&quot; will display bytes at a7 and more (incrementing). But when you
+</I>&gt;<i> want to display the stack you must decrement. For example do something
+</I>&gt;<i> like (don't know if this syntax works) :
+</I>&gt;<i> 
+</I>&gt;<i>   m &quot;a7&quot; - $20
+</I>&gt;<i> 
+</I>&gt;<i> Which would display the last 32 bytes before the content of a7
+</I>
+Ah, right, in that case it would be:
+---
+&gt;<i> m &quot;a7-$20&quot;-&quot;a7&quot;
+</I>- &quot;a7-$20&quot; -&gt; $65a8
+- &quot;a7&quot; -&gt; $65c8
+0065A8: 00 14 00 00 23 10 00 fc b4 60 08 02 00 02 00 fc   ....#....`......
+0065B8: bf 3c 00 00 00 00 00 01 00 00 00 20 00 00 a8 28   .&lt;......... ...(
+---
+
+
+&gt;<i> &gt; Steem actually has one more thing not possible in Hatari:
+</I>&gt;<i> &gt;       - Setting a breakpoint on an interrupt
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Any suggestions how to best check for interrupt?
+</I>&gt;<i> &gt; (I mean, how to express it in breakpoints syntax)
+</I>&gt;<i> 
+</I>&gt;<i> Each interrupt in calling Exception() in newcpu.c with and exception
+</I>&gt;<i> number and and exception source (cpu, mfp). Adding a condition on the
+</I>&gt;<i> expception number allows to catch any kind of interrrupt.
+</I>
+I guess it would need at least this in an appropriate place in
+newcpu.c::Exception():
+--------
+    if (regs.spcflags &amp; SPCFLAG_DEBUGGER)
+        DebugCpu_Exception(nr, ExceptionSource);
+--------
+
+But the question is where in Exception() this should be added so that
+PC, cycles etc are correct?
+
+
+And should the DebugUI() calls elsewhere in that function be skipped
+if breakpoint was hit as it could be annoying to get first a breakpoint
+and then drop again to debugger on DebugUI() call?
+
+
+
+&gt;<i> &gt; (Only potential small usability downside from working through remote
+</I>&gt;<i> &gt; API would be this 0.1s delay per view before it gets refreshed that I
+</I>&gt;<i> &gt; mentioned earlier.)
+</I>
+Note: this may be just a Python issue, not remote API one.
+These things definitely shouldn't be this slow.
+
+(For sockets there's setsockopt() call with which one can specify socket
+buffer size kernel uses, as for low-latency communication the 110kB default
+is quite large, but I don't know whether there's similar issue for fifos.)
+
+
+&gt;<i> I think this 0.1 delay would be really annoying when trying to fast
+</I>&gt;<i> scroll pressing page down for example in a memory dump window.
+</I>
+Oh, I didn't notice that functionality in Steem.
+
+For fast scroll the UI of course should just skip things that it doesn't
+have time to show and just update the address.  I think that should work
+fine for memdumps.
+
+
+But there's a problem for scrolling instruction dumps backwards, regardless
+whether it's shown by remote or &quot;local&quot; UI.  How it knows from which address
+to request the instruction dump as instructions have different widths and
+you would need to decode the memory content to know that width?
+
+(The UI definitely isn't going to have its own instruction decoder...)
+
+
+&gt;<i> &gt;&gt; And a way to search for hexa/text in Hatari's RAM.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; This needs a new feature in the internal debugger too.
+</I>&gt;<i> 
+</I>&gt;<i> I think it could be added rather easily in the current debugger?
+</I>
+Sure, the point was that currently there's no such feature.
+
+
+&gt;<i> We could even add text string in the search pattern :
+</I>&gt;<i> 
+</I>&gt;<i> search 'tos ' $45 $18 'atari'
+</I>
+Yes, especially as that's supported both by Monst and Steem.
+
+Although &quot;&quot; already having a special meaning in debugger
+(evalating what's in quotes) could be a bit confusing for
+the user... :-/
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003554.html">[hatari-devel] Steem debugger features not in Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="003561.html">[hatari-devel] Exception debugging &amp; breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3556">[ date ]</a>
+              <a href="thread.html#3556">[ thread ]</a>
+              <a href="subject.html#3556">[ subject ]</a>
+              <a href="author.html#3556">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

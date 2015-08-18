@@ -1,0 +1,345 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari patches for bitplane conversion + XBios	Hatari control from inside the emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion%20%2B%20XBios%0A%09Hatari%20control%20from%20inside%20the%20emulation&In-Reply-To=%3C200907031320.56380.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000433.html">
+   <LINK REL="Next"  HREF="000437.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari patches for bitplane conversion + XBios	Hatari control from inside the emulation</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion%20%2B%20XBios%0A%09Hatari%20control%20from%20inside%20the%20emulation&In-Reply-To=%3C200907031320.56380.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari patches for bitplane conversion + XBios	Hatari control from inside the emulation">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Jul  3 12:20:56 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000433.html">[hatari-devel] Conditional breakpoints for DSP
+</A></li>
+        <LI>Next message: <A HREF="000437.html">[hatari-devel] new version of video.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#434">[ date ]</a>
+              <a href="thread.html#434">[ thread ]</a>
+              <a href="subject.html#434">[ subject ]</a>
+              <a href="author.html#434">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+CCing hatari-devel as this may be of more general interest.
+
+On Friday 03 July 2009, Thomas Huth wrote:
+&gt;<i> K&#229;re Andersen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">kareandersen at gmail.com</A>&gt; wrote:
+</I>&gt;<i> What do you think of this suggestion: I could add your converters to
+</I>&gt;<i> new files in the repository, and then make the #include statements in
+</I>&gt;<i> screen.c conditional like this:
+</I>&gt;<i>
+</I>&gt;<i> #ifdef ENABLE_SIMPLE_CONVERTERS
+</I>&gt;<i> #include &quot;convert/low_simple_32.c&quot;
+</I>&gt;<i> #else
+</I>&gt;<i> #include &quot;convert/low320x32.c&quot;
+</I>&gt;<i> #endif
+</I>&gt;<i>
+</I>&gt;<i> Then you just would have to add ENABLE_SIMPLE_CONVERTERS=1 to your
+</I>&gt;<i> Xcode project to use your new functions.
+</I>
+Others may also then test this to see whether there's any speed difference.
+(not related to the unrelated frameskip issue you fixed)
+
+
+&gt;<i> &gt; I hope you can understand my dilemma - or even test this for yourself
+</I>&gt;<i> &gt; at some other modern Mac with 10.5.x and Nvidia, ATI or (maybe) newer
+</I>&gt;<i> &gt; Intel graphics if you still cant believe it... Or even prove me wrong
+</I>&gt;<i> &gt; - I certainly would not mind! :)
+</I>&gt;<i>
+</I>&gt;<i> I really would like to understand the real reason for the slow down
+</I>&gt;<i> with the old converters ... it's really hard to believe that code that
+</I>&gt;<i> worked very well for many years suddenly causes so much trouble on a
+</I>&gt;<i> new operating system... But unfortunately, I don't have access to a
+</I>&gt;<i> modern Intel-based Mac.
+</I>
+I'd like to see the new code...
+
+
+&gt;<i> &gt; And again, I stress that the WinSTon converter code is more or less
+</I>&gt;<i> &gt; impossible to maintain the way it is, and does not scale well. The
+</I>&gt;<i> &gt; variable names and the overuse of macros makes it too hard to read -
+</I>&gt;<i> &gt; at least for my taste (and from showing it to others, I know I am not
+</I>&gt;<i> &gt; alone in thinking so)...
+</I>&gt;<i>
+</I>&gt;<i> I agree, it's ugly like hell, I also don't like it, but ... well, it
+</I>&gt;<i> works fine everywhere except for new Mac OS computers.
+</I>
+Having cleaned out third of the original asm-&gt;C conversion code earlier,
+I do agree that it's ugly...  :-)
+
+I think the thing that actually needs optimizations + support for missing
+features is the VIDEL code though.
+
+
+&gt;<i> By the way, now that you've mentioned maintaining patches, I remember
+</I>&gt;<i> there is another thing pending: Your extensions to the XBIOS for
+</I>&gt;<i> changing the configuration of Hatari. I have to say that I really don't
+</I>&gt;<i> like the idea of having so much XBIOS functions intercepted for
+</I>&gt;<i> configuring and debugging. But Eero Tamminen recently added some code
+</I>&gt;<i> to Hatari (control.c) which allows to remote-control Hatari from an
+</I>&gt;<i> external program. Now I've had the idea that this interface could be
+</I>&gt;<i> used for one XBIOS function, too. Intercepting only one XBIOS function
+</I>&gt;<i> with some few code would be still fine for me. It could look like this:
+</I>&gt;<i>
+</I>&gt;<i> /**
+</I>&gt;<i>  * XBIOS remote control for Hatari
+</I>&gt;<i>  * Call 255
+</I>&gt;<i>  */
+</I>&gt;<i> static bool XBios_HatariControl(Uint32 Params)
+</I>&gt;<i> {
+</I>&gt;<i>   Control_ProcessBuffer(STMemory_ReadWord(Params+SIZE_WORD));
+</I>&gt;<i>   Regs[REG_D0] = 0;
+</I>&gt;<i>   return true;
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> That's 1) much less code, 2) uses only one XBIOS function and 3) gives
+</I>&gt;<i> you also full access to all the other interfaces that control.c offers.
+</I>
+For example enabling and disabling the max speed at run-time happens
+with the commands:
+	hatari-option --fast-forward 1
+	hatari-option --fast-forward 0
+
+(instead of 1 &amp; 0, one can use also true/false or yes/no.)
+
+Best way to experiment with this API is using the &quot;hatari-console.py&quot;
+from the python-ui/ -directory[1].  I just added &quot;print msg&quot; to
+the send_message() method so that one can see the full commands.
+
+NOTE: to use all hatari-console features, you need to install latest Hatari
+(somewhere on your $PATH), otherwise it may run an older version of Hatari
+which doesn't e.g. support all the debugger commands.
+
+
+&gt;<i> Just have a look at Control_ProcessBuffer() to see how the strings
+</I>&gt;<i> should look like.
+</I>
+First one could look into Control_Usage():
+---------------------
+Supported commands are:
+- hatari-debug &lt;Debug UI command&gt;
+- hatari-event &lt;event to simulate&gt;
+- hatari-option &lt;command line options&gt;
+- hatari-enable/disable/toggle &lt;device name&gt;
+- hatari-path &lt;config name&gt; &lt;new path&gt;
+- hatari-shortcut &lt;shortcut name&gt;
+- hatari-embed-info
+- hatari-stop
+- hatari-cont
+The last two can be used to stop and continue the Hatari emulation.
+All commands need to be separated by newlines.
+---------------------
+
+
+&gt;<i> Does that sound usable to you?
+</I>
+Sounds good to me.  If this API gets additional users, it could be reviewed
+a bit too.  The current set of remote commands just grew when I added
+new things and I'm not sure the set is most logical/orthogonal.
+
+The only issue with it is that it doesn't allow querying of the current
+values so that program could restore the settings afterwards.  Is this
+a problem?
+
+
+	- Eero
+
+-------------------------------------------------
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at lenny</A>:~/hatari/python-ui$ ./hatari-console.py
+Configuration file /usr/local/etc/hatari.cfg not found.
+close failed: [Errno 10] No child processes
+RUN: ['hatari', '--control-socket', '/tmp/hatari-console-4732.socket']
+Configuration file /usr/local/etc/hatari.cfg not found.
+Hatari devel (Jul  3 2009), compiled on:  Jul  3 2009, 12:58:06
+WAIT hatari to connect to control socket... connected!
+************************************************************
+* Use the TAB key to see all the available Hatari commands *
+************************************************************
+Building CPU table for configuration: 68000 (compatible mode)
+
+hatari-command: console-help
+
+Hatari-console help
+-------------------
+
+Hatari-console allows you to invoke Hatari remote configuration facilities
+from console while Hatari is running and use TAB completion on their names.
+The supported facilities are:
+
+Command line options:
+* --help
+* --version
+* --confirm-quit
+* --configfile
+* --fast-forward
+* --mono
+* --monitor
+* --fullscreen
+* --window
+* --grab
+* --zoom
+* --frameskips
+* --borders
+* --statusbar
+* --drive-led
+* --spec512
+* --bpp
+* --vdi
+* --vdi-planes
+* --vdi-width
+* --vdi-height
+* --joystick
+* --printer
+* --midi-in
+* --midi-out
+* --rs232-in
+* --rs232-out
+* --disk-a
+* --disk-b
+* --slowfdc
+* --harddrive
+* --acsi
+* --ide
+* --memsize
+* --tos
+* --cartridge
+* --memstate
+* --cpulevel
+* --cpuclock
+* --compatible
+* --machine
+* --blitter
+* --dsp
+* --sound
+* --keymap
+* --debug
+* --bios-intercept
+* --trace
+* --trace-file
+* --log-file
+* --log-level
+* --alert-level
+* --run-vbls
+
+Keyboard shortcuts:
+* mousemode
+* coldreset
+* warmreset
+* screenshot
+* bosskey
+* recanim
+* recsound
+* savemem
+
+Event invocation:
+* doubleclick
+* rightpress
+* rightrelease
+* keypress
+* keyrelease
+
+Device toggling:
+* printer
+* rs232
+* midi
+
+Path setting:
+* memauto
+* memsave
+* midiout
+* printout
+* soundout
+* rs232in
+* rs232out
+
+Debugger commands:
+* address
+* breakpoint
+* cont
+* cpureg
+* disasm
+* dspaddress
+* dspbreak
+* dspcont
+* dspdisasm
+* dspmemdump
+* dspreg
+* help
+* loadbin
+* logfile
+* memdump
+* memwrite
+* savebin
+* setopt
+
+and commands to &quot;pause&quot;, &quot;unpause&quot; and &quot;quit&quot; Hatari.
+
+For command line options you can see further help with &quot;--help&quot;
+and for debugger with &quot;h&quot;.  Some other facilities may give help
+if you give them invalid input.
+
+hatari-command: dsp
+dspaddress  dspbreak    dspcont     dspdisasm   dspmemdump  dspreg
+hatari-command: dspreg
+-&gt; hatari-debug dspreg
+DSP isn't present or initialized.
+hatari-command: cpureg
+-&gt; hatari-debug cpureg
+D0: 00000008 D1: 00006aee D2: 00002300 D3: 00000020
+D4: 00000013 D5: 00000000 D6: 00000001 D7: 0000001c
+A0: 0000a828 A1: 00feae82 A2: 0000a828 A3: 00001b1c
+A4: 00003baa A5: 0000a828 A6: 000065c8 A7: 000065c4
+USP=000061a0 ISP=000065c4 MSP=00000000 VBR=00000000
+T=00 S=1 M=0 X=0 N=0 Z=0 V=0 C=0 IMASK=3
+FP0: 0 FP1: 0 FP2: 0 FP3: 0
+FP4: 0 FP5: 0 FP6: 0 FP7: 0
+N=0 Z=0 I=0 NAN=0
+prefetch 00010008
+00fcbf60: 4eb9 00fc b270 3f00 2079 JSR.L $00fcb270
+next PC: 00fcbf66
+hatari-command: quit
+killed hatari with PID 4734
+hatari-command:
+Exiting as there's no Hatari (anymore)...
+-------------------------------------------------
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000433.html">[hatari-devel] Conditional breakpoints for DSP
+</A></li>
+	<LI>Next message: <A HREF="000437.html">[hatari-devel] new version of video.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#434">[ date ]</a>
+              <a href="thread.html#434">[ thread ]</a>
+              <a href="subject.html#434">[ subject ]</a>
+              <a href="author.html#434">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

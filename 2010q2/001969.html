@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling support to Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3Calpine.LMD.2.00.1005032347360.13364%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001968.html">
+   <LINK REL="Next"  HREF="001972.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling support to Hatari debugger</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3Calpine.LMD.2.00.1005032347360.13364%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Profiling support to Hatari debugger">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon May  3 23:58:31 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001968.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="001972.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1969">[ date ]</a>
+              <a href="thread.html#1969">[ thread ]</a>
+              <a href="subject.html#1969">[ subject ]</a>
+              <a href="author.html#1969">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 4 May 2010, Eero Tamminen wrote:
+
+&gt;<i> I was thinking more of demos with subroutines for e.g. handling 3d.
+</I>&gt;<i> You could e.g. compare routines when viewing different objects, or
+</I>&gt;<i> using different view angles.
+</I>
+Yes, I agree this is more useful in these case (although coders often have 
+their own method to measure this changing background color for example ; 
+it's less precise of course)
+
+
+&gt;<i> What about the global CurrentInstrCycles variable value?
+</I>
+It's not always correct ; it's more like a &quot;basis&quot;, but some instructions
+have a &quot;dynamic&quot; time (asr, lsr, movem, ...) that depend on the operand.
+CurrentInstrCycles is useful for some classes of instruction often related 
+to overscan timing, but it's sometimes a rough approximation.
+
+In the end, &quot;cycles = (*cpufunctbl[opcode])(opcode)&quot; is the real value for 
+the opcode.
+
+&gt;<i> Or maybe use Cycles_GetCounter(CYCLES_COUNTER_CPU)?
+</I>
+CYCLES_COUNTER_CPU counts the number of cycles for the instruction + the 
+time needed to process some interruption/exception that could occur at the 
+same time, so it may be a little more that the time taken by instruction 
+at a specific PC (also this counter is only set when DSP mode is enabled, 
+as it's not needed for ST/STE emulation).
+
+In your case, &quot;cycles&quot; above + nWaitStateCycles is really the time taken 
+by an instruction (all overscan timings are based on this value).
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001968.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="001972.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1969">[ date ]</a>
+              <a href="thread.html#1969">[ thread ]</a>
+              <a href="subject.html#1969">[ subject ]</a>
+              <a href="author.html#1969">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

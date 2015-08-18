@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] MP2 player and demos are running well now	in	Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MP2%20player%20and%20demos%20are%20running%20well%20now%0A%09in%09Hatari&In-Reply-To=%3C4D472493.9070204%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002962.html">
+   <LINK REL="Next"  HREF="002934.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] MP2 player and demos are running well now	in	Hatari</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MP2%20player%20and%20demos%20are%20running%20well%20now%0A%09in%09Hatari&In-Reply-To=%3C4D472493.9070204%40free.fr%3E"
+       TITLE="[hatari-devel] MP2 player and demos are running well now	in	Hatari">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Jan 31 22:07:31 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002962.html">[hatari-devel] MP2 player and demos are running well now in	Hatari
+</A></li>
+        <LI>Next message: <A HREF="002934.html">[hatari-devel] Pinball Dream with new cpucore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2963">[ date ]</a>
+              <a href="thread.html#2963">[ thread ]</a>
+              <a href="subject.html#2963">[ subject ]</a>
+              <a href="author.html#2963">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Eero,
+
+I think it's time to forget the old core for Falcon emulation regressions.
+
+The differences are noticeable now.
+
+68030 cycles precise counting really does the difference with many programs.
+
+
+&gt;<i> PS : About sound, I still have the same problem : I launch hatari, then
+</I>&gt;<i> I run any program with sound. It sounds dirty. I quit the program (but
+</I>&gt;<i> not hatari) and launch it again (I haven't changed anything). It plays
+</I>&gt;<i> crystal clear.
+</I>&gt;<i>
+</I>&gt;<i> Sometimes, it plays well immediately. Sometimes, I have to run the
+</I>&gt;<i> program twice times or more before having nice sound, but always in the
+</I>&gt;<i> same hatari cession.
+</I>&gt;<i>  The &quot;scratchiness&quot; in sound could be what you're describing here... :-)
+</I>
+
+No, All these musics are playing perfectly, but only after I launch 
+their programs twice or more time.
+First time, sound is a bit scratchy.
+If I quit the demo and run it again (in the same hatari cession), sound 
+become perfect. (sometimes, I have to do it another time).
+
+Jerome Vernet's got the same behaviour on his mac.
+(I'm under linux).
+
+Laurent
+
+
+
+Le 31/01/2011 22:00, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On lauantai 29 tammikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i> I'm really happy tonight.  ;) ;) ;) ;)
+</I>&gt;&gt;<i> I've finally managed to play correctly MP2 musics.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> DMA_play -&gt;  DSP_Record is correctly synchronized in handshake mode.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've tested with WinUae core, everything is perfect, sound is clear.
+</I>&gt;&gt;<i> I've also tested with the old core, music seems to be played too slowly
+</I>&gt;&gt;<i> (certainly because of the wrong 68030 cycles counting).
+</I>&gt;<i> I tested with old core.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> I've tested the following demos and programs :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> revert (Mikro)
+</I>&gt;&gt;<i> Amanita (DHS)
+</I>&gt;<i> Sound is &quot;scratchy&quot;.
+</I>&gt;<i>
+</I>&gt;&gt;<i> MP2 player
+</I>&gt;<i> This is otherwise quite OK, but the sounds in most mp2 files like beams.mp2
+</I>&gt;<i> is clearly a bit &quot;scratchy&quot;.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Don't break the oath (DHS)
+</I>&gt;<i> Sound is &quot;sratchy&quot;.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Beam (Tscc)
+</I>&gt;<i> At some point in the demo, I stop hearing any sounds.  Demo still
+</I>&gt;<i> continues fine though and sound comes back at credits.  Sound isn't
+</I>&gt;<i> &quot;scratchy&quot; like in others.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> They all work perfectly now.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> There's still the Wait demo from Toys which delivers no sound at all.
+</I>&gt;<i> Verified.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> It may let run some other programs.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Many thanks to Tomas for his explanations of the 2bits shifting while
+</I>&gt;&gt;<i> transferring the data.
+</I>&gt;<i> ...
+</I>&gt;&gt;<i> PS : About sound, I still have the same problem : I launch hatari, then
+</I>&gt;&gt;<i> I run any program with sound. It sounds dirty. I quit the program (but
+</I>&gt;&gt;<i> not hatari) and launch it again (I haven't changed anything). It plays
+</I>&gt;&gt;<i> crystal clear.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Sometimes, it plays well immediately. Sometimes, I have to run the
+</I>&gt;&gt;<i> program twice times or more before having nice sound, but always in the
+</I>&gt;&gt;<i> same hatari cession.
+</I>&gt;<i> The &quot;scratchiness&quot; in sound could be what you're describing here... :-)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002962.html">[hatari-devel] MP2 player and demos are running well now in	Hatari
+</A></li>
+	<LI>Next message: <A HREF="002934.html">[hatari-devel] Pinball Dream with new cpucore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2963">[ date ]</a>
+              <a href="thread.html#2963">[ thread ]</a>
+              <a href="subject.html#2963">[ subject ]</a>
+              <a href="author.html#2963">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

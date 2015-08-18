@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] BITS demo : thread from atari forum
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20BITS%20demo%20%3A%20thread%20from%20atari%20forum&In-Reply-To=%3C4E19E780.8090508%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003668.html">
+   <LINK REL="Next"  HREF="003672.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] BITS demo : thread from atari forum</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20BITS%20demo%20%3A%20thread%20from%20atari%20forum&In-Reply-To=%3C4E19E780.8090508%40corp.free.fr%3E"
+       TITLE="[hatari-devel] BITS demo : thread from atari forum">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jul 10 19:55:12 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003668.html">[hatari-devel] BITS demo : thread from atari forum
+</A></li>
+        <LI>Next message: <A HREF="003672.html">[hatari-devel] BITS demo : thread from atari forum
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3671">[ date ]</a>
+              <a href="thread.html#3671">[ thread ]</a>
+              <a href="subject.html#3671">[ subject ]</a>
+              <a href="author.html#3671">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 10/07/2011 19:33, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> A thread I've just seen in atari forum that says there's a bug in hatari.
+</I>&gt;<i>
+</I>&gt;<i> In case you didn't see it.
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://www.atari-forum.com/viewtopic.php?f=1&amp;t=21311">http://www.atari-forum.com/viewtopic.php?f=1&amp;t=21311</A>
+</I>&gt;<i>
+</I>&gt;<i> (I haven't tested this demo yet)
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>
+Well, I try to start it from low res, and it complains it only runs from 
+low res ?! Seriously, BITS demos are not known for their tech merits, 
+but not being able to get/set low res is really a shame.
+
+as I replied in the forum, he does :
+
+move.b $ffff8260,d0
+beq low_res_ok
+
+instead of :
+
+move.b $ffff8260,d0
+and.b #3,d0
+beq low_res_ok
+
+nothing we can do about this, his method is wrong and won't work on a 
+real ST.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003668.html">[hatari-devel] BITS demo : thread from atari forum
+</A></li>
+	<LI>Next message: <A HREF="003672.html">[hatari-devel] BITS demo : thread from atari forum
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3671">[ date ]</a>
+              <a href="thread.html#3671">[ thread ]</a>
+              <a href="subject.html#3671">[ subject ]</a>
+              <a href="author.html#3671">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

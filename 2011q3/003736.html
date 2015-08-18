@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Awesome 16
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Awesome%2016&In-Reply-To=%3C4E1F4EB1.3070406%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003718.html">
+   <LINK REL="Next"  HREF="003713.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Awesome 16</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Awesome%2016&In-Reply-To=%3C4E1F4EB1.3070406%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Awesome 16">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Jul 14 22:16:49 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003718.html">[hatari-devel] Awesome 16
+</A></li>
+        <LI>Next message: <A HREF="003713.html">[hatari-devel] BITS demo : thread from atari forum
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3736">[ date ]</a>
+              <a href="thread.html#3736">[ thread ]</a>
+              <a href="subject.html#3736">[ subject ]</a>
+              <a href="author.html#3736">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 14/07/2011 00:43, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 13/07/2011 08:18, Thomas Huth a &#233;crit :
+</I>&gt;&gt;<i> Am Tue, 12 Jul 2011 23:14:54 +0200
+</I>&gt;&gt;<i> schrieb Nicolas Pomar&#232;de&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt;:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> - res byte $ff8260 has unused bits 2-7 set to 0 on STE.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> - all other unused bytes between $ff8260 and $ff827f are set to 0
+</I>&gt;&gt;&gt;<i> and not to $ff (as the unused bytes between $ff8200 and $ff820f) ;
+</I>&gt;&gt;&gt;<i> hatari is not correct, it returns $ff.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The cases were Hatari returns $ff instead of $00 for unused bytes is
+</I>&gt;&gt;&gt;<i> not good, but it should be harmless regarding emulation results.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What about Awesome 16? Since the original STE returns 0 when reading
+</I>&gt;&gt;<i> ff8261, I think this menu works there (see my original comments on
+</I>&gt;&gt;<i> <A HREF="http://atari-forum.com/viewtopic.php?f=51&amp;t=15477#p135706">http://atari-forum.com/viewtopic.php?f=51&amp;t=15477#p135706</A>).
+</I>&gt;&gt;<i> But it certainly fails now on Hatari when it is switched to STE mode...
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Yes, it doesn't work anymore. I will add some special cases for these io
+</I>&gt;<i> locations to return 0 as on a real STE.
+</I>
+I just updated the video IO regs to return $OO in some cases instead of 
+$ff, based on the dumps sent by Anders and Matthias for STE and Falcon.
+
+I updated TT mode too, as it's quite likely it behaves this way too, but 
+we would need the dump of a real TT to be sure.
+
+This way, Awesome menu 16 correctly restores resolution in STF or STE 
+mode when going back to the GEM.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003718.html">[hatari-devel] Awesome 16
+</A></li>
+	<LI>Next message: <A HREF="003713.html">[hatari-devel] BITS demo : thread from atari forum
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3736">[ date ]</a>
+              <a href="thread.html#3736">[ thread ]</a>
+              <a href="subject.html#3736">[ subject ]</a>
+              <a href="author.html#3736">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

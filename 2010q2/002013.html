@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005081943400.24984%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002012.html">
+   <LINK REL="Next"  HREF="002014.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005081943400.24984%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat May  8 19:47:27 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002012.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002014.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2013">[ date ]</a>
+              <a href="thread.html#2013">[ thread ]</a>
+              <a href="subject.html#2013">[ subject ]</a>
+              <a href="author.html#2013">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 8 May 2010, David Savinkoff wrote:
+
+&gt;<i> Hi Nicolas,
+</I>&gt;<i> 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Well, &quot;size&quot; is the expected value, so that doesn't seem to be the
+</I>&gt;<i> &gt; cause of the problem.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I tried to set MIXBUFFER_SIZE to 16384*16 and I still don't get any
+</I>&gt;<i> &gt; other delay. But I noticed that when in falcon mode, there's a
+</I>&gt;<i> &gt; slight &gt; delay when using 11 kHz instead of 44 kHz (but not in STF
+</I>&gt;<i> &gt; and STE mode).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; What mode are you using ? Can you try STF/STE/Falcon mode to see if
+</I>&gt;<i> &gt; you have the same delay for each output freq ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> I tried many combinations of machines, borders, roms etc. and get the
+</I>&gt;<i> exactly the same results as before.
+</I>&gt;<i> 
+</I>&gt;<i> Previous emails mentioning possible concerns were:
+</I>&gt;<i> - possible contant offset in buffer
+</I>&gt;<i> - possible synch problem in buffer
+</I>&gt;<i> 
+</I>&gt;<i> Maybe your machine spits the samples out slightly faster than SDL
+</I>&gt;<i> can take them and mine slightly slower. This would lead to
+</I>&gt;<i> MIXBUFFER_SIZE delays on my machine and dropout on yours.
+</I>&gt;<i> One way to solve this problem would be to continuously micro-adjust
+</I>&gt;<i> the sample rate on hatari to maintain the buffer position.
+</I>&gt;<i> 
+</I>&gt;<i> David Savinkoff
+</I>
+In case your system is not fast enough, could you try to replace 1024 by 
+2048 or 4096 in desiredAudioSpec.samples ? This should create less 
+callbacks and should work better for slower machine (without having to 
+change MIXBUFFER_SIZE), but this should increase latency too.
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002012.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002014.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2013">[ date ]</a>
+              <a href="thread.html#2013">[ thread ]</a>
+              <a href="subject.html#2013">[ subject ]</a>
+              <a href="author.html#2013">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] TOS crash when using gemdos pterm and HD emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20TOS%20crash%20when%20using%20gemdos%20pterm%20and%20HD%0A%20emulation&In-Reply-To=%3C20110728204827.16aac1ac%40think43%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003845.html">
+   <LINK REL="Next"  HREF="003869.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] TOS crash when using gemdos pterm and HD emulation</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20TOS%20crash%20when%20using%20gemdos%20pterm%20and%20HD%0A%20emulation&In-Reply-To=%3C20110728204827.16aac1ac%40think43%3E"
+       TITLE="[hatari-devel] TOS crash when using gemdos pterm and HD emulation">huth at users.berlios.de
+       </A><BR>
+    <I>Thu Jul 28 20:48:27 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003845.html">[hatari-devel] TOS crash when using gemdos pterm and HD emulation
+</A></li>
+        <LI>Next message: <A HREF="003869.html">[hatari-devel] TOS crash when using gemdos pterm and HD	emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3846">[ date ]</a>
+              <a href="thread.html#3846">[ thread ]</a>
+              <a href="subject.html#3846">[ subject ]</a>
+              <a href="author.html#3846">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Thu, 28 Jul 2011 00:12:50 +0200
+schrieb Nicolas Pomar&#232;de &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt;:
+
+&gt;<i> Hello
+</I>&gt;<i> 
+</I>&gt;<i> following a report by Paulo Simoes that tos crashed when using a
+</I>&gt;<i> simple program to change video freq, I searched further and it turned
+</I>&gt;<i> out it has nothing to do with video freq, but it's related to the
+</I>&gt;<i> pterm 0x4c function from gemdos.
+</I>&gt;<i> 
+</I>&gt;<i> Here's the source code :
+</I>&gt;<i> 
+</I>&gt;<i> CLR.W -(A7)
+</I>&gt;<i> MOVE.W #$4c,-(A7)
+</I>&gt;<i> TRAP.L #$1
+</I>&gt;<i> 
+</I>&gt;<i> So, very simple, just a call to pterm.
+</I>&gt;<i> 
+</I>&gt;<i> When HD emulation is used (using host's filesystem), this program
+</I>&gt;<i> will crash with the following tos : 1.00 US, 1.02US, 1.02UK, 1.02FR
+</I>&gt;<i> 
+</I>&gt;<i> It works with tos 1.04FR, 1.62
+</I>&gt;<i> 
+</I>&gt;<i> It also work with TOS 1.00 or 1.02 when ran from a floppy image (no
+</I>&gt;<i> HD emulation)
+</I>&gt;<i> 
+</I>&gt;<i> HD emulation intercepts gemdos handler and pass it in cart_asm.s ;
+</I>&gt;<i> but function 0x4c is not supposed to be intercepted and should call
+</I>&gt;<i> the original tos' handler, so there shouldn't be a crash.
+</I>&gt;<i> Or maybe pterm is calling later a specific gemdos function used by hd 
+</I>&gt;<i> emulation ? (but I just see a call to 0x48 malloc)
+</I>&gt;<i> 
+</I>&gt;<i> Thomas, do you have any idea on this and what could go wrong ? Are
+</I>&gt;<i> some patches needed in tos.c for those version ?
+</I>
+I've got an idea what could be causing the crash. TOS 1.00 and 1.02 do
+not feature the Pexec(6, ...) call yet, so the code in cart_asm.s has
+to use Pexec(4, ...) instead:
+
+	...
+	cmp.w	#$0015,d0
+	bge.s	use_gemdos_015
+	move.w	#4,(a6)		; pexec mode 4 for exec. prepared program
+	bra.s	mode0_ok
+use_gemdos_015:
+	move.w	#6,(a6)		; On GEMDOS 0.15 and higher, we can use mode 6
+mode0_ok:
+	...
+
+That means that the memory of the executed program is not freed at the
+end on TOS 1.00 and 1.02. That's ugly, but it works at least for a
+while as long as the called programs shrink their own initial memory
+block (which can be the whole memory in some cases) with Mshrink() in
+their startup code -- that's what most clean programs do anyway.
+
+But if a program does not shrink it's memory block, and for example
+just returns immediately, the memory is not freed anymore during Pterm,
+so there is no free memory left ==&gt; crash.
+
+Possible solutions:
+- It might be possible to patch the OSHEADER-&gt;p_run variable to point
+  to the new basepage before executing the Pexec(4) call already, maybe
+  that helps to assign the memory to the new program instead, so that
+  it gets freed during its Pterm call. However, I am not sure whether
+  this will really work or whether there might be any ugly side-effects
+  instead.
+- Maybe we could hook into the Pterm call, too, and when the program
+  terminates, we call Mfree() instead. However, as soon as the program
+  tries to run other programs with Pexec() again (i.e. nested Pexec and
+  Pterm calls), this gets very ugly...
+- Simply disallow GEMDOS HD with TOS 1.00 and 1.02 or at least warn the
+  user with an annoying alert box.
+
+&gt;<i> Or should we warn user about crash when HD is used with those TOS ?
+</I>
+It's at least mentioned in the manual already since a long time:
+
+&quot;The GEMDOS drive emulation does not work (very well) with TOS 1.00 and
+ 1.02. Use at least TOS 1.04 if you want the GEMDOS drive emulation to
+ work properly.&quot;
+
+   Thomas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003845.html">[hatari-devel] TOS crash when using gemdos pterm and HD emulation
+</A></li>
+	<LI>Next message: <A HREF="003869.html">[hatari-devel] TOS crash when using gemdos pterm and HD	emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3846">[ date ]</a>
+              <a href="thread.html#3846">[ thread ]</a>
+              <a href="subject.html#3846">[ subject ]</a>
+              <a href="author.html#3846">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

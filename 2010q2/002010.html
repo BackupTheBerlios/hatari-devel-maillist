@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005081602420.18536%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002008.html">
+   <LINK REL="Next"  HREF="002009.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005081602420.18536%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat May  8 16:05:38 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002008.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002009.html">[hatari-devel] switching from falcon to ste doesn't change cpu
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2010">[ date ]</a>
+              <a href="thread.html#2010">[ thread ]</a>
+              <a href="subject.html#2010">[ subject ]</a>
+              <a href="author.html#2010">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 7 May 2010, David Savinkoff wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> Here it is:
+</I>&gt;<i> 
+</I>&gt;<i> Could you add a line in Audio_Init in audio.c after the call to
+</I>&gt;<i> SDL_OpenAudio (before &quot;SoundBufferSize = desiredAudioSpec.size&quot;) :
+</I>&gt;<i> 
+</I>&gt;<i> fprintf ( stderr , &quot;freq %d samples %d size %d\n&quot; , desiredAudioSpec.freq
+</I>&gt;<i> , desiredAudioSpec.samples , desiredAudioSpec.size );
+</I>&gt;<i> 
+</I>&gt;<i> And then try changing freq in hatari (8000, 11000, 44100) to see what is
+</I>&gt;<i> printed ; I'd like to compare these values with what I get under my linux.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> $ /tmp/hatari-d1b385bdfcb4/build/src/hatari
+</I>&gt;<i> Configuration file /etc/hatari.cfg not found.
+</I>&gt;<i> Hatari devel (May&#160; 7 2010), compiled on:&#160; May&#160; 7 2010, 15:37:15
+</I>&gt;<i> RS232: Failed to open output file /dev/modem
+</I>&gt;<i> Building CPU table for configuration: 68000 (compatible mode)
+</I>&gt;<i> freq 44100 samples 1024 size 4096
+</I>&gt;<i> Hard drive image /tmp/atari/hdimage.80 mounted.
+</I>&gt;<i> GEMDOS HDD emulation, G: &lt;-&gt; /tmp/atari/hd/G.
+</I>&gt;<i> Detected scancode offset = 8 (key: 'return' with scancode $24)
+</I>&gt;<i> M68000 Bus Error at address $f00001.
+</I>&gt;<i> M68000 Bus Error at address $ff8781.
+</I>&gt;<i> freq 50066 samples 1024 size 4096
+</I>&gt;<i> RS232: Failed to open output file /dev/modem
+</I>&gt;<i> freq 48000 samples 1024 size 4096
+</I>&gt;<i> RS232: Failed to open output file /dev/modem
+</I>&gt;<i> freq 32000 samples 1024 size 4096
+</I>&gt;<i> RS232: Failed to open output file /dev/modem
+</I>&gt;<i> freq 25033 samples 1024 size 4096
+</I>&gt;<i> RS232: Failed to open output file /dev/modem
+</I>&gt;<i> freq 22050 samples 1024 size 4096
+</I>&gt;<i> RS232: Failed to open output file /dev/modem
+</I>&gt;<i> freq 16000 samples 1024 size 4096
+</I>&gt;<i> RS232: Failed to open output file /dev/modem
+</I>&gt;<i> freq 12517 samples 1024 size 4096
+</I>&gt;<i> RS232: Failed to open output file /dev/modem
+</I>&gt;<i> freq 11025 samples 1024 size 4096
+</I>&gt;<i> RS232: Failed to open output file /dev/modem
+</I>&gt;<i>
+</I>
+Well, &quot;size&quot; is the expected value, so that doesn't seem to be the cause 
+of the problem.
+
+I tried to set MIXBUFFER_SIZE to 16384*16 and I still don't get any other 
+delay. But I noticed that when in falcon mode, there's a slight delay when 
+using 11 kHz instead of 44 kHz (but not in STF and STE mode).
+
+What mode are you using ? Can you try STF/STE/Falcon mode to see if you 
+have the same delay for each output freq ?
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002008.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002009.html">[hatari-devel] switching from falcon to ste doesn't change cpu
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2010">[ date ]</a>
+              <a href="thread.html#2010">[ thread ]</a>
+              <a href="subject.html#2010">[ subject ]</a>
+              <a href="author.html#2010">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

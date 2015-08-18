@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issues after restoring a memory snapshot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20after%20restoring%20a%20memory%20snapshot&In-Reply-To=%3C4D41EE4D.9040007%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002920.html">
+   <LINK REL="Next"  HREF="002923.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issues after restoring a memory snapshot</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20after%20restoring%20a%20memory%20snapshot&In-Reply-To=%3C4D41EE4D.9040007%40free.fr%3E"
+       TITLE="[hatari-devel] Issues after restoring a memory snapshot">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Jan 27 23:14:37 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002920.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+        <LI>Next message: <A HREF="002923.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2921">[ date ]</a>
+              <a href="thread.html#2921">[ thread ]</a>
+              <a href="subject.html#2921">[ subject ]</a>
+              <a href="author.html#2921">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm using the latest source code.
+
+With the WinUae core, everything works perfectly (the demo, opening and 
+closing the Option menu, saving and restoring a snapshot).
+
+With the old UAE core, the demo does not start. It freezes on a very 
+large screen.
+I've got the following message in the console : WARNING: too large 
+screen size 5120x240 -&gt; divided by 4x1!
+
+Dsp waits forever at adress $88
+
+
+Don't forget I've uploaded the new dsp_run patch from Nicolas.
+This may break many programs that were running with the old core.
+I've done a lot of tests with the new core and haven't found regressions.
+Better, some programs are working now (crown of creation for example)
+
+I'll try to implement a &quot;real&quot; videl emulation in the next weeks.
+I wish timing problems come from here (bad HBL/VBL synchro).
+
+This may take some time.
+
+Laurent
+
+
+Le 27/01/2011 22:41, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On torstai 27 tammikuu 2011, Eero Tamminen wrote:
+</I>&gt;&gt;<i> On torstai 27 tammikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;&gt;<i> I've tried to restore them from the gui and from the command line
+</I>&gt;&gt;&gt;<i> --memstate xxx
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> (I test with the new CPU, if that helps)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> What's wrong with your test ?
+</I>&gt;&gt;<i> No idea.  :-/   I'll test tomorrow more.
+</I>&gt;<i> Actually, no memory snapshots are required.
+</I>&gt;<i>
+</I>&gt;<i> Just opening and closing the Hatari Options menu breaks the Mahab demo
+</I>&gt;<i> for me.
+</I>&gt;<i>
+</I>&gt;<i> I think the same thing could explain the &quot;change sound frequency&quot; issue
+</I>&gt;<i> with AceMidi demo I mentioned in earlier mail.  Probably it was there also
+</I>&gt;<i> enough to open&amp;  close the options dialog.
+</I>&gt;<i>
+</I>&gt;<i> Does this happen for anybody else (when using AUE core)?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i> PS. It's a regression, it doesn't happen with Hatari version from end
+</I>&gt;<i> of December.
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002920.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+	<LI>Next message: <A HREF="002923.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2921">[ date ]</a>
+              <a href="thread.html#2921">[ thread ]</a>
+              <a href="subject.html#2921">[ subject ]</a>
+              <a href="author.html#2921">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

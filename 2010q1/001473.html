@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] saving/restoring memory state from debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20saving/restoring%20memory%20state%20from%20debugger&In-Reply-To=%3Calpine.LMD.2.00.1002131947510.862%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001472.html">
+   <LINK REL="Next"  HREF="001454.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] saving/restoring memory state from debugger</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20saving/restoring%20memory%20state%20from%20debugger&In-Reply-To=%3Calpine.LMD.2.00.1002131947510.862%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] saving/restoring memory state from debugger">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Feb 13 19:50:02 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001472.html">[hatari-devel] saving/restoring memory state from debugger
+</A></li>
+        <LI>Next message: <A HREF="001454.html">[hatari-devel] register locking in debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1473">[ date ]</a>
+              <a href="thread.html#1473">[ thread ]</a>
+              <a href="subject.html#1473">[ subject ]</a>
+              <a href="author.html#1473">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 13 Feb 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Saturday 13 February 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;<i> On Sat, 13 Feb 2010, Eero Tamminen wrote:
+</I>&gt;&gt;&gt;<i> That works for me too.  I just commited several enhancements to
+</I>&gt;&gt;&gt;<i> the debugger, could you retry whether they affected this?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> No, same as before. But I think I found the problem.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   - If I type saves&lt;tab&gt; /tmp/aa : it doesn't come back to the prompt
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   - If I press up arrow to go to previous histort (savestate /tmp/aa) and
+</I>&gt;&gt;<i>     press &lt;enter&gt;, it works
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   - If I type savestate /tmp/aa : it works
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So, the problem is when I press &lt;tab&gt; to complete savestate.
+</I>&gt;<i>
+</I>&gt;<i> Above works fine for me.  The command is &quot;statesave&quot; though?
+</I>
+Yes, statesave, that's what I meant.
+
+In fact, it seems that only the first statesave when entering debug with 
+altgr+pause doesn't return to prompt ; if I try other statesave (with or 
+without tab) then it works. So, this is not related to completion.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001472.html">[hatari-devel] saving/restoring memory state from debugger
+</A></li>
+	<LI>Next message: <A HREF="001454.html">[hatari-devel] register locking in debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1473">[ date ]</a>
+              <a href="thread.html#1473">[ thread ]</a>
+              <a href="subject.html#1473">[ subject ]</a>
+              <a href="author.html#1473">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

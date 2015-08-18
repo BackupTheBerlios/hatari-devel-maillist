@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari interrupts still assert, if VDI mode is used
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20interrupts%20still%20assert%2C%20if%20VDI%20mode%20is%20used&In-Reply-To=%3C200908090621.20220.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000568.html">
+   <LINK REL="Next"  HREF="000555.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari interrupts still assert, if VDI mode is used</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20interrupts%20still%20assert%2C%20if%20VDI%20mode%20is%20used&In-Reply-To=%3C200908090621.20220.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari interrupts still assert, if VDI mode is used">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Aug  9 05:21:20 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000568.html">[hatari-devel] Further debugger changes for the Hatari v1.3 release
+</A></li>
+        <LI>Next message: <A HREF="000555.html">[hatari-devel] Hatari interrupts still assert,	if VDI mode is used
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#554">[ date ]</a>
+              <a href="thread.html#554">[ thread ]</a>
+              <a href="subject.html#554">[ subject ]</a>
+              <a href="author.html#554">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Latest Hatari version in repo still asserts.  It happens always on startup
+if I do following:
+./hatari --machine tt --tos etos512k.img -s 14 --vdi-planes 1 --vdi-width 
+800 --vdi-height 600  -d .
+
+Gdb says:
+(gdb) break abort
+...
+VDI screen: request = <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">800x600 at 1</A>, aligned result = <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">768x592 at 1</A>
+...
+hatari: int.c:392: Int_AddRelativeInterruptWithOffset: Assertion `CycleTime 
+&gt;<i>= 0' failed.
+</I>[Switching to Thread 0xb79636b0 (LWP 16343)]
+
+Breakpoint 2, 0xb7bdde95 in abort () from /lib/i686/cmov/libc.so.6
+(gdb) bt
+#0  0xb7bdde95 in abort () from /lib/i686/cmov/libc.so.6
+#1  0xb7bd55be in __assert_fail () from /lib/i686/cmov/libc.so.6
+#2  0x08063ce6 in Int_AddRelativeInterruptWithOffset (CycleTime=-45940,
+    CycleType=1, Handler=INTERRUPT_VIDEO_ENDLINE, CycleOffset=0) at 
+int.c:392
+#3  0x08063d17 in Int_AddRelativeInterrupt (CycleTime=-45940, CycleType=1,
+    Handler=INTERRUPT_VIDEO_ENDLINE) at int.c:352
+#4  0x08078684 in Video_AddInterrupt (Pos=-45940,
+    Handler=INTERRUPT_VIDEO_ENDLINE) at video.c:2404
+#5  0x0807be96 in Video_Sync_WriteByte () at video.c:2417
+#6  0x080643bf in IoMem_bput (addr=16744970, val=2) at ioMem.c:358
+#7  0x080b142c in op_11fc_0_ff (opcode=4604) at memory.h:123
+#8  0x08081fe2 in m68k_go (may_quit=1) at newcpu.c:1709
+#9  0x080667b9 in M68000_Start () at m68000.c:224
+#10 0x08067309 in main (argc=15, argv=0x18) at main.c:712
+(gdb) up 4
+#4  0x08078684 in Video_AddInterrupt (Pos=-45940,
+    Handler=INTERRUPT_VIDEO_ENDLINE) at video.c:2404
+2404                    Int_AddRelativeInterrupt ( Pos - LineCycles + 
+nCyclesPerLine , INT_CPU_CYCLE, Handler );
+(gdb) info locals
+FrameCycles = 46984
+HblCounterVideo = 1
+LineCycles = 46476
+(gdb) print Pos
+$3 = -45940
+(gdb) print nCyclesPerLine
+$4 = 508
+
+Using evenly aligned 1024x768x1bpp VDI resolution:
+#4  0x08078684 in Video_AddInterrupt (Pos=-45940,
+    Handler=INTERRUPT_VIDEO_ENDLINE) at video.c:2404
+2404                    Int_AddRelativeInterrupt ( Pos - LineCycles + 
+nCyclesPerLine , INT_CPU_CYCLE, Handler );
+(gdb) info locals
+FrameCycles = 46984
+HblCounterVideo = 1
+LineCycles = 46476
+
+Using 640x400x4bpp VDI resolution:
+#4  0x08078684 in Video_AddInterrupt (Pos=-33240,
+    Handler=INTERRUPT_VIDEO_ENDLINE) at video.c:2404
+2404                    Int_AddRelativeInterrupt ( Pos - LineCycles + 
+nCyclesPerLine , INT_CPU_CYCLE, Handler );
+(gdb) info locals
+FrameCycles = 34284
+HblCounterVideo = 1
+LineCycles = 33776
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000568.html">[hatari-devel] Further debugger changes for the Hatari v1.3 release
+</A></li>
+	<LI>Next message: <A HREF="000555.html">[hatari-devel] Hatari interrupts still assert,	if VDI mode is used
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#554">[ date ]</a>
+              <a href="thread.html#554">[ thread ]</a>
+              <a href="subject.html#554">[ subject ]</a>
+              <a href="author.html#554">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

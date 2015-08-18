@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Little AceTracker question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Little%20AceTracker%20question&In-Reply-To=%3C201007122229.58023.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002379.html">
+   <LINK REL="Next"  HREF="002355.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Little AceTracker question</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Little%20AceTracker%20question&In-Reply-To=%3C201007122229.58023.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Little AceTracker question">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jul 12 21:29:57 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002379.html">[hatari-devel] Freeze / abort in Talk2Talk 2 demo?
+</A></li>
+        <LI>Next message: <A HREF="002355.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2352">[ date ]</a>
+              <a href="thread.html#2352">[ thread ]</a>
+              <a href="subject.html#2352">[ subject ]</a>
+              <a href="author.html#2352">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 19 June 2010, Anders Eriksson wrote:
+&gt;<i> On Sat, 12 Jun 2010, Eero Tamminen wrote:
+</I>&gt;<i> &gt;&gt;&gt; There is.  Just use &quot;--avi-vcodec bmp&quot;.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; It's good to check &quot;hatari --help&quot; now and then (or Hatari manual
+</I>&gt;<i> &gt;&gt;&gt; page), it contains stuff that's not available from the UI. :-)
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Thanks for the information.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Did that help (significantly)?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If yes, I could add a note about it to manual's performance section...
+</I>&gt;<i>
+</I>&gt;<i> Hatari crashes when recording starts while using --avi-vcodec bmp
+</I>&gt;<i> What happens is that the Hatari window dissapears and there's a ~400 byte
+</I>&gt;<i> avi file created. I need to control-c or forcequit Hatari after that.
+</I>
+Were you able to get any backtraces of that with e.g. Valgrind or native OSX
+tools?
+
+
+&gt;<i> &gt; Btw. Is there anything else besides &quot;--drive-led off&quot; that you think
+</I>&gt;<i> &gt; should be mentioned as having more effect on OSX than on other
+</I>&gt;<i> &gt; platforms?
+</I>
+I added OSX comments to the manual performance section and restructured
+it a bit.
+
+
+&gt;<i> No idea, I'm only using it on OS X. But for sure that tiny
+</I>&gt;<i> green square is really hurtful.
+</I>
+My assumption is that it's due to reading from graphics memory where
+SDL/OSX had mapped the Hatari window.  Because of how the ST graphics
+modes are implemented (only updated parts of screen are converted),
+the code needs to read the area of the screen left below the square on
+*each* frame.  Falcon gfx code updates always whole screen so it shouldn't
+have this issue, at least as badly.
+
+
+&gt;<i> I never said it was no work, only that I disagreed to hiding options
+</I>&gt;<i> from the GUI. People (your normal users, not the few devs) do not launch
+</I>&gt;<i> stuff from the terminal, simple as that.
+</I>
+At least you/somebody would need to come up with a design of what the UI
+should look like with all of these options you're interested about.
+
+These layout suggestions can be done as ASCII because Hatari SDL UI widget
+positioning is character based.  No Hatari coding (knowledge) is needed for
+that, you just need to remember to keep the dialog sizes small enough
+(&lt; 64x25) that they actually fit to the Hatari window.
+
+After there's some consensus on how to fit all the options to the UI / what
+the UI should look like with these extra options, it makes sense to start
+implementing them.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002379.html">[hatari-devel] Freeze / abort in Talk2Talk 2 demo?
+</A></li>
+	<LI>Next message: <A HREF="002355.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2352">[ date ]</a>
+              <a href="thread.html#2352">[ thread ]</a>
+              <a href="subject.html#2352">[ subject ]</a>
+              <a href="author.html#2352">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

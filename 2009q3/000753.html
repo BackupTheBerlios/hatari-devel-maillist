@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [Crossbar emulation] : new infos and a problem in DmaSnd.c (I think)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5BCrossbar%20emulation%5D%20%3A%20new%20infos%20and%20a%20problem%0A%20in%20DmaSnd.c%20%28I%20think%29&In-Reply-To=%3C20090928221316.18e9dff3%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000737.html">
+   <LINK REL="Next"  HREF="000755.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [Crossbar emulation] : new infos and a problem in DmaSnd.c (I think)</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5BCrossbar%20emulation%5D%20%3A%20new%20infos%20and%20a%20problem%0A%20in%20DmaSnd.c%20%28I%20think%29&In-Reply-To=%3C20090928221316.18e9dff3%40phineus%3E"
+       TITLE="[hatari-devel] [Crossbar emulation] : new infos and a problem in DmaSnd.c (I think)">huth at users.berlios.de
+       </A><BR>
+    <I>Mon Sep 28 22:13:16 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000737.html">[hatari-devel] [Crossbar emulation] : new infos and a problem in DmaSnd.c (I think)
+</A></li>
+        <LI>Next message: <A HREF="000755.html">[hatari-devel] [Crossbar emulation] : new infos and a problem in DmaSnd.c (I think)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#753">[ date ]</a>
+              <a href="thread.html#753">[ thread ]</a>
+              <a href="subject.html#753">[ subject ]</a>
+              <a href="author.html#753">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 22 Sep 2009 00:11:45 +0200
+Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+
+&gt;<i> Another problem (I think) :
+</I>&gt;<i> 
+</I>&gt;<i> Thomas, in dmaSnd.c, I think there's a problem in :
+</I>&gt;<i> 
+</I>&gt;<i> void DmaSnd_FrameCountHigh_ReadByte(void)
+</I>&gt;<i> void DmaSnd_FrameCountMed_ReadByte(void)
+</I>&gt;<i> void DmaSnd_FrameCountLow_ReadByte(void)
+</I>&gt;<i> 
+</I>&gt;<i> You call DmaSnd_GetFrameCount().
+</I>&gt;<i> 
+</I>&gt;<i>     if (nDmaSoundControl &amp; DMASNDCTRL_PLAY)
+</I>&gt;<i>         nActCount = nFrameStartAddr + (int)FrameCounter;
+</I>&gt;<i> 
+</I>&gt;<i> The problem (I think is that you always return (nFrameStartAddr + 0),
+</I>&gt;<i> as FrameCounter is only computed in a loop in DmaSnd_GenerateSamples.
+</I>
+Looks like you're right. I guess there should be a call to
+Sound_Update() at the start of DmaSnd_GetFrameCount() so that the
+FrameCounter get's updated right, what do you think? That should call
+Sound_GenerateSamples() which then calls DmaSound_GenerateSamples()
+which then finally updates the FrameCounter variable.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000737.html">[hatari-devel] [Crossbar emulation] : new infos and a problem in DmaSnd.c (I think)
+</A></li>
+	<LI>Next message: <A HREF="000755.html">[hatari-devel] [Crossbar emulation] : new infos and a problem in DmaSnd.c (I think)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#753">[ date ]</a>
+              <a href="thread.html#753">[ thread ]</a>
+              <a href="subject.html#753">[ subject ]</a>
+              <a href="author.html#753">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

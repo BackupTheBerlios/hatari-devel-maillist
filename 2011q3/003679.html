@@ -1,0 +1,277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] mac OS X version for Hatari 1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20mac%20OS%20X%20version%20for%20Hatari%201.5&In-Reply-To=%3CCAMVU60ZsUU4ODFYUZ4bF%2BT4NqaWudu%3DPNRQW10exOb4nO-6bag%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003664.html">
+   <LINK REL="Next"  HREF="003680.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] mac OS X version for Hatari 1.5</H1>
+    <B>Christer Solskogen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20mac%20OS%20X%20version%20for%20Hatari%201.5&In-Reply-To=%3CCAMVU60ZsUU4ODFYUZ4bF%2BT4NqaWudu%3DPNRQW10exOb4nO-6bag%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] mac OS X version for Hatari 1.5">christer.solskogen at gmail.com
+       </A><BR>
+    <I>Mon Jul 11 11:54:46 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003664.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+        <LI>Next message: <A HREF="003680.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3679">[ date ]</a>
+              <a href="thread.html#3679">[ thread ]</a>
+              <a href="subject.html#3679">[ subject ]</a>
+              <a href="author.html#3679">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, Jul 9, 2011 at 6:57 PM, Nicolas Pomar&#232;de &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Good, thanks a lot for testing. A few more sound patches to commit and
+</I>&gt;<i> release should be ready to be made (at last !)
+</I>
+Here is the build log on Mac OS X 10.6 (with warnings)
+
+tenderheart:hatari solskogen$ make
+[  1%] Building C object src/CMakeFiles/Floppy.dir/createBlankImage.c.o
+[  2%] Building C object src/CMakeFiles/Floppy.dir/dim.c.o
+[  2%] Building C object src/CMakeFiles/Floppy.dir/msa.c.o
+[  3%] Building C object src/CMakeFiles/Floppy.dir/st.c.o
+[  4%] Building C object src/CMakeFiles/Floppy.dir/zip.c.o
+Linking C static library libFloppy.a
+[  4%] Built target Floppy
+[  5%] Building C object src/uae-cpu/CMakeFiles/build68k.dir/build68k.c.o
+Linking C executable build68k
+[  5%] Built target build68k
+[  5%] Generating cpudefs.c
+[  6%] Building C object src/uae-cpu/CMakeFiles/gencpu.dir/gencpu.c.o
+[  7%] Building C object src/uae-cpu/CMakeFiles/gencpu.dir/readcpu.c.o
+[  8%] Building C object src/uae-cpu/CMakeFiles/gencpu.dir/cpudefs.c.o
+Linking C executable gencpu
+[  8%] Built target gencpu
+[  9%] Generating cpuemu.c, cpustbl.c
+Scanning dependencies of target UaeCpu
+[ 10%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/cpudefs.c.o
+[ 11%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/cpuemu.c.o
+[ 12%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/cpustbl.c.o
+[ 12%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/hatari-glue.c.o
+[ 13%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/memory.c.o
+[ 14%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/newcpu.c.o
+[ 15%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/readcpu.c.o
+[ 15%] Building C object src/uae-cpu/CMakeFiles/UaeCpu.dir/fpp.c.o
+Linking C static library libUaeCpu.a
+[ 16%] Built target UaeCpu
+[ 16%] Building C object src/debug/CMakeFiles/Debug.dir/log.c.o
+[ 17%] Building C object src/debug/CMakeFiles/Debug.dir/debugui.c.o
+/Users/solskogen/source/hatari/src/debug/debugui.c: In function
+&#8216;DebugUI_GetCommand&#8217;:
+/Users/solskogen/source/hatari/src/debug/debugui.c:700: warning:
+assignment discards qualifiers from pointer target type
+[ 18%] Building C object src/debug/CMakeFiles/Debug.dir/breakcond.c.o
+[ 19%] Building C object src/debug/CMakeFiles/Debug.dir/debugcpu.c.o
+[ 19%] Building C object src/debug/CMakeFiles/Debug.dir/debugInfo.c.o
+[ 20%] Building C object src/debug/CMakeFiles/Debug.dir/debugdsp.c.o
+[ 21%] Building C object src/debug/CMakeFiles/Debug.dir/evaluate.c.o
+[ 22%] Building C object src/debug/CMakeFiles/Debug.dir/profile.c.o
+[ 22%] Building C object src/debug/CMakeFiles/Debug.dir/symbols.c.o
+[ 23%] Building C object src/debug/CMakeFiles/Debug.dir/68kDisass.c.o
+Linking C static library libDebug.a
+[ 23%] Built target Debug
+[ 24%] Building C object src/falcon/CMakeFiles/Falcon.dir/crossbar.c.o
+[ 25%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp.c.o
+[ 26%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp_core.c.o
+[ 26%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp_cpu.c.o
+/Users/solskogen/source/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_pm_4&#8217;:
+/Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: warning:
+&#8216;save_ly&#8217; may be used uninitialized in this function
+/Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: note:
+&#8216;save_ly&#8217; was declared here
+/Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: warning:
+&#8216;save_lx&#8217; may be used uninitialized in this function
+/Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: note:
+&#8216;save_lx&#8217; was declared here
+[ 27%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp_disasm.c.o
+[ 28%] Building C object src/falcon/CMakeFiles/Falcon.dir/hostscreen.c.o
+[ 29%] Building C object src/falcon/CMakeFiles/Falcon.dir/microphone.c.o
+[ 29%] Building C object src/falcon/CMakeFiles/Falcon.dir/nvram.c.o
+[ 30%] Building C object src/falcon/CMakeFiles/Falcon.dir/videl.c.o
+/Users/solskogen/source/hatari/src/falcon/videl.c: In function
+&#8216;VIDEL_ST_ShiftModeWriteByte&#8217;:
+/Users/solskogen/source/hatari/src/falcon/videl.c:214: warning:
+&#8216;video_mode&#8217; may be used uninitialized in this function
+/Users/solskogen/source/hatari/src/falcon/videl.c:214: warning:
+&#8216;line_width&#8217; may be used uninitialized in this function
+Linking C static library libFalcon.a
+/usr/bin/ranlib: file: libFalcon.a(microphone.c.o) has no symbols
+/usr/bin/ranlib: file: libFalcon.a(microphone.c.o) has no symbols
+[ 30%] Built target Falcon
+[ 31%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgAbout.c.o
+[ 32%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgAlert.c.o
+[ 32%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgDevice.c.o
+[ 33%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgFileSelect.c.o
+[ 34%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgFloppy.c.o
+[ 35%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgHardDisk.c.o
+[ 35%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgJoystick.c.o
+[ 36%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgKeyboard.c.o
+[ 37%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgMain.c.o
+[ 38%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgMemory.c.o
+[ 38%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgNewDisk.c.o
+[ 39%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgRom.c.o
+[ 40%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgScreen.c.o
+[ 41%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgSound.c.o
+[ 42%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/dlgSystem.c.o
+[ 42%] Building C object src/gui-sdl/CMakeFiles/GuiSdl.dir/sdlgui.c.o
+Linking C static library libGuiSdl.a
+[ 42%] Built target GuiSdl
+[ 42%] Built target osx_bundle_dirs
+Scanning dependencies of target hatari
+[ 43%] Building C object src/CMakeFiles/hatari.dir/audio.c.o
+[ 44%] Building C object src/CMakeFiles/hatari.dir/avi_record.c.o
+[ 45%] Building C object src/CMakeFiles/hatari.dir/bios.c.o
+[ 45%] Building C object src/CMakeFiles/hatari.dir/blitter.c.o
+[ 46%] Building C object src/CMakeFiles/hatari.dir/cart.c.o
+[ 47%] Building C object src/CMakeFiles/hatari.dir/cfgopts.c.o
+[ 48%] Building C object src/CMakeFiles/hatari.dir/clocks_timings.c.o
+[ 49%] Building C object src/CMakeFiles/hatari.dir/configuration.c.o
+[ 49%] Building C object src/CMakeFiles/hatari.dir/options.c.o
+[ 50%] Building C object src/CMakeFiles/hatari.dir/change.c.o
+[ 51%] Building C object src/CMakeFiles/hatari.dir/control.c.o
+[ 52%] Building C object src/CMakeFiles/hatari.dir/cycInt.c.o
+[ 52%] Building C object src/CMakeFiles/hatari.dir/cycles.c.o
+[ 53%] Building C object src/CMakeFiles/hatari.dir/dialog.c.o
+[ 54%] Building C object src/CMakeFiles/hatari.dir/dmaSnd.c.o
+/Users/solskogen/source/hatari/src/dmaSnd.c:371: warning:
+&#8216;DmaSnd_FIFO_ReadByte&#8217; defined but not used
+/Users/solskogen/source/hatari/src/dmaSnd.c:389: warning:
+&#8216;DmaSnd_FIFO_ReadWord&#8217; defined but not used
+[ 55%] Building C object src/CMakeFiles/hatari.dir/fdc.c.o
+[ 55%] Building C object src/CMakeFiles/hatari.dir/file.c.o
+[ 56%] Building C object src/CMakeFiles/hatari.dir/floppy.c.o
+[ 57%] Building C object src/CMakeFiles/hatari.dir/gemdos.c.o
+[ 58%] Building C object src/CMakeFiles/hatari.dir/hd6301_cpu.c.o
+[ 59%] Building C object src/CMakeFiles/hatari.dir/hdc.c.o
+[ 59%] Building C object src/CMakeFiles/hatari.dir/ide.c.o
+[ 60%] Building C object src/CMakeFiles/hatari.dir/ikbd.c.o
+[ 61%] Building C object src/CMakeFiles/hatari.dir/ioMem.c.o
+[ 62%] Building C object src/CMakeFiles/hatari.dir/ioMemTabST.c.o
+[ 62%] Building C object src/CMakeFiles/hatari.dir/ioMemTabSTE.c.o
+[ 63%] Building C object src/CMakeFiles/hatari.dir/ioMemTabTT.c.o
+[ 64%] Building C object src/CMakeFiles/hatari.dir/ioMemTabFalcon.c.o
+[ 65%] Building C object src/CMakeFiles/hatari.dir/joy.c.o
+[ 65%] Building C object src/CMakeFiles/hatari.dir/keymap.c.o
+[ 66%] Building C object src/CMakeFiles/hatari.dir/m68000.c.o
+[ 67%] Building C object src/CMakeFiles/hatari.dir/main.c.o
+[ 68%] Building C object src/CMakeFiles/hatari.dir/midi.c.o
+[ 69%] Building C object src/CMakeFiles/hatari.dir/memorySnapShot.c.o
+[ 69%] Building C object src/CMakeFiles/hatari.dir/mfp.c.o
+[ 70%] Building C object src/CMakeFiles/hatari.dir/paths.c.o
+[ 71%] Building C object src/CMakeFiles/hatari.dir/psg.c.o
+[ 72%] Building C object src/CMakeFiles/hatari.dir/printer.c.o
+[ 72%] Building C object src/CMakeFiles/hatari.dir/resolution.c.o
+[ 73%] Building C object src/CMakeFiles/hatari.dir/rs232.c.o
+[ 74%] Building C object src/CMakeFiles/hatari.dir/reset.c.o
+[ 75%] Building C object src/CMakeFiles/hatari.dir/rtc.c.o
+[ 75%] Building C object src/CMakeFiles/hatari.dir/scandir.c.o
+[ 76%] Building C object src/CMakeFiles/hatari.dir/stMemory.c.o
+[ 77%] Building C object src/CMakeFiles/hatari.dir/screen.c.o
+[ 78%] Building C object src/CMakeFiles/hatari.dir/screenSnapShot.c.o
+[ 79%] Building C object src/CMakeFiles/hatari.dir/shortcut.c.o
+[ 79%] Building C object src/CMakeFiles/hatari.dir/sound.c.o
+[ 80%] Building C object src/CMakeFiles/hatari.dir/spec512.c.o
+[ 81%] Building C object src/CMakeFiles/hatari.dir/statusbar.c.o
+[ 82%] Building C object src/CMakeFiles/hatari.dir/str.c.o
+[ 82%] Building C object src/CMakeFiles/hatari.dir/tos.c.o
+[ 83%] Building C object src/CMakeFiles/hatari.dir/unzip.c.o
+[ 84%] Building C object src/CMakeFiles/hatari.dir/utils.c.o
+[ 85%] Building C object src/CMakeFiles/hatari.dir/vdi.c.o
+[ 85%] Building C object src/CMakeFiles/hatari.dir/video.c.o
+[ 86%] Building C object src/CMakeFiles/hatari.dir/wavFormat.c.o
+[ 87%] Building C object src/CMakeFiles/hatari.dir/xbios.c.o
+[ 88%] Building C object src/CMakeFiles/hatari.dir/ymFormat.c.o
+[ 89%] Building C object src/CMakeFiles/hatari.dir/gui-osx/AlertHooks.m.o
+[ 89%] Building C object src/CMakeFiles/hatari.dir/gui-osx/PrefsController.m.o
+[ 90%] Building C object src/CMakeFiles/hatari.dir/gui-osx/Shared.m.o
+/Users/solskogen/source/hatari/src/gui-osx/Shared.m: In function
+&#8216;-[ModalWrapper runModal:]&#8217;:
+/Users/solskogen/source/hatari/src/gui-osx/Shared.m:26: warning: class
+'ModalWrapper' does not implement the 'NSWindowDelegate' protocol
+/Users/solskogen/source/hatari/src/gui-osx/Shared.m: In function
+&#8216;GuiOsx_ExportPathString&#8217;:
+/Users/solskogen/source/hatari/src/gui-osx/Shared.m:63: warning:
+&#8216;cString&#8217; is deprecated (declared at
+/System/Library/Frameworks/Foundation.framework/Headers/NSString.h:367)
+/Users/solskogen/source/hatari/src/gui-osx/Shared.m:63: warning:
+&#8216;cString&#8217; is deprecated (declared at
+/System/Library/Frameworks/Foundation.framework/Headers/NSString.h:367)
+[ 91%] Building C object
+src/CMakeFiles/hatari.dir/gui-osx/CreateFloppyController.m.o
+[ 92%] Building C object src/CMakeFiles/hatari.dir/gui-osx/SDLMain.m.o
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m: In function
+&#8216;-[SDLMain debugUI:]&#8217;:
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:338: warning:
+implicit declaration of function &#8216;DebugUI&#8217;
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m: In function &#8216;main&#8217;:
+/Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:681: warning:
+passing argument 2 of &#8216;NSApplicationMain&#8217; from incompatible pointer
+type
+Linking C executable hatari.app/Contents/MacOS/hatari
+[ 92%] Built target hatari
+[ 92%] Generating hatari.1.gz
+[ 93%] Built target manpages
+[ 93%] Generating atari-hd-image.1.gz
+[ 94%] Built target atari_hd_image_man
+[ 94%] Generating zip2st.1.gz
+[ 95%] Built target zip2st_man
+[ 96%] Building C object tools/hmsa/CMakeFiles/hmsa.dir/hmsa.c.o
+[ 97%] Building C object tools/hmsa/CMakeFiles/hmsa.dir/floppy.c.o
+[ 97%] Building C object tools/hmsa/CMakeFiles/hmsa.dir/__/__/src/file.c.o
+[ 98%] Building C object tools/hmsa/CMakeFiles/hmsa.dir/__/__/src/unzip.c.o
+Linking C executable hmsa
+[ 98%] Built target hmsa
+[ 98%] Generating hmsa.1.gz
+[ 99%] Built target hmsa_manpage
+[ 99%] Generating hconsole.1.gz
+[100%] Built target hconsole_man
+[100%] Generating hatariui.1.gz
+[100%] Built target hatariui_man
+
+
+
+
+
+-- 
+chs,
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003664.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+	<LI>Next message: <A HREF="003680.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3679">[ date ]</a>
+              <a href="thread.html#3679">[ thread ]</a>
+              <a href="subject.html#3679">[ subject ]</a>
+              <a href="author.html#3679">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

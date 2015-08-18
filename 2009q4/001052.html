@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon emu : problem with 16 Mhz freezing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20emu%20%3A%20problem%20with%2016%20Mhz%20freezing&In-Reply-To=%3C4B16E203.3000508%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001053.html">
+   <LINK REL="Next"  HREF="001055.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon emu : problem with 16 Mhz freezing</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20emu%20%3A%20problem%20with%2016%20Mhz%20freezing&In-Reply-To=%3C4B16E203.3000508%40free.fr%3E"
+       TITLE="[hatari-devel] Falcon emu : problem with 16 Mhz freezing">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Dec  2 22:54:11 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001053.html">[hatari-devel] TOS 3.06 and double click
+</A></li>
+        <LI>Next message: <A HREF="001055.html">[hatari-devel] Falcon emu : problem with 16 Mhz freezing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1052">[ date ]</a>
+              <a href="thread.html#1052">[ thread ]</a>
+              <a href="subject.html#1052">[ subject ]</a>
+              <a href="author.html#1052">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I'm working again on stocasto 's problem (code freezing at 16 and 32 Mhz).
+Fredrik Noring sent me some parts of code of the demo.
+Many thanks to him !
+
+
+The code is looping forever here :
+
+ &gt;&gt; 0002eae4: 4a79 0005 1788 67f8 4a39 TST.W $00051788
+ &gt;&gt; 0002eaea: 67f8 4a39 0003 0730 6708 BEQ.B #$fffffffffffffff8 ==
+ &gt;&gt; 0002eae4 (TRUE)
+
+.wait    tst.w    rasterlock
+    beq.s    .wait
+
+
+
+rasterlock is triggered in timerb (set) and timerb1 (clear).
+
+Timerb and timerb1 are running every other time to each other.
+(Sorry for my poor english here).
+
+
+timerb    tst.b    key_time
+    bne.s    .skip
+    move.l    background_color,$ffff9800.w
+.skip    move.b    #%00000000,$fffffa1b.w
+    move.b    #199,$fffffa21.w
+    move.l    #timerb1,$120.w
+    move.b    #%00001000,$fffffa1b.w
+
+    st    rasterlock
+    bclr.b    #0,$fffffa0f.w
+    rte
+
+timerb1    tst.b    key_time
+    bne.s    .skip
+    clr.l    $ffff9800.w
+.skip    move.l    #timerb,$120.w
+    and.b    #%11111110,$fffffa07.w
+
+    clr.w    rasterlock
+    bclr.b    #0,$fffffa0f.w
+    rte
+
+
+The problem seems to be related to the timerB.
+I don't know very well this part of hatari's code.
+
+Somebody's got any idea here ?
+This would resolve many programs that actually need to run at 32 Mhz.
+
+Best regards,
+
+Laurent
+
+
+
+
+Fredrik Noring a &#233;crit :
+&gt;<i> Hi Laurent,
+</I>&gt;<i>
+</I>&gt;<i> It seems to loop on a variable called &quot;rasterlock&quot; (please find 
+</I>&gt;<i> attached source). That variable is apparently supposed to be trigged 
+</I>&gt;<i> via timer B.
+</I>&gt;<i>
+</I>&gt;<i> All the best,
+</I>&gt;<i> Fredrik
+</I>&gt;<i>
+</I>&gt;<i> 17 nov 2009 kl. 23.27 skrev Laurent Sallafranque:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hello Fredrik,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> For the stocasto demo, I encounter a problem in the 68030 part :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The DSP and the crossbar exchange datas correctly (from what I can 
+</I>&gt;&gt;<i> see with my traces), but the demo get stuck in 68030, at the 
+</I>&gt;&gt;<i> following line :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 0002eae4: 4a79 0005 1788 67f8 4a39 TST.W $00051788
+</I>&gt;&gt;<i> 0002eaea: 67f8 4a39 0003 0730 6708 BEQ.B #$fffffffffffffff8 == 
+</I>&gt;&gt;<i> 0002eae4 (TRUE)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It loop forever here, yamaha sound loops and logo scrolling freezes.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Perhaps you could send me the 68030 part if it doesn't annoy you (I 
+</I>&gt;&gt;<i> promise I won't spread your code everywhere) ;)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Best regards,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent
+</I>&gt;<i>
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001053.html">[hatari-devel] TOS 3.06 and double click
+</A></li>
+	<LI>Next message: <A HREF="001055.html">[hatari-devel] Falcon emu : problem with 16 Mhz freezing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1052">[ date ]</a>
+              <a href="thread.html#1052">[ thread ]</a>
+              <a href="subject.html#1052">[ subject ]</a>
+              <a href="author.html#1052">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

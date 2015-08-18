@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] TOS crash when using gemdos pterm and HD emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20TOS%20crash%20when%20using%20gemdos%20pterm%20and%20HD%20emulation&In-Reply-To=%3C4E308D62.90606%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003851.html">
+   <LINK REL="Next"  HREF="003846.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] TOS crash when using gemdos pterm and HD emulation</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20TOS%20crash%20when%20using%20gemdos%20pterm%20and%20HD%20emulation&In-Reply-To=%3C4E308D62.90606%40corp.free.fr%3E"
+       TITLE="[hatari-devel] TOS crash when using gemdos pterm and HD emulation">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Jul 28 00:12:50 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003851.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+        <LI>Next message: <A HREF="003846.html">[hatari-devel] TOS crash when using gemdos pterm and HD emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3845">[ date ]</a>
+              <a href="thread.html#3845">[ thread ]</a>
+              <a href="subject.html#3845">[ subject ]</a>
+              <a href="author.html#3845">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello
+
+following a report by Paulo Simoes that tos crashed when using a simple 
+program to change video freq, I searched further and it turned out it 
+has nothing to do with video freq, but it's related to the pterm 0x4c 
+function from gemdos.
+
+Here's the source code :
+
+CLR.W -(A7)
+MOVE.W #$4c,-(A7)
+TRAP.L #$1
+
+So, very simple, just a call to pterm.
+
+When HD emulation is used (using host's filesystem), this program will 
+crash with the following tos : 1.00 US, 1.02US, 1.02UK, 1.02FR
+
+It works with tos 1.04FR, 1.62
+
+It also work with TOS 1.00 or 1.02 when ran from a floppy image (no HD 
+emulation)
+
+HD emulation intercepts gemdos handler and pass it in cart_asm.s ; but 
+function 0x4c is not supposed to be intercepted and should call the 
+original tos' handler, so there shouldn't be a crash.
+Or maybe pterm is calling later a specific gemdos function used by hd 
+emulation ? (but I just see a call to 0x48 malloc)
+
+Thomas, do you have any idea on this and what could go wrong ? Are some 
+patches needed in tos.c for those version ?
+
+Or should we warn user about crash when HD is used with those TOS ?
+
+Included is PTERM.PRG that will cause the crash.
+
+
+Nicolas
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: PTERM.PRG
+Type: application/octet-stream
+Size: 65 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110728/794620da/attachment.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110728/794620da/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003851.html">[hatari-devel] Mouse movements limited in Hextracker
+</A></li>
+	<LI>Next message: <A HREF="003846.html">[hatari-devel] TOS crash when using gemdos pterm and HD emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3845">[ date ]</a>
+              <a href="thread.html#3845">[ thread ]</a>
+              <a href="subject.html#3845">[ subject ]</a>
+              <a href="author.html#3845">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

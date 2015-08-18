@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger breakpoints for Hatari variables too?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20breakpoints%20for%20Hatari%20variables%20too%3F&In-Reply-To=%3C200908091338.07468.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000551.html">
+   <LINK REL="Next"  HREF="000562.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger breakpoints for Hatari variables too?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20breakpoints%20for%20Hatari%20variables%20too%3F&In-Reply-To=%3C200908091338.07468.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Debugger breakpoints for Hatari variables too?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Aug  9 12:38:07 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000551.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+        <LI>Next message: <A HREF="000562.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#557">[ date ]</a>
+              <a href="thread.html#557">[ thread ]</a>
+              <a href="subject.html#557">[ subject ]</a>
+              <a href="author.html#557">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 04 August 2009, Eero Tamminen wrote:
+&gt;<i> On Tuesday 04 August 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;<i> &gt; &gt; What would be utterly perfect (and is already available in STEem
+</I>&gt;<i> &gt; &gt; debug build) would be the ability to stop at a specific cycle within
+</I>&gt;<i> &gt; &gt; a frame(that is, PC relative to the current VBL/HBL in cycles), and
+</I>&gt;<i> &gt; &gt; to be able to set new breakpoints relative to the current one - in
+</I>&gt;<i> &gt; &gt; bytes from PC _or_ in cycles/NOPs from PC....
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; This would make debugging synclock code a dream...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; in a previous mail eero talked about having some accessor functions ;
+</I>&gt;<i> &gt; one possible other variable could be LineCycle, and you would get it by
+</I>&gt;<i> &gt; calling Video_GetPosition(int *pFrameCycles , int *pHBL , int
+</I>&gt;<i> &gt; *pLineCycles)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; This way, we would have HBL and LineCycle variables in the debugger and
+</I>&gt;<i> &gt; it would be possible to do such breakpoints at a specific line
+</I>&gt;<i> &gt; position.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; As for setting relative breakpoints in cycles that would mean to be
+</I>&gt;<i> &gt; able to have a variable for FrameCycles (as returned by
+</I>&gt;<i> &gt; Video_GetPosition) and then you could do the math youself to add the
+</I>&gt;<i> &gt; desired cycles to this value and set a breakpoint where
+</I>&gt;<i> &gt; FrameCycles=your_value.
+</I>
+Support for LineCycles and FrameCycles is now commited, I hope it helps in
+debugging the video.c interrupt issues. :-)
+
+Please test, it needed touching many places in breakcond.c so there could
+be some regressions.  But after this it will be easy to add more accessors
+or Hatari variables there.
+
+	<A HREF="http://hg.berlios.de/repos/hatari/">http://hg.berlios.de/repos/hatari/</A>
+
+I also commited the number base change support code and large update
+to the manual.  I put a box around all the &lt;pre&gt; command line output
+excerpts in the Manual, I hope you like them, see:
+<A HREF="http://hg.berlios.de/repos/hatari/raw-file/tip/doc/manual.html#The">http://hg.berlios.de/repos/hatari/raw-file/tip/doc/manual.html#The</A> debugger
+
+
+&gt;<i> &gt; I think that when we enter debug mode on a breakpoint (or maybe also
+</I>&gt;<i> &gt; when pressing pause), it could be useful to display nVBLs,
+</I>&gt;<i> &gt; *pFrameCycles, *pHbl and *pLineCycle by calling Video_GetPosition. This
+</I>&gt;<i> &gt; way, you know at what screen position your breakpoint triggered, which
+</I>&gt;<i> &gt; is very useful when you want to debug overscan or other video-sync
+</I>&gt;<i> &gt; related code.
+</I>
+On Tuesday 04 August 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> On Tue, 4 Aug 2009, Eero Tamminen wrote:
+</I>&gt;<i> &gt; Btw. I forgot to mention that now &quot;b help&quot; will both list the supported
+</I>&gt;<i> &gt; Hatari variables and show their currently values:
+</I>...
+&gt;<i> Yes, that's a good option in case you want to see them again, but perhaps
+</I>&gt;<i> a 1 line summary could be nice anyway when entering the debugger ?
+</I>
+Do you have a proposal patch for debugui.c?  I'm not sure what it should
+look like...
+
+
+Once my debugger changes have been tested (and I've fixed any new bugs)
+and the VDI mode interrupt assert is fixed, Hatari's ready for release from
+my point of view.
+
+(Maybe the STE screenshots and Virtual City screenshots Nicolas suggested
+could also still be fixed on the www-site.)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000551.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+	<LI>Next message: <A HREF="000562.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#557">[ date ]</a>
+              <a href="thread.html#557">[ thread ]</a>
+              <a href="subject.html#557">[ subject ]</a>
+              <a href="author.html#557">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

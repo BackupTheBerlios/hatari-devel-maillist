@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Gemdos date/time confusion/problems (fixed)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Gemdos%20date/time%20confusion/problems%20%28fixed%29&In-Reply-To=%3C200912030047.33080.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001045.html">
+   <LINK REL="Next"  HREF="001062.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Gemdos date/time confusion/problems (fixed)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Gemdos%20date/time%20confusion/problems%20%28fixed%29&In-Reply-To=%3C200912030047.33080.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Gemdos date/time confusion/problems (fixed)">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Dec  2 23:47:32 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001045.html">[hatari-devel] Gemdos date/time confusion/problems
+</A></li>
+        <LI>Next message: <A HREF="001062.html">[hatari-devel] Gemdos date/time confusion/problems (fixed)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1054">[ date ]</a>
+              <a href="thread.html#1054">[ thread ]</a>
+              <a href="subject.html#1054">[ subject ]</a>
+              <a href="author.html#1054">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 29 November 2009, Eero Tamminen wrote:
+&gt;<i> &gt; When looking at GemDOS_GSDToF I wonder if this is correct:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 	pBuffer = STMemory_ReadLong(Params+SIZE_WORD);
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The value on the stack is not the date/time value but a pointer to this
+</I>&gt;<i> &gt; value. Does the code above actually read the date/time value from ST
+</I>&gt;<i> &gt; memory correctly?
+</I>&gt;<i>
+</I>&gt;<i> It doesn't read the date/time value, setting that for file isn't
+</I>&gt;<i> implemented currently (could be done with utime() syscall).  It reads the
+</I>&gt;<i> address of the value.
+</I>
+Actually the time &amp; date words seems to have been in wrong order.  I guess
+that has been gone unnoticed because the DTA filling functionality gets them
+right.
+
+I've fixed that issue and added support for setting the file date&amp;time.
+
+
+However, for some reason although Hatari sets the modification time
+succesfully even according to strace:
+utime(&quot;/home/eerot/stzip/TEST/COLORS.256/NEWDESK.INF&quot;, [2009/12/03-00:39:03, 
+2006/11/20-15:26:22]) = 0
+
+and doesn't manipulate this file afterwards except by closing its FD,
+file system claims that its modification date is today:
+-----------
+stat stzip/TEST/COLORS.256/NEWDESK.INF
+  File: `stzip/TEST/COLORS.256/NEWDESK.INF'
+  Size: 845             Blocks: 8          IO Block: 4096   regular file
+Device: 301h/769d       Inode: 2654437     Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1000/    eero)   Gid: ( 1000/    eero)
+Access: 2009-12-03 00:39:03.000000000 +0200
+Modify: 2009-12-03 00:39:03.000000000 +0200
+Change: 2009-12-03 00:39:03.000000000 +0200
+------------
+?
+
+(Should utime() be called only after GEMDOS emu is asked to close the file?)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001045.html">[hatari-devel] Gemdos date/time confusion/problems
+</A></li>
+	<LI>Next message: <A HREF="001062.html">[hatari-devel] Gemdos date/time confusion/problems (fixed)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1054">[ date ]</a>
+              <a href="thread.html#1054">[ thread ]</a>
+              <a href="subject.html#1054">[ subject ]</a>
+              <a href="author.html#1054">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

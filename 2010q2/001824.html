@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Mudflap testing and minor bugs in opcode pairing &amp; spec512 drawing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mudflap%20testing%20and%20minor%20bugs%20in%20opcode%20pairing%0A%20%26%20spec512%20drawing&In-Reply-To=%3Calpine.LMD.2.00.1004042226580.4555%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001823.html">
+   <LINK REL="Next"  HREF="001825.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Mudflap testing and minor bugs in opcode pairing &amp; spec512 drawing</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Mudflap%20testing%20and%20minor%20bugs%20in%20opcode%20pairing%0A%20%26%20spec512%20drawing&In-Reply-To=%3Calpine.LMD.2.00.1004042226580.4555%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Mudflap testing and minor bugs in opcode pairing &amp; spec512 drawing">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Apr  4 22:28:51 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001823.html">[hatari-devel] Mudflap testing and minor bugs in opcode pairing &amp;	spec512 drawing
+</A></li>
+        <LI>Next message: <A HREF="001825.html">[hatari-devel] New Monitor/Window options dialog feedback?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1824">[ date ]</a>
+              <a href="thread.html#1824">[ thread ]</a>
+              <a href="subject.html#1824">[ subject ]</a>
+              <a href="author.html#1824">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 4 Apr 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> After spending quite a bit of time in getting GCC mudflap stuff working
+</I>&gt;<i> nicely[1] and analyzing the results, I found only two minor bugs (in other
+</I>&gt;<i> than sound related things).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> First bug is in opcode pairing.
+</I>&gt;<i>
+</I>&gt;<i> The previous index to opcode array is initialized to -1 in m68000.c which
+</I>&gt;<i> obviously is out of bounds on first use in CPU emulation in m68000.h:
+</I>&gt;<i> -------
+</I>&gt;<i> static inline void M68000_AddCyclesWithPairing(int cycles)
+</I>&gt;<i> {
+</I>&gt;<i> ...
+</I>&gt;<i>        if ( ( PairingArray[ LastOpcodeFamily ][ OpcodeFamily ] == 1 )
+</I>&gt;<i> -------
+</I>&gt;<i>
+</I>&gt;<i> I would suggest fixing it with the attach patch.
+</I>
+Hi,
+
+thanks for the hint, I will commit a fix for this (I have another change 
+to the pairing code to commit too, I will merge both patches)
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001823.html">[hatari-devel] Mudflap testing and minor bugs in opcode pairing &amp;	spec512 drawing
+</A></li>
+	<LI>Next message: <A HREF="001825.html">[hatari-devel] New Monitor/Window options dialog feedback?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1824">[ date ]</a>
+              <a href="thread.html#1824">[ thread ]</a>
+              <a href="subject.html#1824">[ subject ]</a>
+              <a href="author.html#1824">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

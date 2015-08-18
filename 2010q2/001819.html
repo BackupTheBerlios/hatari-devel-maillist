@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] LMC1992 and Microwire emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C7105417.595837.1270155240427.JavaMail.nitido%40priv-edtnes94%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001818.html">
+   <LINK REL="Next"  HREF="001820.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] LMC1992 and Microwire emulation</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C7105417.595837.1270155240427.JavaMail.nitido%40priv-edtnes94%3E"
+       TITLE="[hatari-devel] LMC1992 and Microwire emulation">dsavnkff at telus.net
+       </A><BR>
+    <I>Thu Apr  1 22:54:00 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001818.html">[hatari-devel] Alert : big problem with DSP emulation and Eko	System demo
+</A></li>
+        <LI>Next message: <A HREF="001820.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1819">[ date ]</a>
+              <a href="thread.html#1819">[ thread ]</a>
+              <a href="subject.html#1819">[ subject ]</a>
+              <a href="author.html#1819">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100401/0a1b8717/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100401/0a1b8717/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: dmaSnd.c.nofoolin.patch
+Type: application/octet-stream
+Size: 2095 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100401/0a1b8717/attachment.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100401/0a1b8717/attachment.obj</A>&gt;
+-------------- next part --------------
+Hi,
+
+Thanks for testing.
+
+A new bug fix patch is attached.
+
+****************************************************************************
+
+&gt;&gt;<i> On Tue, 30 Mar 2010, David Savinkoff wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Looks good to me. Test away and criticize. Try filtering vs non filtering.
+</I>&gt;&gt;<i> I hope the code can help with troubleshooting the sound by way of
+</I>&gt;&gt;<i> determining whether bad sound is due to aliasing or otherwise.
+</I>&gt;&gt;<i> Try different sampling frequencies also; to see which sound best.
+</I>&gt;&gt;<i>
+</I>
+***************************************************************************
+
+&gt;<i> Anders Eriksson wrote:
+</I>&gt;<i>
+</I>&gt;<i> Hi!
+</I>&gt;<i>
+</I>&gt;<i> I've tested the latest Hatari as of this morning.
+</I>&gt;<i>
+</I>&gt;<i> The bass/treble levels seems better, but still not quite on level
+</I>&gt;<i> with a real STe. Also it leaves some high-pitch noise sound now and then.
+</I>&gt;<i>
+</I>
+The anti-aliasing filter being used is not the same as the fourth order
+butterworth low-pass filter (MF4-100) used on the STE. This filter can
+be emulated to get a more accurate STE sound with twice the computational
+load as the tone controls. The current filter allows more aliasing and
+allows more treble through. I'm not blaming the tone controls yet.
+
+
+*****************************************************************************
+
+&gt;<i> Eero wrote:
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Bad:
+</I>&gt;<i>
+</I>&gt;<i> In their E.P.S.S. demo, one channel doesn't seem to sound at all.
+</I>&gt;<i> (There's one volume bar moving at the beginning of the demo, but
+</I>&gt;<i> no sound is heard.)
+</I>&gt;<i>
+</I>&gt;<i> And after the demo has been running for maybe 5 minutes, it aborts with:
+</I>&gt;<i> hatari: cycInt.c:377: CycInt_AddRelativeInterruptWithOffset: Assertion
+</I>&gt;<i> `CycleTime &gt;= 0' failed.
+</I>&gt;<i> Aborted
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> STE stereo music is again broken in PowerUp game.
+</I>&gt;<i>
+</I>&gt;<i> Zero-5 game demo startup sound is still broken.
+</I>&gt;<i>
+</I>&gt;<i> I think Utopos demo sound is better than last week but still has glitches
+</I>&gt;<i> &amp; scratches.
+</I>&gt;<i>
+</I>&gt;<i> Sound volume in Cream's Madness music demo is now really, really low.
+</I>&gt;<i>
+</I>&gt;<i> Last two are regressions from Hatari 1.3.x.
+</I>&gt;<i>
+</I>
+This made me think of problems I was having with an array out of bounds
+creating weirdness so here is a new patch.
+
+
+David Savinkoff
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001818.html">[hatari-devel] Alert : big problem with DSP emulation and Eko	System demo
+</A></li>
+	<LI>Next message: <A HREF="001820.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1819">[ date ]</a>
+              <a href="thread.html#1819">[ thread ]</a>
+              <a href="subject.html#1819">[ subject ]</a>
+              <a href="author.html#1819">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

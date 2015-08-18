@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger usage examples?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20usage%20examples%3F&In-Reply-To=%3C201106112326.31802.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003575.html">
+   <LINK REL="Next"  HREF="003582.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger usage examples?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20usage%20examples%3F&In-Reply-To=%3C201106112326.31802.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Debugger usage examples?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Jun 11 22:26:31 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003575.html">[hatari-devel] Debugger usage examples?
+</A></li>
+        <LI>Next message: <A HREF="003582.html">[hatari-devel] Debugger usage examples?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3579">[ date ]</a>
+              <a href="thread.html#3579">[ thread ]</a>
+              <a href="subject.html#3579">[ subject ]</a>
+              <a href="author.html#3579">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 11 kes&#228;kuu 2011, Laurent Sallafranque wrote:
+&gt;<i> Perhaps also the same commands for DSP ?
+</I>&gt;<i> 7. disassembling from DSP PC
+</I>&gt;<i> 
+</I>&gt;<i> 8. show (set ?) dsp registers
+</I>
+Well, it could mention that one just needs to prefix the CPU commands
+with &quot;d&quot; (or &quot;dsp&quot; if using full command names) to do the exactly
+same operations on DSP.
+
+
+&gt;<i> Another little question : when I break hatari and use d or dd, I see the
+</I>&gt;<i> instructions at PC + some more instructions.
+</I>&gt;<i> 
+</I>&gt;<i> If I use d or dd again, I can see the next instructions.
+</I>&gt;<i> Sometimes, I use d xxx to see instructions at a certain jump address.
+</I>&gt;<i> 
+</I>&gt;<i> But if I want to return back to current PC address, I have to full write
+</I>&gt;<i> it.
+</I>&gt;<i> 
+</I>&gt;<i> Isn't it possible to have a &quot;d pc&quot; or &quot;dd pc&quot; command ?
+</I>
+Yes:
+	d &quot;pc&quot;
+	dd &quot;pc&quot;
+
+PC is a variable, but to &quot;evaluate&quot; its value, you need to
+put it inside &quot;&quot;.
+
+Quotes evaluate expressions and expressions can contain any arithmetic
+operations, registers, breakpoint variables or loaded symbol names.
+For example:
+	d &quot;pc + d0 + (a0) * ($200) - (a1) &amp; %101 - 1&quot;
+	d &quot;text&quot;
+
+See &quot;help evaluate&quot; (or &quot;h e&quot;) for more info.
+
+
+The reason why evaluating needs &quot;&quot;, is that otherwise parser
+cannot differentiate what's a range and what's a subtraction
+operation.
+
+I.e. if expressions weren't quoted, you couldn't give a range
+to disassemble as e.g:
+	d $100-$120
+would complain about invalid disassembly address $ffffffe0
+(as these are unsigned values, -$20 wraps around).
+
+
+Currently only command where expression doesn't need quoting is
+address breakpoint (&quot;a&quot;).
+
+Same can be done for any command that either:
+- takes only a single input value and never more, or
+- all other input to the command is separated by some character
+  that cannot be used in the expressions.
+
+In case of &quot;a&quot; command, the options are separated with ':' character
+which isn't used by expressions.
+
+However, currently there aren't any other such commands,
+besides &quot;a&quot; and &quot;c&quot; (continue), but for &quot;c&quot; I didn't think
+non-quoted expression evalution to be necessary. :-)
+
+
+One possibility would be separate range values with some other character
+like ':' instead of '-':
+	d $100:$200
+
+Then you could instead of:
+	d &quot;pc&quot;-&quot;pc+$20&quot;
+use:
+	d pc:pc+$20
+	d pc
+
+Same for the &quot;m&quot; command.
+
+
+	 Eero
+
+PS. Quotes evaluate the expression before the command itself is parsed,
+but in earlier mail I mentioned about possibility of adding some
+syntax with which one can tell that instead an expression within
+breakpoint should be evaluated always when that breakpoint is checked.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003575.html">[hatari-devel] Debugger usage examples?
+</A></li>
+	<LI>Next message: <A HREF="003582.html">[hatari-devel] Debugger usage examples?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3579">[ date ]</a>
+              <a href="thread.html#3579">[ thread ]</a>
+              <a href="subject.html#3579">[ subject ]</a>
+              <a href="author.html#3579">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

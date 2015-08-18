@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crosscompiling Hatari for GP2X Wiz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C1301513604.23505.14.camel%40jll%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003273.html">
+   <LINK REL="Next"  HREF="003276.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crosscompiling Hatari for GP2X Wiz</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C1301513604.23505.14.camel%40jll%3E"
+       TITLE="[hatari-devel] Crosscompiling Hatari for GP2X Wiz">marndt at asmsoftware.de
+       </A><BR>
+    <I>Wed Mar 30 21:33:24 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003273.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+        <LI>Next message: <A HREF="003276.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3274">[ date ]</a>
+              <a href="thread.html#3274">[ thread ]</a>
+              <a href="subject.html#3274">[ subject ]</a>
+              <a href="author.html#3274">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Mittwoch, den 30.03.2011, 22:12 +0300 schrieb Eero Tamminen:
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On keskiviikko 30 maaliskuu 2011, Matthias Arndt wrote:
+</I>&gt;<i> &gt;&gt; SDL seems to have macro for checking for SDL version, so it might be
+</I>&gt;<i> &gt;&gt; possible that it doesn't need changes to CMake.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I checked those version macros aswell. The problem is, they only work at
+</I>&gt;<i> &gt; runtime while the problem already occurs at compile time.
+</I>&gt;<i> 
+</I>&gt;<i> Sorry, I don't understand.  Those macros are evaluated at compile-time
+</I>&gt;<i> against version defines coming from your SDL headers.  It doesn't do
+</I>&gt;<i> anything at runtime.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; The good points: the binary can execute, I can get terminal output.
+</I>&gt;<i> &gt; The bad point: The config I customtailored for my tests works with the
+</I>&gt;<i> &gt; PC Linux build and opens a 320x240 window.
+</I>&gt;<i> 
+</I>&gt;<i> 320x240, not 32x200?
+</I>
+320x240 - the full ST-LOW screen is shown on the PC setup, same as I
+would expect on the Wiz.
+
+&gt;<i> &gt; On the Wiz it gives &quot;Video mode not supported&quot;
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; That error seems to come from SDL and not Hatari.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; The following SDL video init works for my own SDL game on the Wiz:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; screen = SDL_SetVideoMode(320, 240, 16, SDL_video_flags)
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; The flags are set to no hardware surface, fullscreen, no doublebuffer
+</I>&gt;<i> 
+</I>&gt;<i> Only difference that Hatari has in flags is that it sets SDL_HWSURFACE flag
+</I>&gt;<i> for fullscreen. In both fullscreen &amp; windows mode it sets SDL_HWPALETTE.
+</I>
+I checked my other code and HWSURFACE should work aswell. The HWPALETTE
+*might* be a problem.
+
+&gt;<i> First you can test by starting Hatari in non-fullscreen, second you could
+</I>&gt;<i> try with your tester.
+</I>
+I can try without fullscreen but I think there is no difference. On that
+handheld a &quot;windowed&quot; configuration would make no sense.
+
+&gt;<i> I guess SDL_HWPALETTE is relevant only for 8-bit more, so it would seem
+</I>&gt;<i> a bit strange if that's the problem...
+</I>
+I agree.
+
+&gt;<i> &gt; How can I configure Hatari via commandline or the configfile to engage
+</I>&gt;<i> &gt; such videomode?
+</I>&gt;<i> 
+</I>&gt;<i> You cannot specify the flags on the command line currently.
+</I>&gt;<i> 
+</I>&gt;<i> You can change the flags manually in	src/screen.c::Screen_SetResolution().
+</I>
+I will have to try but this would probably require source encapsulation.
+
+
+&gt;<i> &gt; I won't start coding my joystick and keyboard patches unless I finally
+</I>&gt;<i> &gt; can get some screen output or atleast an EmuTOS bootscreen on my Wiz.
+</I>&gt;<i> 
+</I>&gt;<i> Actually, I started to think that the joystick thing could be quite
+</I>&gt;<i> inconvenient for the user.  He would need to use Hatari options dialog
+</I>&gt;<i> to switch to normal joystick after he's handled the key press.
+</I>
+Well, I did not intend to have a full keyboard emulation for the
+beginning.
+
+Just X presses Atari SPACE, Y presses ESC, B pressed RETURN, A is
+joystick fire
+
+something else opens the GUI or stops emulation.
+
+Mouse support is by touchscreen, the joypad inputs joystick stuffs.
+It's not perfect but enough for many games and watching demos.
+
+If this works, I will consider implementing an onscreen touch keyboard.
+That would be spawend by a joystick key as well.
+
+&gt;<i> Wikipedia didn't say whether the device has X server:
+</I>&gt;<i> 	<A HREF="http://en.wikipedia.org/wiki/GP2X_Wiz">http://en.wikipedia.org/wiki/GP2X_Wiz</A>
+</I>&gt;<i> 
+</I>&gt;<i> If it has, wouldn't it be more convenient &amp; easier just to launch something
+</I>&gt;<i> like xvkbd with Hatari (like some people do with other emulators on N8x0)?
+</I>
+I think it has no X server as it makes no sense. No networking access is
+provided per default and the builtin screen is rather low.
+
+Installed software is listed here: <A HREF="http://www.final-memory.org/?p=2078">http://www.final-memory.org/?p=2078</A>
+
+Matthias
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003273.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+	<LI>Next message: <A HREF="003276.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3274">[ date ]</a>
+              <a href="thread.html#3274">[ thread ]</a>
+              <a href="subject.html#3274">[ subject ]</a>
+              <a href="author.html#3274">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

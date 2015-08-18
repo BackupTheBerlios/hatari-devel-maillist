@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari interrupts still assert,	if VDI mode is used
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20interrupts%20still%20assert%2C%0A%09if%20VDI%20mode%20is%20used&In-Reply-To=%3C200908092343.46017.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000561.html">
+   <LINK REL="Next"  HREF="000565.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari interrupts still assert,	if VDI mode is used</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20interrupts%20still%20assert%2C%0A%09if%20VDI%20mode%20is%20used&In-Reply-To=%3C200908092343.46017.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari interrupts still assert,	if VDI mode is used">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Aug  9 22:43:45 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000561.html">[hatari-devel] Hatari interrupts still assert, if VDI mode is used
+</A></li>
+        <LI>Next message: <A HREF="000565.html">[hatari-devel] Hatari interrupts still assert, if VDI mode is used
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#563">[ date ]</a>
+              <a href="thread.html#563">[ thread ]</a>
+              <a href="subject.html#563">[ subject ]</a>
+              <a href="author.html#563">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 09 August 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> On Sun, 9 Aug 2009, Eero Tamminen wrote:
+</I>&gt;<i> &gt;&gt; Latest Hatari version in repo still asserts.  It happens always on
+</I>&gt;<i> &gt;&gt; startup if I do following:
+</I>&gt;<i> &gt;&gt; ./hatari --machine tt --tos etos512k.img -s 14 --vdi-planes 1
+</I>&gt;<i> &gt;&gt; --vdi-width 800 --vdi-height 600  -d .
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Happens also when starting with ST, STE or Falcon emulation if VDI
+</I>&gt;<i> &gt; resolution is used.
+</I>&gt;<i>
+</I>&gt;<i> Good catch, it's true I don't really use this mode and forgot to test it.
+</I>&gt;<i>
+</I>&gt;<i> Some tests were required to not change HBL / Timer B interrupt when
+</I>&gt;<i> frequency is changed.
+</I>&gt;<i> Fix committed, no more crash for me.
+</I>&gt;<i>
+</I>&gt;<i> By the way, is frequency change between 50/60 Hz really possible ? I
+</I>&gt;<i> don't think we need to handle this, so I could add in
+</I>&gt;<i> Video_Sync_WriteByte :
+</I>&gt;<i>
+</I>&gt;<i>  	if (bUseVDIRes)
+</I>&gt;<i>  		return;
+</I>&gt;<i>
+</I>&gt;<i> Does it looks reasonable ?
+</I>
+VDI mode doesn't need / shouldn't need to support:
+- monitor frequency switching
+- run-time resolution switching
+- palette switching / spec-512
+- borders
+
+I actually tried earlier to use VDI modes with a very low frequency to
+minimize the overhead from the video interrupts (when using e.g.
+fast-forward with GEM applications), but that was interfering with the rest
+of the emulation: sound, display update speed etc. so I dropped it.
+
+Summary: please use a fixed frequency that gives least amount of interrupts
+but still keeps Hatari working fine.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000561.html">[hatari-devel] Hatari interrupts still assert, if VDI mode is used
+</A></li>
+	<LI>Next message: <A HREF="000565.html">[hatari-devel] Hatari interrupts still assert, if VDI mode is used
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#563">[ date ]</a>
+              <a href="thread.html#563">[ thread ]</a>
+              <a href="subject.html#563">[ subject ]</a>
+              <a href="author.html#563">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

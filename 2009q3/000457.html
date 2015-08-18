@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Latest Hatari HG version gets stuck sometimes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Latest%20Hatari%20HG%20version%20gets%20stuck%20sometimes&In-Reply-To=%3C20090709002726.1c2eb9f5%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000456.html">
+   <LINK REL="Next"  HREF="000458.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Latest Hatari HG version gets stuck sometimes</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Latest%20Hatari%20HG%20version%20gets%20stuck%20sometimes&In-Reply-To=%3C20090709002726.1c2eb9f5%40phineus%3E"
+       TITLE="[hatari-devel] Latest Hatari HG version gets stuck sometimes">huth at users.berlios.de
+       </A><BR>
+    <I>Thu Jul  9 00:27:26 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000456.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+        <LI>Next message: <A HREF="000458.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#457">[ date ]</a>
+              <a href="thread.html#457">[ thread ]</a>
+              <a href="subject.html#457">[ subject ]</a>
+              <a href="author.html#457">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 8 Jul 2009 23:32:19 +0200
+Thomas Huth &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">huth at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> On Wed, 8 Jul 2009 21:06:15 +0300
+</I>&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Saving memory state from a freshly booted &amp; idle GEM and then
+</I>&gt;<i> &gt; restoring it with the --memstate option is 100% sure way to trigger
+</I>&gt;<i> &gt; the issue for me.
+</I>&gt;<i> 
+</I>&gt;<i> OK, I can reproduce the problem this way. However, I currently don't
+</I>&gt;<i> have a clue how to fix it...
+</I>
+Phew, just found and fixed this bug. The problem was introduced with
+changeset f3051bd6f969 where the place of the call to
+Video_StartInterrupts() was changed in the VBL function.
+After the change, the VBL function basically looked like this:
+
+void Video_InterruptHandler_VBL ( void )
+{
+	Int_AcknowledgeInterrupt();
+	...
+	ShortCut_ActKey();
+	...
+	Video_StartInterrupts(PendingCyclesOver);
+}
+
+AcknowledgeInterrupt() disabled the VBL Int in int.c.
+ShortCut_ActKey() is where we load &amp; save memory snapshots.
+Video_StartInterrupts() enables the VBL Int in int.c again.
+
+So with that order the VBL Int was disabled in the memory snapshots.
+As long as you used F12 or AltGr+l for loading memory snapshots,
+this did not matter since StartInterrupts() re-launched the VBL.
+But as soon as you used the --memstate option, the VBL was never
+started again.
+
+I've fixed the problem now by moving ShortCut_ActKey down, after the
+Video_StartInterrupts() function call (like it was before the change).
+
+Note that this fix only works for new memory snapshots, since the
+disabled VBL is stored in the file of faulty snapshots.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000456.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+	<LI>Next message: <A HREF="000458.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#457">[ date ]</a>
+              <a href="thread.html#457">[ thread ]</a>
+              <a href="subject.html#457">[ subject ]</a>
+              <a href="author.html#457">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

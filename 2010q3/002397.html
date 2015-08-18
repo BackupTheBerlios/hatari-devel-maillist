@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New FileSelector
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20FileSelector&In-Reply-To=%3Calpine.LMD.2.00.1009102000400.15839%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002396.html">
+   <LINK REL="Next"  HREF="002399.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New FileSelector</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20FileSelector&In-Reply-To=%3Calpine.LMD.2.00.1009102000400.15839%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] New FileSelector">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Sep 10 20:07:51 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002396.html">[hatari-devel] New FileSelector
+</A></li>
+        <LI>Next message: <A HREF="002399.html">[hatari-devel] New FileSelector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2397">[ date ]</a>
+              <a href="thread.html#2397">[ thread ]</a>
+              <a href="subject.html#2397">[ subject ]</a>
+              <a href="author.html#2397">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 10 Sep 2010, Laurent Sallafranque wrote:
+
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> I was too upset with hatari fileSelector.
+</I>&gt;<i> So, I've reworked it a little.
+</I>&gt;<i> I've added
+</I>&gt;<i> - 1 pixel precision scrollBar,
+</I>&gt;<i> - Gem look and feel
+</I>&gt;<i> - 17 lines displayed instead of 16 before
+</I>&gt;<i> - upper left button for &quot;..&quot; folder
+</I>&gt;<i>
+</I>&gt;<i> Still to do :
+</I>&gt;<i> - allow to scroll the scrollbar with the mouse (for now, it just displays the 
+</I>&gt;<i> current view of browsed files)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Question :
+</I>&gt;<i>
+</I>&gt;<i> - Do you like it ?
+</I>&gt;<i>
+</I>&gt;<i> - Can I remove the old &quot;..&quot; button, as now, you can  move to upper folder 
+</I>&gt;<i> with the upper left corner button ?
+</I>
+Hello,
+
+I would not remove it, I don't think all users are aware that gem 
+way of going one level up was by clicking the upper left corner (and quite 
+frankly, I don't think the way gem worked was the more intuitive way).
+
+&gt;<i>
+</I>&gt;<i> - some suggestions ?
+</I>
+pressing the up/down arrow in the scrollbar is doing a fast scrolling, 
+which is nice, but holding up/down keyboard key doesn't have autorepeat. 
+Could you add it ?
+
+
+More generally, changing the UI can be nice to propose some new ways to 
+work, but I think it would be best in that case to provide some code than 
+can be turned on/off using a &quot;define&quot;.
+Once we agree on a new UI, we can remove the #ifdef and the old code, but 
+in the meantime, I think it's best to be able to choose old or new ui at 
+compile time to test it and go back to old ui in case some regressions are 
+found.
+
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002396.html">[hatari-devel] New FileSelector
+</A></li>
+	<LI>Next message: <A HREF="002399.html">[hatari-devel] New FileSelector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2397">[ date ]</a>
+              <a href="thread.html#2397">[ thread ]</a>
+              <a href="subject.html#2397">[ subject ]</a>
+              <a href="author.html#2397">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

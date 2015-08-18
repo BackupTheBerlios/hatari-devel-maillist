@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Multiple%20GEMDOS%20HDD%2C%0A%09Enh.%20CPU%20MHZ%20select%20%26%20VC6%20Compatiblity&In-Reply-To=%3CBAY121-W52366167FD55210C12F2F2D0C00%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000106.html">
+   <LINK REL="Next"  HREF="000111.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity</H1>
+    <B>Kenneth Kaufman</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Multiple%20GEMDOS%20HDD%2C%0A%09Enh.%20CPU%20MHZ%20select%20%26%20VC6%20Compatiblity&In-Reply-To=%3CBAY121-W52366167FD55210C12F2F2D0C00%40phx.gbl%3E"
+       TITLE="[hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity">kvkconsultancy at hotmail.com
+       </A><BR>
+    <I>Thu Feb  5 10:59:38 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000106.html">[hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity
+</A></li>
+        <LI>Next message: <A HREF="000111.html">[hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#110">[ date ]</a>
+              <a href="thread.html#110">[ thread ]</a>
+              <a href="subject.html#110">[ subject ]</a>
+              <a href="author.html#110">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Thanks for all the feed back Thomas, its greatly appriciated and its all positive stuff :).
+ 
+&gt;<i> assume this happened because you've started your changes with Hatari&gt; 1.2.0, but then later created the diff agains the tip development&gt; version... that's not good. 
+</I> 
+It must be... though I'm not entirely certain how this managed to happened. When I realised there was a newer version of HAtari on Mercurial I downloaded a copy of Tortoise and received a new copy from Mercurial. I compared each file using WinDiff and tried to rationalise my changes against the latest version, I must have made a mistake on those two files O_o. 
+&gt;<i> Then, there are the following lines in the patch:&gt; &gt; Only in my_hatari/src: Visual.Studio&gt; Only in my_hatari/src/includes: VisualStudioFix.c&gt; Only in my_hatari/src/includes: VisualStudioFix.h&gt; &gt; ==&gt; You've created new files, but they are not part of the patch. You&gt; must tell the &quot;diff&quot; command to include new files, too (with the -N&gt; parameter).
+</I>Thanks! Invaluable advice :).
+ &gt; Could you please separate that part of the patch from the rest of your&gt; changes to gemdos.c, so that it is clear what is a bug fix and what is&gt; a new feature?
+Definitely.
+ &gt; Yes, that should rather go to a separate key mapping file - that's what&gt; they are good for.
+Yeh *lol*. Sorry, well over keen on this project. I'd long hoped for a Falcon VM :).
+ &gt; &gt; o Mutliple GEM DOS HDD Support -&gt; &gt; &gt; &gt; The folder you point to to be your HDD folder will be scanned for&gt; &gt; sub-folders (C, D, E etc) and each of those sub-folders will become&gt; &gt; an individual GEM DOS drive unit. If you &quot;skip&quot; a drive letter (say&gt; &gt; only including C and F) the intermidiate drive identifiers will be&gt; &gt; free for other devices. Also, the Install Devices option in GEM works&gt; &gt; accordingly. &gt; That sounds very interesting, I need to have a closer look at this&gt; later... I just wonder if it wouldn't be better to make the&gt; location of the different drives fully configurable instead of mapping&gt; them to sub-folders in one parent folder (but that's maybe much more&gt; difficult to represent in the GUI).
+Actually *happy* they are individually configurable :). I just setup the UI to find them in one sub folder but there is absolutely no reason why I couldn't add a menu to override individual drives ^_^. I had though of this because I thought some people might have wanted D on D and so forth (wouldn't be a major change at all). Looks like the direction i'm taking is compatible with your idea :).
+ &gt; &gt; o Variable MHZ setting - Added functionality to allows&gt; &gt; user to select a &quot;Custom&quot; MHZ processor speed up to 32768mhz.&gt; &gt; That certainly does not work right. When nCpuFreqShift is bigger than&gt; 2, the emulator might end up in an endless loop because the new cycle&gt; are shifted to 0.
+Right, i'll scratch that idea. I was basing that on those settings only being &quot;config&quot; settings and did not account for them being used as control variables for the emulation (e.g. if if can't do N it won't do N even if you set it...) was thinking for future.
+For now I will leave that update then. Appriciate your time in reviewing it :).
+ &gt; &gt; o Visual Studio 6 Compatibility - &gt; &gt; You've got some strange changes in there, for example:&gt; &gt; +#if defined(__WIN32__)&gt; BlitterState.have_src = true;&gt; +#else&gt; + BlitterState.have_src = true;&gt; +#endif&gt; &gt; That seems to be nonsense. Please try to read over your patch again&gt; before you send them in, so that this does not happen.
+That is an error. The true should have been upper cased (Visual Studio is pedantic about C, if its a C file it applies all the old style C laws [like no built in type for bool]). 
+ 
+I plan to work out the fix for VC compilation as the priority because until thats in it won't be easy for me to contribute :(.
+ &gt; &gt; Then instead of doing this all over the place:&gt; &gt; +#if !defined(__WIN32__)&gt; +inline&gt; +#endif&gt; &gt; I think it would be better to #define inline somewhere in a central&gt; header file (like config.h). I wonder why VC does not support&gt; inline functions? I've seen some code that does a&gt; &quot;#define inline __inline&quot; on VC6, maybe that's the trick?
+Thanks, now you point it out its obvious *lol*. Makes me cringe at all the code my colleges are supporting now. Fortunately, I made up for it with good solutions and well commented code hehe :).
+  &gt; Instead of using &quot; #if !defined(__WIN32__) &quot; here again, it might be a&gt; better idea to create a unistd.h file for VC6 and stick it somewhere&gt; where only VC6 can find it (maybe in the gui-win folder?)
+Yes, right... sorry.
+ &gt; I'll try to incorporate some of your other changes to the repository&gt; (e.g. the definitions of variables at the beginning of the blocks)&gt; later, but it might take some days since I'm currently quite busy...
+Thanks for you time on this, i'll get onto those things you've outlined and hopefully will have a simple patch for VS compatibility ready for approval soon (and with minimal changes and very much fewer #if defined(__WIN32__) *blush*. Thanks Thomas.
+ 
+I'll probably get time to look at it again on the weekend. Hope to make it a clean sweep on the next Patch... 
+ 
+Can't stress enough how I appriciate you taking the extra time with my &quot;Open Source noobie&quot; mistakes! :) Ta.
+ 
+Kind Regards,
+Vaughan
+_________________________________________________________________
+Time for a change? SEEK and you shall find.
+<A HREF="http://a.ninemsn.com.au/b.aspx?URL=http%3A%2F%2Fmsn%2Eseek%2Eco%2Enz%2FID%5FSEEKNZMAIN%5FUSR%2FPages%2Falliance%5Fhomepage%2Eascx%3FComeFrom%3Dmsnnz%26tracking%3Dsk%3Atl%3Asknz%3Amsnnz%3A0%3Ahottag%3Aflirt&amp;_t=757263783&amp;_r=SEEKNZ_tagline&amp;_m=EXT">http://a.ninemsn.com.au/b.aspx?URL=http%3A%2F%2Fmsn%2Eseek%2Eco%2Enz%2FID%5FSEEKNZMAIN%5FUSR%2FPages%2Falliance%5Fhomepage%2Eascx%3FComeFrom%3Dmsnnz%26tracking%3Dsk%3Atl%3Asknz%3Amsnnz%3A0%3Ahottag%3Aflirt&amp;_t=757263783&amp;_r=SEEKNZ_tagline&amp;_m=EXT</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090205/6218c965/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090205/6218c965/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000106.html">[hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity
+</A></li>
+	<LI>Next message: <A HREF="000111.html">[hatari-devel] Multiple GEMDOS HDD,	Enh. CPU MHZ select &amp; VC6 Compatiblity
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#110">[ date ]</a>
+              <a href="thread.html#110">[ thread ]</a>
+              <a href="subject.html#110">[ subject ]</a>
+              <a href="author.html#110">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

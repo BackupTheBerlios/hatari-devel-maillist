@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Some news
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20news&In-Reply-To=%3C4E8D621C.9050203%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004043.html">
+   <LINK REL="Next"  HREF="004047.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Some news</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20news&In-Reply-To=%3C4E8D621C.9050203%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Some news">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Oct  6 10:09:00 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004043.html">[hatari-devel] Some news
+</A></li>
+        <LI>Next message: <A HREF="004047.html">[hatari-devel] Some news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4046">[ date ]</a>
+              <a href="thread.html#4046">[ thread ]</a>
+              <a href="subject.html#4046">[ subject ]</a>
+              <a href="author.html#4046">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 05/10/2011 23:14, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I give you some news of my current work : I'm merging the latest winuae
+</I>&gt;<i> core to hatari.
+</I>&gt;<i>
+</I>&gt;<i> I encounter a problem with newcpu.c
+</I>&gt;<i>
+</I>&gt;<i> While compiling, I get the following error (the same kind of error
+</I>&gt;<i> occurs in many places in the code) :
+</I>&gt;<i>
+</I>&gt;<i> /home/laurent/Atari/Compare/hatari-2011-09-28/src/cpu/newcpu.c:3563:30:
+</I>&gt;<i> error: expected expression before &#8216;)&#8217; token
+</I>&gt;<i> /home/laurent/Atari/Compare/hatari-2011-09-28/src/cpu/newcpu.c:3563:30:
+</I>&gt;<i> error: too many arguments to function &#8216;do_interrupt&#8217;
+</I>&gt;<i>
+</I>&gt;<i> If I look at the code near the 3563 line, it's an area of comments,
+</I>&gt;<i> there's no instruction.
+</I>&gt;<i>
+</I>&gt;<i> I guess I've got a problem with a .h file ( a missing ; for example).
+</I>&gt;<i>
+</I>&gt;<i> Have you got another idea I should investigate to solve this problem ?
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>
+Hello
+
+how are you doing your merge ? Are you trying to replace all files in 
+cpu/ with the new one from WinUae and repatch them ?
+
+If so, I think that's the wrong method. You should do a diff between the 
+original WinUAE files (that are currently used in Hatari 1.5) and the 
+files from the latest WinUAE release.
+
+This will create a patch file that you can now apply to the files in 
+cpu/. As the files in cpu/ were already modified to compile, it's quite 
+likely that the new set of files will also compile (WinUAE often does 
+only small changes in the cpu part between different releases).
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004043.html">[hatari-devel] Some news
+</A></li>
+	<LI>Next message: <A HREF="004047.html">[hatari-devel] Some news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4046">[ date ]</a>
+              <a href="thread.html#4046">[ thread ]</a>
+              <a href="subject.html#4046">[ subject ]</a>
+              <a href="author.html#4046">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

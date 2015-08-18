@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] uMiNT with Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20uMiNT%20with%20Hatari&In-Reply-To=%3C200905211531.28996.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000290.html">
+   <LINK REL="Next"  HREF="000292.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] uMiNT with Hatari</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20uMiNT%20with%20Hatari&In-Reply-To=%3C200905211531.28996.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] uMiNT with Hatari">oak at helsinkinet.fi
+       </A><BR>
+    <I>Thu May 21 14:31:28 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000290.html">[hatari-devel] Wii port
+</A></li>
+        <LI>Next message: <A HREF="000292.html">[hatari-devel] Wii port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#291">[ date ]</a>
+              <a href="thread.html#291">[ thread ]</a>
+              <a href="subject.html#291">[ subject ]</a>
+              <a href="author.html#291">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+In case you're interested I just tried a bit newer version of MiNT.
+
+I got Micro's uMiNT package (for &gt;=040 machines) from here:
+	<A HREF="http://mikro.umpc.sk/download.htm">http://mikro.umpc.sk/download.htm</A>
+
+And turned its contents into a HD image with the Hatari atari-hd-image.sh 
+script:
+	$ unzip uMiNT.zip
+	$&#160;atari-hd-image.sh 64 umint.img MINT uMiNT
+
+The booting seems a bit complicated.  For some reason the auto/-folder
+stuff isn't executed from the image, so I need to invoke the early boot
+console from EmuTOS, &quot;cd auto/&quot; and run mint117.prg manually (memory
+protection needs to be turned off).  Then it boots fine:
+$&#160;hatari --tos etos512k.img --machine falcon --cpulevel 4 --cpuclock 32 -s 
+14 --dsp none --acsi umint.img
+
+Screenshot is attached.
+
+Any idea why auto/-stuff isn't run with EmuTOS?
+
+When using GEMDOS emulation directly for the uMiNT directory, the stuff
+boots fine from auto/, but naturally doesn't work otherwise (because MiNT
+doesn't recognice C: once it has booted up).
+
+If I use Cecile bootdisk (and --ide) and put MiNT stuff to the same floppy
+image, it will bomb at boot.
+
+
+Some minor issues with uMiNT:
+* At least with EmuTOS, the screen resolution changing from XaAES or
+  Teradesk doesn't work.
+* Some of the desktop icons have wrong paths (use d:\mint\ instead of c:\).
+
+
+	- Eero
+
+PS. Does somebody have binaries for fVDI &amp; drivers &amp; native setup for it?
+The packages I found were either old or for Aranym NatFeat stuff.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: umint.png
+Type: image/png
+Size: 10528 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090521/e40b997b/attachment.png">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090521/e40b997b/attachment.png</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000290.html">[hatari-devel] Wii port
+</A></li>
+	<LI>Next message: <A HREF="000292.html">[hatari-devel] Wii port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#291">[ date ]</a>
+              <a href="thread.html#291">[ thread ]</a>
+              <a href="subject.html#291">[ subject ]</a>
+              <a href="author.html#291">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

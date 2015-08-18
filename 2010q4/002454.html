@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Motorola Disassembler
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Motorola%20Disassembler&In-Reply-To=%3C201010062319.10555.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002451.html">
+   <LINK REL="Next"  HREF="002455.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Motorola Disassembler</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Motorola%20Disassembler&In-Reply-To=%3C201010062319.10555.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Motorola Disassembler">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Oct  6 22:19:10 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002451.html">[hatari-devel] Motorola Disassembler
+</A></li>
+        <LI>Next message: <A HREF="002455.html">[hatari-devel] Motorola Disassembler
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2454">[ date ]</a>
+              <a href="thread.html#2454">[ thread ]</a>
+              <a href="subject.html#2454">[ subject ]</a>
+              <a href="author.html#2454">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 06 October 2010, Markus Fritze wrote:
+&gt;<i> This is the Motorola Disassembler, which originated from the MAME
+</I>&gt;<i> project.
+</I>
+Patch doesn't include dis_68k.h nor the corresponding dis_68k.c file.
+Could you mail them also?
+
+
+&gt;<i> It also contains some changes for better formatting of the disassembly
+</I>&gt;<i> output. The missing #include &quot;screen.h&quot; in the Mac OS X build 
+</I>&gt;<i> was added, too. I've removed the old disassembler.
+</I>
+You commented out part and removed part.  It's better if you just remove
+everything that isn't anymore necessary.
+
+
+You've added everywhere this kind of stuff:
++               char            opcodeBytesAsText[128];
++               char            instruction[128];
++               char            argument[128];
++               UINT32  len = Dis68000One(disasm_addr, 
+opcodeBytesAsText,instruction,argument);
++               fprintf(debugOutput, &quot;%08x: %s %s %s\n&quot;, disasm_addr, 
+opcodeBytesAsText, instruction, argument);
+
+Please have some function that does all this duplicated stuff, and make it
+a bit more robust so that either the called function handles the buffers or
+is told the buffer sizes so that it can check them to be large enough.
+
+Thanks!
+
+
+Otherwise it looks good so far. :-)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002451.html">[hatari-devel] Motorola Disassembler
+</A></li>
+	<LI>Next message: <A HREF="002455.html">[hatari-devel] Motorola Disassembler
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2454">[ date ]</a>
+              <a href="thread.html#2454">[ thread ]</a>
+              <a href="subject.html#2454">[ subject ]</a>
+              <a href="author.html#2454">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

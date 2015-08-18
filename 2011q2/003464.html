@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] ifdef in changeset 3339 (TracksPerDisk_fixed)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20ifdef%20in%20changeset%203339%20%28TracksPerDisk_fixed%29&In-Reply-To=%3C4DD937F9.3030607%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003475.html">
+   <LINK REL="Next"  HREF="003466.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] ifdef in changeset 3339 (TracksPerDisk_fixed)</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20ifdef%20in%20changeset%203339%20%28TracksPerDisk_fixed%29&In-Reply-To=%3C4DD937F9.3030607%40corp.free.fr%3E"
+       TITLE="[hatari-devel] ifdef in changeset 3339 (TracksPerDisk_fixed)">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun May 22 18:21:13 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003475.html">[hatari-devel] LLVM static analyzer output
+</A></li>
+        <LI>Next message: <A HREF="003466.html">[hatari-devel] ifdef in changeset 3339 (TracksPerDisk_fixed)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3464">[ date ]</a>
+              <a href="thread.html#3464">[ thread ]</a>
+              <a href="subject.html#3464">[ subject ]</a>
+              <a href="author.html#3464">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Eero,
+
+in change 3339, I understand moving TracksPerDisk_fixed to remove a 
+warning, but why the &quot;#if 0&quot; ?
+
+I think it's quite useful to have a log when a disk has a boot sector 
+that doesn't match the .st file size  (the only problem with that printf 
+is that it would be better to display it only once when a disk is 
+inserted, not every time a sector is accessed).
+
+This printf is quite useful, for example it shows why &quot;omega rgb plasma&quot; 
+was not correctly booting in hatari 1.4
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003475.html">[hatari-devel] LLVM static analyzer output
+</A></li>
+	<LI>Next message: <A HREF="003466.html">[hatari-devel] ifdef in changeset 3339 (TracksPerDisk_fixed)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3464">[ date ]</a>
+              <a href="thread.html#3464">[ thread ]</a>
+              <a href="subject.html#3464">[ subject ]</a>
+              <a href="author.html#3464">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Bug in File_Length (file.c)?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Bug%20in%20File_Length%20%28file.c%29%3F&In-Reply-To=%3C20091219110903.GA5581%40quattro.seimet.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001115.html">
+   <LINK REL="Next"  HREF="001117.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Bug in File_Length (file.c)?</H1>
+    <B>Uwe Seimet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Bug%20in%20File_Length%20%28file.c%29%3F&In-Reply-To=%3C20091219110903.GA5581%40quattro.seimet.de%3E"
+       TITLE="[hatari-devel] Bug in File_Length (file.c)?">Uwe.Seimet at seimet.de
+       </A><BR>
+    <I>Sat Dec 19 12:09:03 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001115.html">[hatari-devel] Bug in File_Length (file.c)?
+</A></li>
+        <LI>Next message: <A HREF="001117.html">[hatari-devel] Bug in File_Length (file.c)?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1116">[ date ]</a>
+              <a href="thread.html#1116">[ thread ]</a>
+              <a href="subject.html#1116">[ subject ]</a>
+              <a href="author.html#1116">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+&gt;<i> Ok, I've changed it to long now, thanks for the hint.
+</I>&gt;<i> Please note that this only works on 64-bit systems though. On 32-bit
+</I>&gt;<i> systems, sizeof(long) is 4 bytes, so it is still limited to 2 GB.
+</I>&gt;<i> I've searched for a better solution, but there does not seem to be a
+</I>&gt;<i> really wide-spread portable way to get file sizes of huge files.
+</I>
+Under Linux stat or fstat might be an alternative, at least for
+determining the size hard disk image files. The image file size is
+always a multiple of 512 bytes, and fstat provides a blkcnt_t field
+which is the number of 512 byte blocks allocated by a file. For
+providing the correct drive geometry for hard disk images this block
+count should be sufficient, i.e. the actual file size is not needed
+here.
+
+Best regards
+
+Uwe
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001115.html">[hatari-devel] Bug in File_Length (file.c)?
+</A></li>
+	<LI>Next message: <A HREF="001117.html">[hatari-devel] Bug in File_Length (file.c)?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1116">[ date ]</a>
+              <a href="thread.html#1116">[ thread ]</a>
+              <a href="subject.html#1116">[ subject ]</a>
+              <a href="author.html#1116">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

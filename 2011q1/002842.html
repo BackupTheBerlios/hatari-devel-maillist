@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Memory%2C%20Falcon%20and%20TT%20%2824%20vs%2032%20bits%20computers%29&In-Reply-To=%3C20110119195922.582266c0%40think43%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002846.html">
+   <LINK REL="Next"  HREF="002855.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Memory%2C%20Falcon%20and%20TT%20%2824%20vs%2032%20bits%20computers%29&In-Reply-To=%3C20110119195922.582266c0%40think43%3E"
+       TITLE="[hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Jan 19 19:59:22 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002846.html">[hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)
+</A></li>
+        <LI>Next message: <A HREF="002855.html">[hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2842">[ date ]</a>
+              <a href="thread.html#2842">[ thread ]</a>
+              <a href="subject.html#2842">[ subject ]</a>
+              <a href="author.html#2842">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Wed, 19 Jan 2011 11:33:51 +0100 (CET)
+schrieb LAURENT SALLAFRANQUE &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at arkea.com</A>&gt;:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> While trying to let run hatari's new core, I see that for 68020 and
+</I>&gt;<i> upper CPUs the memory it taken into account in 32 bits and not 24
+</I>&gt;<i> bits.
+</I>&gt;<i> 
+</I>&gt;<i> A quick look at iomem, ioMemTabFalcon, ioMemTabTT, and probably some
+</I>&gt;<i> other parts of the code shows me that all addresses are coded in 24
+</I>&gt;<i> bits ($FF8000 instead of $FFFF8000).
+</I>&gt;<i> 
+</I>&gt;<i> There's also a variable for taking this into account in WinUae CPU :
+</I>&gt;<i> currprefs.address_space_24. 
+</I>&gt;<i> 
+</I>&gt;<i> There's also a mask : regs.address_space_mask = 0xffffffff (32 bits)
+</I>&gt;<i> or regs.address_space_mask = 0x00ffffff (24 bits)
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> I think we'll need to adapt the actual uae-cpu code to take this into
+</I>&gt;<i> account if we want to be able to keep the 2 CPU's in the same branch.
+</I>&gt;<i> 
+</I>&gt;<i> At least, changing all the IOmemTab... addresses to have all of them
+</I>&gt;<i> in 32 bits (also for the ST ?) and apply the memory mask for each
+</I>&gt;<i> memory call ?
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Any advise ? 
+</I>
+I don't think that you've got to change here much. The old UAE core
+already has the address_space_24 configuration variable, which should
+theoretically be able to switch between 24 and 32 bit mode. 
+The magic is here only done in uae-cpu/memory.c: When in 24 bit mode
+(which is the only working mode in Hatari right now), the same address
+banks are mapped multiple times already, so that it does not matter
+which byte has been put in the highest 8 bits of the the address.
+
+I think you've only got the change both memory.c files a little bit if
+you want to support Fast-RAM (beyond the 16 MB barrier) emulation.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002846.html">[hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)
+</A></li>
+	<LI>Next message: <A HREF="002855.html">[hatari-devel] Memory, Falcon and TT (24 vs 32 bits computers)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2842">[ date ]</a>
+              <a href="thread.html#2842">[ thread ]</a>
+              <a href="subject.html#2842">[ subject ]</a>
+              <a href="author.html#2842">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

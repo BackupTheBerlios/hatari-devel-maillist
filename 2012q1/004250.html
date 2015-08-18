@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger crash changes / zeroing global variables
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2012q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20crash%20changes%20/%20zeroing%20global%20variables&In-Reply-To=%3C4F11E7CC.7090409%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004249.html">
+   <LINK REL="Next"  HREF="004251.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger crash changes / zeroing global variables</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20crash%20changes%20/%20zeroing%20global%20variables&In-Reply-To=%3C4F11E7CC.7090409%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Debugger crash changes / zeroing global variables">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Jan 14 21:38:36 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004249.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+        <LI>Next message: <A HREF="004251.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4250">[ date ]</a>
+              <a href="thread.html#4250">[ thread ]</a>
+              <a href="subject.html#4250">[ subject ]</a>
+              <a href="author.html#4250">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 14/01/2012 16:53, Eero Tamminen wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Nicolas, what are these changes:
+</I>&gt;<i> <A HREF="http://hg.tuxfamily.org/mercurialroot/hatari/hatari/rev/5651a4bfdf0e">http://hg.tuxfamily.org/mercurialroot/hatari/hatari/rev/5651a4bfdf0e</A>
+</I>&gt;<i> <A HREF="http://hg.tuxfamily.org/mercurialroot/hatari/hatari/rev/b9e92dc09385">http://hg.tuxfamily.org/mercurialroot/hatari/hatari/rev/b9e92dc09385</A>
+</I>&gt;<i> ?
+</I>&gt;<i>
+</I>&gt;<i> Uninitialized global variables are already zero.  Or your compiler
+</I>&gt;<i> is buggy, as C specification states that:
+</I>&gt;<i> ---------
+</I>&gt;<i> If an object that has static storage duration is not initialized explicitly,
+</I>&gt;<i> then:
+</I>&gt;<i>
+</I>&gt;<i> if it has pointer type, it is initialized to a null pointer;
+</I>&gt;<i> if it has arithmetic type, it is initialized to (positive or unsigned) zero;
+</I>&gt;<i> if it is an aggregate, every member is initialized (recursively) according
+</I>&gt;<i> to these rules;
+</I>&gt;<i> if it is a union, the first named member is initialized (recursively)
+</I>&gt;<i> according to these rules.
+</I>&gt;<i> ---------
+</I>&gt;<i>
+</I>&gt;<i> Explicitly setting global variables to NULL/zero/false, may move the
+</I>&gt;<i> variables from (initially zeroed) BSS to DATA section and increase
+</I>&gt;<i> the binary size minimally, it doesn't change the values of those
+</I>&gt;<i> variables as they already were zero.  See also:
+</I>&gt;<i> 	<A HREF="http://en.wikipedia.org/wiki/.bss">http://en.wikipedia.org/wiki/.bss</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>I.e. I think there's some other problem that you just hid.
+&gt;<i>
+</I>&gt;<i>
+</I>
+Hello
+
+yes, I know this is weird, but these 2 variables in debugui.c were 
+having strange values (debugOutput was always 0x060000 in my case, which 
+is not a valid file pointer).
+
+I know global variables are supposed to be null, but in my case gdb 
+shown non-null values for both variables. I'm using gcc 4.6.2 (recent 
+snapshot), maybe it's a bug in it.
+
+Explicitly setting them might move them from  BSS to DATA, but on the 
+other hand, I think there should be a place where the default value is 
+explictly set, it's more readable when trying to understand what the 
+default values are in the source.
+
+I just made the test again, I removed the explicit values in debugui.c : 
+make clean ; configure ; make
+
+Then when I run hatari with transbeauce demo 2 disk 1, I'm sent to the 
+debugger. If I press 'c', I get 'return to emulation' and a crash :(
+
+So, maybe there's another bug hiding somewhere (in debugui or gcc), but 
+I don't know where .
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004249.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+	<LI>Next message: <A HREF="004251.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4250">[ date ]</a>
+              <a href="thread.html#4250">[ thread ]</a>
+              <a href="subject.html#4250">[ subject ]</a>
+              <a href="author.html#4250">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

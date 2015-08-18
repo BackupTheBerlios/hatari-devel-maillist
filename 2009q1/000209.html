@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP emulation and sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20emulation%20and%20sound&In-Reply-To=%3C20090323123702.16d70048%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000203.html">
+   <LINK REL="Next"  HREF="000210.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP emulation and sound</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20emulation%20and%20sound&In-Reply-To=%3C20090323123702.16d70048%40phineus%3E"
+       TITLE="[hatari-devel] DSP emulation and sound">huth at users.berlios.de
+       </A><BR>
+    <I>Mon Mar 23 12:37:02 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000203.html">[hatari-devel] little question about hg
+</A></li>
+        <LI>Next message: <A HREF="000210.html">[hatari-devel] DSP emulation and sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#209">[ date ]</a>
+              <a href="thread.html#209">[ thread ]</a>
+              <a href="subject.html#209">[ subject ]</a>
+              <a href="author.html#209">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 23 Mar 2009 11:06:32 +0100
+LAURENT SALLAFRANQUE &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">LAURENT.SALLAFRANQUE at ARKEA.COM</A>&gt; wrote:
+
+&gt;<i> I've send yesterday the following mail to the dev list.
+</I>&gt;<i> I transfer it to you in case you didn't notice it.
+</I>
+I normally read every mail on the list, it just takes some time to
+reply... ;-)
+
+[...]
+&gt;<i> I've written a bad hack to simulate a SSI event every 32767
+</I>&gt;<i> instructions. It works well and many more programs are running. But
+</I>&gt;<i> that's not the good way to do this and I would prefer the real SSI
+</I>&gt;<i> emulation.
+</I>
+Unfortunately, I never really worked with the interfaces in the Falcon
+to the DSP yet... can you recommend some good documentation which
+explains this?
+
+&gt;<i> Would you be interrested in my patch anyway, just to see what I
+</I>&gt;<i> tested ? (no need to publish it).
+</I>
+Sure, that might help to understand the basics.
+
+&gt;<i> Here is the mail I sent to the list yesterday.
+</I>[...] 
+&gt;<i> I think the last big bunch of code not yet emulated to emulate a good 
+</I>&gt;<i> falcon (and reach hatari V2.0 level ;) is the sound matrix and DSP
+</I>&gt;<i> SSI part.
+</I>&gt;<i> 
+</I>&gt;<i> I'd like to discuss this with all of you before doing anything. For
+</I>&gt;<i> me, there are 2 things to do:
+</I>&gt;<i> - Add a sound.c file into the falcon directory
+</I>
+Right, but don't call it sound.c since there is already a file with
+that name in the main directory.
+
+Since the Falcon sound subsystem mainly consists of a crossbar switch /
+sound matrix, maybe it could be named sndCrossbar.c or sndMatrix.c or
+something similar.
+
+By the way, in the Aranym sources, there is already a file called
+audio_crossbar.cpp ... Patrice, is this already usable to a certain
+extent or just some skeleton code?
+
+&gt;<i> - Add the SSI emulation into the DSP
+</I>&gt;<i> 
+</I>&gt;<i> I can try to emulate the SSI part into the DSP, but there's the other 
+</I>&gt;<i> part (sound.c)
+</I>&gt;<i> 
+</I>&gt;<i> In this sound.c, we must:
+</I>&gt;<i> - connect the yamaha sound, the DMA, the STe sound, the DSP and the
+</I>&gt;<i> jack in and out.
+</I>&gt;<i> - ADC and DAC are not necessary ?
+</I>&gt;<i> - take care of some timers,
+</I>&gt;<i> - take care of the data size (8, 16 or 24 bits),
+</I>&gt;<i> - transfer datas from 1 or more sources to 1 or more dest
+</I>&gt;<i> 
+</I>&gt;<i> I know some of you are good in sound emulation and timers, I think we 
+</I>&gt;<i> should have a look at this to do it well.
+</I>
+Basic DMA sound emulation is already done in dmaSnd.c ... I think it
+should be possible to extend this to work together with the crossbar
+code later.
+
+&gt;<i> Remark: the jack out could be played into SDL out sound. For the Jack 
+</I>&gt;<i> in, we can code this later.
+</I>
+As far as I know, the SDL library does not support sound recording. So
+for sound input, we would require some other way to get it ... is there
+a portable library which provides this?
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000203.html">[hatari-devel] little question about hg
+</A></li>
+	<LI>Next message: <A HREF="000210.html">[hatari-devel] DSP emulation and sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#209">[ date ]</a>
+              <a href="thread.html#209">[ thread ]</a>
+              <a href="subject.html#209">[ subject ]</a>
+              <a href="author.html#209">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

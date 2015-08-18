@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [info] : Falcon crossbar, sound and DSP
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Binfo%5D%20%3A%20Falcon%20crossbar%2C%20sound%20and%20DSP&In-Reply-To=%3C4AB0F041.7060907%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000699.html">
+   <LINK REL="Next"  HREF="000702.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [info] : Falcon crossbar, sound and DSP</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Binfo%5D%20%3A%20Falcon%20crossbar%2C%20sound%20and%20DSP&In-Reply-To=%3C4AB0F041.7060907%40free.fr%3E"
+       TITLE="[hatari-devel] [info] : Falcon crossbar, sound and DSP">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Sep 16 16:03:45 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000699.html">[hatari-devel] [info] : Falcon crossbar, sound and DSP
+</A></li>
+        <LI>Next message: <A HREF="000702.html">[hatari-devel] [info] : Falcon crossbar, sound and DSP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#701">[ date ]</a>
+              <a href="thread.html#701">[ thread ]</a>
+              <a href="subject.html#701">[ subject ]</a>
+              <a href="author.html#701">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Little correction to my precedent mail :
+It seems there are 2 different DMA for the Falcon :
+
+- The crossbar to falcon memory DMA (8 channel 16 bits)
+- The sound DMA co processor (coded in DmaSnd.c)
+
+I think we should keep the dmasound.c, but clean it from the specific 
+crossbar code (I've already started this).
+
+crossbar.c will send to dmasound.c the DAC sound.
+
+crossbar.c will take care of the memory DMA, and the whole Matrice 
+management.
+
+Is it OK for you ?
+
+regards,
+
+Laurent
+
+
+Laurent Sallafranque a &#233;crit :
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> I understand much better the falcon crossbar now.
+</I>&gt;<i>
+</I>&gt;<i> First, there's no DMA sound in the falcon.
+</I>&gt;<i> We shouldn't connect the DSP to the Ste DMA sound.
+</I>&gt;<i>
+</I>&gt;<i> The Falcon DMA is connecting the crossbar (and not the DSP) to the 
+</I>&gt;<i> falcon memory.
+</I>&gt;<i> If you look at the crossbar scheme, you can see that the sound going 
+</I>&gt;<i> from the DSP, but also from the external port, the PSG (or micro) can go 
+</I>&gt;<i> to the DMA record.
+</I>&gt;<i> In this case, datas are transfered to falcon memory.
+</I>&gt;<i>
+</I>&gt;<i> The usual output for games and demos is to connect the DSP to the DAC.
+</I>&gt;<i> The matrice is connected like this : DSP out (SSI) --&gt; Crossbar --&gt; DAC.
+</I>&gt;<i>
+</I>&gt;<i> The DAC is linked to the bipper (cool ;), the screen sound, and the 
+</I>&gt;<i> phone output of the falcon.
+</I>&gt;<i>
+</I>&gt;<i> The DAC can be connected to one of the 4 tracks
+</I>&gt;<i> In general, sound is composed of 1 track stereo 16 bits.
+</I>&gt;<i> The DAC is connected to track 0 in this common case.
+</I>&gt;<i>
+</I>&gt;<i> But we can tell the crossbar and the DSP SSI to communicate with 4 
+</I>&gt;<i> tracks 16 bits.
+</I>&gt;<i> Datas transfered in this case look like this :
+</I>&gt;<i>
+</I>&gt;<i> L1R1 L2R2 L3R3 L4R4 L1R1 L2R2 L3R3 L4R4 L1R1 ...
+</I>&gt;<i>
+</I>&gt;<i> A new frame starts at each L1
+</I>&gt;<i>
+</I>&gt;<i> The DAC can be connected to the track1 (L1R1), to the track2 (L2R2), ...
+</I>&gt;<i>
+</I>&gt;<i> In 4 tracks 16 bits stereo transfer mode, we can transfer datas at 
+</I>&gt;<i> nearly 8 Mhz between DSP and Crossbar (and to falcon memory if DSP out 
+</I>&gt;<i> is connected to the DMA record)
+</I>&gt;<i>
+</I>&gt;<i> The crossbar communicates with all the components in hand-shacked mode 
+</I>&gt;<i> or not, and at a certain frequency.
+</I>&gt;<i>
+</I>&gt;<i> For Hatari, I think we should remove current SSI-&gt;Ste DMA sound code to 
+</I>&gt;<i> keep dma_sound.c for Ste DMA sound only and create a new crossbar.c file 
+</I>&gt;<i> for the falcon crossbar.
+</I>&gt;<i>
+</I>&gt;<i> It'll be easier to implement later a &quot;micro&quot; entrance, a &quot;CD entrance&quot; 
+</I>&gt;<i> via the &quot;external port&quot; and manage correctly all the falcon sound like this.
+</I>&gt;<i>
+</I>&gt;<i> I can try to write something if you're all OK.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000699.html">[hatari-devel] [info] : Falcon crossbar, sound and DSP
+</A></li>
+	<LI>Next message: <A HREF="000702.html">[hatari-devel] [info] : Falcon crossbar, sound and DSP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#701">[ date ]</a>
+              <a href="thread.html#701">[ thread ]</a>
+              <a href="subject.html#701">[ subject ]</a>
+              <a href="author.html#701">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

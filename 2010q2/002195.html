@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari performance issue on OSX
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20performance%20issue%20on%20OSX&In-Reply-To=%3C201005272200.46636.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002194.html">
+   <LINK REL="Next"  HREF="002196.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari performance issue on OSX</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20performance%20issue%20on%20OSX&In-Reply-To=%3C201005272200.46636.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari performance issue on OSX">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu May 27 21:00:46 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002194.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+        <LI>Next message: <A HREF="002196.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2195">[ date ]</a>
+              <a href="thread.html#2195">[ thread ]</a>
+              <a href="subject.html#2195">[ subject ]</a>
+              <a href="author.html#2195">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 27 May 2010, Jerome Vernet wrote:
+&gt;<i> &gt; <A HREF="http://ae.dhs.nu/tmp/shark.mp4">http://ae.dhs.nu/tmp/shark.mp4</A>
+</I>&gt;<i>
+</I>&gt;<i> What is very curious is that I didn't get the same things:
+</I>
+From Anders video I can see that first column is self and second
+is accumulated CPU usage.
+
+&gt;<i>      58.6%    58.6%    SDL    SDL_AddTimer
+</I>
+I don't understand where SDL_AddTimer() comes from.  Hatari doesn't
+call it.  Even SDL itself doesn't call it, according to v1.2.13 sources
+(it just provides the function).
+
+Which SDL version you have?
+
+
+&gt;<i>      0.0%    58.6%    SDL     SDL_AddTimer
+</I>&gt;<i>      0.0%    58.6%    SDL      SDL_LowerBlit
+</I>&gt;<i>      0.0%    58.6%    SDL       SDL_UpdateRects
+</I>&gt;<i>      0.0%    58.6%    Hatari        Screen_DrawFrame
+</I>&gt;<i>      0.0%    58.6%    Hatari         Screen_Draw
+</I>&gt;<i>      0.0%    0.0%    SDL     SDL_LowerBlit
+</I>&gt;<i>      0.0%    0.0%    SDL     SDL_UpdateRects
+</I>
+If one ignores the timer and callstack to it,
+your results are similar to Anders':
+
+
+&gt;<i>      8.5%    8.5%    CoreGraphics    sseCGSConvertXXXX8888TransposeMask
+</I>&gt;<i>      3.9%    3.9%    mach_kernel    lo_alltraps
+</I>&gt;<i>      2.3%    2.3%    mach_kernel    pmap_enter
+</I>&gt;<i>      1.6%    1.6%    mach_kernel    vm_page_lookup
+</I>&gt;<i>      1.5%    1.5%    mach_kernel    ml_set_interrupts_enabled
+</I>&gt;<i>      1.4%    1.4%    Hatari    ConvertSpec512_640x16Bit
+</I>
+Memory page lookups seem suspicious though.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002194.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+	<LI>Next message: <A HREF="002196.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2195">[ date ]</a>
+              <a href="thread.html#2195">[ thread ]</a>
+              <a href="subject.html#2195">[ subject ]</a>
+              <a href="author.html#2195">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] GEMDOS HD emulation broken?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20HD%20emulation%20broken%3F&In-Reply-To=%3C200912310227.07850.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001163.html">
+   <LINK REL="Next"  HREF="001178.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] GEMDOS HD emulation broken?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20GEMDOS%20HD%20emulation%20broken%3F&In-Reply-To=%3C200912310227.07850.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] GEMDOS HD emulation broken?">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Dec 31 01:27:07 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001163.html">[hatari-devel] GEMDOS HD emulation broken?
+</A></li>
+        <LI>Next message: <A HREF="001178.html">[hatari-devel] GEMDOS HD emulation broken?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1177">[ date ]</a>
+              <a href="thread.html#1177">[ thread ]</a>
+              <a href="subject.html#1177">[ subject ]</a>
+              <a href="author.html#1177">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wednesday 30 December 2009, Konador, Cyprian wrote:
+&gt;<i> &gt; &gt;  - too long file names are accepted (e.g. BudgieDisks on attached
+</I>&gt;<i> &gt; &gt; screen);
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Sorry, what exactly is the problem?  Is it specific to some
+</I>&gt;<i> &gt; TOS version?
+</I>&gt;<i>
+</I>&gt;<i> Issue exists in Hatari v1.3.1. and in current release too. The same
+</I>&gt;<i> behaviour exists under TOS1.62, 4.04, 3.06.
+</I>&gt;<i>
+</I>&gt;<i> TOS file/directory name should be 8+3, but current in release, GEMDOS
+</I>&gt;<i> emulation do not trim longer name. And we can see following directories
+</I>&gt;<i> under e.g. GEM's desktop:
+</I>&gt;<i> LongFileName
+</I>&gt;<i> BudgieDisks
+</I>&gt;<i>
+</I>&gt;<i> And finally I'm not able to open such a directory from fileselector in
+</I>&gt;<i> Devpac.
+</I>
+Ah, so this is the actual problem.
+
+
+&gt;<i> Followed by Wikipedia: <A HREF="http://en.wikipedia.org/wiki/8.3_filename">http://en.wikipedia.org/wiki/8.3_filename</A> :
+</I>&gt;<i>
+</I>&gt;<i> If the filename contains characters not allowed in an 8.3 name (including
+</I>&gt;<i> space which was disallowed by convention though not by the APIs) or
+</I>&gt;<i> either part is too long, the name is stripped of invalid characters such
+</I>&gt;<i> as spaces and extra periods. Other characters such as &quot;+&quot; are changed to
+</I>&gt;<i> the underscore &quot;_&quot;, and uppercased. The stripped name is then truncated
+</I>&gt;<i> to the first 6 letters of its basename, followed by a tilde, followed by
+</I>&gt;<i> a single digit, followed by a period &quot;.&quot;, followed by the first 3
+</I>&gt;<i> characters of the extension.
+</I>
+I think I'm just going to truncate it to first 8 chars of the basename + 
+extension.  If you really want to use Hatari on file system that contains
+long file names, you should use MiNT.
+
+Attached is a patch that does this, but the problem is that if anything else
+is done to the name except straight truncation (like I now do), Hatari
+doesn't find the file when the TOS asks for it.  It would need changes also
+to the filename matching code (of which is a separate version for Windows
+which somebody else needs to code, I can look only to the Unix version).
+
+
+&gt;<i>     * Example: &quot;TextFile1.Mine.txt&quot; becomes &quot;TEXTFI~1.TXT&quot; (or
+</I>&gt;<i> &quot;TEXTFI~2.TXT&quot;, should &quot;TEXTFI~1.TXT&quot; already exist). &quot;ver +1.2.text&quot;
+</I>&gt;<i> becomes &quot;VER_12~1.TEX&quot;.
+</I>
+Does MicroSoft have patents on this? :-)
+
+
+&gt;<i> &gt; &gt; - Hatari can't open an directory if there is that file
+</I>&gt;<i> &gt; &gt; 128CHESS.PRG. The only difference I found is that Modified
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; date is 'out
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; of range' - 21.01.1660 The same issue happen when file's
+</I>&gt;<i>
+</I>&gt;<i> &gt; Create Date is
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; greaten than 2038-01-19
+</I>&gt;<i>
+</I>&gt;<i> &gt; Is the problem specific to some TOS version(s)?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Can you make a tar.gz (or zip) from such a directory and send
+</I>&gt;<i> &gt; it to me?
+</I>&gt;<i>
+</I>&gt;<i> I didn't face that issue under Hatari v1.3.1.
+</I>&gt;<i> The same behaviour under TOS1.62, 4.04, 3.06. - I'm not able to open such
+</I>&gt;<i> a directory from neither desktop nor fileselector.
+</I>
+I cannot have that kind of files on Linux.  Smallest create/modify year
+is 1970 (who really has digital files unmodified since?) and files with
+dates larger than 2038 are set as 1970 (I think it means invalid).
+
+But e.g. TOS 1.4 shows files from 1970 as 1980 and has no trouble
+showing dirs with them (or 2038 files) or the contents of those files. 
+Newer TOS versions don't have any issues either.
+
+Sounds like your issue is something Windows specific.
+
+
+&gt;<i> Attached you can find my example and below you can find another one:
+</I>&gt;<i> <A HREF="http://lineout.atari.org/crap/128chess.zip">http://lineout.atari.org/crap/128chess.zip</A>
+</I>
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: gemdos-patch.diff
+Type: text/x-diff
+Size: 1915 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20091231/1b3a466e/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20091231/1b3a466e/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001163.html">[hatari-devel] GEMDOS HD emulation broken?
+</A></li>
+	<LI>Next message: <A HREF="001178.html">[hatari-devel] GEMDOS HD emulation broken?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1177">[ date ]</a>
+              <a href="thread.html#1177">[ thread ]</a>
+              <a href="subject.html#1177">[ subject ]</a>
+              <a href="author.html#1177">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

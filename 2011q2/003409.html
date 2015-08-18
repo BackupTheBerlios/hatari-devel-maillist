@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Code-review, unit tests and bug-tracker
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Code-review%2C%20unit%20tests%20and%20bug-tracker&In-Reply-To=%3C201105092341.16513.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003402.html">
+   <LINK REL="Next"  HREF="003410.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Code-review, unit tests and bug-tracker</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Code-review%2C%20unit%20tests%20and%20bug-tracker&In-Reply-To=%3C201105092341.16513.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Code-review, unit tests and bug-tracker">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon May  9 22:41:16 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003402.html">[hatari-devel] Code-review, unit tests and bug-tracker
+</A></li>
+        <LI>Next message: <A HREF="003410.html">[hatari-devel] Code-review, unit tests and bug-tracker
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3409">[ date ]</a>
+              <a href="thread.html#3409">[ thread ]</a>
+              <a href="subject.html#3409">[ subject ]</a>
+              <a href="author.html#3409">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 07 toukokuu 2011, Deniz Turkoglu wrote:
+&gt;<i> I have been following the list for sometime and now I have the time to
+</I>&gt;<i> contribute more, at least I hope so :) I have a few
+</I>&gt;<i> questions/suggestions, mainly based on the flow we use at work;
+</I>&gt;<i> 
+</I>&gt;<i> - We use ReviewBoard <A HREF="http://www.reviewboard.org/">http://www.reviewboard.org/</A> at work. I think this
+</I>&gt;<i> is nice for a few reasons. It makes discussing on changes easier and
+</I>&gt;<i> you can associate changes with bugs and end results tends to be
+</I>&gt;<i> better. I think this would speed up the discussion that goes on
+</I>&gt;<i> patches?
+</I>
+If BerliOS will support reviewboard, why not.
+
+
+&gt;<i> - I tried the bug tracker to have a go at things but seems it is not
+</I>&gt;<i> as active as the mailing list, maybe we need another bug tracker, like
+</I>&gt;<i> bugzilla or trac?
+</I>
+You can file bugs/tickets for BerliOS bug tracker itself too I assume.
+
+
+Or were you proposing on hosting reviewboard and bug tracking services
+for Hatari yourself?
+
+
+&gt;<i> - There is already a tests dir with some coverage, I am now looking at
+</I>&gt;<i> C unit tests frameworks and I stumbled upon
+</I>&gt;<i> <A HREF="http://check.sourceforge.net/">http://check.sourceforge.net/</A> , any ideas on this?
+</I>
+It's OK as C unit-test framework (I have some collegues at work who use it),
+but it's not very applicable for Hatari.
+
+The test/ directory contains two kind of things:
+- Code testing Hatari debugger
+- Code to run on real HW and inside the emulator
+  (output should be same on both)
+
+For former I prefer something that outputs extra debugging output while
+it runs, and which finishes all checks within a test for particular area,
+instead of breaking on first failure.  I also want it to be easy (automatic)
+to run code under Valgrind &amp; GCC Mudflap and the current Makefile already
+does that.  Check is overkill for that.
+
+For latter it's not unit test framework isn't what's needed but manual work
+with real HW for comparison.
+
+
+Main bulk of Hatari testing is running different (hundreds of) Atari ST, STE
+and Falcon programs and just checking whether their output looks OK without
+(much) need to compare it to real HW though.  And checking that the output
+hasn't regressed.
+
+If you want to look into that, you should try &quot;hconsole&quot; python program in
+tools/hconsole/ and try the Hatari remote API on how you automate[1] running
+of the tests (ST/STE/Falcon demos).  Through that you could e.g. run demos
+and record sound output &amp; get screenshots[1] from them.
+
+Comparing the sound files could be a bit inconvenient because 1-1 file 
+compare probably isn't the best thing (you'd catch changes, not whether
+they're regressions).  I think for screenshots 1-1 checking should be fine
+for catching regressions though.
+
+
+[1]  Automating other things than demos would probably require adding
+    support for positioning Atari mouse on some specific co-ordinate
+    on Atari screen.
+
+    To get them screenshots etc at suitable time in the demo, adding some
+    kind of &quot;pause at VBL n from start/now&quot; functionality to Hatari might be
+    needed.  Or &quot;dump screenshot at exit&quot; coupled with &quot;--run-vbls&quot; option,
+    if one screenshot per demo is enough.
+
+   Somehow detecting bus errors and other emulated Atari exceptions
+   through the remote API could also be useful.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003402.html">[hatari-devel] Code-review, unit tests and bug-tracker
+</A></li>
+	<LI>Next message: <A HREF="003410.html">[hatari-devel] Code-review, unit tests and bug-tracker
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3409">[ date ]</a>
+              <a href="thread.html#3409">[ thread ]</a>
+              <a href="subject.html#3409">[ subject ]</a>
+              <a href="author.html#3409">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

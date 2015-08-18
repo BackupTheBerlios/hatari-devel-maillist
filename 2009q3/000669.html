@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Register ff8260 mysteries
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Register%20ff8260%20mysteries&In-Reply-To=%3Calpine.LMD.2.00.0909061350380.4455%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000673.html">
+   <LINK REL="Next"  HREF="000670.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Register ff8260 mysteries</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Register%20ff8260%20mysteries&In-Reply-To=%3Calpine.LMD.2.00.0909061350380.4455%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Register ff8260 mysteries">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Sep  6 14:09:06 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000673.html">[hatari-devel] something not working with breakpoints ?
+</A></li>
+        <LI>Next message: <A HREF="000670.html">[hatari-devel] Little problem with program command line
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#669">[ date ]</a>
+              <a href="thread.html#669">[ thread ]</a>
+              <a href="subject.html#669">[ subject ]</a>
+              <a href="author.html#669">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 4 Sep 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+
+&gt;<i> On Fri, 21 Aug 2009, Thomas H. wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hi Nicolas!
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> I've tried to analyze the problem with &quot;Take Two&quot; on Fuzion CD 32 (it shows 
+</I>&gt;&gt;<i> &quot;ST low resolution only&quot; error though it is running in low resolution), but 
+</I>&gt;&gt;<i> now I am stuck. Maybe you can help...
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> The game checks the $44C system variable for the resolution:
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 00014208: 203c 0000 044c 6100 76de MOVE.L #$0000044c,D0
+</I>&gt;&gt;<i> 0001420e: 6100 76de 4a80 672c 45f9 BSR.W #$76de == 0001b8ee
+</I>&gt;&gt;<i> 0001b8ee: 487a 0022 600a 203c 0000 PEA.L (PC,$0022) == $0001b912
+</I>&gt;&gt;<i> 0001b8f2: 600a 203c 0000 04ba 487a BT .B #$0000000a == 0001b8fe (TRUE)
+</I>&gt;&gt;<i> 0001b8fe: 2600 3f3c 0026 4e4e 5c8f MOVE.L D0,D3
+</I>&gt;&gt;<i> 0001b900: 3f3c 0026 4e4e 5c8f 4e75 MOVE.W #$0026,-(A7)
+</I>&gt;&gt;<i> 0001b904: 4e4e 5c8f 4e75 7000 2043 TRAP.L #$0000000e
+</I>&gt;&gt;<i> 0001b912: 7000 2043 3010 4e75 2043 MOVE.L #$00000000,D0
+</I>&gt;&gt;<i> 0001b914: 2043 3010 4e75 2043 2010 MOVEA.L D3,A0
+</I>&gt;&gt;<i> 0001b916: 3010 4e75 2043 2010 4e75 MOVE.W (A0),D0
+</I>&gt;&gt;<i> 0001b918: 4e75 2043 2010 4e75 4a42 RTS.L
+</I>&gt;&gt;<i> 0001b906: 5c8f 4e75 7000 2043 1010 ADDA.L #$00000006,A7
+</I>&gt;&gt;<i> 0001b908: 4e75 7000 2043 1010 4e75 RTS.L
+</I>&gt;&gt;<i> 00014212: 4a80 672c 45f9 0001 f3da TST.L D0
+</I>&gt;&gt;<i> 00014214: 672c 45f9 0001 f3da 7013 BEQ.B #$0000002c == 00014242 (FALSE)
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> The variable should be zero for low resolution, but for this disk, it is 
+</I>&gt;&gt;<i> $fc, so the TST.L fails.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> As far as I can see, the variable is initialized to a none-zero value by 
+</I>&gt;&gt;<i> TOS after pressing the F2 key in the Fuzion menu (you can set a breakpoint 
+</I>&gt;&gt;<i> with the condition &quot;($44c).w &gt; 0&quot;) ...
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> But why does this happen? Is there maybe more magic with the uppper bits in 
+</I>&gt;&gt;<i> the FF8260 register than we first thought of? Do you have an idea?
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Thomas
+</I>&gt;&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> yes this is really strange. I saw a few things :
+</I>&gt;<i>
+</I>&gt;<i> - when I boot in Gem in med res, $44c=1, so there's no or with $fc and
+</I>&gt;<i>   this seems correct.
+</I>&gt;<i> - If I change resolution to low res, then $44c=0, this is OK again.
+</I>&gt;<i> - booting with Steem to monitor read to $ff8260, I see the TOS is doing:
+</I>&gt;<i> 	move.b -$7da0(a5),d0
+</I>&gt;<i> 	and.b #3,d0
+</I>&gt;<i> 	move.b d0,$44c(a5)
+</I>&gt;<i>   So unused bits are correcly masked
+</I>&gt;<i> - with steem, $44c=0 when pressing F2, instead of $fc with Hatari
+</I>&gt;<i>
+</I>&gt;<i> I know there're some &quot;strange&quot; things when 68000 code is executed from ROM / 
+</I>&gt;<i> cartridge instead of RAM : memory accesses are not rounded to 4 cycles anymore 
+</I>&gt;<i> as we don't need to wait for the bus in that case. Perhaps the fact that we 
+</I>&gt;<i> don't wait for the bus is also setting unused bits to 0 ?
+</I>&gt;<i>
+</I>&gt;<i> But anyway, as the TOS seems to mask unused bits, this shouldn't matter. One 
+</I>&gt;<i> solution could be to run with --trace cpu_all and see all the code that 
+</I>&gt;<i> writes to $44c until F2 is pressed. Maybe this will show some part where 
+</I>&gt;<i> $ff8260 is read but not masked after ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+I traced with cpu_all up to pressing F2 ; here're the accesses to $44c
+(with tos 1.04 french) :
+
+cpu video_cyc= 33800   8@ 66 : 00fc03c8: 102d 8260 c03c 0003 b03c MOVE.B (A5,$8260) == $ffff8260,D0
+cpu video_cyc= 33812  20@ 66 : 00fc03cc: c03c 0003 b03c 0003 6602 AND.B #$03,D0
+cpu video_cyc= 33820  28@ 66 : 00fc03d0: b03c 0003 6602 7002 1b40 CMP.B #$03,D0
+cpu video_cyc= 33828  36@ 66 : 00fc03d4: 6602 7002 1b40 044c 102d BNE.B #$00000002 == 00fc03d8 (TRUE)
+cpu video_cyc= 33840  48@ 66 : 00fc03d8: 1b40 044c 102d fa01 6b14 MOVE.B D0,(A5,$044c) == $0000044c
+
+cpu video_cyc=  3860 276@  7 : 00fc0a9c: 4a6f 000c 6b20 1b6f 000d TST.W (A7,$000c) == $0000b9ce
+cpu video_cyc=  3872 288@  7 : 00fc0aa0: 6b20 1b6f 000d 044c 6100 BMI.B #$00000020 == 00fc0ac2 (FALSE)
+cpu video_cyc=  3880 296@  7 : 00fc0aa2: 1b6f 000d 044c 6100 fcf8 MOVE.B (A7,$000d) == $0000b9cf,(A5,$044c) == $0000044c
+
+cpu video_cyc=  2492 444@  4 : 00fc0aac: 1b6d 044c 8260 426d 0452 MOVE.B (A5,$044c) == $0000044c,(A5,$8260) == $ffff8260
+cpu video_cyc=  2512 464@  4 : 00fc0ab2: 426d 0452 4eb9 00fc b540 CLR.W (A5,$0452) == $00000452
+cpu video_cyc=  2528 480@  4 : 00fc0ab6: 4eb9 00fc b540 3b7c 0001 JSR.L $00fcb540
+cpu video_cyc=  2548 500@  4 : 00fcb540: 1039 0000 044c 7203 c041 MOVE.B $0000044c,D0
+cpu video_cyc=  2564   4@  5 : 00fcb546: 7203 c041 b041 6602 7002 MOVE.L #$00000003,D1
+cpu video_cyc=  2568   8@  5 : 00fcb548: c041 b041 6602 7002 3f00 AND.W D1,D0
+cpu video_cyc=  2572  12@  5 : 00fcb54a: b041 6602 7002 3f00 6100 CMP.W D1,D0
+
+cpu video_cyc= 72556 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">364 at 141</A> : 00fc0a9c: 4a6f 000c 6b20 1b6f 000d TST.W (A7,$000c) == $0000b9ce
+cpu video_cyc= 72568 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">376 at 141</A> : 00fc0aa0: 6b20 1b6f 000d 044c 6100 BMI.B #$00000020 == 00fc0ac2 (FALSE)
+cpu video_cyc= 72576 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">384 at 141</A> : 00fc0aa2: 1b6f 000d 044c 6100 fcf8 MOVE.B (A7,$000d) == $0000b9cf,(A5,$044c) == $0000044c
+
+We can see that when $ff8260 is read, it's correctly masked.
+
+The problem is with code at 00fc0a9c ; it's called a first time before the 
+menu is loaded (and set $44c to 0), and it's called a 2nd time when 
+pressing F2.
+At this point, $b9cf=$fc, so this is where $44c is overwritten with a non 
+0 value.
+
+There's some code to save the video settings at :
+
+cpu video_cyc=133344 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">224 at 260</A> : 0000b03a: 43f9 0000 baaa 1378 8260 LEA.L $0000baaa,A1
+cpu video_cyc=133356 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">236 at 260</A> : 0000b040: 1378 8260 0001 2378 044e MOVE.B $ffff8260,(A1,$0001) == $0000baab
+cpu video_cyc=133376 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">256 at 260</A> : 0000b046: 2378 044e 0002 4cf8 00ff MOVE.L $0000044e,(A1,$0002) == $0000baac
+cpu video_cyc=133404 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">284 at 260</A> : 0000b04c: 4cf8 00ff 8240 48e9 00ff MVMEL.L #$00ff,$ffff8240
+cpu video_cyc=133484 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">364 at 260</A> : 0000b052: 48e9 00ff 0006 41f8 fa01 MVMLE.L #$00ff,(A1,$0006) == $0000bab0
+
+It could be interesting to see on a real ST if the saved values have the 
+upper bits randomly set to 1 or not (which would validate the fact that 
+when 68000 is executed from ROM the bus has a different behavior).
+
+Do you have an ST near you to check this ? (or I will have to unpack 
+mine, which will take more time)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000673.html">[hatari-devel] something not working with breakpoints ?
+</A></li>
+	<LI>Next message: <A HREF="000670.html">[hatari-devel] Little problem with program command line
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#669">[ date ]</a>
+              <a href="thread.html#669">[ thread ]</a>
+              <a href="subject.html#669">[ subject ]</a>
+              <a href="author.html#669">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

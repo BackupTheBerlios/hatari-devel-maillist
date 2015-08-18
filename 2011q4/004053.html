@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New FDC emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20FDC%20emulation&In-Reply-To=%3C1891076641.2033381317973128278.JavaMail.root%40zimbra57-e10.priv.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004050.html">
+   <LINK REL="Next"  HREF="004060.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New FDC emulation</H1>
+    <B>laurent.sallafranque at free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20FDC%20emulation&In-Reply-To=%3C1891076641.2033381317973128278.JavaMail.root%40zimbra57-e10.priv.proxad.net%3E"
+       TITLE="[hatari-devel] New FDC emulation">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Fri Oct  7 09:38:48 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004050.html">[hatari-devel] New FDC emulation
+</A></li>
+        <LI>Next message: <A HREF="004060.html">[hatari-devel] New FDC emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4053">[ date ]</a>
+              <a href="thread.html#4053">[ thread ]</a>
+              <a href="subject.html#4053">[ subject ]</a>
+              <a href="author.html#4053">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Good job Nicolas,
+
+I'll test this week end (and I'll spend some time with the games by the same time :)
+
+I'll tell you the results monday.
+
+Regards
+
+Laurent
+
+
+----- Mail Original -----
+De: &quot;Nicolas Pomar&#232;de&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt;
+&#192;: &quot;Mailing list for Hatari developers&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>&gt;
+Envoy&#233;: Vendredi 7 Octobre 2011 00h09:28 GMT +01:00 Amsterdam / Berlin / Berne / Rome / Stockholm / Vienne
+Objet: [hatari-devel] New FDC emulation
+
+Hello
+
+After seeing a lot of bug reports about games not running under Hatari, 
+due to uncomplete emulation of the WD1772, I committed the result of my 
+work during the latest weeks.
+
+The fdc.c emulation has been nearly completly rewritten, with accuracy 
+in mind regarding registers emulation, delays and dma transfers.
+
+The general structure of the file was kept, as it's a state machine that 
+was already close to the WD1772 docs, but all inner work was changed.
+
+The FDC now supports all type I/I/III/IV commands (except the Write 
+Track command, as it doesn't make many sense with the ST/MSA disk images).
+
+Precise delays are emulated to start the motor, spin up the disk, stop 
+the motor after last command, move the head, read/write sectors and read 
+track/address, etc.
+
+All transfers between disk and RAM are emulating the DMA, bytes are 
+handled by blocks of 16 bytes, dma address is correctly updated all 
+along while processing a command.
+
+Status Register should now behave like a real FDC, read sector with 
+multi bit=1 was completly wrong, and the lack of Read Address / Read 
+Track command prevented a lot of cracked games in ST/MSA format to start 
+(because the game was still trying to use these command to check for the 
+protection, before the result was ignored by the crack).
+
+This allows to run 2 very good demos : &quot;Just Buggin&quot; by ACF and 
+&quot;STNICCC&quot; by Oxygene
+
+On the games side, a LOT should now work : Pang (Fuzion 32), The Simpson 
+(Fuzion 108), Super Grand Prix (Fuzion 40), Warlock (Fuzion 46), Navy 
+Seals (Fuzion 51), Flight Of The Intruder (Fuzion 82), Rbi Baseball 2 
+(Fuzion 83), Exile (Fuzion 102), ...
+
+Even some programs like Procopy / Fastcopy / Terminator copy / Diskus 
+3.65 can be run in analyze mode and should allow to see the layout of a 
+track :)
+
+Correctly emulating the WD1772 took a lot of time to get precise 
+timings. At first, I just wanted to add correct Status Register and Read 
+Address/Read Track, this fixed a lot of programs, but then some programs 
+required correct DMA timings to transfer block of 16 bytes, and some 
+copy programs require precise GAPs and delays between successive sector 
+reads.
+In the end, this led to rewritting nearly everything :)
+
+As Hatari only supports ST/MSA disk images with fixed number of sectors 
+per track and 512 bytes per sector, some parts of the FDC are not 
+completly generic (but they could be easily updated to support more 
+advanced disk image, such as Pasti).
+
+Regarding Pasti, there's no support for it in this new code, Ijor 
+(P&#228;sti's author) told me he was still working on releasing an open 
+source version of Pasti, so I prefer waiting for this instead of reverse 
+engineering the format).
+
+I removed the &quot;--slowfdc&quot; option and replaced it with &quot;--fastfdc&quot; (which 
+is off by default). This way, Hatari will start in maximum compatibility 
+mode regarding FDC, so users should get the best results out of the box.
+If you want faster disk acceses (at the risk of some incompatibilities), 
+you can use --fastfdc to speed up most delays by a factor 10.
+
+I updated python-ui and the OSX gui to use this new option.
+
+Could someone test the OSX version (I don't know how to rebuild 
+keyedobjects.nib) and post some patches in case it doesn't compile ?
+
+
+Please, test a lot of demos / games (but mainly games) and report the 
+regressions you could see. If some games are still not working, let me 
+know, it could be either an error in the new fdc code, or some errors in 
+the cpu emulation used by the protection, in either case this need to be 
+fixed.
+
+
+Nicolas
+_______________________________________________
+hatari-devel mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004050.html">[hatari-devel] New FDC emulation
+</A></li>
+	<LI>Next message: <A HREF="004060.html">[hatari-devel] New FDC emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4053">[ date ]</a>
+              <a href="thread.html#4053">[ thread ]</a>
+              <a href="subject.html#4053">[ subject ]</a>
+              <a href="author.html#4053">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

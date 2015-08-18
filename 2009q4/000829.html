@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Troubles compiling latest Hatari with new avi	support
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%09support&In-Reply-To=%3C200910111239.54501.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000828.html">
+   <LINK REL="Next"  HREF="000830.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Troubles compiling latest Hatari with new avi	support</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%09support&In-Reply-To=%3C200910111239.54501.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Troubles compiling latest Hatari with new avi	support">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Oct 11 11:39:54 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000828.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+        <LI>Next message: <A HREF="000830.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#829">[ date ]</a>
+              <a href="thread.html#829">[ thread ]</a>
+              <a href="subject.html#829">[ subject ]</a>
+              <a href="author.html#829">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 11 October 2009, Jerome Vernet wrote:
+&gt;<i> Jerome Vernet a &#233;crit :
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+</I>&gt;<i> &gt;&gt; This is strange, as many other parts of Hatari are using #if instead
+</I>&gt;<i> &gt;&gt; of #ifdef and this doesn't seem to be a problem on osx.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Don't know why, but i came back to #if and it's working now.... I may
+</I>&gt;<i> &gt; have made something wrong.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Anyway, AVI recording doesn't seem to work on MacOsX, at least on my
+</I>&gt;<i> &gt; build. It seems that Hatari hang here:
+</I>&gt;<i> &gt;     png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL,
+</I>&gt;<i> &gt; NULL, NULL);
+</I>&gt;<i>
+</I>&gt;<i> With the latest update on the mercurial, AVI screen capture work a
+</I>&gt;<i> little bit better but still hang when screen goes black right after
+</I>&gt;<i> booting.
+</I>&gt;<i>
+</I>&gt;<i> I need to know what I have to call to add AVI recording in the MacOsX
+</I>&gt;<i> GUI (for th emoment, still using BMP recording).
+</I>
+It hangs only if called from that?  Not if you use the internal Hatari GUI?
+
+The internal GUI does only this:
+--------------
+                        if (Avi_AreWeRecording())
+                        {
+                                screendlg[DLGSCRN_RECANIM].txt = &quot;Record 
+AVI&quot;;
+                                AviStopRecording();
+                        }
+                        else
+                        {
+                                screendlg[DLGSCRN_RECANIM].txt = &quot;Stop 
+recording
+&quot;;
+                                ConfigureParams.Screen.bCaptureChange = 
+(screend
+lg[DLGSCRN_ONCHANGE].state &amp; SG_SELECTED);
+                                AviStartRecording ( AviRecordFile , 
+AviRecordDefaultCrop , nScreenRefreshRate , AviRecordDefaultVcodec );
+                        }
+                        break;
+------------
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000828.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+	<LI>Next message: <A HREF="000830.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#829">[ date ]</a>
+              <a href="thread.html#829">[ thread ]</a>
+              <a href="subject.html#829">[ subject ]</a>
+              <a href="author.html#829">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

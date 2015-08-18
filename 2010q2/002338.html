@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling support to Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3C201006291535.02064.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002335.html">
+   <LINK REL="Next"  HREF="002037.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling support to Hatari debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3C201006291535.02064.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Profiling support to Hatari debugger">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Jun 29 14:35:01 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002335.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="002037.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2338">[ date ]</a>
+              <a href="thread.html#2338">[ thread ]</a>
+              <a href="subject.html#2338">[ subject ]</a>
+              <a href="author.html#2338">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 26 June 2010, Eero Tamminen wrote:
+&gt;<i> Attached patch adds profiling information to the disassembly output.
+</I>...
+&gt;<i> Does that look OK?
+</I>
+As there were no comments, I added this as-is to the repo.
+
+
+Here's an example of what the profiler output looks for DSP.
+It's for an idling Falcon &quot;Virtual City&quot; demo:
+-----------
+DSP profile statistics (0x0-0xFFFF):
+- active address range:
+  0x004e-0x00c3
+- active instruction addresses:
+  86
+- executed instructions:
+  101279562
+- used cycles:
+  707895386
+- address with most cycles:
+  0x004e, 642239526 cycles (90.73% of all)
+- address with most hits:
+  0x004e, 91749434 hits (90.59% of all)
+
+CPU=$30e66, VBL=3301, FrameCycles=88, HBL=0, LineCycles=88, DSP=$4e
+&gt;<i> dspprofile cycles 100
+</I>addr:   cycles:
+0x004e  90.73%  642239526
+0x00a7  4.99%   35358807
+0x009f  0.74%   5219320
+...
+0x009b  0.00%   880
+86 DSP addresses listed.
+&gt;<i> dspdisasm 0x004b
+</I>DSP disasm 0x4b-0x53:
+004b:  64f400 000520  (04 cyc)  move #0x000520,r4
+004d:  0502a4         (02 cyc)  movec #0x02,m4
+91749434/642239526 times/cycles:
+004e:  0aa980 00004e  (07 cyc)  jclr #0,x:0xffe9,p:0x004e
+6512/45584 times/cycles:
+0050:  08582b         (05 cyc)  movep x:0xffeb,n0
+6512/32560 times/cycles:
+0051:  0ad800 000056  (06 cyc)  jclr #0,n0,p:0x0056
+-----------
+
+Btw. Should I show percentage of used cycles/counts also in the disassembly
+output?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002335.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="002037.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2338">[ date ]</a>
+              <a href="thread.html#2338">[ thread ]</a>
+              <a href="subject.html#2338">[ subject ]</a>
+              <a href="author.html#2338">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

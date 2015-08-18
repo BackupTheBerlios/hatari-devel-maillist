@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Raster stability issue in new Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Raster%20stability%20issue%20in%20new%20Hatari&In-Reply-To=%3Calpine.LMD.2.00.0907162249070.8532%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000494.html">
+   <LINK REL="Next"  HREF="000484.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Raster stability issue in new Hatari</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Raster%20stability%20issue%20in%20new%20Hatari&In-Reply-To=%3Calpine.LMD.2.00.0907162249070.8532%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Raster stability issue in new Hatari">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Jul 16 22:58:21 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000494.html">[hatari-devel] Blitter interrupt CPU usage
+</A></li>
+        <LI>Next message: <A HREF="000484.html">[hatari-devel] EKO System and HIRNTOD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#479">[ date ]</a>
+              <a href="thread.html#479">[ thread ]</a>
+              <a href="subject.html#479">[ subject ]</a>
+              <a href="author.html#479">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 12 Jul 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I noticed that in current Hatari the rasters are very unstable in this
+</I>&gt;<i> Automation disk menu:
+</I>&gt;<i> <A HREF="http://ataristgames.free.fr/AUTOMATION/500-5xx/A_500/A_500_B.ST">http://ataristgames.free.fr/AUTOMATION/500-5xx/A_500/A_500_B.ST</A>
+</I>&gt;<i>
+</I>&gt;<i> (I was trying to verify one of the issues on the compatibility list.)
+</I>&gt;<i>
+</I>&gt;<i> In Hatari v1.0 there's no unstability.
+</I>&gt;<i>
+</I>
+Hello,
+
+this problem occurs when spec512 mode is not used to change the color at 
+the exact cycle.
+In that case, Video_SetHBLPaletteMaskPointers determines the line where 
+the palette should be modified to use this new color.
+
+The problem is that with the new video.c, I considered that any change 
+before cycle 512 applied to line nHBL, but in fact as the maximum possible 
+display position is cycle 460, we should use cycle 460 as a limit to 
+decide if the change applies to line nHBL or nHBL+1 (this was handled in 
+previous video.c version, but the formula used LineStartCycle, which 
+worked, but was not the correct limit).
+Else, any change close to +/- cycle 512 was applied to line nHBL or 
+nHBL+1, which gave this ugly flickering.
+
+The &quot;problem&quot; is that automation menu 2/500 is in med res, and we don't 
+have support for spec512 mode in med res. While this bug would not have 
+shown in lo res (because hatari would switch to spec512 mode), it was 
+visible in med res. Thanks for reporting this.
+
+
+Anyone feeling like implementing spec512 mode in med res ? :)
+
+Nicolas
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000494.html">[hatari-devel] Blitter interrupt CPU usage
+</A></li>
+	<LI>Next message: <A HREF="000484.html">[hatari-devel] EKO System and HIRNTOD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#479">[ date ]</a>
+              <a href="thread.html#479">[ thread ]</a>
+              <a href="subject.html#479">[ subject ]</a>
+              <a href="author.html#479">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] IDE &amp; gemdos HD emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20%26%20gemdos%20HD%20emulation&In-Reply-To=%3C201001170156.43919.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001241.html">
+   <LINK REL="Next"  HREF="001273.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] IDE &amp; gemdos HD emulation</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20%26%20gemdos%20HD%20emulation&In-Reply-To=%3C201001170156.43919.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] IDE &amp; gemdos HD emulation">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jan 17 00:56:43 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001241.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+        <LI>Next message: <A HREF="001273.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1254">[ date ]</a>
+              <a href="thread.html#1254">[ thread ]</a>
+              <a href="subject.html#1254">[ subject ]</a>
+              <a href="author.html#1254">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 16 January 2010, Thomas H. wrote:
+&gt;<i> &gt; At least although HDDriver claims that driver is installed to the IDE
+</I>&gt;<i> &gt; drive, booting with it doesn't run the IDE driver / you don't see the
+</I>&gt;<i> &gt; whole driver (Tested both with TT &amp; Falcon modes).  I have no idea
+</I>&gt;<i> &gt; whether this is Hatari or TOS issue.
+</I>&gt;<i>
+</I>&gt;<i> Try AHDI 6 or Cecile. With these drivers I was able to boot from IDE
+</I>&gt;<i> drive (at least half a year ago).
+</I>
+E.g. with Cecile booting from IDE drive works, but not when having GEMDOS
+D &amp; E drives.
+
+Might be related to ide.c not updating nNumDrives nor nPartitions:
+$ egrep '(nNumDrives|nPartitions)' *.c
+gemdos.c:       if ((iDrive &lt;= nNumDrives) &amp;&amp; (iDrive &gt; 1))
+gemdos.c:                       i += nPartitions;
+gemdos.c:                       if (i &gt;= nPartitions)
+gemdos.c:                               nNumDrives = i + 3;
+gemdos.c:                               nNumDrives -= 1;
+gemdos.c:       if ((Drive == 0 &amp;&amp; CurrentDrive &gt;= 2) || (Drive &gt;= 3 /*&amp;&amp; 
+Drive &lt;= nNumDrives*/))
+hdc.c:int nPartitions = 0;
+hdc.c:  nPartitions = 0;
+hdc.c:                  nPartitions++;
+hdc.c:  nNumDrives += nPartitions;
+hdc.c:  nNumDrives -= nPartitions;
+hdc.c:  nPartitions = 0;
+tos.c:int nNumDrives = 2;                     /* Number of drives,...
+tos.c:  MemorySnapShot_Store(&amp;nNumDrives, sizeof(nNumDrives));
+
+
+...as GemDOS_InitDrives() uses them:
+                /* If single partition mode, skip to the right entry */
+                if (!bMultiPartitions)
+                        i += nPartitions;
+...
+                         /* If the GemDos Drive letter is free then */
+                        if (i &gt;= nPartitions)
+                        {
+...
+                                nNumDrives = i + 3;
+                        }
+
+
+Then I also noticed another thing in ide.c while testing Cecile and getting
+a lot of ICE bdrv_read() errors (from too short IDE image?):
+------
+static void ide_sector_read(IDEState *s)
+...
+
+                ret = bdrv_read(s-&gt;bs, sector_num, s-&gt;io_buffer, n);
+                ide_transfer_start(s, s-&gt;io_buffer, 512 * n, 
+ide_sector_read);
+                ide_set_irq(s);
+                ide_set_sector(s, sector_num + n);
+                s-&gt;nsector -= n;
+        }
+}
+-------
+
+bdrv_read() return value errors (ret &lt; 0) aren't handled?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001241.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+	<LI>Next message: <A HREF="001273.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1254">[ date ]</a>
+              <a href="thread.html#1254">[ thread ]</a>
+              <a href="subject.html#1254">[ subject ]</a>
+              <a href="author.html#1254">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

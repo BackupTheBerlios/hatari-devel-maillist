@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CD5ECF1.9040003%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002608.html">
+   <LINK REL="Next"  HREF="002611.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CD5ECF1.9040003%40free.fr%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Nov  7 01:04:01 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002608.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002611.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2609">[ date ]</a>
+              <a href="thread.html#2609">[ thread ]</a>
+              <a href="subject.html#2609">[ subject ]</a>
+              <a href="author.html#2609">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Great job Thomas.
+
+I've reintroduced do_specialties() and CPU trace from old cpu core.
+I wish they're still useful.
+
+I'll reintroduce Exception() code tomorrow and CPU_TRACE_EXCEPTION code.
+
+
+Just in case another bell rings, we're now annoyed with the following :
+
+Illegal wget at ffff8006
+Illegal wget at ffff8006
+Illegal wput at ffff8940
+Illegal instruction: 4e7b at 00E00060 -&gt; 00000000
+Illegal lput at 602e0400
+Illegal wput at 602e03fe
+Illegal instruction: 7520 at 00000420 -&gt; 00000000
+
+Regards
+
+Laurent
+
+
+
+Le 06/11/2010 19:39, Thomas Huth a &#233;crit :
+&gt;<i> On Sat, 06 Nov 2010 18:33:15 +0100
+</I>&gt;<i> Laurent Sallafranque&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;  wrote:
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>&gt;&gt;<i> I think I've got a problem with the rom or boot.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If some of you wants to play with the new core, don't hesitate to
+</I>&gt;&gt;<i> upload things.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've added the traces I get when I start Hatari
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent at OrdiLolo</A>:~/Atari/hatari/build/src$ ./hatari
+</I>&gt;&gt;<i> Configuration file /etc/hatari.cfg not found.
+</I>&gt;&gt;<i> Hatari devel (Nov  6 2010), compiled on:  Nov  6 2010, 17:04:15
+</I>&gt;&gt;<i> Building CPU table for configuration: 0
+</I>&gt;&gt;<i> 1879 CPU functions
+</I>&gt;&gt;<i> Building CPU, 44316 opcodes (0 0 0)
+</I>&gt;&gt;<i> CPU=68000, FPU=0, MMU=0, JIT=0.
+</I>&gt;&gt;<i> GEMDOS HDD emulation, C:&lt;-&gt;  /media/0470BC8670BC7FCA/Jeux/Atari.
+</I>&gt;&gt;<i> bt_audio_service_open: connect() failed: Connection refused (111)
+</I>&gt;&gt;<i> bt_audio_service_open: connect() failed: Connection refused (111)
+</I>&gt;&gt;<i> bt_audio_service_open: connect() failed: Connection refused (111)
+</I>&gt;&gt;<i> bt_audio_service_open: connect() failed: Connection refused (111)
+</I>&gt;&gt;<i> M68000 Bus Error reading at address $0.
+</I>&gt;&gt;<i> M68000 Bus Error reading at address $4.
+</I>&gt;&gt;<i>      
+</I>&gt;<i> That rings a bell... yes, I remember this problem from my last attempts
+</I>&gt;<i> to convert the WinUAE CPU core: m68k_reset tries to access the low
+</I>&gt;<i> memory for setting the PC and SP before the supervisor bit is turned on
+</I>&gt;<i> in the SR. This can be easy fixed by moving the memory access down a
+</I>&gt;<i> little bit in that function. I've committed a fix.
+</I>&gt;<i>
+</I>&gt;<i>   Regards,
+</I>&gt;<i>    Thomas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002608.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002611.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2609">[ date ]</a>
+              <a href="thread.html#2609">[ thread ]</a>
+              <a href="subject.html#2609">[ subject ]</a>
+              <a href="author.html#2609">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

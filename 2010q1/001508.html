@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] cmake doesn't find readline
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cmake%20doesn%27t%20find%20readline&In-Reply-To=%3C201002211902.27038.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001504.html">
+   <LINK REL="Next"  HREF="001512.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] cmake doesn't find readline</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cmake%20doesn%27t%20find%20readline&In-Reply-To=%3C201002211902.27038.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] cmake doesn't find readline">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Feb 21 18:02:26 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001504.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+        <LI>Next message: <A HREF="001512.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1508">[ date ]</a>
+              <a href="thread.html#1508">[ thread ]</a>
+              <a href="subject.html#1508">[ subject ]</a>
+              <a href="author.html#1508">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 21 February 2010, Thomas Huth wrote:
+&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;<i> &gt; Btw. I quickly looked into the configure.ac and as the *.in files are
+</I>&gt;<i> &gt; already removed, configure.ac itself cannot work anymore.   I.e. feel
+</I>&gt;<i> &gt; free to remove it.
+</I>&gt;<i>
+</I>&gt;<i> What *.in files are you talking about? I did not remove anything from
+</I>&gt;<i> the autoconf build system yet, I only removed the old Xcode project
+</I>&gt;<i> files.
+</I>
+As there was Makefile.cnf.in, I thought there should be config.h.in too.
+But it's actually created by configure.ac...  Doh.
+
+Maybe it's better to remove configure.ac anyway, it seems I'm too confused
+about it anyway (I'm much more familiar with plain GNU make).  I guess that
+means Makefile.cnf.in can be removed too...
+
+
+Btw. the config-default.h is currently missing defines for
+posix_memalign / valloc / etc stuff.
+
+You earlier said that:
+&quot;IIRC the valloc call was the only function that was available everywhere.
+ posix_memalign() was not available on MinGW, memalign() was not available
+ on Mac OS X.&quot;
+
+Is posix_memalign() available on OSX?
+
+
+&gt;<i> &gt; &gt; 3) Do an out-of-source build instead, i.e. run the initial &quot;cmake&quot;
+</I>&gt;<i> &gt; &gt; from a separate folder that is not part of the source tree.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I think this is the best alternative.  Maybe the &quot;configure&quot; wrapper
+</I>&gt;<i> &gt; you've added for CMake could automatically cause the build to be done
+</I>&gt;<i> &gt; in a separate build subdirectory?
+</I>&gt;<i>
+</I>&gt;<i> The configure script behaves like proper automake-style configure
+</I>&gt;<i> scripts behave, too: It creates the build directory in the folder from
+</I>&gt;<i> wherever it has been called. For example if you have a folder called
+</I>&gt;<i> &quot;hatari-src&quot; with the sources and one called &quot;hatari-build&quot; for the
+</I>&gt;<i> build files, you would do something like this:
+</I>&gt;<i>
+</I>&gt;<i>  cd hatari-build
+</I>&gt;<i>  ../hatari-src/configure
+</I>&gt;<i>  make
+</I>
+Sounds good! :-)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001504.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+	<LI>Next message: <A HREF="001512.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1508">[ date ]</a>
+              <a href="thread.html#1508">[ thread ]</a>
+              <a href="subject.html#1508">[ subject ]</a>
+              <a href="author.html#1508">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

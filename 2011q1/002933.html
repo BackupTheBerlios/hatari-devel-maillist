@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New CPU, MacOsX Build
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20CPU%2C%20MacOsX%20Build&In-Reply-To=%3C4D447C26.3080604%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002932.html">
+   <LINK REL="Next"  HREF="002936.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New CPU, MacOsX Build</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20CPU%2C%20MacOsX%20Build&In-Reply-To=%3C4D447C26.3080604%40free.fr%3E"
+       TITLE="[hatari-devel] New CPU, MacOsX Build">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Jan 29 21:44:22 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002932.html">[hatari-devel] New CPU, MacOsX Build
+</A></li>
+        <LI>Next message: <A HREF="002936.html">[hatari-devel] New CPU, MacOsX Build
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2933">[ date ]</a>
+              <a href="thread.html#2933">[ thread ]</a>
+              <a href="subject.html#2933">[ subject ]</a>
+              <a href="author.html#2933">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've retested, everything works well for me (gemdos disk root in upper 
+directory).
+I cann see all my hard disk now.
+
+Can you tell me what happens exactly ?
+
+Laurent
+
+
+Le 29/01/2011 21:40, Laurent Sallafranque a &#233;crit :
+&gt;<i> It works for me, BUT, I've encountered a problem similar to your's.
+</I>&gt;<i> (I haven't searched for now).
+</I>&gt;<i>
+</I>&gt;<i> I had to choose the demo directory of my gemdos harddrive, instead of 
+</I>&gt;<i> the directory just upper.
+</I>&gt;<i> Then it works well.
+</I>&gt;<i>
+</I>&gt;<i> I can try to search why the gemdos &quot;disk&quot; doesn't work with my upper 
+</I>&gt;<i> directory as the root.
+</I>&gt;<i>
+</I>&gt;<i> Maybe you could try to create a little directory with just 1 demo into 
+</I>&gt;<i> it, point the gemdos drive root into this directory  and tell me if 
+</I>&gt;<i> this works ?
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Le 29/01/2011 19:26, Jerome Vernet a &#233;crit :
+</I>&gt;&gt;<i> Le 29/01/11 19:06, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;&gt;<i> Hi Jerome,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thanks for the OSX compil.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i> You can find here the build (Intel Only, not yet managed a UB build 
+</I>&gt;&gt;<i> working for 10.5/PPC).
+</I>&gt;&gt;<i> <A HREF="http://www.megaupload.com/?d=BVSD0PM0">http://www.megaupload.com/?d=BVSD0PM0</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> You should remind that the new winUae core is for now Highly 
+</I>&gt;&gt;&gt;<i> experimental.
+</I>&gt;&gt;&gt;<i> I'm only working on the Falcon part of it for now.
+</I>&gt;&gt;&gt;<i> Nicolas has not yet reimplemented all the Atari specific stuff he 
+</I>&gt;&gt;&gt;<i> did for the ST emulation part.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i> Look like there is hard work to do on the STe part.
+</I>&gt;&gt;<i> &gt;For Falcon emulation, the best is to use the following parameters :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Machine type : Falcon
+</I>&gt;&gt;&gt;<i> CPU type : 68030
+</I>&gt;&gt;&gt;<i> CPU clock : 16 Mhz (some demos run only with 32 Mhz, see the 
+</I>&gt;&gt;&gt;<i> compatibility list on hatari's site)
+</I>&gt;&gt;&gt;<i> Falcon Dsp : full
+</I>&gt;&gt;<i> The GEMDOS drive emulation do not work, so I cannot test demos at 
+</I>&gt;&gt;<i> all... Disk C show in the GEM, but do not open (TOS 4.04).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Jerome
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110129/0bb227f2/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110129/0bb227f2/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002932.html">[hatari-devel] New CPU, MacOsX Build
+</A></li>
+	<LI>Next message: <A HREF="002936.html">[hatari-devel] New CPU, MacOsX Build
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2933">[ date ]</a>
+              <a href="thread.html#2933">[ thread ]</a>
+              <a href="subject.html#2933">[ subject ]</a>
+              <a href="author.html#2933">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

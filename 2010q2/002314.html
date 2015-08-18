@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Getting OS call opcode from stack?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Getting%20OS%20call%20opcode%20from%20stack%3F&In-Reply-To=%3C4C173826.5040903%40freesbee.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002313.html">
+   <LINK REL="Next"  HREF="002315.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Getting OS call opcode from stack?</H1>
+    <B>Vincent Rivi&#232;re</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Getting%20OS%20call%20opcode%20from%20stack%3F&In-Reply-To=%3C4C173826.5040903%40freesbee.fr%3E"
+       TITLE="[hatari-devel] Getting OS call opcode from stack?">vincent.riviere at freesbee.fr
+       </A><BR>
+    <I>Tue Jun 15 10:21:58 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002313.html">[hatari-devel] Getting OS call opcode from stack?
+</A></li>
+        <LI>Next message: <A HREF="002315.html">[hatari-devel] Getting OS call opcode from stack?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2314">[ date ]</a>
+              <a href="thread.html#2314">[ thread ]</a>
+              <a href="subject.html#2314">[ subject ]</a>
+              <a href="author.html#2314">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eero Tamminen wrote:
+&gt;<i> - Why this checks the supervisor mode from word on top of the stack
+</I>&gt;<i>   register A7, instead of from the status register SR?
+</I>
+When the CPU is in user mode and encounters a trap (or any other
+exception) it switches to supervisor mode. Thus, inside the trap
+handler, SR indicates always the supervisor mode.
+The word on the stack is a backup of SR before the trap. So it indicates
+the mode before the stack.
+
+&gt;<i> - Why in user mode parameters are taken from USP and in supervisor mode
+</I>&gt;<i>   with an offset from A7?  Aren't the parameters always in place pointed by
+</I>&gt;<i>   A7 and where it points just changing with supervisor mode?
+</I>
+The trap parameters are always pushed on A7.
+If the trap is called from user mode, the CPU is switched to supervisor
+mode, the old A7 becomes available only trough the USP register, and A7
+is initialized with the supervisor stack pointer. On 68010+, a format
+word is pushed. Then PC and SR are pushed on the supervisor stack.
+If the trap is called from supervisor mode, the same thing happens, but
+no stack switch occurs.
+
+Thus, inside the trap handler, you must look at the parameters pushed on
+USP or A7 depending on the CPU mode of the caller.
+
+-- 
+Vincent Rivi&#232;re
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002313.html">[hatari-devel] Getting OS call opcode from stack?
+</A></li>
+	<LI>Next message: <A HREF="002315.html">[hatari-devel] Getting OS call opcode from stack?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2314">[ date ]</a>
+              <a href="thread.html#2314">[ thread ]</a>
+              <a href="subject.html#2314">[ subject ]</a>
+              <a href="author.html#2314">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

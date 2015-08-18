@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005102338210.30272%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002044.html">
+   <LINK REL="Next"  HREF="002046.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005102338210.30272%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon May 10 23:46:32 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002044.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002046.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2045">[ date ]</a>
+              <a href="thread.html#2045">[ thread ]</a>
+              <a href="subject.html#2045">[ subject ]</a>
+              <a href="author.html#2045">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 10 May 2010, David Savinkoff wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> &gt; By &quot;advertised&quot;, do you mean you don't have delay at 11025 Hz
+</I>&gt;<i> &gt; when setting &quot;desiredAudioSpec.samples = 0&quot; ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> I do have a delay, no good news (the delay is proportional to
+</I>&gt;<i> SoundBufferSize as it had been before). At 11025 Hz SoundBufferSize
+</I>&gt;<i> is 512 when &quot;desiredAudioSpec.samples = 0&quot; so this delay is
+</I>&gt;<i> shorter than when using 1024.
+</I>
+Theorically, 508/512 should give 46 ms delay at 11 kHz, which should not 
+be noticeable. If you can hear it, then the delay is bigger than what SDL 
+reports.
+
+&gt;<i> alsamixer info:
+</I>&gt;<i> Card: SBLive 5.1 [SB0060]&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; ?
+</I>&gt;<i> Chip: SigmaTel STAC9708,11&#160;&#160;&#160;&#160;
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; If you set desiredAudioSpec.samples to 508 (=46 ms at 11 kHz) and
+</I>&gt;<i> &gt; then run hatari at freq 11025, what output do you get in stderr ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> Sound_Reset SoundBufferSize 508 SAMPLES_PER_FRAME 184 nGeneratedSamples 692 , ActiveSndBufIdx 692
+</I>&gt;<i> Sound_ResetBufferIndex SoundBufferSize 508 SAMPLES_PER_FRAME 221 nGeneratedSamples 729 , ActiveSndBufIdx 13913
+</I>
+This differs from me there too ; if I set samples to 508, I get :
+
+SoundBufferSize 352 SAMPLES_PER_FRAME 221 nGeneratedSamples 573 , ActiveSndBufIdx 13865
+
+So, in my case alsa is reporting a lower value than the requested number 
+of samples.
+
+It would be interesting to compare when you have sdl 1.2.14 installed, to 
+be sure we look at the same things.
+
+Nicolas
+
+PS : while searching for an older message at 
+<A HREF="https://lists.berlios.de/pipermail/hatari-devel/2010q2/thread.html">https://lists.berlios.de/pipermail/hatari-devel/2010q2/thread.html</A> I 
+noticed that your messages are not readable. The problem seems to be that 
+your mail are only in html ; do you have a way to switch to text when 
+posting, or perhaps to mixed text + html. This would allow a better 
+archiving of the posted mails (this is certainly a limitation of berlios 
+ML, but there's nothing we can do).
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002044.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002046.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2045">[ date ]</a>
+              <a href="thread.html#2045">[ thread ]</a>
+              <a href="subject.html#2045">[ subject ]</a>
+              <a href="author.html#2045">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

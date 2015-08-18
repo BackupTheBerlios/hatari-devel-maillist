@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] STE dmaSnd.c with better sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20dmaSnd.c%20with%20better%20sound&In-Reply-To=%3C4D456FDD.1000807%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002939.html">
+   <LINK REL="Next"  HREF="002952.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] STE dmaSnd.c with better sound</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20dmaSnd.c%20with%20better%20sound&In-Reply-To=%3C4D456FDD.1000807%40free.fr%3E"
+       TITLE="[hatari-devel] STE dmaSnd.c with better sound">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Jan 30 15:04:13 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002939.html">[hatari-devel] STE dmaSnd.c with better sound
+</A></li>
+        <LI>Next message: <A HREF="002952.html">[hatari-devel] STE dmaSnd.c with better sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2948">[ date ]</a>
+              <a href="thread.html#2948">[ thread ]</a>
+              <a href="subject.html#2948">[ subject ]</a>
+              <a href="author.html#2948">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi David
+
+I don't understand why you need to change the size of
+
+LMC1992_Master_Volume_Table
+LMC1992_LeftRight_Volume_Table
+
+
+As the biggest value in these tables is a Uint16.
+
+Same question for
+
+-	Uint16 masterVolume;		/* Master volume command */
+-	Uint16 leftVolume;		/* Left channel volume command */
+-	Uint16 rightVolume;		/* Right channel volume command */
+
+
+
+Another question : in the reset part, you load the following values :
+
+-		microwire.masterVolume = 65535;
+-		microwire.leftVolume = 65535;
+-		microwire.rightVolume = 65535;
++		microwire.masterVolume = 0;
++		microwire.leftVolume = 0;
++		microwire.rightVolume = 0;
+
+
+But according to the tables, values can't be 0, but 7 (for master volume 
+and 655 for LeftRight values.
+Shouldn't we use these values instead ?
+
+
+Why do you add a return just before the end of the function ?
+
+@@ -460,6 +476,7 @@
+  		MixBuffer[nBufIdx][0] = (((MixBuffer[nBufIdx][0] * microwire.leftVolume)&gt;&gt;  16) * microwire.masterVolume)&gt;&gt;  16;
+  		MixBuffer[nBufIdx][1] = (((MixBuffer[nBufIdx][1] * microwire.rightVolume)&gt;&gt;  16) * microwire.masterVolume)&gt;&gt;  16;
+  	}
++	return;
+  }
+
+
+I haven't tested the patch, but shouldn't I keep only the removing of 
+the mono part ?
+
+Regards
+
+Laurent
+
+
+Le 30/01/2011 03:28, David Savinkoff a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Here is a patch that greatly improves STE sound because some samples
+</I>&gt;<i> were not played. There is more to go too... Some Uint16 were changed
+</I>&gt;<i> to int because Uint16 is too small.
+</I>&gt;<i>
+</I>&gt;<i> Now you can compose a masterpiece on Hatari with MaxYmizer.
+</I>&gt;<i>
+</I>&gt;<i> David
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002939.html">[hatari-devel] STE dmaSnd.c with better sound
+</A></li>
+	<LI>Next message: <A HREF="002952.html">[hatari-devel] STE dmaSnd.c with better sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2948">[ date ]</a>
+              <a href="thread.html#2948">[ thread ]</a>
+              <a href="subject.html#2948">[ subject ]</a>
+              <a href="author.html#2948">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

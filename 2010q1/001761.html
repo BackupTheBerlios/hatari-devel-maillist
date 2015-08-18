@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake floppy target
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20floppy%20target&In-Reply-To=%3C20100321152114.7f4b10bb%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001758.html">
+   <LINK REL="Next"  HREF="001764.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake floppy target</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20floppy%20target&In-Reply-To=%3C20100321152114.7f4b10bb%40phineus%3E"
+       TITLE="[hatari-devel] CMake floppy target">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Mar 21 15:21:14 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001758.html">[hatari-devel] CMake floppy target
+</A></li>
+        <LI>Next message: <A HREF="001764.html">[hatari-devel] CMake floppy target
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1761">[ date ]</a>
+              <a href="thread.html#1761">[ thread ]</a>
+              <a href="subject.html#1761">[ subject ]</a>
+              <a href="author.html#1761">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 21 Mar 2010 15:25:44 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On Sunday 21 March 2010, Thomas Huth wrote:
+</I>&gt;<i> &gt; Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;<i> &gt; &gt; Scanning dependencies of target Floppy
+</I>&gt;<i> &gt; &gt; [  1%] Building C object src/CMakeFiles/Floppy.dir/dim.c.o
+</I>&gt;<i> &gt; &gt; [  2%] Building C object src/CMakeFiles/Floppy.dir/msa.c.o
+</I>&gt;<i> &gt; &gt; [  3%] Building C object src/CMakeFiles/Floppy.dir/st.c.o
+</I>&gt;<i> &gt; &gt; [  4%] Building C object src/CMakeFiles/Floppy.dir/zip.c.o
+</I>&gt;<i> &gt; &gt; Linking C static library
+</I>&gt;<i> &gt; &gt; libFloppy.a
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; I wonder why unzip.c isn't there.  It's needed by zip.c which is
+</I>&gt;<i> &gt; &gt; already included and it's needed by hmsa that links Floppy
+</I>&gt;<i> &gt; &gt; library:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; unzip.c is not part of the floppy subsystem. It's generic zip
+</I>&gt;<i> &gt; uncompression functions. It is also used by other parts of Hatari,
+</I>&gt;<i> &gt; e.g. for loading zipped TOS ROM images.
+</I>&gt;<i> 
+</I>&gt;<i> Why zip.c is there?  It's used by other parts of Hatari too, at least
+</I>&gt;<i> file.c, and it depends on unzip.c.
+</I>
+Hm, I think it's grown historically this way. zip.c started as a
+file for floppy disks only, then at one point in time got this
+dependency to file.c, too...
+If you're picky, feel free to clean it up.
+
+&gt;<i> CMake stuff doesn't work for me properly yet (and I'm not completely
+</I>&gt;<i> happy with the defaults it uses).  I guess we'll see after Hatari 1.4
+</I>&gt;<i> release whether there are others with similar issues.
+</I>
+Any chance that you can figure out the problem with hatari.1.gz ? You
+are the only one so far who ran into this problem, so maybe it's just
+the cmake version of your Debian that is too old...?
+(By the way, I am using &quot;cmake version 2.6-patch 4&quot;)
+
+&gt;<i> I'm fine for removing the normal Makefiles sometime before v1.5
+</I>&gt;<i> release, then the CMake stuff should be tested widely &amp; working well
+</I>&gt;<i> enough.
+</I>
+Ok.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001758.html">[hatari-devel] CMake floppy target
+</A></li>
+	<LI>Next message: <A HREF="001764.html">[hatari-devel] CMake floppy target
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1761">[ date ]</a>
+              <a href="thread.html#1761">[ thread ]</a>
+              <a href="subject.html#1761">[ subject ]</a>
+              <a href="author.html#1761">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

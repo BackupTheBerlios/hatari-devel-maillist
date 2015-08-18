@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Execution history debugger command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201106022127.15033.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003534.html">
+   <LINK REL="Next"  HREF="003525.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Execution history debugger command</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201106022127.15033.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Execution history debugger command">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Jun  2 20:27:14 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003534.html">[hatari-devel] Execution history debugger command
+</A></li>
+        <LI>Next message: <A HREF="003525.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3524">[ date ]</a>
+              <a href="thread.html#3524">[ thread ]</a>
+              <a href="subject.html#3524">[ subject ]</a>
+              <a href="author.html#3524">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On torstai 02 kes&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> &gt; Before running it, does your version have same checksums as the version
+</I>&gt;<i> &gt; I just downloaded:
+</I>&gt;<i> &gt; $ md5sum Steem.exe steemupdate.exe unzipd32.dll
+</I>&gt;<i> &gt; 7d89731bd2bade75cf973ccd308ed50f  Steem.exe
+</I>&gt;<i> &gt; 259d0340504a80fdcb2371367c3e704f  steemupdate.exe
+</I>&gt;<i> &gt; aaddb5561976f09c2d002d8ebc78d54d  unzipd32.dll
+</I>&gt;<i> 
+</I>&gt;<i> Yes, I have the same md5sum for those files.
+</I>
+Thanks.
+
+When I ran Steem with Wine the first time, the icons for the Atari window
+were always black (but happily they have working mouseover explanations)
+and it crashed after use.  After disabling DirectDraw, it started to work
+OK.  It's still a bit crashy though.
+
+
+Steem debugger's features which are missing from the current
+Hatari CLI debugger:
+
+* Things that would seem to be straightforward to add:
+  - History.  I would need to add tracking also instruction cycles
+    to the code I posted earlier
+    (= Steem History view &amp; Trace info)
+  - Showing values both in different lengts and numeric bases.
+    In Hatari one gets latter with &quot;evaluate&quot; command, e.g. &quot;e a0&quot;,
+    but that doesn't show the value if it were long/word/byte
+  - All register values being shown with above info
+    (= Steem Register monitor)
+  - info commands for PSG, MFP, FDC and IKBD register values
+    (= Steem monitors for these)
+  - Info command for &quot;timings&quot; i.e. cycles since HBL/VBL, timer values,
+    video address &amp; scanline
+    (= Steem Timings view)
+  - memory dump in text format
+    (= Steem Text monitor)
+  - Text string and binary values (hex) search
+    (= widgets in Steem monitor windows)
+  - Disasm format options being changable at run-time
+    (= Steem options)
+  - Run for N cycles
+    (Hatari continue command accepts only instructions, not cycles)
+
+* These would be harder, either because I'm not sure where/how these
+  would be best integrated or because they're more work:
+  - Monitoring reads &amp; writes to specific address.  Hatari supports only
+    monitoring changes to values, not having breakpoints of reading values
+    or writing the same value
+  - Break on exceptions 2-8 vs. bombs vs. don't break.
+    Hatari has only an option to break on address &amp; bus errors
+    &amp; uninitialized exception handler.
+  - Showing breakpoints in instruction dumps.  Hatari breakpoints
+    are more advanced than the trivial address breakpoints...
+  - Adding new symbol names for arbitrary addresses one at the time.
+    Hatari debugger currently requires new symbols to be added to
+    a file containing all the symbols + reloading that file
+  - Memory dump that shows also disassembly and values in different bases
+    (= Steem Memory monitor)
+  - Stack content display
+  - Shift Atari screen contents by 0/2/4/6 bytes
+
+(I think rest of the Steem features can be supported by the Hatari
+breakpoints.)
+
+
+Do any of the above listed items (especially the easy ones) sound
+interesting to be had in the CLI debugger?
+
+(As I'm already listing missing Monst features as potential TODOs
+ for Hatari debugger, I'll add these also to the todo.txt file.)
+
+
+As to the Steem UI on top of these features, Steem's UI really has a *huge*
+amount of functionality integrated to it.  With Hatari it would also need
+to work for CPU &amp; DSP as Hatari supports both.
+
+So... I think you need to specify quite in detail what you would like to
+have in the debugger GUI and in which priority order before it makes much
+sense to start coding it.
+
+--
+
+&gt;<i> &gt; [...]
+</I>&gt;<i> Well, if I recall correctly Vice and/or Openmsx are having different UI,
+</I>&gt;<i> I don't know if it's possible to mix qt/cocoa, but in that case it could
+</I>&gt;<i> be possible to make a QT only UI and use it also on OSX (if the user
+</I>&gt;<i> prefers it to the native osx look).
+</I>
+Hm.  Switching Hatari itself from SDL-only to Qt+SDL would be quite large
+change.  Before considering that, I'd like to see for a bit longer how well
+Nokia manages Qt...
+
+
+&gt;<i> &gt; While the SDL debugger UI would be bound by the Hatari screen size, it
+</I>&gt;<i> &gt; doesn't mean that the output would have to be scaled like the Atari
+</I>&gt;<i> &gt; screen is.  Adding --desktop option support for ST mode too and
+</I>&gt;<i> &gt; running in fullscreen would guarantee largest possible resolution.
+</I>&gt;<i> 
+</I>&gt;<i> In my case running --desktop on a 1280x1024 monitor then pressing F11
+</I>&gt;<i> doesn't give that much more space (visually it looks the same as if I
+</I>&gt;<i> didn't use &quot;--desktop 1&quot;)
+</I>
+If you're using ST mode, you need my earlier patch to have --desktop option
+effect that too.
+
+Even if the Atari screen content fills only part of the screen
+the SDL resolution used by Hatari window is what's important.
+Hatari can use all of that area.
+
+
+&gt;<i> &gt; If Hatari would be running at e.g. 1280x1024, you could fit several
+</I>&gt;<i> &gt; hex/asm dumps on same screen...  How many of them you typically and at
+</I>&gt;<i> &gt; maximum would want to compare at the same time ?
+</I>&gt;<i> 
+</I>&gt;<i> Do you mean emulating a 1280x1024 resolution in GEM ? But in that case
+</I>&gt;<i> it won't work with demos and games, and those are certainly the only
+</I>&gt;<i> candidates for a debugger.
+</I>
+I mean that however the Atari screen is put to the Hatari's window,
+that doesn't affect how e.g. debugger could use that area.  If debugger UI
+would use 8x16 font, 1280x1024 pixel Hatari window could accommodate 180x60
+amount of textual information.
+
+
+&gt;<i> The problem with single window (everything in Hatari's current window)
+</I>&gt;<i> is that once in the debugger, you can't see the ST screen anymore. And
+</I>&gt;<i> when you want to debug colors/blitter or other gfx problems, it's very
+</I>&gt;<i> important to have the full Atari video screen visible, not overlapped by
+</I>&gt;<i> some other informations.
+</I>&gt;<i> 
+</I>&gt;<i> I know lot of things can be made with ncurses, including using the
+</I>&gt;<i> mouse, but what if you want to resize some of those internal windows to
+</I>&gt;<i> make an hexa dump bigger/smaller for example ? You need to handle some
+</I>&gt;<i> kind of window resizing in ncurse. Same if you want to reorder/move
+</I>&gt;<i> those windows inside Hatari.
+</I>&gt;<i> Quite a nightmare in the end, reinventing the wheel in some ways, I
+</I>&gt;<i> don't think ncurse is the proper solution when you want to handle a
+</I>&gt;<i> variable number of windows, with different size and position.
+</I>&gt;<i> 
+</I>&gt;<i> Having external windows seems really much more useful to me : you keep
+</I>&gt;<i> the Atari's video screen untouched and you have a bunch of windows
+</I>&gt;<i> locked on registers/asm/hex dump. You're not limited to Hatari's
+</I>&gt;<i> resolution, but you can benefit of all the space your OS is giving you
+</I>&gt;<i> (if you have dual monitor for example).
+</I>
+Ok, then it really needs a real, modern widget toolkit.
+
+In that case I think it's better to do the UI separately from Hatari
+and utilize the remote API.  Only if the remote UI turns out infeasible,
+I would go for integrating everything to Hatari binary itself.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003534.html">[hatari-devel] Execution history debugger command
+</A></li>
+	<LI>Next message: <A HREF="003525.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3524">[ date ]</a>
+              <a href="thread.html#3524">[ thread ]</a>
+              <a href="subject.html#3524">[ subject ]</a>
+              <a href="author.html#3524">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

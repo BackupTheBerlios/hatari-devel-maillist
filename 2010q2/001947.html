@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Linking with readline
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Linking%20with%20readline&In-Reply-To=%3C4BD87362.9010905%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001926.html">
+   <LINK REL="Next"  HREF="001927.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Linking with readline</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Linking%20with%20readline&In-Reply-To=%3C4BD87362.9010905%40free.fr%3E"
+       TITLE="[hatari-devel] Linking with readline">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Apr 28 19:41:54 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001926.html">[hatari-devel] Linking with readline
+</A></li>
+        <LI>Next message: <A HREF="001927.html">[hatari-devel] Regression in falcon psg sound ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1947">[ date ]</a>
+              <a href="thread.html#1947">[ thread ]</a>
+              <a href="subject.html#1947">[ subject ]</a>
+              <a href="author.html#1947">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Very latest version doesn't link for me :
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent at OrdiLolo</A>:~/Atari/hatari/build/src$ make
+[  4%] Built target Floppy
+[  5%] Built target build68k
+[  8%] Built target gencpu
+[ 17%] Built target UaeCpu
+[ 25%] Built target Debug
+[ 33%] Built target Falcon
+[ 47%] Built target GuiSdl
+Linking C executable hatari
+debug/libDebug.a(debugui.c.o): In function `DebugUI_Completion':
+debugui.c:(.text+0x241): undefined reference to `rl_point'
+debugui.c:(.text+0x265): undefined reference to `rl_line_buffer'
+debugui.c:(.text+0x315): undefined reference to `rl_line_buffer'
+debugui.c:(.text+0x39d): undefined reference to 
+`rl_attempted_completion_over'
+debugui.c:(.text+0x3b9): undefined reference to `rl_completion_matches'
+debugui.c:(.text+0x3ed): undefined reference to `rl_completion_matches'
+debugui.c:(.text+0x41c): undefined reference to `rl_completion_matches'
+debugui.c:(.text+0x43b): undefined reference to `rl_completion_matches'
+debugui.c:(.text+0x445): undefined reference to 
+`rl_filename_completion_function'
+debugui.c:(.text+0x454): undefined reference to `rl_completion_matches'
+debug/libDebug.a(debugui.c.o): In function `DebugUI':
+debugui.c:(.text+0x12df): undefined reference to `rl_readline_name'
+debugui.c:(.text+0x12ea): undefined reference to 
+`rl_attempted_completion_function'
+debugui.c:(.text+0x12f3): undefined reference to `readline'
+debugui.c:(.text+0x1369): undefined reference to `add_history'
+collect2: ld returned 1 exit status
+make[2]: *** [src/hatari] Erreur 1
+make[1]: *** [src/CMakeFiles/hatari.dir/all] Erreur 2
+make: *** [all] Erreur 2
+
+
+
+Regards
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001926.html">[hatari-devel] Linking with readline
+</A></li>
+	<LI>Next message: <A HREF="001927.html">[hatari-devel] Regression in falcon psg sound ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1947">[ date ]</a>
+              <a href="thread.html#1947">[ thread ]</a>
+              <a href="subject.html#1947">[ subject ]</a>
+              <a href="author.html#1947">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

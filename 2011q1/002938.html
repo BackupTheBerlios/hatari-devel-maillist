@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari CPU frequency shifter issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20CPU%20frequency%20shifter%20issue&In-Reply-To=%3C4D44A1EC.2020005%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002935.html">
+   <LINK REL="Next"  HREF="002955.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari CPU frequency shifter issue</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20CPU%20frequency%20shifter%20issue&In-Reply-To=%3C4D44A1EC.2020005%40free.fr%3E"
+       TITLE="[hatari-devel] Hatari CPU frequency shifter issue">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Jan 30 00:25:32 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002935.html">[hatari-devel] Hatari CPU frequency shifter issue
+</A></li>
+        <LI>Next message: <A HREF="002955.html">[hatari-devel] Hatari CPU frequency shifter issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2938">[ date ]</a>
+              <a href="thread.html#2938">[ thread ]</a>
+              <a href="subject.html#2938">[ subject ]</a>
+              <a href="author.html#2938">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Eero,
+
+Give me a day or two to have a look at your patch, please.
+
+Regards
+Laurent
+
+
+Le 29/01/2011 21:59, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On perjantai 28 tammikuu 2011, Eero Tamminen wrote:
+</I>&gt;&gt;&gt;<i> Actually, no memory snapshots are required.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Just opening and closing the Hatari Options menu breaks the Mahab demo
+</I>&gt;&gt;&gt;<i> for me.
+</I>&gt;&gt;<i> F12 + Enter does it.   Canceling the Options menu with Esc doesn't have
+</I>&gt;&gt;<i> any issues.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> After iterating this a lot with debug prints, I found out that
+</I>&gt;&gt;<i> although no options were changed, this code in
+</I>&gt;&gt;<i> configuration.c::Configuration_Apply():
+</I>&gt;<i> ...
+</I>&gt;&gt;<i> Changes the nCpuFreqShift from zero to one and that breaks (freezes)
+</I>&gt;&gt;<i> Mahab.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If Hatari is started with something else than --machine st/ste,
+</I>&gt;&gt;<i> nCpuFreqShift is non-zero and Mahab won't even start.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I strongly think that above code should be moved to
+</I>&gt;&gt;<i> M68000_CheckCpuLevel() which is called both by TOS switch and
+</I>&gt;&gt;<i> Configuration_Apply() code.  Rest of the CPU related checks are anyway
+</I>&gt;&gt;<i> done there already.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Does anybody have any objections for this?
+</I>&gt;<i> Patch attached.  With this it made sense to rename the function too
+</I>&gt;<i> and re-ordering the lines in tos.c makes it a bit clearer what affects what.
+</I>&gt;<i>
+</I>&gt;<i> This fixes Hatari to always work the same way (as it should) regardless of
+</I>&gt;<i> TOS version changes and means that Mahab demo doesn't anymore work
+</I>&gt;<i> when using the old UAE core (even when starting with ST emulation).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> As to nCpuFreqShift variable, besides above code, it's referenced only in
+</I>&gt;&gt;<i> following places:
+</I>&gt;&gt;<i> ----------
+</I>&gt;&gt;<i> ./includes/m68000.h:extern int nCpuFreqShift;
+</I>&gt;&gt;<i> ./includes/m68000.h:    cycles = cycles&gt;&gt;  nCpuFreqShift;
+</I>&gt;&gt;<i> ./includes/m68000.h:    cycles = cycles&gt;&gt;  nCpuFreqShift;
+</I>&gt;&gt;<i> ./m68000.c:int nCpuFreqShift;              /* Used to emulate higher CPU
+</I>&gt;&gt;<i> frequencies: 0=8MHz, 1=16MHz, 2=32Mhz */
+</I>&gt;&gt;<i> ./blitter.c:    nCyclesMainCounter += all_cycles&gt;&gt;  nCpuFreqShift;
+</I>&gt;&gt;<i> ./blitter.c:
+</I>&gt;&gt;<i> CycInt_AddRelativeInterrupt((CurrentInstrCycles+nWaitStateCycles)&gt;&gt;nCpuFr
+</I>&gt;&gt;<i> eqShift, ----------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Because Mahab works fine with it being zero and breaks when it's
+</I>&gt;&gt;<i> non-zero, maybe DSP cycle count isn't taking it into account properly?
+</I>&gt;<i> Laurent?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110130/cd3fc342/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110130/cd3fc342/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002935.html">[hatari-devel] Hatari CPU frequency shifter issue
+</A></li>
+	<LI>Next message: <A HREF="002955.html">[hatari-devel] Hatari CPU frequency shifter issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2938">[ date ]</a>
+              <a href="thread.html#2938">[ thread ]</a>
+              <a href="subject.html#2938">[ subject ]</a>
+              <a href="author.html#2938">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Write protection options?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Write%20protection%20options%3F&In-Reply-To=%3C201004181836.44859.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001869.html">
+   <LINK REL="Next"  HREF="001918.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Write protection options?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Write%20protection%20options%3F&In-Reply-To=%3C201004181836.44859.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Write protection options?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Apr 18 17:36:44 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001869.html">[hatari-devel] Write protection options?
+</A></li>
+        <LI>Next message: <A HREF="001918.html">[hatari-devel] Write protection options?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1870">[ date ]</a>
+              <a href="thread.html#1870">[ thread ]</a>
+              <a href="subject.html#1870">[ subject ]</a>
+              <a href="author.html#1870">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 18 April 2010, Eero Tamminen wrote:
+&gt;<i> While going through Hatari options in the SDL options GUI, I noticed that
+</I>&gt;<i> we have floppy write protection option which can be off, on or auto. 
+</I>&gt;<i> Auto means that protection is taken from the floppy image access rights.
+</I>&gt;<i> This doesn't have command line option.
+</I>&gt;<i>
+</I>&gt;<i> Then we have GEMDOS HD emu which write protection can be only on or off.
+</I>&gt;<i> This has --mount-changes command line option.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I was wondering whether it would make sense to have command line options
+</I>&gt;<i> for both, and with similar names, like this:
+</I>&gt;<i>   --write-protect-floppy &lt;off/on/auto&gt;
+</I>&gt;<i>   --write-protect-hd &lt;off/on/auto&gt;
+</I>&gt;<i>
+</I>&gt;<i> The HD protection would for now be only GEMDOS emulation but I think
+</I>&gt;<i> it could be expanded to ACSI and IDE emulation too.
+</I>&gt;<i>
+</I>&gt;<i> For GEMDOS emulation &quot;auto&quot; setting would mean that just Fattrib() calls
+</I>&gt;<i> fail.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Besides the --mount-changes option, the configuration file
+</I>&gt;<i> bDoGemdosChanges option name would change to nWriteProtection like it's
+</I>&gt;<i> for Floppies.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The reason to do the change before release is that they haven't been in
+</I>&gt;<i> any release yet...
+</I>
+
+Btw. Currently the boot drive is specified according to which floppy or hd
+image or gemdos dir is given last on the command line.  This _implicit_ 
+thing overrides whatever is set in the configuration file.  Sometimes it
+has confused users.
+
+I wonder whether that should be removed (at least for other things than
+floppy image given as argument instead of as option) and instead an explicit
+option added to change the boot drive from what's set in the configuration?
+
+Or if only a new option:
+	--boot-drive &lt;a-z&gt;
+
+Is added, should it be made so that it will override any boot drive
+settings implied by other command line options?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001869.html">[hatari-devel] Write protection options?
+</A></li>
+	<LI>Next message: <A HREF="001918.html">[hatari-devel] Write protection options?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1870">[ date ]</a>
+              <a href="thread.html#1870">[ thread ]</a>
+              <a href="subject.html#1870">[ subject ]</a>
+              <a href="author.html#1870">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

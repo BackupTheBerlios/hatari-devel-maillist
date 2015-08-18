@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Wotanoid problem : final fix before commit ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wotanoid%20problem%20%3A%20final%20fix%20before%20commit%20%3F&In-Reply-To=%3C201001252152.26964.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001343.html">
+   <LINK REL="Next"  HREF="001359.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Wotanoid problem : final fix before commit ?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wotanoid%20problem%20%3A%20final%20fix%20before%20commit%20%3F&In-Reply-To=%3C201001252152.26964.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Wotanoid problem : final fix before commit ?">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jan 25 20:52:26 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001343.html">[hatari-devel] Wotanoid problem : final fix before commit ?
+</A></li>
+        <LI>Next message: <A HREF="001359.html">[hatari-devel] Wotanoid problem : final fix before commit ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1350">[ date ]</a>
+              <a href="thread.html#1350">[ thread ]</a>
+              <a href="subject.html#1350">[ subject ]</a>
+              <a href="author.html#1350">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 24 January 2010, Thomas Huth wrote:
+&gt;<i> BUT: According to <A HREF="http://toshyp.atari.org/005001.htm,">http://toshyp.atari.org/005001.htm,</A> the GEMDOS does
+</I>&gt;<i> not preserve the registers D0 - D2 during the trap, so D2 might have
+</I>&gt;<i> been altered to another value during the Fopen !
+</I>&gt;<i> So this load function might just work by accident on a real Falcon.
+</I>&gt;<i>
+</I>&gt;<i> I suggest you try the following:
+</I>&gt;<i>
+</I>&gt;<i> 1) Create an IDE hard disk image and copy the game on it
+</I>&gt;<i> 2) Check wether it works from IDE disk now after you modified
+</I>&gt;<i>    ioMemTabFalcon.c
+</I>
+Doesn't need IDE hard disk, running it from a HD floppy image is enough
+after the ioMemTabFalcon.c patch.   As a game, Wotanoid is pretty crappy
+though.
+
+
+Btw. Why Hatari GUI supports creating only floppy images with sizes up to
+950kB?  E.g. Falcon supports 1.44MB HD floppy drives.
+
+Heck, even my old STFm supported HD floppies fine after I had soldered one
+NAND chip[1] inside it and replaced the DD-drive with HD one + had small
+utility in auto/-folder.
+
+
+&gt;<i> 3) Add a breakpoint right before the above Fread trap to look at D2
+</I>&gt;<i>    when you've loaded the game from IDE disk.
+</I>&gt;<i> 4) Add a breakpoint right after the above Fread trap to look at D0
+</I>&gt;<i>    when you've loaded the game from IDE disk... maybe this helps to
+</I>&gt;<i>    understand the details of this problem.
+</I>
+
+	- Eero
+
+[1] When I soldered it some 15 years ago, it's pins were already rusty
+(it was the only one I found at home when I got the urge to try that).
+But the HD drive still worked when I last tried my STfm last fall. :-)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001343.html">[hatari-devel] Wotanoid problem : final fix before commit ?
+</A></li>
+	<LI>Next message: <A HREF="001359.html">[hatari-devel] Wotanoid problem : final fix before commit ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1350">[ date ]</a>
+              <a href="thread.html#1350">[ thread ]</a>
+              <a href="subject.html#1350">[ subject ]</a>
+              <a href="author.html#1350">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

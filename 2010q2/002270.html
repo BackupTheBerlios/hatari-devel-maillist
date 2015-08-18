@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Small bugs (fix before 1.4?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20bugs%20%28fix%20before%201.4%3F%29&In-Reply-To=%3CAANLkTimlnQtoENcEHvf-lU_EJvcFZdJ1O9fJbMJh4zxF%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002269.html">
+   <LINK REL="Next"  HREF="002271.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Small bugs (fix before 1.4?)</H1>
+    <B>K&#229;re Andersen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20bugs%20%28fix%20before%201.4%3F%29&In-Reply-To=%3CAANLkTimlnQtoENcEHvf-lU_EJvcFZdJ1O9fJbMJh4zxF%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Small bugs (fix before 1.4?)">kareandersen at gmail.com
+       </A><BR>
+    <I>Fri Jun  4 22:57:33 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002269.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+        <LI>Next message: <A HREF="002271.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2270">[ date ]</a>
+              <a href="thread.html#2270">[ thread ]</a>
+              <a href="subject.html#2270">[ subject ]</a>
+              <a href="author.html#2270">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, Jun 4, 2010 at 10:28 PM, Jerome Vernet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">vernet.jerome at wanadoo.fr</A>&gt; wrote:
+&gt;<i> Le 04/06/10 21:21, Anders Eriksson a &#233;crit :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I use the OS X GUI as much as possible instead of the SDL one.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> About loading config-files from the OSX GUI; after loading a couple of
+</I>&gt;&gt;<i> files Hatari segfaults, the same with statusbar toggling. Using the SDL GUI
+</I>&gt;&gt;<i> for this does not invoke the crash. So something is not healthy in the OS X
+</I>&gt;&gt;<i> GUI.
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> same things here. Really don't know why....
+</I>
+Unfortunately I cant test right now, but I'm thinking there is
+something fishy in PrefsController.m from line 428 and out that
+function. Why do you need to copy the path string anyway? (I could be
+way off tho, just wondering...)
+
+-K&#229;re
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002269.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+	<LI>Next message: <A HREF="002271.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2270">[ date ]</a>
+              <a href="thread.html#2270">[ thread ]</a>
+              <a href="subject.html#2270">[ subject ]</a>
+              <a href="author.html#2270">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

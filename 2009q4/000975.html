@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] MoonGames
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MoonGames&In-Reply-To=%3C200911221836.27389.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000974.html">
+   <LINK REL="Next"  HREF="000977.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] MoonGames</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MoonGames&In-Reply-To=%3C200911221836.27389.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] MoonGames">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Nov 22 17:36:27 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000974.html">[hatari-devel] MoonGames
+</A></li>
+        <LI>Next message: <A HREF="000977.html">[hatari-devel] MoonGames
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#975">[ date ]</a>
+              <a href="thread.html#975">[ thread ]</a>
+              <a href="subject.html#975">[ subject ]</a>
+              <a href="author.html#975">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 22 November 2009, Laurent Sallafranque wrote:
+&gt;<i> I always run hatari with -D option.
+</I>
+&quot;-D&quot; is intended just for debugging certain types of exceptions, such as bus
+errors.  It will just cause emulator to call internal debugger when
+the emulated code triggers them.
+
+I would assume that feature to be most useful when one's debugging why his
+Atari program doesn't work correctly on real Atari either... :-)
+
+
+&gt;<i> When I start moongame, it stops with :
+</I>&gt;<i>
+</I>&gt;<i> Uninitialized exception handler #28!
+</I>
+This is in UAE core in newcpu.c::Exception():
+------------
+    /* Set PC and flags */
+    if (bExceptionDebugging &amp;&amp; get_long (regs.vbr + 4*nr) == 0) {
+        write_log(&quot;Uninitialized exception handler #%i!\n&quot;, nr);
+        DebugUI();
+    }
+    m68k_setpc (get_long (regs.vbr + 4*nr));
+    fill_prefetch_0 ();
+    /* Handle trace flags depending on current state */
+    exception_trace (nr);
+------------
+
+According to earlier UAE debug statement:
+---------
+    LOG_TRACE(TRACE_CPU_EXCEPTION, &quot;cpu exception %d currpc %x buspc %x 
+newpc %x fault_e3 %x op_e3 %hx addr_e3 %x\n&quot;,
+        nr, currpc, BusErrorPC, get_long (regs.vbr + 4*nr), 
+last_fault_for_exception_3, last_op_for_exception_3, 
+last_addr_for_exception_3);
+---------
+
+This value refers to the next PC position on exceptions.  I.e. the exception
+handler address is zero.  What's the exception number (&quot;nr&quot;)?
+
+Looking at the end of this function, one possible issue for the game not
+working properly could be that an incorrect number of cycles are used for
+that exception.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000974.html">[hatari-devel] MoonGames
+</A></li>
+	<LI>Next message: <A HREF="000977.html">[hatari-devel] MoonGames
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#975">[ date ]</a>
+              <a href="thread.html#975">[ thread ]</a>
+              <a href="subject.html#975">[ subject ]</a>
+              <a href="author.html#975">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] mac OS X version for Hatari 1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20mac%20OS%20X%20version%20for%20Hatari%201.5&In-Reply-To=%3C201107112340.02544.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003681.html">
+   <LINK REL="Next"  HREF="003686.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] mac OS X version for Hatari 1.5</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20mac%20OS%20X%20version%20for%20Hatari%201.5&In-Reply-To=%3C201107112340.02544.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] mac OS X version for Hatari 1.5">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jul 11 22:40:02 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003681.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+        <LI>Next message: <A HREF="003686.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3684">[ date ]</a>
+              <a href="thread.html#3684">[ thread ]</a>
+              <a href="subject.html#3684">[ subject ]</a>
+              <a href="author.html#3684">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On maanantai 11 hein&#228;kuu 2011, Deniz Turkoglu wrote:
+&gt;<i> On Mon, Jul 11, 2011 at 12:04 PM, Nicolas Pomar&#232;de
+</I>&gt;<i> &gt;&gt;  wrote:
+</I>&gt;<i> &gt;&gt;&gt; Good, thanks a lot for testing. A few more sound patches to commit
+</I>&gt;<i> &gt;&gt;&gt; and release should be ready to be made (at last !)
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; Here is the build log on Mac OS X 10.6 (with warnings)
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Thanks for the logs, this is roughly  what I get too under linux, so
+</I>&gt;<i> &gt; those warnings should be harmless.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;&gt; [ 17%] Building C object src/debug/CMakeFiles/Debug.dir/debugui.c.o
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/debug/debugui.c: In function
+</I>&gt;<i> &gt;&gt; &#8216;DebugUI_GetCommand&#8217;:
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/debug/debugui.c:700: warning:
+</I>&gt;<i> &gt;&gt; assignment discards qualifiers from pointer target type
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; This one seems new ? Eero ?
+</I>&gt;<i> 
+</I>&gt;<i> It expects a char* and we pass a const,
+</I>
+The OSX readline header is either broken or obsolete.
+
+According to readline documentation:
+	info readline --index-search rl_readline_name
+------------
+ -- Variable: const char * rl_readline_name
+     This variable is set to a unique name by each application using
+     Readline.  The value allows conditional parsing of the inputrc file
+     (*note Conditional Init Constructs::).
+-------------
+
+Which version of the readline your OSX has?
+
+(Above doc is for v6.1)
+
+
+&gt;<i> replaced it strdup (or we can plain cast).
+</I>
+With your patch the code would leak memory frequently, you would need
+to free your alloc too.
+
+
+
+&gt;<i> &gt;&gt; [ 26%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp_cpu.c.o
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c: In function
+</I>&gt;<i> &gt;&gt; &#8216;dsp_pm_4&#8217;:
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: warning:
+</I>&gt;<i> &gt;&gt; &#8216;save_ly&#8217; may be used uninitialized in this function
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: note:
+</I>&gt;<i> &gt;&gt; &#8216;save_ly&#8217; was declared here
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: warning:
+</I>&gt;<i> &gt;&gt; &#8216;save_lx&#8217; may be used uninitialized in this function
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/falcon/dsp_cpu.c:3715: note:
+</I>&gt;<i> &gt;&gt; &#8216;save_lx&#8217; was declared here
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Laurent knows about those one, they're &quot;normal&quot;
+</I>
+I'm not seeing them with GCC, only with Clang.
+
+(I went through them in my earlier mail about DSP warnings.)
+
+
+&gt;<i> &gt;&gt; [ 30%] Building C object src/falcon/CMakeFiles/Falcon.dir/videl.c.o
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/falcon/videl.c: In function
+</I>&gt;<i> &gt;&gt; &#8216;VIDEL_ST_ShiftModeWriteByte&#8217;:
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/falcon/videl.c:214: warning:
+</I>&gt;<i> &gt;&gt; &#8216;video_mode&#8217; may be used uninitialized in this function
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/falcon/videl.c:214: warning:
+</I>&gt;<i> &gt;&gt; &#8216;line_width&#8217; may be used uninitialized in this function
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I think these are also intended.
+</I>
+It's a compiler problem.
+
+It doesn't notice that:
+	switch (value &amp; 0x3) {
+	case 0:
+		...
+	case 1:
+		...
+	case 2:
+		...
+	case 3:
+		...
+covers all possible cases.
+
+I guess OSX has more or less obsolete version of GCC.
+
+
+&gt;<i> &gt;&gt; Linking C static library libFalcon.a
+</I>&gt;<i> &gt;&gt; /usr/bin/ranlib: file: libFalcon.a(microphone.c.o) has no symbols
+</I>&gt;<i> &gt;&gt; /usr/bin/ranlib: file: libFalcon.a(microphone.c.o) has no symbols
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I don't know, maybe OS X specific.
+</I>
+Microphone emulation is enabled only if libportaudio-dev is found.
+If not, that .o file indeed doesn't have symbols.
+
+
+&gt;<i> It turns out this means it is not used:
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://stackoverflow.com/questions/4929255/building-static-libraries-on-m">http://stackoverflow.com/questions/4929255/building-static-libraries-on-m</A>
+</I>&gt;<i> ac-using-cmake-and-gcc
+</I>&gt;<i> 
+</I>&gt;<i> &gt;&gt; [ 54%] Building C object src/CMakeFiles/hatari.dir/dmaSnd.c.o
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/dmaSnd.c:371: warning:
+</I>&gt;<i> &gt;&gt; &#8216;DmaSnd_FIFO_ReadByte&#8217; defined but not used
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/dmaSnd.c:389: warning:
+</I>&gt;<i> &gt;&gt; &#8216;DmaSnd_FIFO_ReadWord&#8217; defined but not used
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I will remove these soon, they're not used anymore.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;&gt; [ 90%] Building C object src/CMakeFiles/hatari.dir/gui-osx/Shared.m.o
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/gui-osx/Shared.m: In function
+</I>&gt;<i> &gt;&gt; &#8216;-[ModalWrapper runModal:]&#8217;:
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/gui-osx/Shared.m:26: warning: class
+</I>&gt;<i> &gt;&gt; 'ModalWrapper' does not implement the 'NSWindowDelegate' protocol
+</I>&gt;<i> 
+</I>&gt;<i> This is OSX 10.6 acting up, fixed.
+</I>&gt;<i> 
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/gui-osx/Shared.m: In function
+</I>&gt;<i> &gt;&gt; &#8216;GuiOsx_ExportPathString&#8217;:
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/gui-osx/Shared.m:63: warning:
+</I>&gt;<i> &gt;&gt; &#8216;cString&#8217; is deprecated (declared at
+</I>&gt;<i> &gt;&gt; /System/Library/Frameworks/Foundation.framework/Headers/NSString.h:367
+</I>&gt;<i> &gt;&gt; ) /Users/solskogen/source/hatari/src/gui-osx/Shared.m:63: warning:
+</I>&gt;<i> &gt;&gt; &#8216;cString&#8217; is deprecated (declared at
+</I>&gt;<i> &gt;&gt; /System/Library/Frameworks/Foundation.framework/Headers/NSString.h:367
+</I>&gt;<i> &gt;&gt; )
+</I>&gt;<i> 
+</I>&gt;<i> Replaced the deprecated method.
+</I>&gt;<i> 
+</I>&gt;<i> &gt;&gt; [ 91%] Building C object
+</I>&gt;<i> &gt;&gt; src/CMakeFiles/hatari.dir/gui-osx/CreateFloppyController.m.o
+</I>&gt;<i> &gt;&gt; [ 92%] Building C object src/CMakeFiles/hatari.dir/gui-osx/SDLMain.m.o
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m: In function
+</I>&gt;<i> &gt;&gt; &#8216;-[SDLMain debugUI:]&#8217;:
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:338: warning:
+</I>&gt;<i> &gt;&gt; implicit declaration of function &#8216;DebugUI&#8217;
+</I>&gt;<i> &gt;&gt; /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m: In function
+</I>&gt;<i> &gt;&gt; &#8216;main&#8217;: /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:681:
+</I>&gt;<i> &gt;&gt; warning: passing argument 2 of &#8216;NSApplicationMain&#8217; from incompatible
+</I>&gt;<i> &gt;&gt; pointer type
+</I>&gt;<i> 
+</I>&gt;<i> Indeed they are harmless, but removed the warnings anyway. The patch
+</I>&gt;<i> is attached, the binary works. The version number is still 1.4 for OSX
+</I>&gt;<i> btw, if we are going to release soon we should change it :)
+</I>&gt;<i> 
+</I>&gt;<i> -deniz
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Can't say for this part, seems to be harmless, but I don't have OS X to
+</I>&gt;<i> &gt; look further.
+</I>
+I guess the OSX specific part of the patch could be applied.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003681.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+	<LI>Next message: <A HREF="003686.html">[hatari-devel] mac OS X version for Hatari 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3684">[ date ]</a>
+              <a href="thread.html#3684">[ thread ]</a>
+              <a href="subject.html#3684">[ subject ]</a>
+              <a href="author.html#3684">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

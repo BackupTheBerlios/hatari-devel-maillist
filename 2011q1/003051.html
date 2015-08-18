@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Fwd: Falcon memory
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fwd%3A%20Falcon%20memory&In-Reply-To=%3C20110215101804.1389a0e1%40think43%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003045.html">
+   <LINK REL="Next"  HREF="003041.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Fwd: Falcon memory</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fwd%3A%20Falcon%20memory&In-Reply-To=%3C20110215101804.1389a0e1%40think43%3E"
+       TITLE="[hatari-devel] Fwd: Falcon memory">huth at users.berlios.de
+       </A><BR>
+    <I>Tue Feb 15 10:18:04 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003045.html">[hatari-devel] Fwd: Falcon memory
+</A></li>
+        <LI>Next message: <A HREF="003041.html">[hatari-devel] Chaos AD demo question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3051">[ date ]</a>
+              <a href="thread.html#3051">[ thread ]</a>
+              <a href="subject.html#3051">[ subject ]</a>
+              <a href="author.html#3051">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Mon, 14 Feb 2011 23:04:56 +0100
+schrieb Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;:
+
+&gt;<i> It's really no effort, I can do it in 2 minutes.
+</I>&gt;<i> 
+</I>&gt;<i> This only goes against this parameter you sent me :
+</I>&gt;<i> 
+</I>&gt;<i> $FFFF8006 [R/W] B         76543210  Monitor-Type Hi
+</I>&gt;<i>                            ||||||+-- Video Bus Breite
+</I>&gt;<i>                            ||||||    0 = 16 Bit
+</I>&gt;<i>                            ||||||    1 = 32 Bit (default)
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> If I fix 0 instead of 1 (seems to mean video bus Breite 16 bits), I
+</I>&gt;<i> can get the 512Ko, 2Meg or 8 Meg.
+</I>&gt;<i> But is it logical to set this bit in a read only register that only 
+</I>&gt;<i> seems to be fixed to 1 in the real hardware ?
+</I>&gt;<i> (That's why I ask before doing the change).
+</I>&gt;<i> 
+</I>&gt;<i> Does Breite means size ?
+</I>
+Yes, Breite means size, so &quot;Video Bus Breite&quot; means size of the video
+bus ... which does not make sense when this bit is affiliated to the
+main RAM instead.
+So I would suggest that you implement this bit according to what TOS
+expects, i.e. RAM size, and put a descriptive comment in the source code
+that this bit is not documented very well but used by TOS 4.0x for
+determing the memory size.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003045.html">[hatari-devel] Fwd: Falcon memory
+</A></li>
+	<LI>Next message: <A HREF="003041.html">[hatari-devel] Chaos AD demo question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3051">[ date ]</a>
+              <a href="thread.html#3051">[ thread ]</a>
+              <a href="subject.html#3051">[ subject ]</a>
+              <a href="author.html#3051">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

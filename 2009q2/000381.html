@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Conditional breakpoint code, please comment!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C4A36B594.5010509%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000395.html">
+   <LINK REL="Next"  HREF="000383.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Conditional breakpoint code, please comment!</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Conditional%20breakpoint%20code%2C%20please%20comment%21&In-Reply-To=%3C4A36B594.5010509%40free.fr%3E"
+       TITLE="[hatari-devel] Conditional breakpoint code, please comment!">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Jun 15 22:56:52 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000395.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+        <LI>Next message: <A HREF="000383.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#381">[ date ]</a>
+              <a href="thread.html#381">[ thread ]</a>
+              <a href="subject.html#381">[ subject ]</a>
+              <a href="author.html#381">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+Latest release seems not to compile :
+
+breakcond.c:23:23: erreur: breakcond.h : Aucun fichier ou dossier de ce
+type
+
+debugui.c:35:23: erreur: breakcond.h : Aucun fichier ou dossier de ce
+type
+
+regards,
+
+Laurent
+
+
+Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Monday 15 June 2009, Thomas H. wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> I think the attached patches should be pretty straightforward.
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> Right, the 3 patches are quite small and look fine to me.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Thanks!  They're now commited so that others can test the breakpoint stuff
+</I>&gt;<i> more easily.
+</I>&gt;<i>
+</I>&gt;<i> Nicolas, could you test the conditional breakpoint stuff a bit and tell what
+</I>&gt;<i> all I need to fix? :-)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Do you have any ideas how I could or should improve things e.g. in regards 
+</I>&gt;<i> to variable naming, things I mentioned earlier mail, whether the CPU
+</I>&gt;<i> register address thing should be in debugui.c (and not e.g. somewhere under
+</I>&gt;<i> uae-cpu) etc?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Next I'm going to look into DSP memory access support.
+</I>&gt;<i>
+</I>&gt;<i> Btw. The BITMASK macro is in three separate dsp*.c files and now also in
+</I>&gt;<i> breakcond.c.  Which header it should be put into and should it have some
+</I>&gt;<i> prefix?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> There might be also other complicated things in Hatari which could
+</I>&gt;&gt;&gt;<i> profit from regression tests, although writing automation code for them
+</I>&gt;&gt;&gt;<i> (e.g. DSP)
+</I>&gt;&gt;&gt;<i> could be quite complicated...  Do you think Hatari could in future have
+</I>&gt;&gt;&gt;<i> automated test code for other stuff?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> (Just breakcond.c test code alone in tests/-dir could be silly.  :-))
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> I currently don't think there is any other part of the code that would
+</I>&gt;&gt;<i> need automated test code... so I'd say to either keep the #ifdef'd main
+</I>&gt;&gt;<i> function in breakcond.c or keep it save on your hard disk.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Ok, I'll keep it in breakcond.c.
+</I>&gt;<i>
+</I>&gt;<i> What about adding &quot;test&quot; &quot;test-with-valgrind&quot; targets to src/Makefile
+</I>&gt;<i> that would build (things like) breakcond.c using &quot;-DTEST=1&quot; and run it?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000395.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+	<LI>Next message: <A HREF="000383.html">[hatari-devel] Conditional breakpoint code, please comment!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#381">[ date ]</a>
+              <a href="thread.html#381">[ thread ]</a>
+              <a href="subject.html#381">[ subject ]</a>
+              <a href="author.html#381">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

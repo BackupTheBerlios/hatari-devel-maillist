@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New STE DMA audio emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C201107042033.03567.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003637.html">
+   <LINK REL="Next"  HREF="003644.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New STE DMA audio emulation</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C201107042033.03567.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] New STE DMA audio emulation">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jul  4 19:33:03 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003637.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+        <LI>Next message: <A HREF="003644.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3639">[ date ]</a>
+              <a href="thread.html#3639">[ thread ]</a>
+              <a href="subject.html#3639">[ subject ]</a>
+              <a href="author.html#3639">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On maanantai 04 hein&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> &gt; Btw.  Have you noticed that Hextracker mouse doesn't track host mouse
+</I>&gt;<i> &gt; properly in windowed mode?  After using Hextracker for a while, I
+</I>&gt;<i> &gt; cannot anymore move mouse cursor to a place where I could click on
+</I>&gt;<i> &gt; &quot;Play&quot;...
+</I>&gt;<i> 
+</I>&gt;<i> No, I didn't really use the tracker, except for starting a mod.
+</I>&gt;<i> 
+</I>&gt;<i> But I noticed that if I lock the mouse in windowed mode 'alt+m', after a
+</I>&gt;<i> while the mouse was unlocked again and could exit Hatari's window (this
+</I>&gt;<i> seems to be triggered when loading a module and having the tos'
+</I>&gt;<i> fileselector displayed, but I'm not sure if there's a relation ?)
+</I>
+I'll look into that.
+
+
+&gt;<i> The error (which is in ROx) is still there, it's just that I don't print
+</I>&gt;<i> an error anymore as this case is handled by the dma's emulation.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> * Paradox Xmas-2004 scroller music has strange skips
+</I>&gt;<i> 
+</I>&gt;<i> I don't hear them ; do you mean the dma sound or the ym sound, what part
+</I>&gt;<i> of the demo is that in ?
+</I>
+The part early in the demo with the blue vertical scrolltext.  I guess
+the part that &quot;doesn't sound right&quot; to me is the music looping, but I
+don't know whether it sounds the same also on a real machine...
+
+ 
+&gt;<i> &gt; * <A HREF="http://hg.berlios.de/repos/hatari/rev/df8c0a09d846">http://hg.berlios.de/repos/hatari/rev/df8c0a09d846</A>
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; -&gt;  It's a bit ugly to do init on uninit phase, but I think it's also
+</I>&gt;<i> &gt; best
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;     to do the re-init if machine needs reset (not just when machine
+</I>&gt;<i> &gt;     type changes), because that takes into account also changing e.g.
+</I>&gt;<i> &gt;     TV to mono monitor (HZ change).
+</I>&gt;<i> 
+</I>&gt;<i> What phase is &quot;uninit&quot; ? ClocksTimings_InitMachine is called when
+</I>&gt;<i> machine changes, which seems enough to me, I don't see what you call
+</I>&gt;<i> &quot;uninit&quot;.
+</I>
+First half of the function does uninit calls, then the configuration
+parameters are changed and init functions are called in the latter half
+of the function.  Just move the ClocksTimings_InitMachine() init function
+to latter part where all the other init functions are called.
+
+
+&gt;<i> Calling ClocksTimings_InitMachine when video freq change is not
+</I>&gt;<i> necessary, the machine's clocks don't depend on the chosen video freq
+</I>&gt;<i> (that's why video freq is a parameter of some other functions in
+</I>&gt;<i> clocks_timings.c)
+</I>&gt;<i>
+</I>&gt;<i> &gt; -&gt;  ClocksTimings_InitMachine() call doesn't belong to dlgSystem.c,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;     it should be done where the changes are applied (why calling
+</I>&gt;<i> &gt;     it in change.c wouldn't be enough?)
+</I>&gt;<i> 
+</I>&gt;<i> It's possible I left some redundant calls, I will check that.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; * <A HREF="http://hg.berlios.de/repos/hatari/rev/065cb494bb3f">http://hg.berlios.de/repos/hatari/rev/065cb494bb3f</A>
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; -&gt;  &quot;the number of cpu cycles per second is not a multiple of the
+</I>&gt;<i> &gt; number
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;     of cpu cycles per second.&quot;
+</I>&gt;<i> &gt;     - did you mean instructions?
+</I>&gt;<i> 
+</I>&gt;<i> I meant &quot;VBL&quot; :)
+</I>
+Ah, right.
+
+
+&gt;<i> &gt; -&gt;  There are several functions like this:
+</I>...
+&gt;<i> I did this on purpose to emphasize the fact that MEGA_STE, TT and FALCON
+</I>&gt;<i> should eventually be handled with their own special case ; so I prefer
+</I>&gt;<i> leaving a commented code that does nothing to make it clear that those
+</I>&gt;<i> machines need a customised value too.
+</I>
+IMHO it would be clearer just to have an explicit TODO comments about
+that.  Commented out code that basically just duplicates line in
+the beginning of the function just looks suspicious. :-)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003637.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+	<LI>Next message: <A HREF="003644.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3639">[ date ]</a>
+              <a href="thread.html#3639">[ thread ]</a>
+              <a href="subject.html#3639">[ subject ]</a>
+              <a href="author.html#3639">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

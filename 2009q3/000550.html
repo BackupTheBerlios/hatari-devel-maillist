@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger breakpoints for Hatari variables too?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20breakpoints%20for%20Hatari%20variables%20too%3F&In-Reply-To=%3C200908042130.46439.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000548.html">
+   <LINK REL="Next"  HREF="000551.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger breakpoints for Hatari variables too?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20breakpoints%20for%20Hatari%20variables%20too%3F&In-Reply-To=%3C200908042130.46439.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Debugger breakpoints for Hatari variables too?">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Aug  4 20:30:46 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000548.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+        <LI>Next message: <A HREF="000551.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#550">[ date ]</a>
+              <a href="thread.html#550">[ thread ]</a>
+              <a href="subject.html#550">[ subject ]</a>
+              <a href="author.html#550">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 04 August 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> &gt; What would be utterly perfect (and is already available in STEem debug
+</I>&gt;<i> &gt; build) would be the ability to stop at a specific cycle within a
+</I>&gt;<i> &gt; frame(that is, PC relative to the current VBL/HBL in cycles), and to
+</I>&gt;<i> &gt; be able to set new breakpoints relative to the current one - in bytes
+</I>&gt;<i> &gt; from PC _or_ in cycles/NOPs from PC....
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; This would make debugging synclock code a dream...
+</I>&gt;<i>
+</I>&gt;<i> in a previous mail eero talked about having some accessor functions ; one
+</I>&gt;<i> possible other variable could be LineCycle, and you would get it by
+</I>&gt;<i> calling Video_GetPosition(int *pFrameCycles , int *pHBL , int
+</I>&gt;<i> *pLineCycles)
+</I>&gt;<i>
+</I>&gt;<i> This way, we would have HBL and LineCycle variables in the debugger and
+</I>&gt;<i> it would be possible to do such breakpoints at a specific line position.
+</I>&gt;<i>
+</I>&gt;<i> As for setting relative breakpoints in cycles that would mean to be able
+</I>&gt;<i> to have a variable for FrameCycles (as returned by Video_GetPosition) and
+</I>&gt;<i> then you could do the math youself to add the desired cycles to this
+</I>&gt;<i> value and set a breakpoint where FrameCycles=your_value.
+</I>
+Hm.  This shouldn't be too hard to add.  I need to:
+* change &quot;regsize&quot; to &quot;valuetype&quot;
+* define types for numbers, different registers &amp; variables and functions
+* add function pointer to value union
+* in breakpoint checking check for function type (+call that function)
+* have a helper for checking whether valuetype is register because that's
+  currently done in some places in the parser
+* add the accessor functions for things you mentioned
+* parse the names for them &amp; fill valuetype etc properly
+
+I can do this at the end of the week along with the number base option
+stuff.
+
+
+&gt;<i> I think that when we enter debug mode on a breakpoint (or maybe also when
+</I>&gt;<i> pressing pause), it could be useful to display nVBLs, *pFrameCycles,
+</I>&gt;<i> *pHbl and *pLineCycle by calling Video_GetPosition. This way, you know at
+</I>&gt;<i> what screen position your breakpoint triggered, which is very useful when
+</I>&gt;<i> you want to debug overscan or other video-sync related code.
+</I>
+Btw. I forgot to mention that now &quot;b help&quot; will both list the supported
+Hatari variables and show their currently values:
+--------------------
+&gt;<i> b help
+</I>...
+  Valid Hatari variable names (and their current values) are:
+  - HBL (0)
+  - VBL (67)
+--------------------
+
+You can use that after the breakpoint is hit.
+
+It could list &amp; show the accessor function variable values too.
+
+
+&gt;<i> Other variables that could be used for breakpoints : track/sector nbr as
+</I>&gt;<i> used in fdc.c Could be useful to debug some disk related issue, but
+</I>&gt;<i> unless someone really say he require them now, I'm not sure it's urgent
+</I>&gt;<i> to do (most remaining fdc problems are related to commands timing, so
+</I>&gt;<i> unless pasti is ported to hatari, brekpoints won't really help on these
+</I>&gt;<i> cases).
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000548.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+	<LI>Next message: <A HREF="000551.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#550">[ date ]</a>
+              <a href="thread.html#550">[ thread ]</a>
+              <a href="subject.html#550">[ subject ]</a>
+              <a href="author.html#550">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

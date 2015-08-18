@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] SIGSEGV error with MMU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20SIGSEGV%20error%20with%20MMU&In-Reply-To=%3C4D658CFB.3080603%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003123.html">
+   <LINK REL="Next"  HREF="003125.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] SIGSEGV error with MMU</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20SIGSEGV%20error%20with%20MMU&In-Reply-To=%3C4D658CFB.3080603%40free.fr%3E"
+       TITLE="[hatari-devel] SIGSEGV error with MMU">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Feb 23 23:40:59 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003123.html">[hatari-devel] SIGSEGV error with MMU
+</A></li>
+        <LI>Next message: <A HREF="003125.html">[hatari-devel] New Xtreme intro?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3124">[ date ]</a>
+              <a href="thread.html#3124">[ thread ]</a>
+              <a href="subject.html#3124">[ subject ]</a>
+              <a href="author.html#3124">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+1) Is your code really running from m68k_run_mmu040() instead of some
+    of the other m68k_run_xxx() functions?
+
+I've found the solution. This was the problem : from bt, I can see that 
+code runs from run_2p and not from mmu_040.
+
+(gdb) bt
+#0  0x00000000004f4e40 in get_iword ()
+     at /home/laurent/Atari/hatari/src/cpu/newcpu.h:326
+#1  next_iword () at /home/laurent/Atari/hatari/src/cpu/newcpu.h:327
+#2  0x00000000006fe8d4 in op_11b0_31_ff (opcode=5040)
+     at /home/laurent/Atari/hatari/build/src/cpu/cpuemu_31.c:7548
+#3  0x00000000004ff737 in m68k_run_2p ()
+     at /home/laurent/Atari/hatari/src/cpu/newcpu.c:3516
+#4  0x00000000004fd243 in m68k_go (may_quit=&lt;value optimized out&gt;)
+     at /home/laurent/Atari/hatari/src/cpu/newcpu.c:3723
+#5  0x00000000004b2056 in M68000_Start ()
+     at /home/laurent/Atari/hatari/src/m68000.c:241
+#6  0x00000000004b2916 in main (argc=1, argv=0x7fffffffe308)
+     at /home/laurent/Atari/hatari/src/main.c:773
+
+It seems to be because of the following code from newcpu.c (function 
+m68k_go)
+
+         set_x_funcs ();
+         if (mmu_enabled &amp;&amp; !currprefs.cachesize) {
+             run_func = m68k_run_mmu;
+         } else {
+             run_func = currprefs.cpu_cycle_exact &amp;&amp; currprefs.cpu_model 
+== 68000 ? m68k_run_1_ce :
+                 currprefs.cpu_compatible &amp;&amp; currprefs.cpu_model == 
+68000 ? m68k_run_1 :
+#ifdef JIT
+                 currprefs.cpu_model &gt;= 68020 &amp;&amp; currprefs.cachesize ? 
+m68k_run_jit :
+#endif
+                 (currprefs.cpu_model == 68040 || currprefs.cpu_model == 
+68060) &amp;&amp; currprefs.mmu_model ? m68k_run_mmu040 :
+                 currprefs.cpu_model &gt;= 68020 &amp;&amp; 
+currprefs.cpu_cycle_exact ? m68k_run_2ce :
+                 currprefs.cpu_compatible ? m68k_run_2p : m68k_run_2;
+         }
+         run_func ();
+
+
+Currprefs.mmu_model is not filled correctly from inits. So, instead of 
+running m68k_run_mmu040, we ran m68k_run_2p (or m68k_run_2 if precise 
+cycle was not selected).
+
+I've added the following line before the test (see code below) :
+
+currprefs.mmu_model = 1;
+
+And relaunched hatari with 68040 and MMU.
+
+Hatari boots and displays the desktop.
+
+I'll try to understand better this currprefs.mmu_model and add it to the 
+Hatari's GUI.
+
+Thanks for the help.
+Regards,
+
+Laurent
+
+
+Le 23/02/2011 22:45, Thomas Huth a &#233;crit :
+&gt;<i> Am Wed, 23 Feb 2011 11:56:31 +0100
+</I>&gt;<i> schrieb Laurent Sallafranque&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've tested quickly the mmu code.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I start with my usual 68030 CPU, no MMU.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Then, I press &quot;F12&quot; and change the following parameters :
+</I>&gt;&gt;<i> CPU = 68040, activate MMU
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Then I reset Hatari.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I get a SIGSEGV error when hatari reset (look at the gdb trace) :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Exception 2 (0) at e02ce2 -&gt;  e02ce6!
+</I>&gt;&gt;<i> Building CPU, 46224 opcodes (4 1 1)
+</I>&gt;&gt;<i> CPU=68040, FPU=68040, MMU=1, JIT=0.
+</I>&gt;&gt;<i> MMU: enabled=0 page8k=0
+</I>&gt;&gt;<i> MMU: enabled=0 page8k=0
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Program received signal SIGSEGV, Segmentation fault.
+</I>&gt;&gt;<i> 0x00000000004f4e40 in get_iword () at
+</I>&gt;<i> I wonder why you got a segfault in get_iword ... shouldn't that be
+</I>&gt;<i> uae_mmu_get_iword() instead?
+</I>&gt;<i>
+</I>&gt;<i> Please check the following:
+</I>&gt;<i>
+</I>&gt;<i> 1) Is your code really running from m68k_run_mmu040() instead of some
+</I>&gt;<i>     of the other m68k_run_xxx() functions?
+</I>&gt;<i>
+</I>&gt;<i> 2) m68k_run_mmu040() needs the M68000_AddCycles() stuff instead of the
+</I>&gt;<i>     do_cycles() call.
+</I>&gt;<i>
+</I>&gt;<i> 3) You might need to disable the &quot;NoPmmu&quot; TOS patch in tos.c for
+</I>&gt;<i>     running with MMU...
+</I>&gt;<i>
+</I>&gt;<i>   Thomas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003123.html">[hatari-devel] SIGSEGV error with MMU
+</A></li>
+	<LI>Next message: <A HREF="003125.html">[hatari-devel] New Xtreme intro?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3124">[ date ]</a>
+              <a href="thread.html#3124">[ thread ]</a>
+              <a href="subject.html#3124">[ subject ]</a>
+              <a href="author.html#3124">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

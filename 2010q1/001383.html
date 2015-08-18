@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] User selectable threshold for window zooming
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20User%20selectable%20threshold%20for%20window%20zooming&In-Reply-To=%3C201001290025.53323.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001384.html">
+   <LINK REL="Next"  HREF="001392.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] User selectable threshold for window zooming</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20User%20selectable%20threshold%20for%20window%20zooming&In-Reply-To=%3C201001290025.53323.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] User selectable threshold for window zooming">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Jan 28 23:25:52 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001384.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+        <LI>Next message: <A HREF="001392.html">[hatari-devel] User selectable threshold for window zooming
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1383">[ date ]</a>
+              <a href="thread.html#1383">[ thread ]</a>
+              <a href="subject.html#1383">[ subject ]</a>
+              <a href="author.html#1383">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 28 January 2010, Thomas Huth wrote:
+&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;<i> &gt; I notice an curious thing.  When the &quot;double low rez&quot; option
+</I>&gt;<i> &gt; is enabled, it zooms the beginning demo part in horizontal
+</I>&gt;<i> &gt; direction, but not in vertical, which makes it look pretty bad.
+</I>&gt;<i>
+</I>&gt;<i> &lt;obiwan-mode&gt;Use the source, Luke!&lt;/obiwan-mode&gt;
+</I>&gt;<i>
+</I>&gt;<i> Add some printf's to HostScreen_setWindowSize() and you'll see what
+</I>&gt;<i> might go wrong.
+</I>
+:<i>-)
+</I>
+How the code works is clear:
+                /* Ugly: 400x300 threshold is currently hard-coded. */
+                /* Should rather be selectable by the user! */
+                if (width &amp;&amp; width &lt;= 400)
+                {
+                        nScreenZoomX = (800/width);
+                        width *= nScreenZoomX;
+                }
+                if (height &amp;&amp; height &lt;= 300)
+                {
+                        nScreenZoomY = (550/height);
+                        height *= nScreenZoomY;
+                }
+
+Except for the ST-medrez case in screen.c, I was just wondering why one
+would want to zoom vertical and horizontal directions by different
+amounts?   Does it make sense for Falcon?
+
+
+Attached is a patch that makes the desired target window resolution
+selectable from the configuration file.  If resolution would still fit to
+that size when doubled, it will be doubled in both directions.
+
+
+The code adapts also rest of the Hatari code to use the new configuration 
+variables, but I noticed something strange in the original screen.c code:
+-------
+	else    /* else use 640x400, also for med-rez */
+	{
+		Width = 640;
+		Height = 400;
+	}
+...
+	/* Adjust width/height for overscan borders, if mono or VDI we have no 
+overscan */
+	if (ConfigureParams.Screen.bAllowOverscan &amp;&amp; !bUseHighRes)
+	{
+		int nZoom = ((Width == 640) ? 2 : 1);
+		/* Add in overscan borders (if 640x200 bitmap is double on Y) */
+		Width += (nBorderPixelsLeft+nBorderPixelsRight) * nZoom;
+		Height += (nBorderPixelsTop+nBorderPixelsBottom) * nZoom;
+	}
+...
+	else if (STRes == ST_MEDIUM_RES &amp;&amp; !bUseVDIRes)
+	{
+		nScreenZoomX = 1;
+		nScreenZoomY = 2;
+	}
+---------
+
+I understand why med-rez is special-cased to be zoomed only in vertical
+direction, but why this then doubles border size both in horizontal and
+vertical direction?
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: winsize.diff
+Type: text/x-diff
+Size: 13800 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100129/9c5edf72/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100129/9c5edf72/attachment.diff</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001384.html">[hatari-devel] Raimbow2 problem : seems to be a big problem
+</A></li>
+	<LI>Next message: <A HREF="001392.html">[hatari-devel] User selectable threshold for window zooming
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1383">[ date ]</a>
+              <a href="thread.html#1383">[ thread ]</a>
+              <a href="subject.html#1383">[ subject ]</a>
+              <a href="author.html#1383">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

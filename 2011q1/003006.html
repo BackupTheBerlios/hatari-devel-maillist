@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] STE sound breakage with lower sound frequencies
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20sound%20breakage%20with%20lower%20sound%20frequencies&In-Reply-To=%3C24470057.163505.1297289246382.JavaMail.nitido%40priv-edtnes91%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003012.html">
+   <LINK REL="Next"  HREF="003013.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] STE sound breakage with lower sound frequencies</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20STE%20sound%20breakage%20with%20lower%20sound%20frequencies&In-Reply-To=%3C24470057.163505.1297289246382.JavaMail.nitido%40priv-edtnes91%3E"
+       TITLE="[hatari-devel] STE sound breakage with lower sound frequencies">dsavnkff at telus.net
+       </A><BR>
+    <I>Wed Feb  9 23:07:26 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003012.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+        <LI>Next message: <A HREF="003013.html">[hatari-devel] crossbar and 8 bits mono DMA play sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3006">[ date ]</a>
+              <a href="thread.html#3006">[ thread ]</a>
+              <a href="subject.html#3006">[ subject ]</a>
+              <a href="author.html#3006">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Feb 9, 2011, Nicolas Pomar&#232;de &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt; wrote: 
+&gt;<i> Le 09/02/2011 00:35, David Savinkoff a &#233;crit :
+</I>&gt;<i> 
+</I>&gt;<i> &gt; All of this ntp and time changes are dirty enough to force a re-think.
+</I>&gt;<i> &gt; Maybe we should use SDL exclusively as it is cleaner and will 'not' be
+</I>&gt;<i> &gt; less accurate averaged over time. Furthermore main.c would not depend
+</I>&gt;<i> &gt; on #include&lt;time.h&gt;
+</I>&gt;<i> 
+</I>&gt;<i> Hello,
+</I>&gt;<i> 
+</I>&gt;<i> sdl is using either gettimeofday or clock_gettime on unixlike systems
+</I>&gt;<i> (changing time when SDL is running will confuse it if clock_gettime was
+</I>&gt;<i> not available at compile time) so I don't see the difference, except SDL
+</I>&gt;<i> &quot;truncates&quot; all times to millisecond instead of keeping the micro/nano
+</I>&gt;<i> value.
+</I>
+&gt;<i> What do you mean by &quot;less accurate averaged over time&quot; ?
+</I>
+I was referring to accuracy/precision where the frequency is
+accurate, but jitters.
+
+&gt;<i> 
+</I>&gt;<i> &gt; SDL at 10ms is just as accurate as usleep in microseconds; it is the
+</I>&gt;<i> &gt; precision that is 10ms. To time-average 60Hz VBLs, one only needs to
+</I>&gt;<i> &gt; have a 10ms delay 1/3 of the time and a 20ms delay 2/3 of the time.
+</I>&gt;<i> &gt; eg.
+</I>&gt;<i> &gt; VBL(1) = 10ms
+</I>&gt;<i> &gt; VBL(2) = 20ms
+</I>&gt;<i> &gt; VBL(3) = 20ms
+</I>&gt;<i> &gt; Time average the above over 3 VBLs and you have 16.66... ms
+</I>&gt;<i> &gt; This time averaging has been taking place since Thomas added the code.
+</I>&gt;<i> &gt; In light of this, SDL at 1ms is a luxury.
+</I>&gt;<i> 
+</I>&gt;<i> 10 ms is really a very rough averaging to get close to 16.666 ms
+</I>&gt;<i> In that regard, I prefer sleeping 17ms + 17ms + 16ms which also gives
+</I>&gt;<i> 16.66 over 3 VBL.
+</I>&gt;<i> 
+</I>&gt;<i> So yes, 10ms precision can be used to average 16.66, but it will do so
+</I>&gt;<i> with many more jitter (=standard deviation) than if using a 1ms precision.
+</I>&gt;<i> 
+</I>
+10 ms doesn't have to jitter because it happens more frequently
+than 16.66 ms. It also happens that the next two 20 ms intervals
+allow a 16.66 ms interval to land within them.
+
+VBL(1)        -starts at - 0  ms    0 ms (simultaneous)
+VBL(1) = 10ms -ends after- 10 ms
+
+
+VBL(2)        -starts at - 10 ms
+                                    16.66 ms (within)
+VBL(2) = 20ms -ends after- 30 ms
+
+
+VBL(3)        -starts at - 30 ms
+                                    33.33 ms (within)
+VBL(3) = 20ms -ends after- 50 ms
+
+
+VBL(1)        -starts at - 50 ms    50 ms (repeating)
+...
+
+&gt;<i> My point is : just use as many precision as the OS provides (with a
+</I>&gt;<i> reasonnable amount of code), it won't hurt anyone and it will benefit to
+</I>&gt;<i> some cases.
+</I>&gt;<i> 
+</I>
+I'm happy with this. I was getting concerned about too much precision.
+
+&gt;<i> 
+</I>&gt;<i> &gt; I don't believe your eyes will bothered, especially if xorg
+</I>&gt;<i> &gt; (or equivalent) is doing its job (buffering). Video is the
+</I>&gt;<i> &gt; only thing that is affected, sound is not.
+</I>&gt;<i> 
+</I>&gt;<i> Yes, of course a lot of thing happen behind SDL to copy the buffer to
+</I>&gt;<i> the video screen, wait or not for a vsync, ...
+</I>&gt;<i> 
+</I>&gt;<i> Today, you don't see the difference because most LCD monitors will run
+</I>&gt;<i> at 70/80 Hz, not 50 or 60, so anyway Hatari emulating a 50/60 Hz video
+</I>&gt;<i> will not look smooth.
+</I>&gt;<i> 
+</I>&gt;<i> But if you connect your PC to an old CRT capable of doing exactly 60 Hz,
+</I>&gt;<i> then doing sleep of 10+20+20 ms instead of 17+17+16 will be really
+</I>&gt;<i> noticable. If using nanosleep, you will even get a 16.667 ms sleep which
+</I>&gt;<i> means Hatari's video should be really synchronized with the CRT monitor
+</I>&gt;<i> at 60 Hz (this is how hardcore emulation fans are doing when using MAME,
+</I>&gt;<i> they prefer using CRT because it can output at the same video freq as
+</I>&gt;<i> the original arcade machine).
+</I>
+Good points here. If hardcore emulation is possible with 10ms
+precision, then the rest is extra.
+
+Note that the ST has its Sound, Video, and CPU synchronized with
+the same crystal; a feature that modern computers lack. I believe
+that changing the emulation rate to keep the sound syncronized is
+reasonable given that even an old TV can handle small vertical
+frequency variations. The picture size may vary slightly, but old
+TVs position and size change depending on what is being displayed.
+
+David
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003012.html">[hatari-devel] STE sound breakage with lower sound frequencies
+</A></li>
+	<LI>Next message: <A HREF="003013.html">[hatari-devel] crossbar and 8 bits mono DMA play sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3006">[ date ]</a>
+              <a href="thread.html#3006">[ thread ]</a>
+              <a href="subject.html#3006">[ subject ]</a>
+              <a href="author.html#3006">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

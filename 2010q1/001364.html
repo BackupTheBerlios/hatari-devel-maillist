@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] ide.c memory leak and ifdefs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20ide.c%20memory%20leak%20and%20ifdefs&In-Reply-To=%3C20100126214100.53960f37%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001361.html">
+   <LINK REL="Next"  HREF="001362.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] ide.c memory leak and ifdefs</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20ide.c%20memory%20leak%20and%20ifdefs&In-Reply-To=%3C20100126214100.53960f37%40phineus%3E"
+       TITLE="[hatari-devel] ide.c memory leak and ifdefs">huth at users.berlios.de
+       </A><BR>
+    <I>Tue Jan 26 21:41:00 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001361.html">[hatari-devel] ide.c memory leak and ifdefs
+</A></li>
+        <LI>Next message: <A HREF="001362.html">[hatari-devel] Improved GEMDOS emu long host filenames support	commited
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1364">[ date ]</a>
+              <a href="thread.html#1364">[ thread ]</a>
+              <a href="subject.html#1364">[ subject ]</a>
+              <a href="author.html#1364">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 26 Jan 2010 15:10:21 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> While checking small memory leak in ide.c, I noticed that it has some
+</I>&gt;<i> ifdefs:
+</I>&gt;<i> ------
+</I>&gt;<i> $ grep 'HAVE.*_M' ide.c
+</I>&gt;<i> #if HAVE_MALLOC_H
+</I>&gt;<i> #if HAVE_POSIX_MEMALIGN
+</I>&gt;<i> #elif HAVE_MEMALIGN
+</I>&gt;<i> ------
+</I>&gt;<i> 
+</I>&gt;<i> If there's no HAVE_POSIX_MEMALIGN defined ide.c uses, instead of
+</I>&gt;<i> the (POSIX) standard posix_memalign() call, obsolete memalign() or
+</I>&gt;<i> valign() calls.  Unlike memory returned by posix_memalign(), the
+</I>&gt;<i> memory returned from these obsolete functions cannot be safely freed
+</I>&gt;<i> on all platforms (with Glibc it can).
+</I>&gt;<i> 
+</I>&gt;<i> Some code in ide.c frees memory returned from the qemu_memalign()
+</I>&gt;<i> wrapper, Ide_UnInit didn't, I fixed that.
+</I>&gt;<i> 
+</I>&gt;<i> The reason why the obsolete functions are used is that we have no
+</I>&gt;<i> check for POSIX_MEMALIGN:
+</I>&gt;<i> ------
+</I>&gt;<i> $ grep 'HAVE.*_M' ../config-default.h
+</I>&gt;<i> ------
+</I>&gt;<i> 
+</I>&gt;<i> Is there any reason to even support these unsafe &amp; obsolete valign()
+</I>&gt;<i> &amp; memalign() functions (one can trivially implement aligned malloc
+</I>&gt;<i> that works better...)?
+</I>
+IIRC the valloc call was the only function that was available
+everywhere. posix_memalign() was not available on MinGW, memalign() was
+not available on Mac OS X.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001361.html">[hatari-devel] ide.c memory leak and ifdefs
+</A></li>
+	<LI>Next message: <A HREF="001362.html">[hatari-devel] Improved GEMDOS emu long host filenames support	commited
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1364">[ date ]</a>
+              <a href="thread.html#1364">[ thread ]</a>
+              <a href="subject.html#1364">[ subject ]</a>
+              <a href="author.html#1364">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] saving/restoring memory state from debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20saving/restoring%20memory%20state%20from%20debugger&In-Reply-To=%3Calpine.LMD.2.00.1002132232270.30997%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001479.html">
+   <LINK REL="Next"  HREF="001482.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] saving/restoring memory state from debugger</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20saving/restoring%20memory%20state%20from%20debugger&In-Reply-To=%3Calpine.LMD.2.00.1002132232270.30997%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] saving/restoring memory state from debugger">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Feb 13 22:39:38 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001479.html">[hatari-devel] saving/restoring memory state from debugger
+</A></li>
+        <LI>Next message: <A HREF="001482.html">[hatari-devel] saving/restoring memory state from debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1480">[ date ]</a>
+              <a href="thread.html#1480">[ thread ]</a>
+              <a href="subject.html#1480">[ subject ]</a>
+              <a href="author.html#1480">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 13 Feb 2010, Eero Tamminen wrote:
+
+&gt;<i> Debugger uses the normal MemorySnapShot_Capture() function to do the state
+</I>&gt;<i> saving.  Because that doesn't return any success/fail value, debugger gives
+</I>&gt;<i> it an argument that makes it to print message about saving success.
+</I>&gt;<i>
+</I>&gt;<i> It does that using:
+</I>&gt;<i> 	Log_AlertDlg(LOG_INFO, &quot;Memory state file saved.&quot;);
+</I>&gt;<i>
+</I>&gt;<i> With the default Hatari settings that will just print the message to
+</I>&gt;<i> console.  You have set an alert level which shows this also as an alert on
+</I>&gt;<i> screen.
+</I>&gt;<i>
+</I>&gt;<i> Instead of using ^C in debugger, you can just press Enter in Hatari window
+</I>&gt;<i> for the dialog to go away and Hatari to continue.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I could:
+</I>&gt;<i> - Remove that flag from MemorySnapShot_Capture/Restore() calls
+</I>&gt;<i> - Change them to return a bool about success
+</I>&gt;<i> - Output a message from debugger itself based on this return value.
+</I>&gt;<i>
+</I>&gt;<i> But I wonder whether alerts should be completely disabled while one is in
+</I>&gt;<i> debugger.  Is there any reason why one should get an alert from debugger
+</I>&gt;<i> command in addition to console message (log messages can be re-directed
+</I>&gt;<i> to a file)?
+</I>&gt;<i>
+</I>
+You're right, a message was displayed in Hatari's window, but I didn't see 
+it as my terminal was above hatari's window, and pressing ctrl+c was 
+terminating hatari (pressing 'c' after in the debugger would cause hatari 
+to exit).
+
+I think it would be more consistent to not display alert messages in 
+Hatari's window while we're in the debugger. In the case of saving a 
+memory snapshot for example, it doesn't add any value to have a 
+confirmation message in Hatari's window. A message in the console would be 
+enough (I think saving/restoring snapshot is the only case so far that can 
+display a confirmation box ?).
+
+I would go for disabling alerts while in the debugger, once in console 
+mode we shouldn't mix interactions between term and non term windows.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001479.html">[hatari-devel] saving/restoring memory state from debugger
+</A></li>
+	<LI>Next message: <A HREF="001482.html">[hatari-devel] saving/restoring memory state from debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1480">[ date ]</a>
+              <a href="thread.html#1480">[ thread ]</a>
+              <a href="subject.html#1480">[ subject ]</a>
+              <a href="author.html#1480">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

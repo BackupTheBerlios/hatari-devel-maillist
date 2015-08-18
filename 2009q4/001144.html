@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] source level debugging with the Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20source%20level%20debugging%20with%20the%20Hatari%20debugger&In-Reply-To=%3C4B37E364.5010400%40freesbee.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001142.html">
+   <LINK REL="Next"  HREF="001146.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] source level debugging with the Hatari debugger</H1>
+    <B>Vincent Rivi&#232;re</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20source%20level%20debugging%20with%20the%20Hatari%20debugger&In-Reply-To=%3C4B37E364.5010400%40freesbee.fr%3E"
+       TITLE="[hatari-devel] source level debugging with the Hatari debugger">vincent.riviere at freesbee.fr
+       </A><BR>
+    <I>Sun Dec 27 23:44:52 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001142.html">[hatari-devel] source level debugging with the Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="001146.html">[hatari-devel] source level debugging with the Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1144">[ date ]</a>
+              <a href="thread.html#1144">[ thread ]</a>
+              <a href="subject.html#1144">[ subject ]</a>
+              <a href="author.html#1144">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello.
+
+First, let's be clear.
+
+I use very few Hatari. Not because it is bad software, but because I'm
+usually very happy with Steem and ARAnyM on Windows. Personally, I don't
+need additional debugging features, but of course it would be very nice.
+
+In the past, I used the Mappy VM GameBoy Advance emulator.
+<A HREF="http://www.bottledlight.com/mappy/">http://www.bottledlight.com/mappy/</A>
+I often think to it, because it is an absolutely great piece of
+software. More than an emulator, it is an incredible real time debugger.
+It has special windows to see the status of the hardware. For example,
+the contents of the video memory can be displayed in real time, with the
+ability to change the display settings according to the different modes,
+and so on.
+
+I often dream about such abilities in an Atari emulator. Something like
+a real time Ultimate Ripper.
+
+Such things would be good, but it is not a necessity for me right now.
+I want to focus on the ACP project.
+
+Now here are my answers.
+
+Eero Tamminen wrote:
+&gt;&gt;<i> there is no tool for debugging special software like fVDI, XaAES or
+</I>&gt;&gt;<i> MyAES.
+</I>&gt;<i> 
+</I>&gt;<i> What specifically is the problem in debugging these?
+</I>
+For fVDI and MyAES, I don't know, I have never tried.
+It would probably possible to debug them with a standard Falcon
+debugger. GDB can only debug MiNT process, it may be able to debug
+MyAES, for fVDI I don't know. Someone should try that.
+
+&gt;<i> Or is the issue
+</I>&gt;<i> finding out what these do also within MiNT (e.g. in XaAES kernel extension)?
+</I>
+It is probably an issue with XaAES which is a kernel module.
+
+&gt;<i> Cannot Gdb  (run
+</I>&gt;<i> remotely e.g. over SSH) attach to multiple processes?
+</I>
+GDB can be used remotely via direct TCP connection.
+There is GDB 5.1 on my website, and some concrete explanations:
+<A HREF="http://vincent.riviere.free.fr/soft/m68k-atari-mint/">http://vincent.riviere.free.fr/soft/m68k-atari-mint/</A>
+I have used the gdbserver tool inside MiNT running on ARAnyM, then I
+have used the gdb tool on Cygwin to attach to the MiNT process. It works
+fine.
+
+Note that the source of the gdbserver tool is really simple, we could
+even imagine Hatari acting lile a big gdbserver, then any gdb variant
+could be connected to it, providing its standard debug facilities.
+
+Some time ago, I have started porting GDB 7.0 to MiNT. It is quite
+different from the old versions, so some code has to be rewritten. I
+have not fully finished, but it works enough to debug a process with the
+basic facilities.
+
+There are special stuff in the new GDB for debugging multiple processes.
+
+&gt;<i> I assume debugging these doesn't need MMU (Hatari can run MiNT,
+</I>&gt;<i> but not with MP enabled as Hatari doesn't emulate MMU currently).
+</I>
+The current implementation of GDB communicates with the debugged process
+with the Ptrace() function call. It doesn't require an MMU. However, it
+should work fine with full memory protection enabled too, I have not tested.
+
+&gt;&gt;<i> If the debug info is in DRI format all the labels are in the executable, 
+</I>&gt;&gt;<i> its easy.
+</I>&gt;<i> 
+</I>&gt;<i> Do you have a pointer to DRI (on-disk) format documentation?
+</I>
+The only documentation I have is the C code generating such debug
+information in the binutils patch available on my website:
+<A HREF="http://vincent.riviere.free.fr/soft/m68k-atari-mint/">http://vincent.riviere.free.fr/soft/m68k-atari-mint/</A>
+This patch has been originally written by Guido Flohr.
+I think I have understood most of it, it is really simple. For each
+symbol, there is a 14-byte entry (?) in the symbol table. This entry
+contains a symbol name, the address associated with the symbol, and some
+flags. Devpac has added support for an additional 14-byte entry to allow
+longer symbol names. That's all.
+
+&gt;&gt;<i> If the debug info is in STABS format (the one produced by GCC), the
+</I>&gt;&gt;<i> symbols are in the executable, too,
+</I>&gt;<i> 
+</I>&gt;<i> Do you have any better documentation on the STABS on-disk data format
+</I>&gt;<i> than e.g. this:
+</I>&gt;<i> <A HREF="http://sourceware.org/gdb/download/onlinedocs/stabs.html#Symbol-Tables">http://sourceware.org/gdb/download/onlinedocs/stabs.html#Symbol-Tables</A>
+</I>&gt;<i> ?
+</I>
+I have never parsed such debug info myself, it's the job of the BFD
+library. The symbols are in STABS format, the standard debug format for
+a.out executables. I know there is a string table allowing strings of
+any length. Then there is a symbol table of fixed-length structures,
+referencing a string as symbol name, an address and some flags. Again,
+nothing complicated. For source-level debugging, some GNU extensions are
+used as special STABS entries, I don't know them.
+
+&gt;<i> I don't know anything (on any platform, not just Atari) that would allow
+</I>&gt;<i> debugging all programs in a system, including kernel, at source level.
+</I>
+Why not ? If the emulator can keep the track of all the kernels and
+executables loaded, it could provide source-level debugging for all of
+them. It is probably not easy, but doable.
+
+&gt;<i> The maximum level of support I was thinking of was being able to set
+</I>&gt;<i> breakpoints to function and variable addresses and seeing these names when
+</I>&gt;<i> doing disassembly or dumping memory contents.  Would that kind of a goal
+</I>&gt;<i> be useful enough to be worth consider implementing during next year?
+</I>
+Back to the reality: simply setting breakpoints on assembly labels would
+be great. And an extremely useful feature is &quot;data breakpoints&quot;. They
+are supported on x86, but not on 68000. They can break when the data is
+modified at a specific address. No native 68000 debugger will be ever
+able to do that. But as Hatari is an emulator, it can do that. That
+would be a killer feature. To answer the question: which buggy program
+has overwritten my variables ?
+
+Another invaluable feature would be a full history of all the assembly
+instructions executed. To answer the question: how have the program
+counter reached this address. Maybe Hatari has already that feature.
+
+About MiNT, some facilities could be added into the kernel to ease
+debugging from an external debugger.
+
+Well, it would be possible to do a lot of cool things.
+
+-- 
+Vincent Rivi&#232;re
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001142.html">[hatari-devel] source level debugging with the Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="001146.html">[hatari-devel] source level debugging with the Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1144">[ date ]</a>
+              <a href="thread.html#1144">[ thread ]</a>
+              <a href="subject.html#1144">[ subject ]</a>
+              <a href="author.html#1144">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] things sometimes not working and fast forwarding
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20things%20sometimes%20not%20working%20and%20fast%20forwarding&In-Reply-To=%3C200904192104.08963.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000262.html">
+   <LINK REL="Next"  HREF="000268.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] things sometimes not working and fast forwarding</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20things%20sometimes%20not%20working%20and%20fast%20forwarding&In-Reply-To=%3C200904192104.08963.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] things sometimes not working and fast forwarding">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Apr 19 20:04:08 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000262.html">[hatari-devel] Avena : Sonolumineszenz
+</A></li>
+        <LI>Next message: <A HREF="000268.html">[hatari-devel] things sometimes not working and fast forwarding
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#263">[ date ]</a>
+              <a href="thread.html#263">[ thread ]</a>
+              <a href="subject.html#263">[ subject ]</a>
+              <a href="author.html#263">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 19 April 2009, Eero Tamminen wrote:
+&gt;<i> I've been testing &quot;Built-in Obsolescence&quot; more and it's quite random how
+</I>&gt;<i> long it runs and whether it bombs at startup.  It works differently on
+</I>&gt;<i> different invocations with the same options.
+</I>
+Btw.  For a while I suspected fast forwarding as I remember earlier noticing
+some TOS version sometimes freezing when using (or was it toggling?)
+fast-forward during bootup and I think I've had sometimes issues with
+it otherwise too.
+
+Only things where fast-forward can have an affect are:
+1. key repeat (effect configurable)
+2. toggling back to normal speed calls Sound_ResetBufferIndex()
+3. allowing emulation go faster than system clock. System clock
+    i.e. &quot;time(NULL)&quot; call is used in rtc.c and ikbc.c
+
+1) or 2) cannot affect what happens within emulation, they should affect
+only emulator.  3) could have an effect.
+
+Unlike ST/STe/TT tables, ioMemTabFalcon.c doesn't seem to hook RTC
+functions, so that shouldn't[1] affect this either.  That leaves
+IKBD_Cmd_ReadClock() call, but according to &quot;--trace ikbd_cmds&quot;,
+Built-in Obsolescence doesn't call that either.
+
+[1] Thomas any comment on this?
+
+
+        - Eero
+
+PS.  If speeding fast-forwarding emulation could actually make things not
+to work due to timings changing, so could emulation running at less than
+100% speed because it's too slow...
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000262.html">[hatari-devel] Avena : Sonolumineszenz
+</A></li>
+	<LI>Next message: <A HREF="000268.html">[hatari-devel] things sometimes not working and fast forwarding
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#263">[ date ]</a>
+              <a href="thread.html#263">[ thread ]</a>
+              <a href="subject.html#263">[ subject ]</a>
+              <a href="author.html#263">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Suggestion about small additions for v1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3C4BEB0EDC.5000503%40wanadoo.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002213.html">
+   <LINK REL="Next"  HREF="002070.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Suggestion about small additions for v1.4</H1>
+    <B>Jerome Vernet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3C4BEB0EDC.5000503%40wanadoo.fr%3E"
+       TITLE="[hatari-devel] Suggestion about small additions for v1.4">vernet.jerome at wanadoo.fr
+       </A><BR>
+    <I>Wed May 12 22:26:04 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002213.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+        <LI>Next message: <A HREF="002070.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2068">[ date ]</a>
+              <a href="thread.html#2068">[ thread ]</a>
+              <a href="subject.html#2068">[ subject ]</a>
+              <a href="author.html#2068">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 12/05/10 21:25, Eero Tamminen a &#233;crit :
+&gt;<i>
+</I>&gt;&gt;<i> Just like Hatari in general, the windowed mode on OS X is really,
+</I>&gt;&gt;<i> really, really slow. But we've been over this a thousand times already.
+</I>&gt;&gt;<i> Claiming that things are &quot;slow&quot; isn't same as clearly stating that it
+</I>&gt;&gt;<i> doesn't work (even nearly) as fast as it should.
+</I>&gt;&gt;<i>      
+</I>It's not Hatari, it's SDL in windowed mode under MacOsX. MacOsX windows 
+are natively double buffered under MacOsX, so, SDL windows are triple or 
+quad buffered. It's slow, nothing can be done. I tried to play with 
+HWSURFACE attributes, without changes. I'm also using SDL 1.3 on my 
+build, supposed to be faster. Hum.... So, use full screen ! And, yes, 
+don't use statusbar nor LED (I removed the option in MacOsX build to 
+activate it).
+&gt;<i>
+</I>&gt;<i> On Windows&amp;  OSX getting Python&amp;  Gtk is a bit hard, so I don't expect users
+</I>&gt;<i> from them normally to have them installed.
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>Yep, I tried to install it. More than 2 hours, it's not finished. Had to 
+build almost everything, install 139 packages... Not usable.
+
+&gt;<i> They're preinstalled on normal Linux distros (which is the main target
+</I>&gt;<i> for Hatari).
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>Don't forget us poor MacOsX users ;).
+&gt;<i>
+</I>&gt;<i> If Jerome thinks they're ready for inclusion review, he should send them for
+</I>&gt;<i> review.
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>I'm not ready ;). It's not finished, but usable (need to be tested, take 
+the build here:
+<A HREF="http://pagesperso-orange.fr/jerome.vernet/emulateurs.html">http://pagesperso-orange.fr/jerome.vernet/emulateurs.html</A>
+
+It will work only on 10.5 and above, as I now use libreadline, libpng, 
+and some other lib that are now standard on 10.5+ and not present under 
+10.4.
+
+&gt;<i>    
+</I>&gt;&gt;&gt;<i> You could try whether removing HWSURFACE option from screen.c has
+</I>&gt;&gt;&gt;<i> any effect on this.  If it has, we could consider making it optional.
+</I>&gt;&gt;&gt;<i>        
+</I>&gt;&gt;<i> This wouldn't even let me go to fullscreen at all.
+</I>&gt;&gt;<i>      
+</I>&gt;<i> It works fine on Linux SDL.  Please file a bug against OSX SDL,
+</I>&gt;<i> HWSURFACE is an optional thing according to SDL documenation.
+</I>&gt;<i>
+</I>&gt;<i> See the documentation on it to see why I asked to test removing it:
+</I>&gt;<i> 	<A HREF="http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetVideoMode">http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetVideoMode</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>It's working on my build, either with HWSURFACE or the other.
+
+Jerome
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002213.html">[hatari-devel] Hatari performance issue on OSX
+</A></li>
+	<LI>Next message: <A HREF="002070.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2068">[ date ]</a>
+              <a href="thread.html#2068">[ thread ]</a>
+              <a href="subject.html#2068">[ subject ]</a>
+              <a href="author.html#2068">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

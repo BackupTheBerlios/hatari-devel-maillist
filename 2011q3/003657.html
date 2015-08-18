@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari frozen after it's been paused for few	hours
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20frozen%20after%20it%27s%20been%20paused%20for%20few%0A%09hours&In-Reply-To=%3C201107090130.59712.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003651.html">
+   <LINK REL="Next"  HREF="003709.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari frozen after it's been paused for few	hours</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20frozen%20after%20it%27s%20been%20paused%20for%20few%0A%09hours&In-Reply-To=%3C201107090130.59712.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari frozen after it's been paused for few	hours">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Jul  9 00:30:59 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003651.html">[hatari-devel] Hatari frozen after it's been paused for few	hours
+</A></li>
+        <LI>Next message: <A HREF="003709.html">[hatari-devel] Hatari frozen after it's been paused for few	hours
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3657">[ date ]</a>
+              <a href="thread.html#3657">[ thread ]</a>
+              <a href="subject.html#3657">[ subject ]</a>
+              <a href="author.html#3657">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On tiistai 05 hein&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 05/07/2011 00:43, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; I was running Oxygen's Amiga STE demo under latest Hatari
+</I>&gt;<i> &gt; and paused it for couple of hours.  When I unpaused Hatari,
+</I>&gt;<i> &gt; it didn't react to anything anymore.  Gdb tells following:
+</I>&gt;<i> &gt; (gdb) bt
+</I>&gt;<i> &gt; #0  0xb7738424 in __kernel_vsyscall ()
+</I>&gt;<i> &gt; #1  0xb7659876 in ?? ()
+</I>&gt;<i> &gt; #2  0x080b5398 in Main_WaitOnVbl () at
+</I>&gt;<i> &gt; /home/eero/work/hatari/src/main.c:330 #3  0x0810dba1 in m68k_run_1
+</I>&gt;<i> &gt; (may_quit=1) at /home/eero/work/hatari/src/uae- cpu/newcpu.c:1774
+</I>&gt;<i> &gt; #4  m68k_go (may_quit=1) at
+</I>&gt;<i> &gt; /home/eero/work/hatari/src/uae-cpu/newcpu.c:1872 #5  0x080b40d4 in
+</I>&gt;<i> &gt; M68000_Start () at /home/eero/work/hatari/src/m68000.c:241 #6 
+</I>&gt;<i> &gt; 0x080b4ece in main (argc=6, argv=0xbfbd7e24) at
+</I>&gt;<i> &gt; /home/eero/work/hatari/src/main.c:776
+</I>&gt;<i> &gt; (gdb) up
+</I>&gt;<i> &gt; #1  0xb7659876 in ?? ()
+</I>&gt;<i> &gt; (gdb)
+</I>&gt;<i> &gt; #2  0x080b5398 in Main_WaitOnVbl () at
+</I>&gt;<i> &gt; /home/eero/work/hatari/src/main.c:330 330                            
+</I>&gt;<i> &gt; Time_Delay(nDelay - 1000);
+</I>&gt;<i> &gt; (gdb) print nDelay
+</I>&gt;<i> &gt; $1 = -1078100952
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Ticks had wrapped?
+</I>&gt;<i> 
+</I>&gt;<i> this is the same problem that Anders reported some weeks ago, but I
+</I>&gt;<i> didn't had time to look at it back then.
+</I>&gt;<i> 
+</I>&gt;<i> Thanks to this gdb trace, I can see the error : nDelay is declared as
+</I>&gt;<i> int with &quot; nDelay = DestTicks - CurrentTicks&quot;
+</I>&gt;<i> 
+</I>&gt;<i> DestTicks and CurrentTicks are both Sint64 (microsec), so in normal
+</I>&gt;<i> usage, the difference will be small (less than 1 sec) and can be stored
+</I>&gt;<i> on an int.
+</I>&gt;<i> 
+</I>&gt;<i> But if the pause is more than 2147 sec, then nDelay will overflow :(
+</I>&gt;<i> 
+</I>&gt;<i> The solution is to declare nDelay as Sint64, and we should be able to
+</I>&gt;<i> pause for approx 68 years :)
+</I>
+I didn't have time to test this yet (hopefully by next week), but with
+the latest code, when I let stmp3 4run in Hatari (STE mode) on background
+(not paused) for an hour and then got back to Hatari, Hatari was frozen,
+it didn't react to anything.
+
+Backtrace was following:
+-------
+#0  0xb77f1424 in __kernel_vsyscall ()
+#1  0xb74690e6 in gettimeofday () at ../sysdeps/unix/syscall-template.S:82
+#2  0x080b52a3 in Time_GetTicks () at /home/eero/work/hatari/src/main.c:122
+#3  Main_WaitOnVbl () at /home/eero/work/hatari/src/main.c:342
+#4  0x0810dc21 in m68k_run_1 (may_quit=1) at /home/eero/work/hatari/src/uae-
+cpu/newcpu.c:1776
+#5  m68k_go (may_quit=1) at /home/eero/work/hatari/src/uae-cpu/newcpu.c:1872
+#6  0x080b40d4 in M68000_Start () at /home/eero/work/hatari/src/m68000.c:241
+#7  0x080b4ece in main (argc=6, argv=0xbf804994) at 
+/home/eero/work/hatari/src/main.c:776
+...
+#3  Main_WaitOnVbl () at /home/eero/work/hatari/src/main.c:342
+342                     CurrentTicks = Time_GetTicks();
+(gdb) info locals
+CurrentTicks = &lt;value optimized out&gt;
+DestTicks = 4294977719
+FrameDuration_micro = 19979
+nDelay = 18449
+-------
+
+I.e. Main loop seems to be still running, but keys aren't being processed.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003651.html">[hatari-devel] Hatari frozen after it's been paused for few	hours
+</A></li>
+	<LI>Next message: <A HREF="003709.html">[hatari-devel] Hatari frozen after it's been paused for few	hours
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3657">[ date ]</a>
+              <a href="thread.html#3657">[ thread ]</a>
+              <a href="subject.html#3657">[ subject ]</a>
+              <a href="author.html#3657">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

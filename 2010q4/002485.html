@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Executing program with Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Executing%20program%20with%20Hatari&In-Reply-To=%3C20101008204206.0fd3f24b%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002469.html">
+   <LINK REL="Next"  HREF="002495.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Executing program with Hatari</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Executing%20program%20with%20Hatari&In-Reply-To=%3C20101008204206.0fd3f24b%40phineus%3E"
+       TITLE="[hatari-devel] Executing program with Hatari">huth at users.berlios.de
+       </A><BR>
+    <I>Fri Oct  8 20:42:06 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002469.html">[hatari-devel] Executing program with Hatari
+</A></li>
+        <LI>Next message: <A HREF="002495.html">[hatari-devel] Executing program with Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2485">[ date ]</a>
+              <a href="thread.html#2485">[ thread ]</a>
+              <a href="subject.html#2485">[ subject ]</a>
+              <a href="author.html#2485">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 7 Oct 2010 20:46:51 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> &gt; I also think that using DESKTOP.INF is the only feasible way to
+</I>&gt;<i> &gt; automatically start such a program, ... not sure whether I like the
+</I>&gt;<i> &gt; idea of the &quot;virtual&quot; INF file, but I also don't have a better idea
+</I>&gt;<i> &gt; right now to avoid such problems like write-protected folders.
+</I>&gt;<i> &gt; And I think you should write such a temporary file rather to /tmp/
+</I>&gt;<i> &gt; instead of ~/.hatari/, by using the tmpfile() function for example.
+</I>&gt;<i> 
+</I>&gt;<i> Is there any particular reason to use tmpfile() instead of user's
+</I>&gt;<i> ~/.hatari/ directory?
+</I>
+Well, it's a temporary file, isn't it? Or is there any reason to keep
+it (like the other configuration files)? So I thought the /tmp folder
+would be a better place for this file.
+
+&gt;<i> Random file names mean that I need to remove the file at Hatari exit,
+</I>&gt;<i> and if I don't do it at all possible exit places, Hatari can &quot;leak&quot;
+</I>&gt;<i> these files.  File with fixed name like ~/.hatari/autorun.inf could
+</I>&gt;<i> be left there.
+</I>
+According to the man page of tmpfile:
+
+&quot;The file will be automatically deleted when it is closed or the
+program terminates.&quot;
+
+No need to delete it manually!
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002469.html">[hatari-devel] Executing program with Hatari
+</A></li>
+	<LI>Next message: <A HREF="002495.html">[hatari-devel] Executing program with Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2485">[ date ]</a>
+              <a href="thread.html#2485">[ thread ]</a>
+              <a href="subject.html#2485">[ subject ]</a>
+              <a href="author.html#2485">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

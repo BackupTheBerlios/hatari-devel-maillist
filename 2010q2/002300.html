@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Makefiles removal?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Makefiles%20removal%3F&In-Reply-To=%3C20100613181303.5c8b77d9%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002299.html">
+   <LINK REL="Next"  HREF="002301.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Makefiles removal?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Makefiles%20removal%3F&In-Reply-To=%3C20100613181303.5c8b77d9%40phineus%3E"
+       TITLE="[hatari-devel] Makefiles removal?">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Jun 13 18:13:03 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002299.html">[hatari-devel] Makefiles removal?
+</A></li>
+        <LI>Next message: <A HREF="002301.html">[hatari-devel] Makefiles removal?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2300">[ date ]</a>
+              <a href="thread.html#2300">[ thread ]</a>
+              <a href="subject.html#2300">[ subject ]</a>
+              <a href="author.html#2300">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 13 Jun 2010 18:24:24 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> I noticed that you removed all the makefiles. I think this was
+</I>&gt;<i> premature.
+</I>&gt;<i> 
+</I>&gt;<i> We may need to do some bugfix point release for 4.x still and you
+</I>
+Well, in that case it is also inappropriate that you've committed also
+your profiling, hmsa and other stuff already!
+
+Honestly, if we need to release a bug fix release 1.4.1, we should do
+it on a branch from the 1.4.0 release, not from the hg tip.
+
+&gt;<i> didn't add all the stuff that was in the Makefiles into CMake files. 
+</I>&gt;<i> 
+</I>&gt;<i> For example following things are now missing:
+</I>&gt;<i> * Building &amp; running of the tests
+</I>&gt;<i> * Support for Mudflap (GCC pointer debugging), both for Hatari itself
+</I>&gt;<i>   and the tests (tests don't use external libraries, so they can use
+</I>&gt;<i>   additional mudflap options)
+</I>
+That's your stuff only, so I leave it up to you to add it to the CMake
+files.
+
+&gt;<i> Please add those or restore the Makefiles.
+</I>
+Or what? Sorry, no, we've really got to get rid of this double
+maintenance. There's no point in keeping two build systems forever.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002299.html">[hatari-devel] Makefiles removal?
+</A></li>
+	<LI>Next message: <A HREF="002301.html">[hatari-devel] Makefiles removal?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2300">[ date ]</a>
+              <a href="thread.html#2300">[ thread ]</a>
+              <a href="subject.html#2300">[ subject ]</a>
+              <a href="author.html#2300">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

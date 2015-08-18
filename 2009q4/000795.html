@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] pkg-config portaudio complainments...
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20pkg-config%20portaudio%20complainments...&In-Reply-To=%3C200910090002.17737.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000794.html">
+   <LINK REL="Next"  HREF="000797.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] pkg-config portaudio complainments...</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20pkg-config%20portaudio%20complainments...&In-Reply-To=%3C200910090002.17737.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] pkg-config portaudio complainments...">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Oct  8 23:02:17 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000794.html">[hatari-devel] pkg-config portaudio complainments...
+</A></li>
+        <LI>Next message: <A HREF="000797.html">[hatari-devel] pkg-config portaudio complainments...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#795">[ date ]</a>
+              <a href="thread.html#795">[ thread ]</a>
+              <a href="subject.html#795">[ subject ]</a>
+              <a href="author.html#795">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 08 October 2009, Laurent Sallafranque wrote:
+&gt;<i> &gt; As microphone.c and crossbar.c are Falcon specific, shouldn't they be
+</I>&gt;<i> &gt; moved under falcon/ subdirectory?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If yes, the annoying pkg-config complainments about portaudio (when its
+</I>&gt;<i> &gt; devel files are not present) could be made to happen only from the
+</I>&gt;<i> &gt; falcon/Makefile instead of from all Makefiles.
+</I>&gt;<i>
+</I>&gt;<i> No problem for me, it's a good idea.
+</I>
+I commited the file move, but unfortunately I couldn't get rid
+the warnings...
+
+
+&gt;<i> &gt; (By changing in Makefile.cnf the evaluating &quot;:=&quot; assignment for
+</I>&gt;<i> &gt; portaudio pkg-config values to deferred &quot;=&quot; assignment and doing the
+</I>&gt;<i> &gt; evaluating assigment in falcon/Makefile CFLAGS (to avoid pkg-config
+</I>&gt;<i> &gt; being run for all falcon/*.c files).)
+</I>
+...because this:
+ifneq ($(PORTAUDIO_LIBS),)
+
+will anyway cause this to be evaluated:
+PORTAUDIO_LIBS = $(shell pkg-config --libs portaudio-2.0)
+
+when Makefiles include Makefile.cnf.  :-/
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000794.html">[hatari-devel] pkg-config portaudio complainments...
+</A></li>
+	<LI>Next message: <A HREF="000797.html">[hatari-devel] pkg-config portaudio complainments...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#795">[ date ]</a>
+              <a href="thread.html#795">[ thread ]</a>
+              <a href="subject.html#795">[ subject ]</a>
+              <a href="author.html#795">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20immediately%20showing%20regs%20%26%0A%20memdump%3F&In-Reply-To=%3Calpine.LMD.2.00.0904051147510.11529%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000239.html">
+   <LINK REL="Next"  HREF="000230.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20immediately%20showing%20regs%20%26%0A%20memdump%3F&In-Reply-To=%3Calpine.LMD.2.00.0904051147510.11529%40localhost%3E"
+       TITLE="[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Apr  5 11:52:20 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000239.html">[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+</A></li>
+        <LI>Next message: <A HREF="000230.html">[hatari-devel] Hatari debugger immediately showing regs	&amp;	memdump?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#237">[ date ]</a>
+              <a href="thread.html#237">[ thread ]</a>
+              <a href="subject.html#237">[ subject ]</a>
+              <a href="author.html#237">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 5 Apr 2009, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> That should be pretty easy to do.  Maybe just:
+</I>&gt;<i>  --debug-start &lt;r|d&gt; Show at debugger start: r=registers, d=disassembly.
+</I>&gt;<i>
+</I>&gt;<i> And if one gives &quot;d&quot; multiple times, it will disassemble more
+</I>&gt;<i> (call the disassembling function multiple times).
+</I>&gt;<i>
+</I>&gt;<i> Does this sound useful?
+</I>
+Or sthg like the trace parsing option with '-' or '+' to add multiple 
+options at the same time ( +reg+dsp+cpu-mem ? ).
+
+Anyway, I don't know if a lot of users are using the debugger, so perhaps 
+we should not put too much work in this part at this time ?
+
+
+&gt;<i> I was thinking it more of a something one uses to kind of &quot;sample&quot; what
+</I>&gt;<i> the emulated program is doing.
+</I>&gt;<i>
+</I>&gt;<i> But being able to set breakpoints into the emulated memory and to be able to
+</I>&gt;<i> single step the program execution would be much more interesting features.
+</I>&gt;<i> (You've been mentioning that you could look into the latter... :-))
+</I>&gt;<i>
+</I>
+Yes, hopefully I will implement sthg like that, but I'm really out of time 
+at the moment, so I can't give any date.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000239.html">[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+</A></li>
+	<LI>Next message: <A HREF="000230.html">[hatari-devel] Hatari debugger immediately showing regs	&amp;	memdump?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#237">[ date ]</a>
+              <a href="thread.html#237">[ thread ]</a>
+              <a href="subject.html#237">[ subject ]</a>
+              <a href="author.html#237">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

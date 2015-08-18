@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari debugger improvements
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20improvements&In-Reply-To=%3C201001242039.27057.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001181.html">
+   <LINK REL="Next"  HREF="001360.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari debugger improvements</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20improvements&In-Reply-To=%3C201001242039.27057.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari debugger improvements">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jan 24 19:39:26 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001181.html">[hatari-devel] Hatari debugger improvements
+</A></li>
+        <LI>Next message: <A HREF="001360.html">[hatari-devel] Hatari debugger improvements
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1337">[ date ]</a>
+              <a href="thread.html#1337">[ thread ]</a>
+              <a href="subject.html#1337">[ subject ]</a>
+              <a href="author.html#1337">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 08 January 2010, Eero Tamminen wrote:
+&gt;<i> Doesn't anybody have any comments on which of these you would
+</I>&gt;<i> think the most important improvements to Hatari debugger?
+</I>&gt;<i>
+</I>&gt;<i> For example the counting breakpoints should be easy to do, first
+</I>&gt;<i> e.g. just for the address breakpoints...
+</I>&gt;<i>
+</I>&gt;<i> On Sunday 27 December 2009, Eero Tamminen wrote:
+</I>&gt;<i> &gt; &gt; with a built in window system,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Things could even be shown on specific parts of the screen if Hatari
+</I>&gt;<i> &gt; dependency to ncurses is OK, but that could constrict the area for
+</I>&gt;<i> &gt; other outputs (help texts etc) and require changing a lot of code, so
+</I>&gt;<i> &gt; I'd skip that, at least for now.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (I think that kind of stuff would be a better in a separate GUI
+</I>&gt;<i> &gt; debugger that works over the Hatari control socket.)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; register locking,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hatari debugger already supports showing different kinds of invormation
+</I>&gt;<i> &gt; when entering the debugger.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; And what's shown when entering the debugger could be configurable
+</I>&gt;<i> &gt; (regs, memdump, disassembly, for CPU and/or DSP).  It could be based on
+</I>&gt;<i> &gt; the register values too (address in register N).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The hard part isn't in implementing that, but getting a good syntax on
+</I>&gt;<i> &gt; how to specify it to the debugger...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; search  in disasm mode, ...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Byte search could also be implemented.  With an option for using word
+</I>&gt;<i> &gt; boundary for searching instruction opcodes.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Doing it based on using assembler instructions (instead of opcodes)
+</I>&gt;<i> &gt; like is possible in Monst would probably be too complicated though,
+</I>&gt;<i> &gt; unless somebody wants to write the lookup tables needed for this...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; I really used a lot of this some years ago and I don't see how adding
+</I>&gt;<i> &gt; &gt; symbol to hatari debugger would make it much useful than debugging
+</I>&gt;<i> &gt; &gt; directly under the emulated atari, there so much power in monst that
+</I>&gt;<i> &gt; &gt; making Hatari at the same level would be a huge task.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; After digging my Devpac manual from the attic, I went through it and
+</I>&gt;<i> &gt; checked what other features Hatari debugger is currently missing in
+</I>&gt;<i> &gt; addition to above listed ones:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 1. Showing PC and breakpoints positions in the disassembly output.
+</I>&gt;<i> &gt;    -&gt; easy at least for PC and address breakpoints
+</I>&gt;<i> &gt; 2. Counting breakpoints.
+</I>&gt;<i> &gt; 3. Stopping at breakpoint only after it's been passed certain number
+</I>&gt;<i> &gt;    of times.
+</I>&gt;<i> &gt;    -&gt; 2) &amp; 3) are trivial to do too, but need to be done separately
+</I>&gt;<i> &gt;         for CPU, DSP and conditional breakpoints
+</I>&gt;<i> &gt; 4. Breakpoints that act only once (and disappears after a hit?)
+</I>
+I just commited the first four features for CPU address breakpoints.
+
+Note: that if you have no _address_ breakpoints, symbols aren't shown
+in the CPU disassembly trace either.
+
+
+Usage:
+* Set a breakpoint that is deleted before it drops you to debugger:
+	address &lt;address&gt; 1
+* Set a breakpoint that triggers only on each fourth hit:
+	address &lt;address&gt; 4
+
+
+Laurent, would you be interested about counted breakpoints for DSP?
+
+
+&gt;<i> &gt; 5. Shortcut for telling to run until given (temporary breakpoint)
+</I>&gt;<i> &gt;     condition is hit.
+</I>&gt;<i> &gt;    -&gt; Would be trivial to do after 4)
+</I>
+Only if 4) would be implemented for conditional breakpoints...
+
+
+&gt;<i> &gt; 6. Running until code returns from ROM (exiting from super mode?)
+</I>&gt;<i> &gt; 7. Single stepping that skips Traps, Line-A, Line-F. And one that
+</I>&gt;<i> &gt;     skips also BSRs and JSRs.
+</I>&gt;<i> &gt; 8. Set breakpoint to next instruction and run (to skip loops)
+</I>
+With feature 4), this would be easy to do too.  Anybody want a &quot;next&quot;
+command?
+
+
+&gt;<i> &gt; 9. Set breakpoint on specific OS call
+</I>&gt;<i> &gt; 10. Run slowly
+</I>
+&quot;slow &lt;msecs to sleep between instructions&gt;&quot;?
+
+
+&gt;<i> &gt; 11. Showing contents of memory pointed by the registers
+</I>&gt;<i> &gt; 12. Saving machine status to history buffer each time debugger is
+</I>&gt;<i> &gt;       entered (exception or breakpoint is hit) and being able to view
+</I>&gt;<i> &gt;       this history
+</I>&gt;<i> &gt; 13. SP &amp; SSP as CPU register names (active &amp; supervisor stack)
+</I>&gt;<i> &gt; 13. Fill and copy memory
+</I>
+&quot;fill &lt;range&gt; &lt;value&gt;&quot;, &quot;copy &lt;range&gt; &lt;address&gt;&quot;?
+
+
+&gt;<i> &gt; Although all together these are quite a lot of added code and
+</I>&gt;<i> &gt; complexity, each individual feature is pretty easy to do.  Which of
+</I>&gt;<i> &gt; them you would prioritize?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (The hard thing would again be what kind of a syntax one would use for
+</I>&gt;<i> &gt; specifying them to Hatari...)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Btw. Monst manual mentioned couple of things that could be nice in
+</I>&gt;<i> &gt; Hatari debugger.  For example:
+</I>&gt;<i> &gt; * Running until code gets out of ROM:
+</I>&gt;<i> &gt; 	SP = A7
+</I>&gt;<i> &gt; * Running until subroutine ends (RTS=0x4e75):
+</I>&gt;<i> &gt; 	(PC).w = 0x4e75  &amp;&amp;  SP &gt; CURRENT_SP_MINUS_ONE
+</I>
+Please prioritize, what's most useful for you?
+
+(I do very little instruction level debugging myself...)
+
+
+Btw. I think soon the debugger needs to split the help output to sections
+like the Hatari command line options help does...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001181.html">[hatari-devel] Hatari debugger improvements
+</A></li>
+	<LI>Next message: <A HREF="001360.html">[hatari-devel] Hatari debugger improvements
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1337">[ date ]</a>
+              <a href="thread.html#1337">[ thread ]</a>
+              <a href="subject.html#1337">[ subject ]</a>
+              <a href="author.html#1337">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

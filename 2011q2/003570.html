@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger usage examples?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20usage%20examples%3F&In-Reply-To=%3C4DF297F7.5080004%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003569.html">
+   <LINK REL="Next"  HREF="003575.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger usage examples?</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20usage%20examples%3F&In-Reply-To=%3C4DF297F7.5080004%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Debugger usage examples?">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Jun 11 00:17:27 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003569.html">[hatari-devel] Debugger usage examples?
+</A></li>
+        <LI>Next message: <A HREF="003575.html">[hatari-devel] Debugger usage examples?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3570">[ date ]</a>
+              <a href="thread.html#3570">[ thread ]</a>
+              <a href="subject.html#3570">[ subject ]</a>
+              <a href="author.html#3570">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 11/06/2011 00:07, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Miro asked about debugger usage examples to be added
+</I>&gt;<i> to the Manual.  I came up with these simple ones:
+</I>&gt;<i>
+</I>&gt;<i> 1. stopping on program startup
+</I>&gt;<i> 2. disassembling from PC
+</I>&gt;<i>    2.1 and showing BSS content
+</I>&gt;<i> 3. single stepping
+</I>&gt;<i>    3.1 with e.g. regs shown after each step
+</I>&gt;<i> 4. setting breakpoint on register value change
+</I>&gt;<i>    4.1 so that instructions leading to it are show
+</I>&gt;<i>        when the breakpoint is hit
+</I>&gt;<i>    4.2 without stopping
+</I>&gt;<i> 5. listing stack contents
+</I>&gt;<i>     5.1 that being shown whenever one enters the debugger
+</I>&gt;<i> 6. tracing all OS calls between two breakpoints
+</I>&gt;<i>
+</I>&gt;<i> Any others?
+</I>&gt;<i>
+</I>
+- Setting breakpoint where register has a specific values
+- Setting breakpoint where memory B/W/L has a specific values
+   (with memory being a RAM location or an IO location (detect freq 
+change in ff820a for example))
+- Setting breakpoint on a specific screen position using 
+VBL/HBL/linecycle counter
+- Setting a simple PC breakpoint that triggers after 'n' times
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003569.html">[hatari-devel] Debugger usage examples?
+</A></li>
+	<LI>Next message: <A HREF="003575.html">[hatari-devel] Debugger usage examples?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3570">[ date ]</a>
+              <a href="thread.html#3570">[ thread ]</a>
+              <a href="subject.html#3570">[ subject ]</a>
+              <a href="author.html#3570">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

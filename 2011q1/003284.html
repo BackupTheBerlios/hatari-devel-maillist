@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crosscompiling Hatari for GP2X Wiz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C1301592226.2938.21.camel%40jll%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003282.html">
+   <LINK REL="Next"  HREF="003285.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crosscompiling Hatari for GP2X Wiz</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C1301592226.2938.21.camel%40jll%3E"
+       TITLE="[hatari-devel] Crosscompiling Hatari for GP2X Wiz">marndt at asmsoftware.de
+       </A><BR>
+    <I>Thu Mar 31 19:23:46 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003282.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+        <LI>Next message: <A HREF="003285.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3284">[ date ]</a>
+              <a href="thread.html#3284">[ thread ]</a>
+              <a href="subject.html#3284">[ subject ]</a>
+              <a href="author.html#3284">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Donnerstag, den 31.03.2011, 18:00 +0200 schrieb Matthias Arndt:
+&gt;<i> &gt; 
+</I>&gt;<i> &gt; Did you use:
+</I>&gt;<i> &gt; 	--max-width 320 --max-height 240
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; options?
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Not yet, but I will try it. Sofar I only hardcoded 320x240 into screen.c
+</I>&gt;<i> 
+</I>
+I tried the options and the config also contains the following:
+
+[Screen]
+nMaxWidth = 320
+nMaxHeight = 240
+
+I now did a test and booted the Fantasia Demo by Dune.
+The MSA file does not work (I don't know why) but the .ST does boot up
+and gives a first glimpse of the outcome.
+
+a) it runs - with sound :)
+b) c2p parts seem to be emulation intensive, notable slowdowns
+
+I think I have to add even more frameskip and probably reduce sound
+frequency. Atm it is set to 44kHz.
+
+Matthias
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003282.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+	<LI>Next message: <A HREF="003285.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3284">[ date ]</a>
+              <a href="thread.html#3284">[ thread ]</a>
+              <a href="subject.html#3284">[ subject ]</a>
+              <a href="author.html#3284">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

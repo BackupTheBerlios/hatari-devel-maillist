@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Suggestion about small additions for v1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3Calpine.DEB.1.10.1005122159480.3410%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002066.html">
+   <LINK REL="Next"  HREF="002073.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Suggestion about small additions for v1.4</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3Calpine.DEB.1.10.1005122159480.3410%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Suggestion about small additions for v1.4">ae at dhs.nu
+       </A><BR>
+    <I>Wed May 12 22:20:14 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002066.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002073.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2067">[ date ]</a>
+              <a href="thread.html#2067">[ thread ]</a>
+              <a href="subject.html#2067">[ subject ]</a>
+              <a href="author.html#2067">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 12 May 2010, Eero Tamminen wrote:
+
+&gt;<i> Claiming that things are &quot;slow&quot; isn't same as clearly stating that it
+</I>&gt;<i> doesn't work (even nearly) as fast as it should.
+</I>&gt;<i>
+</I>&gt;<i> Only thing that has been reported earlier to us was an issue by K&#229;re which
+</I>&gt;<i> turned to be a bug which sometimes caused an unrelated variable to be
+</I>&gt;<i> overwritten.  In OSX build, that variable was frameskip (on Linux it was
+</I>&gt;<i> something that wasn't visible to users)...  If I remember correctly, it was 
+</I>&gt;<i> fixed last year, already for v1.3.
+</I>
+Hello!
+
+Oh no don't try this on me :)  I've reported many times that in OS X 
+window mode, Hatari is slow as snails, while in fullscreen it works fast.
+
+The problems in fullscreen however are that virtual desktops doesn't work, 
+refresh rate changes, video resolution changes and it doesn't do double 
+buffering so there is screen tearing.
+
+
+
+&gt;<i> Does the slowness you're reporting happen only when overlay LED is
+</I>&gt;<i> enabled (not necessary visible) and statusbar is disabled?
+</I>&gt;<i> Or does it happen also if statusbar is enabled or both statusbar &amp; led are
+</I>&gt;<i> disabled?
+</I>
+The general slowness is whatever of statusbar/HUD status. It's something 
+to do with updating the actual window. Something is horribly wrong in the 
+screen blit. But this has been brought up time and time again.
+
+
+
+&gt;<i> To me it seems 1/2 (or maybe 1/3) of normal speed.  I think easy way to
+</I>&gt;<i> check how much the slowdown is would be to try frameskip values of 1 or 2.
+</I>&gt;<i> Btw. If OSX SDL is doing VSync() on windowed mode and you have an LCD
+</I>&gt;<i> monitor, you probably should be running Hatari with frameskip anyway.
+</I>&gt;<i> Otherwise OSX/SDL is forcing e.g. monochrome mode (71Hz updates...) to
+</I>&gt;<i> be running too slowly as LCD refresh is usually something like 60Hz.
+</I>&gt;<i> (My CRT refresh is 85Hz so I cannot see issues like this.)
+</I>
+Come on, so the solution to a small little green box slowing down Hatari 
+to a crawl is to frameskip it, not to fix the thing that slows it down?
+
+
+
+&gt;<i> Is OSX that primitive? :-)
+</I>&gt;<i> I can do that without a script on Linux and I think it's possible on Windows
+</I>&gt;<i> also.  Heck, it's even possible to do in Atari Teradesk (not as desktop
+</I>&gt;<i> icon, but for programs configured to handle specific file types).
+</I>
+Yeah it's very primitive. Only one mouse button, only AppleTalk network
+and you can't install any program Steve Jobs personally hasn't granted you 
+access to install.
+
+
+
+&gt;&gt;<i> All comptuers made the last decade or 
+</I>&gt;&gt;<i> so have hardware scaling support, and older machines than that are too
+</I>&gt;&gt;<i> slow for Hatari anyways. Apart from the hwardware scaling, a modern
+</I>&gt;&gt;<i> compter can do software scaling without a blink as well.
+</I>&gt;<i>
+</I>&gt;<i> Well, yours seems to have problems getting the updates to screen
+</I>&gt;<i> frequently enough.  ;-))
+</I>
+Funny, now you remember that I've reported performance issues before..
+
+
+&gt;&gt;<i> See the Vice emulator as a great example how things can be implemented.
+</I>&gt;<i> Is it implemented on top of SDL?
+</I>
+I have no idea, but the implementation is great.
+
+
+&gt;&gt;<i> This wouldn't even let me go to fullscreen at all.
+</I>&gt;<i> It works fine on Linux SDL.  Please file a bug against OSX SDL,
+</I>&gt;<i> HWSURFACE is an optional thing according to SDL documenation.
+</I>&gt;<i> See the documentation on it to see why I asked to test removing it:
+</I>&gt;<i> 	<A HREF="http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetVideoMode">http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetVideoMode</A>
+</I>
+
+Wonderful, I knew this was coming, Hatari is fault free and the problem 
+lies elsewhere, even though Hatari includes the &quot;elsewhere&quot; code.
+
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002066.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002073.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2067">[ date ]</a>
+              <a href="thread.html#2067">[ thread ]</a>
+              <a href="subject.html#2067">[ subject ]</a>
+              <a href="author.html#2067">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Re : DSP host interface interrupted mode : help	needed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Re%20%3A%20DSP%20host%20interface%20interrupted%20mode%20%3A%20help%0A%09needed&In-Reply-To=%3C4AAE47D6.8010505%40arkea.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000688.html">
+   <LINK REL="Next"  HREF="000691.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Re : DSP host interface interrupted mode : help	needed</H1>
+    <B>LAURENT SALLAFRANQUE</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Re%20%3A%20DSP%20host%20interface%20interrupted%20mode%20%3A%20help%0A%09needed&In-Reply-To=%3C4AAE47D6.8010505%40arkea.com%3E"
+       TITLE="[hatari-devel] Re : DSP host interface interrupted mode : help	needed">LAURENT.SALLAFRANQUE at ARKEA.COM
+       </A><BR>
+    <I>Mon Sep 14 15:40:38 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000688.html">[hatari-devel] DSP host interface interrupted mode : help needed
+</A></li>
+        <LI>Next message: <A HREF="000691.html">[hatari-devel] Re : DSP host interface interrupted mode : help needed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#689">[ date ]</a>
+              <a href="thread.html#689">[ thread ]</a>
+              <a href="subject.html#689">[ subject ]</a>
+              <a href="author.html#689">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+ From what I've understood of the google traduction of the german 
+message :), it seems that the DSP sends its interrupt to the COMBEL chip 
+and not directly to the MFP chip. The COMBEL gather MFP and DSP 
+interrupts at level 6, and interrupts the 68030.
+
+But, as the COMBEL isn't adressable by software (it's a pure hardware 
+chip) and as the MFP does already a big part of the COMBEL job, could we 
+imagine to just upgrade the actual MFP code to MFP/COMBEL chip 
+management. We could add the lightgun interrupt later if needed ;)
+
+Like this, the DSP interrupt could be easily added to the MFP code (at 
+interrupt level 6).
+I think, the level of interrupt musn't be too high, as the DSP is 
+waiting for the host to feed him with datas.
+That's not crucial (as a VSYNC is for example).
+
+As I don't know well the MFP part, would you (Thomas), add the interrupt ?
+
+(I can add the &quot;dsp_get_HREQ()&quot; function in dsp.c if you want it to be 
+coded this way).
+
+Regards
+
+Laurent
+
+
+--
+Ce message et  toutes les pieces jointes (ci-apres  le &quot;message&quot;) sont
+confidentiels et etablis a l'intention exclusive de ses destinataires.
+Toute  utilisation ou  diffusion  non autorisee  est interdite.   Tout
+message  etant  susceptible  d'alteration,  l'emetteur  decline  toute
+responsabilite au titre de  ce message  s'il a  ete altere, deforme ou
+falsifie.
+                -----------------------------------
+This message and any  attachments (the &quot;message&quot;) are confidential and
+intended  solely   for  the   addressees.  Any  unauthorised   use  or
+dissemination is prohibited. As e-mails are susceptible to alteration,
+the issuer shall  not be  liable for  the  message if altered, changed
+or falsified.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000688.html">[hatari-devel] DSP host interface interrupted mode : help needed
+</A></li>
+	<LI>Next message: <A HREF="000691.html">[hatari-devel] Re : DSP host interface interrupted mode : help needed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#689">[ date ]</a>
+              <a href="thread.html#689">[ thread ]</a>
+              <a href="subject.html#689">[ subject ]</a>
+              <a href="author.html#689">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

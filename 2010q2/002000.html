@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling support to Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3C201005070017.40543.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001973.html">
+   <LINK REL="Next"  HREF="002179.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling support to Hatari debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3C201005070017.40543.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Profiling support to Hatari debugger">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu May  6 23:17:40 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001973.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="002179.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2000">[ date ]</a>
+              <a href="thread.html#2000">[ thread ]</a>
+              <a href="subject.html#2000">[ subject ]</a>
+              <a href="author.html#2000">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Tuesday 04 May 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> On Tue, 4 May 2010, Eero Tamminen wrote:
+</I>&gt;<i> &gt; So as a conclusion...  To get the correct cycles spent by instruction
+</I>&gt;<i> &gt; execution, I should use:
+</I>&gt;<i> &gt; 	uae_u32 opcode = get_iword_prefetch (0);
+</I>&gt;<i> &gt; 	cycles = (*cpufunctbl[opcode])(opcode) + nWaitStateCycles;
+</I>&gt;<i> &gt; ?
+</I>&gt;<i> Yes, that's it.
+</I>
+Attached is a new version of the profiling code.
+
+It's used like this for CPU:
+----------------------------------
+&gt;<i> h profile
+</I>'profile' - profile CPU code
+Usage:  profile &lt;true|false|stats|cycles|counts&gt; [show count]
+        true &amp; false enable and disable profiling.  Data is collected
+        until debugger is entered again after which you can view
+        statistics about the data or view PC addresses that took
+        most cycles or (function) symbols called most often.
+        You can specify how many items are shown at most.
+        To continue profiling, you need to set it true again.
+&gt;<i> profile true
+</I>Profiling enabled.
+&gt;<i> c
+</I>Returning to emulation...
+Allocated CPU profile buffer (18 MB).
+Allocated CPU profile address buffer (28 KB).
+Normal RAM (0-0x400000):
+- no activity
+Cartridge ROM (0xFA0000-0xFC0000):
+- no activity
+ROM TOS (0xE00000-0xE80000):
+- active address range:
+  0xe0014c-0xe31df4, 7236 active instructions
+- total used cycles and executed instructions:
+  32461842 / 2772968
+- address with most cycles:
+  0xe0dcca, 524520 cycles
+- address with most hits:
+  0xe11fb2, 17907 hits
+
+CPU=$e176fc, VBL=972, FrameCycles=64, HBL=0, LineCycles=64, DSP=N/A
+&gt;<i> profile cycles 8
+</I>addr:           cycles:
+0xe0dcca        524520
+0xe0dc64        512880
+0xe13204        435276
+0xe131e8        434952
+0xe11fc4        402864
+0xe14016        302440
+0xe14000        302160
+0xe140ae        301920
+8 addresses listed.
+&gt;<i> profile counts
+</I>ERROR: no symbols loaded!
+&gt;<i> symbols ../tests/debugui/etos512.sym
+</I>WARNING: symbol '_do_bell' listed twice.
+Loaded 1281 symbols from '../tests/debugui/etos512.sym'.
+&gt;<i> profile counts 12
+</I>addr:           count:  symbol:
+0xe1af5e        4462    _gsx_ncode
+0xe0f560        4280    _screen
+0xe0fa3a        4278    _get_vwk_by_handle
+0xe14a0c        1551    _gchr_key
+0xe1492e        1538    _vsin_mode
+0xe1b3fa        1530    _gsx_char
+0xe030f0        1527    _kbshift
+0xe1b3a8        1527    _gsx_kstate
+0xe14912        1525    _vq_key_s
+0xe17676        1522    _chkkbd
+0xe149ea        1279    _gshift_s
+0xe1484e        1255    _v_string
+12 symbols listed.
+----------------------------------
+
+Now would be a good time to comment on how one would
+like to use the profiling!   (Tob&#235;?)
+
+Next I'll refactor DSP profiling code to work similarly to the CPU code
+(one can view until one continues emulation), then I'll add the cycles/count
+information to disassembly output.
+
+(Due to limitation on how that is output, the information is not
+on disassembly lines, but on lines between them along with
+the symbol names.)
+
+
+&gt;<i> &gt; Will that work fine also in non-compatible CPU mode which seems
+</I>&gt;<i> &gt; e.g. to be using get_iword(0) instead of get_iword_prefetch (0)?
+</I>&gt;<i>
+</I>&gt;<i> Except when using self modifying code, get_iword and get_iword_prefetch
+</I>&gt;<i> should not have a different result.
+</I>
+I was mainly worried about whether it would have completely bogus
+results...?
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: profile4.diff
+Type: text/x-diff
+Size: 10824 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100507/a0635272/attachment.diff">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100507/a0635272/attachment.diff</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: profile.c
+Type: text/x-csrc
+Size: 10528 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100507/a0635272/attachment.c">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100507/a0635272/attachment.c</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: profile.h
+Type: text/x-chdr
+Size: 527 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20100507/a0635272/attachment.h">https://lists.berlios.de/pipermail/hatari-devel/attachments/20100507/a0635272/attachment.h</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001973.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="002179.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2000">[ date ]</a>
+              <a href="thread.html#2000">[ thread ]</a>
+              <a href="subject.html#2000">[ subject ]</a>
+              <a href="author.html#2000">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

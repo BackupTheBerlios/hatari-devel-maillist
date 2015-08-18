@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] spec512 using blitter on STE
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20spec512%20using%20blitter%20on%20STE&In-Reply-To=%3Calpine.LMD.2.00.1001091203090.22030%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001184.html">
+   <LINK REL="Next"  HREF="001190.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] spec512 using blitter on STE</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20spec512%20using%20blitter%20on%20STE&In-Reply-To=%3Calpine.LMD.2.00.1001091203090.22030%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] spec512 using blitter on STE">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Jan  9 12:13:39 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001184.html">[hatari-devel] spec512 using blitter on STE
+</A></li>
+        <LI>Next message: <A HREF="001190.html">[hatari-devel] spec512 using blitter on STE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1186">[ date ]</a>
+              <a href="thread.html#1186">[ thread ]</a>
+              <a href="subject.html#1186">[ subject ]</a>
+              <a href="author.html#1186">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 9 Jan 2010, Jean-Baptiste Berlioz wrote:
+
+&gt;<i> Yes i'm still around, and ready to fix blitter timings.
+</I>&gt;<i> 16 cycles, that's huge, i'd like to see the source code, just before the
+</I>&gt;<i> blitter was started.
+</I>
+Maybe those 16 cycles are the results of 4 * 4 cycles ? I don't see any 
+io accesses with wait state. Or maybe Hatari is synchronising with ff8209 
+16 cycles too late (but this would be a rare case).
+
+I will try to compare with Steem's timing to see at which point we don't 
+get the same result, to be sure the problem is really blitter's related.
+
+Here's the code :
+
+0001ca20: dafa 4e73 70ff 21c0 8a28 ADDA.W (PC,$4e73) == $00021895,A5
+0001ca24: 70ff 21c0 8a28 31c0 8a2c MOVE.L #$ffffffff,D0
+0001ca26: 21c0 8a28 31c0 8a2c 1238 MOVE.L D0,$ffff8a28
+0001ca2a: 31c0 8a2c 1238 8209 67fa MOVE.W D0,$ffff8a2c
+0001ca2e: 1238 8209 67fa 4601 e329 MOVE.B $ffff8209,D1
+0001ca32: 67fa 4601 e329 21fc 0002 BEQ.B #$fffffffa == 0001ca2e (TRUE)
+0001ca34: 4601 e329 21fc 0002 fff2 NOT.B D1
+0001ca36: e329 21fc 0002 fff2 8a2e LSL.B D1,D1
+
+0001ca38: 21fc 0002 fff2 8a2e 21fc MOVE.L #$0002fff2,$ffff8a2e
+0001ca40: 21fc 0002 0002 8a20 31fc MOVE.L #$00020002,$ffff8a20
+0001ca48: 31fc 0008 8a36 4238 8a3d MOVE.W #$0008,$ffff8a36
+0001ca4e: 4238 8a3d 31fc 0203 8a3a CLR.B $ffff8a3d
+0001ca52: 31fc 0203 8a3a 7ac0 7805 MOVE.W #$0203,$ffff8a3a
+0001ca58: 7ac0 7805 2279 0001 dc0e MOVE.L #$ffffffc0,D5
+0001ca5a: 7805 2279 0001 dc0e d3f9 MOVE.L #$00000005,D4
+0001ca5c: 2279 0001 dc0e d3f9 0001 MOVEA.L $0001dc0e,A1
+0001ca62: d3f9 0001 db04 307c 820a ADDA.L $0001db04,A1
+0001ca68: 307c 820a 347c 8250 367c MOVEA.W #$820a,A0
+0001ca6c: 347c 8250 367c 8a24 387c MOVEA.W #$8250,A2
+0001ca70: 367c 8a24 387c 8a3c 3a7c MOVEA.W #$8a24,A3
+0001ca74: 387c 8a3c 3a7c 8a38 3c7c MOVEA.W #$8a3c,A4
+0001ca78: 3a7c 8a38 3c7c 8a32 7000 MOVEA.W #$8a38,A5
+0001ca7c: 3c7c 8a32 7000 363a 1074 MOVEA.W #$8a32,A6
+0001ca80: 7000 363a 1074 4e71 4e71 MOVE.L #$00000000,D0
+0001ca82: 363a 1074 4e71 4e71 4e71 MOVE.W (PC,$1074) == $0001daf8,D3
+0001ca86: 4e71 4e71 4e71 4e71 4e71 NOP.L
+0001ca88: 4e71 4e71 4e71 4e71 4e71 NOP.L
+0001ca8a: 4e71 4e71 4e71 4e71 4e71 NOP.L
+0001ca8c: 4e71 4e71 4e71 4e71 4e71 NOP.L
+0001ca8e: 4e71 4e71 4e71 4e71 4e71 NOP.L
+0001ca90: 4e71 4e71 4e71 4e71 4e71 NOP.L
+0001ca92: 4e71 4e71 4e71 4e71 3559 NOP.L
+0001ca94: 4e71 4e71 4e71 3559 0002 NOP.L
+0001ca96: 4e71 4e71 3559 0002 2559 NOP.L
+0001ca98: 4e71 3559 0002 2559 0004 NOP.L
+0001ca9a: 3559 0002 2559 0004 2559 MOVE.W (A1)+,(A2,$0002) == $000addfa
+0001ca9e: 2559 0004 2559 0008 2559 MOVE.L (A1)+,(A2,$0004) == $000addfc
+0001caa2: 2559 0008 2559 000c 3a84 MOVE.L (A1)+,(A2,$0008) == $000ade00
+0001caa6: 2559 000c 3a84 2c8a 2689 MOVE.L (A1)+,(A2,$000c) == $000ade04
+0001caaa: 3a84 2c8a 2689 1885 43e9 MOVE.W D4,(A5)
+0001caac: 2c8a 2689 1885 43e9 0050 MOVE.L A2,(A6)
+0001caae: 2689 1885 43e9 0050 51cb MOVE.L A1,(A3)
+0001cab0: 1885 43e9 0050 51cb ffd0 MOVE.B D5,(A4)
+0001cab2: 43e9 0050 51cb ffd0 4e75 LEA.L (A1,$0050) == $000af650,A1
+0001cab6: 51cb ffd0 4e75 70ff 21c0 DBF .W D3,#$ffd0 == 0001ca88 (FALSE)
+0001caba: 4e75 70ff 21c0 8a28 31c0 RTS.L
+
+
+By the way, &quot;strange&quot; effect you used in your screen ; are you changing 
+STE's hscroll every 16 pixels or so ?
+
+
+&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;<i> Hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> while looking at the wrong colors displayed in the intro of the STE 20th
+</I>&gt;&gt;<i> year demo, I was able to get a correct result by simulating color changes
+</I>&gt;&gt;<i> 16 cycles earlier for all blitter writes.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> These are the current (wrong) timings :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> cpu video_cyc= 32828  60@ 64 : 0001caae: 2689 1885 43e9 0050 51cb MOVE.L A1,(A3)
+</I>&gt;&gt;<i> IO write.l $ff8a24 = $00043e28
+</I>&gt;&gt;<i> cpu video_cyc= 32840  72@ 64 : 0001cab0: 1885 43e9 0050 51cb ffd0 MOVE.B D5,(A4)
+</I>&gt;&gt;<i> IO write.b $ff8a3c = $c0
+</I>&gt;&gt;<i> blitter write ctrl=c0 video_cyc=32840 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">72 at 64</A> pc=1cab2 instr_cyc=8
+</I>&gt;&gt;<i> IO write.w $ff8250 = $0000
+</I>&gt;&gt;<i> write col addr=ff8250 col=0 video_cyc_w=32860 line_cyc_w=92 @ nHBL=64/video_hbl_w=64 pc=1cab2 instr_cyc=8
+</I>&gt;&gt;<i> IO write.w $ff8252 = $0888
+</I>&gt;&gt;<i> write col addr=ff8252 col=888 video_cyc_w=32868 line_cyc_w=100 @ nHBL=64/video_hbl_w=64 pc=1cab2 instr_cyc=8
+</I>&gt;&gt;<i> IO write.w $ff8254 = $0088
+</I>&gt;&gt;<i> write col addr=ff8254 col=88 video_cyc_w=32876 line_cyc_w=108 @ nHBL=64/video_hbl_w=64 pc=1cab2 instr_cyc=8
+</I>&gt;&gt;<i> IO write.w $ff8256 = $0111
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> to get correct pictures, ff8250 should be changed at cycle 76, not 92, for
+</I>&gt;&gt;<i> example.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> JB / Tobe are you still around ? Do you have any idea of what's wrong ?
+</I>&gt;&gt;<i> (this works fine under steem, which is odd because I had the feeling
+</I>&gt;&gt;<i> latest hatari had better blitter's timings than steem for many demos)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Nicolas
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001184.html">[hatari-devel] spec512 using blitter on STE
+</A></li>
+	<LI>Next message: <A HREF="001190.html">[hatari-devel] spec512 using blitter on STE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1186">[ date ]</a>
+              <a href="thread.html#1186">[ thread ]</a>
+              <a href="subject.html#1186">[ subject ]</a>
+              <a href="author.html#1186">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

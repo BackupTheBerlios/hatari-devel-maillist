@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Choosing ym mixing method in the UI
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Choosing%20ym%20mixing%20method%20in%20the%20UI&In-Reply-To=%3C4D9AD245.5060207%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003305.html">
+   <LINK REL="Next"  HREF="003317.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Choosing ym mixing method in the UI</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Choosing%20ym%20mixing%20method%20in%20the%20UI&In-Reply-To=%3C4D9AD245.5060207%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Choosing ym mixing method in the UI">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Apr  5 10:26:45 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003305.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+        <LI>Next message: <A HREF="003317.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3306">[ date ]</a>
+              <a href="thread.html#3306">[ thread ]</a>
+              <a href="subject.html#3306">[ subject ]</a>
+              <a href="author.html#3306">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 04/04/2011 21:19, Eero Tamminen a &#233;crit :
+&gt;<i> You mean radio boxes, I assume user cannot select both?
+</I>&gt;<i>
+</I>
+Hello, yes radio button, not checkboxes.
+
+&gt;<i> What about command line and configuration option,
+</I>&gt;<i> I guess the command line option could be:
+</I>&gt;<i> 	--ym-mixer&lt;x&gt;   YM mixing method (x=linear/table)
+</I>&gt;<i> ?
+</I>
+Yes, this would need to be added ; if you can add it, I'll write some 
+infos about this option in the doc. I think &quot;--ym-mixing&quot; would sound a 
+little better (in the sense that it's a &quot;mixing method&quot;)
+
+
+&gt;<i>
+</I>&gt;&gt;<i> ------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> YM voice mixing  [] linear   [] ST table
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Isn't the table used for mixing STE/Falcon/TT YM sound?
+</I>
+no, only for mixing the 3 volumes of the ym2149 together and get the 
+equivalent of the mono signal  (this mono signal could be further mixed 
+with dma/dsp on STE/Falcon, but that's not the same problem).
+
+I called this &quot;ST table&quot; because the values are the results of measuring 
+the output voltage of the audio signal on an STF while changing volume 
+on all 3 voices from 0 to 15 (4096 entries, less to measure if you 
+remove permutations).
+
+As Anders said, we had some talks recently on this subject in order to 
+improve sound quality with their &quot;Sommarhack 2011 invitro&quot; which uses 
+STF and gave much better results when table mixing is used.
+
+
+&gt;<i> Attached are three possible layouts that could be used to fit this to
+</I>&gt;<i> sound dialog, please pick one. :-)
+</I>&gt;<i>
+</I>&gt;<i> I can look into this and the add command line option after the configuration
+</I>&gt;<i> variable is there.
+</I>
+I like the 1st one better (everything on a single line seems to better 
+suit the way we read from left to right).
+
+I will add the configuration variable asap.
+
+
+regards
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003305.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+	<LI>Next message: <A HREF="003317.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3306">[ date ]</a>
+              <a href="thread.html#3306">[ thread ]</a>
+              <a href="subject.html#3306">[ subject ]</a>
+              <a href="author.html#3306">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

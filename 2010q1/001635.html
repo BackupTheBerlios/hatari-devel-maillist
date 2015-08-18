@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] LMC1992 and Microwire emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3Calpine.LMD.2.00.1003072243200.8475%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001634.html">
+   <LINK REL="Next"  HREF="001636.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] LMC1992 and Microwire emulation</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3Calpine.LMD.2.00.1003072243200.8475%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] LMC1992 and Microwire emulation">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Mar  7 22:50:25 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001634.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+        <LI>Next message: <A HREF="001636.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1635">[ date ]</a>
+              <a href="thread.html#1635">[ thread ]</a>
+              <a href="subject.html#1635">[ subject ]</a>
+              <a href="author.html#1635">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 7 Mar 2010, Laurent Sallafranque wrote:
+
+&gt;<i> I totally agree with you.
+</I>&gt;<i>
+</I>&gt;<i> The main problem is that I've only got a 520 STf.
+</I>&gt;<i>
+</I>&gt;<i> Another point, if we want to be accurate is the 8 cpu cycles interrupt for 
+</I>&gt;<i> the Microwire.
+</I>&gt;<i> If a 68000 instruction takes 50 cycles (for examples), we should detect this 
+</I>&gt;<i> and rotate the microwire mask 6 times instead of only one.
+</I>
+Thomas added some code in DmaSnd_InterruptHandler_Microwire some times ago 
+to handle a part of this, but it's true the interrupt will only rotate one 
+time per cpu instruction.
+
+I will try to look at this some day (don't have time at the moment), but 
+even if precision is better, do we know a demo/program that doesn't work 
+today because of this (it would be needed to verify the modification is 
+OK) ?
+
+If there's no program that bug because of this, then this could be fixed 
+later, but not as a priority.
+
+&gt;<i>
+</I>&gt;<i> Nicolas, you know how to do this better than me, could you add this feature ?
+</I>&gt;<i>
+</I>&gt;<i> I'll try to have a look at the bass and treble algos during this time.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>
+Nicolas
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001634.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+	<LI>Next message: <A HREF="001636.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1635">[ date ]</a>
+              <a href="thread.html#1635">[ thread ]</a>
+              <a href="subject.html#1635">[ subject ]</a>
+              <a href="author.html#1635">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] something not working with breakpoints ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20something%20not%20working%20with%20breakpoints%20%3F&In-Reply-To=%3C20090906121546.377ba04c%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000666.html">
+   <LINK REL="Next"  HREF="000673.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] something not working with breakpoints ?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20something%20not%20working%20with%20breakpoints%20%3F&In-Reply-To=%3C20090906121546.377ba04c%40phineus%3E"
+       TITLE="[hatari-devel] something not working with breakpoints ?">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Sep  6 12:15:46 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000666.html">[hatari-devel] something not working with breakpoints ?
+</A></li>
+        <LI>Next message: <A HREF="000673.html">[hatari-devel] something not working with breakpoints ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#668">[ date ]</a>
+              <a href="thread.html#668">[ thread ]</a>
+              <a href="subject.html#668">[ subject ]</a>
+              <a href="author.html#668">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 5 Sep 2009 20:53:06 +0200 (CEST)
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+
+&gt;<i> In fact, I think I found the bug : when I add your printf, I get lots
+</I>&gt;<i> of lines like :
+</I>&gt;<i> 
+</I>&gt;<i> (0x44c).b = 0x0
+</I>&gt;<i> 
+</I>&gt;<i> Then I insert the disk in drive A and press alt+r for reset, and at
+</I>&gt;<i> this point, there's no more printf, so it seems resetting the ST is
+</I>&gt;<i> removing the SPCFLAG_DEBUGGER flag :(
+</I>
+That could be true. Please check m68k_reset() in newcpu.c, I think the
+flags are cleared there...
+
+&gt;<i> If I press alt+pause and then immediatly 'c', I return to emulation
+</I>&gt;<i> and the printf are back again -&gt; breakpoints are checked again.
+</I>&gt;<i> 
+</I>&gt;<i> So, I think when Hatari is cold/warm rebooted, it should keep the
+</I>&gt;<i> state of the SPCFLAG_DEBUGGER, else we have a list of active
+</I>&gt;<i> breakpoints that stay persistent after the reset, but they're not
+</I>&gt;<i> checked anymore.
+</I>
+Agreed, this should be fixed.
+
+&gt;<i> Thomas, maybe this should go in 1.3.2 ? (I think it could puzzle some 
+</I>&gt;<i> users, but as it's limited to a few person that will use breakpoints, 
+</I>&gt;<i> maybe it's not worth to do another release)
+</I>
+I think there are not that much people who use the debugger, and most
+of them likely read this mailing list already, so they should be aware
+of this problem now...
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000666.html">[hatari-devel] something not working with breakpoints ?
+</A></li>
+	<LI>Next message: <A HREF="000673.html">[hatari-devel] something not working with breakpoints ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#668">[ date ]</a>
+              <a href="thread.html#668">[ thread ]</a>
+              <a href="subject.html#668">[ subject ]</a>
+              <a href="author.html#668">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Ym / Dma mixing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3C20090207111212.7900272d%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000119.html">
+   <LINK REL="Next"  HREF="000122.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Ym / Dma mixing</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Ym%20/%20Dma%20mixing&In-Reply-To=%3C20090207111212.7900272d%40phineus%3E"
+       TITLE="[hatari-devel] Ym / Dma mixing">th.huth at gmx.de
+       </A><BR>
+    <I>Sat Feb  7 11:12:12 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000119.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+        <LI>Next message: <A HREF="000122.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#120">[ date ]</a>
+              <a href="thread.html#120">[ thread ]</a>
+              <a href="subject.html#120">[ subject ]</a>
+              <a href="author.html#120">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+ Hi!
+
+On Fri, 6 Feb 2009 23:35:57 +0100 (CET)
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+
+&gt;<i> &gt; Jean-Baptiste Berlioz wrote:
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; + No more desync between SDL buffer and mixing buffer (no more
+</I>&gt;<i> &gt;&gt; mixing buffer btw)
+</I>
+What do you mean by that? Was there a problem?
+
+&gt;<i> &gt;&gt; + The SDL audio buffer size is frequency dependant (and small).
+</I>
+I don't think that this is a good idea to use sizes smaller than 512...
+according to the SDL documentation:
+
+&quot; desired-&gt;samples : The desired size of the audio buffer in samples.
+This number should be a power of two, and may be adjusted by the audio
+driver to a value more suitable for the hardware. Good values seem to
+range between 512 and 8192 inclusive, depending on the application and
+CPU speed. Smaller values yield faster response time, but can lead to
+underflow if the application is doing heavy processing and cannot fill
+the audio buffer in time. &quot;
+
+&gt;<i> &gt;&gt; + Added some 4 pole filters (configurable).
+</I>
+What are they good for? There is hardly any comment in your patch about
+them.
+
+&gt;<i> &gt;&gt; - Now, when a ym register is written, the affected sample number
+</I>&gt;<i> &gt;&gt; is computed and the change is stored in a list.
+</I>&gt;<i> &gt;&gt; When the SDL audio callback needs samples, it calls the ym
+</I>&gt;<i> &gt;&gt; emulation, and the ym emulation replay the history and generate
+</I>&gt;<i> &gt;&gt; the samples.
+</I>
+So where's the advantage to the old way of generating the samples
+directly?
+
+&gt;<i> &gt;&gt; - The Dma sound generation is done the same way. The SDL audio
+</I>&gt;<i> &gt;&gt; callback ask some samples to the Dma emulation (but there's no
+</I>&gt;<i> &gt;&gt; history).
+</I>
+But what happens when the ST memory has changed inbetween? You might
+copy wrong that in that case?!
+
+&gt;<i>   - many parts of the mixing routines for dma sound are using float
+</I>&gt;<i> and other math functions (ceilf, ...). I think this is a little
+</I>&gt;<i> overkill to use float for every sample to compute its resampled
+</I>&gt;<i> version (perhaps libsamplerate could do this optionnaly).
+</I>[...]
+&gt;<i> If we consider embeded/non desktop PC as Hatari's targets too, trying
+</I>&gt;<i> to avoid float should help maintaining performance.
+</I>
+Right, it's also bad on for performance on PowerPC CPUs.
+If possible, you should avoid float&lt;-&gt;int conversions.
+
+&gt;<i> &gt;&gt; PS: about 'improve the dma resampling', maybe *optionally* with a
+</I>&gt;<i> &gt;&gt; configure flag we could use libsamplerate ?
+</I>&gt;<i> 
+</I>&gt;<i> I don't know ; does it really improve sound a lot at 44.1 kHz ? I'm
+</I>&gt;<i> not sure the real problem to get a sound really close to dma is
+</I>&gt;<i> resampling, but more in the modeling of filters that match the
+</I>&gt;<i> original 1 kohm resistance between the sound chip and the left/right
+</I>&gt;<i> output for instance.
+</I>&gt;<i> 
+</I>&gt;<i> Thomas's policy was to keep dependancies at the minimum to allow 
+</I>&gt;<i> compilation on as much system (including the &quot;broken&quot; ones), but
+</I>&gt;<i> perhaps that if the code is made optional with configure this could
+</I>&gt;<i> be used (but once again, I'm not sure that libresample would give
+</I>&gt;<i> huge difference when resampling 50 Khz to a close 44.1 output freq,
+</I>&gt;<i> the ratio is too close to 1 to have some really audible aliasing
+</I>&gt;<i> artefacts I think).
+</I>
+Some Falcon games / demos that run with 50 kHz DMA sound have really,
+really bad sound quality. I guess this is due to the downsampling to
+44.1 kHz. So a proper sample rate convertion function could be helpful
+here. So I really would not mind to add an additional autoconf test for
+this.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000119.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+	<LI>Next message: <A HREF="000122.html">[hatari-devel] Ym / Dma mixing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#120">[ date ]</a>
+              <a href="thread.html#120">[ thread ]</a>
+              <a href="subject.html#120">[ subject ]</a>
+              <a href="author.html#120">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

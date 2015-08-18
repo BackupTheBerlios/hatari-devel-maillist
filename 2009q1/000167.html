@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] MacOsX GUI
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MacOsX%20GUI&In-Reply-To=%3C20090217002005.5a4f243f%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000166.html">
+   <LINK REL="Next"  HREF="000169.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] MacOsX GUI</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MacOsX%20GUI&In-Reply-To=%3C20090217002005.5a4f243f%40phineus%3E"
+       TITLE="[hatari-devel] MacOsX GUI">th.huth at gmx.de
+       </A><BR>
+    <I>Tue Feb 17 00:20:05 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000166.html">[hatari-devel] MacOsX GUI
+</A></li>
+        <LI>Next message: <A HREF="000169.html">[hatari-devel] MacOsX GUI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#167">[ date ]</a>
+              <a href="thread.html#167">[ thread ]</a>
+              <a href="subject.html#167">[ subject ]</a>
+              <a href="author.html#167">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 16 Feb 2009 22:49:05 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> &gt; - Enable Bios/Xbios Interception (bBiosIntercept). Same, thing, a
+</I>&gt;<i> &gt; menu in Emulator. I don't even know what's it's supposed to do.
+</I>&gt;<i> 
+</I>&gt;<i> It might be useful if you want to debug what Bios/XBios operations
+</I>&gt;<i> Atari programs do.  It also redirects Atari print screen
+</I>&gt;<i> functionality to create Hatari screen dump.
+</I>&gt;<i> 
+</I>&gt;<i> I.e. basically the debug &amp; biosintercept are not really sensible in
+</I>&gt;<i> the UI.
+</I>
+These functions are only useful for debugging. I don't think that you
+need it in the normal OS X GUI... and it will only confuse the normal
+users.
+
+&gt;<i> &gt; - Fast Forward: I suppose that's it's also a flags.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Do these flags can be changed while Hatari is running ?
+</I>
+You can already toggle the fast forward mode with the COMMAND-x shortcut
+on OS X, I think.
+
+&gt;<i> &gt; There is also some option (I think) that may be running option only:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Trace Parameter,
+</I>&gt;<i> &gt; Socket to read option
+</I>&gt;<i> &gt; File to save log output
+</I>&gt;<i> &gt; Log Level
+</I>&gt;<i> &gt; Dialog for log level.
+</I>&gt;<i> 
+</I>&gt;<i> Except for socket option, these can be changed at run-time, but you're
+</I>&gt;<i> responsible for applying the changes.  With socket option the point
+</I>&gt;<i> is that you control Hatari through the socket, not through something
+</I>&gt;<i> else.
+</I>&gt;<i> 
+</I>&gt;<i> Unless you're showing the traces or logs in the UI, they don't make
+</I>&gt;<i> sense in the UI.
+</I>
+Right, especially since you're normally do not use a terminal window on
+OS X, these options are useless in the GUI for the normal users.
+
+&gt;<i> &gt; Then I really need to add the new Hardisk management. IDE
+</I>&gt;<i> &gt; Emulation, for example. In the CLI, IDE emulation is an option at
+</I>&gt;<i> &gt; launch. It should be a option that can be change thru preferences.
+</I>&gt;<i> &gt; But the way it's done for the moment make this impossible. It's not
+</I>&gt;<i> &gt; an option wich are written in the pref
+</I>&gt;<i> &gt; file. IDE_Init() is called only one time, at startup. If I change
+</I>&gt;<i> &gt; Hardisk Emulation parameters like these, while Atari is running,
+</I>&gt;<i> &gt; it's not working at all, even with a Cold Boot.
+</I>
+IDE emulation is still work-in-progress. I also haven't added it to the
+normal SDL GUI yet. I'll do that somewhen in the future when I've got
+some more spare time.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000166.html">[hatari-devel] MacOsX GUI
+</A></li>
+	<LI>Next message: <A HREF="000169.html">[hatari-devel] MacOsX GUI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#167">[ date ]</a>
+              <a href="thread.html#167">[ thread ]</a>
+              <a href="subject.html#167">[ subject ]</a>
+              <a href="author.html#167">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

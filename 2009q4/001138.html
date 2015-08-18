@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] source level debugging with the Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20source%20level%20debugging%20with%20the%20Hatari%20debugger&In-Reply-To=%3C200912232036.05613.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001124.html">
+   <LINK REL="Next"  HREF="001139.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] source level debugging with the Hatari debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20source%20level%20debugging%20with%20the%20Hatari%20debugger&In-Reply-To=%3C200912232036.05613.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] source level debugging with the Hatari debugger">oak at helsinkinet.fi
+       </A><BR>
+    <I>Wed Dec 23 19:36:05 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001124.html">[hatari-devel] IDE patch
+</A></li>
+        <LI>Next message: <A HREF="001139.html">[hatari-devel] source level debugging with the Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1138">[ date ]</a>
+              <a href="thread.html#1138">[ thread ]</a>
+              <a href="subject.html#1138">[ subject ]</a>
+              <a href="author.html#1138">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I CCed this to Hatari-devel instead of MiNT list because the subject
+changed.
+
+On Sunday 20 December 2009, Vincent Rivi&#232;re wrote:
+&gt;<i> &gt; It doesn't support showing symbols for the (CPU) code, but if somebody
+</I>&gt;<i> &gt; provides documentation on the Atari binary debug data format, some kind
+</I>&gt;<i> &gt; of a support for it might be considered.
+</I>&gt;<i>
+</I>&gt;<i> The debug info is never loaded into memory (except by debuggers). For
+</I>&gt;<i> providing symbols in the Hatari debugger, you would have to find the
+</I>&gt;<i> executable path from somewhere, and load the debug info from it.
+</I>&gt;<i> Everything is possible in an emulator, but it could be tricky.
+</I>
+Hatari already hooks pexec() call when emulating &quot;directory as a HDD&quot; at
+GEMDOS level.  I guess it would need another hook (called regardless of
+GEMDOS HDD emulation) when the pexec() has loaded the binary and relocated
+it.
+
+If program source level debugging is enabled, emulator could then load
+the program debugging symbols, add them to the debugger command line
+TAB completion list and breakpoint to the internal debugger so that one
+can set program specific breakpoints.
+
+Alternatively the internal Hatari debugger could do also the program loading
+(like pexec() does it) when explicitly requested by the user.  I don't know
+which approach would be more work.
+
+Once the program symbols and their (relocated) addresses are known,
+CPU disassembly can show the address label names too.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001124.html">[hatari-devel] IDE patch
+</A></li>
+	<LI>Next message: <A HREF="001139.html">[hatari-devel] source level debugging with the Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1138">[ date ]</a>
+              <a href="thread.html#1138">[ thread ]</a>
+              <a href="subject.html#1138">[ subject ]</a>
+              <a href="author.html#1138">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] start and break question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20start%20and%20break%20question&In-Reply-To=%3C4DF3A116.80908%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003571.html">
+   <LINK REL="Next"  HREF="003583.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] start and break question</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20start%20and%20break%20question&In-Reply-To=%3C4DF3A116.80908%40corp.free.fr%3E"
+       TITLE="[hatari-devel] start and break question">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Jun 11 19:08:38 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003571.html">[hatari-devel] start and break question
+</A></li>
+        <LI>Next message: <A HREF="003583.html">[hatari-devel] start and break question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3578">[ date ]</a>
+              <a href="thread.html#3578">[ thread ]</a>
+              <a href="subject.html#3578">[ subject ]</a>
+              <a href="author.html#3578">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 11/06/2011 00:22, Eero Tamminen a &#233;crit :
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Btw. Now that I looked, different places in the debugger check debugger
+</I>&gt;<i> variable, user symbol&amp;  register names in different order:
+</I>&gt;<i> - breakpoint parsing: variable, register, symbol
+</I>&gt;<i> - expressions: register, symbol, variable
+</I>&gt;<i>
+</I>&gt;<i> I'm not sure in which order the matching really should go (i.e. which
+</I>&gt;<i> overrides the others), just that it should be same.   If loaded symbols
+</I>&gt;<i> contain e.g. HBL or TEXT symbol, should value of that be picked instead
+</I>&gt;<i> of Hatari variable value?
+</I>&gt;<i>
+</I>
+Hi
+
+I think hatari's internal variable should have priority over any loaded 
+symbol. If a loaded symbol conflicts, either dismiss it (easy) or add an 
+automatic suffix to it (_1, _2, ...) (little more complicated)
+
+&gt;<i> --
+</I>&gt;<i>
+</I>&gt;<i> Regarding expressions that the debugger parser evaluates, currently they're
+</I>&gt;<i> marked with &quot;&quot;, like in 'm &quot;data&quot;' above, but those would be nice for
+</I>&gt;<i> indicating search strings too.  Should I change &quot;&quot; expression markers to
+</I>&gt;<i> something else?
+</I>&gt;<i>
+</I>&gt;<i> Rest of the debugger breakpoints&amp;  expressions syntax already uses
+</I>&gt;<i> these special ASCII characters: #!%&amp;|():-_+*~^/&lt;&gt;=.
+</I>&gt;<i>
+</I>&gt;<i> That leaves only these free: []{}?';
+</I>&gt;<i>
+</I>&gt;<i> &quot;'&quot; character might be nice to leave for strings too, &quot;m ?data?&quot; looks
+</I>&gt;<i> a bit strange and while &quot;m [data]&quot; looks IMHO fine, it's a bit more
+</I>&gt;<i> complicated to write (on my Finnish keyboard) than above 'm &quot;data&quot;'.
+</I>&gt;<i>
+</I>&gt;<i> Any opinions on this?  There aren't many opportunities to change this
+</I>&gt;<i> once the debugger starts to get wider usage...
+</I>
+Personnaly, I really don't like the &quot;?&quot; syntax ; I'd rather use {} to 
+enclose expression ; it's not used in asm coding as far as I remember, 
+so it's the less likely to give a conflict with what the user is used to 
+(better to add a completly new notation than to re-use a notation that 
+has a different wide known meaning to the user)
+
+As {} is also used in C or many other languages to delimit a block of 
+code, I think it would also make sense to use this to enclose 
+breakpoints' expressions/conditions.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003571.html">[hatari-devel] start and break question
+</A></li>
+	<LI>Next message: <A HREF="003583.html">[hatari-devel] start and break question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3578">[ date ]</a>
+              <a href="thread.html#3578">[ thread ]</a>
+              <a href="subject.html#3578">[ subject ]</a>
+              <a href="author.html#3578">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

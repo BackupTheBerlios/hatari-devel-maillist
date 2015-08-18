@@ -1,0 +1,382 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] LLVM static analyzer output
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LLVM%20static%20analyzer%20output&In-Reply-To=%3C201105221723.21700.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003480.html">
+   <LINK REL="Next"  HREF="003463.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] LLVM static analyzer output</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LLVM%20static%20analyzer%20output&In-Reply-To=%3C201105221723.21700.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] LLVM static analyzer output">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun May 22 16:23:21 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003480.html">[hatari-devel] Compiling Hatari with Clang (from LLVM project)	and the resulting signed comparison warnings
+</A></li>
+        <LI>Next message: <A HREF="003463.html">[hatari-devel] LLVM static analyzer output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3460">[ date ]</a>
+              <a href="thread.html#3460">[ thread ]</a>
+              <a href="subject.html#3460">[ subject ]</a>
+              <a href="author.html#3460">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+One can use LLVM static analyzer by setting &quot;--analyze&quot; option to CMake
+C-flags in addition to using &quot;clang&quot; as CC.  Linking of some stuff will then
+fail, but one can just copy the binaries from the GCC build (from another
+CMake build dir) and continue as the analyzer doesn't build binaries, just
+analyzes the code.
+
+
+The output from that seems more interesting than plain Clang output
+as it actually found couple of corner-case bugs among non-interesting
+things.  The whole output from Debian Stable v2.7 &quot;clang -analyze&quot;:
+
+src/falcon/dsp_cpu.c:3502:12: warning: Although the value stored to 
+'numreg2' is used in the enclosing expression, the value is never actually 
+read from 'numreg2'
+        numreg1 = numreg2 = DSP_REG_NULL;
+                  ^         ~~~~~~~~~~~~
+-&gt; Redundant assigment, should be harmless.
+
+
+src/falcon/dsp_cpu.c:3851:3: warning: Pass-by-value argument in function 
+call is undefined
+                write_memory(DSP_SPACE_X, l_addr, save_lx);
+                ^                                 ~~~~~~~
+-&gt; Warning looks bogus to me. As far as I can see, all possible paths
+   set save_lx before this is called (numreg cannot be larger than 7,
+   and the called static dsp_pm_read_accu24() function always sets
+   save_lx value), I guess it was too complicated for Clang.
+
+
+src/falcon/videl.c:251:2: warning: Pass-by-value argument in function call 
+is undefined
+        IoMem_WriteWord(0xff8210, line_width); 
+        ^                         ~~~~~~~~~~
+-&gt; Looks bogus too.  I guess this is the same problem GCC had earlier for
+   variable value being masked and only masked values being in switch...
+
+
+src/falcon/videl.c:1235:14: warning: Value stored to 'fvram_line' during its 
+initialization is never read
+                                        Uint16 *fvram_line = fvram;
+                                                ^            ~~~~~
+-&gt; Redundant assigment, I removed it for consistency with rest of code.
+
+
+src/uae-cpu/gencpu.c:129:6: warning: Assigned value is garbage or undefined
+            counts[opcode] = count;
+            ^                ~~~~~
+-&gt; True, if &quot;frequent.68k&quot; doesn't exist or has only one line, &quot;count&quot;
+   value is undefined.  I don't think we have that file, so I left it as-is.
+
+
+src/uae-cpu/newcpu.c:2064:10: warning: Although the value stored to 
+'mcycles' is used in the enclosing expression, the value is never actually 
+read from 'mcycles'
+        return (mcycles = 5) * 2;
+                ^         ~
+-&gt; I guess this:
+    // Overflow
+    if ((dividend &gt;&gt; 16) &gt;= divisor)
+        return (mcycles = 5) * 2;
+Was meant just as more readable version of:
+        return 5 * 2;
+?
+
+
+src/uae-cpu/fpp.c:1360:5: warning: Value stored to 'model' is never read
+    model = restore_u32();
+    ^       ~~~~~~~~~~~~~
+-&gt; save_fpu() takes model from &quot;currprefs.cpu_level&quot;, restore_fpp()
+   indeed ignores that memory snapshot value...  Is this for WinAUE
+   compatibility?  (if yes, it could have a comment about it)
+
+
+src/debug/profile.c:469:2: warning: Value stored to 'item' is never read
+        item = cpu_profile.data;
+        ^      ~~~~~~~~~~~~~~~~
+-&gt; Removed the redundant line.
+
+
+src/debug/68kDisass.c:563:3: warning: Null pointer passed as an argument to 
+a 'nonnull' parameter
+                strcpy(buf, sp);
+                ^           ~~
+-&gt; Switch for registers doesn't give value for &quot;sp&quot; in the default
+   case (e.g. &quot;unknown&quot;), so if that can happen, the disassembler
+   would SIGSEGV.  IMHO makes sense to fix.
+
+
+src/debug/68kDisass.c:608:2: warning: Value stored to 'val' is never read
+        val = 0;
+        ^     ~
+-&gt; Redundant assigment, should be harmless.
+
+
+src/gui-sdl/dlgFileSelect.c:240:2: warning: Value stored to 'b' is never 
+read
+        b = SDL_GetMouseState(&amp;x, &amp;y);
+        ^   ~~~~~~~~~~~~~~~~~~~~~~~~~
+-&gt; Redundant assigment, should be harmless.
+
+/home/eero/work/hatari/src/gui-sdl/dlgFileSelect.c:481:2: warning: Value 
+stored to 'yScrolbar_pos' is never read
+        yScrolbar_pos = 0;
+        ^               ~
+-&gt; Whole variable is redundant.  Removed.
+
+
+src/gui-sdl/dlgFileSelect.c:809:5: warning: Value stored to 'selection' is 
+never read
+                                selection = -1;
+                                ^           ~~
+src/gui-sdl/dlgFileSelect.c:684:6: warning: Value stored to 'selection' is 
+never read
+                                        selection = -1;                /* 
+Remove old selection */
+                                        ^           ~~
+src/gui-sdl/dlgFileSelect.c:652:6: warning: Value stored to 'selection' is 
+never read
+                                        selection = -1;                /* 
+Remove old selection */
+                                        ^           ~~
+src/gui-sdl/dlgFileSelect.c:482:2: warning: Value stored to 'yScrolbar_size' 
+is never read
+        yScrolbar_size = 0;
+        ^                ~
+-&gt; Redundant assignments with the current code, removed.
+
+
+src/gui-sdl/sdlgui.c:446:2: warning: Value stored to 'h' is never read
+        h = pdlg[objnum].h*sdlgui_fontheight;
+        ^   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-&gt; Redundant variable, removed.
+
+
+src/cfgopts.c:97:4: warning: Value stored to 'fptr' is never read
+                        fptr = Str_Trim(fgets(line, sizeof(line), file));  
+/* get input line */
+                        ^      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cfgopts.c:124:13: warning: Null pointer passed as an argument to a 
+'nonnull' parameter
+                                                        if 
+(!strcasecmp(next,&quot;FALSE&quot;))
+                                                             ^          ~~~~
+src/cfgopts.c:410:4: warning: Value stored to 'fptr' is never read
+                        fptr = Str_Trim(fgets(line, sizeof(line), cfgfile));  
+/* get input line */
+                        ^      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cfgopts.c:366:5: warning: Value stored to 'next' is never read
+                                next = strtok(line, &quot;=\n\r&quot;);             /* 
+get actual config information */
+                                ^      ~~~~~~~~~~~~~~~~~~~~~
+src/cfgopts.c:317:4: warning: Value stored to 'fptr' is never read
+                        fptr = Str_Trim(fgets(line, sizeof(line), cfgfile));  
+/* get input line */
+                        ^      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-&gt; Config file parsing was confused/broken in regards to fgets() error
+   (passed through Str_Trim() in the code), Str_Trim() and strtok()
+   usage (the warned strtok() line is both redundant &amp; broken).
+   I partly rewrote the cfgopts.c code to fix it.
+
+
+src/file.c:537:3: warning: Value stored to 'rd' is never read
+                rd = 1;
+                ^    ~
+src/file.c:535:3: warning: Value stored to 'wr' is never read
+                wr = 1;
+                ^    ~
+-&gt; Happen because CMake compiles by default with -DNDEBUG.
+
+
+src/gemdos.c:714:9: warning: Dereference of null pointer
+                        if (!emudrives[i])
+                             ^
+src/gemdos.c:720:5: warning: Null pointer passed as an argument to a 
+'nonnull' parameter
+                                memset(emudrives[i], 0, 
+sizeof(EMULATEDDRIVE));
+                                ^      ~~~~~~~~~~~~
+-&gt; Improved alloc failure handling.
+
+
+src/gemdos.c:990:3: warning: Value stored to 'namelen' is never read
+                namelen++;
+                ^~~~~~~~~
+src/gemdos.c:981:3: warning: Value stored to 'namelen' is never read
+                namelen++;
+                ^~~~~~~~~
+-&gt; Redundant assigments, should be harmless.
+
+
+src/gemdos.c:994:2: warning: Branch condition evaluates to a garbage value
+        if (modified)
+        ^   ~~~~~~~~
+
+src/hdc.c:513:9: warning: The left operand of '==' is a garbage value
+                if (n == HD_SECTORCOUNT(HDCCommand))
+                    ~ ^
+-&gt; Variables could be undefined, fixed.
+
+
+src/ide.c:1767:3: warning: Value stored to 'msf' is never read
+                msf = (packet[1] &gt;&gt; 1) &amp; 1;
+                ^     ~~~~~~~~~~~~~~~~~~~~
+src/ide.c:1768:3: warning: Value stored to 'start_track' is never read
+                start_track = packet[6];
+                ^             ~~~~~~~~~
+-&gt; Referred by commented out cdrom_read_toc* FIXME code.
+
+
+src/ioMem.c:154:38: warning: Dereference of null pointer
+                for (i=0; pInterceptAccessFuncs[i].Address != 0; i++)
+                                                   ^
+-&gt; Added default to nMachineType switch-case that aborts.
+
+
+src/screenSnapShot.c:188:4: warning: Value stored to 'row_ptr' is never read
+                        row_ptr = src_ptr;
+                        ^         ~~~~~~~
+-&gt; Removed redundant variable.
+
+
+src/unzip.c:618:3: warning: Value stored to 'lSeek' is never read
+                lSeek+=file_info.size_file_comment;
+                ^      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/unzip.c:615:3: warning: Value stored to 'lSeek' is never read
+                lSeek+=file_info.size_file_comment - uSizeRead;
+                ^      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-&gt; Redundant assigments, should be harmless.
+
+src/unzip.c:885:3: warning: Value stored to 'err' is never read
+                err=UNZ_BADZIPFILE;
+                ^   ~~~~~~~~~~~~~~
+-&gt; Compressed zip file unzipping error handling is a bit broken...
+
+
+src/video.c:2554:3: warning: Value stored to 'bScreenChanged' is never read
+                bScreenChanged = Screen_Draw();
+                ^                ~~~~~~~~~~~~~
+src/video.c:2540:3: warning: Value stored to 'bScreenChanged' is never read
+                bScreenChanged = VIDEL_renderScreen();
+                ^                ~~~~~~~~~~~~~~~~~~~~
+src/video.c:2544:3: warning: Value stored to 'bScreenChanged' is never read
+                bScreenChanged = Video_RenderTTScreen();
+                ^                ~~~~~~~~~~~~~~~~~~~~~~
+-&gt; Nicolas, should something be done based on whether rendering
+   changed the screen contents?
+
+
+src/xbios.c:116:2: warning: Value stored to 'Scr' is never read
+src/xbios.c:115:2: warning: Value stored to 'Tsr' is never read
+src/xbios.c:114:2: warning: Value stored to 'Rsr' is never read
+-&gt; Updated xbios.c debugging stuff
+
+
+/home/eero/work/hatari/tools/hmsa/hmsa.c:35:3: warning: Value stored to 
+'sType' is never read
+                sType = &quot;WARNING: &quot;;
+                ^       ~~~~~~~~~~~
+-&gt; Fixed, was missing a &quot;break&quot;.
+
+
+I've already commited most of the above stuff I modified, but I will test
+gemdos.c &amp; cfgopts.c changes a bit more before commiting them too.
+
+
+	- Eero
+
+----------------------------------------
+PS. I didn't check these, but I assume they're harmless:
+
+/home/eero/work/hatari/src/uae-cpu/readcpu.c:675:4: warning: Value stored to 
+'pos' is never read
+                        pos++;
+                        ^~~~~
+/home/eero/work/hatari/src/uae-cpu/readcpu.c:665:4: warning: Value stored to 
+'pos' is never read
+                        pos += 10;
+                        ^      ~~
+/home/eero/work/hatari/src/uae-cpu/readcpu.c:657:7: warning: Value stored to 
+'pos' is never read
+                    pos++;
+                    ^~~~~
+/home/eero/work/hatari/src/uae-cpu/readcpu.c:624:4: warning: Value stored to 
+'pos' is never read
+                        pos++;
+                        ^~~~~
+/home/eero/work/hatari/src/uae-cpu/readcpu.c:614:4: warning: Value stored to 
+'pos' is never read
+                        pos += 10;
+                        ^      ~~
+/home/eero/work/hatari/src/uae-cpu/readcpu.c:606:7: warning: Value stored to 
+'pos' is never read
+                    pos++;
+                    ^~~~~
+/home/eero/work/hatari/src/uae-cpu/readcpu.c:570:21: warning: Value stored 
+to 'pos' is never read
+            switch (opcstr[pos++]) {
+                           ^~~~~
+/home/eero/work/hatari/src/uae-cpu/readcpu.c:563:34: warning: Value stored 
+to 'pos' is never read
+             case 'P': destmode = Aipi; pos++; break;
+                                        ^~~~~
+/home/eero/work/hatari/src/uae-cpu/readcpu.c:562:34: warning: Value stored 
+to 'pos' is never read
+             case 'p': destmode = Apdi; pos++; break;
+                                        ^~~~~
+/home/eero/work/hatari/src/uae-cpu/readcpu.c:543:21: warning: Value stored 
+to 'pos' is never read
+            switch (opcstr[pos++]) {
+                           ^~~~~
+/home/eero/work/hatari/src/uae-cpu/readcpu.c:790:6: warning: Value stored to 
+'smsk' is never read
+            smsk = 0; sbitdst = 0;
+            ^      ~
+/home/eero/work/hatari/src/uae-cpu/readcpu.c:790:16: warning: Value stored 
+to 'sbitdst' is never read
+            smsk = 0; sbitdst = 0;
+                      ^         ~
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003480.html">[hatari-devel] Compiling Hatari with Clang (from LLVM project)	and the resulting signed comparison warnings
+</A></li>
+	<LI>Next message: <A HREF="003463.html">[hatari-devel] LLVM static analyzer output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3460">[ date ]</a>
+              <a href="thread.html#3460">[ thread ]</a>
+              <a href="subject.html#3460">[ subject ]</a>
+              <a href="author.html#3460">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

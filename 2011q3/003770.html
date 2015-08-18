@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Last checks before releasing 1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3C4E249084.6040709%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003768.html">
+   <LINK REL="Next"  HREF="003772.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Last checks before releasing 1.5</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3C4E249084.6040709%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Last checks before releasing 1.5">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jul 18 21:59:00 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003768.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+        <LI>Next message: <A HREF="003772.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3770">[ date ]</a>
+              <a href="thread.html#3770">[ thread ]</a>
+              <a href="subject.html#3770">[ subject ]</a>
+              <a href="author.html#3770">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 18/07/2011 20:19, David Savinkoff a &#233;crit :
+&gt;<i> Le 18/07/2011 02:25, David Savinkoff a &#233;crit :
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> I don't understand what you mean. What part of Hatari is not precise,
+</I>&gt;<i> and what do you mean by &quot;infinitely precise&quot; for audio ?
+</I>
+The problem is not too be too precise, the problem is too be precise 
+enough so that all emulated programs behave the same on Hatari as on a 
+real ST.
+I had to use non integer fps, because in the case of the STE video clock 
+and dma audio clock are really too different clock.s
+
+As Anders reported, Hatari with video at 50 Hz had some audio/video sync 
+problem after a moment in the demo. And the only way to fix this was to 
+really have video at 50.053 Hz, or put in another way a VBL that last 
+19.979 ms. All ST output PAL video at 50.053 Hz (well some rare models, 
+such as Paulo Simoes, were reported to have different clock, but that's 
+not the rule).
+
+If you don't do that, at one point the dma player (which is synchronised 
+on the audio dma buffer) &quot;skips&quot; one pattern and one sample is looped 
+one time too much, because the code that is supposed to run on each VBL 
+will not happen at the same &quot;position&quot; in the dma buffer.
+
+More precisely, if you play dma sound at 50066 Hz, after 50 VBL you 
+should not have played 50066 samples, but ~50012 samples. If that's not 
+the case, some demos will just don't work correctly (Hextracker requires 
+this precision, although it also self adapt to the audio variation (when 
+running under falcon, steem, 16 Mhz cpu, ...))
+
+&gt;<i>
+</I>&gt;<i> ** Hatari is attempting to be too precise.
+</I>&gt;<i> ** The audio and video frequencies are 'defined' to be what they are.
+</I>
+But concretly, Hatari sleeps after each rendered video frame to emulate 
+the display freq. Do you mean Hatari should render one frame every 20 
+ms, instead of the 19.979 used now in PAL ?
+
+&gt;<i> It's a known fact that apart from the above ntsc/pal fps numbers the ST
+</I>&gt;<i> were never precise enough and the output video signal is not exactly the
+</I>&gt;<i> PAL value (it's really 50.053 Hz on a PAL ST).
+</I>&gt;<i>
+</I>&gt;<i> ** 50.053 Hz is close enough to be called 50 Hz.
+</I>
+I agree, but the problem is not how you call it, it's the timings 
+involved behind. Sleeping 20 ms or 19.979 is not the same, it's very 
+close, but since it's possible we should respect the maximum accuracy.
+The results on the screen could be the same, but that's due to the 
+screen which has its own freq, which could be neither 50 HZ nor 50.053 Hz.
+
+&gt;<i>
+</I>&gt;<i> Do you recommand to emulate sound and video at 50.053 but to refresh
+</I>&gt;<i> screen at 50 Hz ?
+</I>&gt;<i>
+</I>&gt;<i> * The video card dictates its approximately 50 Hz refresh rate.
+</I>&gt;<i> * Hatari should emulate the video at approximately 50.053 Hz in
+</I>&gt;<i>    'emulation space' and the video card will display it in real time
+</I>&gt;<i>    at approximately 50 Hz (PAL). To do this, hatari must use a video
+</I>&gt;<i>    mode that supports approx 50 Hz. Then hatari 'must' supply video at
+</I>&gt;<i>    the rate that the card demands (which probably is not 50.053 Hz).
+</I>&gt;<i> * Note that an Atari ST and a PC video card can both display PAL.
+</I>&gt;<i>    Thus both operate at a nominal 50 Hz. Nobody can justifiably
+</I>&gt;<i>    complain about the emulation speed accuracy because they would be
+</I>&gt;<i>    effectively complaining that one real Atari runs at different speed
+</I>&gt;<i>    than another real Atari.
+</I>
+I agree that anyway, Hatari has no way to send the sync signal to start 
+a new VBL. So we're bound to what the display driver of the OS is doing.
+
+Also, we have no way from Hatari to know the exact video freq that is 
+produced by the video card.
+
+Since we don't know those 2 parameters, the only reasonable thing to do 
+for me is to have Hatari generate frames at the rate supposed to be 
+produced on a real ST. Maybe, we will be close to the video card freq, 
+maybe not, but we can't know ; so why should we favour a 20 ms speed 
+instead of 19.979 ?
+
+&gt;<i>
+</I>&gt;<i> Why do you say it will keep hardware happy ? I'm not sure Anders is
+</I>&gt;<i> speaking about hardware, but about software.
+</I>&gt;<i>
+</I>&gt;<i> * Anders problem is Hatari's fault. Hatari should always provide
+</I>&gt;<i>    nominal values (eg. 50Hz 44100Hz etc). The exact values are
+</I>&gt;<i>    internal just like a real Atari.
+</I>
+No, for the same reasons, if you want to record avi of what is emulated 
+by Hatari, then I think you should put in the avi header the most exact 
+value possible (for the same audio/video sync that can appear on STE).
+
+Then, the video player you use can do some more advanced rendering to 
+adapt the avi frame rate to your monitor frame rate (motion 
+compensation, ...), but I don't think that Hatari has to simplify what 
+it generates. A real PAL ST produces 50.053 Hz video, so we should put 
+this value in the avi header and let the video player round it to 50 Hz 
+while playing if it wants.
+
+But regarding Anders problem, it's just that quicktime doesn't seem to 
+support a high precision in the fps_scale values :
+  - 50053000 / 1000000 = 50.053, but it will be rejected by 
+quicktime/ffmpeg.
+  - 50053 / 1000 = 50.053 too, but it will be accepted by quicktime.
+
+&gt;<i> On LCD monitors, it's quite unlikely you can output 50 Hz video, it's
+</I>&gt;<i> more often 60 Hz, so having 50 Hz or 50.053 would not change anything in
+</I>&gt;<i> the end.
+</I>&gt;<i>
+</I>&gt;<i> * Note that it is the 'video card' that dictates the frequency. The
+</I>&gt;<i>    monitor synchronizes to the video card. Hatari must either synchronize
+</I>&gt;<i>    to the video card or allow SDL/system to insert or drop a frame
+</I>&gt;<i>    periodically. The video card is guaranteed to Not be exactly 60 Hz.
+</I>&gt;<i>    I do not recommend synchronizing to the video card because
+</I>&gt;<i>    synchronizing to the sound card is better.
+</I>
+I agree, but since we don't have any mean to synchronise with the video 
+card, then it's better to render frame at the rate of a real ST and let 
+the video driver drop/skip one refresh on screen from time to time.
+
+It's clear that with most lcd running at 60 Hz, emulating 50 Hz or 
+50.053 Hz will just not be in sync and will never give a &quot;smooth&quot; 
+display (as on an old Atari's CRT monitor).
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003768.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+	<LI>Next message: <A HREF="003772.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3770">[ date ]</a>
+              <a href="thread.html#3770">[ thread ]</a>
+              <a href="subject.html#3770">[ subject ]</a>
+              <a href="author.html#3770">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

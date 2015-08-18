@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Road Riot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Road%20Riot&In-Reply-To=%3C4B825C30.8070602%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001512.html">
+   <LINK REL="Next"  HREF="001516.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Road Riot</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Road%20Riot&In-Reply-To=%3C4B825C30.8070602%40free.fr%3E"
+       TITLE="[hatari-devel] Road Riot">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Feb 22 11:28:00 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001512.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+        <LI>Next message: <A HREF="001516.html">[hatari-devel] Road Riot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1515">[ date ]</a>
+              <a href="thread.html#1515">[ thread ]</a>
+              <a href="subject.html#1515">[ subject ]</a>
+              <a href="author.html#1515">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+Some comments about RoadRiot :
+
+The loading part of the game is really slow.
+The animated menu and the game are running at a correct speed.
+
+
+I have 2 problems with RoadRiot :
+
+1) screen problem
+2) DSP stack problem.
+
+
+1) Screen problem :
+
+When the race is about to start (when the bimbo counts from 3 to 0), I
+press &quot;F11&quot; to go to fullscreen.
+The BPP seems to change from 24 to 8 BPP here.
+When I go back to windowed mode, it stays in 8BPP mode and all my linux
+display is crashed.
+I have to disconnect and reconnect my session to reload the X server and
+return to 24 BPP.
+I'm using an old CRT monitor, not a new LCD one.
+I think the problem is in hostscreen.c when switching to fullscreen mode.
+
+
+2) The DSP stack.
+
+A few months ago, I added  the stack management. I think I've done it
+correctly, but there may be a bug I don't see.
+
+ From what I understand from the motorola DSP doc :
+The stack is a 2*16 bits stack. Values are loaded and saved in the stack
+from index 1 to 15.
+Index 0 is not connected and values written at stack address 0 always
+equal 0.
+
+In Road Riot, one of the first instruction is a &quot;movec #$7FFF,SP&quot; which
+results in:
+SP :  0  --&gt; $3F   and this generates a stack error (from me, it's normal).
+
+If I remove the 10 lines  that take into account the stack management,
+RoadRiot runs well (and some other programs too (built in obsolescence
+for example).
+
+But I don't know if the problem is in my code or if my code is OK and
+the problem is somewhere else.
+(in this last case, removing the 10 lines would mask the problem but not
+correct it).
+
+Should I comment the 10 lines for now and let run some more programs or
+keep my actual stack management code like this ?
+
+Regards
+
+Laurent
+
+
+
+Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I just tested &quot;Road Riot4WD &quot;[1].  It loads fine (just *very* slow) from
+</I>&gt;<i> GEMDOS partition, but when the game is to start, it gives infinitely:
+</I>&gt;<i> Dsp: 0x029f: 0x000732 unknown instruction
+</I>&gt;<i> Dsp: 0x029f: 0x000732 unknown instruction
+</I>&gt;<i> Dsp: 0x029f: 0x000732 unknown instruction
+</I>&gt;<i> Dsp: 0x029f: 0x000732 unknown instruction
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> [1] 
+</I>&gt;<i> <A HREF="http://christophe.bray.free.fr/informatique/falcon/jeux/Road%20riot/ROADRIOT.ZIP">http://christophe.bray.free.fr/informatique/falcon/jeux/Road%20riot/ROADRIOT.ZIP</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001512.html">[hatari-devel] cmake doesn't find readline
+</A></li>
+	<LI>Next message: <A HREF="001516.html">[hatari-devel] Road Riot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1515">[ date ]</a>
+              <a href="thread.html#1515">[ thread ]</a>
+              <a href="subject.html#1515">[ subject ]</a>
+              <a href="author.html#1515">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

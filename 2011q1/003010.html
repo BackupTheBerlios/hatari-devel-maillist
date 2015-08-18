@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Fullscreen / dualhead bug
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fullscreen%20/%20dualhead%20bug&In-Reply-To=%3C201102102059.41548.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003009.html">
+   <LINK REL="Next"  HREF="003017.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Fullscreen / dualhead bug</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fullscreen%20/%20dualhead%20bug&In-Reply-To=%3C201102102059.41548.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Fullscreen / dualhead bug">oak at helsinkinet.fi
+       </A><BR>
+    <I>Thu Feb 10 19:59:41 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003009.html">[hatari-devel] Fullscreen / dualhead bug
+</A></li>
+        <LI>Next message: <A HREF="003017.html">[hatari-devel] MacOsx: bad color in falcon mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3010">[ date ]</a>
+              <a href="thread.html#3010">[ thread ]</a>
+              <a href="subject.html#3010">[ subject ]</a>
+              <a href="author.html#3010">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On torstai 10 helmikuu 2011, Matthias Arndt wrote:
+&gt;<i> Am Donnerstag, den 10.02.2011, 11:14 +0100 schrieb Anders Eriksson:
+</I>&gt;<i> &gt; So SDL fucks up Hatari on Linux and it fucks up Hatari on OS X. Styckx
+</I>&gt;<i> &gt; is trying to improve timing accuracy by going around SDL. One can
+</I>&gt;<i> &gt; start to wonder if SDL is just a quick-fix and not that good in the
+</I>&gt;<i> &gt; long run.
+</I>&gt;<i> 
+</I>&gt;<i> I wouldn't sa ythat at full. Maybe dualscreen support is not complete or
+</I>&gt;<i> desired as of yet?
+</I>
+Maybe nobody has filed a bug about that to SDL bug tracker so that
+SDL developers would know?
+
+
+&gt;<i> On a signlescreen setup I never never had problems with any SDL apps
+</I>&gt;<i> under Linux to go fullscreen and back.
+</I>
+Likewise.  Only problems I've had have been with programs using OpenGL
+when they crash and leave gfx HW into some broken state.  Sometimes
+even restarting X doesn't help for that.
+
+
+&gt;<i> The SDL API certainly is not at fault, if at all, it is the
+</I>&gt;<i> implementation or the platform specific backend.
+</I>
+Exactly.
+
+On Linux the SDL backend does what was earlier only available alternative to
+get fast fullscreen, but AFAIK nowadays there are better ways to do things
+with X that what SDL is still doing.  I.e. the issue on Linux is a bit of
+a legacy issue.  Maybe they want to be compatible to obsolete X versions,
+or maybe this is already fixed/improved in the SDL trunk (I haven't
+checked).
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003009.html">[hatari-devel] Fullscreen / dualhead bug
+</A></li>
+	<LI>Next message: <A HREF="003017.html">[hatari-devel] MacOsx: bad color in falcon mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3010">[ date ]</a>
+              <a href="thread.html#3010">[ thread ]</a>
+              <a href="subject.html#3010">[ subject ]</a>
+              <a href="author.html#3010">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

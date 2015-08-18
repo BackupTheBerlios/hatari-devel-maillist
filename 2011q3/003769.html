@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Rainbow2 multimedia patch accepted before release ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Rainbow2%20multimedia%20patch%20accepted%20before%0A%20release%20%3F&In-Reply-To=%3C4E248E5F.7020301%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003764.html">
+   <LINK REL="Next"  HREF="003771.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Rainbow2 multimedia patch accepted before release ?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Rainbow2%20multimedia%20patch%20accepted%20before%0A%20release%20%3F&In-Reply-To=%3C4E248E5F.7020301%40free.fr%3E"
+       TITLE="[hatari-devel] Rainbow2 multimedia patch accepted before release ?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Jul 18 21:49:51 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003764.html">[hatari-devel] Rainbow2 multimedia patch accepted before release ?
+</A></li>
+        <LI>Next message: <A HREF="003771.html">[hatari-devel] Rainbow2 multimedia patch accepted before release ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3769">[ date ]</a>
+              <a href="thread.html#3769">[ thread ]</a>
+              <a href="subject.html#3769">[ subject ]</a>
+              <a href="author.html#3769">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've uploaded 2 patchs :
+
+- 1 for rainbow2 (I've added VFC counter, and I've changed 
+ioMemTabFalcon to allow VFC_Read and removeVFC_Write)
+- 1 for compatibility.htm (for Moai96 and rainbow2 programs).
+
+Don't hesitate to make changes to these 2 patchs if necessary.
+
+Regards
+
+Laurent
+
+
+Le 18/07/2011 15:09, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 18/07/2011 14:33, LAURENT SALLAFRANQUE a &#233;crit :
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've worked with rainbow2 multimedia for Falcon.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> With old cpu, it won't work, as there's no MMU emulation.
+</I>&gt;&gt;<i> With the new cpu, it looped forever waiting a synchro from videl.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've added a small patch in video.c and now it works perfectly well 
+</I>&gt;&gt;<i> for me.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This patch is &quot;natural&quot; with the actual video emulation (all done by 
+</I>&gt;&gt;<i> video.c).
+</I>&gt;&gt;<i> It increases VFC (Vertical Frequency Counter) after each HBL and 
+</I>&gt;&gt;<i> resets it at each VBL.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I will have to remove it when I upload the real Videl emulation.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Here is the patch :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> in void Video_InterruptHandler_HBL ( void )
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> +    if (ConfigureParams.System.nMachineType == MACHINE_FALCON) {
+</I>&gt;&gt;<i> +        /* Videl Vertical counter increase */
+</I>&gt;&gt;<i> +        IoMem_WriteByte(0xff82a0, IoMem_ReadByte(0xff82a0)+1);
+</I>&gt;&gt;<i> +    }
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> in void Video_InterruptHandler_VBL ( void )
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> +    if (ConfigureParams.System.nMachineType == MACHINE_FALCON) {
+</I>&gt;&gt;<i> +        /* Videl Vertical counter reset */
+</I>&gt;&gt;<i> +        IoMem_WriteByte(0xff82a0, 0);
+</I>&gt;&gt;<i> +    }
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Do you think I can upload it now (before the V1.5 release) or should 
+</I>&gt;&gt;<i> I wait after it to upload this patch ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> I'm ok with modification, but it should not be written this way.
+</I>&gt;<i>
+</I>&gt;<i> The problem here is that you use an internal IO value to handle the 
+</I>&gt;<i> counter, but what if on HBL 109 for example, a program writes in 
+</I>&gt;<i> ff82a0 to  store 40 or 1300 (well, apparenlty it's read only register, 
+</I>&gt;<i> so this should not happen).
+</I>&gt;<i>
+</I>&gt;<i> Also, ff82a0 is word (10 bits), not byte (else you can't have more 
+</I>&gt;<i> than 255 lines).
+</I>&gt;<i>
+</I>&gt;<i> A better solution would be to have a &quot;vfc_counter&quot; variable in falcon/ 
+</I>&gt;<i> sources declared as extern in falcon/videl.h and reset / increment 
+</I>&gt;<i> this variable in video.c, but not directly the IO register.
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003764.html">[hatari-devel] Rainbow2 multimedia patch accepted before release ?
+</A></li>
+	<LI>Next message: <A HREF="003771.html">[hatari-devel] Rainbow2 multimedia patch accepted before release ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3769">[ date ]</a>
+              <a href="thread.html#3769">[ thread ]</a>
+              <a href="subject.html#3769">[ subject ]</a>
+              <a href="author.html#3769">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

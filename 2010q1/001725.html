@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issues with CMake/CMakeLists.txt
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20CMake/CMakeLists.txt&In-Reply-To=%3C201003192232.56054.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001722.html">
+   <LINK REL="Next"  HREF="001727.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issues with CMake/CMakeLists.txt</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20CMake/CMakeLists.txt&In-Reply-To=%3C201003192232.56054.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Issues with CMake/CMakeLists.txt">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Mar 19 21:32:55 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001722.html">[hatari-devel] Issues with CMake/CMakeLists.txt
+</A></li>
+        <LI>Next message: <A HREF="001727.html">[hatari-devel] Issues with CMake/CMakeLists.txt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1725">[ date ]</a>
+              <a href="thread.html#1725">[ thread ]</a>
+              <a href="subject.html#1725">[ subject ]</a>
+              <a href="author.html#1725">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 19 March 2010, Thomas Huth wrote:
+&gt;<i> &gt; I think just this should be enough:
+</I>&gt;<i> &gt; add_subdirectory(python-ui)
+</I>&gt;<i>
+</I>&gt;<i> Ok, that sounds reasonable.
+</I>&gt;<i>
+</I>&gt;<i> &gt; And maybe something like this:
+</I>&gt;<i> &gt; include(FindPythonInterp)
+</I>&gt;<i> &gt; if(PYTHONINTERP_FOUND)
+</I>&gt;<i> &gt;         message(STATUS &quot;WARNING: Python not present, hatariui cannot
+</I>&gt;<i> &gt; be run in the build environment!&quot;)
+</I>&gt;<i> &gt; endif(PYTHONINTERP_FOUND)
+</I>&gt;<i>
+</I>&gt;<i> Well, I think that could also be annoying for people who do not need
+</I>&gt;<i> the the python-ui and don't have python installed (e.g. on Windows).
+</I>&gt;<i> So let's keep it simple, without warning message.
+</I>
+Hm.  Maybe in that case it's better to leave it as it is.
+
+All major Linux distros include Python in their base system
+(in Ubuntu it's even declared essential), so Linux packagers
+should always get python UI stuff.
+
+
+&gt;<i> This is certainly caused by the fact that the CMakeLists.txt in the
+</I>&gt;<i> topmost directory turns on large filesystem support via &quot;getconf
+</I>&gt;<i> LFS_CFLAGS&quot; - which is not done by the old Makefiles.
+</I>&gt;<i> But you should not get warning messages because of this - unless your
+</I>&gt;<i> zlib.h is broken. My zlib.h looks like this here:
+</I>...
+
+Mine looks the same.
+
+&gt;<i> That means it does both, declaring the right prototypes and then
+</I>&gt;<i> re-defining the functions to the 64-bit versions.
+</I>
+Btw. How do I enabled showing of compiler options &amp; flags with CMake?
+
+
+&gt;<i> &gt; For example isblank() manual page says:
+</I>&gt;<i> &gt;    Feature Test Macro Requirements for glibc (see
+</I>&gt;<i> &gt; feature_test_macros(7)): isascii(): _BSD_SOURCE || _SVID_SOURCE ||
+</I>&gt;<i> &gt; _XOPEN_SOURCE isblank(): _XOPEN_SOURCE &gt;= 600 || _ISOC99_SOURCE; or
+</I>&gt;<i> &gt; cc -std=c99
+</I>&gt;<i>
+</I>&gt;<i> That's interesting... but I can't see how CMake could cause that
+</I>&gt;<i> warning. Could you check the corresponding header file in which case
+</I>&gt;<i> it defines isblank() and in which case is does not?
+</I>
+ctype.h:
+# ifdef __USE_ISOC99
+#  define isblank(c)    __isctype((c), _ISblank)
+# endif
+
+features.h:
+--------------
+#ifdef _GNU_SOURCE
+# define _ISOC99_SOURCE 1
+...
+# define _LARGEFILE64_SOURCE    1
+...
+#endif
+
+#if (defined _ISOC99_SOURCE || defined _ISOC9X_SOURCE \
+     || (defined __STDC_VERSION__ &amp;&amp; __STDC_VERSION__ &gt;= 199901L))
+# define __USE_ISOC99   1
+#endif
+
+#ifdef  _XOPEN_SOURCE
+# if (_XOPEN_SOURCE - 0) &gt;= 500
+#  define _LARGEFILE_SOURCE     1
+#  if (_XOPEN_SOURCE - 0) &gt;= 600
+#   define __USE_ISOC99         1
+# endif
+#endif
+
+#ifdef _LARGEFILE64_SOURCE
+# define __USE_LARGEFILE64      1
+#endif
+---------------
+
+And:
+$ sdl-config --cflags
+-I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT
+
+
+So sdl-config brings in _GNU_SOURCE which brings in LFS, C99 etc.
+
+
+&gt;<i> &gt; When I ran ccmake (cmake ncurses UI) and switched it to advanced mode,
+</I>&gt;<i> &gt; I noticed that it at least turns assert()s off by default.
+</I>&gt;<i>
+</I>&gt;<i> You've got to tell CMake to generate a debug build (set
+</I>&gt;<i> CMAKE_BUILD_TYPE to Debug), then it will keep the asserts enabled.
+</I>&gt;<i> When you specify nothing, it will create a Release build - which has
+</I>&gt;<i> asserts turned off.
+</I>&gt;<i>
+</I>&gt;<i> &gt; CMake defines SDL_LIBRARY
+</I>&gt;<i> &gt; as: /usr/lib/libSDLmain.a;/usr/lib/libSDL.so;-lpt
+</I>&gt;<i>
+</I>&gt;<i> This is done by the standard FindSDL.cmake package that is shipped with
+</I>&gt;<i> CMake. I think they now what they're doing. If not, they would probably
+</I>&gt;<i> get a lot of complaints on their mailing lists... ;-)
+</I>
+Well, it seems that CMake doesn't use sdl-config and therefore doesn't
+use _GNU_SOURCE, so it craps out my build.
+
+
+
+&gt;<i> &gt; Eventually build with CMake fails with:
+</I>&gt;<i> &gt; make[2]: *** No rule to make target `../doc/hatari.1.gz', needed by
+</I>&gt;<i> &gt; `doc/CMakeFiles/manpages'.  Stop.
+</I>&gt;<i> &gt; make[1]: *** [doc/CMakeFiles/manpages.dir/all] Error 2
+</I>&gt;<i> &gt; make: *** [all] Error 2
+</I>&gt;<i>
+</I>&gt;<i> Huh? Strange, this works for me, and I can't see any obvious problem in
+</I>&gt;<i> doc/CMakeLists.txt ... which version of CMake are you using?
+</I>
+One from Debian stable (Lenny) i.e. 
+$ cmake --version
+cmake version 2.6-patch 0
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001722.html">[hatari-devel] Issues with CMake/CMakeLists.txt
+</A></li>
+	<LI>Next message: <A HREF="001727.html">[hatari-devel] Issues with CMake/CMakeLists.txt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1725">[ date ]</a>
+              <a href="thread.html#1725">[ thread ]</a>
+              <a href="subject.html#1725">[ subject ]</a>
+              <a href="author.html#1725">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

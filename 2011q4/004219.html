@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Stereo DC filtering which accounts for DMA sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Stereo%20DC%20filtering%20which%20accounts%20for%20DMA%20sound&In-Reply-To=%3C20083785.1018693.1322543488735.JavaMail.nitido%40priv-edtnes97%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004217.html">
+   <LINK REL="Next"  HREF="004220.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Stereo DC filtering which accounts for DMA sound</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Stereo%20DC%20filtering%20which%20accounts%20for%20DMA%20sound&In-Reply-To=%3C20083785.1018693.1322543488735.JavaMail.nitido%40priv-edtnes97%3E"
+       TITLE="[hatari-devel] Stereo DC filtering which accounts for DMA sound">dsavnkff at telus.net
+       </A><BR>
+    <I>Tue Nov 29 06:11:28 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004217.html">[hatari-devel] Wrong memory init
+</A></li>
+        <LI>Next message: <A HREF="004220.html">[hatari-devel] Stereo DC filtering which accounts for DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4219">[ date ]</a>
+              <a href="thread.html#4219">[ thread ]</a>
+              <a href="subject.html#4219">[ subject ]</a>
+              <a href="author.html#4219">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Monday 28 November 2011 05:19, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 21/11/2011 22:20, David Savinkoff a &#233;crit :
+</I>&gt;<i> &gt; How I derived lumped component value:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Looking at the STf schematic; R8=1K is pulled up by the YM2149 so this
+</I>&gt;<i> &gt; 1K is electrically in parallel with the YM2149 from the perspective of
+</I>&gt;<i> &gt; the -ve end of C11=100uF. R8 can have 2.5volts and 0volts applied to it
+</I>&gt;<i> &gt; at 50% duty cycle with a 5v powersupply. If R8 is pulled up to 2.5 volts
+</I>&gt;<i> &gt; by a series resistor connected to 5.0 volts, that resistor will be
+</I>&gt;<i> &gt; 1k (YM2149 looks like 1k when pulling up and infinite otherwise).
+</I>&gt;<i> &gt; Thus the YM2149 looks like 2k on average.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Q1 has an approximate gain of 100 so R12=470 looks like 47k on Q1's
+</I>&gt;<i> &gt; base.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (R8=1k//2k) + (R9=10k//R10=5.1k//47k) = 3817.7 ohms
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; C11=100uF derated by 40% and designed to swamp its inadequecies by a
+</I>&gt;<i> &gt; factor of 10 was calculated to be 5.7uF by the person who put it there.
+</I>&gt;<i>
+</I>&gt;<i> Hello
+</I>&gt;<i>
+</I>&gt;<i> thanks for your explanation, I applied your patch.
+</I>&gt;<i>
+</I>&gt;<i> For my information, what are the differences between the original filter
+</I>&gt;<i> in the ST (with several R and C) and the one with your values and only
+</I>&gt;<i> one R and C ? Does the ST's one filters different freqs ? (even if it
+</I>&gt;<i> would be subtle to hear)
+</I>
+The lumped calculation of R and C is mathematically and electrically
+equal to the individual values, thus, is the same.
+
+The IIR filter 11Hz cutoff frequency is greater than the MEGA ST and
+STFNR, but less than the ST/STFAR. This cutoff frequency is not that
+critical unless it negatively impacts the audio passband.
+
+The 100uF electrolytic capacitor works very well at low frequencies and
+blocks DC more than adequately, but will attenuate higher frequencies
+(thus the 1uF in parallel with 100uF on the ST [table on page 137] ).
+
+The 16 bit 11Hz IIR filter works adequately at low frequencies (&lt; 30 Hz),
+blocks DC more than adequately, does not attenuate higher frequencies,
+and is an improvement over the FIR filter. I believe it is overkill
+to improve the IIR filter's low frequency performance with int64_t or
+floating point math (I think 11Hz is close to the best for 16 bits).
+
+Comparing the IIR DC filter and ST DC filter at various frequencies:
+DC - IIR DC filter (excellent)
+DC - ST  DC filter (very good)
+Subsonic below 11 Hz  - IIR DC filter (yes good)
+Subsonic below 0.4 Hz - ST  DC filter (yes..but)
+30 Hz - IIR DC filter (good -0.53 dB)
+30 Hz - ST  DC filter (very good  0.0 dB)
+
+Note that the ST has another dc blocking capacitor on the output, and
+the STe has dc blocking in several places. Cascaded high-pass filters
+effectively increases the corner frequency. These dc blocking filters
+are needed in hardware, but not software because we are not emulating
+dc offsets due to transistor bias networks (AC circuit analysis here).
+
+*** Should be emulated ***
+The Lowpass Filter formed by C10 = 0.1 uF and
+(R8=1k//2k//R9=10k//R10=5.1k//47k) = 550.25 ohms
+for a lowpass corner frequency of 1/(2*pi*(0.1*10e-6)*550.25) = 2892.4 Hz
+(STFNR reference designators R8 R9 R10 C10)
+
+Frequency Response:
+
+DC    ST=0.4Hz IIR=11Hz FIR=22Hz STFAR=65Hz      2900 Hz
+|<i>     High Pass                                  Low Pass
+</I>|<i>     Corner                                     Corner
+</I>|<i>     |                                          |
+</I>|<i>
+</I>      ----------Real ST and Hatari--------------------------Hatari--
+     /                                            \
+    /                                              \
+   /                                            Real\ST
+  /                                                  \
+ /                                                    \
+/
+
+&gt;<i> Else, just for the record, I found an old interesting article in french
+</I>&gt;<i> ST Magazine. It was a small card to turn the mono output into stereo
+</I>&gt;<i> output (I built it in my ST back then, the ym suffered quite a lot from
+</I>&gt;<i> my poor soldering skill at that time, but it worked anyway :) ).
+</I>&gt;<i>
+</I>&gt;<i> Still, what is interesting is that the author gathered informations
+</I>&gt;<i> about the various filters used in different ST generation, with the
+</I>&gt;<i> component values, until Atari reached a &quot;stable&quot; model (columns STFNR
+</I>&gt;<i> and MEGA ST, refering to fig. 1)
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://download.abandonware.org/magazines/ST%20Magazine/stmagazine_numero023/st%20magazine%20-%20N023%20-%20janvier%201988%20-%20page136%20et%20137.jpg">http://download.abandonware.org/magazines/ST%20Magazine/stmagazine_numero023/st%20magazine%20-%20N023%20-%20janvier%201988%20-%20page136%20et%20137.jpg</A>
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://download.abandonware.org/magazines/ST%20Magazine/stmagazine_numero023/st%20magazine%20-%20N023%20-%20janvier%201988%20-%20page138%20et%20139.jpg">http://download.abandonware.org/magazines/ST%20Magazine/stmagazine_numero023/st%20magazine%20-%20N023%20-%20janvier%201988%20-%20page138%20et%20139.jpg</A>
+</I>&gt;<i>
+</I>
+Thanks for applying the dc filter patch, and thanks for the good info.
+
+Referring to Figure 1 and the Table of Components in
+st magazine - N023 - janvier 1988 - page136 et 137.jpg :
+
+C1) Is 1uF non-electrolytic (see fig3 C14) on ST/STFAR,
+- - 47uF electrolytic on the other computers.
+- - This demonstrates that Atari would use less capacitance
+- - when a Higher quality capacitor is used.
+- - 
+- - An electrolytic capacitor looks like:
+- -          R      L        C
+- -    o---\/\/---UUUU------||-------o
+- -                     |        |
+- -                      --\/\/--
+- -                          R leakage
+- -
+- - RL in series with a Resistor in parallel with the
+- - Capacitor.
+- - This means that dc is not completely blocked and
+- - high audio frequencies are attenuated by an electrolytic
+- - capacitor as compared to a non-electrolytic capacitor.
+- - Distortion can be caused by dielectric absorption.
+
+C2) Is not emulated, but definitely affects the sound as a
+- - 2900 Hz first order low pass filter.
+- - Real YM digi-sound is probably mellower than Hatari's.
+- -
+- - I'm going to look into this.
+
+C3) See C1 above. It looks like the ST has a 1uF in parallel
+- - with the 100uF electrolytic, the ST/STFAR just uses 1uF,
+- - and the rest use just 100uF.
+- - The objective is to Not affect the audio pass-band. It
+- - appears that any capacitance from 1uF to 100uF is OK as
+- - long as the capacitor is up to the job.
+- - The 1uF capacitor would have a highpass corner at 42Hz
+- - (65 Hz on ST/STFAR because of different resistors).
+- - 1uF looks a little Too small.
+
+C5) See C1 above.
+
+R1) 1K on Atari, 2.2K on ZX Spectrum. This accounts for some
+- - difference in sound between the two computers.
+- - A different volume table would make the difference here.
+
+R2) 3K on ST/STFAR (because Vcc is 5volts?), the rest use 10K
+- - (affects bass frequency response and bias slightly).
+- - I don't believe that these resistor values really needed
+- - to be changed to 3K and 8.2K
+- - R2 and R3 set the bias voltage on the base of Q1.
+
+&gt;<i> Nicolas
+</I>&gt;<i>
+</I>&gt;<i> &gt; Thanks
+</I>&gt;<i> &gt; David
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; PS:
+</I>&gt;<i> &gt; My lousy mail frustrates me also. It would be a luxury to have a
+</I>&gt;<i> &gt; secure email connection with highlighting. I have to cut and paste
+</I>&gt;<i> &gt; into vim. I think a solution is to save the email source, open it
+</I>&gt;<i> &gt; with kmail, edit, then cut and paste into lousy telus mail.
+</I>&gt;<i>
+</I>&gt;<i> Not that I want to promote the obvious &quot;big&quot; ones, but maybe you should
+</I>&gt;<i> give a try to gmail, yahoo or hotmail ? ;)
+</I>&gt;<i>
+</I>&gt;<i> But if you use vim, I'm sure there should be a small vim script floating
+</I>&gt;<i> around that indent the mail you want to answer by adding &quot;&gt; &quot; at the
+</I>&gt;<i> start of each line and wrapping at 80 columns.
+</I>
+Cutting and pasting with kmail worked well. I'll look for a script
+or write one now that I've been investigating this.
+
+Thanks,
+David
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004217.html">[hatari-devel] Wrong memory init
+</A></li>
+	<LI>Next message: <A HREF="004220.html">[hatari-devel] Stereo DC filtering which accounts for DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4219">[ date ]</a>
+              <a href="thread.html#4219">[ thread ]</a>
+              <a href="subject.html#4219">[ subject ]</a>
+              <a href="author.html#4219">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

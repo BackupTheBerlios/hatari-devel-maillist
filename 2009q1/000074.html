@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Potential bug with MSA disk images
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Potential%20bug%20with%20MSA%20disk%20images&In-Reply-To=%3C20090122210934.5c47eeeb%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000066.html">
+   <LINK REL="Next"  HREF="000075.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Potential bug with MSA disk images</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Potential%20bug%20with%20MSA%20disk%20images&In-Reply-To=%3C20090122210934.5c47eeeb%40phineus%3E"
+       TITLE="[hatari-devel] Potential bug with MSA disk images">th.huth at gmx.de
+       </A><BR>
+    <I>Thu Jan 22 21:09:34 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000066.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+        <LI>Next message: <A HREF="000075.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#74">[ date ]</a>
+              <a href="thread.html#74">[ thread ]</a>
+              <a href="subject.html#74">[ subject ]</a>
+              <a href="author.html#74">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 19 Jan 2009 23:10:45 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> On Sunday 18 January 2009, Thomas Huth wrote:
+</I>&gt;<i> &gt; &gt; &gt; Sorry, seems like I've messed that part up :-( My apologies to
+</I>&gt;<i> &gt; &gt; &gt; everybody, I hope there hasn't been a real data loss yet!
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; I think this was actually from my file handling changes (I think
+</I>&gt;<i> &gt; &gt; they were for 1.1, not 1.0?) with which it was possible to cancel
+</I>&gt;<i> &gt; &gt; the changes done in the Options dialog.  I had overlooked this
+</I>&gt;<i> &gt; &gt; kind of issue, sorry about that.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; That was also my first thought, but actually it was me who
+</I>&gt;<i> &gt; introduced the bug with changeset 5d29291777ec (and my current bug
+</I>&gt;<i> &gt; fix mainly reverts that patch).
+</I>&gt;<i> 
+</I>&gt;<i> I noticed that the the floppy buffers are saved to memory snapshots.
+</I>&gt;<i> Loading such a snapshot and then ejecting the disk would also corrupt
+</I>&gt;<i> the disk if its contents were changed in the meanwhile.
+</I>&gt;<i> 
+</I>&gt;<i> Couldn't the disk contents be flushed to the image when memory
+</I>&gt;<i> snapshot is saved and the buffer be loaded from the disk image after
+</I>&gt;<i> memory snapshot is loaded?
+</I>
+No, that could only work worse, I think. Image that somebody changes
+the disk image completely or even deletes or renames the file - the the
+memory snapshot would become useless!
+
+&gt;<i> Btw. If one were to implement saving also to disk images within ZIP
+</I>&gt;<i> files, then also the ZipPath would need to be stored along with disk
+</I>&gt;<i> path.  IMHO it would be better to remove whole ZIP support though as
+</I>&gt;<i> it significantly complicates the file selector / disk image handling
+</I>&gt;<i> and is incomplete.  Does somebody use Zip files?
+</I>
+Well, I is this feature almost continuesly. Half of my disk image
+collection is ZIPped. I guess most other people also use this since
+most disk images that can be found on the internet are ZIPped. So there
+is certainly no point in removing this feature!
+
+&gt;<i> &gt; &gt; Is this bad enough to warrant Hatari v1.3 (as you've already added
+</I>&gt;<i> &gt; &gt; midi in/through and IDE disk features) soonish?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Yes, I think we urgently should publish a new version with that fix,
+</I>&gt;<i> &gt; since this can really cause ugly data losses... let's target next
+</I>&gt;<i> &gt; weekend, would that be OK for everybody?
+</I>&gt;<i> 
+</I>&gt;<i> Would one week more be too much?  Have all the changes done so far
+</I>&gt;<i> already been tested properly &amp; stabilized?
+</I>
+Since that disk image bug is really critical (you can loose data!), I
+think we should publish a new version as soon as possible. If there are
+then any problems left, we still can do a patch-level release (1.2.1)
+later.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000066.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+	<LI>Next message: <A HREF="000075.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#74">[ date ]</a>
+              <a href="thread.html#74">[ thread ]</a>
+              <a href="subject.html#74">[ subject ]</a>
+              <a href="author.html#74">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

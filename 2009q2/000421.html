@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] EKO System and easter
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EKO%20System%20and%20easter&In-Reply-To=%3C20090624223846.0dd65002%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000427.html">
+   <LINK REL="Next"  HREF="000423.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] EKO System and easter</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EKO%20System%20and%20easter&In-Reply-To=%3C20090624223846.0dd65002%40phineus%3E"
+       TITLE="[hatari-devel] EKO System and easter">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Jun 24 22:38:46 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000427.html">[hatari-devel] EKO System and HIRNTOD
+</A></li>
+        <LI>Next message: <A HREF="000423.html">[hatari-devel] EKO System and easter
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#421">[ date ]</a>
+              <a href="thread.html#421">[ thread ]</a>
+              <a href="subject.html#421">[ subject ]</a>
+              <a href="author.html#421">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 24 Jun 2009 09:51:55 +0200
+Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+
+&gt;<i> The result is exactly the same than if I use &quot;with DSP&quot;
+</I>&gt;<i> At 16 Mhz, the demo freezes and image and sound are not synchronized
+</I>&gt;<i> At 32 Mhz, everything is synchronized (demo stops when DSP code
+</I>&gt;<i> should start, music continues to play).
+</I>
+Ok, so this means that the timing problems are not related to the CPU :
+DSP ratio, right?
+
+&gt;<i> With my latest tests, I can notice a few things :
+</I>&gt;<i> 
+</I>&gt;<i> * Sound is directly rendered by the 68030 (no DSP here).
+</I>&gt;<i> 
+</I>&gt;<i> * Sound is really badly rendered (at 16 or 32 Mhz).
+</I>&gt;<i>   There's really a problem here and it's not a DSP problem.
+</I>&gt;<i>    When sound comes from 68030, but in falcon mode, do we use the 
+</I>&gt;<i> correct frequencies ?
+</I>
+Have a look at dmaSound.c ... I thing the frequency table should be
+fine...?
+
+&gt;<i> * The synchro (image/sound) is dependent of the &quot;processor speed&quot;.
+</I>&gt;<i>    There must be a timer somewhere which is not correctly computed
+</I>&gt;<i>    (In videl, or dma sound)
+</I>
+Could be related to the VBL ... as I already mentioned in another mail,
+the Videl emulation does not emulate the screen timings right yet. VBL
+is always triggered in 50 Hz, no matter which refresh frequency is
+programmed into the Videl chip...
+Have I already mentioned that the Videl code needs a major rewrite one
+day? ;-)
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000427.html">[hatari-devel] EKO System and HIRNTOD
+</A></li>
+	<LI>Next message: <A HREF="000423.html">[hatari-devel] EKO System and easter
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#421">[ date ]</a>
+              <a href="thread.html#421">[ thread ]</a>
+              <a href="subject.html#421">[ subject ]</a>
+              <a href="author.html#421">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

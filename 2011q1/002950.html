@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New CPU, MacOsX Build
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20CPU%2C%20MacOsX%20Build&In-Reply-To=%3C201101301626.58792.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002947.html">
+   <LINK REL="Next"  HREF="002951.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New CPU, MacOsX Build</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20CPU%2C%20MacOsX%20Build&In-Reply-To=%3C201101301626.58792.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] New CPU, MacOsX Build">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Jan 30 15:26:58 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002947.html">[hatari-devel] New CPU, MacOsX Build
+</A></li>
+        <LI>Next message: <A HREF="002951.html">[hatari-devel] New CPU, MacOsX Build
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2950">[ date ]</a>
+              <a href="thread.html#2950">[ thread ]</a>
+              <a href="subject.html#2950">[ subject ]</a>
+              <a href="author.html#2950">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 30 tammikuu 2011, Laurent Sallafranque wrote:
+&gt;<i> Le 30/01/2011 10:39, Jerome Vernet a &#233;crit :
+</I>&gt;<i> &gt; Le 30/01/11 00:24, Laurent Sallafranque a &#233;crit :
+</I>&gt;<i> &gt;&gt; For the sound, I've detected a strange behaviour (I spoke about it in
+</I>&gt;<i> &gt;&gt; a previous message).
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; If you restart the same demo 2 or 3 times, sound becomes perfect. I
+</I>&gt;<i> &gt;&gt; don't know why yet, I'll search this.
+</I>&gt;<i> &gt;&gt; I've heard beam demo yesterday with perfect sound (this demo is
+</I>&gt;<i> &gt;&gt; really nice).
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; Could you try to launch it 2 or 3 times (on the same hatari's cession
+</I>&gt;<i> &gt;&gt; if possible ?)
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; You're right, I have exactly the same thing here. First try, bad
+</I>&gt;<i> &gt; sound, second try, no sound, third, correct sound, at least until
+</I>&gt;<i> &gt; something start to go bad (musique goes more and more bad), from the
+</I>&gt;<i> &gt; start of the green 3D labyrinthe. At this point, Hatari use 104% of my
+</I>&gt;<i> &gt; Core2Duo 2.2Ghz, FS (set to auto) skip from 1 to 2.
+</I>&gt;<i> &gt; Then sound become good for the rest.
+</I>&gt;<i>
+</I>&gt;<i> Ok, thanks a lot for the test.
+</I>&gt;<i> 
+</I>&gt;<i> I've got exactly the same behaviour : nice music after a few tries, then
+</I>&gt;<i> music goes wrong in the green labyrinth, then music is nice again to the
+</I>&gt;<i> end.
+</I>&gt;<i> 
+</I>&gt;<i> I thing the problem in the labyrinth is not related to music (crossbar
+</I>&gt;<i> or DSP), but timings (maybe again videl).
+</I>&gt;<i> For me, top never goes up to 92% cpu for this screen.
+</I>
+What CPU frequency governor you're using?
+Are you monitoring CPU consumption of all your cores?
+If you're using &quot;auto&quot; frameskip, does frameskip ever go over 0?
+
+It's still possible that there just isn't enough CPU for the DSP emulation
+and that's why it sounds occasionally bad.
+
+&quot;top&quot; gives a running average over multiple seconds, over all cores.
+Something like &quot;htop -d 5&quot; should show information a bit closer to reality.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002947.html">[hatari-devel] New CPU, MacOsX Build
+</A></li>
+	<LI>Next message: <A HREF="002951.html">[hatari-devel] New CPU, MacOsX Build
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2950">[ date ]</a>
+              <a href="thread.html#2950">[ thread ]</a>
+              <a href="subject.html#2950">[ subject ]</a>
+              <a href="author.html#2950">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

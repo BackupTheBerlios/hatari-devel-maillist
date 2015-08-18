@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Demo Don't break the oath (DHS)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Demo%20Don%27t%20break%20the%20oath%20%28DHS%29&In-Reply-To=%3C20110214203330.075d1243%40think43%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003033.html">
+   <LINK REL="Next"  HREF="003038.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Demo Don't break the oath (DHS)</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Demo%20Don%27t%20break%20the%20oath%20%28DHS%29&In-Reply-To=%3C20110214203330.075d1243%40think43%3E"
+       TITLE="[hatari-devel] Demo Don't break the oath (DHS)">huth at users.berlios.de
+       </A><BR>
+    <I>Mon Feb 14 20:33:30 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003033.html">[hatari-devel] Demo Don't break the oath (DHS)
+</A></li>
+        <LI>Next message: <A HREF="003038.html">[hatari-devel] Demo Don't break the oath (DHS)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3037">[ date ]</a>
+              <a href="thread.html#3037">[ thread ]</a>
+              <a href="subject.html#3037">[ subject ]</a>
+              <a href="author.html#3037">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Mon, 14 Feb 2011 00:06:18 +0100
+schrieb Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;:
+
+&gt;<i> OK, found : it's because of the patch I added in stMemory.c
+</I>&gt;<i> 
+</I>&gt;<i> This mean that all the descriptions of the $ff8006.b register I read 
+</I>&gt;<i> were wrong.
+</I>&gt;<i> 
+</I>&gt;<i> Anybody here as a complete description of this register ?
+</I>
+This register seems to be different in each register listing that I've
+got ... one that describes the missing bits in ff8006 (not ff8007) is
+in a german doc called &quot;FALREG.TXT&quot;:
+
+$FFFF8006 [R/W] B         76543210  Monitor-Type Hi
+                          ||||||||
+                          |||||||+- RAM Wait Status
+                          |||||||   0 =  1 Wait (default)
+                          |||||||   1 =  0 Wait
+                          ||||||+-- Video Bus Breite
+                          ||||||    0 = 16 Bit
+                          ||||||    1 = 32 Bit (default)
+                          ||||++--- ROM Wait Status
+                          ||||      00 = Reserviert
+                          ||||      01 =  2 Wait (default)
+                          ||||      10 =  1 Wait
+                          ||||      11 =  0 Wait
+                          ||++----- Gr&#246;&#223;e Hauptspeicherkarte
+                          ||        01 =  4 MB
+                          ||        10 = 16 MB
+                          ++------- Monitor-Typ
+                                    00 Monochrom
+                                    01 RGB - Farbmonitor
+                                    10 VGA - Farbmonitor
+                                    11 Fernseher (&#252;ber Modulator)
+
+Hope that helps,
+  Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003033.html">[hatari-devel] Demo Don't break the oath (DHS)
+</A></li>
+	<LI>Next message: <A HREF="003038.html">[hatari-devel] Demo Don't break the oath (DHS)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3037">[ date ]</a>
+              <a href="thread.html#3037">[ thread ]</a>
+              <a href="subject.html#3037">[ subject ]</a>
+              <a href="author.html#3037">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Moai demo as regressed a lot since hatari 1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Moai%20demo%20as%20regressed%20a%20lot%20since%20hatari%201.4&In-Reply-To=%3C4E1F3D9B.5090809%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003723.html">
+   <LINK REL="Next"  HREF="003739.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Moai demo as regressed a lot since hatari 1.4</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Moai%20demo%20as%20regressed%20a%20lot%20since%20hatari%201.4&In-Reply-To=%3C4E1F3D9B.5090809%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Moai demo as regressed a lot since hatari 1.4">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Jul 14 21:03:55 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003723.html">[hatari-devel] Froggies over the fence
+</A></li>
+        <LI>Next message: <A HREF="003739.html">[hatari-devel] Moai demo as regressed a lot since hatari 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3733">[ date ]</a>
+              <a href="thread.html#3733">[ thread ]</a>
+              <a href="subject.html#3733">[ subject ]</a>
+              <a href="author.html#3733">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 14/07/2011 15:02, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i>  &gt; For example, what about writing a test program similar to the STE's
+</I>&gt;<i> one I sent to play &quot;simple&quot; sound (no dsp involved) with the crossbar at
+</I>&gt;<i> different frequencies and ensure we get correct results ? (that's is the
+</I>&gt;<i> correct number of samples is *exactly* played for a number of VBL) If
+</I>&gt;<i> it's not the case, then it would prove something is wrong and that is
+</I>&gt;<i> not cpu related.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I this this is a good idea to start from somewhere.
+</I>&gt;<i> Could you send me again the source.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>
+Hello
+
+here's the source for the STE test. I removed the precise video sync 
+with $ff8209, because it would not work with the 68030 timings.
+
+But doing &quot;stop 2300&quot; should be enough to get a good estimation between 
+50 VBLs.
+
+To adapt this for falcon, some init code might need to be added, but I 
+don't know falcon enough and I dont't have enough time to search now.
+
+To be sure results are not altered by our not yet completed videl 
+emulation, the falcon should be put in STE compatible mode for the video 
+:<i> 320x200 low res at 50 Hz.
+</I>
+If some falcon coders want to improve this code to be a more robust 
+test, don't hesitate :)
+
+This should compile under devpac with no error ; you can try it on STE 
+first to see what it does.
+
+
+Nicolas
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: dma_test.s
+Type: text/x-asm
+Size: 6414 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110714/57d0b104/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110714/57d0b104/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003723.html">[hatari-devel] Froggies over the fence
+</A></li>
+	<LI>Next message: <A HREF="003739.html">[hatari-devel] Moai demo as regressed a lot since hatari 1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3733">[ date ]</a>
+              <a href="thread.html#3733">[ thread ]</a>
+              <a href="subject.html#3733">[ subject ]</a>
+              <a href="author.html#3733">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

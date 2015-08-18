@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Potential bug with MSA disk images
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Potential%20bug%20with%20MSA%20disk%20images&In-Reply-To=%3C1232271981.5634.7.camel%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000033.html">
+   <LINK REL="Next"  HREF="000037.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Potential bug with MSA disk images</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Potential%20bug%20with%20MSA%20disk%20images&In-Reply-To=%3C1232271981.5634.7.camel%40localhost%3E"
+       TITLE="[hatari-devel] Potential bug with MSA disk images">marndt at asmsoftware.de
+       </A><BR>
+    <I>Sun Jan 18 10:46:21 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000033.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+        <LI>Next message: <A HREF="000037.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#34">[ date ]</a>
+              <a href="thread.html#34">[ thread ]</a>
+              <a href="subject.html#34">[ subject ]</a>
+              <a href="author.html#34">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Actually I already have an idea what coudl help but I have no idea how
+or where to implement it.
+That would mean: if the users choose &quot;Eject&quot; to call the proper sequence
+which will write all diskimage buffers back to their respective parent
+image file.
+
+Matthias
+
+Am Sonntag, den 18.01.2009, 10:26 +0100 schrieb Matthias Arndt:
+&gt;<i> Hello team,
+</I>&gt;<i> 
+</I>&gt;<i> by accident I discovered a potential issue with MSA disk images:
+</I>&gt;<i> 
+</I>&gt;<i> a) Booted a utility disk image with a Bootsector writer
+</I>&gt;<i> b) Used the utiliy on disk A.MSA (all in drive A:)
+</I>&gt;<i> c) pushed &quot;Eject&quot; button in disk image dialogue
+</I>&gt;<i> d) inserted disk B.MSA (which was definitly different than A.MSA)
+</I>&gt;<i> e) resetted Hatari to get A.MSA loaded with the new bootsector
+</I>&gt;<i> 
+</I>&gt;<i> BUT: B.MSA was still inserted and was overwritten with the old A.MSA
+</I>&gt;<i> 
+</I>&gt;<i> Ermmm, this sounds really dodgy to me :(
+</I>&gt;<i> Thank god I didn't loose anything important, just some game menus which
+</I>&gt;<i> are entirely replaceable from CDs...
+</I>&gt;<i> 
+</I>&gt;<i> My Hatari version is a fresh Mercurial build from last week.
+</I>&gt;<i> 
+</I>&gt;<i> cheers,
+</I>&gt;<i> Matthias
+</I>-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000033.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+	<LI>Next message: <A HREF="000037.html">[hatari-devel] Potential bug with MSA disk images
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#34">[ date ]</a>
+              <a href="thread.html#34">[ thread ]</a>
+              <a href="subject.html#34">[ subject ]</a>
+              <a href="author.html#34">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

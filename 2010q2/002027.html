@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] switching from falcon to ste doesn't change cpu
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20switching%20from%20falcon%20to%20ste%20doesn%27t%20change%20cpu&In-Reply-To=%3C201005100002.45869.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002022.html">
+   <LINK REL="Next"  HREF="002029.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] switching from falcon to ste doesn't change cpu</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20switching%20from%20falcon%20to%20ste%20doesn%27t%20change%20cpu&In-Reply-To=%3C201005100002.45869.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] switching from falcon to ste doesn't change cpu">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun May  9 23:02:45 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002022.html">[hatari-devel] switching from falcon to ste doesn't change cpu
+</A></li>
+        <LI>Next message: <A HREF="002029.html">[hatari-devel] switching from falcon to ste doesn't change cpu
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2027">[ date ]</a>
+              <a href="thread.html#2027">[ thread ]</a>
+              <a href="subject.html#2027">[ subject ]</a>
+              <a href="author.html#2027">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 09 May 2010, Laurent Sallafranque wrote:
+&gt;<i> I would enjoy to have a list of &quot;parametred working computers&quot; in
+</I>&gt;<i> the options GUI.  Like &quot;st , ste, tt, falcon&quot; where I would be able to set
+</I>&gt;<i> and save the tos, the memory, the cpu speed, the DSP state, ...)
+</I>
+I think easiest would be to make the save &amp; load config buttons to
+show a file selector like the memory snapshot save &amp; restore buttons do.
+
+Hatari (python/Gtk) UI already does this.  Just use the &quot;load config...&quot; and
+&quot;save config as...&quot; options from its Configuration menu.
+
+
+&gt;<i> Like this, I would easily choose between a ste and a Falcon at boot and
+</I>&gt;<i> I could customize my virtual computers once for all.
+</I>
+With current Hatari you can already do this, just:
+- save a suitable configuration &amp; memory states to disk
+- copy them under suitable name (say falcon.sav &amp; falcon.cfg)
+- set config file to load that memory state automatically (&amp; autosave it)
+- create to your desktop shortcut icons which tell Hatari to load these
+  configurations.  E.g. &quot;Falcon&quot; shortcut would just start Hatari like this:
+	hatari --config &lt;path&gt;/falcon.cfg
+
+
+&gt;<i> I also find the GUI not really beautiful.
+</I>
+Aranym one looks better and is AFAIK related somehow to Hatari's GUI code.
+Maybe somebody could check whether the nicer looks for buttons etc.
+could be brought to Hatari GUI?
+
+
+&gt;<i> If I had a few hours to loose, would you enjoy a rewrite of this GUI
+</I>&gt;<i> menu with a more user friendly interface ?
+</I>
+The SDL GUI is not really that fun to modify.  Position of everything are /
+currently need to be hard coded which means that if you add something, you
+need to change also everything else below it (and maybe adapt sizes of
+surrounding boxes too).
+
+Additionally, it doesn't handle non-ASCII file names, isn't localizable,
+doesn't scale with GUI contents etc.  These are some of the reasons why
+I wrote the Hatari UI and why it's included with Hatari...
+
+
+&gt;<i> Le 09/05/2010 20:23, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; Note that currently MHz value isn't changed at all because TOSes work
+</I>&gt;<i> &gt; with different MHz values.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; But if TOS version and other parameters don't match, wouldn't it be
+</I>&gt;<i> &gt; fair to assume that user did a mistake and just forgot to specify other
+</I>&gt;<i> &gt; parameters beside TOS?  If yes, then I think it would make sense to set
+</I>&gt;<i> &gt; also the MHz to most appropriate value for that TOS, right?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I.e. if one gives e.g. a TT tos, it would be nice if Hatari would
+</I>&gt;<i> &gt; automatically set speed also for TT without needing to specify
+</I>&gt;<i> &gt; &quot;--machine tt&quot; or &quot;--cpuclock 32&quot; (or do similar thing in the options
+</I>&gt;<i> &gt; GUI)...
+</I>
+Any comments on this?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002022.html">[hatari-devel] switching from falcon to ste doesn't change cpu
+</A></li>
+	<LI>Next message: <A HREF="002029.html">[hatari-devel] switching from falcon to ste doesn't change cpu
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2027">[ date ]</a>
+              <a href="thread.html#2027">[ thread ]</a>
+              <a href="subject.html#2027">[ subject ]</a>
+              <a href="author.html#2027">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] dsp trace instr
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20dsp%20trace%20instr&In-Reply-To=%3C201103172226.00360.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003170.html">
+   <LINK REL="Next"  HREF="003176.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] dsp trace instr</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20dsp%20trace%20instr&In-Reply-To=%3C201103172226.00360.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] dsp trace instr">oak at helsinkinet.fi
+       </A><BR>
+    <I>Thu Mar 17 21:26:00 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003170.html">[hatari-devel] dsp trace instr
+</A></li>
+        <LI>Next message: <A HREF="003176.html">[hatari-devel] dsp trace instr
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3171">[ date ]</a>
+              <a href="thread.html#3171">[ thread ]</a>
+              <a href="subject.html#3171">[ subject ]</a>
+              <a href="author.html#3171">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On torstai 17 maaliskuu 2011, Laurent Sallafranque wrote:
+&gt;<i> I've uploaded the DSP trace code in hatari.
+</I>&gt;<i> I've tried to optimize it enough to have hatari running normally when
+</I>&gt;<i> DSP isn't in use.
+</I>&gt;<i> DSP Trace mode is still slow when DSP runs (because of number of
+</I>&gt;<i> instructions).
+</I>&gt;<i> 
+</I>&gt;<i> It seems to run well, except in one case : if I start hatari with option
+</I>&gt;<i> --trace dsp_disasm and then I enter the dd command, it's broken.
+</I>&gt;<i> 
+</I>&gt;<i> dd command works well if hatari is not in trace dsp_disasm mode.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> I'll try to improve this. Eero, maybe you could have a look too ?
+</I>
+I think the problem is PC looping check.
+
+Does the attached (untested) patch help?
+
+It prints when looping is detected, resets the related variables
+when disasm init is called + calls the disasm init on disasm loop[1].
+(And makes the returned instruction string const char*.)
+
+[1] I wonder whether some of the stuff done in the loop could be
+moved outside the loop?
+
+
+&gt;<i> Do you think it absolutely need to be fixed before the release ?
+</I>
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: dsp.diff
+Type: text/x-patch
+Size: 2174 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110317/3ec6d768/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110317/3ec6d768/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003170.html">[hatari-devel] dsp trace instr
+</A></li>
+	<LI>Next message: <A HREF="003176.html">[hatari-devel] dsp trace instr
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3171">[ date ]</a>
+              <a href="thread.html#3171">[ thread ]</a>
+              <a href="subject.html#3171">[ subject ]</a>
+              <a href="author.html#3171">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

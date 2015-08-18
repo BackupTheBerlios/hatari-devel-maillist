@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari debugger immediately showing regs &amp;	memdump?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20immediately%20showing%20regs%20%26%0A%09memdump%3F&In-Reply-To=%3C200904051238.57214.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000233.html">
+   <LINK REL="Next"  HREF="000240.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari debugger immediately showing regs &amp;	memdump?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20debugger%20immediately%20showing%20regs%20%26%0A%09memdump%3F&In-Reply-To=%3C200904051238.57214.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Hatari debugger immediately showing regs &amp;	memdump?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Apr  5 11:38:56 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000233.html">[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+</A></li>
+        <LI>Next message: <A HREF="000240.html">[hatari-devel] MacOsX GUI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#236">[ date ]</a>
+              <a href="thread.html#236">[ thread ]</a>
+              <a href="subject.html#236">[ subject ]</a>
+              <a href="author.html#236">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 05 April 2009, Thomas Huth wrote:
+&gt;<i> &gt; &gt; One which would always display the 680x0 registers
+</I>&gt;<i> &gt; &gt; One which would always display the DSP registers
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; One which would let us write commands and displays results ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Easier solution could be using the Hatari control-socket to implement
+</I>&gt;<i> &gt; something like that out of process.
+</I>&gt;<i>
+</I>&gt;<i> Ok, but pushing all debug information through the control-socket might
+</I>&gt;<i> become slow or unhandy at some point.
+</I>
+Control socket is still nice as an option.
+
+With Python there seems to be some latency issues, but I think they should
+go away if the debugger would be coded in C/C++.  Default Linux socket
+buffer size could affect that also[1], AFAIK it's geared towards throughput,
+not latency.
+
+[1]&#160;On my Debian Lenny this seems to be 109KB:
+     cat /proc/sys/net/core/*mem_default
+Setting them e.g. to 2048 bytes (kernel doubles it to one memory page) with
+setsockopt() SO_RCVBUF and SO_SNDBUF options could help and even Python
+socket module seems to support them.    I could play with them a bit when
+I start again updating the Hatari Python UI.
+
+
+&gt;<i> Maybe we should start to use gtk windows within the hatari executable
+</I>&gt;<i> itself? 
+</I>
+I would rather leave toolkits out of Hatari, there are too many of them out
+there. :-)
+
+
+&gt;<i> Or maybe rather extend  the gui-sdl code (or statusbar?) with some
+</I>&gt;<i> debugging dialogs? 
+</I>
+It could work like native Atari debuggers.  Debugger uses the same screen as
+emulated Atari and you have some shortcut (Pause?) to flip between the
+debugger screen and Atari screen.
+
+In Falcon emulation some demos (like TYS) can set really small screen sizes,
+I'm not sure what to do then though.  Switching screen size would be pretty
+ugly.
+
+
+&gt;<i> Well, one thing is clear: It's a lot of work.
+</I>
+The effort to get just what the current debugger does, but in SDL window
+might be reasonable as Hatari already has text output and input stuff done
+with SDL.  Just that wouldn't be so useful though.
+
+
+
+On Sunday 05 April 2009, Thomas Huth wrote:
+&gt;<i> It's still not clear to me what this should really be good for. What's
+</I>&gt;<i> the real purpose for dumping registers/memory/disassembly as soon as
+</I>&gt;<i> you enter the debugger?
+</I>&gt;<i>
+</I>&gt;<i> I guess it's about monitoring the running program, right? But you can
+</I>&gt;<i> never press the debugger key fast enough to intercept the program at
+</I>&gt;<i> the very right place this way. So instead of implementing this feature,
+</I>&gt;<i> we should focus our energy on implementing proper breakpoint and
+</I>&gt;<i> single-stepping support, I think.
+</I>
+Sure, It would be much more useful once these have been implemented.
+I.e. showing the status of registers etc when a breakpoint happens, or
+automatically showing more of disassembly when single-stepping.
+
+With SDL debugger screen this information could be positioned always
+to same place.  In console debugger this could be done with ncurses,
+but that would again be one more dependency for Hatari which is harder
+to get on non-Linux platforms (and I doubt we would support a debugger
+both with and without ncurses)...
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000233.html">[hatari-devel] Hatari debugger immediately showing regs &amp; memdump?
+</A></li>
+	<LI>Next message: <A HREF="000240.html">[hatari-devel] MacOsX GUI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#236">[ date ]</a>
+              <a href="thread.html#236">[ thread ]</a>
+              <a href="subject.html#236">[ subject ]</a>
+              <a href="author.html#236">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

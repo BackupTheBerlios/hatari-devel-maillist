@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%22Floating%20point%20exception%22%20%20when%20RS232%20Enabled&In-Reply-To=%3C200902122204.09906.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000152.html">
+   <LINK REL="Next"  HREF="000156.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%22Floating%20point%20exception%22%20%20when%20RS232%20Enabled&In-Reply-To=%3C200902122204.09906.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Feb 12 21:04:09 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000152.html">[hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled
+</A></li>
+        <LI>Next message: <A HREF="000156.html">[hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#153">[ date ]</a>
+              <a href="thread.html#153">[ thread ]</a>
+              <a href="subject.html#153">[ subject ]</a>
+              <a href="author.html#153">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 12 February 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> &gt; I get a &quot;Floating point exception&quot;  in the Xmas 2004 demo when RS-232
+</I>&gt;<i> &gt; is enabled in hatari. The error happens at the end of the black screen
+</I>&gt;<i> &gt; before the Christmas lady, and kills hatari.
+</I>[...] 
+&gt;<i> run : &quot;gdb ./hatari&quot;  (or whatever your path for hatari)
+</I>
+With EmuTOS one gets just a blank screen when at this point, but the crash
+is easily reproducible with real STE TOS:
+hatari -s 4 --machine ste --rs232-in /dev/ttyS0 --rs232-out /dev/ttyS0 -d 
+xmas2004/
+
+Program received signal SIGFPE, Arithmetic exception.
+[Switching to Thread 0xb79746b0 (LWP 3466)]
+0x080689fe in RS232_SetBaudRateFromTimerD () at rs232.c:553
+553             nBaudRate /= 16;
+(gdb) bt
+#0  0x080689fe in RS232_SetBaudRateFromTimerD () at rs232.c:553
+#1  0x08064e4d in MFP_TimerDData_WriteByte () at mfp.c:1642
+#2  0x08060b7f in IoMem_bput (addr=16775717, val=0) at ioMem.c:358
+#3  0x080d9748 in op_4238_5_ff (opcode=16952) at memory.h:123
+#4  0x080823da in m68k_go (may_quit=1) at newcpu.c:1705
+#5  0x08062f79 in M68000_Start () at m68000.c:224
+#6  0x08063ba9 in main (argc=13, argv=Cannot access memory at address 0x4
+) at main.c:642
+(gdb) info locals
+nTimerD_CR = 1
+nBaudRate = &lt;value optimized out&gt;
+
+The interesting thing is that all related values should be integers:
+--------------------------------------
+(gdb) list RS232_SetBaudRateFromTimerD
+539     void RS232_SetBaudRateFromTimerD(void)
+540     {
+541             int nTimerD_CR, nTimerD_DR, nBaudRate;
+542
+543             nTimerD_CR = IoMem[0xfffa1d] &amp; 0x07;
+544             nTimerD_DR = IoMem[0xfffa25];
+545
+546             if (!nTimerD_CR)
+547                     return;
+548
+549             /* Calculate baud rate: (MFP/Timer-D is supplied with 2.4576 
+MHz) */
+550             nBaudRate = 2457600 / nTimerD_DR / 2;
+551
+552             /*if (IoMem[0xfffa29] &amp; 0x80)*/  /* We only support the 
+by-16 prescaler */
+553             nBaudRate /= 16;
+------------------------------------
+
+
+To get to the right point fast, you can even use some speed up options:
+  --fast-forward on --spec512 0 --compatible off --sound off --frameskips 
+8 --zoom 1
+:<i>-)
+</I>
+Which tells that sound code i.e. threading isn't involved in this.
+Valgrind (3.3.1) doesn't find any problem.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000152.html">[hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled
+</A></li>
+	<LI>Next message: <A HREF="000156.html">[hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#153">[ date ]</a>
+              <a href="thread.html#153">[ thread ]</a>
+              <a href="subject.html#153">[ subject ]</a>
+              <a href="author.html#153">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

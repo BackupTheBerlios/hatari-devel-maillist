@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Froggies over the fence
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Froggies%20over%20the%20fence&In-Reply-To=%3C4E25EC66.10704%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003810.html">
+   <LINK REL="Next"  HREF="003795.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Froggies over the fence</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Froggies%20over%20the%20fence&In-Reply-To=%3C4E25EC66.10704%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Froggies over the fence">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Jul 19 22:43:18 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003810.html">[hatari-devel] Froggies over the fence
+</A></li>
+        <LI>Next message: <A HREF="003795.html">[hatari-devel] Froggies over the fence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3811">[ date ]</a>
+              <a href="thread.html#3811">[ thread ]</a>
+              <a href="subject.html#3811">[ subject ]</a>
+              <a href="author.html#3811">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 19/07/2011 22:28, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 19/07/2011 22:21, Miro Krop&#225;&#269;ek a &#233;crit :
+</I>&gt;&gt;<i> Hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I&#8217;ve prepared complete pack, Hatari, TOS, MSA image:
+</I>&gt;&gt;<i> <A HREF="http://260ste.appspot.com/TEST_Hatari.zip">http://260ste.appspot.com/TEST_Hatari.zip</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Huge thanks for it. Now I already know, what was it. Not a configuration
+</I>&gt;&gt;<i> issue but I kind of forgot to think the ST way and to realize the
+</I>&gt;&gt;<i> difference between UK and US versions of the TOS isn't only in spelling
+</I>&gt;&gt;<i> (right, I was always downloading the US version, i.e. the one which set
+</I>&gt;&gt;<i> the vertical frequency to 60 Hz :D).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'm sorry for scaring you ;)
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> That's a bug, it shouldn't behave this way :(
+</I>&gt;<i>
+</I>&gt;<i> It's normal it changes the gem behaviour, but it shouldn't affect games
+</I>&gt;<i> or demos that set frequency to 50 Hz anyway.
+</I>&gt;<i>
+</I>&gt;<i> I can reproduce with tos 2.06 us, I will have a look, but it seems I
+</I>&gt;<i> will need to release 1.5.1 ...
+</I>
+
+Phheww, wrong alert :) The problem is due to this specific demo, not to 
+Hatari.
+
+This is what happen at boot :
+  - ff820a is set to 0 by default in the shifter, so any ST will always 
+be 60 Hz when switched on
+
+  - if you use a PAL tos, it will switch to 50 Hz
+  - if you have an NTSC tos, it won't touch freq reg anymore, so the 
+display stays at 60 Hz.
+
+Now, Froggies over the fence expects to be started from the boot disk, 
+which is the case, so resolution will already be 0, but freq could be 0 
+or 2, and the demo doesn't force it to 2 to be sure it goes to 50 Hz.
+
+And as no part of the demo is removing border until you reach the menu, 
+the ST stays in 60 Hz and the demo goes wrong (it would be the same on a 
+real ST)
+
+So, yes, it's better to always boot with a PAL/european TOS to watch 
+demos/games.
+
+I can finally take a few days of rest :)
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003810.html">[hatari-devel] Froggies over the fence
+</A></li>
+	<LI>Next message: <A HREF="003795.html">[hatari-devel] Froggies over the fence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3811">[ date ]</a>
+              <a href="thread.html#3811">[ thread ]</a>
+              <a href="subject.html#3811">[ subject ]</a>
+              <a href="author.html#3811">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

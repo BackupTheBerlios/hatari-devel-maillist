@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C201001252205.42989.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001349.html">
+   <LINK REL="Next"  HREF="001353.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C201001252205.42989.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] CMake build system">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jan 25 21:05:42 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001349.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001353.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1351">[ date ]</a>
+              <a href="thread.html#1351">[ thread ]</a>
+              <a href="subject.html#1351">[ subject ]</a>
+              <a href="author.html#1351">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 25 January 2010, Thomas Huth wrote:
+&gt;<i> Sorry, but this will only cause confusion. If we announce mic input
+</I>&gt;<i> support on the one hand, and then let the user run into this
+</I>&gt;<i> oh-by-the-way-the-autoconf-build-system-does-not-support-portaudio
+</I>&gt;<i> problem ... no, that's not a good idea.
+</I>
+It doesn't even need to be in configure.ac.  It can be handled by
+putting pkg-config stuff from Makefile.cnf to Makefile.cnf.in directly.
+
+Configure.ac update is needed only if you want user to be notified (at
+configure time) that lack of portaudio means missing Falcon mic support.
+
+Anything else that's missing from configure.ac?
+
+
+&gt;<i> &gt; CMake is getting popular, but it's not necessarily yet on all
+</I>&gt;<i> &gt; platforms on which Hatari is currently being build (BSD?  Wii?
+</I>&gt;<i> &gt; Maemo?  Amiga?).
+</I>&gt;<i>
+</I>&gt;<i> It's certainly available on BSD and other unix-style operating systems.
+</I>&gt;<i> Concerning Wii, Amiga and the other exotic systems... I don't think that
+</I>&gt;<i> they were really using autoconf, but rather edited Makefile.cnf
+</I>&gt;<i> directly
+</I>
+Fair enough.
+
+
+&gt;<i> (and I didn't talk about removing the old Makefiles yet). 
+</I>
+Now you scared me... :-)
+
+
+&gt;<i> &gt; &gt; I do not want to update this stuff anymore, do you?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Me neither, but I don't see any problem in keeping it still around for
+</I>&gt;<i> &gt; a while, while it works OK.
+</I>&gt;<i>
+</I>&gt;<i> Do you know whether the configure.ac is still working at all? Have you
+</I>&gt;<i> tried recently? At least I haven't tried it since the last release...
+</I>&gt;<i>
+</I>&gt;<i> So for keeping this file, I suggest that somebody volunteers to take over
+</I>&gt;<i> the maintainance. If nobody volunteers, I'll remove it at the next
+</I>&gt;<i> weekend.
+</I>
+Ok, ok... :-)
+
+I'll test &amp; update it for the next release (or earlier if somebody complains
+about it not working).  I added todo item about that to myself into Hatari
+todo list.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001349.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001353.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1351">[ date ]</a>
+              <a href="thread.html#1351">[ thread ]</a>
+              <a href="subject.html#1351">[ subject ]</a>
+              <a href="author.html#1351">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

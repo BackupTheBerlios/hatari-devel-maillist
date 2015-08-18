@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Last checks before releasing 1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3C27178228.2375417.1311024552053.JavaMail.nitido%40priv-edmwes92%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003770.html">
+   <LINK REL="Next"  HREF="003773.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Last checks before releasing 1.5</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3C27178228.2375417.1311024552053.JavaMail.nitido%40priv-edmwes92%3E"
+       TITLE="[hatari-devel] Last checks before releasing 1.5">dsavnkff at telus.net
+       </A><BR>
+    <I>Mon Jul 18 23:29:12 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003770.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+        <LI>Next message: <A HREF="003773.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3772">[ date ]</a>
+              <a href="thread.html#3772">[ thread ]</a>
+              <a href="subject.html#3772">[ subject ]</a>
+              <a href="author.html#3772">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 18/07/2011 20:19, David Savinkoff a &#233;crit :
+&gt;<i> Le 18/07/2011 02:25, David Savinkoff a &#233;crit :
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>
+&lt;snip&gt;
+
+I had to use non integer fps, because in the case of the STE video clock 
+and dma audio clock are really too different clock.s
+
+As Anders reported, Hatari with video at 50 Hz had some audio/video sync 
+problem after a moment in the demo. And the only way to fix this was to 
+really have video at 50.053 Hz, or put in another way a VBL that last 
+19.979 ms. All ST output PAL video at 50.053 Hz (well some rare models, 
+such as Paulo Simoes, were reported to have different clock, but that's 
+not the rule).
+
+If you don't do that, at one point the dma player (which is synchronised 
+on the audio dma buffer) &quot;skips&quot; one pattern and one sample is looped 
+one time too much, because the code that is supposed to run on each VBL 
+will not happen at the same &quot;position&quot; in the dma buffer.
+
+* This is done in 'emulator time', isn't real time external to hatari?
+  (If your PC/system/videocard runs fast so will hatari)
+
+More precisely, if you play dma sound at 50066 Hz, after 50 VBL you 
+should not have played 50066 samples, but ~50012 samples. If that's not 
+the case, some demos will just don't work correctly (Hextracker requires 
+this precision, although it also self adapt to the audio variation (when 
+running under falcon, steem, 16 Mhz cpu, ...))
+
+&lt;snip&gt;
+
+But concretly, Hatari sleeps after each rendered video frame to emulate 
+the display freq. Do you mean Hatari should render one frame every 20 
+ms, instead of the 19.979 used now in PAL ?
+
+* It doesn't matter whether if you sleep a bit more or a bit less
+  because SDL/system will insert or drop one frame in 952.381 frames.
+  (20.000 - 19.979)/20.000 = 952.381
+  Which takes 19 seconds. The sleep() function has its timebase on a
+  clock that is separate from both the sound card and the video card.
+  This will create sleep jitter that causes gratuitously dropped 'and'
+  inserted frames anyways.
+
+&lt;snip&gt;
+
+I agree that anyway, Hatari has no way to send the sync signal to start 
+a new VBL. So we're bound to what the display driver of the OS is doing.
+
+Also, we have no way from Hatari to know the exact video freq that is 
+produced by the video card.
+
+Since we don't know those 2 parameters, the only reasonable thing to do 
+for me is to have Hatari generate frames at the rate supposed to be 
+produced on a real ST. Maybe, we will be close to the video card freq, 
+maybe not, but we can't know ; so why should we favour a 20 ms speed 
+instead of 19.979 ?
+
+* I agree 
+
+&lt;snip&gt;
+
+&gt;<i> * Anders problem is Hatari's fault. Hatari should always provide
+</I>&gt;<i>    nominal values (eg. 50Hz 44100Hz etc). The exact values are
+</I>&gt;<i>    internal just like a real Atari.
+</I>
+No, for the same reasons, if you want to record avi of what is emulated 
+by Hatari, then I think you should put in the avi header the most exact 
+value possible (for the same audio/video sync that can appear on STE).
+
+* The generated .avi file should specify 50 Hz (20ms) and 44100 Hz
+  even though hatari did 19.979 ms internally. The .avi file would
+  play properly everywhere and be 3.78 seconds slow for every hour
+  in length. I challenge anyone to sit in a dark room without a
+  clock and perceive exactly one hour to within 3.78 seconds.
+
+&lt;snip&gt;
+
+it generates. A real PAL ST produces 50.053 Hz video, so we should put 
+this value in the avi header and let the video player round it to 50 Hz 
+while playing if it wants.
+
+* If you recorded a real Atari with a real video recorder, there
+  would be no mention of 50.053 Hz.
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003770.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+	<LI>Next message: <A HREF="003773.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3772">[ date ]</a>
+              <a href="thread.html#3772">[ thread ]</a>
+              <a href="subject.html#3772">[ subject ]</a>
+              <a href="author.html#3772">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP debugging : actual point
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20%3A%20actual%20point&In-Reply-To=%3C200906032259.58575.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000288.html">
+   <LINK REL="Next"  HREF="000289.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP debugging : actual point</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20%3A%20actual%20point&In-Reply-To=%3C200906032259.58575.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] DSP debugging : actual point">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Jun  3 21:59:58 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000288.html">[hatari-devel] DSP debugging : actual point
+</A></li>
+        <LI>Next message: <A HREF="000289.html">[hatari-devel] Wii port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#317">[ date ]</a>
+              <a href="thread.html#317">[ thread ]</a>
+              <a href="subject.html#317">[ subject ]</a>
+              <a href="author.html#317">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I just noticed I haven't answered this.
+
+On Sunday 17 May 2009, Laurent Sallafranque wrote:
+&gt;<i> Actually, I'm searching to correct a big bug.
+</I>&gt;<i> I'm working with Motion demo
+</I>&gt;<i> - explot.prg
+</I>&gt;<i> - susie.prg
+</I>&gt;<i> - torus.prg
+</I>&gt;<i>
+</I>&gt;<i> All these demos result in visual glitches or freeze.
+</I>
+Motion wasn't finished so it can also have bugs...
+
+
+&gt;<i> I have no idea of where is the problem for now.
+</I>&gt;<i> I've got traces and sources from hatari debug, but there are more than
+</I>&gt;<i> 20 millions lines of code (hard to read).
+</I>&gt;<i>
+</I>&gt;<i> I'm also using lcov (great tool to profile the code).
+</I>&gt;<i> Just have to add :
+</I>&gt;<i> -g -fprofile-arcs -ftest-coverage
+</I>&gt;<i> Run hatari, then,
+</I>&gt;<i> lcov -c -o coverage.info --directory=./
+</I>&gt;<i> genhtml coverage.info
+</I>&gt;<i>
+</I>&gt;<i> then, you can see the code profile into your browser (load index.html).
+</I>&gt;<i>
+</I>&gt;<i> I think this bug is one of the latest to correct (I'd like to find it).
+</I>&gt;<i> Then, there'll just be to finalize the SSI receive data and optimize DSP
+</I>&gt;<i> code a bit more (I have some ideas for that, but I'd like to finish the
+</I>&gt;<i> debugging before).
+</I>&gt;<i>
+</I>&gt;<i> Do you know if somebody from Motion could give me the sources from the
+</I>&gt;<i> Motion demo (to help me a little) ? Or if one of the people of this team
+</I>&gt;<i> is still alive in atari world ?
+</I>
+Um, whatever sources were left of the demo are included with the demo?
+
+
+&gt;<i> Do you know if it exists a DSP program that I could use as a benchmark
+</I>&gt;<i> or a &quot;non regression&quot; test code ?
+</I>
+Just some demo that can be run from auto folder, does many different things
+and hopefully also doesn't take too long.  With the VBL speed measuring I
+added to the Hatari some simple 4KB DSP demo that loops could be best.
+
+I've been using &quot;Terrorise your soul&quot; as one test, but it's not that fast
+and currently it seems to end with:
+Dsp: 0x01d9: 0x00007f unknown instruction
+
+
+&gt;<i> Any ideas would be appreciate here.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i> PS : I continue to search.
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000288.html">[hatari-devel] DSP debugging : actual point
+</A></li>
+	<LI>Next message: <A HREF="000289.html">[hatari-devel] Wii port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#317">[ date ]</a>
+              <a href="thread.html#317">[ thread ]</a>
+              <a href="subject.html#317">[ subject ]</a>
+              <a href="author.html#317">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

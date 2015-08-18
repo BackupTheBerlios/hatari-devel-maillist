@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Problem with NVDI and latest hatari sources
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20with%20NVDI%20and%20latest%20hatari%20sources&In-Reply-To=%3C201101301657.55470.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002870.html">
+   <LINK REL="Next"  HREF="002990.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Problem with NVDI and latest hatari sources</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Problem%20with%20NVDI%20and%20latest%20hatari%20sources&In-Reply-To=%3C201101301657.55470.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Problem with NVDI and latest hatari sources">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Jan 30 15:57:55 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002870.html">[hatari-devel] Problem with NVDI and latest hatari sources
+</A></li>
+        <LI>Next message: <A HREF="002990.html">[hatari-devel] Problem with NVDI and latest hatari sources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2953">[ date ]</a>
+              <a href="thread.html#2953">[ thread ]</a>
+              <a href="subject.html#2953">[ subject ]</a>
+              <a href="author.html#2953">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 23 tammikuu 2011, Uwe Seimet wrote:
+&gt;<i> Yes, I'm using the old CPU core.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; I guess the issue isn't reproducible if you disable extended VDI
+</I>&gt;<i> &gt; resolution and e.g. use TT TOS and TT high resolution?
+</I>&gt;<i> 
+</I>&gt;<i> Yes, if I switch off the extended resolution in the config file before
+</I>&gt;<i> starting Hatari the issue is gone. But in this case I have a different
+</I>&gt;<i> problem: The Hatari window is placed elsewhere on the screen (looks as
+</I>&gt;<i> if the Window manager now places the window at a location not yet used
+</I>&gt;<i> by other windows) and the Hatari and X11 mouse cursor are not properly
+</I>&gt;<i> synchronized anymore.
+</I>
+To keep mouse cursor in sync, you need to enable mouse grabbing.  To have it
+in sync from the beginning, you need to have mouse grab enabled from the
+beginning. There's a &quot;--grab&quot; command line option for latter and keyboard
+shortcut just for former.
+
+If you want cursor to be permanently grabbed, run Hatari in fullscreen
+and save that setting.
+
+
+&gt;<i> &gt; Could you try switching ENABLE_TRACING to &quot;OFF&quot; from cmake
+</I>&gt;<i> &gt; configuration, rebuild Hatari and see whether anything changes?
+</I>&gt;<i> 
+</I>&gt;<i> There is no change when setting ENABLE_TRACING to 0.
+</I>
+Ok, so the issue wasn't added AES tracing...
+
+When you earlier said that:
+	the print preview (as well as the actualprintout) do not correctly
+	recognize the paper size (A4) anymore. The output is clipped, so that
+	only the upper left corner is visible.
+
+to what size it's clipped?   E.g. size of ST-low or ST-high screen size?
+
+Do similar issues happen with any other software?
+
+
+&gt;<i> My guess is that NVDI relies on data returned by the actual VDI
+</I>&gt;<i> and these data are probably not correct anymore.
+</I>
+They shouldn't have changed...
+
+I need some way to reproduce the issue, otherwise I cannot debug it.
+Is this software available somewhere?
+
+(You could try enabling &quot;trace vdi&quot; from the debugger before the issue
+happens and try to guess what kind of VDI calls could have the issue.
+If you can pinpoint the broken VDI call, that would help.)
+
+
+&gt;&gt;<i> Could you send your hatari.cfg file so that I can try whether I can
+</I>&gt;&gt;<i> reproduce the issue with that?  Can you reproduce it if you don't
+</I>&gt;&gt;<i> have anything started when the emulated machine boots?
+</I>&gt;&gt;<i> What Hatari outputs when the emulation is reseted?
+</I>&gt;<i> 
+</I>&gt;<i> I have added my hatari.cfg as an attachment. During the reboot nothing
+</I>&gt;<i> was running, i.e. TOS was still running its RAM test. This is the output
+</I>&gt;<i> I get after disabling the extended VDI mode and returning to the main
+</I>&gt;<i> menu:
+</I>&gt;<i> 
+</I>&gt;<i> Segmentation fault
+</I>
+With your config I could reproduce the crash and it happened also with v1.4
+release.
+
+I've commited a fix to the crash and to another issue revealed by the fix.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002870.html">[hatari-devel] Problem with NVDI and latest hatari sources
+</A></li>
+	<LI>Next message: <A HREF="002990.html">[hatari-devel] Problem with NVDI and latest hatari sources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2953">[ date ]</a>
+              <a href="thread.html#2953">[ thread ]</a>
+              <a href="subject.html#2953">[ subject ]</a>
+              <a href="author.html#2953">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

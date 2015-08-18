@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Multi-machine multiplayer games?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Multi-machine%20multiplayer%20games%3F&In-Reply-To=%3C201007122248.53073.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002360.html">
+   <LINK REL="Next"  HREF="002354.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Multi-machine multiplayer games?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Multi-machine%20multiplayer%20games%3F&In-Reply-To=%3C201007122248.53073.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Multi-machine multiplayer games?">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Jul 12 21:48:52 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002360.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+        <LI>Next message: <A HREF="002354.html">[hatari-devel] Multi-machine multiplayer games?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2353">[ date ]</a>
+              <a href="thread.html#2353">[ thread ]</a>
+              <a href="subject.html#2353">[ subject ]</a>
+              <a href="author.html#2353">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've earlier tested that networking over MIDI works between multiple Hatari
+instances.  At least Midimaze 2 works fine with this.
+
+I just tested that a serial connection between two Hatari instances works
+using an emulated rs232 device.
+
+For local testing of these, there are the hatari-local-midi-ring.sh and
+the (new) hatari-local-rs232.sh scripts in the tools directory.  They start
+local Hatari instances that are set up to communicate with each other.
+
+Extra arguments given to these scripts (like disk image) are passed to
+the started Hatari instances.
+
+
+What games actually support networking over MIDI or serial connection?
+
+Could you test whether those work with these scripts?
+
+I could then document those e.g. in the compatibility list and come up with
+some (Linux) helper script that sets up things over network using zenity[1]
+and socat[2] as using networked Hatari instances locally on the same machine
+is not so useful.
+
+(The local setup scripts could after this be retired to the tests dir.)
+
+
+	- Eero
+
+[1] Zenity is a Gtk scripting tool.
+[2] Socat is (among other things) a network forwarding tool.
+      midi-linux.txt doc has some instructions on how to use it.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002360.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+	<LI>Next message: <A HREF="002354.html">[hatari-devel] Multi-machine multiplayer games?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2353">[ date ]</a>
+              <a href="thread.html#2353">[ thread ]</a>
+              <a href="subject.html#2353">[ subject ]</a>
+              <a href="author.html#2353">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

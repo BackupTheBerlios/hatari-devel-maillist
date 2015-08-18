@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Slow sound buffer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005130017530.11121%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002065.html">
+   <LINK REL="Next"  HREF="002078.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Slow sound buffer</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Slow%20sound%20buffer&In-Reply-To=%3Calpine.LMD.2.00.1005130017530.11121%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Slow sound buffer">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu May 13 00:27:23 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002065.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002078.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2074">[ date ]</a>
+              <a href="thread.html#2074">[ thread ]</a>
+              <a href="subject.html#2074">[ subject ]</a>
+              <a href="author.html#2074">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 12 May 2010, David Savinkoff wrote:
+
+&gt;<i> Hi Nicolas,
+</I>&gt;<i> 
+</I>&gt;<i> &gt; As the ST runs at 50/60 Hz, this means approx 20 ms per VBL, so using
+</I>&gt;<i> &gt; lower value than 20 might not be a good idea.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Anyway, I think I will add an option to Hatari to specify SoundBufferSize
+</I>&gt;<i> &gt; as a &quot;ms&quot; (with a default to 46-50 as it is today). This way people with
+</I>&gt;<i> &gt; sound problem on their setup can finetune this and choose what fit their
+</I>&gt;<i> &gt; need best.
+</I>&gt;<i> &gt; This &quot;ms&quot; delay will be converted in the corresponding SoundBufferSize
+</I>&gt;<i> &gt; by taking into account current replay freq.
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> Excellent!
+</I>&gt;<i> 
+</I>&gt;<i> David Savinkoff
+</I>&gt;<i>
+</I>
+Hi,
+
+changes are committed. By default, hatari will work as before, so no 
+regression should be seen.
+
+A new variable SdlAudioBufferSize was added to the [Sound] section in 
+hatari.cfg (it will be created if you press &quot;save configuration&quot;).
+
+&gt;<i>From the command line, you can use --sound-buffer-size
+</I>
+If SdlAudioBufferSize is set to 0, nothing changes when compared to 
+previous Hatari version : we use a &quot;samples&quot; value of 1024. In that case 
+ALSA (or the audio system used by SDL) will compute the best fitting value 
+for &quot;samples&quot; if needed.
+
+If you want to force &quot;samples&quot; instead of using 1024, you can specify a 
+value between 10 and 100 ms. A value of 20 ms should be good enough I 
+think (lower value will add more interrupts and could give more rounding 
+errors in Hatari's sound emulation).
+
+Of course, this can be used under Windows too, so all people experimenting 
+sound delays should try to set this parameter to 20 for example.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002065.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002078.html">[hatari-devel] Slow sound buffer
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2074">[ date ]</a>
+              <a href="thread.html#2074">[ thread ]</a>
+              <a href="subject.html#2074">[ subject ]</a>
+              <a href="author.html#2074">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

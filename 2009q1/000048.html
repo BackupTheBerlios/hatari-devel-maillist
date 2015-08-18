@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Midi works fine (was: Midi support broken?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Midi%20works%20fine%20%28was%3A%20Midi%20support%20broken%3F%29&In-Reply-To=%3C20090118212710.2d679b8c%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000047.html">
+   <LINK REL="Next"  HREF="000069.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Midi works fine (was: Midi support broken?)</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Midi%20works%20fine%20%28was%3A%20Midi%20support%20broken%3F%29&In-Reply-To=%3C20090118212710.2d679b8c%40phineus%3E"
+       TITLE="[hatari-devel] Midi works fine (was: Midi support broken?)">th.huth at gmx.de
+       </A><BR>
+    <I>Sun Jan 18 21:27:10 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000047.html">[hatari-devel] Midi works fine (was: Midi support broken?)
+</A></li>
+        <LI>Next message: <A HREF="000069.html">[hatari-devel] Midi works fine (was: Midi support broken?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#48">[ date ]</a>
+              <a href="thread.html#48">[ thread ]</a>
+              <a href="subject.html#48">[ subject ]</a>
+              <a href="author.html#48">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 18 Jan 2009 22:15:08 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> As I haven't used them earlier so it's hard to say whether they work
+</I>&gt;<i> exactly like they should.  E.g. the Midimaze send/receive takes a
+</I>&gt;<i> really long time, but using fast-forward gives a Midi error (seems
+</I>&gt;<i> the connection is timing sensitive).    I guess forcing socat PTY
+</I>&gt;<i> speed (to what?) wouldn't help here...
+</I>
+Midi runs with 31250 bits per second, as far as I know.
+
+&gt;<i> &gt; Well, we could leave --midi work like now for convenience and add
+</I>&gt;<i> &gt; --midi-in for setting the input file name if it needs to be separate
+</I>&gt;<i> &gt; (i.e. it would need to be given after --midi is set).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I guess same should them be done for RS232, --rs232 would set both
+</I>&gt;<i> &gt; input and output files and --rs232-in would overide just the input
+</I>&gt;<i> &gt; side.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Would that make sense?
+</I>&gt;<i> 
+</I>&gt;<i> Any comment on that?
+</I>&gt;<i> 
+</I>&gt;<i> --midi (in &amp; out MIDI file)
+</I>&gt;<i> --midi-in (override MIDI in file later in command line)
+</I>&gt;<i> --rs232
+</I>&gt;<i> --rs232-in
+</I>
+I think this is confusing for the normal users, who might not be aware
+that the order of the parameters matters!
+
+&gt;<i> --midi-in (MIDI in file)
+</I>&gt;<i> --midi-out (MIDI out file)
+</I>&gt;<i> --rs232-in
+</I>&gt;<i> --rs232-out
+</I>
+I think this is the cleaner solution. Not sure whether we should keep
+the old options in that case, too, but I would rather say to remove
+them.
+
+&gt;<i> &gt; &gt; &gt; Midi_Init() has also minor issue that it:
+</I>&gt;<i> &gt; &gt; &gt; - doesn't check whether filename is empty before trying to open
+</I>&gt;<i> &gt; &gt; &gt;   MIDI in/out
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Shouldn't that rather be handled by File_Open instead (which then
+</I>&gt;<i> &gt; &gt; should return a NULL pointer)?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; In the case midi file name is empty, it shouldn't be tried to be
+</I>&gt;<i> &gt; opened.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If there's an error (NULL) returned by Midi I/O file open, user
+</I>&gt;<i> &gt; should be notified with a dialog. I can add that.
+</I>
+OK, that would be great.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000047.html">[hatari-devel] Midi works fine (was: Midi support broken?)
+</A></li>
+	<LI>Next message: <A HREF="000069.html">[hatari-devel] Midi works fine (was: Midi support broken?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#48">[ date ]</a>
+              <a href="thread.html#48">[ thread ]</a>
+              <a href="subject.html#48">[ subject ]</a>
+              <a href="author.html#48">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

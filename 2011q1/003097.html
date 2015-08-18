@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] 68030 Debug mode and new CPU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068030%20Debug%20mode%20and%20new%20CPU&In-Reply-To=%3C4D6191EF.6000702%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003096.html">
+   <LINK REL="Next"  HREF="003099.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] 68030 Debug mode and new CPU</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068030%20Debug%20mode%20and%20new%20CPU&In-Reply-To=%3C4D6191EF.6000702%40free.fr%3E"
+       TITLE="[hatari-devel] 68030 Debug mode and new CPU">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Feb 20 23:13:03 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003096.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+        <LI>Next message: <A HREF="003099.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3097">[ date ]</a>
+              <a href="thread.html#3097">[ thread ]</a>
+              <a href="subject.html#3097">[ subject ]</a>
+              <a href="author.html#3097">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm going to test it immediatly.
+I think that Markus's debugger is not yet implemented in the new Core.
+
+Regards
+
+Laurent
+
+Le 20/02/2011 23:07, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On sunnuntai 20 helmikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i> I don't understand everything here (sorry).
+</I>&gt;&gt;<i> If you think this patch is needed, please, fell free to upload it and
+</I>&gt;&gt;<i> I'll test it.
+</I>&gt;<i> I commited it with largish explanation, but didn't test it more than
+</I>&gt;<i> to see that it compiles.  Now WinAUE disassembly should work also
+</I>&gt;<i> if you redirect it to file.
+</I>&gt;<i>
+</I>&gt;<i> To test it I guess you first need set that you want to use the WinAUE
+</I>&gt;<i> disassembly instead of Markus' code in in debug/68kDisass.h, currently it's
+</I>&gt;<i> pointing to Markus version:
+</I>&gt;<i> #define        DISASM_ENGINE_UAE       0               /* Use UAE's internal
+</I>&gt;<i> disassembler */
+</I>&gt;<i> #define        DISASM_ENGINE_EXT       1               /* Use external
+</I>&gt;<i> disassembler from 68kdisass.c */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Btw. While testing the compilation, I noticed this in cpu/cpummu.h:
+</I>&gt;<i> 	#define likely(x) x
+</I>&gt;<i> 	#define unlikely(x) x
+</I>&gt;<i>
+</I>&gt;<i> Why the optimization macros from main.h (intended to mark code branches
+</I>&gt;<i> as cold/hot) are nullified?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;&gt;<i> Best regards
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Le 17/02/2011 22:25, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On keskiviikko 16 helmikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;&gt;&gt;&gt;<i> You could add:
+</I>&gt;&gt;&gt;&gt;&gt;<i> 	#define f_out fprintf
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> to one of the headers, remove the f_out stuff from cpu/custom.c and
+</I>&gt;&gt;&gt;&gt;&gt;<i> replace all &quot;void *&quot; args for functions calling f_out() with &quot;FILE
+</I>&gt;&gt;&gt;&gt;&gt;<i> *&quot;.
+</I>&gt;&gt;&gt;&gt;<i> Done, it works well now.
+</I>&gt;&gt;&gt;&gt;<i> And it seems to have removed some compiling warnings.
+</I>&gt;&gt;&gt;<i> Actually, as f_out() seems to be used only in newcpu.c, the define
+</I>&gt;&gt;&gt;<i> could be there too.  Unless you want all this kind of stuff to be in
+</I>&gt;&gt;&gt;<i> compat.h so that it's easier to find.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> While looking into newcpu.c more, I noticed that the &quot;buf&quot;&amp;   &quot;bufsize&quot;
+</I>&gt;&gt;&gt;<i> arguments to function:
+</I>&gt;&gt;&gt;<i> void m68k_disasm_2 (TCHAR *buf, int bufsize, uaecptr addr, uaecptr
+</I>&gt;&gt;&gt;<i> *nextpc, int cnt, uae_u32 *seaddr, uae_u32 *deaddr, int safemode)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Are redundant with your changes (instead of using buf_out(), you're
+</I>&gt;&gt;&gt;<i> calling printf() directly and not buffering the string for later
+</I>&gt;&gt;&gt;<i> printing).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Attached (untested) patch would clean that.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> 	- Eero
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> hatari-devel mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003096.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+	<LI>Next message: <A HREF="003099.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3097">[ date ]</a>
+              <a href="thread.html#3097">[ thread ]</a>
+              <a href="subject.html#3097">[ subject ]</a>
+              <a href="author.html#3097">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

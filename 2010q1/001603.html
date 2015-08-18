@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Compiler warnings / system call
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compiler%20warnings%20/%20system%20call&In-Reply-To=%3C20100228173142.04d4e1ec%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001610.html">
+   <LINK REL="Next"  HREF="001609.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Compiler warnings / system call</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compiler%20warnings%20/%20system%20call&In-Reply-To=%3C20100228173142.04d4e1ec%40phineus%3E"
+       TITLE="[hatari-devel] Compiler warnings / system call">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Feb 28 17:31:42 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001610.html">[hatari-devel] Hatari windows binary (test needed)
+</A></li>
+        <LI>Next message: <A HREF="001609.html">[hatari-devel] Compiler warnings / system call
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1603">[ date ]</a>
+              <a href="thread.html#1603">[ thread ]</a>
+              <a href="subject.html#1603">[ subject ]</a>
+              <a href="author.html#1603">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+When compiling the current hg tip, I get these compiler warnings:
+
+/home/thomas/devel/hatari/master/src/debug/debugui.c: In function &#8216;DebugUI_Exec&#8217;:
+/home/thomas/devel/hatari/master/src/debug/debugui.c:392: warning: ignoring return value of &#8216;system&#8217;, declared with attribute warn_unused_result
+/home/thomas/devel/hatari/master/src/debug/debugui.c: In function &#8216;DebugUI_ParseFile&#8217;:
+/home/thomas/devel/hatari/master/src/debug/debugui.c:956: warning: ignoring return value of &#8216;chdir&#8217;, declared with attribute warn_unused_result
+
+Eero, could you please fix them?
+
+Also I have to say that I dislike the use of the system() call in
+Hatari. First, I guess this call is quite specific to Unix-like
+platforms, so we might run into problems on platforms that do not
+feature a standard system shell and thus do not implement this call in
+their C library.
+Second, this could introduce possible security issues. On some systems,
+Hatari might be installed as suid-root, so that it can for example
+access the framebuffer device directly. Offering a system() call here
+means to offer a root shell! So I vote for removing this debugger
+commando again - or is it really required badly?
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001610.html">[hatari-devel] Hatari windows binary (test needed)
+</A></li>
+	<LI>Next message: <A HREF="001609.html">[hatari-devel] Compiler warnings / system call
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1603">[ date ]</a>
+              <a href="thread.html#1603">[ thread ]</a>
+              <a href="subject.html#1603">[ subject ]</a>
+              <a href="author.html#1603">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] EmuTOS screen
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EmuTOS%20screen&In-Reply-To=%3C20110720093457.26312c5b%40think43%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003816.html">
+   <LINK REL="Next"  HREF="003821.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] EmuTOS screen</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EmuTOS%20screen&In-Reply-To=%3C20110720093457.26312c5b%40think43%3E"
+       TITLE="[hatari-devel] EmuTOS screen">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Jul 20 09:34:57 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003816.html">[hatari-devel] EmuTOS screen
+</A></li>
+        <LI>Next message: <A HREF="003821.html">[hatari-devel] EmuTOS screen
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3818">[ date ]</a>
+              <a href="thread.html#3818">[ thread ]</a>
+              <a href="subject.html#3818">[ subject ]</a>
+              <a href="author.html#3818">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Wed, 20 Jul 2011 01:33:05 +0200
+schrieb Vincent Rivi&#232;re &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">vincent.riviere at freesbee.fr</A>&gt;:
+
+&gt;<i> Le 01/07/2010 11:18, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On Friday 25 June 2010, Eero Tamminen wrote:
+</I>&gt;<i> &gt;&gt; On Saturday 19 June 2010, Vincent Rivi&#232;re wrote:
+</I>&gt;<i> &gt;&gt;&gt; I have noticed 2 problems with Hatari in ST mode and EmuTOS:
+</I>&gt;<i> &gt;&gt;&gt; - The EmuTOS welcome screen never appears
+</I>&gt;<i> &gt;&gt;&gt; - Ctrl+Alt+Shift+Del crashes with a double bus error
+</I>[...]
+&gt;<i> 
+</I>&gt;<i> I'm disappointed that Hatari 1.5 has been released and those issues I 
+</I>&gt;<i> reported last year have not been investigated further. Hatari is
+</I>&gt;<i> shipped with EmuTOS, this is a good thing, but because of those
+</I>&gt;<i> Hatari bugs the EmuTOS user experience is not what it should be.
+</I>
+Well, seems like you have a different user experience like me ... ;-)
+
+Ok, maybe let me explain this issue from the beginning:
+
+- Hatari always started the machine in &quot;warm reset&quot; mode since the
+  beginning, it's a legacy from the WinSTon source code (so we
+  certainly do not do this to offend EmuTOS). Maybe we could remove
+  those memvalid hacks nowadays, but on the other side, why should
+  we slow down the TOS boot process that way?
+
+- The EmuTOS splashscreen has been once introduced by Petr, mainly
+  for Aranym. However, there have always been some inconsistencies
+  with it, e.g. autobooting Games that did not clear the screen
+  initially clashed with the remainders of the splashscreen.
+
+- The splashscreen also is of no real big use for the user, and
+  occupies valuable space in the EmuTOS image, so for the 192 kB ROM
+  images that I've built in the past, the splashscreen always had been
+  disabled anyways.
+
+- Some users also complained about the boot delay, and in the end
+  even Petr changed the code, so that the splashscreen does not appear
+  during a warm reset anymore.
+
+So in my opinion it's rather welcome that the splashscreen does not
+appear anymore on Hatari (even if it's just by accident right now), and
+I think we should rather consider to remove it from EmuTOS completely.
+(However, if you rather think that it should always appear again,
+then simply revert the memvalid hack in EmuTOS again).
+
+
+Concerning your crash with the Ctrl+Alt+Shift+Del, you're right, this
+should certainly not crash and needs some investigation...
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003816.html">[hatari-devel] EmuTOS screen
+</A></li>
+	<LI>Next message: <A HREF="003821.html">[hatari-devel] EmuTOS screen
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3818">[ date ]</a>
+              <a href="thread.html#3818">[ thread ]</a>
+              <a href="subject.html#3818">[ subject ]</a>
+              <a href="author.html#3818">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] I'm lucky ;) K.prg  is working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3Calpine.LMD.2.00.1002251231090.32624%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001550.html">
+   <LINK REL="Next"  HREF="001552.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] I'm lucky ;) K.prg  is working</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20I%27m%20lucky%20%3B%29%20K.prg%20%20is%20working&In-Reply-To=%3Calpine.LMD.2.00.1002251231090.32624%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] I'm lucky ;) K.prg  is working">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Feb 25 12:35:49 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001550.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+        <LI>Next message: <A HREF="001552.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1551">[ date ]</a>
+              <a href="thread.html#1551">[ thread ]</a>
+              <a href="subject.html#1551">[ subject ]</a>
+              <a href="author.html#1551">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 25 Feb 2010, Laurent Sallafranque wrote:
+
+&gt;<i> OK, I understand my problem ;)
+</I>&gt;<i>
+</I>&gt;<i> I've just uploaded a patch in DSP.C to take into account correctly the 8 -&gt; 
+</I>&gt;<i> 32 Mhz conversion.
+</I>&gt;<i>
+</I>
+Just a detail, but I think you could change :
+
+Sint32 i = nHostCycles * 4 - save_cycles + 1;
+
+into :
+#define DSP_FREQ 32000000
+#define CPU_FREQ 8000000
+Sint32 i = nHostCycles * ( DSP_FREQ / CPU_FREQ ) - save_cycles + 1;
+
+It would make clearer where &quot;*4&quot; comes from and if one day we support 
+native 16 MHz freq for the cpu it will be less likely that we forget to 
+change this &quot;*4' :)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001550.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+	<LI>Next message: <A HREF="001552.html">[hatari-devel] I'm lucky ;) K.prg  is working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1551">[ date ]</a>
+              <a href="thread.html#1551">[ thread ]</a>
+              <a href="subject.html#1551">[ subject ]</a>
+              <a href="author.html#1551">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

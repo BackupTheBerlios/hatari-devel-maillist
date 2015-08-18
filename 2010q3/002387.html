@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] small changes to sound output
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20small%20changes%20to%20sound%20output&In-Reply-To=%3Calpine.LMD.2.00.1009041410360.31120%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002398.html">
+   <LINK REL="Next"  HREF="002394.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] small changes to sound output</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20small%20changes%20to%20sound%20output&In-Reply-To=%3Calpine.LMD.2.00.1009041410360.31120%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] small changes to sound output">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Sep  4 14:18:37 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002398.html">[hatari-devel] Some problems in the latest build
+</A></li>
+        <LI>Next message: <A HREF="002394.html">[hatari-devel] New FileSelector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2387">[ date ]</a>
+              <a href="thread.html#2387">[ thread ]</a>
+              <a href="subject.html#2387">[ subject ]</a>
+              <a href="author.html#2387">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hello
+
+as reported on another forum, the part of StSound's code to handle noise 
+(that was still present in Hatari 1.4) was discarding all noise per &lt; 3, 
+which resulted in no sound being output in that case.
+
+I rewrote tone and noise step compute to remove StSound's remaining code 
+in that case and to use the same logic as the one I used to compute env's 
+per.
+
+Old code is still present in case some regressions should be tested, but I 
+will remove it soon.
+
+If you ever noticed some different sound when noise was used, could you 
+please test again with this new version (the maxymiser song &quot;chipping 
+for ca$h&quot; was reported as such ; could someone test it now ?)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002398.html">[hatari-devel] Some problems in the latest build
+</A></li>
+	<LI>Next message: <A HREF="002394.html">[hatari-devel] New FileSelector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2387">[ date ]</a>
+              <a href="thread.html#2387">[ thread ]</a>
+              <a href="subject.html#2387">[ subject ]</a>
+              <a href="author.html#2387">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

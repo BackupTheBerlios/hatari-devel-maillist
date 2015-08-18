@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] setting unused bits to 1 when reading hardware	regs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2008q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20setting%20unused%20bits%20to%201%20when%20reading%20hardware%0A%09regs&In-Reply-To=%3Cd32dfd680812261104j51355f41ja61d66c02daa30be%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000004.html">
+   <LINK REL="Next"  HREF="000007.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] setting unused bits to 1 when reading hardware	regs</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20setting%20unused%20bits%20to%201%20when%20reading%20hardware%0A%09regs&In-Reply-To=%3Cd32dfd680812261104j51355f41ja61d66c02daa30be%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] setting unused bits to 1 when reading hardware	regs">huth at users.berlios.de
+       </A><BR>
+    <I>Fri Dec 26 20:04:07 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000004.html">[hatari-devel] setting unused bits to 1 when reading hardware regs
+</A></li>
+        <LI>Next message: <A HREF="000007.html">[hatari-devel] setting unused bits to 1 when reading hardware regs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5">[ date ]</a>
+              <a href="thread.html#5">[ thread ]</a>
+              <a href="subject.html#5">[ subject ]</a>
+              <a href="author.html#5">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Datum: Fri, 26 Dec 2008 19:06:17 +0100 (CET)
+</I>&gt;<i> Von: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>
+</I>&gt;<i>
+</I>&gt;<i> I took my STF out of the box some days ago to do some measures on cycles
+</I>&gt;<i> precision and I also had a look at what happened when reading
+</I>&gt;<i> shifter/sound registers with unused bits ; I didn't think this mattered
+</I>&gt;<i> since we never saw problem with that, but it was wrong :
+</I>&gt;<i>
+</I>&gt;<i>   - ff8260 : bits 2-7 are set to 1
+</I>&gt;<i>   - ff820a : bits 2-7 are set to 1
+</I>&gt;<i>   - ff8240-5c : on STF, bits 12-15 seem to be always 1, bits 3/7/11 are
+</I>&gt;<i>     sometimes 0, sometimes 1. Can't say for STE, bits 3/7/11 are of course
+</I>&gt;<i>     used but I don't know for 12-15.
+</I>&gt;<i>
+</I>&gt;<i> I committed a change for $ff8260/0a to add a OR with 0xfc, this fixes
+</I>&gt;<i> Awesome menu 16 (why does the TOS needs unused bits set to 1, that's
+</I>&gt;<i> really strange).
+</I>
+Ah, OK, I think the trick is that with your patch, the value (read
+with MOVE.W $ff8260,...) becomes negative. And negative values are
+likely ignored when passed as parameter to the Setscreen XBIOS
+function.
+
+&gt;<i> For ff8240-5c, it's more complex. I know some programs are writing bits
+</I>&gt;<i> here to detect between STF/STE, so we should be cautious.
+</I>&gt;<i>
+</I>&gt;<i> Another small problem I saw with colors regs : they can only be accessed
+</I>&gt;<i> with .W acces, but on ST you can do a 'move.b #7,$ff8241' and it works. On
+</I>&gt;<i> Hatari this will give some wrong colors because we don't &quot;mix&quot; the result
+</I>&gt;<i> with the content of $ff8240.
+</I>
+Are you sure? If I look at the code in video.c
+(Video_ColorReg_WriteWord ff.) it looks like the code can handle both,
+word and byte accesses (it always uses IoMemReadWord to get the
+value). Do you have a sample program which fails here?
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000004.html">[hatari-devel] setting unused bits to 1 when reading hardware regs
+</A></li>
+	<LI>Next message: <A HREF="000007.html">[hatari-devel] setting unused bits to 1 when reading hardware regs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5">[ date ]</a>
+              <a href="thread.html#5">[ thread ]</a>
+              <a href="subject.html#5">[ subject ]</a>
+              <a href="author.html#5">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

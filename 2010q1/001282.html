@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] IDE &amp; gemdos HD emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20%26%20gemdos%20HD%20emulation&In-Reply-To=%3C20100119195906.518250a1%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001281.html">
+   <LINK REL="Next"  HREF="001283.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] IDE &amp; gemdos HD emulation</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20IDE%20%26%20gemdos%20HD%20emulation&In-Reply-To=%3C20100119195906.518250a1%40phineus%3E"
+       TITLE="[hatari-devel] IDE &amp; gemdos HD emulation">huth at users.berlios.de
+       </A><BR>
+    <I>Tue Jan 19 19:59:06 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001281.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+        <LI>Next message: <A HREF="001283.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1282">[ date ]</a>
+              <a href="thread.html#1282">[ thread ]</a>
+              <a href="subject.html#1282">[ subject ]</a>
+              <a href="author.html#1282">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 19 Jan 2010 01:09:31 +0200
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On Monday 18 January 2010, Thomas Huth wrote:
+</I>&gt;<i> &gt; &gt; E.g. with Cecile booting from IDE drive works, but not when having
+</I>&gt;<i> &gt; &gt; GEMDOS D &amp; E drives.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I just tried it again, and yes, it works for me. TOS 2.06, IDE
+</I>&gt;<i> &gt; hard disk image with two partitions and AHDI 6 installed, and one
+</I>&gt;<i> &gt; GEMDOS hard disk folder &quot;E&quot;. Hatari successfully boots from the IDE
+</I>&gt;<i> &gt; drive and all partitions, C, D and E show up correctly.
+</I>&gt;<i> 
+</I>&gt;<i> Hm.  I got this when trying to format an image with AHDI 6:
+</I>&gt;<i> 	HDC: Unsupported MODE SENSE command
+</I>
+RTFM ;-)
+For _partitioning_, you need Cecile. Once you've got the disk image
+partitioned, you can install AHDI 6.
+
+&gt;<i> And when AHDI told that it couldn't format the disk image, I got an
+</I>&gt;<i> assert: hatari: int.c:394: Int_AddRelativeInterruptWithOffset:
+</I>&gt;<i> Assertion `CycleTime 
+</I>&gt;<i> &gt;= 0' failed.
+</I>
+That's bad... is it reproducible? Could you do a backtrace?
+
+&gt;<i> If I try to use the ACSI format disk image, everything works fine
+</I>&gt;<i> with that. If I try same image with --ide-master, HDX or HINSTALL
+</I>&gt;<i> don't even find C: (after running ahdi.prg, v5 or v6).  And Hatari
+</I>&gt;<i> doesn't boot from HD when --ide-master is used (when it has AHDI
+</I>&gt;<i> installed on it in --acsi mode).
+</I>
+IIRC, the disk images are endianess swapped (ACSI is big endian, IDE
+is little). You might be able to convert it with dd, but I am not sure
+whether this really works reliable.
+
+&gt;<i> &gt; &gt; Might be related to ide.c not updating nNumDrives nor nPartitions:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; As you can see in gemdos.c, this code is only for old,
+</I>&gt;<i> &gt; single-partition GEMDOS HD mode (&quot;if (!bMultiPartitions) ....&quot;).
+</I>&gt;<i> &gt; For multi-GEMDOS-drive mode, this does not apply.
+</I>&gt;<i> 
+</I>&gt;<i> This part applies also to multi partition support:
+</I>&gt;<i>                          /* If the GemDos Drive letter is free then */
+</I>&gt;<i>                         if (i &gt;= nPartitions)
+</I>&gt;<i> 
+</I>&gt;<i> And anyway it's strange why IDE should work differently in this
+</I>&gt;<i> respect from the ASCI HDD?
+</I>
+I thought we've discussed this a year ago already... it should work the
+same way, but so far nobody has tried to implement partition detection
+to the IDE code yet. Anyway, I am also not sure whether we really want
+to have partition detection in ACSI code, since it also fails for
+example when the image is partitioned with a DOS-style partition table.
+So I tend to say: When you want to use GEMDOS HD emulation and ACSI/IDE
+disk images together, simply always configure your GEMDOS HD drive
+letters manually.
+
+&gt;<i> &gt; &gt; bdrv_read() return value errors (ret &lt; 0) aren't handled?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Looks like bad error handling. Feel free to fix it!
+</I>&gt;<i> 
+</I>&gt;<i> Problem is that not being familar with IDE, I'm not sure how it
+</I>&gt;<i> should be handled. :-)
+</I>
+Me neither, I just ported the code from qemu to Hatari :-)
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001281.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+	<LI>Next message: <A HREF="001283.html">[hatari-devel] IDE &amp; gemdos HD emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1282">[ date ]</a>
+              <a href="thread.html#1282">[ thread ]</a>
+              <a href="subject.html#1282">[ subject ]</a>
+              <a href="author.html#1282">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

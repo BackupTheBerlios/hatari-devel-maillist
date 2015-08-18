@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Register ff8260 mysteries
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Register%20ff8260%20mysteries&In-Reply-To=%3C20090908234234.71be901d%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000674.html">
+   <LINK REL="Next"  HREF="000676.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Register ff8260 mysteries</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Register%20ff8260%20mysteries&In-Reply-To=%3C20090908234234.71be901d%40phineus%3E"
+       TITLE="[hatari-devel] Register ff8260 mysteries">huth at users.berlios.de
+       </A><BR>
+    <I>Tue Sep  8 23:42:34 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000674.html">[hatari-devel] Little problem with program command line
+</A></li>
+        <LI>Next message: <A HREF="000676.html">[hatari-devel] Command completion added to debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#675">[ date ]</a>
+              <a href="thread.html#675">[ thread ]</a>
+              <a href="subject.html#675">[ subject ]</a>
+              <a href="author.html#675">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 6 Sep 2009 14:09:06 +0200 (CEST)
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+
+&gt;<i> The problem is with code at 00fc0a9c ; it's called a first time
+</I>&gt;<i> before the menu is loaded (and set $44c to 0), and it's called a 2nd
+</I>&gt;<i> time when pressing F2.
+</I>
+Looks like this is the XBIOS Setscreen() function, as far as I can see.
+
+&gt;<i> It could be interesting to see on a real ST if the saved values have
+</I>&gt;<i> the upper bits randomly set to 1 or not (which would validate the
+</I>&gt;<i> fact that when 68000 is executed from ROM the bus has a different
+</I>&gt;<i> behavior).
+</I>&gt;<i> 
+</I>&gt;<i> Do you have an ST near you to check this ? (or I will have to unpack 
+</I>&gt;<i> mine, which will take more time)
+</I>
+My ST is also packed away, don't know when I've got some spare time to
+check it there again...
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000674.html">[hatari-devel] Little problem with program command line
+</A></li>
+	<LI>Next message: <A HREF="000676.html">[hatari-devel] Command completion added to debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#675">[ date ]</a>
+              <a href="thread.html#675">[ thread ]</a>
+              <a href="subject.html#675">[ subject ]</a>
+              <a href="author.html#675">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

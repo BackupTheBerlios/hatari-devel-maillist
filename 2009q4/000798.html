@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new support for avi recording
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3C20091008233714.18211da4%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000858.html">
+   <LINK REL="Next"  HREF="000799.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new support for avi recording</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3C20091008233714.18211da4%40phineus%3E"
+       TITLE="[hatari-devel] new support for avi recording">huth at users.berlios.de
+       </A><BR>
+    <I>Thu Oct  8 23:37:14 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000858.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000799.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#798">[ date ]</a>
+              <a href="thread.html#798">[ thread ]</a>
+              <a href="subject.html#798">[ subject ]</a>
+              <a href="author.html#798">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 7 Oct 2009 23:57:22 +0200 (CEST)
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+
+&gt;<i> Hello,
+</I>&gt;<i> 
+</I>&gt;<i> after quite some time, I finally completed the avi recording support
+</I>&gt;<i> I started 2 months ago.
+</I>&gt;<i> 
+</I>&gt;<i> This mode will create some video+audio recording of Hatari with as
+</I>&gt;<i> little overhead as possible.
+</I>
+Great stuff, I was looking forward to this, thanks!
+I just gave it a quick try, and it seems to work nice when recording as
+BMP for me. But when I use PNG recording, the colors of the video look
+wrong in mplayer later... well, maybe there's a big-endian bug
+remaining (just tested it on my PowerPC machine...), or my mplayer does
+not like PNG-AVIs... maybe I've got some time at the weekend to have a
+closer look at this problem.
+
+Then, I also get a lot of compiler warnings now (GCC 4.3.3):
+
+avi_record.c: In function 'AviRecordVideoStream_BMP':
+avi_record.c:443: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:461: warning: pointer of type 'void *' used in arithmetic
+avi_record.c:461: warning: pointer of type 'void *' used in arithmetic
+avi_record.c:483: warning: comparison between signed and unsigned
+avi_record.c: In function 'AviRecordVideoStream_PNG':
+avi_record.c:509: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c: In function 'AviRecordAudioStream_PCM':
+avi_record.c:597: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c: In function 'AviBuildFileHeader':
+avi_record.c:664: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:666: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:668: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:671: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:673: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:692: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:694: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:696: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:698: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:702: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:719: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:742: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:752: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:754: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:756: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:758: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:776: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c: In function 'AviBuildIndex':
+avi_record.c:804: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:824: warning: ignoring return value of 'fread', declared with attribute warn_unused_result
+avi_record.c: In function 'AviStartRecording_WithParams':
+avi_record.c:901: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:903: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:904: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:921: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+avi_record.c:923: warning: passing argument 2 of 'AviStore4cc' discards qualifiers from pointer target type
+
+screenSnapShot.c: In function 'ScreenSnapShot_SavePNG_ToFile':
+screenSnapShot.c:207: warning: pointer of type 'void *' used in arithmetic
+screenSnapShot.c:207: warning: pointer of type 'void *' used in arithmetic
+
+
+I think you should at least change the &quot;char *text&quot; parameter of
+AviStore4cc to &quot;const char *text&quot; ... ;-)
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000858.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000799.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#798">[ date ]</a>
+              <a href="thread.html#798">[ thread ]</a>
+              <a href="subject.html#798">[ subject ]</a>
+              <a href="author.html#798">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

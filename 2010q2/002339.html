@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Getting OS call opcode from stack?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Getting%20OS%20call%20opcode%20from%20stack%3F&In-Reply-To=%3C201006291659.52354.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002337.html">
+   <LINK REL="Next"  HREF="002316.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Getting OS call opcode from stack?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Getting%20OS%20call%20opcode%20from%20stack%3F&In-Reply-To=%3C201006291659.52354.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Getting OS call opcode from stack?">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Jun 29 15:59:52 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002337.html">[hatari-devel] Getting OS call opcode from stack?
+</A></li>
+        <LI>Next message: <A HREF="002316.html">[hatari-devel] CMake usage?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2339">[ date ]</a>
+              <a href="thread.html#2339">[ thread ]</a>
+              <a href="subject.html#2339">[ subject ]</a>
+              <a href="author.html#2339">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 26 June 2010, Gerhard Stoll wrote:
+&gt;<i> &gt; /* TODO: GEMDOS memory pool address for TOS 1.0? */
+</I>&gt;<i>
+</I>&gt;<i> You can use the address 0x56FA for TOS 1.0.
+</I>
+Thanks, I commited a fix for this.
+
+
+On Sunday 27 June 2010, Vincent Rivi&#232;re wrote:
+&gt;<i> Gerhard Stoll wrote:
+</I>&gt;<i> &gt; In debugInfo.c#DebugInfo_OSHeader stand:
+</I>&gt;<i> &gt; fprintf(stderr, &quot;OS RAM end+1 : 0x%06x\n&quot;,
+</I>&gt;<i> &gt; STMemory_ReadLong(sysbase+0x0C));
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; But why &quot;+1&quot;. My information is that sysbase+0x0c is the first byte
+</I>&gt;<i> &gt; which is not used from the OS.
+</I>&gt;<i>
+</I>&gt;<i> Both are correct !
+</I>&gt;<i>
+</I>&gt;<i> The memory contains &quot;OS RAM&quot; and just after there is &quot;RAM not used from
+</I>&gt;<i> the OS&quot;.
+</I>&gt;<i>
+</I>&gt;<i> The address of the last byte of the first area + 1 is equal to the
+</I>&gt;<i> address of the first byte of the second area.
+</I>&gt;<i>
+</I>&gt;<i> For me, the simplest definition of sysbase+0x0c would be :
+</I>&gt;<i> &quot;End of the operating system's BSS segment&quot;.
+</I>
+Well, I didn't want the name to be too long so that values align nicely:
+-----
+&gt;<i> info osheader
+</I>OS base addr : 0xe00000
+OS RAM end+1 : 0x008f9a
+...
+------
+
+The &quot;basepage&quot; info uses similar heading:
+------
+&gt;<i> info basepage
+</I>Process basepage information:
+- TPA start      : 0x00fce4
+- TPA end +1     : 0x00fe64
+...
+------
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002337.html">[hatari-devel] Getting OS call opcode from stack?
+</A></li>
+	<LI>Next message: <A HREF="002316.html">[hatari-devel] CMake usage?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2339">[ date ]</a>
+              <a href="thread.html#2339">[ thread ]</a>
+              <a href="subject.html#2339">[ subject ]</a>
+              <a href="author.html#2339">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

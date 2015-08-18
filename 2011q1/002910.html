@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New CPU and falcon emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20CPU%20and%20falcon%20emulation&In-Reply-To=%3C4D40A8CB.30109%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002902.html">
+   <LINK REL="Next"  HREF="002914.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New CPU and falcon emulation</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20CPU%20and%20falcon%20emulation&In-Reply-To=%3C4D40A8CB.30109%40corp.free.fr%3E"
+       TITLE="[hatari-devel] New CPU and falcon emulation">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Jan 27 00:05:47 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002902.html">[hatari-devel] New CPU and falcon emulation
+</A></li>
+        <LI>Next message: <A HREF="002914.html">[hatari-devel] New CPU and falcon emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2910">[ date ]</a>
+              <a href="thread.html#2910">[ thread ]</a>
+              <a href="subject.html#2910">[ subject ]</a>
+              <a href="author.html#2910">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 26/01/2011 23:43, Miro Krop&#225;&#269;ek a &#233;crit :
+
+&gt;<i> Well, I was really naive, on my &quot;humble&quot; 1.66 GHz dual core, even with
+</I>&gt;<i> adjustments above, I couldn't get below FS 5 as soon as real show
+</I>&gt;<i> started (sound, dsp playback and/or effects, cpu). I think I'll wait for
+</I>&gt;<i> JIT ;-) (WinUAE with JIT plays 060 demos just fine).
+</I>
+Don't hold your breath too much, it could take some time :)
+
+Also, winuae in 060 mode often emulates a 68060 with no really special 
+video effect (I mean no massive use of copper or blitter for example). 
+So CPU emulation is really sped up by JIT.
+
+In the case of the Falcon, JIT can speed up the CPU too, but the DSP 
+will remain a true bottleneck, so in the end it's not obvious you will 
+get has many fps as under winuae, even with jit.
+
+Well, we'll see ...
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002902.html">[hatari-devel] New CPU and falcon emulation
+</A></li>
+	<LI>Next message: <A HREF="002914.html">[hatari-devel] New CPU and falcon emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2910">[ date ]</a>
+              <a href="thread.html#2910">[ thread ]</a>
+              <a href="subject.html#2910">[ subject ]</a>
+              <a href="author.html#2910">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

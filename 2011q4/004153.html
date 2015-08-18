@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Another question about cycles
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Another%20question%20about%20cycles&In-Reply-To=%3C4EB86A02.4070605%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004152.html">
+   <LINK REL="Next"  HREF="004141.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Another question about cycles</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Another%20question%20about%20cycles&In-Reply-To=%3C4EB86A02.4070605%40free.fr%3E"
+       TITLE="[hatari-devel] Another question about cycles">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Nov  8 00:30:10 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004152.html">[hatari-devel] Another question about cycles
+</A></li>
+        <LI>Next message: <A HREF="004141.html">[hatari-devel] Stereo DC filtering which accounts for DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4153">[ date ]</a>
+              <a href="thread.html#4153">[ thread ]</a>
+              <a href="subject.html#4153">[ subject ]</a>
+              <a href="author.html#4153">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Thanks for the help, I think I've got the keys to do it now.
+
+
+ &gt;&gt; It would be : OR.W (A0), (A1)   :  2   2   8   8   ---&gt; Falcon 
+cycles : 2   2   12   14  ?
+ &gt; Whoo, whoo! There's no or.w (a0),(a1) instruction :)
+
+LOL. I was so in the theory that I didn't even have a look at what I wrote.
+But I think I've got the idea now.
+
+Regards
+
+Laurent
+
+
+Le 08/11/2011 00:23, Miro Krop&#225;c(ek a &#233;crit :
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i>     So, for Falcon, a OR.W D0,D0 gives 0 0 2 4.
+</I>&gt;<i>
+</I>&gt;<i> Yes.
+</I>&gt;<i>
+</I>&gt;<i>     But how does it work for a OR.W D0,(A0) ?
+</I>&gt;<i>
+</I>&gt;<i>    OR Dn,EA 0 1 3(0/0/1) 4(0/1/1)
+</I>&gt;<i> + (An)            1 1 3(1/0/0) 3(1/0/0)
+</I>&gt;<i> OR Dn,(An) -&gt; 1 2 6(1/0/1) 7(1/1/1)
+</I>&gt;<i> or.w dn,(an) -&gt; 1 2 10 13 (falcon)
+</I>&gt;<i>
+</I>&gt;<i>     Should I add the times of the OR.W DO,DO and the time of the (A0)
+</I>&gt;<i>     from the table ?
+</I>&gt;<i>     It would be : OR.W D0,(A0)   :  1   1    5   5   ---&gt; Falcon
+</I>&gt;<i>     cycles : 1   1   7    9  ?
+</I>&gt;<i>
+</I>&gt;<i> Well, I can't tell that for sure but I'd say always try to look for a 
+</I>&gt;<i> special case (like OR Dn,Dn explicitly listed) and if not found, use 
+</I>&gt;<i> the general formula, as I did above.
+</I>&gt;<i>
+</I>&gt;<i>     Same for a OR.W (A0), (A1) ?
+</I>&gt;<i>     It would be : OR.W (A0), (A1)   :  2   2   8   8   ---&gt; Falcon
+</I>&gt;<i>     cycles : 2   2   12   14  ?
+</I>&gt;<i>
+</I>&gt;<i> Whoo, whoo! There's no or.w (a0),(a1) instruction :)
+</I>&gt;<i>
+</I>&gt;<i>     I's enjoy you control my file when it's finished.
+</I>&gt;<i>
+</I>&gt;<i> Please don't take my word as definite, most of the stuff I'm talking 
+</I>&gt;<i> here about is just my educated guess :) Too bad I'm not a hardware 
+</I>&gt;<i> guy, I could measure some stuff then.
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> MiKRO / Mystic Bytes
+</I>&gt;<i> <A HREF="http://mikro.atari.org">http://mikro.atari.org</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20111108/175a8886/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20111108/175a8886/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004152.html">[hatari-devel] Another question about cycles
+</A></li>
+	<LI>Next message: <A HREF="004141.html">[hatari-devel] Stereo DC filtering which accounts for DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4153">[ date ]</a>
+              <a href="thread.html#4153">[ thread ]</a>
+              <a href="subject.html#4153">[ subject ]</a>
+              <a href="author.html#4153">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

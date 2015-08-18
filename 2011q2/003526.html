@@ -1,0 +1,275 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Steem debugger features not in Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Steem%20debugger%20features%20not%20in%20Hatari%20debugger&In-Reply-To=%3C201106030928.52023.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003513.html">
+   <LINK REL="Next"  HREF="003554.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Steem debugger features not in Hatari debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Steem%20debugger%20features%20not%20in%20Hatari%20debugger&In-Reply-To=%3C201106030928.52023.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Steem debugger features not in Hatari debugger">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Jun  3 08:28:51 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003513.html">[hatari-devel] Bug with msa files in falcon mode ?
+</A></li>
+        <LI>Next message: <A HREF="003554.html">[hatari-devel] Steem debugger features not in Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3526">[ date ]</a>
+              <a href="thread.html#3526">[ thread ]</a>
+              <a href="subject.html#3526">[ subject ]</a>
+              <a href="author.html#3526">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On torstai 02 kes&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 02/06/2011 20:27, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; Steem debugger's features which are missing from the current
+</I>&gt;<i> &gt; Hatari CLI debugger:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; * Things that would seem to be straightforward to add:
+</I>&gt;<i> &gt;    - History.  I would need to add tracking also instruction cycles
+</I>&gt;<i> &gt;      to the code I posted earlier
+</I>&gt;<i> &gt;      (= Steem History view&amp;  Trace info)
+</I>&gt;<i> &gt;    
+</I>&gt;<i> &gt;    - Showing values both in different lengts and numeric bases.
+</I>&gt;<i> &gt;      In Hatari one gets latter with &quot;evaluate&quot; command, e.g. &quot;e a0&quot;,
+</I>&gt;<i> &gt;      but that doesn't show the value if it were long/word/byte
+</I>&gt;<i> &gt;    
+</I>&gt;<i> &gt;    - All register values being shown with above info
+</I>&gt;<i> &gt;      (= Steem Register monitor)
+</I>&gt;<i> &gt;    
+</I>&gt;<i> &gt;    - info commands for PSG, MFP, FDC and IKBD register values
+</I>&gt;<i> &gt;      (= Steem monitors for these)
+</I>&gt;<i> &gt;    
+</I>&gt;<i> &gt;    - Info command for &quot;timings&quot; i.e. cycles since HBL/VBL, timer
+</I>&gt;<i> &gt;      values, video address&amp;  scanline
+</I>&gt;<i> &gt;      (= Steem Timings view)
+</I>&gt;<i>
+</I>&gt;<i> regarding the reg/timer/monitors/dump view, it's of course possible do
+</I>&gt;<i> use the &quot;info&quot; command already available and add more output to it.
+</I>
+Yep.  And with the &quot;lock&quot; command you can make it to be shown every time
+you enter debugger.  If you want tracing breakpoints to show that
+information too, use the &quot;:lock&quot; breakpoint option instead of the &quot;:trace&quot;
+option.
+
+(These options are briefly explained in the manual.)
+
+
+&gt;<i> &gt;    - memory dump in text format
+</I>&gt;<i> &gt;      (= Steem Text monitor)
+</I>&gt;<i> &gt;    
+</I>&gt;<i> &gt;    - Text string and binary values (hex) search
+</I>&gt;<i> &gt;      (= widgets in Steem monitor windows)
+</I>&gt;<i> &gt;    
+</I>&gt;<i> &gt;    - Disasm format options being changable at run-time
+</I>&gt;<i> &gt;      (= Steem options)
+</I>&gt;<i> &gt;    
+</I>&gt;<i> &gt;    - Run for N cycles
+</I>&gt;<i> &gt;      (Hatari continue command accepts only instructions, not cycles)
+</I>
+Would the last one be useful?
+
+
+&gt;<i> &gt; * These would be harder, either because I'm not sure where/how these
+</I>&gt;<i> &gt;    would be best integrated or because they're more work:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;    - Monitoring reads&amp;  writes to specific address.  Hatari supports
+</I>&gt;<i> &gt;      only monitoring changes to values, not having breakpoints
+</I>&gt;<i> &gt;      of reading values or writing the same value
+</I>&gt;<i> 
+</I>&gt;<i> Not supported in current Hatari and quite time consuming, because it
+</I>&gt;<i> requires evaluating &quot;memory access&quot; breakpoints on each read/write to
+</I>&gt;<i> memory.
+</I>&gt;<i>
+</I>&gt;<i> I have a modified version that does this for my own debugging need, it
+</I>&gt;<i> could be possible to add some proper hooks in the corresponding memory
+</I>&gt;<i> handling functions,
+</I>
+Could you mail the patch doing this?
+
+
+&gt;<i> but we would also need to add a #define to enable
+</I>&gt;<i> this kind of memory breakpoint at compile time, because it can really
+</I>&gt;<i> slow down performance and not everybody needs it.
+</I>&gt;<i> 
+</I>&gt;<i> Still, this is the most useful we miss in my opinion, it's really
+</I>&gt;<i> powerful to monitor some memory location and I sometime use Steem just
+</I>&gt;<i> to see what part of a program accessed such memory region.
+</I>
+Ok, that's a good reason to add it to Hatari (as compile option). :)
+
+
+&gt;<i> &gt;    - Break on exceptions 2-8 vs. bombs vs. don't break.
+</I>&gt;<i> &gt;      Hatari has only an option to break on address&amp;  bus errors
+</I>&gt;<i> &gt;      &amp;  uninitialized exception handler.
+</I>&gt;<i> 
+</I>&gt;<i> Not sure this is important. In games/demos, you most likely want &quot;don't
+</I>&gt;<i> break&quot; because it often part of the protection to do such behaviour.
+</I>
+OK.
+
+
+&gt;<i> &gt;    - Showing breakpoints in instruction dumps.  Hatari breakpoints
+</I>&gt;<i> &gt;      are more advanced than the trivial address breakpoints...
+</I>&gt;<i> 
+</I>&gt;<i> We can show only PC breakpoint in that case, but it's sure Hatari syntax
+</I>&gt;<i> is more advanced than Steem's ont.
+</I>
+To show PC address breakpoints in disassembly, the code would need to
+separately[1] keep track of address breakpoints.  In that case I guess it
+would make sense to revert the change where I made them to be just
+a wrapper for conditional breakpoints.
+
+This would require changing also the 68kDisass.c code, as breakpoint
+indication being on its own line would look horrible.
+
+
+[1] One more reason for this is that I assume there could be quit
+a lot of these breakpoints (especially if they're easy to add from an UI),
+whereas number of conditional breakpoints is quite limited and they're
+slower to check.  Address breakpoints can be binary searched from an array.
+
+
+&gt;<i> &gt;    - Adding new symbol names for arbitrary addresses one at the time.
+</I>&gt;<i> &gt;      Hatari debugger currently requires new symbols to be added to
+</I>&gt;<i> &gt;      a file containing all the symbols + reloading that file
+</I>&gt;<i> 
+</I>&gt;<i> Can't say, I don't use that.
+</I>
+I think UI makes that kind of reverse debugging much more convenient as
+you can easily annotate the disassembly as discover what it does.  To make
+it really useful, it would require this symbol information to be savable
+and Hatari to warn if it isn't saved at exit time...
+
+(The way how I have used the current symbols functionality is utilizing
+the symbol information generated by the AHCC compiler/linker.)
+
+
+&gt;<i> &gt;    - Memory dump that shows also disassembly and values in
+</I>&gt;<i> &gt;      different bases
+</I>&gt;<i> &gt;      (= Steem Memory monitor)
+</I>&gt;<i> &gt;    
+</I>&gt;<i> &gt;    - Stack content display
+</I>&gt;<i> 
+</I>&gt;<i> Should be in the &quot;easy&quot; section I think, it's just a dump of the memory
+</I>&gt;<i> before the value pointed by A7.
+</I>
+You mean it would be just:
+	m &quot;a7&quot;
+?
+
+But with a bit different output; instead of 16x hex values per line,
+a word as 2x hex, 2x ASCII &amp; decimal &amp; binary values.  (I.e. using
+same output routine as I mentioned above)
+
+
+&gt;<i> &gt;    - Shift Atari screen contents by 0/2/4/6 bytes
+</I>&gt;<i> 
+</I>&gt;<i> Not very useful, only use is when trying to debug overscan's emulation
+</I>&gt;<i> problems, but Hatari is now fairly robust.
+</I>
+I guess it's mean for people debuggign their own code, not the emulator
+itself.  :-)
+
+
+&gt;<i> &gt; (I think rest of the Steem features can be supported by the Hatari
+</I>&gt;<i> &gt; breakpoints.)
+</I>
+Steem actually has one more thing not possible in Hatari:
+     - Setting a breakpoint on an interrupt
+
+Any suggestions how to best check for interrupt?
+(I mean, how to express it in breakpoints syntax)
+
+
+&gt;<i> &gt; Do any of the above listed items (especially the easy ones) sound
+</I>&gt;<i> &gt; interesting to be had in the CLI debugger?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; (As I'm already listing missing Monst features as potential TODOs
+</I>&gt;<i> &gt;   for Hatari debugger, I'll add these also to the todo.txt file.)
+</I>&gt;<i> 
+</I>&gt;<i> The info command for the different components can be useful, but it's of
+</I>&gt;<i> course more easy to use if you are in UI mode.
+</I>
+Sure.  But (remote) UI can use the info command output.
+
+
+&gt;&gt;<i> So... I think you need to specify quite in detail what you would like
+</I>&gt;&gt;<i> to have in the debugger GUI and in which priority order before it
+</I>&gt;&gt;<i> makes much sense to start coding it.
+</I>&gt;<i> 
+</I>&gt;<i> Well the ability to open as many dump/info windows as wanted
+</I>&gt;<i> (hex/asm/mfp/video/sound/...) and have those content refreshed each time
+</I>&gt;<i> a breakpoint is encountered would be nice.
+</I>&gt;<i> 
+</I>&gt;<i> A stop/run button, as well as a &quot;execute only instruction&quot; buttons would
+</I>&gt;<i> be cool.
+</I>
+These seem as easy to do through the remote API as without, after I've
+added to remote API a facility to notify the client about breakpoint hits.
+
+(Only potential small usability downside from working through remote API
+would be this 0.1s delay per view before it gets refreshed that I mentioned
+earlier.)
+
+
+&gt;<i> The possibility to click to define simple PC breakpoint (or monitor
+</I>&gt;<i> memory on B/W/L accesses)
+</I>&gt;<i> 
+</I>&gt;<i> And a way to search for hexa/text in Hatari's RAM.
+</I>
+This needs a new feature in the internal debugger too.
+
+
+&gt;<i> At least, that what I use the most ; other people might have different
+</I>&gt;<i> needs.
+</I>
+Hopefully the others pipe up if they have something else that they
+use more commonly.  :-)
+
+
+Thanks!
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003513.html">[hatari-devel] Bug with msa files in falcon mode ?
+</A></li>
+	<LI>Next message: <A HREF="003554.html">[hatari-devel] Steem debugger features not in Hatari debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3526">[ date ]</a>
+              <a href="thread.html#3526">[ thread ]</a>
+              <a href="subject.html#3526">[ subject ]</a>
+              <a href="author.html#3526">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

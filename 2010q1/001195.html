@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100110123906.1bdf06ee%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001189.html">
+   <LINK REL="Next"  HREF="001238.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100110123906.1bdf06ee%40phineus%3E"
+       TITLE="[hatari-devel] CMake build system">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Jan 10 12:39:06 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001189.html">[hatari-devel] [hatari-users] New Hatari administrator
+</A></li>
+        <LI>Next message: <A HREF="001238.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1195">[ date ]</a>
+              <a href="thread.html#1195">[ thread ]</a>
+              <a href="subject.html#1195">[ subject ]</a>
+              <a href="author.html#1195">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+ Hi all!
+
+As you might have already seen in the repository, I recently started to
+add CMake build files to Hatari. Now I think it's stable enough so that
+everybody could have a try.
+
+First of all, why a new build system? Wasn't the old Makefile-based
+built system working well enough? Well, it was most of the time, but it
+also had a lot of problems:
+
+- The autoconf/configure way vs. Makefile-default.cnf:
+  I think most developers simply used the Makefile-default.cnf setup
+  without taking care of configure.ac - quite understandable, since
+  editing configure.ac requires knowledge about the autoconf &quot;madness&quot;,
+  you have to struggle with M4 and portable shell script programming,
+  and that's no fun at all.
+  However, most users are used to run &quot;./configure ; make ; make
+  install&quot; to install a software (and actually also complain if there
+  is no configure script, I had this situation in the past...), and the
+  configure step is also required for compiling on most non-Linux
+  systems.
+  So we had the situation that developers and users use different steps
+  to configure and compile the emulator ... not a very good solution
+  since the configure script often dropped behind the
+  Makefile-default.cnf evolvement.
+
+- Managing dependencies between header files and C files is quite a
+  pain and very error prone with pure Makefiles. It's working most of
+  the time in Hatari now, thanks to the &quot;make depend&quot; target, but there
+  are still situations where people complain an the mailing list that
+  Hatari does not compile anymore - and we've got to tell them that a
+  simply &quot;make distclean&quot; inbetween should fix the issue.
+
+- Our Makefiles only worked with GNU-Make, other derivates like
+  BSD-make did not work.
+
+- Our build system did not support out-of-source builds (i.e.
+  generating the object files out of the source tree), which is helpful
+  for cross-compiling and distributors.
+
+- The Mac OS X build system is a separate build system. It
+  does not get updated automatically when we add or remove a a
+  .c file in the main Makefiles. So OS X users often complain
+  about the non-working Xcode files.
+
+- Some people tried to compile Hatari on Windows with an IDE, without
+  using the Makefiles, for example with Code::Blocks or Visual Studio.
+  Most of them failed, being quite frustrated afterwards. I think we
+  could get a lot of more support from these users when we enabled
+  Hatari build for these IDEs, too.
+
+After being quite frustrated of this situation for quite a while, I
+recently came across CMake: <A HREF="http://www.cmake.org/">http://www.cmake.org/</A>
+CMake is a build system configuration environment, somewhat similar to
+what autoconf provides, but with multiple backends and much easier to
+use than autoconf:
+
+- It can generate Makefiles for make, project files for Visual Studio,
+  Code::Blocks and XCode.
+
+- It supports library and header file detection (similar to autoconf)
+
+- The Makefiles that CMake generates are really cool, they use colored
+  output, percentage indicator, proper header &lt;-&gt; .c file
+  dependencies, out-of-source builds, etc.
+
+- The syntax of the CMakeList.txt files is likely new to everybody, but
+  it is very easy to learn. I've never run into big problems here, and
+  the cmake manual is quite helpful (and not as chaotic as the various
+  autotools info-pages)
+
+All in all, it solves most of the problems that I've mentioned above.
+
+Now, I'd like to ask you to try it out, so we can discuss here on the
+mailing list whether we should switch complete to CMake or stay with
+the old build system.
+For testing it, please install &quot;cmake&quot;, create an empty folder
+somewhere and run cmake from there with the path to the sources as
+argument. For example, if you are at the top of the sources:
+
+  mkdir obj
+  cd obj
+  cmake ..
+
+(you could also run &quot;cmake .&quot; from the top of the sources, but this
+would currently overwrite the old Makefiles, which is certainly not
+what you want)
+It should configure the build process and generate Makefiles. Then you
+can run &quot;make&quot; (and &quot;make install&quot;) to build Hatari.
+Then please have a look at the CMakeLists.txt files to see whether you
+like the CMake syntax or not (and compare it to configure.ac ;-) )
+
+What do you think about it?
+
+ Regards,
+  Thomas
+
+
+PS: I haven't tried cmake on Mac OS X or Windows yet, so it might not
+work there yet.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001189.html">[hatari-devel] [hatari-users] New Hatari administrator
+</A></li>
+	<LI>Next message: <A HREF="001238.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1195">[ date ]</a>
+              <a href="thread.html#1195">[ thread ]</a>
+              <a href="subject.html#1195">[ subject ]</a>
+              <a href="author.html#1195">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

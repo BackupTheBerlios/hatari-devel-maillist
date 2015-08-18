@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CE3B0B7.6070204%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002636.html">
+   <LINK REL="Next"  HREF="002639.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CE3B0B7.6070204%40corp.free.fr%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Nov 17 11:38:47 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002636.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002639.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2638">[ date ]</a>
+              <a href="thread.html#2638">[ thread ]</a>
+              <a href="subject.html#2638">[ subject ]</a>
+              <a href="author.html#2638">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 17/11/2010 00:53, Laurent Sallafranque a &#233;crit :
+
+&gt;<i> With cpu_emu_0 core (seems correct) :
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC0030 46fc 2700 MV2SR.W #$2700
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC0034 4e70 RESET.L
+</I>&gt;<i> ikbd custom exe off
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC0036 0cb9 fa52 235f 00fa 0000 CMP.L
+</I>&gt;<i> #$fa52235f,$00fa0000
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC0040 660a BNE.B #$0000000a == $00FC004C (T)
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC004C 4dfa 0006 LEA.L (PC,$0006) == $00fc0054,A6
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC0050 6000 0636 BT .W #$0636 == $00FC0688 (T)
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC0688 9bcd SUBA.L A5,A5
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> With cpu_emu_11 core (seems wrong) :
+</I>&gt;<i>
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC0030 46fc 2700 MV2SR.W #$2700
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC0034 4e70 RESET.L
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC0038 fa52 ILLEGAL.L
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC003C 00fa ILLEGAL.L
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC0040 660a BNE.B #$0000000a == $00FC004C (F)
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC0044 0008 ILLEGAL.L
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC0048 00fa ILLEGAL.L
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC004C 4dfa 0006 LEA.L (PC,$0006) == $00fc0054,A6
+</I>&gt;<i> cpu video_cyc= 0 0@ 0 : 00FC0050 6000 0636 BT .W #$0636 == $00FC0688 (T)
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> It seems (by comparing the 2 traces), that PC is wrongly computed with
+</I>&gt;<i> the &quot;better&quot; cpu core.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Do you know if there's something that could explain this (a diff between
+</I>&gt;<i> amiga and atari for example), or if it's just because I've badly
+</I>&gt;<i> implemented WinUae code ?
+</I>&gt;<i>
+</I>
+Hello,
+
+from what I see, the prefetched word seems either to be lost or the pc 
+is wrongly set after the prefetched word, which is wrong.
+
+For example at fc00034, you read 1 word for reset and prefetch 1 word, 
+so PC should be at fc0034+2, not at fc0034+4.
+
+I don't think there was anything rally specific to Hatari in uae-cpu, so 
+I guess sthg is not correctly implemented with win-uae's integration.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002636.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002639.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2638">[ date ]</a>
+              <a href="thread.html#2638">[ thread ]</a>
+              <a href="subject.html#2638">[ subject ]</a>
+              <a href="author.html#2638">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

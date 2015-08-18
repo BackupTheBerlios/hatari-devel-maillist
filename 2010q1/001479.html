@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] saving/restoring memory state from debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20saving/restoring%20memory%20state%20from%20debugger&In-Reply-To=%3C201002132218.19709.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001483.html">
+   <LINK REL="Next"  HREF="001480.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] saving/restoring memory state from debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20saving/restoring%20memory%20state%20from%20debugger&In-Reply-To=%3C201002132218.19709.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] saving/restoring memory state from debugger">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Feb 13 21:18:19 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001483.html">[hatari-devel] MFP problem with Bolo
+</A></li>
+        <LI>Next message: <A HREF="001480.html">[hatari-devel] saving/restoring memory state from debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1479">[ date ]</a>
+              <a href="thread.html#1479">[ thread ]</a>
+              <a href="subject.html#1479">[ subject ]</a>
+              <a href="author.html#1479">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 13 February 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> &gt;&gt; In fact, it seems that only the first statesave when entering debug
+</I>&gt;<i> &gt;&gt; with altgr+pause doesn't return to prompt ; if I try other statesave
+</I>&gt;<i> &gt;&gt; (with or without tab) then it works. So, this is not related to
+</I>&gt;<i> &gt;&gt; completion.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Can you send you Hatari config file and tell which command line
+</I>&gt;<i> &gt; arguments you're using?
+</I>&gt;<i>
+</I>&gt;<i> Here it is ; I'm just running ./hatari without any args.
+</I>&gt;<i>
+</I>&gt;<i> (the problem is there even if I compile Hatari without readline support)
+</I>
+Debugger uses the normal MemorySnapShot_Capture() function to do the state
+saving.  Because that doesn't return any success/fail value, debugger gives
+it an argument that makes it to print message about saving success.
+
+It does that using:
+	Log_AlertDlg(LOG_INFO, &quot;Memory state file saved.&quot;);
+
+With the default Hatari settings that will just print the message to
+console.  You have set an alert level which shows this also as an alert on
+screen.
+
+Instead of using ^C in debugger, you can just press Enter in Hatari window
+for the dialog to go away and Hatari to continue.
+
+
+I could:
+- Remove that flag from MemorySnapShot_Capture/Restore() calls
+- Change them to return a bool about success
+- Output a message from debugger itself based on this return value.
+
+But I wonder whether alerts should be completely disabled while one is in
+debugger.  Is there any reason why one should get an alert from debugger
+command in addition to console message (log messages can be re-directed
+to a file)?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001483.html">[hatari-devel] MFP problem with Bolo
+</A></li>
+	<LI>Next message: <A HREF="001480.html">[hatari-devel] saving/restoring memory state from debugger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1479">[ date ]</a>
+              <a href="thread.html#1479">[ thread ]</a>
+              <a href="subject.html#1479">[ subject ]</a>
+              <a href="author.html#1479">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

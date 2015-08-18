@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Voice.prg problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Voice.prg%20problem&In-Reply-To=%3C4B082E75.4010701%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000956.html">
+   <LINK REL="Next"  HREF="000949.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Voice.prg problem</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Voice.prg%20problem&In-Reply-To=%3C4B082E75.4010701%40free.fr%3E"
+       TITLE="[hatari-devel] Voice.prg problem">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Nov 21 19:16:21 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000956.html">[hatari-devel] Voice.prg problem
+</A></li>
+        <LI>Next message: <A HREF="000949.html">[hatari-devel] illegal bput $e00000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#962">[ date ]</a>
+              <a href="thread.html#962">[ thread ]</a>
+              <a href="subject.html#962">[ subject ]</a>
+              <a href="author.html#962">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok, I've placed the breakpoint : b M68000_BusError
+
+I get the following bt :
+
+#0  M68000_BusError (addr=16746753, bReadWrite=false) at m68000.c:350
+#1  0x00000000005418c4 in Crossbar_InterruptHandler_25Mhz () at 
+crossbar.c:1185
+#2  0x0000000000440a4b in m68k_run_1 (may_quit=&lt;value optimized out&gt;) at 
+newcpu.c:1751
+#3  m68k_go (may_quit=&lt;value optimized out&gt;) at newcpu.c:1840
+#4  0x0000000000424c46 in main (argc=3, argv=0x7fffffffe238) at main.c:689
+
+I'll try to understand what is wrong.
+
+For info : while booting, hatari goes 3 times into bus_error, but 
+doesn't enter the if (to display the message).
+
+Breakpoint 1, M68000_BusError (addr=16748041, bReadWrite=true) at 
+m68000.c:350  : $ff8e09
+Breakpoint 1, M68000_BusError (addr=15728697, bReadWrite=true) at 
+m68000.c:350  : $f00039
+Breakpoint 1, M68000_BusError (addr=15728697, bReadWrite=true) at 
+m68000.c:350  : $f00039
+
+regards
+
+
+Thomas Huth a &#233;crit :
+&gt;<i> On Sat, 21 Nov 2009 17:15:31 +0100
+</I>&gt;<i> Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I encounter a strange problem with voice.prg.
+</I>&gt;&gt;<i>     
+</I>&gt;<i> [...]
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Crossbar : $ff8900 (Sound DMA control) write: 0x00
+</I>&gt;&gt;<i> Crossbar : $ff8901 (additional Sound DMA control) write: 0x01
+</I>&gt;&gt;<i> M68000 Bus Error at address $ff8901.
+</I>&gt;&gt;<i> Crossbar : $ff8901 (additional Sound DMA control) write: 0x00
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> How is it possible that I have a Bus error at address ff8901, as it
+</I>&gt;&gt;<i> is the Sound Dma address ?
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> That looks strange, I can also not see anything there what could be
+</I>&gt;<i> causing a bus error.
+</I>&gt;<i> You could try this:
+</I>&gt;<i>
+</I>&gt;<i> 1) Use gdb or another debugger to set a breakpoint to the line in
+</I>&gt;<i> m68000.c that prints out the &quot;M68000 Bus Error at address&quot; message.
+</I>&gt;<i> When the breakpoint is triggered, do a backtrace to find out where the
+</I>&gt;<i> function has been called from.
+</I>&gt;<i>
+</I>&gt;<i> 2) Add a &quot;DebugUI()&quot; below that printf statement to get a disassembly
+</I>&gt;<i> of the 68k program code that caused that bus error.
+</I>&gt;<i>
+</I>&gt;<i>  Thomas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000956.html">[hatari-devel] Voice.prg problem
+</A></li>
+	<LI>Next message: <A HREF="000949.html">[hatari-devel] illegal bput $e00000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#962">[ date ]</a>
+              <a href="thread.html#962">[ thread ]</a>
+              <a href="subject.html#962">[ subject ]</a>
+              <a href="author.html#962">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

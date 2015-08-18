@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger breakpoints for Hatari variables too?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20breakpoints%20for%20Hatari%20variables%20too%3F&In-Reply-To=%3C200908022218.12069.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000539.html">
+   <LINK REL="Next"  HREF="000544.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger breakpoints for Hatari variables too?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20breakpoints%20for%20Hatari%20variables%20too%3F&In-Reply-To=%3C200908022218.12069.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Debugger breakpoints for Hatari variables too?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Aug  2 21:18:11 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000539.html">[hatari-devel] Debugger address base
+</A></li>
+        <LI>Next message: <A HREF="000544.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#542">[ date ]</a>
+              <a href="thread.html#542">[ thread ]</a>
+              <a href="subject.html#542">[ subject ]</a>
+              <a href="author.html#542">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Friday 31 July 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> By the way, there's a possibility that I think would be quite useful : to
+</I>&gt;<i> be able to use Hatari's variable as breakpoint condition.
+</I>&gt;<i>
+</I>&gt;<i> The 2 variables I'm thinking about for now are nVBLs and nHBL, as
+</I>&gt;<i> sometimes you know a problem will happen after a certain time, or only at
+</I>&gt;<i> a certain line, so doing something like :
+</I>&gt;<i>
+</I>&gt;<i> VBL=30 &amp;&amp; HBL=263 &amp;&amp; ( $ff820a ) = 0
+</I>&gt;<i>
+</I>&gt;<i> would be really cool.
+</I>&gt;<i>
+</I>&gt;<i> Certainly some other variables could be exported this way, with a simple
+</I>&gt;<i> table to associate a string to a pointer to that variable (we could
+</I>&gt;<i> assume it's always 'int' size).
+</I>
+Debugger already support 8, 16 &amp; 32-bit variables, so that's not a problem.
+
+
+&gt;<i> Would change the parser and the breakpoint evaluation function, so I'm
+</I>&gt;<i> not sure if it could be done before release (Eero ?)
+</I>
+I don't see why not. I just need a function that maps variable names to
+their addresses &amp; sizes and call that if name didn't match to a register.
+
+First I'd like a bit more complete list of all the variables that you,
+Thomas, Laurent etc would want to be available to the debugger though...
+For the release this will support only global variables.
+
+
+	- Eero
+
+(Maybe later there could be also accessor functions for non-globals
+variables that this function could use.  It doesn't make sense to make
+globals from static variables just for the debugger.)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000539.html">[hatari-devel] Debugger address base
+</A></li>
+	<LI>Next message: <A HREF="000544.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#542">[ date ]</a>
+              <a href="thread.html#542">[ thread ]</a>
+              <a href="subject.html#542">[ subject ]</a>
+              <a href="author.html#542">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

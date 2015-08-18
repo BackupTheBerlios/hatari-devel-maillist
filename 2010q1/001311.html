@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3Cc1a0d1561001230433v50f4cef3w1ca550b4a3d4eec8%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001310.html">
+   <LINK REL="Next"  HREF="001313.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Christer Solskogen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3Cc1a0d1561001230433v50f4cef3w1ca550b4a3d4eec8%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] CMake build system">christer.solskogen at gmail.com
+       </A><BR>
+    <I>Sat Jan 23 13:33:04 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001310.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001313.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1311">[ date ]</a>
+              <a href="thread.html#1311">[ thread ]</a>
+              <a href="subject.html#1311">[ subject ]</a>
+              <a href="author.html#1311">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, Jan 23, 2010 at 1:19 PM, Thomas H. &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">th.huth at gmx.de</A>&gt; wrote:
+&gt;&gt;<i> Datum: Sat, 23 Jan 2010 10:59:20 +0100
+</I>&gt;&gt;<i> Von: Christer Solskogen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">christer.solskogen at gmail.com</A>&gt;
+</I>&gt;<i>
+</I>&gt;&gt;<i> On Sat, Jan 23, 2010 at 10:47 AM, Thomas Huth &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">huth at users.berlios.de</A>&gt;
+</I>&gt;&gt;<i> wrote:
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; FYI: It's now possible to create a Xcode project with the CMake build
+</I>&gt;&gt;<i> &gt; system, too :-) There are still some issues left (SDLMain.nib is not
+</I>&gt;&gt;<i> &gt; loaded right when the user starts hatari.app), but they can certainly
+</I>&gt;&gt;<i> &gt; be fixed.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'm sorry but it looks even worse now:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> tenderheart:hatari solskogen$ ./configure
+</I>&gt;&gt;<i> -- The C compiler identification is GNU
+</I>&gt;&gt;<i> -- The CXX compiler identification is GNU
+</I>&gt;<i> [...]
+</I>&gt;&gt;<i> -- Configuring done
+</I>&gt;&gt;<i> -- Generating done
+</I>&gt;&gt;<i> -- Build files have been written to: /Users/solskogen/source/hatari
+</I>&gt;<i>
+</I>&gt;<i> At least the configuration phase looks fine now ;-)
+</I>&gt;<i>
+</I>
+It have for quite a while :)
+
+&gt;&gt;<i> [ &#160;4%] Building CXX object src/gui-osx/CMakeFiles/GuiOsx.dir/SDLMain.m.o
+</I>&gt;&gt;<i> /Users/solskogen/source/hatari/src/gui-osx/SDLMain.m:
+</I>&gt;<i>
+</I>&gt;<i> It's strange that CMake tries to use CXX (this means C++) here for compiling the Objective-C files. I've added a little hack to src/gui-osx/CMakeLists.txt to force the compiler to gcc instead... maybe that works better?
+</I>&gt;<i>
+</I>
+Yeap!
+
+
+&gt;<i> Ok, I've made the OS X bundling now optional. You can disable it by running cmake with the followin parameter: -DENABLE_OSX_BUNDLE:BOOL=0
+</I>&gt;<i>
+</I>
+Not to be picky about it, but why not add it as a option to configure?
+Remembering all those variables is a pain :) (yeahyeah, i know I can
+find them in CMakeLists.txt)
+
+-- 
+chs,
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001310.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001313.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1311">[ date ]</a>
+              <a href="thread.html#1311">[ thread ]</a>
+              <a href="subject.html#1311">[ subject ]</a>
+              <a href="author.html#1311">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

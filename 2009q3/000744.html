@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] missing SDL_Lock in png snapshot ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20missing%20SDL_Lock%20in%20png%20snapshot%20%3F&In-Reply-To=%3C200909242305.08222.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000743.html">
+   <LINK REL="Next"  HREF="000746.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] missing SDL_Lock in png snapshot ?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20missing%20SDL_Lock%20in%20png%20snapshot%20%3F&In-Reply-To=%3C200909242305.08222.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] missing SDL_Lock in png snapshot ?">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Sep 24 22:05:08 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000743.html">[hatari-devel] missing SDL_Lock in png snapshot ?
+</A></li>
+        <LI>Next message: <A HREF="000746.html">[hatari-devel] [Fwd: Re: Crossbar.c Dac buffer size define? (found,	YESSS)]
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#744">[ date ]</a>
+              <a href="thread.html#744">[ thread ]</a>
+              <a href="subject.html#744">[ subject ]</a>
+              <a href="author.html#744">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 24 September 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> looking at the png screenshot's code, I see a call to SDL_UnlockSurface
+</I>&gt;<i> after processing each row, but I don't see the corresponding
+</I>&gt;<i> SDL_LockSurface.
+</I>
+Thanks, fixed.
+
+
+&gt;<i> Am I missing something or is this really an (harmless) error?
+</I>
+Doesn't seem to have done any harm, but according to SDL documentation
+Un/LockSurface()  should be used.
+
+It's possible that with current Hatari SDL surfaces locking isn't needed
+(not HW surfaces) and that's why it's harmless.
+
+
+&gt;<i> Why is a lock required for each row, would it be enough to
+</I>&gt;<i> lock at start and  unlock when whole screen was saved as png ?
+</I>
+According to SDL documentation:
+	<A HREF="http://www.libsdl.org/docs/html/sdllocksurface.html">http://www.libsdl.org/docs/html/sdllocksurface.html</A>
+
+Locks should be released before doing any syscalls:
+&quot;No operating system or library calls should be made between lock/unlock 
+pairs, as critical system locks may be held during this time.&quot;
+
+I would assume that libpng uses just write() which is safe even in
+signal context (or fwrite() which isn't safe in signal context).
+
+
+&gt;<i> Eero, any idea ? (I think you're the one who wrote png support)
+</I>
+You could ask on the SDL mailing list why Unlocking is needed for
+syscalls.
+
+Maybe it's important on Windows?  Or when using OpenGL?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000743.html">[hatari-devel] missing SDL_Lock in png snapshot ?
+</A></li>
+	<LI>Next message: <A HREF="000746.html">[hatari-devel] [Fwd: Re: Crossbar.c Dac buffer size define? (found,	YESSS)]
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#744">[ date ]</a>
+              <a href="thread.html#744">[ thread ]</a>
+              <a href="subject.html#744">[ subject ]</a>
+              <a href="author.html#744">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

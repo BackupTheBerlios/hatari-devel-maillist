@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] 68030 Debug mode and new CPU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068030%20Debug%20mode%20and%20new%20CPU&In-Reply-To=%3C201102212210.52246.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003099.html">
+   <LINK REL="Next"  HREF="003105.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] 68030 Debug mode and new CPU</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068030%20Debug%20mode%20and%20new%20CPU&In-Reply-To=%3C201102212210.52246.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] 68030 Debug mode and new CPU">oak at helsinkinet.fi
+       </A><BR>
+    <I>Mon Feb 21 21:10:52 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003099.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+        <LI>Next message: <A HREF="003105.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3104">[ date ]</a>
+              <a href="thread.html#3104">[ thread ]</a>
+              <a href="subject.html#3104">[ subject ]</a>
+              <a href="author.html#3104">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On maanantai 21 helmikuu 2011, Laurent Sallafranque wrote:
+&gt;<i> It seems to work for me, no regression detected.
+</I>
+Thanks!
+
+
+&gt;<i> Le 20/02/2011 23:07, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;<i> Btw. While testing the compilation, I noticed this in cpu/cpummu.h:
+</I>&gt;&gt;<i> 	#define likely(x) x
+</I>&gt;&gt;<i> 	#define unlikely(x) x
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Why the optimization macros from main.h (intended to mark code branches
+</I>&gt;&gt;<i> as cold/hot) are nullified?
+</I>
+They were already in your original import of this file:
+<A HREF="http://hg.berlios.de/repos/hatari/file/026e498bd040/src/cpu/cpummu.h">http://hg.berlios.de/repos/hatari/file/026e498bd040/src/cpu/cpummu.h</A>
+
+Is it just just that the WinUAE author didn't know how to properly check
+for GCC version when he imported the MMU code from Aranym?
+
+Maybe you could just remove them and add:
+	#include &quot;main.h&quot;
+to any C-file that gets compiler warning after that?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003099.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+	<LI>Next message: <A HREF="003105.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3104">[ date ]</a>
+              <a href="thread.html#3104">[ thread ]</a>
+              <a href="subject.html#3104">[ subject ]</a>
+              <a href="author.html#3104">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

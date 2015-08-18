@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Some more demos that fail with 1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20more%20demos%20that%20fail%20with%201.4&In-Reply-To=%3C4D8F9AE4.4060100%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003243.html">
+   <LINK REL="Next"  HREF="003206.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Some more demos that fail with 1.4</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Some%20more%20demos%20that%20fail%20with%201.4&In-Reply-To=%3C4D8F9AE4.4060100%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Some more demos that fail with 1.4">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Mar 27 22:15:32 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003243.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+        <LI>Next message: <A HREF="003206.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3244">[ date ]</a>
+              <a href="thread.html#3244">[ thread ]</a>
+              <a href="subject.html#3244">[ subject ]</a>
+              <a href="author.html#3244">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 27/03/2011 21:13, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I'm back with a lot of reading ;)
+</I>&gt;<i>
+</I>&gt;<i> Nicolas, is your DMA patch applyable to falcon crossbar code ?
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>
+Hi,
+
+I didn't touch the Falcon's code, but yes, I think SoundUpdate should be 
+called too in Crossbar_FrameCountHigh_ReadByte / Med / Low when dma play 
+is ON (should be done for recording too I think, but I don't know this 
+part).
+
+In fact, I think DmaSnd_GetFrameCount() should be called from these 3 
+functions, else I think it's wrong, because $ff8909/0b/0d won't contain 
+the current updated value in falcon mode.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003243.html">[hatari-devel] Some more demos that fail with 1.4
+</A></li>
+	<LI>Next message: <A HREF="003206.html">[hatari-devel] So, do you have a planned release date for 1.5.0?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3244">[ date ]</a>
+              <a href="thread.html#3244">[ thread ]</a>
+              <a href="subject.html#3244">[ subject ]</a>
+              <a href="author.html#3244">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

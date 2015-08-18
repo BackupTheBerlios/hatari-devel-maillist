@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon (bad)Patch but sound quality increased a	lot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20%28bad%29Patch%20but%20sound%20quality%20increased%0A%20a%09lot&In-Reply-To=%3C4D344633.4020604%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002819.html">
+   <LINK REL="Next"  HREF="002821.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon (bad)Patch but sound quality increased a	lot</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20%28bad%29Patch%20but%20sound%20quality%20increased%0A%20a%09lot&In-Reply-To=%3C4D344633.4020604%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Falcon (bad)Patch but sound quality increased a	lot">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jan 17 14:37:55 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002819.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a	lot
+</A></li>
+        <LI>Next message: <A HREF="002821.html">[hatari-devel] WinAUE wide chars usage and what to do with it?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2820">[ date ]</a>
+              <a href="thread.html#2820">[ thread ]</a>
+              <a href="subject.html#2820">[ subject ]</a>
+              <a href="author.html#2820">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 17/01/2011 13:44, LAURENT SALLAFRANQUE a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> First, I thank you for the time passed on this analysis.
+</I>&gt;<i> It explains many things I can detect while debugging the Falcon.
+</I>&gt;<i>
+</I>&gt;<i> I agree with both points, but I think the most important one is the second (CPU freq).
+</I>&gt;<i> As long as everything in the emulated falcon is driven by the CPU clock, it doesn't worth a try to change anything with the older core (except, as you said, correcting DSP related problems).
+</I>&gt;<i> This may explain the bad sound quality at high frequencies (because cyc_int is wrong), demos running only at 32 Mhz, some DSP stack overflow if Host Interface interrupts are called too often, ...
+</I>&gt;<i>
+</I>&gt;<i> For info, the only &quot;specific&quot; code I added was the +1 cycle in DSP_Run.
+</I>&gt;<i> All other parts of the falcon code I wrote are done with &quot;real&quot; values (cycles counting, crossbar, DSP host interface, ...)
+</I>&gt;<i> This mean that the only way to improve the falcon emulation is to change the CPU core.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I think that our main priority for the next months should be running hatari with WinUae Core :
+</I>&gt;<i>     a) actually, it compiles, and runs some programs and demos (ST and Falcon mode)
+</I>&gt;<i>     b) let's emulate completely the STF and STE (at least at the same level than our old core does)
+</I>&gt;<i>     c) next, we can add the 68030 with DSP
+</I>&gt;<i>     d) let's then add the cycle exact to the 68000 (STF, STE)
+</I>&gt;<i>     e) next, the Falcon in cycle_exact emulation
+</I>&gt;<i>     f) next, 68040, fast memory, 68060, 64 Mo of RAM, ... ;)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Except if there are still some things to add to the current version you're working on, I think we should concentrate on the following list:
+</I>&gt;<i>
+</I>
+Hello, I agree with the goals of all these points, but I think we could 
+do it in a different order (see end of this mail).
+
+1st, regarding frequency, it's a &quot;problem&quot; that we use a master clock of 
+8 Mhz for falcon (same as STF/STE), but not a too important one because 
+Falcon use integer multiples of this freq (16 and 32), so we can adapt 
+the different components using &gt;&gt;1 or &gt;&gt;2 to make them &quot;speak&quot; at the 
+same freq (what is important is not the absolute value per se, but the 
+ratio between the frequencies).
+
+Anyway, I'm planning to change a few things in Hatari to really have a 
+16 Mhz or 32 Mhz freq for cpu (that is doubling the number of 
+instructions per second by doubling the freq and not by halving the 
+cycle count of each instruction).
+
+But changing this freq things won't fix anything, it will make things 
+&quot;nicer&quot; and more similar to a real hardware, but we could fix all this 
+too by keeping the 8Mhz main clock and using &lt;&lt; and &gt;&gt; to get the good 
+ratio.
+
+The real immediate improvement will come from using 68030 cycle count.
+
+
+Now, regarding the switch to Winuae, I think it would be best to keep 
+STF/STE apart from now and consider we use this core only for now to fix 
+the Falcon. When Falcon works better/perfectly regarding cycles and DSP 
+sync, then we can add 68000 specific code used for STF/STE to Winuae.
+
+I would prefer this order, because adapting Winuae for the falcon will 
+require very few changes to the 68030 emulation. The falcon programs 
+don't use such strict timings as those required for fullscreen on STF/STE.
+
+For me, 68000's patches are really the final stage, and lots of these 
+patches are anyway rather ugly and would need to be rewritten to be 
+adapted to a cleaner base as provided by winuae.
+
+If we modify winuae to immediatly supports all the &quot;tricks&quot; we added for 
+68000 in uae, then I fear we might break a working winuae's core and 
+when we will try to make the 68030 work, there will be so many 
+modifications that we won't be able to see the differences between what 
+we &quot;broke&quot; and what was not good in winuae.
+
+Winuae's core for 68030 is I think very close to what we need for 
+falcon, so we should keep it as untouched as possible and first try to 
+integrate it for Falcon mode.
+This way we will be confident that the integration and the bases of 
+winuae are ok for Hatari, and we can backport 68000's patches one after 
+the other in this core (68000 is a less powerful CPU than 68030, but 
+it's used with so much &quot;precision&quot; in STF/STE demos that fully 
+implementing it will be more complicated than for the 68030, where we 
+basically need only a good cycle count for each instruction)
+
+
+
+So, I think we should find different Falcon demos, from simple to more 
+evolved, that will allow us to test the cpu, then cpu+sound, then 
+cpu+dsp, and so on (as videl is not correctly emulated now, we should 
+avoid demos that make too much use of it for now).
+
+If we can run GEM + a few simple demos in falcon mode with WinUae's 
+core, I'm quite confident we will be able to quickly fix the sync issues 
+we have now.
+
+For now, we could even imagine that for next release there would be a 
+hatari_st.bin (built with uae) and hatari_falcon.bin (built with winuae).
+
+Having 2 binaries for each machine is not the final goal, but it could 
+be a transition step to check each machine is correctly emulated (before 
+merging everything in winuae's core)
+
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002819.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a	lot
+</A></li>
+	<LI>Next message: <A HREF="002821.html">[hatari-devel] WinAUE wide chars usage and what to do with it?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2820">[ date ]</a>
+              <a href="thread.html#2820">[ thread ]</a>
+              <a href="subject.html#2820">[ subject ]</a>
+              <a href="author.html#2820">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

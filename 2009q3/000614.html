@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issues with DMA sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20DMA%20sound&In-Reply-To=%3C001001ca1daa%24f91577e0%246600a8c0%40peranburk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000613.html">
+   <LINK REL="Next"  HREF="000615.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issues with DMA sound</H1>
+    <B>Per Almered</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20DMA%20sound&In-Reply-To=%3C001001ca1daa%24f91577e0%246600a8c0%40peranburk%3E"
+       TITLE="[hatari-devel] Issues with DMA sound">per at brainfish.net
+       </A><BR>
+    <I>Sat Aug 15 15:19:09 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000613.html">[hatari-devel] Issues with DMA sound
+</A></li>
+        <LI>Next message: <A HREF="000615.html">[hatari-devel] Issues with DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#614">[ date ]</a>
+              <a href="thread.html#614">[ thread ]</a>
+              <a href="subject.html#614">[ subject ]</a>
+              <a href="author.html#614">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> &gt; &gt; Now I am confused completely. I've scaled _down_ the DMA
+</I>&gt;<i> &gt; &gt; sound samples by factor two after Anders complained about 
+</I>&gt;<i> &gt; &gt; them being to loud, see this mail here:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; To me, it looks like between Hatari v1.2 and v1.3, the DMA output 
+</I>&gt;<i> &gt; amplitude was divided by 4, which should give a volume change of 
+</I>&gt;<i> &gt; -12dB. And indeed, the volume change between v1.2 and v1.3 
+</I>&gt;<i> is 12.1dB, 
+</I>&gt;<i> &gt; certainly close enough.
+</I>&gt;<i> 
+</I>&gt;<i> That's strange. The changeset that introduced the difference is this
+</I>&gt;<i> one:
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://hg.berlios.de/repos/hatari/rev/e27e82952a01">http://hg.berlios.de/repos/hatari/rev/e27e82952a01</A>
+</I>&gt;<i>
+</I>&gt;<i> As you can see, the DMA sound samples are just shifted by 7 instead of
+</I>8 now, so this &gt; is factor 2, not 4.
+
+Sadly, I'm a fairly crappy coder, and I haven't coded in C at ALL this
+century,
+but yeah, it looks alright, I guess.
+
+All I can see is the results in the exported .WAV file. You can check it
+fairly
+easily with any editor that shows you the waveform. In my original data,
+before
+I scaled it so YM volume $f was -6dB, YM volume $f was -9.5 (both Hatari
+versions),
+STE DMA volume was -6dB in v1.2 and -18.1 in v1.3.
+
+On my real STE, the original volume for YM $f was -3.5dB and -3.0 for
+STE DMA. So
+as a quick fix, if you download my test file:
+
+<A HREF="http://brainfish.net/atari/maxymiser/hat_test.snd">http://brainfish.net/atari/maxymiser/hat_test.snd</A>
+
+and play it back in any SNDH player (it loads fine in maxYMiser 1.29,
+and that's
+what I used for sampling), then adjust the STE DMA volume so it's
+exactly the same
+amplitude in the exported .WAV file, that's good enough (if you manage
+to get them
+EXACTLY the same, that would mean a 0.5dB rror, and that's MILES better
+than both
+STeem and the Hatari versions I've tried).
+
+For later versions, I'd suggest getting closer to a real STE's volume
+curve, feel
+free to use my values as a base.
+
+
+Per.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000613.html">[hatari-devel] Issues with DMA sound
+</A></li>
+	<LI>Next message: <A HREF="000615.html">[hatari-devel] Issues with DMA sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#614">[ date ]</a>
+              <a href="thread.html#614">[ thread ]</a>
+              <a href="subject.html#614">[ subject ]</a>
+              <a href="author.html#614">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari v1.3 release issues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20v1.3%20release%20issues&In-Reply-To=%3C20090816005836.3c733959%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000623.html">
+   <LINK REL="Next"  HREF="000604.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari v1.3 release issues</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20v1.3%20release%20issues&In-Reply-To=%3C20090816005836.3c733959%40phineus%3E"
+       TITLE="[hatari-devel] Hatari v1.3 release issues">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Aug 16 00:58:36 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000623.html">[hatari-devel] Hatari v1.3 release issues
+</A></li>
+        <LI>Next message: <A HREF="000604.html">[hatari-devel] Hatari v1.3 release issues (was: Hatari VDI mode colors)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#624">[ date ]</a>
+              <a href="thread.html#624">[ thread ]</a>
+              <a href="subject.html#624">[ subject ]</a>
+              <a href="author.html#624">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 15 Aug 2009 22:13:30 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> On Saturday 15 August 2009, Eero Tamminen wrote:
+</I>&gt;<i> &gt; &gt; &gt; I was also thinking that when catching of exceptions isn't
+</I>&gt;<i> &gt; &gt; &gt; enabled, the double bus-error thingy should instead of halting
+</I>&gt;<i> &gt; &gt; &gt; the emulation and making Hatari use 100% CPU, present user a
+</I>&gt;<i> &gt; &gt; &gt; dialog:
+</I>&gt;<i> ...
+</I>&gt;<i> &gt; &gt; Sounds good, but maybe better postpone this until the new release
+</I>&gt;<i> &gt; &gt; has been done (since it requires changing the most internal CPU
+</I>&gt;<i> &gt; &gt; code a little bit - I don't want to have any regression bugs here
+</I>&gt;<i> &gt; &gt; right before a new release).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hm.  I thought this would be pretty easy.  Or is reseting the
+</I>&gt;<i> &gt; emulator deep in the emulation what's risky?   (maybe you could
+</I>&gt;<i> &gt; then do it after the release? :-))
+</I>&gt;<i> 
+</I>&gt;<i> I added a dialog notifying user about the halting (when DebugUI isn't
+</I>&gt;<i> called) which seems to work fine.  Reseting emulation after that can
+</I>&gt;<i> be done after the release.
+</I>
+Well, I rather thought about asserting SPCFLAG_BRK and then to
+show/handle the dialog in m68000.c instead. In my eyes, the UAE CPU
+code is some kind of &quot;library&quot; that shouldn't directly display an alert
+dialog.
+But ok, let's keep it this way for this release and think about a
+cleaner solution (with reset button) later...
+
+ Thomas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000623.html">[hatari-devel] Hatari v1.3 release issues
+</A></li>
+	<LI>Next message: <A HREF="000604.html">[hatari-devel] Hatari v1.3 release issues (was: Hatari VDI mode colors)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#624">[ date ]</a>
+              <a href="thread.html#624">[ thread ]</a>
+              <a href="subject.html#624">[ subject ]</a>
+              <a href="author.html#624">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

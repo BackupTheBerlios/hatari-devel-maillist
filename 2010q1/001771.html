@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] LMC1992 and Microwire emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4BA6A192.7040706%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001733.html">
+   <LINK REL="Next"  HREF="001772.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] LMC1992 and Microwire emulation</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20LMC1992%20and%20Microwire%20emulation&In-Reply-To=%3C4BA6A192.7040706%40free.fr%3E"
+       TITLE="[hatari-devel] LMC1992 and Microwire emulation">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun Mar 21 23:45:38 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001733.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+        <LI>Next message: <A HREF="001772.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1771">[ date ]</a>
+              <a href="thread.html#1771">[ thread ]</a>
+              <a href="subject.html#1771">[ subject ]</a>
+              <a href="author.html#1771">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've found and corrected the mixing DMA + Yamaha's bug.
+Now, Phazer (by 505 from Blubber demo) plays well.
+
+Would you please test again and tell me if everything is OK and accurate 
+(by comparing with the real hardware) ?
+
+Could you test some more programs or demos and tell me is there's still 
+problems with DMA sound (STE/TT mode only, not Falcon)
+
+Regards
+
+Laurent
+
+
+
+Anders Eriksson a &#233;crit :
+&gt;<i> On Fri, 19 Mar 2010, Laurent Sallafranque wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> I've uploaded David's fixes.
+</I>&gt;&gt;<i> It sounds much better now.
+</I>&gt;&gt;<i> I've just detected that +12 bass seems to saturate for me (I don't 
+</I>&gt;&gt;<i> know if this is the same on the real hardware).
+</I>&gt;&gt;<i> Could you test again with this new code and tell us if this is OK ?
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> still terrible noise for DMA sounds. Same song as last time (Phazer by 
+</I>&gt;<i> 505 from Blubber demo):
+</I>&gt;<i>
+</I>&gt;<i> Latest HG: <A HREF="http://ae.dhs.nu/tmp/phazer_hg2.mp3">http://ae.dhs.nu/tmp/phazer_hg2.mp3</A>
+</I>&gt;<i> Previous HG: <A HREF="http://ae.dhs.nu/tmp/phazer_hg.mp3">http://ae.dhs.nu/tmp/phazer_hg.mp3</A>
+</I>&gt;<i> Real STe: <A HREF="http://ae.dhs.nu/tmp/phazer_ste.mp3">http://ae.dhs.nu/tmp/phazer_ste.mp3</A>
+</I>&gt;<i>
+</I>&gt;<i> It sounds like the tone is changing this time though, but only on the 
+</I>&gt;<i> DMA sounds (or, noise..), the YM seems to be unfiltered.
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> Anders Eriksson
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001733.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+	<LI>Next message: <A HREF="001772.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1771">[ date ]</a>
+              <a href="thread.html#1771">[ thread ]</a>
+              <a href="subject.html#1771">[ subject ]</a>
+              <a href="author.html#1771">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

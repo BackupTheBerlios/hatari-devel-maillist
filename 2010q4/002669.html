@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] AVI/screenshot/YM/Wav save path
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20AVI/screenshot/YM/Wav%20save%20path&In-Reply-To=%3C201011240123.28156.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002666.html">
+   <LINK REL="Next"  HREF="002671.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] AVI/screenshot/YM/Wav save path</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20AVI/screenshot/YM/Wav%20save%20path&In-Reply-To=%3C201011240123.28156.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] AVI/screenshot/YM/Wav save path">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Nov 24 00:23:27 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002666.html">[hatari-devel] Hatari feature suggestion
+</A></li>
+        <LI>Next message: <A HREF="002671.html">[hatari-devel] AVI/screenshot/YM/Wav save path
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2669">[ date ]</a>
+              <a href="thread.html#2669">[ thread ]</a>
+              <a href="subject.html#2669">[ subject ]</a>
+              <a href="author.html#2669">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+(I renamed the subject)
+
+On Tuesday 23 November 2010, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 22/11/2010 23:10, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; I think something similar should be done also for the file path. 
+</I>&gt;<i> &gt; Currently it will save the directory where Hatari was first started,
+</I>&gt;<i> &gt; but it might be better to use as default either:
+</I>&gt;<i> &gt; * an empty string which would means current dir&amp;  default name, or
+</I>&gt;<i> &gt; * just a file name without a path
+</I>
+Hm, I just remembered that debugger has now a function for changing
+the &quot;current&quot; dir which might confuse user if one doesn't remember that...?
+
+
+&gt;<i> &gt; (Screenshot functionality would need a similar feature, there's a
+</I>&gt;<i> &gt; mention about it in the todo.txt file.)
+</I>&gt;<i>
+</I>&gt;<i> it's true that depending on the current dir, it's not always easy to
+</I>&gt;<i> find where the file was created.
+</I>
+When starting the recording from the UI instead of with shortcut, maybe it
+would be better if it would give user a file selector with current dir
+and &quot;hatari.avi&quot; name prefilled, so that user can change them if needed?
+
+
+&gt;<i> Maybe we could create it in $HOME by default if there's no filepath ?
+</I>
+Or that path isn't writable for some reason...
+
+
+&gt;<i> (do we have a function to get $HOME on windows ?)
+</I>
+The Paths_GetUserHome() from paths.c works is supposed to work also
+for Windows.  If it doesn't find a suitable env variable, it uses current
+directory.
+
+
+&gt;<i> As you said, this should be applied to screenshot, but also to ym/wav
+</I>&gt;<i> recording.
+</I>
+Right.
+
+
+&gt;<i> &gt;&gt; Regarding the UI, if there's enough room, we could put a 'crop'
+</I>&gt;<i> &gt;&gt; checkbox and an 'fps' box (auto or a number).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I think the crop option should apply both to screenshots and to videos,
+</I>&gt;<i> &gt; so I moved it to [Screen] section and renamed the --avi-crop option
+</I>&gt;<i> &gt; just to --crop.  See the attached patch.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Additionally I noticed some dead variables that aren't anymore used
+</I>&gt;<i> &gt; after you added AVI recording so removed those too, both from
+</I>&gt;<i> &gt; screenshot code and the Screen.bCaptureChange in the configuration.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Is that OK for everybody?
+</I>&gt;<i>
+</I>&gt;<i> This looks ok to me, it makes sense to have cropping for screenshot too.
+</I>
+Ok, commited with a fix. 
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002666.html">[hatari-devel] Hatari feature suggestion
+</A></li>
+	<LI>Next message: <A HREF="002671.html">[hatari-devel] AVI/screenshot/YM/Wav save path
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2669">[ date ]</a>
+              <a href="thread.html#2669">[ thread ]</a>
+              <a href="subject.html#2669">[ subject ]</a>
+              <a href="author.html#2669">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

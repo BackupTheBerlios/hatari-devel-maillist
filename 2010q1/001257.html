@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100117170413.184090%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001255.html">
+   <LINK REL="Next"  HREF="001288.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Thomas H.</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100117170413.184090%40gmx.net%3E"
+       TITLE="[hatari-devel] CMake build system">th.huth at gmx.de
+       </A><BR>
+    <I>Sun Jan 17 18:04:13 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001255.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001288.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1257">[ date ]</a>
+              <a href="thread.html#1257">[ thread ]</a>
+              <a href="subject.html#1257">[ subject ]</a>
+              <a href="author.html#1257">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Datum: Sun, 17 Jan 2010 11:22:32 +0100
+</I>&gt;<i> Von: Christer Solskogen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">christer.solskogen at gmail.com</A>&gt;
+</I>&gt;<i> 
+</I>&gt;<i> With the last update from mercirual the output is different:
+</I>&gt;<i> tenderheart:hatari solskogen$ ./configure
+</I>...
+&gt;<i> CMake Error at CMakeLists.txt:64 (check_include_files):
+</I>&gt;<i>   Unknown CMake command &quot;check_include_files&quot;.
+</I>
+Ok, I forgot a
+
+ include(CheckIncludeFiles)
+
+right before these lines there to include the corresponding module...
+
+I wonder why this was working on my system at all. Maybe one of the other modules included this module, but only on Linux...
+
+ Thomas
+
+-- 
+Jetzt kostenlos herunterladen: Internet Explorer 8 und Mozilla Firefox 3.5 -
+sicherer, schneller und einfacher! <A HREF="http://portal.gmx.net/de/go/chbrowser">http://portal.gmx.net/de/go/chbrowser</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001255.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001288.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1257">[ date ]</a>
+              <a href="thread.html#1257">[ thread ]</a>
+              <a href="subject.html#1257">[ subject ]</a>
+              <a href="author.html#1257">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

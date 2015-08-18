@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Unable to compile hatari on Solaris 11
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Unable%20to%20compile%20hatari%20on%20Solaris%2011&In-Reply-To=%3C201104301608.47613.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003368.html">
+   <LINK REL="Next"  HREF="003377.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Unable to compile hatari on Solaris 11</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Unable%20to%20compile%20hatari%20on%20Solaris%2011&In-Reply-To=%3C201104301608.47613.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Unable to compile hatari on Solaris 11">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sat Apr 30 15:08:47 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003368.html">[hatari-devel] Unable to compile hatari on Solaris 11
+</A></li>
+        <LI>Next message: <A HREF="003377.html">[hatari-devel] Unable to compile hatari on Solaris 11
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3371">[ date ]</a>
+              <a href="thread.html#3371">[ thread ]</a>
+              <a href="subject.html#3371">[ subject ]</a>
+              <a href="author.html#3371">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 29 huhtikuu 2011, Christer Solskogen wrote:
+&gt;<i> Now I see this:
+</I>...
+&gt;<i> CMakeFiles/hatari.dir/ymFormat.c.o  -o hatari
+</I>&gt;<i> -L/home/et0640/source/hatari/src/debug
+</I>&gt;<i> -L/home/et0640/source/hatari/src/falcon
+</I>&gt;<i> -L/home/et0640/source/hatari/src/gui-sdl
+</I>&gt;<i> -L/home/et0640/source/hatari/src/uae-cpu debug/libDebug.a
+</I>&gt;<i> falcon/libFalcon.a gui-sdl/libGuiSdl.a libFloppy.a uae-cpu/libUaeCpu.a
+</I>&gt;<i> -lSDL -lthread -lm -lz -lpng -lX11
+</I>&gt;<i> -Wl,-R/home/et0640/source/hatari/src/debug:/home/et0640/source/hatari/src
+</I>&gt;<i> /falcon:/home/et0640/source/hatari/src/gui-sdl:/home/et0640/source/hatari
+</I>&gt;<i> /src/uae-cpu: Undefined                       first referenced
+</I>&gt;<i>  symbol                             in file
+</I>&gt;<i> socket                              CMakeFiles/hatari.dir/control.c.o
+</I>&gt;<i> (symbol belongs to implicit dependency /usr/lib/libsocket.so.1)
+</I>&gt;<i> connect                             CMakeFiles/hatari.dir/control.c.o
+</I>&gt;<i> (symbol belongs to implicit dependency /usr/lib/libsocket.so.1)
+</I>&gt;<i> ld: fatal: symbol referencing errors. No output written to hatari
+</I>&gt;<i> collect2: ld returned 1 exit status
+</I>
+It would seem that your compiler has enabled errors on using functions
+from libraries that aren't directly linked.
+
+On Linux socket() is in the C-library, but it seems that no Solaris you need
+to add &quot;-lsocket&quot; to CMAKE_EXE_LINKER_FLAGS, at least when
+HAVE_UNIX_DOMAIN_SOCKETS is enabled (socket() function is found by CMake).
+
+Does that fix your problem?
+
+
+	 Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003368.html">[hatari-devel] Unable to compile hatari on Solaris 11
+</A></li>
+	<LI>Next message: <A HREF="003377.html">[hatari-devel] Unable to compile hatari on Solaris 11
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3371">[ date ]</a>
+              <a href="thread.html#3371">[ thread ]</a>
+              <a href="subject.html#3371">[ subject ]</a>
+              <a href="author.html#3371">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

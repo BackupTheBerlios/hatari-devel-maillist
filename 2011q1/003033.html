@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Demo Don't break the oath (DHS)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Demo%20Don%27t%20break%20the%20oath%20%28DHS%29&In-Reply-To=%3C4D5863EA.9000508%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003023.html">
+   <LINK REL="Next"  HREF="003037.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Demo Don't break the oath (DHS)</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Demo%20Don%27t%20break%20the%20oath%20%28DHS%29&In-Reply-To=%3C4D5863EA.9000508%40free.fr%3E"
+       TITLE="[hatari-devel] Demo Don't break the oath (DHS)">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Feb 14 00:06:18 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003023.html">[hatari-devel] Demo Don't break the oath (DHS)
+</A></li>
+        <LI>Next message: <A HREF="003037.html">[hatari-devel] Demo Don't break the oath (DHS)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3033">[ date ]</a>
+              <a href="thread.html#3033">[ thread ]</a>
+              <a href="subject.html#3033">[ subject ]</a>
+              <a href="author.html#3033">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>OK, found : it's because of the patch I added in stMemory.c
+
+This mean that all the descriptions of the $ff8006.b register I read 
+were wrong.
+
+Anybody here as a complete description of this register ?
+
+For monitor :
+
+		/* Set the Falcon memory and monitor configuration register:
+			$FFFF8006: Monitor Type BIT 7 6  (These 2 bits are duplicated in $FFFF82C0 (BIT 1 0))
+				00 - Monochrome (SM124)
+				01 - Color (SC1224)
+				10 - VGA Color
+				11 - Television
+
+For memory :
+			  $FFFF8006: Memory configuration BIT 5 4
+				00 -  1Mb
+				01 -  4Mb
+				10 - 14Mb
+				11 - no boot !
+
+
+To see the memory of my Falcon, I just wait the memory test at boot to 
+complete.
+It displays memory size.
+
+
+If I write $20 to the register, I get only 8 meg (???) instead of 14.
+(8 Meg is possible on Falcon ? I thought it was 1, 4 or 14 megs only)
+
+If I keep the original value $26, I've got 14 megs as expected.
+
+So what is the bits 3, 2, 1 and 0 meaning ?
+
+Regards
+
+Laurent
+
+
+
+
+
+
+Le 13/02/2011 18:12, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Don't break the oath from DHS works with hatari 1.4 (old CPU of 
+</I>&gt;<i> course) without MP2 sound (it was not implemented in hatari v1.4, so 
+</I>&gt;<i> it sounds garbage).
+</I>&gt;<i>
+</I>&gt;<i> I've tried it with the new CPU.
+</I>&gt;<i>
+</I>&gt;<i> It stops at beginning with the following message :
+</I>&gt;<i>
+</I>&gt;<i> data\aura.mp2
+</I>&gt;<i> Sorry, you don't have enough free ST-RAM
+</I>&gt;<i> to run this demo.
+</I>&gt;<i>
+</I>&gt;<i> Press any key to exit.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I'm running with 14 Mo of ram.
+</I>&gt;<i>
+</I>&gt;<i> Anybody has an idea where to search to let this demo work with the new 
+</I>&gt;<i> CPU ?
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110214/65473ee8/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110214/65473ee8/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003023.html">[hatari-devel] Demo Don't break the oath (DHS)
+</A></li>
+	<LI>Next message: <A HREF="003037.html">[hatari-devel] Demo Don't break the oath (DHS)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3033">[ date ]</a>
+              <a href="thread.html#3033">[ thread ]</a>
+              <a href="subject.html#3033">[ subject ]</a>
+              <a href="author.html#3033">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger crash changes / zeroing global variables
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2012q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20crash%20changes%20/%20zeroing%20global%20variables&In-Reply-To=%3C201201151650.24108.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004257.html">
+   <LINK REL="Next"  HREF="004259.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger crash changes / zeroing global variables</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20crash%20changes%20/%20zeroing%20global%20variables&In-Reply-To=%3C201201151650.24108.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Debugger crash changes / zeroing global variables">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Jan 15 15:50:24 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004257.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+        <LI>Next message: <A HREF="004259.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4258">[ date ]</a>
+              <a href="thread.html#4258">[ thread ]</a>
+              <a href="subject.html#4258">[ subject ]</a>
+              <a href="author.html#4258">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+(Just when sending this, I noticed your mail.
+It may still be interesting though.)
+
+On sunnuntai 15 tammikuu 2012, Nicolas Pomar&#232;de wrote:
+&gt;<i> On 14/01/2012 23:43, Eero Tamminen wrote:
+</I>&gt;<i> &gt; On sunnuntai 15 tammikuu 2012, Nicolas Pomar&#232;de wrote:
+</I>&gt;<i> &gt;&gt; (no time on my side to run mudflap option, but you can give it a try
+</I>&gt;<i> &gt;&gt; if you want, it's quite likely you get the same crash with TB2 demo)
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Could you send the demo to me (pouet.net links aren't working)?
+</I>&gt;<i> 
+</I>&gt;<i> I sent it in a separate mail
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Where / in which order variables are placed in memory is compiler, its
+</I>&gt;<i> &gt; version and optimization level dependent.   Some compilers might put
+</I>&gt;<i> &gt; also zeroed variables to BSS.  With some other compilers, their
+</I>&gt;<i> &gt; versions or different compile options, more critical variables might
+</I>&gt;<i> &gt; be overwritten.
+</I>&gt;<i> 
+</I>&gt;<i> yes, of course. But in the end, I think the problem happens only with
+</I>&gt;<i> TB2 specific timings, so even if variables are in different order,
+</I>&gt;<i> unless a program does the same thing as TB2, then there should be no
+</I>&gt;<i> problem.
+</I>
+I can see what's the problem with Mudflap:
+  $ sudo apt-get install libmudflap0-4.4-dev
+  $ make clean; cmake -D ENABLE_MUDFLAP:BOOL=1; make
+  $ MUDFLAP_OPTIONS=&quot;-viol-gdb&quot; src/hatari --sound off trans2_a.msa
+
+This is the first issue reported by it:
+------------------------
+mudflap violation 1 (check/read): time=1326630156.647041 ptr=0x9ad3de0 
+size=1112
+pc=0xb76573bd location=`/home/eero/work/hatari/src/video.c:1871:22 
+(Video_InterruptHandler_HBL)'
+      /usr/lib/libmudflap.so.0(__mf_check+0x3d) [0xb76573bd]
+      src/hatari(Video_InterruptHandler_HBL+0x3f75) [0x81cbbd5]
+      src/hatari(m68k_go+0x2c1) [0x831cec1]
+Nearby object 1: checked region begins 0B into and ends 4B after
+mudflap object 0xb212e90: name=`/home/eero/work/hatari/src/video.c:375:8 
+HBLPaletteMasks'
+bounds=[0x9ad3de0,0x9ad4233] size=1108 area=static check=2129r/17w 
+liveness=1545
+alloc time=1326630150.155936 pc=0xb7656b2d
+number of nearby objects: 1
+------------------------
+
+And the invoked Gdb shows a clear logical error:
+----------------------
+(gdb) bt
+...
+#6  0xb76573bd in __mf_check () from /usr/lib/libmudflap.so.0
+#7  0x081cbbd5 in Video_StoreResolution () at 
+/home/eero/work/hatari/src/video.c:1516
+#8  Video_EndHBL () at /home/eero/work/hatari/src/video.c:1720
+#9  Video_InterruptHandler_HBL () at /home/eero/work/hatari/src/video.c:1572
+#10 0x0831cec1 in m68k_run_1 (may_quit=1) at /home/eero/work/hatari/src/uae-
+cpu/newcpu.c:1776
+#11 m68k_go (may_quit=1) at /home/eero/work/hatari/src/uae-cpu/newcpu.c:1872
+#12 0x081399cf in M68000_Start () at /home/eero/work/hatari/src/m68000.c:246
+#13 0x0813fb46 in main (argc=4, argv=0xbfd81374) at 
+/home/eero/work/hatari/src/main.c:782
+----------------------
+static void Video_StoreResolution(int y)                                        
+{                                                                               
+        Uint8 res;                                                              
+        int Mask;                                                               
+                                                                                
+        /* Clear resolution, and set with current value */                      
+        if (!(bUseHighRes || bUseVDIRes))                                       
+        {                                                                       
+                HBLPaletteMasks[y] &amp;= ~(0x3&lt;&lt;16); 
+... Video_EndHBL() ...
+        /* Are we in possible visible color display (including borders)? */     
+        else if (nHBL &gt;= nFirstVisibleHbl &amp;&amp; nHBL &lt; nLastVisibleHbl)            
+        {                                                                       
+                /* Store resolution for every line so can check for mix...
+                Video_StoreResolution(nHBL-nFirstVisibleHbl);
+----------------------
+(gdb) print nLastVisibleHbl-nFirstVisibleHbl
+$1 = 400
+(gdb) print nHBL-nFirstVisibleHbl
+$2 = 277
+(gdb) print sizeof(HBLPaletteMasks)/sizeof(HBLPaletteMasks[0])
+$3 = 277
+----------------------
+(gdb) print nScreenRefreshRate
+$4 = 71
+(gdb) print STRam[0xff8260] &amp; 3
+$5 = 2
+(gdb) print STRam[0xff820a] &amp; 2
+$6 = 0
+----------------------
+
+It would seem that HBLPaletteMasks array size / your code using the array
+doesn't take into account the monochrome mode switch trick in the demo and
+what effect it has on HBL numbers used to index the mask array.
+
+Are there many other demos which use this trick?
+
+
+
+Btw. When testing with some other things, I got also once this:
+mudflap violation 1 (check/read): time=1326627178.463958 ptr=0x88e8d80 
+size=4
+pc=0xb76d13bd location=`/home/eero/work/hatari/src/gui-sdl/sdlgui.c:741:6 
+(SDLGui_DoDialog)'
+      /usr/lib/libmudflap.so.0(__mf_check+0x3d) [0xb76d13bd]
+      src/hatari(SDLGui_DoDialog+0x3db4) [0x8300e74]
+      src/hatari() [0x82eb21e]
+Nearby object 1: checked region begins 1B after and ends 4B after
+mudflap object 0x9bd3e90: 
+name=`/home/eero/work/hatari/src/falcon/nvram.c:56:14 nvram'
+
+But I wasn't able to reproduce it / steps leading to it. :-/
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004257.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+	<LI>Next message: <A HREF="004259.html">[hatari-devel] Debugger crash changes / zeroing global variables
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4258">[ date ]</a>
+              <a href="thread.html#4258">[ thread ]</a>
+              <a href="subject.html#4258">[ subject ]</a>
+              <a href="author.html#4258">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] SIGSEGV error with MMU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20SIGSEGV%20error%20with%20MMU&In-Reply-To=%3C201102232155.08529.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003116.html">
+   <LINK REL="Next"  HREF="003120.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] SIGSEGV error with MMU</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20SIGSEGV%20error%20with%20MMU&In-Reply-To=%3C201102232155.08529.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] SIGSEGV error with MMU">oak at helsinkinet.fi
+       </A><BR>
+    <I>Wed Feb 23 20:55:08 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003116.html">[hatari-devel] SIGSEGV error with MMU
+</A></li>
+        <LI>Next message: <A HREF="003120.html">[hatari-devel] SIGSEGV error with MMU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3118">[ date ]</a>
+              <a href="thread.html#3118">[ thread ]</a>
+              <a href="subject.html#3118">[ subject ]</a>
+              <a href="author.html#3118">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 23 helmikuu 2011, Laurent Sallafranque wrote:
+&gt;<i> I've tested quickly the mmu code.
+</I>&gt;<i> 
+</I>&gt;<i> I start with my usual 68030 CPU, no MMU.
+</I>&gt;<i> 
+</I>&gt;<i> Then, I press &quot;F12&quot; and change the following parameters :
+</I>&gt;<i> CPU = 68040, activate MMU
+</I>&gt;<i> 
+</I>&gt;<i> Then I reset Hatari.
+</I>&gt;<i> 
+</I>&gt;<i> I get a SIGSEGV error when hatari reset (look at the gdb trace) :
+</I>&gt;<i> 
+</I>&gt;<i> Exception 2 (0) at e02ce2 -&gt; e02ce6!
+</I>&gt;<i> Building CPU, 46224 opcodes (4 1 1)
+</I>&gt;<i> CPU=68040, FPU=68040, MMU=1, JIT=0.
+</I>&gt;<i> MMU: enabled=0 page8k=0
+</I>&gt;<i> MMU: enabled=0 page8k=0
+</I>&gt;<i> 
+</I>&gt;<i> Program received signal SIGSEGV, Segmentation fault.
+</I>&gt;<i> 0x00000000004f4e40 in get_iword () at
+</I>&gt;<i> /home/laurent/Atari/hatari/src/cpu/newcpu.h:326
+</I>&gt;<i> 326    {
+</I>&gt;<i> (gdb) bt
+</I>&gt;<i> #0  0x00000000004f4e40 in get_iword () at
+</I>&gt;<i> /home/laurent/Atari/hatari/src/cpu/newcpu.h:326
+</I>&gt;<i> #1  next_iword () at /home/laurent/Atari/hatari/src/cpu/newcpu.h:327
+</I>&gt;<i> #2  0x00000000006fe8d4 in op_11b0_31_ff (opcode=5040) at
+</I>&gt;<i> /home/laurent/Atari/hatari/build/src/cpu/cpuemu_31.c:7548
+</I>...
+
+static inline uae_u16 do_get_mem_word(void *a)
+{
+        return SDL_SwapBE16(*(uae_u16 *)a);
+}
+...
+STATIC_INLINE uae_u32 get_iword (int o)
+{
+        return do_get_mem_word((uae_u16 *)((regs).pc_p + (o)));
+}
+...
+STATIC_INLINE uae_u32 next_iword (void)
+{
+        uae_u32 r = get_iword (0);
+        m68k_incpc (2);
+        return r;
+}
+
+
+I.e. Hatari segfaulted when trying to byte-swap word at &quot;regs.pc_p&quot; address.
+
+
+&gt;<i> If anybody's got an idea of where the problem can come from, I'd be
+</I>&gt;<i> happy to get some help.
+</I>
+What gdb shows for &quot;print regs&quot; and &quot;print STRam&quot; after the crash?
+
+I.e. is regs.pc_p pointing even close to STRam array containing the emulated
+RAM?
+
+
+&gt;<i> I continue to search.
+</I>
+Maybe the ST RAM memory accessor functions (in cpu/memory.c) aren't properly
+set up for MMU access?
+
+
+	- Eero
+
+PS. I started reading cpu/memory.[ch] &amp; newcpu.h, but got confused with
+the large amount of functions, struct members[1] and functions that aren't
+used anywhere.  Is WinAUE code missing large pieces?
+
+[1] Try e.g.:
+	grep -e baseaddr -e xlateaddr $(find -type f)
+
+Then I looked into JIT stuff, and uurgh...  That I definitely don't want to
+debug. :-)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003116.html">[hatari-devel] SIGSEGV error with MMU
+</A></li>
+	<LI>Next message: <A HREF="003120.html">[hatari-devel] SIGSEGV error with MMU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3118">[ date ]</a>
+              <a href="thread.html#3118">[ thread ]</a>
+              <a href="subject.html#3118">[ subject ]</a>
+              <a href="author.html#3118">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

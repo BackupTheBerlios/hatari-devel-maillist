@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Empty disk image creation to hmsa
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Empty%20disk%20image%20creation%20to%20hmsa&In-Reply-To=%3C4C029807.2020204%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002226.html">
+   <LINK REL="Next"  HREF="002227.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Empty disk image creation to hmsa</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Empty%20disk%20image%20creation%20to%20hmsa&In-Reply-To=%3C4C029807.2020204%40free.fr%3E"
+       TITLE="[hatari-devel] Empty disk image creation to hmsa">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun May 30 18:53:27 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002226.html">[hatari-devel] Empty disk image creation to hmsa
+</A></li>
+        <LI>Next message: <A HREF="002227.html">[hatari-devel] Hatari vs. Aranym key bindings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2228">[ date ]</a>
+              <a href="thread.html#2228">[ thread ]</a>
+              <a href="subject.html#2228">[ subject ]</a>
+              <a href="author.html#2228">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+ From my point of view, the actual code is correct enough for the new 
+release (I speak for the code I modified).
+
+DSP emulation let run more new programs and musics.
+STe DMA sound is really much better (LCM and microWire emulation)
+Many bugs fixed.
+Info crossbar added
+
+
+For after the 1.4 release :
+
+- I would like to add all the DSP traces (cpu, host transfers, SSI 
+transfers, interrupts)
+
+- I've noticed a few regressions with some Falcon demos (Eko), AFM 
+doesn't work again (Winrec still work).
+
+- Sound is still not good sometimes (I've got an idea I'd like to test : 
+it deals with SSI transfers when crossbar plays 8 bit sound but SSI is 
+configured for 16 bits transfers)
+
+- PowerUp Ste still doesn't sound good (I'll need Nicolas' help when 
+he's back for this one)
+
+- There are still some programs that run only when CPU is set to 32 Mhz
+
+- There's the APEX $fff20000 strange address problem (Thomas, do you 
+think we should hack this problem with the patch you sent me ? (we would 
+have to add a lot of comments to say this is only a bad hack for now))
+
+- And the 2 biggest problems to solve :
+     o Videl emulation has to be full rewritten
+     o Main CPU should be upgraded from WinUae CPU (MMU + bus cycles)
+
+But all these points should be taken into account after the 1.4 release
+
+Last info, I'll probably have a Falcon this summer. YESSSSS :)
+I'll be able to tests things directly on the real hardware, and I won't 
+have to guess everything all the time.
+
+So, go for the 1.4 release :)
+
+Best regard to you all,
+
+Laurent
+
+
+
+Le 30/05/2010 18:35, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Sunday 30 May 2010, Thomas Huth wrote:
+</I>&gt;<i>    
+</I>&gt;&gt;<i> By the way, now that the Mac OS X build problems seem to be solved, I
+</I>&gt;&gt;<i> think we're really ready for the new release now. Or are there any
+</I>&gt;&gt;<i> major bugs left?
+</I>&gt;&gt;<i>      
+</I>&gt;<i> Not that I know of and there are several things pending on the release
+</I>&gt;<i> getting out of the way:
+</I>&gt;<i> - my profiler&amp;  hmsa stuff
+</I>&gt;<i> - Laurent's DSP tracing stuff
+</I>&gt;<i>
+</I>&gt;<i> And then there are some other possible things:
+</I>&gt;<i> - Handling both IDE/ASCI partitions numbering the same way
+</I>&gt;<i> - Option to explicitly set the boot drive
+</I>&gt;<i> - Optionally getting Hatari fullscreen resolution from current
+</I>&gt;<i>    display resolution
+</I>&gt;<i> - Maybe finally starting to rewrite the ST/STE screen updates
+</I>&gt;<i>    to be line based
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>&gt;&gt;<i> I think I'll wait two or three more days to see whether someone brings
+</I>&gt;&gt;<i> up another major bug, and if not I (or Nicolas when he's back from his
+</I>&gt;&gt;<i> vacation) will package the next release.
+</I>&gt;&gt;<i>      
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002226.html">[hatari-devel] Empty disk image creation to hmsa
+</A></li>
+	<LI>Next message: <A HREF="002227.html">[hatari-devel] Hatari vs. Aranym key bindings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2228">[ date ]</a>
+              <a href="thread.html#2228">[ thread ]</a>
+              <a href="subject.html#2228">[ subject ]</a>
+              <a href="author.html#2228">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

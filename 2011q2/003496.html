@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Execution history debugger command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201106010011.54390.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003491.html">
+   <LINK REL="Next"  HREF="003501.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Execution history debugger command</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C201106010011.54390.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Execution history debugger command">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue May 31 23:11:54 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003491.html">[hatari-devel] Execution history debugger command
+</A></li>
+        <LI>Next message: <A HREF="003501.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3496">[ date ]</a>
+              <a href="thread.html#3496">[ thread ]</a>
+              <a href="subject.html#3496">[ subject ]</a>
+              <a href="author.html#3496">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On maanantai 30 toukokuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 29/05/2011 22:46, Miro Krop&#225;&#269;ek a &#233;crit :
+</I>&gt;&gt;<i>     And Hatari debugger not being &quot;marketed&quot;.
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;<i>     (I've commented about it on EmuTOS &amp; MiNT mailing lists sometimes
+</I>&gt;&gt;<i>     when there
+</I>&gt;&gt;<i>     have been issues with which Hatari debugger might help, but I'm not
+</I>&gt;&gt;<i>     on any
+</I>&gt;&gt;<i>     of the Hatari forums where demo coders visit...)
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> So true. I think I've got some of your emails starred in the inbox (&quot;to
+</I>&gt;&gt;<i> check later&quot;) because I was always impressed what is possible with the
+</I>&gt;&gt;<i> debugger but then... I always see that strange syntax and fall back.
+</I>&gt;&gt;<i> Maybe some tutorials for us dummies would be cool, some popular use
+</I>&gt;&gt;<i> cases.
+</I>
+Could you suggest some use-cases that are not (yet :)) documented in
+the Manual:
+<A HREF="http://hg.berlios.de/repos/hatari/raw-file/tip/doc/manual.html#The">http://hg.berlios.de/repos/hatari/raw-file/tip/doc/manual.html#The</A> debugger
+
+?
+
+&gt;<i> Well, I know it's a lot of work, but I really think something similar to
+</I>&gt;<i> the &quot;Steem debug version&quot; UI would be just great and would make all the
+</I>&gt;<i> available possibilities shine more than ever.
+</I>&gt;<i> 
+</I>&gt;<i> Steem really has a great UI when it comes to the debuger : multiple
+</I>&gt;<i> windows, click-and-set breakpoints, hexa/ascii dumps, ... All these
+</I>&gt;<i> functions are of course available in Hatari, but the UI really makes it
+</I>&gt;<i> so much powerful (something similar to the UI provided by MonST, with
+</I>&gt;<i> several sub windows in the same window, but really powerful to use in
+</I>&gt;<i> the end)
+</I>
+I've thought of expanding the debugger in the Python UI, but there are
+some issues:
+
+1. When Hatari enters debugger, note of that and what triggered it needs
+   to be sent to the remote UI and remote UI needs still able to be
+   command Hatari.  Currently it cannot.
+
+-&gt; I have some thoughts on how to fix this.
+
+
+2. For some reason after the debugger sends the data to the remote UI
+   and the socket is ready on the UI side, UI needs to wait 0.1s until it
+   can read the data, otherwise the data is stale.
+
+   I've wondered could it be because the current remote UI is done in
+   Python (but that would seem strange as Python has been used to do e.g.
+   high performance / high traffic websites).
+
+-&gt; I've thought at some point write a simple native Hatari remote client
+   to check whether that helps.
+
+
+3. People seem to have issues on OSX &amp; Windows on getting everything
+   required for Python &amp; Gtk, Qt probably isn't any better in this
+   respect...?
+
+-&gt; So, should the remote debugger UI be done in SDL or ncurses?  Both will
+   restrict the debugger UI to a single window.  It can of course have
+   different areas dedicated for different things, but the available
+   space will be fixed &amp; limited.
+
+-&gt; I need UI design on what of the current debugger functionality should
+   be in such a screen, how it should be layed out, should there be multiple
+   screen through which one can switch (e.g. help), should there be buttons
+   one can click with mouse, keyboard shortcuts etc.
+
+Also, if I write a separate debugger UI in C (or C++), this will probably
+need Hatari to support sockets for multiple remote clients (one being
+debugger, another an UI, third a scripting console...), but I don't think
+that's too much of a problem compared to writing the UI itself.
+
+
+&gt;<i> PS : for those who haven't tried it, just download Steem debug from
+</I>&gt;<i> Steem website and simply run it with Wine if you use Linux or OSX.
+</I>
+I don't like binary blobs, could you mail a screenshot of it and tell what
+exactly in it is nice?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003491.html">[hatari-devel] Execution history debugger command
+</A></li>
+	<LI>Next message: <A HREF="003501.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3496">[ date ]</a>
+              <a href="thread.html#3496">[ thread ]</a>
+              <a href="subject.html#3496">[ subject ]</a>
+              <a href="author.html#3496">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

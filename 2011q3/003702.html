@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] BITS demo : thread from atari forum
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20BITS%20demo%20%3A%20thread%20from%20atari%20forum&In-Reply-To=%3C4E1CB94E.2020107%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003694.html">
+   <LINK REL="Next"  HREF="003703.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] BITS demo : thread from atari forum</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20BITS%20demo%20%3A%20thread%20from%20atari%20forum&In-Reply-To=%3C4E1CB94E.2020107%40corp.free.fr%3E"
+       TITLE="[hatari-devel] BITS demo : thread from atari forum">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Jul 12 23:14:54 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003694.html">[hatari-devel] BITS demo : thread from atari forum
+</A></li>
+        <LI>Next message: <A HREF="003703.html">[hatari-devel] BITS demo : thread from atari forum
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3702">[ date ]</a>
+              <a href="thread.html#3702">[ thread ]</a>
+              <a href="subject.html#3702">[ subject ]</a>
+              <a href="author.html#3702">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 12/07/2011 20:00, Anders Eriksson a &#233;crit :
+&gt;<i> On Tue, 12 Jul 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Either way, it would be great if an STE's owner could dump the memory
+</I>&gt;&gt;<i> region from $ff8200 to $ff827f (Anders maybe ? ;-) )
+</I>&gt;<i>
+</I>&gt;<i> Hi!
+</I>&gt;<i>
+</I>&gt;<i> 48 bytes did buserror (from offset $0f) so I left that area blank. The
+</I>&gt;<i> remaning 80 bytes are in the file. See the source in case I did
+</I>&gt;<i> something wrong.
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://ae.dhs.nu/tmp/regdump.zip">http://ae.dhs.nu/tmp/regdump.zip</A>
+</I>
+Thanks also for this test.
+
+ From what I see, Hatari STE's mode is OK :
+  - hatari has bus error between ff8210 and ff823f (Thomas wrote a 
+program to check those bus errors area)
+  - hatari sets unused byte (even addresses) between ff8200 and ff820f 
+to $ff
+  - sync byte at $ff820a has unused bits 2-7 set to 1 on STE (which is 
+different from $ff8260 on STE), OK on Hatari
+
+  - unused bytes $ff820b returns 0 on STE, but $ff on Hatari
+
+  - colors reg between $ff8240 and $ff8260 sets unused bits 12-15 to 0 
+on STE, this is OK on hatari (on STF, those bits seem to be randomly set 
+to 1)
+
+  - res byte $ff8260 has unused bits 2-7 set to 0 on STE.
+
+  - scroll bytes $ff8264/65 have nothing special
+
+  - all other unused bytes between $ff8260 and $ff827f are set to 0 and 
+not to $ff (as the unused bytes between $ff8200 and $ff820f) ; hatari is 
+not correct, it returns $ff.
+
+
+The cases were Hatari returns $ff instead of $00 for unused bytes is not 
+good, but it should be harmless regarding emulation results.
+
+I will add a 'todo' about this for the next Hatari version.
+
+It would need to be confirmed on real hardware, but as Mega STE, TT and 
+Falcon were released after the STE, the same rules might apply for bytes 
+that return 0 instead of $ff on STF.
+
+
+If someone here on this list can run Anders regdump.tos program under 
+STF / TT / Falcon or any non STE machines, it could interesting to 
+compare the results.
+
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003694.html">[hatari-devel] BITS demo : thread from atari forum
+</A></li>
+	<LI>Next message: <A HREF="003703.html">[hatari-devel] BITS demo : thread from atari forum
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3702">[ date ]</a>
+              <a href="thread.html#3702">[ thread ]</a>
+              <a href="subject.html#3702">[ subject ]</a>
+              <a href="author.html#3702">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

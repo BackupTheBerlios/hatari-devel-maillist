@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari feature suggestion
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20feature%20suggestion&In-Reply-To=%3C4CE04398.3050705%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002701.html">
+   <LINK REL="Next"  HREF="002663.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari feature suggestion</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20feature%20suggestion&In-Reply-To=%3C4CE04398.3050705%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Hatari feature suggestion">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Nov 14 21:16:24 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002701.html">[hatari-devel] Hatari feature suggestion
+</A></li>
+        <LI>Next message: <A HREF="002663.html">[hatari-devel] Hatari feature suggestion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2635">[ date ]</a>
+              <a href="thread.html#2635">[ thread ]</a>
+              <a href="subject.html#2635">[ subject ]</a>
+              <a href="author.html#2635">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 07/11/2010 22:28, Eero Tamminen a &#233;crit :
+&gt;<i> As to AVI options, they don't seem be yet even in the Hatari configuration.
+</I>&gt;<i> The UI includes only options that are in the Hatari configuration.
+</I>&gt;<i>
+</I>&gt;<i> Nicolas, could you move the AviRecordFile, AviRecordDefaultCrop,
+</I>&gt;<i> nScreenRefreshRate, AviRecordDefaultVcodec to the configuration,
+</I>&gt;<i> maybe under new [Video] section?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> After that there could be checkbox for cropping in the UI as SDL Screen
+</I>&gt;<i> dialog still seems to have little space for it.
+</I>&gt;<i>
+</I>&gt;<i> OSX UI of course cannot be updated by any of the Hatari developers as we
+</I>&gt;<i> don't have XCode (Thomas has OSX, but AFAIK his XCode is too old to work
+</I>&gt;<i> with current Hatari OSX code).
+</I>&gt;<i>
+</I>&gt;<i> For the Python UI I haven't yet had time to add to even some more common
+</I>&gt;<i> earlier/options (which actually have been requested earlier).  But once AVI
+</I>&gt;<i> is in configuration I can add the needed support.
+</I>&gt;<i>
+</I>
+I added the AVI parameters in hatari.cfg, under [Video] section.
+
+AviRecordFps has a special meaning :
+  - if it's &gt; 0, then this is the fps value to be used when creating the
+    avi file (this overwrite the current refresh rate). For ST, the
+    possible values should be 50, 60 or 71.
+  - if it's == 0, then it means to use nScreenRefreshRate as the fps
+    value.
+
+Default mode should be AviRecordFps=0 to automatically select the 
+current refresh rate.
+
+Regarding the UI, if there's enough room, we could put a 'crop' checkbox 
+and an 'fps' box (auto or a number).
+
+Note that I removed some variables in avi_record.c and added a structure 
+in configuration.c, so the OSX UI won't compile anymore and need to be 
+updated.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002701.html">[hatari-devel] Hatari feature suggestion
+</A></li>
+	<LI>Next message: <A HREF="002663.html">[hatari-devel] Hatari feature suggestion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2635">[ date ]</a>
+              <a href="thread.html#2635">[ thread ]</a>
+              <a href="subject.html#2635">[ subject ]</a>
+              <a href="author.html#2635">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

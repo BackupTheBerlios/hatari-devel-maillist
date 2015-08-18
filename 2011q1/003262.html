@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Crosscompiling Hatari for GP2X Wiz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C201103292312.46390.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003260.html">
+   <LINK REL="Next"  HREF="003267.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Crosscompiling Hatari for GP2X Wiz</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Crosscompiling%20Hatari%20for%20GP2X%20Wiz&In-Reply-To=%3C201103292312.46390.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Crosscompiling Hatari for GP2X Wiz">oak at helsinkinet.fi
+       </A><BR>
+    <I>Tue Mar 29 22:12:46 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003260.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+        <LI>Next message: <A HREF="003267.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3262">[ date ]</a>
+              <a href="thread.html#3262">[ thread ]</a>
+              <a href="subject.html#3262">[ subject ]</a>
+              <a href="author.html#3262">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On tiistai 29 maaliskuu 2011, Matthias Arndt wrote:
+&gt;<i> It is sad that you fulfill my expectations. Your code is the best and
+</I>&gt;<i> all other setups are not valid or outdated or whatever excuse you post
+</I>&gt;<i> here.
+</I>
+Well, it was a bit hard to believe that there's a system that's still being
+developed for but which has this obsolete version of SDL that nobody's
+even interested to update.
+
+Even Atari has a newer version:
+	<A HREF="http://patrice.mandin.pagesperso-orange.fr/en/port-libs.html">http://patrice.mandin.pagesperso-orange.fr/en/port-libs.html</A>
+:<i>-)
+</I>
+Are you really sure GP2X doesn't have a newer libsdl?
+
+
+&gt;<i> What is so difficult to think about backward compatibility or making
+</I>&gt;<i> code parts OPTIONAL at compile time?
+</I>
+I checked what SDL versions all Linux distros ship before adding the 
+functionality needed by Laurent (limiting Hatari window to Desktop size
+so that it doesn't crash his X server) and Anders (not changing resolution
+as it messes his OSX virtual desktops).
+
+Only distros where one could still find that old version of SDL is
+the commercial RedHat Enterprise Linux v4 (+ its commercial Oracle &amp;
+free CentOS derivatives) that was released on 2005:
+<A HREF="http://en.wikipedia.org/wiki/Red_Hat_Enterprise_Linux#Life_Cycle_Dates">http://en.wikipedia.org/wiki/Red_Hat_Enterprise_Linux#Life_Cycle_Dates</A>
+
+None of the currently available Fedora, Ubuntu, Debian, SUSE, Mandriva etc
+distro versions (e.g. Debian oldstable) have it anymore available and of
+course any RHEL distro where new Hatari version would be included will have
+new enough SDL version.
+
+
+&gt;<i> Stop applying the Java &quot;no code has to be optional&quot; approach to portable
+</I>&gt;<i> C sources!
+</I>
+As I don't have that obsolete SDL version, I cannot test functionality
+for it.
+
+If you want Hatari to have support for SDL versions that nobody else has
+ready access to, you're the one that needs to support them and test that
+this support works.  If that support is really needed and can be added
+cleanly to Hatari, there isn't a problem.
+
+According to your comments the code &amp; documentation part should look
+something like the attached patch.  SDL seems to have macro for checking
+for SDL version, so it might be possible that it doesn't need changes to
+CMake.
+
+
+	- Eero
+
+PS. The new SDL requirement is not the only thing that had changed in Hatari
+since v1.4, Thomas for example removed the support for Autotools &amp; plain
+Makefiles (about which I complained a bit at the time :)).
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: sdl.diff
+Type: text/x-patch
+Size: 2364 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110329/2ad821db/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110329/2ad821db/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003260.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+	<LI>Next message: <A HREF="003267.html">[hatari-devel] Crosscompiling Hatari for GP2X Wiz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3262">[ date ]</a>
+              <a href="thread.html#3262">[ thread ]</a>
+              <a href="subject.html#3262">[ subject ]</a>
+              <a href="author.html#3262">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

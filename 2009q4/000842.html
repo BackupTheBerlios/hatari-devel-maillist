@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new support for avi recording
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Calpine.LMD.2.00.0910180011410.23838%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000819.html">
+   <LINK REL="Next"  HREF="000843.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new support for avi recording</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Calpine.LMD.2.00.0910180011410.23838%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] new support for avi recording">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Oct 18 00:24:02 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000819.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000843.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#842">[ date ]</a>
+              <a href="thread.html#842">[ thread ]</a>
+              <a href="subject.html#842">[ subject ]</a>
+              <a href="author.html#842">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 8 Oct 2009, Eero Tamminen wrote:
+
+&gt;<i> * You reverted the PNG saving SDL screen locking fix, please fix it again.
+</I>fixed
+
+&gt;<i>
+</I>&gt;<i> * Line conversion functions are now duplicated in both screenshot and AVI
+</I>&gt;<i>  recording C-files.  Maybe you could add a (lineConvert.h?) header which
+</I>&gt;<i>  contains the static inline functions and is included into both?
+</I>
+include/pixel_convert.h created ; note that functions were not exactly the 
+same between screenSnapshot.c and avi_record.c, because the BMP codec 
+requires data to be in BGR instead of the usual RGB format.
+
+&gt;<i> * Shouldn't these functions now move to avi_record.c:
+</I>&gt;<i>  - ScreenSnapShot_AreWeRecording()
+</I>&gt;<i>  - ScreenSnapShot_BeginRecording()
+</I>&gt;<i>  - ScreenSnapShot_EndRecording()
+</I>&gt;<i>  - ScreenSnapShot_RecordFrame()
+</I>&gt;<i>  ?
+</I>
+I removed this code and all references to it, as it's now replaced by avi 
+recording.
+
+&gt;<i>
+</I>&gt;<i> * Not really important, but all the other other Hatari functions names seem
+</I>&gt;<i>   to be of Prefix_CamelCaps() format and yours are in AviSomething()
+</I>&gt;<i>   format.
+</I>
+fixed
+
+&gt;&gt;<i> Video can be saved as uncompressed 24 bits BMP images or as PNG images.
+</I>&gt;&gt;<i> No frames are skipped, so you will get a full 50 or 60 Hz video in the
+</I>&gt;&gt;<i> end.
+</I>&gt;<i>
+</I>&gt;<i> What happens if user has (automatic) frame skip enabled?
+</I>&gt;<i>
+</I>&gt;<i> (it's the default)
+</I>
+This is not possible ; avi format requires a constant FPS over the time, 
+so auto frame skipping could cause some audio frames to be saved 
+without their corresponding video frames for this VBL, which after a while 
+would create some synchronisation problem between audio and video.
+
+If frame skipping is constant (that is 25 fps for example), it is 
+theorically possible to mix 25 fps video with 50 &quot;fps&quot; audio, but the 
+use case is not worth the coding complexity.
+
+summary could be : &quot;if your pc is not fast enough to run hatari with frame 
+skip off, don't even try to record avi&quot; :)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000819.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000843.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#842">[ date ]</a>
+              <a href="thread.html#842">[ thread ]</a>
+              <a href="subject.html#842">[ subject ]</a>
+              <a href="author.html#842">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

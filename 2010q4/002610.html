@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Compiler warnings dsp_cpu.c
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compiler%20warnings%20dsp_cpu.c&In-Reply-To=%3C1289120238.2567.1.camel%40jll%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002655.html">
+   <LINK REL="Next"  HREF="002612.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Compiler warnings dsp_cpu.c</H1>
+    <B>Matthias Arndt</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Compiler%20warnings%20dsp_cpu.c&In-Reply-To=%3C1289120238.2567.1.camel%40jll%3E"
+       TITLE="[hatari-devel] Compiler warnings dsp_cpu.c">marndt at asmsoftware.de
+       </A><BR>
+    <I>Sun Nov  7 09:57:18 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002655.html">[hatari-devel] compilation warnings with normal hatari (not	WinUae)
+</A></li>
+        <LI>Next message: <A HREF="002612.html">[hatari-devel] Compiler warnings dsp_cpu.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2610">[ date ]</a>
+              <a href="thread.html#2610">[ thread ]</a>
+              <a href="subject.html#2610">[ subject ]</a>
+              <a href="author.html#2610">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+dsp_cpu.c gives compiler warnings here:
+
+[ 21%] Building C object src/falcon/CMakeFiles/Falcon.dir/dsp_cpu.c.o
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c: In function
+&#8216;dsp_jsset_pp&#8217;:
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c:952: warning: array
+subscript is above array bounds
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c: In function
+&#8216;dsp_jsclr_pp&#8217;:
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c:952: warning: array
+subscript is above array bounds
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_btst_pp&#8217;:
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c:952: warning: array
+subscript is above array bounds
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_jset_pp&#8217;:
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c:952: warning: array
+subscript is above array bounds
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_jclr_pp&#8217;:
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c:952: warning: array
+subscript is above array bounds
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_bchg_pp&#8217;:
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c:952: warning: array
+subscript is above array bounds
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_bset_pp&#8217;:
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c:952: warning: array
+subscript is above array bounds
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_bclr_pp&#8217;:
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c:952: warning: array
+subscript is above array bounds
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c: In function
+&#8216;dsp_movep_23&#8217;:
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c:952: warning: array
+subscript is above array bounds
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_movep_1&#8217;:
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c:952: warning: array
+subscript is above array bounds
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c: In function &#8216;dsp_movep_0&#8217;:
+/home/marndt/src/hatari/src/falcon/dsp_cpu.c:952: warning: array
+subscript is above array bounds
+
+I'm compiling with CMake and
+$ gcc -v
+Using built-in specs.
+Target: x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu
+4.4.3-4ubuntu5' --with-bugurl=<A HREF="file:///usr/share/doc/gcc-4.4/README.Bugs">file:///usr/share/doc/gcc-4.4/README.Bugs</A>
+--enable-languages=c,c++,fortran,objc,obj-c++ --prefix=/usr
+--enable-shared --enable-multiarch --enable-linker-build-id
+--with-system-zlib --libexecdir=/usr/lib --without-included-gettext
+--enable-threads=posix --with-gxx-include-dir=/usr/include/c++/4.4
+--program-suffix=-4.4 --enable-nls --enable-clocale=gnu
+--enable-libstdcxx-debug --enable-plugin --enable-objc-gc
+--disable-werror --with-arch-32=i486 --with-tune=generic
+--enable-checking=release --build=x86_64-linux-gnu
+--host=x86_64-linux-gnu --target=x86_64-linux-gnu
+Thread model: posix
+gcc version 4.4.3 (Ubuntu 4.4.3-4ubuntu5)
+
+cheers,
+Matthias
+-- 
+Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+PGP-Key: <A HREF="http://www.final-memory.org/files/marndt.asc">http://www.final-memory.org/files/marndt.asc</A>   ICQ: 40358321
+&gt;&gt;&gt;<i> Jabber: <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">simonsunnyboy at jabber.ccc.de</A> &lt;&lt;&lt;
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002655.html">[hatari-devel] compilation warnings with normal hatari (not	WinUae)
+</A></li>
+	<LI>Next message: <A HREF="002612.html">[hatari-devel] Compiler warnings dsp_cpu.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2610">[ date ]</a>
+              <a href="thread.html#2610">[ thread ]</a>
+              <a href="subject.html#2610">[ subject ]</a>
+              <a href="author.html#2610">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

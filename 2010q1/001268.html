@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Symbol name/address support added to Hatari	debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Symbol%20name/address%20support%20added%20to%20Hatari%0A%09debugger&In-Reply-To=%3C201001172325.36465.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001233.html">
+   <LINK REL="Next"  HREF="001212.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Symbol name/address support added to Hatari	debugger</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Symbol%20name/address%20support%20added%20to%20Hatari%0A%09debugger&In-Reply-To=%3C201001172325.36465.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Symbol name/address support added to Hatari	debugger">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jan 17 22:25:36 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001233.html">[hatari-devel] Symbol name/address support added to Hatari	debugger
+</A></li>
+        <LI>Next message: <A HREF="001212.html">[hatari-devel] Illusion demo (Aura) is now working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1268">[ date ]</a>
+              <a href="thread.html#1268">[ thread ]</a>
+              <a href="subject.html#1268">[ subject ]</a>
+              <a href="author.html#1268">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 14 January 2010, Eero Tamminen wrote:
+&gt;<i> &gt; &gt; Laurent, would you be interested about similar support for DSP? :-)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Yes I would if it doesn't annoy you ;)
+</I>&gt;<i>
+</I>&gt;<i> I think I'll first complete the symbols support for CPU and then move
+</I>&gt;<i> to DSP breakpoint support.
+</I>
+DSP &quot;dspaddress&quot; breakpoints have now also symbols support.  You can
+use the &quot;dspsymbols&quot; command to load the DSP symbol names &amp; addresses[1].
+After that &quot;dspaddress&quot; TAB completion can complete the loaded symbols.
+
+[1] For the format, see tests/etos512.sym for an example.  &quot;T&quot; means that
+     the address is for TEXT section i.e. code.  (I've thought that I could 
+     later add support for symbols also to conditional breakpoints, then
+     one can set also breakpoints on data &amp; bss section changes (data
+     changes) using their symbolic names in code.)
+
+
+Btw. Other things that I've added to the symbol support:
+1) Whenever you break to breakpoint at some symbol address, it shows
+   the symbol name too.  Symbol names are also shown when listing or
+   deleting breakpoints.  This is for both CPU &amp; DSP.
+2) When disassembling memory from the debugger, it shows the symbols,
+   like this:
+----------
+00e01032: 60e4 2f0a 45f9 0000 530e BT .B #$ffffffe4 == 00e01018 (TRUE)
+_random:
+00e01034: 2f0a 45f9 0000 530e 4a92 MOVE.L A2,-(A7)
+00e01036: 45f9 0000 530e 4a92 6614 LEA.L $0000530e,A2
+00e0103c: 4a92 6614 2039 0000 04ba TST.L (A2)
+----------
+
+DSP disassembly doesn't show the symbolic address names because code
+for that does the whole range and that code is not in the debugdsp.c.
+
+For the same reason (it not being done in debugger code) the symbol names
+are not show when using CPU disassembly tracing.
+
+
+&gt;<i> Btw. Did the things listed in &quot;Hatari debugger improvements&quot; thread have
+</I>&gt;<i> anything you would specifically like to see supported for DSP
+</I>&gt;<i> breakpoints?
+</I>
+After I've finished the improved GEMDOS emu long host names support, I had
+thought to look into counted CPU &amp; DSP address breakpoints.   But if you
+have any comments on things you would think useful from that list, please
+comment! :-)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001233.html">[hatari-devel] Symbol name/address support added to Hatari	debugger
+</A></li>
+	<LI>Next message: <A HREF="001212.html">[hatari-devel] Illusion demo (Aura) is now working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1268">[ date ]</a>
+              <a href="thread.html#1268">[ thread ]</a>
+              <a href="subject.html#1268">[ subject ]</a>
+              <a href="author.html#1268">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

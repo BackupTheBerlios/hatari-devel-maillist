@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CPU breakpoints and single-stepping
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3C4A2D668E.2020704%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000360.html">
+   <LINK REL="Next"  HREF="000363.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CPU breakpoints and single-stepping</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CPU%20breakpoints%20and%20single-stepping&In-Reply-To=%3C4A2D668E.2020704%40free.fr%3E"
+       TITLE="[hatari-devel] CPU breakpoints and single-stepping">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Jun  8 21:29:18 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000360.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+        <LI>Next message: <A HREF="000363.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#362">[ date ]</a>
+              <a href="thread.html#362">[ thread ]</a>
+              <a href="subject.html#362">[ subject ]</a>
+              <a href="author.html#362">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+For the DSP breakpoints, I really would need them now to finish to debug 
+the thing.
+After debugging, when the lattest bug is found, I've planned to optimize 
+DSP code (there are many things to do im DSP optimisation code).
+
+Later, we'll be able to remove the breakpoint code into DSP if it takes 
+too much cpu.
+But as I still consider this part as still not completly debugged, I 
+don't care about speed.
+(And my CPU is really fast ;)
+
+Regards,
+
+Laurent
+
+PS : debug mode doesn't work at all for now, I'll try to see why.
+
+
+
+Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Monday 08 June 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> Btw.  I was thinking that the conditional breakpoint checking will
+</I>&gt;&gt;&gt;<i> be quite a bit slower than normal address based breakpoints, so
+</I>&gt;&gt;&gt;<i> maybe we should have both?
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> Well, I think that as soon as you use breakpoint, you don't care about
+</I>&gt;&gt;<i> speed anymore ; I'm only exagerating a little, but I really think that if
+</I>&gt;&gt;<i> the user choose to use advanced debugging functions, he must have a
+</I>&gt;&gt;<i> machine powerful enough to handle it, so splitting the code in 2 kinds of
+</I>&gt;&gt;<i> breakpoints seems to be extra work not necessarily needed to me. But if
+</I>&gt;&gt;<i> someone feels like doing it, why not :)
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> I'm mostly concerned about the DSP side.  Currently e.g. even the trivial
+</I>&gt;<i> DSP_Run() is quite visible in profile because it's run 7x for each m68k
+</I>&gt;<i> instruction and this adds a lot of code to execute at that place when
+</I>&gt;<i> there're conditional breakpoints.  (And half of the time DSP emu would like
+</I>&gt;<i> to take much more CPU than my machine has available.... :-))
+</I>&gt;<i>
+</I>&gt;<i> Extra performance may also be nice for speeding up the emulation
+</I>&gt;<i> while waiting the breakpoint to trigger.  But let's see whether this will be
+</I>&gt;<i> a problem in practice.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i> PS. I added the current code as breakcond.c to repo.  I will shortly add
+</I>&gt;<i> some more parsing code to it + do some other fine-tuning.
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000360.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+	<LI>Next message: <A HREF="000363.html">[hatari-devel] CPU breakpoints and single-stepping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#362">[ date ]</a>
+              <a href="thread.html#362">[ thread ]</a>
+              <a href="subject.html#362">[ subject ]</a>
+              <a href="author.html#362">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

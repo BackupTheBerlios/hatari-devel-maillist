@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] dsp trace instr
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20dsp%20trace%20instr&In-Reply-To=%3C201103201305.43421.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003176.html">
+   <LINK REL="Next"  HREF="003189.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] dsp trace instr</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20dsp%20trace%20instr&In-Reply-To=%3C201103201305.43421.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] dsp trace instr">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Mar 20 12:05:43 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003176.html">[hatari-devel] dsp trace instr
+</A></li>
+        <LI>Next message: <A HREF="003189.html">[hatari-devel] dsp trace instr
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3179">[ date ]</a>
+              <a href="thread.html#3179">[ thread ]</a>
+              <a href="subject.html#3179">[ subject ]</a>
+              <a href="author.html#3179">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 20 maaliskuu 2011, Laurent Sallafranque wrote:
+&gt;<i> I've reworked the DSP disasm and trace modes.
+</I>&gt;<i> It seems to work well now.
+</I>
+Looks good to me.
+
+
+&gt;<i> I've tested it a lot, but don't hesitate to do some tests too.
+</I>&gt;<i> 
+</I>&gt;<i> I've improved it at the same time :
+</I>&gt;<i> - no more stack messages (overflow or underflow) in disasm mode on RTI
+</I>&gt;<i> and other instructions
+</I>&gt;<i> - illegal instruction become dc opcode in disasm mode
+</I>&gt;<i> - dc instructions are displayed with 0 cycles
+</I>&gt;<i> 
+</I>&gt;<i> Now, you can mix trace mode and illegal mode as you want.
+</I>
+What are the differences between DSP trace &amp; disasm modes and
+when one would use which of them?
+
+-&gt; This information should be in Hatari manual debugging section,
+   under its own DSP debugging subsection I think.
+
+
+&gt;<i> 2 questions :
+</I>&gt;<i> 
+</I>&gt;<i> - Do you think that trace dsp_registers and trace dsp_memory should be
+</I>&gt;<i> added to the debugguer or should they stay as DEFINES and recompilation
+</I>&gt;<i> in dsp_cpu code ?
+</I>
+How often they're needed compared to the normal disassembling?
+
+Both add a check to speed-critical DSP function, but memory tracing
+would need also switching an often used auxialiary function at run-time.
+
+
+&gt;<i> - Is there a way to use the debugguer like this ?
+</I>&gt;<i>         db pc=$'value' and then trace the N next lines of DSP code
+</I>&gt;<i> 
+</I>&gt;<i> DSP debugging sorts so many lines, I's like to be able to just display
+</I>&gt;<i> the N next lines after pc = a value, or after a certain register reach a
+</I>&gt;<i> value, ...
+</I>
+You can set a breakpoint to the condition you like with the &quot;:info&quot; modifier
+and then use the &quot;lock file&quot; info command to give/lock a file containing
+the debugger commands that you want to be run[1] when the breakpoint is hit.
+
+In above case the file should in theory be something like:
+	trace dsp_disasm
+	cont 5
+	trace none
+
+But here's a similar problem as with your DSP disassembling.
+Within the breakpoint, the CPU core flag for entering debugger is set,
+so CPU core returns immediately to debugger instead of continuing for
+5 instructions.
+
+For now all you can run from breakpoint is the trace command, rest of
+the actions you unfortunately need to do from the debugger prompt yourself.
+
+
+[1] Even if the continue issue would be fixed, there's a second problem,
+that the locked command (in this case parsing a debugger commands file)
+would be executed also when debugger is re-entered, i.e. it would loop
+recursively forever continuing.
+
+To fix that:
+1. breakpoints would need to use something else than the &quot;lock&quot; command
+2. the CPU &amp; DSP cores and debugger need to be fixed so that it's possible
+   to continue (for given number of steps) before getting back to debugger
+
+Regarding 1), on retrospect I think the &quot;:info&quot; breakpoint flag wasn't so
+hot idea because one might have multiple breakpoints on which he might want
+different actions to be executed.  I could at some point change it to
+&quot;:file &lt;file&gt;&quot; flag that allows specifying a separate debugger commands file
+for each breakpoint.
+
+As to 2), that would indeed be a nice feature... :-)   It might also help
+in enabling breakpoint usage from Python UI (haven't really thought
+about that).
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003176.html">[hatari-devel] dsp trace instr
+</A></li>
+	<LI>Next message: <A HREF="003189.html">[hatari-devel] dsp trace instr
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3179">[ date ]</a>
+              <a href="thread.html#3179">[ thread ]</a>
+              <a href="subject.html#3179">[ subject ]</a>
+              <a href="author.html#3179">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

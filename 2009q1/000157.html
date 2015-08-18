@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%22Floating%20point%20exception%22%20%20when%20RS232%20Enabled&In-Reply-To=%3C200902122335.24501.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000156.html">
+   <LINK REL="Next"  HREF="000164.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%22Floating%20point%20exception%22%20%20when%20RS232%20Enabled&In-Reply-To=%3C200902122335.24501.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled">eerot at users.berlios.de
+       </A><BR>
+    <I>Thu Feb 12 22:35:24 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000156.html">[hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled
+</A></li>
+        <LI>Next message: <A HREF="000164.html">[hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#157">[ date ]</a>
+              <a href="thread.html#157">[ thread ]</a>
+              <a href="subject.html#157">[ subject ]</a>
+              <a href="author.html#157">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 12 February 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> Which tells that sound code i.e. threading isn't involved in this.
+</I>
+Erm, forgot that RS232 threads, but that doesn't seem to be issue:
+(gdb) info threads
+  2 Thread 0xb7611b90 (LWP 4065)  0xb7efa424 in __kernel_vsyscall ()
+* 1 Thread 0xb792b6b0 (LWP 4062)  0x080689fe in RS232_SetBaudRateFromTimerD 
+()
+    at rs232.c:553
+
+
+&gt;<i> &gt; The interesting thing is that all related values should be integers:
+</I>&gt;<i> &gt; --------------------------------------
+</I>&gt;<i> &gt; (gdb) list RS232_SetBaudRateFromTimerD
+</I>&gt;<i> &gt; 539     void RS232_SetBaudRateFromTimerD(void)
+</I>&gt;<i> &gt; 540     {
+</I>&gt;<i> &gt; 541             int nTimerD_CR, nTimerD_DR, nBaudRate;
+</I>&gt;<i> &gt; 542
+</I>&gt;<i> &gt; 543             nTimerD_CR = IoMem[0xfffa1d] &amp; 0x07;
+</I>&gt;<i> &gt; 544             nTimerD_DR = IoMem[0xfffa25];
+</I>&gt;<i> &gt; 545
+</I>&gt;<i> &gt; 546             if (!nTimerD_CR)
+</I>&gt;<i> &gt; 547                     return;
+</I>&gt;<i> &gt; 548
+</I>&gt;<i> &gt; 549             /* Calculate baud rate: (MFP/Timer-D is supplied with
+</I>&gt;<i> &gt; 2.4576 MHz) */
+</I>&gt;<i> &gt; 550             nBaudRate = 2457600 / nTimerD_DR / 2;
+</I>&gt;<i> &gt; 551
+</I>&gt;<i> &gt; 552             /*if (IoMem[0xfffa29] &amp; 0x80)*/  /* We only support the
+</I>&gt;<i> &gt; by-16 prescaler */
+</I>&gt;<i> &gt; 553             nBaudRate /= 16;
+</I>&gt;<i> &gt; ------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> I see, the problem, but gdb doesn't give the correct line.
+</I>&gt;<i>
+</I>&gt;<i> The problem is :
+</I>&gt;<i>
+</I>&gt;<i> nBaudRate = 2457600 / nTimerD_DR / 2
+</I>&gt;<i>
+</I>&gt;<i> As we can see 'IoMem_bput (addr=16775717, val=0) at ioMem.c:358',
+</I>&gt;<i> 16775717 is in fact $fffa25. So this means a 0 is written in timer d data
+</I>&gt;<i> register, hence the divide by 0 error.
+</I>&gt;<i>
+</I>&gt;<i> I think a special case must be handled for nTimerD_DR=0 in
+</I>&gt;<i> RS232_SetBaudRateFromTimerD, but I don't know the real behaviour on an
+</I>&gt;<i> ST.
+</I>&gt;<i>
+</I>&gt;<i> I think nTimerD_DR=0 should be handled the same way we handle mfp timers,
+</I>&gt;<i> which means in the case of 0, we should use 256.
+</I>&gt;<i>
+</I>&gt;<i> Anyone can confirm this on a real ST (if not, I'm quite sure that 0-&gt;256
+</I>&gt;<i> is the real way to go)
+</I>&gt;<i>
+</I>&gt;<i> (I don't see why this crashed with a floating point exception, as you say
+</I>&gt;<i> only integers involved here ...)
+</I>
+The same code in x86 asm:
+(gdb) disassemble
+Dump of assembler code for function RS232_SetBaudRateFromTimerD:
+0x080689d0 &lt;RS232_SetBaudRateFromTimerD+0&gt;:     push   %ebp
+0x080689d1 &lt;RS232_SetBaudRateFromTimerD+1&gt;:     mov    %esp,%ebp
+0x080689d3 &lt;RS232_SetBaudRateFromTimerD+3&gt;:     sub    $0x18,%esp
+0x080689d6 &lt;RS232_SetBaudRateFromTimerD+6&gt;:     movzbl 0x92f105d,%eax
+0x080689dd &lt;RS232_SetBaudRateFromTimerD+13&gt;:    mov    %ebx,-0x8(%ebp)
+0x080689e0 &lt;RS232_SetBaudRateFromTimerD+16&gt;:    movzbl 0x92f1065,%edx
+0x080689e7 &lt;RS232_SetBaudRateFromTimerD+23&gt;:    mov    %esi,-0x4(%ebp)
+0x080689ea &lt;RS232_SetBaudRateFromTimerD+26&gt;:    mov    %eax,%ebx
+0x080689ec &lt;RS232_SetBaudRateFromTimerD+28&gt;:    and    $0x7,%ebx
+0x080689ef &lt;RS232_SetBaudRateFromTimerD+31&gt;:    je     0x8068a4d 
+&lt;RS232_SetBaudRateFromTimerD+125&gt;
+0x080689f1 &lt;RS232_SetBaudRateFromTimerD+33&gt;:    movzbl %dl,%esi
+0x080689f4 &lt;RS232_SetBaudRateFromTimerD+36&gt;:    mov    $0x12c000,%edx
+0x080689f9 &lt;RS232_SetBaudRateFromTimerD+41&gt;:    mov    %edx,%eax
+0x080689fb &lt;RS232_SetBaudRateFromTimerD+43&gt;:    sar    $0x1f,%edx
+0x080689fe &lt;RS232_SetBaudRateFromTimerD+46&gt;:    idiv   %esi
+0x08068a00 &lt;RS232_SetBaudRateFromTimerD+48&gt;:    mov    %eax,%ecx
+0x08068a02 &lt;RS232_SetBaudRateFromTimerD+50&gt;:    sar    $0x4,%ecx
+
+I read a bit on the x86 asm:
+	<A HREF="http://en.wikipedia.org/wiki/X86_instruction_listings">http://en.wikipedia.org/wiki/X86_instruction_listings</A>
+	<A HREF="http://siyobik.info/index.php?document=x86_32bit_asm#partial_registers">http://siyobik.info/index.php?document=x86_32bit_asm#partial_registers</A>
+
+And deciphered some of above::
+	movzbl %dl,%esi
+= move/extend byte from long address &quot;%dl&quot; to esi reg?
+  What the heck is %dl?  If &quot;nTimerD_DR&quot;, where it came?
+
+	mov    $0x12c000,%edx
+= copy 2457600 / 2 value to eax reg
+
+	mov    %edx,%eax
+= copy edx value to eax reg
+
+	sar    $0x1f,%edx
+= shift edx reg value to right by 31.  Why???
+
+	idiv   %esi
+= signed divide (divide what?) by esi reg value (assumably &quot;nTimerD_DR&quot;)
+   -&gt; Floating point exception on this line
+
+	mov    %eax,%ecx
+= copy eax (i.e. earlier edx) value to ecx reg
+
+	sar    $0x4,%ecx
+= shift it by 4 i.e. &quot;nBaudRate /= 16&quot;
+
+Because the SIGFPE happens on the &quot;idiv&quot; line, aparently you can get it also
+for integer division.  &quot;man 7 signal&quot; also that it's floating point
+exception too, but Google on &quot;SGIFPE idiv&quot; returns hits stating division
+by zero.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000156.html">[hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled
+</A></li>
+	<LI>Next message: <A HREF="000164.html">[hatari-devel] &quot;Floating point exception&quot;  when RS232 Enabled
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#157">[ date ]</a>
+              <a href="thread.html#157">[ thread ]</a>
+              <a href="subject.html#157">[ subject ]</a>
+              <a href="author.html#157">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] 68030 Debug mode and new CPU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068030%20Debug%20mode%20and%20new%20CPU&In-Reply-To=%3C201102172325.49063.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003062.html">
+   <LINK REL="Next"  HREF="003068.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] 68030 Debug mode and new CPU</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068030%20Debug%20mode%20and%20new%20CPU&In-Reply-To=%3C201102172325.49063.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] 68030 Debug mode and new CPU">oak at helsinkinet.fi
+       </A><BR>
+    <I>Thu Feb 17 22:25:49 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003062.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+        <LI>Next message: <A HREF="003068.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3066">[ date ]</a>
+              <a href="thread.html#3066">[ thread ]</a>
+              <a href="subject.html#3066">[ subject ]</a>
+              <a href="author.html#3066">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 16 helmikuu 2011, Laurent Sallafranque wrote:
+&gt;<i> &gt; You could add:
+</I>&gt;<i> &gt; 	#define f_out fprintf
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; to one of the headers, remove the f_out stuff from cpu/custom.c and
+</I>&gt;<i> &gt; replace all &quot;void *&quot; args for functions calling f_out() with &quot;FILE *&quot;.
+</I>&gt;<i>
+</I>&gt;<i> Done, it works well now.
+</I>&gt;<i> And it seems to have removed some compiling warnings.
+</I>
+Actually, as f_out() seems to be used only in newcpu.c, the define could
+be there too.  Unless you want all this kind of stuff to be in compat.h so
+that it's easier to find.
+
+
+While looking into newcpu.c more, I noticed that the &quot;buf&quot; &amp; &quot;bufsize&quot;
+arguments to function:
+void m68k_disasm_2 (TCHAR *buf, int bufsize, uaecptr addr, uaecptr *nextpc, 
+int cnt, uae_u32 *seaddr, uae_u32 *deaddr, int safemode)
+
+Are redundant with your changes (instead of using buf_out(), you're calling
+printf() directly and not buffering the string for later printing).
+
+Attached (untested) patch would clean that.
+
+
+	- Eero
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: disasm.diff
+Type: text/x-patch
+Size: 4388 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110217/f3a3b42f/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110217/f3a3b42f/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003062.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+	<LI>Next message: <A HREF="003068.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3066">[ date ]</a>
+              <a href="thread.html#3066">[ thread ]</a>
+              <a href="subject.html#3066">[ subject ]</a>
+              <a href="author.html#3066">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

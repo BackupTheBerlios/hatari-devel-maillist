@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Chaos AD  problem : $fffffc02
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Chaos%20AD%20%20problem%20%3A%20%24fffffc02&In-Reply-To=%3C4DF6831E.4050509%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003597.html">
+   <LINK REL="Next"  HREF="003600.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Chaos AD  problem : $fffffc02</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Chaos%20AD%20%20problem%20%3A%20%24fffffc02&In-Reply-To=%3C4DF6831E.4050509%40free.fr%3E"
+       TITLE="[hatari-devel] Chaos AD  problem : $fffffc02">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Jun 13 23:37:34 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003597.html">[hatari-devel] Chaos AD  problem : $fffffc02
+</A></li>
+        <LI>Next message: <A HREF="003600.html">[hatari-devel] Chaos AD  problem : $fffffc02
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3599">[ date ]</a>
+              <a href="thread.html#3599">[ thread ]</a>
+              <a href="subject.html#3599">[ subject ]</a>
+              <a href="author.html#3599">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've checked the DSP part. Nothing special at first glance.
+
+I'll check it more.
+
+I think many sound problems may come from the fact that the real Falcon 
+DMA sound has 2
+32 bytes buffers.
+
+I've already thought about coding them in the crossbar, but I need some 
+infos
+
+- when are these buffers filled by the Falcon ? (at VBL, every xxx 
+cycles, ...)
+- Is there a &quot;burst mode&quot; like in the videl DMA ?
+
+I may try to read a few bytes every HBL, as Nicolas did for the STe and 
+see if this increase the sound quality.
+(after 1.5)
+
+Regards
+
+Laurent
+
+
+Le 13/06/2011 22:45, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 13/06/2011 22:32, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On maanantai 13 kes&#228;kuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;&gt;<i> Thanks a lot Nicolas.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Another demo that runs now ;)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> For me, it has freezed while showing the tridi DNT crew logo (near the
+</I>&gt;&gt;&gt;<i> end of the demo I guess).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> For me it works to the end (there are still several screens after the
+</I>&gt;&gt;<i> blue-white tridi DNT logo), when using the old UAE core.
+</I>&gt;<i>
+</I>&gt;<i> In my case, it was also using the old UAE core (although I get one 
+</I>&gt;<i> freeze once during the kind of &quot;fractal color cycling&quot; tiled screen)
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I agree, the sound is awfully noisy (one of the most noisy sounds I've
+</I>&gt;&gt;&gt;<i> heard under hatari).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Credits at the end say it's DSP sound.  :-)
+</I>&gt;<i>
+</I>&gt;<i> Yes, and there're a lot of dsp traces if your turn them on
+</I>&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Hopefully, the demo doesn't uses the 6301's code that was supposed to
+</I>&gt;&gt;&gt;&gt;<i> decode the byte. The 6301 code is using some kinds of 'sync decoding',
+</I>&gt;&gt;&gt;&gt;<i> by relying on the 6301's timer counter and the instructions cycle
+</I>&gt;&gt;&gt;&gt;<i> length.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> At what frequency that timer is running, are you saying that it could
+</I>&gt;&gt;<i> be using IKBD for synching the sound?
+</I>&gt;<i>
+</I>&gt;<i> No, the ikbd is used at the start to &quot;decrypt&quot; the demo (during the 
+</I>&gt;<i> floppy disk picture) ; it's a kind of protection for preventing other 
+</I>&gt;<i> people to rip your code.
+</I>&gt;<i> Once the demo starts, the ikbd is not used anymore (it would be 
+</I>&gt;<i> impossible to use it for any real time effect, as it takes approx 8000 
+</I>&gt;<i> 68000 cpu cycles to send 1 byte)
+</I>&gt;<i>
+</I>&gt;<i> I was refering to some &quot;sync code&quot; in the 6301 decoder, because it was 
+</I>&gt;<i> supposed to use the content of the 6301's free clock run counter to 
+</I>&gt;<i> decrypt the bytes, which means you can't run the code &quot;by hand&quot; at a 
+</I>&gt;<i> slower speed, you need to really run it on the ikbd if you want to get 
+</I>&gt;<i> proper decoding, which makes things harder to debug if you want to 
+</I>&gt;<i> crack the protection (this is similar to the protections that use the 
+</I>&gt;<i> content of $ff8209 to decode some part of a program).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003597.html">[hatari-devel] Chaos AD  problem : $fffffc02
+</A></li>
+	<LI>Next message: <A HREF="003600.html">[hatari-devel] Chaos AD  problem : $fffffc02
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3599">[ date ]</a>
+              <a href="thread.html#3599">[ thread ]</a>
+              <a href="subject.html#3599">[ subject ]</a>
+              <a href="author.html#3599">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

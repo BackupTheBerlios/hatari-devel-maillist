@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] 68000 cycles, read and write cycles
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068000%20cycles%2C%20read%20and%20write%20cycles&In-Reply-To=%3C4EC5948C.6010201%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004195.html">
+   <LINK REL="Next"  HREF="004197.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] 68000 cycles, read and write cycles</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068000%20cycles%2C%20read%20and%20write%20cycles&In-Reply-To=%3C4EC5948C.6010201%40corp.free.fr%3E"
+       TITLE="[hatari-devel] 68000 cycles, read and write cycles">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Nov 18 00:11:08 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004195.html">[hatari-devel] 68000 cycles, read and write cycles
+</A></li>
+        <LI>Next message: <A HREF="004197.html">[hatari-devel] Hatari v1.6 features?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4196">[ date ]</a>
+              <a href="thread.html#4196">[ thread ]</a>
+              <a href="subject.html#4196">[ subject ]</a>
+              <a href="author.html#4196">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 17/11/2011 23:57, Laurent Sallafranque wrote:
+&gt;<i> For my example with clr, I looked at the 8 bits table instead of the 16
+</I>&gt;<i> bits table.
+</I>&gt;<i>
+</I>&gt;<i> CLR cycles would be :
+</I>&gt;<i>
+</I>&gt;<i> CLR (byte) (register) : 4(1/0)
+</I>&gt;<i> CLR (word) (register) : 4(1/0)
+</I>&gt;<i> CLR (long) (register) : 6(1/0)
+</I>&gt;<i>
+</I>&gt;<i> CLR (byte) (memory) : 8(1/1) +
+</I>&gt;<i> CLR (word) (memory) : 8(1/1)+
+</I>&gt;<i> CLR (long) (memory) : 12(1/2)+
+</I>&gt;<i>
+</I>&gt;<i> Maybe some cycles values are different from the 68000 doc and the cycles
+</I>&gt;<i> of a real atari, but it's really easy to change this in a table that
+</I>&gt;<i> contains all the instructions.
+</I>&gt;<i> Correct values could be pick up in the old gencpu code.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>
+Hello
+
+in fact this information wouldn't help to determine when the write 
+really takes place. The number of read and write for each instruction is 
+rather easy to &quot;guess&quot;, as the 68000 in the ST does one access for 1 or 
+2 bytes, you just have to divide the size of the operand to get the 
+number of access (so a move.l is 2 write accesses).
+
+But the problem to determine the precise write is more complex : it's 
+more than knowing how many writes are made, but when these writes are 
+made inside the operand, and there's no motorola documentation (that I 
+know) that tells that.
+
+This is the kind of work that has been made in WinUAE, based on research 
+from Ijor and Toni, probably using some rare documentations and a lot of 
+hand made testing.
+
+Nicolas
+
+&gt;<i>
+</I>&gt;<i> Le 17/11/2011 23:53, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;<i> Hi Nicolas,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I was watching your last patch in cycles.c
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The aim seems to compute precise cycles for the read and the write of
+</I>&gt;&gt;<i> an instruction in the 2 following functions :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> int Cycles_GetCounterOnReadAccess(int nId)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> int Cycles_GetCounterOnWriteAccess(int nId)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is this related to the cycles tables of the 68000 processor ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I mean when I look at the M68000UM doc, for CLR, I can read (maybe my
+</I>&gt;&gt;<i> document is not the good one, but it gives the idea) :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> CLR (byte) (register) : 8(2/0)
+</I>&gt;&gt;<i> CLR (word) (register) : 8(2/0)
+</I>&gt;&gt;<i> CLR (long) (register) : 10(2/0)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> CLR (byte) (memory) : 12(2/1) +
+</I>&gt;&gt;<i> CLR (word) (memory) : 16(2/2)+
+</I>&gt;&gt;<i> CLR (long) (memory) : 24(2/4)+
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In parenthesis are given the number of read and write access to the
+</I>&gt;&gt;<i> memory.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Would having these values for each instruction could let us compute
+</I>&gt;&gt;<i> precise values for GetCounterOnReadAccess and GetCounterOnWriteAccess ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'm currently filling a table for each 68030 instructions with all
+</I>&gt;&gt;<i> these datas.
+</I>&gt;&gt;<i> If having all these values for the 68000 is the good answear, I can
+</I>&gt;&gt;<i> also fill a table for the Atari_St(e) processor with cycles + read +
+</I>&gt;&gt;<i> write access.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If yes, we could also speed up hatari a little by removing the return
+</I>&gt;&gt;<i> in each instruction code and transform all instruction functions to
+</I>&gt;&gt;<i> void and read the amount of cycles directly from the table.
+</I>&gt;&gt;<i> (we can also leave the gencpu.c code unchanged, it's no problem)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Are you interrested in such a table ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004195.html">[hatari-devel] 68000 cycles, read and write cycles
+</A></li>
+	<LI>Next message: <A HREF="004197.html">[hatari-devel] Hatari v1.6 features?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4196">[ date ]</a>
+              <a href="thread.html#4196">[ thread ]</a>
+              <a href="subject.html#4196">[ subject ]</a>
+              <a href="author.html#4196">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] official v1.5.0 binaries for Mac OSX?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20official%20v1.5.0%20binaries%20for%20Mac%20OSX%3F&In-Reply-To=%3CCAO-0pXAsyKeCQ9FknHC2NQrYo5ZpaZLqtO4zp375Nk%2BdB%2BWbrg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003900.html">
+   <LINK REL="Next"  HREF="003913.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] official v1.5.0 binaries for Mac OSX?</H1>
+    <B>Ois&#237;n</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20official%20v1.5.0%20binaries%20for%20Mac%20OSX%3F&In-Reply-To=%3CCAO-0pXAsyKeCQ9FknHC2NQrYo5ZpaZLqtO4zp375Nk%2BdB%2BWbrg%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] official v1.5.0 binaries for Mac OSX?">denpashogai at gmail.com
+       </A><BR>
+    <I>Sat Aug 13 02:11:07 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003900.html">[hatari-devel] official v1.5.0 binaries for Mac OSX?
+</A></li>
+        <LI>Next message: <A HREF="003913.html">[hatari-devel] official v1.5.0 binaries for Mac OSX?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3912">[ date ]</a>
+              <a href="thread.html#3912">[ thread ]</a>
+              <a href="subject.html#3912">[ subject ]</a>
+              <a href="author.html#3912">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 12 August 2011 08:58, Vernet Jerome &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">vernet.jerome at wanadoo.fr</A>&gt; wrote:
+
+&gt;<i> I made a New build with patched SDL for Lion and it seem to work. See
+</I>&gt;<i> Atari-forum for the link.
+</I>&gt;<i>
+</I>&gt;<i> M'y last problem is to include all needed library in the app and tell MacOs
+</I>&gt;<i> how to use them. I found a way, Will try tomorrow.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>Hi,
+
+This doesn't run for me on Leopard:
+
+;;;;
+
+Process:         Hatari [8883]
+Path:            /Users/oisin/emu/hatari/
+Hatari.app/Contents/MacOS/Hatari
+Identifier:      de.berlios.hatari
+Version:         ??? (???)
+Code Type:       X86-64 (Native)
+Parent Process:  launchd [111]
+
+Interval Since Last Report:          5922 sec
+Crashes Since Last Report:           2
+Per-App Interval Since Last Report:  0 sec
+Per-App Crashes Since Last Report:   3
+
+Date/Time:       2011-08-13 00:56:04.108 +0100
+OS Version:      Mac OS X 10.5.8 (9L31a)
+Report Version:  6
+Anonymous UUID:  9C1BDC95-7DEF-4E4F-8370-B93A38462701
+
+Exception Type:  EXC_BREAKPOINT (SIGTRAP)
+Exception Codes: 0x0000000000000002, 0x0000000000000000
+Crashed Thread:  0
+
+Dyld Error Message:
+  unknown required load command 0x80000022
+
+;;;;
+
+Could it be a problem with the Xcode flags, if you're building from Snow
+Leopard or Lion:
+<A HREF="http://lists.apple.com/archives/xcode-users/2009/Oct/msg00518.html">http://lists.apple.com/archives/xcode-users/2009/Oct/msg00518.html</A> ?
+
+Thanks for your work on this!
+
+Ois&#237;n
+
+
+
+
+&gt;<i> Envoy&#233; depuis un iPhone
+</I>&gt;<i>
+</I>&gt;<i> Le 10 ao&#251;t 2011 &#224; 23:00, Jerome Vernet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">vernet.jerome at wanadoo.fr</A>&gt; a &#233;crit
+</I>&gt;<i> :
+</I>&gt;<i>
+</I>&gt;<i> &gt; Le 10/08/11 21:42, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt;&gt; Hi,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; On tiistai 09 elokuu 2011, Matthias Arndt wrote:
+</I>&gt;<i> &gt;&gt;&gt; some people on atari-home don't seem to be able to compile Hatari for
+</I>&gt;<i> &gt;&gt;&gt; Mac? Can anyone provide working binaries for Intel Mac on Berlios,
+</I>&gt;<i> &gt;&gt;&gt; please?
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; I'm tired to tell them it's working :P
+</I>&gt;<i> &gt;&gt; Note that Hatari doesn't work in fullscreen on OSX Lion because
+</I>&gt;<i> &gt;&gt; Apple broke SDL in their latest release.  SDL 1.2 isn't yet updated
+</I>&gt;<i> &gt;&gt; for that and SDL 1.3 development version (which apparently works with
+</I>&gt;<i> &gt;&gt; Lion) isn't going to be release any time soon.
+</I>&gt;<i> &gt; And there is some (not so hard) work to build Hatari with SDL 1.3.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I do no have Lion, anyway. Still no return from anyone wich can test my
+</I>&gt;<i> build.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; JV
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; hatari-devel mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110813/fc195d29/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110813/fc195d29/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003900.html">[hatari-devel] official v1.5.0 binaries for Mac OSX?
+</A></li>
+	<LI>Next message: <A HREF="003913.html">[hatari-devel] official v1.5.0 binaries for Mac OSX?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3912">[ date ]</a>
+              <a href="thread.html#3912">[ thread ]</a>
+              <a href="subject.html#3912">[ subject ]</a>
+              <a href="author.html#3912">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

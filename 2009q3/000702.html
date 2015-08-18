@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [info] : Falcon crossbar, sound and DSP
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Binfo%5D%20%3A%20Falcon%20crossbar%2C%20sound%20and%20DSP&In-Reply-To=%3C4AB14D76.2000205%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000701.html">
+   <LINK REL="Next"  HREF="000706.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [info] : Falcon crossbar, sound and DSP</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Binfo%5D%20%3A%20Falcon%20crossbar%2C%20sound%20and%20DSP&In-Reply-To=%3C4AB14D76.2000205%40free.fr%3E"
+       TITLE="[hatari-devel] [info] : Falcon crossbar, sound and DSP">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Wed Sep 16 22:41:26 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000701.html">[hatari-devel] [info] : Falcon crossbar, sound and DSP
+</A></li>
+        <LI>Next message: <A HREF="000706.html">[hatari-devel] [info] : Falcon crossbar, sound and DSP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#702">[ date ]</a>
+              <a href="thread.html#702">[ thread ]</a>
+              <a href="subject.html#702">[ subject ]</a>
+              <a href="author.html#702">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've just uploaded a first version.
+
+I've added crossbar.c to manage the falcon crossbar.
+I've removed the DSP access from dmaSnd.c
+I've reconnected the DSP to the crossbar in order not to loose falcon sound.
+But for now, it's really bad coded (it'll change very soon).
+
+I've added a new function into dmaSnd.c : DmaSnd_GetsoundFromDAC()
+With it, I'll receive the sound from the DAC connected to the crossbar.
+
+I had to change some things into int.c, iomemtab_falcon.c, 
+iomemtab_ste.c, ...
+
+Please, can you verify that I haven't broken anything in DMA sound in 
+Ste mode and in Falcon mode ?
+
+Thanks.
+
+With this first version, I'll be able to connect correctly the DSP and 
+the crossbar, take care of all the matrice parameters...
+
+I still have some work before the final release.
+
+Regards
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000701.html">[hatari-devel] [info] : Falcon crossbar, sound and DSP
+</A></li>
+	<LI>Next message: <A HREF="000706.html">[hatari-devel] [info] : Falcon crossbar, sound and DSP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#702">[ date ]</a>
+              <a href="thread.html#702">[ thread ]</a>
+              <a href="subject.html#702">[ subject ]</a>
+              <a href="author.html#702">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

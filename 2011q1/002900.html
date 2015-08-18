@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Higher precision when generating samples -&gt; use	nanosleep
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Higher%20precision%20when%20generating%20samples%20-%3E%20use%0A%09nanosleep&In-Reply-To=%3C201101262332.24357.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002897.html">
+   <LINK REL="Next"  HREF="002903.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Higher precision when generating samples -&gt; use	nanosleep</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Higher%20precision%20when%20generating%20samples%20-%3E%20use%0A%09nanosleep&In-Reply-To=%3C201101262332.24357.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Higher precision when generating samples -&gt; use	nanosleep">oak at helsinkinet.fi
+       </A><BR>
+    <I>Wed Jan 26 22:32:24 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002897.html">[hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+</A></li>
+        <LI>Next message: <A HREF="002903.html">[hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2900">[ date ]</a>
+              <a href="thread.html#2900">[ thread ]</a>
+              <a href="subject.html#2900">[ subject ]</a>
+              <a href="author.html#2900">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 26 tammikuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Regarding SDL, I think some part of it are just not up to date to what
+</I>&gt;<i> recent OS/kernel can do nowadays. The fact that they don't provide a
+</I>&gt;<i> finer granularity than 100 ms doesn't mean it's not safe/achievable.
+</I>
+Sorry, I accidentally wrote its API has 100Hz accuracy, but it of course is
+1000Hz as its in ms.  I.e. SDL granularity is 1ms.
+
+
+&gt;<i> If possible and nanosleep is ok on a machine, it will be better to
+</I>&gt;<i> alternate between 16.66 ms and 16.67 to emulate a 16.66666... ms delay
+</I>&gt;<i> (60 Hz), than to alternate between 16 ms and 17 ms to also emulate
+</I>&gt;<i> 16.6666 ms delay.
+</I>
+Well, any process/thread (like X server, composite manager, SDL sound thread
+etc. doing what Hatari asks them to do) will probably take at least 1ms of
+time.  And then there's the monitor sync to consider...
+
+While using nanosleep() isn't much extra CMake &amp; C-code, I don't think it's
+going to help at all with the US TOS sound delay.  That delay is in several
+hundreds of ms, SDL having &quot;just&quot; 1ms accuracy cannot be a cause for that.
+
+
+
+On keskiviikko 26 tammikuu 2011, Mickael Pointier wrote:
+&gt;<i> The two points to consider are of course the frequency
+</I>&gt;<i> of the timer, but also the granularity, and the cost of the timer call.
+</I>
+The SDL functions do minimal work, the only issue is that they round
+values to milliseconds:
+------- SDL v1.2.14 --------
+Uint32 SDL_GetTicks (void)
+{
+#if HAVE_CLOCK_GETTIME
+        Uint32 ticks;
+        struct timespec now;
+        clock_gettime(CLOCK_MONOTONIC,&amp;now);
+        ticks=(now.tv_sec-start.tv_sec)*1000+(now.tv_nsec-
+start.tv_nsec)/1000000;
+        return(ticks);
+#else
+        Uint32 ticks;
+        struct timeval now;
+        gettimeofday(&amp;now, NULL);
+        ticks=(now.tv_sec-start.tv_sec)*1000+(now.tv_usec-
+start.tv_usec)/1000;
+        return(ticks);
+#endif
+}
+-----------------------------
+
+(Why it prefers clock_gettime() is it being monotonic I think, clock
+corrections don't affect that.)
+
+-----------------------------
+void SDL_Delay (Uint32 ms)
+{
+#if SDL_THREAD_PTH
+        pth_time_t tv;
+        tv.tv_sec  =  ms/1000;
+        tv.tv_usec = (ms%1000)*1000;
+        pth_nap(tv);
+#else
+        int was_error;
+
+#if HAVE_NANOSLEEP
+        struct timespec elapsed, tv;
+#else
+        struct timeval tv;
+        Uint32 then, now, elapsed;
+#endif
+
+        /* Set the timeout interval */
+#if HAVE_NANOSLEEP
+        elapsed.tv_sec = ms/1000;
+        elapsed.tv_nsec = (ms%1000)*1000000;
+#else
+       then = SDL_GetTicks();
+#endif
+        do {
+                errno = 0;
+
+#if HAVE_NANOSLEEP
+                tv.tv_sec = elapsed.tv_sec;
+                tv.tv_nsec = elapsed.tv_nsec;
+                was_error = nanosleep(&amp;tv, &amp;elapsed);
+#else
+                /* Calculate the time interval left (in case of interrupt) 
+*/
+                now = SDL_GetTicks();
+                elapsed = (now-then);
+                then = now;
+                if ( elapsed &gt;= ms ) {
+                        break;
+                }
+                ms -= elapsed;
+                tv.tv_sec = ms/1000;
+                tv.tv_usec = (ms%1000)*1000;
+
+                was_error = select(0, NULL, NULL, NULL, &amp;tv);
+#endif /* HAVE_NANOSLEEP */
+       } while ( was_error &amp;&amp; (errno == EINTR) );
+#endif /* SDL_THREAD_PTH */
+}
+----------------------
+
+
+&gt;<i> On Windows I tend to use QueryPerformanceCounter /
+</I>&gt;<i> QueryPerformanceFrequency, not only because it has a higher frequency
+</I>&gt;<i> than the standard millisecond timer, but also because it has a way lower
+</I>&gt;<i> granularity: You are guaranteed that if you call QueryperformanceCounter
+</I>&gt;<i> twice in a row, you get two different values, which is nice for
+</I>&gt;<i> profiling or measuring very short events.
+</I>&gt;<i> 
+</I>&gt;<i> Not sure for other systems.
+</I>
+The mentioned standard POSIX functions use highest available HW
+accuracy when kernel has been configured with high resolution timers
+support.  About everything should have it nowadays:
+$ grep -e cpu -e clock -e resolution /proc/timer_list 
+cpu: 0
+ clock 0:
+  .resolution: 1 nsecs
+ clock 1:
+  .resolution: 1 nsecs
+cpu: 1
+ clock 0:
+  .resolution: 1 nsecs
+ clock 1:
+  .resolution: 1 nsecs
+cpu: 2
+ clock 0:
+  .resolution: 1 nsecs
+ clock 1:
+  .resolution: 1 nsecs
+cpu: 3
+ clock 0:
+  .resolution: 1 nsecs
+ clock 1:
+  .resolution: 1 nsecs
+
+
+That's not much help for non-realtime process though when there are other
+processes running in the system.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002897.html">[hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+</A></li>
+	<LI>Next message: <A HREF="002903.html">[hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2900">[ date ]</a>
+              <a href="thread.html#2900">[ thread ]</a>
+              <a href="subject.html#2900">[ subject ]</a>
+              <a href="author.html#2900">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

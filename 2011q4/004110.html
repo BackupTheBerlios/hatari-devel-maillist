@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Old vs New CPU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Old%20vs%20New%20CPU&In-Reply-To=%3C4E9DF033.5030107%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004109.html">
+   <LINK REL="Next"  HREF="004111.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Old vs New CPU</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Old%20vs%20New%20CPU&In-Reply-To=%3C4E9DF033.5030107%40free.fr%3E"
+       TITLE="[hatari-devel] Old vs New CPU">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Oct 18 23:31:31 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004109.html">[hatari-devel] Fullscreen on Lion crashes
+</A></li>
+        <LI>Next message: <A HREF="004111.html">[hatari-devel] Old vs New CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4110">[ date ]</a>
+              <a href="thread.html#4110">[ thread ]</a>
+              <a href="subject.html#4110">[ subject ]</a>
+              <a href="author.html#4110">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Mikro,
+
+A few more questions, as I'm digging deeper in 68030 cycles :
+
+Do you manage to compile the falcon's cycles table from my file ?
+
+Are head and tail values of the 68030 useful for Falcon (I mean if every 
+instruction takes a multiplier of 4 cycles to execute) ?
+Or for a given instruction, should I use the cycle value you'll give me 
+and them add/substract the head/tails of the precedent instruction ?
+
+Let's take an imaginary example:
+
+AND Dn,EA               0    2    3(0/0/1)    4(0/1/1)
+MOVEQ #(data),Dn        2    0    5(0/0/0)    2(0/1/0)
+OR Dn,EA                0    1    3(0/0/1)    4(0/1/1)
+
+When I execute these 3 instructions under hatari, should I get :
+
+and :      3 cycles ---&gt; 4 cycles
+moveq : 5 cycles ---&gt; 8 cycles
+or :         3 cycles ---&gt; 4 cycles
+
+Total : 16 cycles (and no use of head/tail)
+
+
+Or :
+
+
+and : 3 cycles
+moveq : 5-2 cycles = 3 cycles    /* (-2 for the tail/head min = 2) */
+or : 3 cycles
+
+Total : 9 cycles (use of head/tail)
+
+
+Or :
+
+
+and : 3 cycles  --&gt; 4 cycles
+moveq : 5-2 cycles = 3 cycles ---&gt; 4 cycles
+or : 3 cycles  --&gt; 4 cycles
+
+Total : 12 cycles (use of head/tail + compute cycles to upper 4 cycles 
+value)
+
+
+Or something else ?
+
+
+
+Last question : do you know where I can find an algo that would explain 
+how to compute the exact number of cycles taken by a div ?
+
+Regards
+
+Laurent
+
+
+
+Le 30/09/2011 11:11, Miro Krop&#225;c(ek a &#233;crit :
+&gt;<i> Hello Laurent,
+</I>&gt;<i>
+</I>&gt;<i> first, my huge apologies, I totally overlooked the file you had sent 
+</I>&gt;<i> me! So my answer is yes, the format is ok, if you manage to create 
+</I>&gt;<i> complete text (adressing modes etc) from the Motorola PDF (be sure you 
+</I>&gt;<i> use this as a source, various text files floating around are not 
+</I>&gt;<i> always 100% correct!), hopefully I manage to make a script which 
+</I>&gt;<i> recalculates the numbers for Falcon timing.
+</I>&gt;<i>
+</I>&gt;<i>     For example, could you explain me in a few words how to read the
+</I>&gt;<i>     numbers from the file I've sent you ?
+</I>&gt;<i>
+</I>&gt;<i>     cache     : x(y,z,t)
+</I>&gt;<i>     non cache : a(b,c,d)
+</I>&gt;<i>
+</I>&gt;<i>     how should I use these x y z t values ?
+</I>&gt;<i>
+</I>&gt;<i>     And what are the 2 numbers before ?
+</I>&gt;<i>
+</I>&gt;<i> Those two numbers (not included in your example, right?) are head and 
+</I>&gt;<i> tail values, i.e. how much the instruction overlap with the next and 
+</I>&gt;<i> previous one. For example:
+</I>&gt;<i>
+</I>&gt;<i> i1: cycles = 3, h = 2, tail = 1
+</I>&gt;<i> i2: cycles = 4, h = 2, tail = 0
+</I>&gt;<i> i3: cycles = 2, h = 1, tail = 0
+</I>&gt;<i>
+</I>&gt;<i> in normal case, the instructions would take 3 + 4 + 2 = 9 cycles. But 
+</I>&gt;<i> we see, there is some overlapping: tail1 and head2 cut down 1 cycle 
+</I>&gt;<i> (min(tail[n-1],head[n])) but unfortunately, tail2 and head3 cut down 
+</I>&gt;<i> zero cycles (min(tail2,head3) = min(0,1) = 0). So thanks to the 
+</I>&gt;<i> tail/head mechanism, we've saved 1 cycle and the overall execution 
+</I>&gt;<i> time is going to be 8 cycles.
+</I>&gt;<i>
+</I>&gt;<i> y, z, t and b, c, d values represent the bus activity: data read, 
+</I>&gt;<i> instruction prefetch and data write. Cache and non-cache means if the 
+</I>&gt;<i> value is already in the data or instruction cache. Obvious case is the 
+</I>&gt;<i> instruction prefetch, once it is in a cache, it takes zero cycles.
+</I>&gt;<i>
+</I>&gt;<i> The whole idea / purpose of this conversion we are talking about is to 
+</I>&gt;<i> calculate the number of internal cycles (i.e. the 'raw' CPU activity, 
+</I>&gt;<i> without any bus access). We get this number as:
+</I>&gt;<i>
+</I>&gt;<i> (total number of cycles) - (number of bus activity cycles) = (number 
+</I>&gt;<i> of internal cycles)
+</I>&gt;<i>
+</I>&gt;<i> Once we have this number (internal cycles), we can re-calculate the 
+</I>&gt;<i> bus activity (4 clock cycles for 1 bus cycle plus split every 
+</I>&gt;<i> instruction for byte+word and long access, since these numbers differ 
+</I>&gt;<i> on Falcon 16-bit bus).
+</I>&gt;<i>
+</I>&gt;<i> Btw all this math is nicely explained in 68030 UM, the paragraph above 
+</I>&gt;<i> specially on a page 11-25. Plus, I've tried to explain this 
+</I>&gt;<i> calculation also in my document about this, I'm so sorry it isn't that 
+</I>&gt;<i> clear :)
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> MiKRO / Mystic Bytes
+</I>&gt;<i> <A HREF="http://mikro.atari.org">http://mikro.atari.org</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20111018/db1a908f/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20111018/db1a908f/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004109.html">[hatari-devel] Fullscreen on Lion crashes
+</A></li>
+	<LI>Next message: <A HREF="004111.html">[hatari-devel] Old vs New CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4110">[ date ]</a>
+              <a href="thread.html#4110">[ thread ]</a>
+              <a href="subject.html#4110">[ subject ]</a>
+              <a href="author.html#4110">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

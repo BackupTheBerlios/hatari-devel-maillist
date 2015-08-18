@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Avena : Sonolumineszenz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Avena%20%3A%20Sonolumineszenz&In-Reply-To=%3C200904192015.30738.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000275.html">
+   <LINK REL="Next"  HREF="000263.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Avena : Sonolumineszenz</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Avena%20%3A%20Sonolumineszenz&In-Reply-To=%3C200904192015.30738.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Avena : Sonolumineszenz">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Apr 19 19:15:30 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000275.html">[hatari-devel] [DSP] : New fixed uploaded
+</A></li>
+        <LI>Next message: <A HREF="000263.html">[hatari-devel] things sometimes not working and fast forwarding
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#262">[ date ]</a>
+              <a href="thread.html#262">[ thread ]</a>
+              <a href="subject.html#262">[ subject ]</a>
+              <a href="author.html#262">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+(CC'ing to list as the debugging information could be of interest to others
+too.)
+
+On Sunday 19 April 2009, Laurent Sallafranque wrote:
+&gt;<i> Actually, I'm searching 2 known bugs:
+</I>&gt;<i>
+</I>&gt;<i> 1 graphical bug in Hmmm
+</I>&gt;<i> 1 stack error in When Dreams Become Reality
+</I>&gt;<i>
+</I>&gt;<i> I wish they'll finish to debug the DSP ;)
+</I>
+I've been testing &quot;Built-in Obsolescence&quot; more and it's quite random how
+long it runs and whether it bombs at startup.  It works differently on
+different invocations with the same options.
+
+I tried using GCC -fstack-protector(-all) compile option to get a warning
+about (some) possible stack overwrites at run-time, see:
+<A HREF="http://en.wikipedia.org/wiki/Stack-smashing_protection#GCC_Stack-Smashing_Protector_.28ProPolice.29">http://en.wikipedia.org/wiki/Stack-smashing_protection#GCC_Stack-Smashing_Protector_.28ProPolice.29</A>
+
+But that didn't reveal anything.  Maybe it doesn't catch overwrites
+to global structures, only to function local (stack) structures.
+
+
+As you have a faster machine, you could try running Hatari under
+&quot;valgrind --tool=memcheck&quot; in case the DSP stuff corrupts Hatari internal
+(heap) memory.
+
+For that to work for detecting DSP stack overwrites you could allocate
+the DSP CPU structure dynamically (to heap) in dsp.c instead of it being
+a static structure and move the stack member to the end of the structure.
+
+Btw. if you do that change, Duma could also be used and it's much faster
+than Valgrind:
+	<A HREF="http://duma.sourceforge.net/">http://duma.sourceforge.net/</A>
+
+Like Valgrind, Duma is available in Debian.  Instead of showing an error
+backtrace, it causes the process to segfault at faulty access.  You can
+then use Gdb to debug the internal Hatari state.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000275.html">[hatari-devel] [DSP] : New fixed uploaded
+</A></li>
+	<LI>Next message: <A HREF="000263.html">[hatari-devel] things sometimes not working and fast forwarding
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#262">[ date ]</a>
+              <a href="thread.html#262">[ thread ]</a>
+              <a href="subject.html#262">[ subject ]</a>
+              <a href="author.html#262">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

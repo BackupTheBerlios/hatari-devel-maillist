@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100116214440.83570%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001246.html">
+   <LINK REL="Next"  HREF="001255.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Thomas H.</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100116214440.83570%40gmx.net%3E"
+       TITLE="[hatari-devel] CMake build system">th.huth at gmx.de
+       </A><BR>
+    <I>Sat Jan 16 22:44:40 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001246.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001255.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1247">[ date ]</a>
+              <a href="thread.html#1247">[ thread ]</a>
+              <a href="subject.html#1247">[ subject ]</a>
+              <a href="author.html#1247">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Datum: Sat, 16 Jan 2010 22:36:00 +0100
+</I>&gt;<i> Von: Christer Solskogen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">christer.solskogen at gmail.com</A>&gt;
+</I>
+&gt;<i> On Sat, Jan 16, 2010 at 9:28 PM, Thomas H. &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">th.huth at gmx.de</A>&gt; wrote:
+</I>&gt;<i> &gt;&gt; Datum: Sat, 16 Jan 2010 20:57:42 +0100
+</I>&gt;<i> &gt;&gt; Von: Christer Solskogen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">christer.solskogen at gmail.com</A>&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Error report!
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; tenderheart:hatari solskogen$ ./configure
+</I>&gt;<i> &gt;&gt; CMake Error at cmake/FindReadline.cmake:11
+</I>&gt;<i> &gt;&gt; (FIND_PACKAGE_HANDLE_STANDARD_ARGS):
+</I>&gt;<i> &gt;&gt; &#160; Unknown CMake command &quot;FIND_PACKAGE_HANDLE_STANDARD_ARGS&quot;.
+</I>&gt;<i> &gt;&gt; Call Stack (most recent call first):
+</I>&gt;<i> &gt;&gt; &#160; CMakeLists.txt:34 (find_package)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks for the feedback, Christer!
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Could you please check which version of CMake you are using?
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> Sure thing! cmake version 2.8.0
+</I>
+Ok, I am using CMake version 2.6, so this shouldn't be a problem...
+
+Hmm, could you try adding the following line somewhere before the FIND_PACKAGE_HANDLE_STANDARD_ARGS line in cmake/FindReadline.cmake:
+
+INCLUDE(FindPackageHandleStandardArgs)
+
+I hope that fixes this issue...
+
+ Thomas
+
+-- 
+Preisknaller: GMX DSL Flatrate f&#252;r nur 16,99 Euro/mtl.!
+<A HREF="http://portal.gmx.net/de/go/dsl02">http://portal.gmx.net/de/go/dsl02</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001246.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001255.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1247">[ date ]</a>
+              <a href="thread.html#1247">[ thread ]</a>
+              <a href="subject.html#1247">[ subject ]</a>
+              <a href="author.html#1247">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

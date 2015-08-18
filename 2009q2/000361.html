@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP breakpoints and single-stepping
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20breakpoints%20and%20single-stepping&In-Reply-To=%3C4A2D64B6.6030701%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000356.html">
+   <LINK REL="Next"  HREF="000326.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP breakpoints and single-stepping</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20breakpoints%20and%20single-stepping&In-Reply-To=%3C4A2D64B6.6030701%40free.fr%3E"
+       TITLE="[hatari-devel] DSP breakpoints and single-stepping">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Jun  8 21:21:26 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000356.html">[hatari-devel] DSP breakpoints and single-stepping
+</A></li>
+        <LI>Next message: <A HREF="000326.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#361">[ date ]</a>
+              <a href="thread.html#361">[ thread ]</a>
+              <a href="subject.html#361">[ subject ]</a>
+              <a href="author.html#361">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>No, no, I'm working on Linux (the lattest Kubuntu).
+
+regards,
+
+
+Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Hm.  Seems like something is mangling line endings.
+</I>&gt;<i> You're not by any chance using Hatari on Windows or Mac?
+</I>&gt;<i>
+</I>&gt;<i> (on a version where strtok/readline/fgets don't work properly?)
+</I>&gt;<i>
+</I>&gt;<i> I get following:
+</I>&gt;<i> ----------------------------
+</I>&gt;<i> You have entered debug mode. Type c to continue emulation, h for help.
+</I>&gt;<i>   
+</I>&gt;&gt;<i> h
+</I>&gt;&gt;<i>     
+</I>&gt;<i> Available commands:
+</I>&gt;<i>      dspbreak (db) : toggle or list DSP breakpoints
+</I>&gt;<i>     dspdisasm (dd) : disassemble DSP code
+</I>&gt;<i>    dspmemdump (dm) : dump DSP memory
+</I>&gt;<i>        dspreg (dr) : read/write DSP registers
+</I>&gt;<i>       dspcont (dc) : continue emulation / DSP single-stepping
+</I>&gt;<i>        disasm ( d) : disassemble from PC, or given address
+</I>&gt;<i>        cpureg ( r) : dump register values or set register to value
+</I>&gt;<i>         break ( b) : toggle or list CPU breakpoints
+</I>&gt;<i>       memdump ( m) : dump memory
+</I>&gt;<i>      memwrite ( w) : write bytes to memory
+</I>&gt;<i>       logfile ( f) : open or close log file
+</I>&gt;<i>       loadbin ( l) : load a file into memory
+</I>&gt;<i>       savebin ( s) : save memory to a file
+</I>&gt;<i>        setopt ( o) : set Hatari command line options
+</I>&gt;<i>          cont ( c) : continue emulation / CPU single-stepping
+</I>&gt;<i>          quit ( q) : quit emulator
+</I>&gt;<i>          help ( h) : print help
+</I>&gt;<i> Adresses may be given as a range e.g. fc0000-fc0100
+</I>&gt;<i> All values in hexadecimal.
+</I>&gt;<i> ----------------------------
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i>
+</I>&gt;<i> On Monday 08 June 2009, Laurent Sallafranque wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> In fact, no debug command seems to work for me !
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> regards,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hello,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I wanted to do some tests with the lattest debug breakpoints.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Help function seems not to work anymore in debug mode :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Laurent
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> ----------------------------------------------------------------------
+</I>&gt;&gt;&gt;<i> You have entered debug mode. Type c to continue emulation, h for help.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>  &gt; h
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Command 'h
+</I>&gt;&gt;&gt;<i> ' not found.
+</I>&gt;&gt;&gt;<i> Use 'help' to view a list of available commands.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>  &gt; help
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Command 'help
+</I>&gt;&gt;&gt;<i> ' not found.
+</I>&gt;&gt;&gt;<i> Use 'help' to view a list of available commands.
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000356.html">[hatari-devel] DSP breakpoints and single-stepping
+</A></li>
+	<LI>Next message: <A HREF="000326.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#361">[ date ]</a>
+              <a href="thread.html#361">[ thread ]</a>
+              <a href="subject.html#361">[ subject ]</a>
+              <a href="author.html#361">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP external Memory timings fixed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20external%20Memory%20timings%20fixed&In-Reply-To=%3C4D2CCDA6.6070900%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002763.html">
+   <LINK REL="Next"  HREF="002765.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP external Memory timings fixed</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20external%20Memory%20timings%20fixed&In-Reply-To=%3C4D2CCDA6.6070900%40free.fr%3E"
+       TITLE="[hatari-devel] DSP external Memory timings fixed">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Jan 11 22:37:42 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002763.html">[hatari-devel] DSP external Memory timings fixed
+</A></li>
+        <LI>Next message: <A HREF="002765.html">[hatari-devel] DSP external Memory timings fixed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2764">[ date ]</a>
+              <a href="thread.html#2764">[ thread ]</a>
+              <a href="subject.html#2764">[ subject ]</a>
+              <a href="author.html#2764">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>No, the 2nd patch doesn't change the problem with Aura Illusion Demo.
+
+It's more Strange, I explain :
+
+I've started again from the latest Mercurial sources.
+
+I've launched 5 times illusion demo (I quit completely hatari between 
+each try).
+
+- 3 times, sound was horrible (I quit and reload hatari without waiting).
+- 1 time, sound was &quot;nearly perfect&quot; (some very little glitches 
+sometimes), demo freezed near the beginning (flat 3d cubes)
+- 1 time, sound was perfect (no glitches). I can see the demo until the 
+3D Gouraud cubes (much more &quot;demo time&quot; than before).
+
+So, I run the same program under hatari (without recompiling anything) 
+and it doesn't react the same way each time.
+
+I don't know what to think aboout this.
+
+(My second patch seemed better with Eko demos, I'll reverify again by 
+launching them 5 or 6 times with and without patch)
+
+Regards
+
+Laurent
+
+
+
+Le 11/01/2011 22:20, Laurent Sallafranque a &#233;crit :
+&gt;<i>
+</I>&gt;&gt;<i> Aura's &quot;E.X.Illusion&quot;?  Although later in the demo there's 40% free CPU,
+</I>&gt;&gt;<i> this has pretty horrible sound even tthen and eventually the demo gets
+</I>&gt;&gt;<i> (still) stuck for me.
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Yes, I agree for the horrible sound.
+</I>&gt;<i> SO, PLEASE, try my second patch and tell me what you think of it .
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002763.html">[hatari-devel] DSP external Memory timings fixed
+</A></li>
+	<LI>Next message: <A HREF="002765.html">[hatari-devel] DSP external Memory timings fixed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2764">[ date ]</a>
+              <a href="thread.html#2764">[ thread ]</a>
+              <a href="subject.html#2764">[ subject ]</a>
+              <a href="author.html#2764">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

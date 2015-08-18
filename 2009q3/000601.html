@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger breakpoints for Hatari variables too?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20breakpoints%20for%20Hatari%20variables%20too%3F&In-Reply-To=%3C20090815105142.33021617%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000562.html">
+   <LINK REL="Next"  HREF="000621.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger breakpoints for Hatari variables too?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20breakpoints%20for%20Hatari%20variables%20too%3F&In-Reply-To=%3C20090815105142.33021617%40phineus%3E"
+       TITLE="[hatari-devel] Debugger breakpoints for Hatari variables too?">huth at users.berlios.de
+       </A><BR>
+    <I>Sat Aug 15 10:51:42 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000562.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+        <LI>Next message: <A HREF="000621.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#601">[ date ]</a>
+              <a href="thread.html#601">[ thread ]</a>
+              <a href="subject.html#601">[ subject ]</a>
+              <a href="author.html#601">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 9 Aug 2009 22:35:05 +0200 (CEST)
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+
+&gt;<i> One remark, from my use, I think it's better to avoid scrolling and
+</I>&gt;<i> to display as little lines as possible in the terminal, so I think it
+</I>&gt;<i> could be more efficient when using 'v' to replace :
+</I>&gt;<i> 
+</I>&gt;<i> &gt; v 127
+</I>&gt;<i> Value '127' is in the supported number bases:
+</I>&gt;<i> - bin: %1111111
+</I>&gt;<i> - dec: #127
+</I>&gt;<i> - hex: $7f
+</I>&gt;<i> 
+</I>&gt;<i> with :
+</I>&gt;<i> 
+</I>&gt;<i> Value '127' is : %1111111 (bin)  #127 (dec)  $7f (hex)
+</I>&gt;<i> 
+</I>&gt;<i> That is, everything on one single line.
+</I>
+Yes, that would be nicer.
+
+By the way, I've just found another little &quot;bug&quot; :
+
+&gt;<i> v 0
+</I>Value '0' is in the supported number bases:
+- bin: %
+- dec: #0
+- hex: $0
+
+The binary value is only a '%' character in that case, but should
+be '%0' instead.
+
+&gt;<i> &gt; Do you have a proposal patch for debugui.c?  I'm not sure what it
+</I>&gt;<i> &gt; should look like...
+</I>&gt;<i> 
+</I>&gt;<i> Sthg like :
+</I>&gt;<i> 
+</I>&gt;<i> PC=xx  VBL=xx FrameCycles=xx HBL=xx LineCycles=xx
+</I>&gt;<i> 
+</I>&gt;<i> Rather simple, but I think in the end people that use the debugger
+</I>&gt;<i> will care for immediate visibility of the values, so avoiding &quot;words&quot;
+</I>&gt;<i> seems more efficient.
+</I>&gt;<i> 
+</I>&gt;<i> Just my preferences anyway, perhaps others have different ideas ?
+</I>
+I agree with you, a one-line statement sounds best.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000562.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+	<LI>Next message: <A HREF="000621.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#601">[ date ]</a>
+              <a href="thread.html#601">[ thread ]</a>
+              <a href="subject.html#601">[ subject ]</a>
+              <a href="author.html#601">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Troubles compiling latest Hatari with new avi support
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%20support&In-Reply-To=%3Calpine.LMD.2.00.0910102145420.30794%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000820.html">
+   <LINK REL="Next"  HREF="000823.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Troubles compiling latest Hatari with new avi support</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%20support&In-Reply-To=%3Calpine.LMD.2.00.0910102145420.30794%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Troubles compiling latest Hatari with new avi support">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Oct 10 21:48:36 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000820.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+        <LI>Next message: <A HREF="000823.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#821">[ date ]</a>
+              <a href="thread.html#821">[ thread ]</a>
+              <a href="subject.html#821">[ subject ]</a>
+              <a href="author.html#821">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 10 Oct 2009, Thomas Huth wrote:
+
+&gt;&gt;<i> &gt;&gt; More over, the &quot;Stop recording&quot; button in the pref panel doesn't
+</I>&gt;&gt;<i> &gt;&gt; work for me (hang hatri also).
+</I>&gt;<i>
+</I>&gt;<i> That buttons does also not work on Linux here. I can start recording,
+</I>&gt;<i> but as soon as I try to disable recording and to leave the GUI, I get
+</I>&gt;<i> this segmentation fault here:
+</I>&gt;<i>
+</I>&gt;<i> Program received signal SIGSEGV, Segmentation fault.
+</I>&gt;<i> [Switching to Thread 0x48027cc0 (LWP 6023)]
+</I>&gt;<i> _IO_ftell (fp=0x0) at ioftell.c:40
+</I>&gt;<i> 40	ioftell.c: No such file or directory.
+</I>&gt;<i> 	in ioftell.c
+</I>&gt;<i> (gdb) bt
+</I>&gt;<i> #0  _IO_ftell (fp=0x0) at ioftell.c:40
+</I>&gt;<i> #1  0x1000524c in AviRecordVideoStream () at avi_record.c:515
+</I>&gt;<i> #2  0x10040c24 in Video_InterruptHandler_VBL () at video.c:2501
+</I>&gt;<i> #3  0x1004ba00 in m68k_go (may_quit=&lt;value optimized out&gt;) at newcpu.c:1741
+</I>&gt;<i> #4  0x10029368 in M68000_Start () at m68000.c:224
+</I>&gt;<i> #5  0x10029e98 in main (argc=1, argv=&lt;value optimized out&gt;) at main.c:716
+</I>&gt;<i>
+</I>&gt;<i> Any ideas?
+</I>
+I will have a look ; from the trace it seems avi recording is not 
+completly stopped and we try to save a video frame in a closed file 
+handle.
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000820.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+	<LI>Next message: <A HREF="000823.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#821">[ date ]</a>
+              <a href="thread.html#821">[ thread ]</a>
+              <a href="subject.html#821">[ subject ]</a>
+              <a href="author.html#821">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

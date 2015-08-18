@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Unable to compile Hatari.App
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Unable%20to%20compile%20Hatari.App&In-Reply-To=%3C4ACCEAE7.6050602%40wanadoo.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000781.html">
+   <LINK REL="Next"  HREF="000784.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Unable to compile Hatari.App</H1>
+    <B>Jerome Vernet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Unable%20to%20compile%20Hatari.App&In-Reply-To=%3C4ACCEAE7.6050602%40wanadoo.fr%3E"
+       TITLE="[hatari-devel] Unable to compile Hatari.App">vernet.jerome at wanadoo.fr
+       </A><BR>
+    <I>Wed Oct  7 21:24:23 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000781.html">[hatari-devel] Unable to compile Hatari.App
+</A></li>
+        <LI>Next message: <A HREF="000784.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#783">[ date ]</a>
+              <a href="thread.html#783">[ thread ]</a>
+              <a href="subject.html#783">[ subject ]</a>
+              <a href="author.html#783">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Christer Solskogen a &#233;crit :
+&gt;<i> Although I mostly use hatari from command line on Mac OS X, I tried to
+</I>&gt;<i> compile the latest sources from mercurial with the Xcode IDE.
+</I>&gt;<i> I have no problems to compile hatari from command line, so I guess
+</I>&gt;<i> that there is something wrong with the Hatari.xcodeproj rather than
+</I>&gt;<i> the source.
+</I>&gt;<i>
+</I>&gt;<i> Most of the errors is include files that Xcode is not able to find
+</I>&gt;<i> (they are marked red) - I have created a patch, but beware I'm far
+</I>&gt;<i> away from beeing a developer so please-PLEASE recheck and recheck
+</I>&gt;<i> again that is alright. The patch will not fully work on 10.6 as it
+</I>&gt;<i> fails with missing symbols:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>Don't forget to add all the file added recently -crossbar.c, 
+microphone.c,...-to the project (it is outdated on the mercurial). I 
+also need to add path to include some wich was moved (debug.h).
+
+I have an updated XCode Project, but doesn't know how to send it.
+
+I've also added to the MacOsX Project a french ressources files and the 
+latest sound preferences changes.
+
+Jerome
+
+&gt;<i> Undefined symbols:
+</I>&gt;<i>   &quot;_Crossbar_SrcControler_ReadWord&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_TrackRecSelect_WriteByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_DebugCpu_MemorySnapShot_Capture&quot;, referenced from:
+</I>&gt;<i>       _DebugUI_MemorySnapShot_Capture in debugui.o
+</I>&gt;<i>   &quot;_Crossbar_FreqDivInt_WriteByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_CodecInput_WriteByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_DmaTrckCtrl_WriteByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_DmaCtrlReg_WriteWord&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_DebugCpu_Init&quot;, referenced from:
+</I>&gt;<i>       _DebugUI in debugui.o
+</I>&gt;<i>   &quot;_Crossbar_OutputReduct_WriteWord&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_SoundModeCtrl_ReadByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_FreqDivInt_ReadByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_InputAmp_WriteByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_BufferInter_ReadWord&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_DebugCpu_GetRegisterAddress&quot;, referenced from:
+</I>&gt;<i>       _BreakCond_ParseRegister in breakcond.o
+</I>&gt;<i>   &quot;_Crossbar_DmaCtrlReg_ReadWord&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_DstControler_WriteWord&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_GenerateSamples&quot;, referenced from:
+</I>&gt;<i>       _Sound_Update in sound.o
+</I>&gt;<i>   &quot;_Crossbar_TrackRecSelect_ReadByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_BufferInter_WriteWord&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_AdcInput_ReadByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_FrameCountMed_ReadByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_AdcInput_WriteByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_InterruptHandler_ADCXmit&quot;, referenced from:
+</I>&gt;<i>       _pIntHandlerFunctions in int.o
+</I>&gt;<i>   &quot;_Crossbar_FrameCountLow_ReadByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_FreqDivExt_ReadByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_SoundModeCtrl_WriteByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_Reset&quot;, referenced from:
+</I>&gt;<i>       _Reset_ST in reset.o
+</I>&gt;<i>   &quot;_Crossbar_InterruptHandler_DspXmit&quot;, referenced from:
+</I>&gt;<i>       _pIntHandlerFunctions in int.o
+</I>&gt;<i>   &quot;_Crossbar_OutputReduct_ReadWord&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_CodecStatus_ReadWord&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_DebugCpu_SetDebugging&quot;, referenced from:
+</I>&gt;<i>       _DebugUI in debugui.o
+</I>&gt;<i>   &quot;_Crossbar_DstControler_ReadWord&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_InputAmp_ReadByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_nCbar_DmaSoundControl&quot;, referenced from:
+</I>&gt;<i>       _MFP_GPIP_ReadByte in mfp.o
+</I>&gt;<i>   &quot;_Crossbar_FrameCountHigh_ReadByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_FreqDivExt_WriteByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_CodecInput_ReadByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_DebugCpu_Check&quot;, referenced from:
+</I>&gt;<i>       _do_specialties in newcpu.o
+</I>&gt;<i>   &quot;_Crossbar_CodecStatus_WriteWord&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_InterruptHandler_DmaSound&quot;, referenced from:
+</I>&gt;<i>       _pIntHandlerFunctions in int.o
+</I>&gt;<i>   &quot;_calculate&quot;, referenced from:
+</I>&gt;<i>       _DebugUI_Evaluate in debugui.o
+</I>&gt;<i>   &quot;_Crossbar_SrcControler_WriteWord&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i>   &quot;_Crossbar_DmaTrckCtrl_ReadByte&quot;, referenced from:
+</I>&gt;<i>       _IoMemTable_Falcon in ioMemTabFalcon.o
+</I>&gt;<i> ld: symbol(s) not found
+</I>&gt;<i> collect2: ld returned 1 exit status
+</I>&gt;<i> ** BUILD FAILED **
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The following build commands failed:
+</I>&gt;<i> Hatari:
+</I>&gt;<i>         Ld /Users/solskogen/source/hatari/build/Development/Hatari.app/Contents/MacOS/Hatari
+</I>&gt;<i> normal x86_64
+</I>&gt;<i> (1 failure)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Please note that I'm using Mac OS X 10.6 (Snow Leopard) - And it seems
+</I>&gt;<i> like there will and can be problems linking libsdl-framework since
+</I>&gt;<i> 10.6 is Intel only.
+</I>&gt;<i>   
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>   
+</I>
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000781.html">[hatari-devel] Unable to compile Hatari.App
+</A></li>
+	<LI>Next message: <A HREF="000784.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#783">[ date ]</a>
+              <a href="thread.html#783">[ thread ]</a>
+              <a href="subject.html#783">[ subject ]</a>
+              <a href="author.html#783">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

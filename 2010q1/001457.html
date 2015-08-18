@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Whip is working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Whip%20is%20working&In-Reply-To=%3C4B7477E4.3000402%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001401.html">
+   <LINK REL="Next"  HREF="001405.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Whip is working</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Whip%20is%20working&In-Reply-To=%3C4B7477E4.3000402%40free.fr%3E"
+       TITLE="[hatari-devel] Whip is working">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Thu Feb 11 22:34:28 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001401.html">[hatari-devel] Whip is working
+</A></li>
+        <LI>Next message: <A HREF="001405.html">[hatari-devel] FW:  Issue with current directory in file selector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1457">[ date ]</a>
+              <a href="thread.html#1457">[ thread ]</a>
+              <a href="subject.html#1457">[ subject ]</a>
+              <a href="author.html#1457">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've just uploaded some more code for the crossbar.
+
+ADC --&gt; DAC direct connexion was missing. It is now correctly taken into 
+account.
+
+At least Whip and Audio Fun Machine are now playing sound.
+Perhaps some more programs that use direct ADC-&gt;DAC connexion are 
+working too.
+
+For me, there are still 4 points to code to finish the crossbar emulation:
+
+- increase sound quality
+
+- take into account the &quot;crossbar size of datas&quot; when transfering datas 
+from SSI to crossbar.
+  (DSP size can be 16bits and crossbar size 8bits, which means that SSI 
+acquitment must be active after 2 SSI clocks and the data must be 
+partially read the first time) (to keep the correct speed)
+
+- add the sound volume for ADC and DAC. Is there a formula or something 
+to add 3db or reduce sound by 3 db or should I just mul (or div) sound 
+by a constant ?
+
+- optimize the code (when everything is working well) ;)
+
+Regards
+
+Laurent
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001401.html">[hatari-devel] Whip is working
+</A></li>
+	<LI>Next message: <A HREF="001405.html">[hatari-devel] FW:  Issue with current directory in file selector
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1457">[ date ]</a>
+              <a href="thread.html#1457">[ thread ]</a>
+              <a href="subject.html#1457">[ subject ]</a>
+              <a href="author.html#1457">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

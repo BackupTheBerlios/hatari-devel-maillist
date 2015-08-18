@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new support for avi recording
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Calpine.LMD.2.00.0910072336150.17178%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000783.html">
+   <LINK REL="Next"  HREF="000790.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new support for avi recording</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3Calpine.LMD.2.00.0910072336150.17178%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] new support for avi recording">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Oct  7 23:57:22 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000783.html">[hatari-devel] Unable to compile Hatari.App
+</A></li>
+        <LI>Next message: <A HREF="000790.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#784">[ date ]</a>
+              <a href="thread.html#784">[ thread ]</a>
+              <a href="subject.html#784">[ subject ]</a>
+              <a href="author.html#784">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+Hello,
+
+after quite some time, I finally completed the avi recording support I 
+started 2 months ago.
+
+This mode will create some video+audio recording of Hatari with as little 
+overhead as possible.
+
+Although the avi support is modular and could be extended with support for 
+other audio/video codecs, I chose to use only some lossless and low cpu 
+codecs. This way, you can record a game while playing it, without 
+suffering slowdown.
+
+Sound is saved as 16 bits stereo pcm (same as the wav recording option).
+
+Video can be saved as uncompressed 24 bits BMP images or as PNG images.
+No frames are skipped, so you will get a full 50 or 60 Hz video in the 
+end.
+
+The BMP format uses very few cpu but requires a lot of disk space and some 
+fast disk to be able to record all the frames.
+
+The PNG format uses a compression level of 4, which gives a good tradeoff 
+between disk space and cpu usage.
+
+The following options were added :
+--avirecord : immediatly starts recording (useful when restoring a
+   memory snapshot)
+--avirecord_vcodec : choose between BMP and PNG (default is png)
+--avirecord_fps : force frame rate (useful if the program changes frame
+   rate, such as boot sequence where the shifter starts at 60 Hz then goes
+   to 50 Hz) (default is 50)
+--avirecord_crop : remove all gui element (status bar) from the recorded
+   video (default is yes)
+--avirecord_file : choose destination file (default is hatari.avi)
+
+
+For the GUI, I replaced the 'record animation' option with 'record AVI' as 
+quick hack. Feel free to add back 'record animation' button if someone 
+requires it (but I think that 'record avi' supersedes this mode, so we 
+shouldn't need it anymore).
+
+For better results, don't use &quot;zoom low res&quot; option, as this will require 
+4 times more data to compress and a lot more cpu.
+
+Although it's possible to extend the codec list, I think using bmp and png 
+should be enough. This mode is not supposed to be a full ffmpeg 
+implementation, but a way to record Hatari's output in real time in a 
+lossless format.
+Videos can then be recompressed using mencoder or ffmpeg to use h264 codec 
+and mp3 for example.
+
+
+example :
+
+hatari --memstate ~/Emul/ST/hatari.sav/nostalgic_intro.sav -z 1 
+--avirecord  --avirecord_fps 50 --avirecord_crop y --avirecord_file 
+/tmp/hatari.avi
+
+
+Happy recording of your faves demos !
+
+Nicolas
+
+
+PS : OSX version certainly needs to be updated to add avi_record.c to the 
+project.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000783.html">[hatari-devel] Unable to compile Hatari.App
+</A></li>
+	<LI>Next message: <A HREF="000790.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#784">[ date ]</a>
+              <a href="thread.html#784">[ thread ]</a>
+              <a href="subject.html#784">[ subject ]</a>
+              <a href="author.html#784">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Two Hatari bugs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Two%20Hatari%20bugs&In-Reply-To=%3C4DCEA533.8010100%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003431.html">
+   <LINK REL="Next"  HREF="003435.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Two Hatari bugs</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Two%20Hatari%20bugs&In-Reply-To=%3C4DCEA533.8010100%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Two Hatari bugs">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat May 14 17:52:19 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003431.html">[hatari-devel] Two Hatari bugs
+</A></li>
+        <LI>Next message: <A HREF="003435.html">[hatari-devel] Two Hatari bugs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3434">[ date ]</a>
+              <a href="thread.html#3434">[ thread ]</a>
+              <a href="subject.html#3434">[ subject ]</a>
+              <a href="author.html#3434">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 14/05/2011 16:37, Anders Eriksson a &#233;crit :
+&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I've found two bugs in Hatari that seems to be across both Mac OS X and
+</I>&gt;<i> Linux platforms.
+</I>&gt;<i>
+</I>&gt;<i> Bug #1
+</I>&gt;<i> If you leave Hatari with the F12 menu open for many hours (say over a
+</I>&gt;<i> night) Hatari becomes unresponsive and needs a kill -9 to terminate.
+</I>&gt;<i> I've confirmed this with the Hatari in the repositry from both Mac OS X
+</I>&gt;<i> 10.6 and Ubuntu Linux 11.04.
+</I>
+Hello
+
+I think this could be due to the microsec counter wrapping ; I would 
+need to check.
+
+
+&gt;<i>
+</I>&gt;<i> Bug #2
+</I>&gt;<i> Hatari YM-file writing needs some improvements. The YM specification
+</I>&gt;<i> says that for buzzer sounds, register 13 should have value $ff, this
+</I>&gt;<i> means that the YM player should not update register 13 in that case.
+</I>&gt;<i>
+</I>&gt;<i> I've only tried the YM files in my own player, but as far as I can tell,
+</I>&gt;<i> it doesn't do the buzzer correct (silent channel) - I'm unaware of any
+</I>&gt;<i> YM player on OS X that I could use and compare.
+</I>&gt;<i>
+</I>&gt;<i> Here are two YM snippets recorded with Hatari 1.5 repo:
+</I>&gt;<i> <A HREF="http://ae.dhs.nu/tmp/tao.ym.gz">http://ae.dhs.nu/tmp/tao.ym.gz</A>
+</I>&gt;<i> <A HREF="http://ae.dhs.nu/tmp/frazer.ym.gz">http://ae.dhs.nu/tmp/frazer.ym.gz</A>
+</I>&gt;<i>
+</I>&gt;<i> And here are the original files:
+</I>&gt;<i> <A HREF="http://sndh.atari.org/sndh/sndh_lf/Tao/Just_Buggin/Ride_The_Sky.sndh">http://sndh.atari.org/sndh/sndh_lf/Tao/Just_Buggin/Ride_The_Sky.sndh</A>
+</I>&gt;<i> <A HREF="http://sndh.atari.org/sndh/sndh_lf/Frazer/If_Pigs_Could_Fly_End.sndh">http://sndh.atari.org/sndh/sndh_lf/Frazer/If_Pigs_Could_Fly_End.sndh</A>
+</I>
+Do you mean reg 13 in the YM file is never set to 0xff, or the opposite ?
+
+ From the code in ymformat.c, we have :
+
+                 if (bEnvelopeFreqFlag)
+                         *pYMData++ = SoundRegs[PSG_REG_ENV_SHAPE];
+                 else
+                         *pYMData++ = 0xff;
+
+I tried recording an YM from the GEM desktop and reg 13 is always 0xff 
+in the YM file.
+
+Same in the 2 files you sent, reg 13 is always 0xff ; are you sure those 
+tunes don't use mfp timer to change reg 13 ? Because in that case it 
+clearly won't work in Hatari's ym dumping.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003431.html">[hatari-devel] Two Hatari bugs
+</A></li>
+	<LI>Next message: <A HREF="003435.html">[hatari-devel] Two Hatari bugs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3434">[ date ]</a>
+              <a href="thread.html#3434">[ thread ]</a>
+              <a href="subject.html#3434">[ subject ]</a>
+              <a href="author.html#3434">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

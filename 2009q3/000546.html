@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Debugger breakpoints for Hatari variables too?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20breakpoints%20for%20Hatari%20variables%20too%3F&In-Reply-To=%3C4A7761EE.1080708%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000545.html">
+   <LINK REL="Next"  HREF="000549.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Debugger breakpoints for Hatari variables too?</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Debugger%20breakpoints%20for%20Hatari%20variables%20too%3F&In-Reply-To=%3C4A7761EE.1080708%40free.fr%3E"
+       TITLE="[hatari-devel] Debugger breakpoints for Hatari variables too?">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Tue Aug  4 00:17:18 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000545.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+        <LI>Next message: <A HREF="000549.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#546">[ date ]</a>
+              <a href="thread.html#546">[ thread ]</a>
+              <a href="subject.html#546">[ subject ]</a>
+              <a href="author.html#546">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've just cloned the latest hg version and compiled it without problem.
+
+I have a quad core 64 bits computer.
+
+regards
+
+Laurent
+
+
+Thomas Huth a &#233;crit :
+&gt;<i> On Mon, 3 Aug 2009 23:53:47 +0300
+</I>&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;&gt;<i> Certainly some other variables could be exported this way, with a
+</I>&gt;&gt;&gt;&gt;<i> simple table to associate a string to a pointer to that variable
+</I>&gt;&gt;&gt;&gt;<i> (we could assume it's always 'int' size).
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> Debugger already support 8, 16 &amp; 32-bit variables, so that's not
+</I>&gt;&gt;&gt;<i> a problem.
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> Well, &quot;int&quot; is actually a problem because on 64-bit machines it's
+</I>&gt;&gt;<i> 64-bit. Should the variables be changed to 32-bit or should I add
+</I>&gt;&gt;<i> support for (potentially) 64-bit values to breakpoint code?
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Unless you're compiling for a very exotic target, &quot;int&quot; is normally 32
+</I>&gt;<i> bits, and &quot;long&quot; is 64 bits.
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> (Current breakcond code will give a compilation error on 64-bit.)
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Uh, that would be a no-go for the release... could somebody with a
+</I>&gt;<i> 64-bit system please check if the current hg code still compiles fine?
+</I>&gt;<i>
+</I>&gt;<i>  Thomas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000545.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+	<LI>Next message: <A HREF="000549.html">[hatari-devel] Debugger breakpoints for Hatari variables too?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#546">[ date ]</a>
+              <a href="thread.html#546">[ thread ]</a>
+              <a href="subject.html#546">[ subject ]</a>
+              <a href="author.html#546">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

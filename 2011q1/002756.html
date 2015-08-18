@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling Hatari code with Valgrind
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind&In-Reply-To=%3C201101072328.34060.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002754.html">
+   <LINK REL="Next"  HREF="002758.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling Hatari code with Valgrind</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind&In-Reply-To=%3C201101072328.34060.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Profiling Hatari code with Valgrind">oak at helsinkinet.fi
+       </A><BR>
+    <I>Fri Jan  7 22:28:34 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002754.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+        <LI>Next message: <A HREF="002758.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2756">[ date ]</a>
+              <a href="thread.html#2756">[ thread ]</a>
+              <a href="subject.html#2756">[ subject ]</a>
+              <a href="author.html#2756">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On perjantai 07 tammikuu 2011, Laurent Sallafranque wrote:
+&gt;<i> I don't agree with you here.
+</I>&gt;<i> 
+</I>&gt;<i> Update_e_u_n_z is called for nearly every other instruction in the DSP
+</I>&gt;<i> (each instructions that are decoded in the else of the main DSP
+</I>&gt;<i> instruction decoder).
+</I>&gt;<i> 
+</I>&gt;<i> This mean mac, mpy, add, sub, test, cmp, ...
+</I>&gt;<i> Nearly all DSP programs use these instructions a lot (and use them
+</I>&gt;<i> millions of time).
+</I>&gt;<i> 
+</I>&gt;<i> I've done a quick Vallgrind tonight to see the difference before this
+</I>&gt;<i> update and after it.
+</I>&gt;<i> The difference is not negligeable (compared to the png you sent last
+</I>&gt;<i> time).
+</I>&gt;<i> 
+</I>&gt;<i> I'm running a vallgrind of hatari without this optimization. I'll send
+</I>&gt;<i> you the 2 pngs tonight.
+</I>
+In general, while profiler output can indicate performance changes, it's
+better to have something that actually measures it[1], like I suggested in
+previous mail (memory snapshot, --run-vbls &amp; --frame-skips etc).
+Especially if the change isn't localized within single function, but it
+affects also how functions are called.
+
+[1] Performance measuring and profiling/analysing are two different things
+(I've done that kind of stuff at work for years), you typically need to use
+different means for each.
+
+
+Looking at the diff for your changes, they seem to be localized though, so
+in this case profiler (especially one like Valgrind) could be reliable. 
+
+Note though that while the boxed view gives nice overall picture,
+if you want to know total individual percentage of given function, look
+into callgraph or inclusive % column in the table at left.
+
+
+&gt;<i> I'm sure I can't see the difference on my fast computer (I never go up
+</I>&gt;<i> to 92 % cpu), but for a slower machine, these small optimizations can do
+</I>&gt;<i> the difference (that's my point of view).
+</I>
+I was comparing numbers that &quot;top&quot; was giving for me before and after
+the optimizations.  In both cases they were fluctuating quite a bit, but
+the numbers I was seeing (highest, lowest, average) were very close
+(within 0-2%) to each other at same places in the demos.
+
+It might be possible that my i3 CPU scales its speed according to
+the load[2] though and that's why I don't see the differences.  I hadn't
+thought of that earlier. If it does scaling, then &quot;top&quot; isn't valid way
+to measure anything.
+
+
+	- Eero
+
+[2] My earlier 7 years old computer with AMD Athlon XP CPU didn't do
+    stuff like that.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002754.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+	<LI>Next message: <A HREF="002758.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2756">[ date ]</a>
+              <a href="thread.html#2756">[ thread ]</a>
+              <a href="subject.html#2756">[ subject ]</a>
+              <a href="author.html#2756">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

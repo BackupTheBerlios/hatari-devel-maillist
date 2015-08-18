@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Small bugs (fix before 1.4?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20bugs%20%28fix%20before%201.4%3F%29&In-Reply-To=%3C20100601205016.79f6c22e%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002237.html">
+   <LINK REL="Next"  HREF="002239.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Small bugs (fix before 1.4?)</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Small%20bugs%20%28fix%20before%201.4%3F%29&In-Reply-To=%3C20100601205016.79f6c22e%40phineus%3E"
+       TITLE="[hatari-devel] Small bugs (fix before 1.4?)">huth at users.berlios.de
+       </A><BR>
+    <I>Tue Jun  1 20:50:16 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002237.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+        <LI>Next message: <A HREF="002239.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2238">[ date ]</a>
+              <a href="thread.html#2238">[ thread ]</a>
+              <a href="subject.html#2238">[ subject ]</a>
+              <a href="author.html#2238">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 1 Jun 2010 11:03:12 +0200 (CEST)
+Anders Eriksson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>&gt; wrote:
+
+&gt;<i> 
+</I>&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> I found a couple of small bugs in todays hg (I can't tell when they
+</I>&gt;<i> were introduced).
+</I>&gt;<i> 
+</I>&gt;<i> 1.
+</I>&gt;<i> Screenshots get the wrong colour, earlier screenshots were in BMP 
+</I>&gt;<i> format, now they are in PNG, perhaps that has somehting to do with
+</I>&gt;<i> it. Here's a screenshot from Hatari build today:
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://ae.dhs.nu/pics/hataricolours.png">http://ae.dhs.nu/pics/hataricolours.png</A>
+</I>&gt;<i> 
+</I>&gt;<i> As you can guess the background should be white and the desktop green.
+</I>
+This sounds like an endianess issue again... could you please add some
+#warnings to PixelConvert_32to24Bits_BGR() in pixel_convert.h so that it
+looks like this:
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+#warning Compiling for big endian
+		*dst++ = src[3];	/* B */
+		*dst++ = src[2];	/* G */
+		*dst++ = src[1];	/* R */
+#else
+#warning Compiling for little endian
+		*dst++ = src[0];	/* B */
+		*dst++ = src[1];	/* G */
+		*dst++ = src[2];	/* R */
+#endif
+
+Which warning do you then get when you recompile screenSnapShot.c ?
+
+&gt;<i> 
+</I>&gt;<i> 2.
+</I>&gt;<i> The &quot;Disks LED&quot; in the OS X GUI have no function.
+</I>&gt;<i> The LED is controlled by the &quot;Show StatusBar&quot; instead, so one can
+</I>&gt;<i> only have either StatusBar or LED, not both off.
+</I>
+Jerome, could you please have a look at this one?
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002237.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+	<LI>Next message: <A HREF="002239.html">[hatari-devel] Small bugs (fix before 1.4?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2238">[ date ]</a>
+              <a href="thread.html#2238">[ thread ]</a>
+              <a href="subject.html#2238">[ subject ]</a>
+              <a href="author.html#2238">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

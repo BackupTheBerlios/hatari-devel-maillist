@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Pasti support and other things
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Pasti%20support%20and%20other%20things&In-Reply-To=%3CA189F55D-E3C6-44AA-BAA6-1713D88EC9F7%40sarnau.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002432.html">
+   <LINK REL="Next"  HREF="002441.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Pasti support and other things</H1>
+    <B>Markus Fritze</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Pasti%20support%20and%20other%20things&In-Reply-To=%3CA189F55D-E3C6-44AA-BAA6-1713D88EC9F7%40sarnau.com%3E"
+       TITLE="[hatari-devel] Pasti support and other things">my at sarnau.com
+       </A><BR>
+    <I>Fri Sep 24 06:20:38 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002432.html">[hatari-devel] Pasti support and other things
+</A></li>
+        <LI>Next message: <A HREF="002441.html">[hatari-devel] Pasti support and other things
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2436">[ date ]</a>
+              <a href="thread.html#2436">[ thread ]</a>
+              <a href="subject.html#2436">[ subject ]</a>
+              <a href="author.html#2436">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sep 23, 2010, at 12:31 PM, Thomas Huth wrote:
+
+&gt;<i> The floppy subsystem needs a major rewrite anyway, I think, so it's ok
+</I>&gt;<i> to mess around in all files there, I guess. When you're ready, please
+</I>&gt;<i> send your patches to this mailing list so we can review them.
+</I>
+It was ported vom WinSTon, right?
+
+I started writing on a state machine for the FDC, which handles thinks like different data rates, spin-up time, settle time for head movements, etc. and all the standard FDC commands. I also plan to support fuzzy sectors (sectors with wrong timing, that creates unstable bits). For simple disk formats it should still work with read track (it just puts the sectors into a &quot;formatted&quot; track), for Pasti files it hopefully does better :-) This will take a bit time (strangely I have a full-time job, too :-), I'll keep you updated.
+
+
+Markus
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002432.html">[hatari-devel] Pasti support and other things
+</A></li>
+	<LI>Next message: <A HREF="002441.html">[hatari-devel] Pasti support and other things
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2436">[ date ]</a>
+              <a href="thread.html#2436">[ thread ]</a>
+              <a href="subject.html#2436">[ subject ]</a>
+              <a href="author.html#2436">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

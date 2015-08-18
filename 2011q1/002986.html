@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Videl changes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Videl%20changes&In-Reply-To=%3C4D4DCC45.5050009%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002985.html">
+   <LINK REL="Next"  HREF="002987.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Videl changes</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Videl%20changes&In-Reply-To=%3C4D4DCC45.5050009%40free.fr%3E"
+       TITLE="[hatari-devel] Videl changes">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Feb  5 23:16:37 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002985.html">[hatari-devel] Videl changes
+</A></li>
+        <LI>Next message: <A HREF="002987.html">[hatari-devel] Videl changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2986">[ date ]</a>
+              <a href="thread.html#2986">[ thread ]</a>
+              <a href="subject.html#2986">[ subject ]</a>
+              <a href="author.html#2986">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I Just have a question : is it possible to change the HBB and HBE 
+(border begin and border end) registers in the middle of the screen (HBL 
+change) or is it just taken into account by the Videl during each VBL ?
+
+Same question for other parameters (horizontal and vertical parameters) ?
+
+List of registers implied by my question below:
+
+     $FFFF8280 (word) : HHC - Horizontal Hold Counter
+     $FFFF8282 (word) : HHT - Horizontal Hold Timer
+     $FFFF8284 (word) : HBB - Horizontal Border Begin
+     $FFFF8286 (word) : HBE - Horizontal Border End
+     $FFFF8288 (word) : HDB - Horizontal Display Begin
+     $FFFF828A (word) : HDE - Horizontal Display End
+     $FFFF828C (word) : HSS - Horizontal SS
+     $FFFF828E (word) : HFS - Horizontal FS
+     $FFFF8290 (word) : HEE - Horizontal EE
+
+     $FFFF82A0 (word) : VFC - Vertical Frequency Counter
+     $FFFF82A2 (word) : VFT - Vertical Frequency Timer
+     $FFFF82A4 (word) : VBB - Vertical Border Begin
+     $FFFF82A6 (word) : VBE - Vertical Border End
+     $FFFF82A8 (word) : VDB - Vertical Display Begin
+     $FFFF82AA (word) : VDE - Vertical Display End
+     $FFFF82AC (word) : VSS - Vertical SS
+
+I know I can change the palette at any time in the screen (raster 
+effect), but can I have a upper screen in overscan and a lower screen 
+with borders for example ?
+
+Regards,
+
+Laurent
+
+Le 05/02/2011 21:45, Matthias Arndt a &#233;crit :
+&gt;<i> Am Samstag, den 05.02.2011, 13:18 +0100 schrieb Nicolas Pomar&#232;de:
+</I>&gt;&gt;<i> Well, I think we agree then ; my point is exactly &quot;let's forget how the
+</I>&gt;&gt;<i> shifter works in STF/STE mode, don't reuse the code of video.c in
+</I>&gt;&gt;<i> videl.c&quot; (we'll see later if some program still don't work in STE mode
+</I>&gt;&gt;<i> under falcon)
+</I>&gt;<i> Yep, i definitly agree. It is the Videl to be emulated with all its
+</I>&gt;<i> special features and bugs and not the Shifter, even if some operational
+</I>&gt;<i> modes are similar.
+</I>&gt;<i>
+</I>&gt;<i> cheers,
+</I>&gt;<i> Matthias
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002985.html">[hatari-devel] Videl changes
+</A></li>
+	<LI>Next message: <A HREF="002987.html">[hatari-devel] Videl changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2986">[ date ]</a>
+              <a href="thread.html#2986">[ thread ]</a>
+              <a href="subject.html#2986">[ subject ]</a>
+              <a href="author.html#2986">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

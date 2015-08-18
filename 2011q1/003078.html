@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20emu%20and%20STE%20compatibility%20%28D-Bug%20games%29&In-Reply-To=%3C20110219153105.44f453ac%40think43%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003075.html">
+   <LINK REL="Next"  HREF="003082.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon emu and STE compatibility (D-Bug games)</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20emu%20and%20STE%20compatibility%20%28D-Bug%20games%29&In-Reply-To=%3C20110219153105.44f453ac%40think43%3E"
+       TITLE="[hatari-devel] Falcon emu and STE compatibility (D-Bug games)">huth at users.berlios.de
+       </A><BR>
+    <I>Sat Feb 19 15:31:05 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003075.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+        <LI>Next message: <A HREF="003082.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3078">[ date ]</a>
+              <a href="thread.html#3078">[ thread ]</a>
+              <a href="subject.html#3078">[ subject ]</a>
+              <a href="author.html#3078">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Sat, 19 Feb 2011 15:00:38 +0100
+schrieb Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt;:
+
+&gt;<i> For 8Mhz &lt;---&gt; 16 Mhz switch, I've implemented it too.
+</I>&gt;<i> But I don't see any difference and I can't tell this works well or
+</I>&gt;<i> not).
+</I>
+That should be quite easy to test, just get a program for configuring
+this CPU clock setting, e.g. Falconf.cpx (from the URL
+<A HREF="http://cd.textfiles.com/crawlycrypt2/falcon/utility/falconf/">http://cd.textfiles.com/crawlycrypt2/falcon/utility/falconf/</A> for example)
+and then run one of the numerous benchmark programs, e.g. Kronos.
+As far as I can see, you've got a typo in your patch:
+
+	/* 68030 Frequency ? */
++	if ((busCtrl &amp; 0x1) == 1)
++		nCpuFreqShift = 1;
++	else
++		nCpuFreqShift = 1;
+
+One of the two lines should certainly end with &quot;= 0&quot; instead of
+&quot;= 1&quot; :-)
+
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003075.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+	<LI>Next message: <A HREF="003082.html">[hatari-devel] Falcon emu and STE compatibility (D-Bug games)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3078">[ date ]</a>
+              <a href="thread.html#3078">[ thread ]</a>
+              <a href="subject.html#3078">[ subject ]</a>
+              <a href="author.html#3078">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

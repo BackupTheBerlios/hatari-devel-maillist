@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Videl changes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Videl%20changes&In-Reply-To=%3C4D4D3E69.3030602%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002976.html">
+   <LINK REL="Next"  HREF="002981.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Videl changes</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Videl%20changes&In-Reply-To=%3C4D4D3E69.3030602%40free.fr%3E"
+       TITLE="[hatari-devel] Videl changes">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Feb  5 13:11:21 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002976.html">[hatari-devel] IoMem question :
+</A></li>
+        <LI>Next message: <A HREF="002981.html">[hatari-devel] Videl changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2979">[ date ]</a>
+              <a href="thread.html#2979">[ thread ]</a>
+              <a href="subject.html#2979">[ subject ]</a>
+              <a href="author.html#2979">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm not that sure to agree with all of this :
+
+Videl part :
+
+The Falcon is not an STe or ST : It has no Shifter but a Videl, and not 
+a DMA with LM192 but a crossbar.
+
+There's no need to try to implement ST's Shifter specific code.
+In &quot;STe compatibility mode&quot;, the Falcon Behave like a STe, but it's only 
+&quot;&quot;&quot;&quot;emulation&quot;&quot;&quot;&quot;.
+
+In Ste graphical mode, Videl is given some frequencies, width and height 
+of pixels to generate a 320x200 screen.
+If you want to remove the borders in this mode, you have to play with 
+Videl registers (Border begin, border end, ...)
+
+There's not special &quot;tricks&quot; used in STe to remove the borders.
+I'm nearly sure that none of the ST overscan demos would run natively on 
+the Falcon.
+
+Another proves : nearly all Falcon specific demos and programs are 
+running well by only copying the full screen (as done actually in videl.c).
+
+Falcon plasmas are all running well (from what I know), which mean they 
+don't use video tricks but colors &quot;rotations&quot; or something else.
+
+Only a few programs are playing with the &quot;border color (color 0)&quot; like 
+Reeking Rubber, or with the video pointer (like pinball dream).
+
+The best doc to understand the Videl is to read Mikro's videl documentation.
+Everything is explained.
+
+The main problem is the VBL/HBL timers that are dependant of all the 
+Videl's hardware registers (horizontal and vertical registers) + BPP + 
+frequency + monitor + ST palette or Falcon Palette.
+
+If we use the &quot;Shifter&quot; HBL, as it is done actually, we've got wrong 
+timers in the Falcon emulation.
+The same for the VBL.
+
+(Another program that have a strange display I can't explain for now is 
+UFO_WAR.
+It's using all the Videl registers to use Overscan mode.
+
+Last point : I haven't found a program that changes the palette except 
+in the left border. If you know one...
+
+
+So, what I want to do is :
+
+- computing the correct border begin, border end and display them
+- compute HBL and VBL accordingly to Videl registers
+- take into account the video position registers (like in pinball dream).
+- take into account the half frame (videl works with half frame, not 
+full frame).
+
+I think I've got at least one example of program for each of these problems.
+But if you encounter any graphical problem  with a falcon programm, 
+please tell me, I'll have a look and see if it's because of a known 
+problem or a new one.
+
+
+
+Falcon &quot;ST compatible mode&quot;.
+
+This mode is not magic ;)
+It only involve running the 68030 at 8 Mhz without cache, running the 
+blitter at 8 Mhz and playing the sound in crossbar Ste compatibility mode.
+
+Everything is in register $ffff8007.b
+
+(It's a TODO in stMemory.c), but it should be somewhere else, as one can 
+change from 16 to 8 Mhz when he wants in a program.
+
+This doesn't mean shifter or anything else.
+
+
+Best regards
+
+Laurent
+
+
+
+
+
+Le 04/02/2011 23:31, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 04/02/2011 23:02, Eero Tamminen a &#233;crit :
+</I>&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> And what about the existing shifter stuff that Nicolas has in video.c,
+</I>&gt;&gt;&gt;&gt;<i> doesn't Videl have same tricks as ST shifter?  I mean, what happens if
+</I>&gt;&gt;&gt;&gt;<i> one runs ST program using these tricks on Falcon?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I think all the shifter stuff Nicolas included in Video.c musn't be
+</I>&gt;&gt;&gt;<i> keeped for Falcon. Here, we emulate a Videl componant, not a Shifter 
+</I>&gt;&gt;&gt;<i> one.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Shifter and Videl are not working the same way (from what I understand
+</I>&gt;&gt;&gt;<i> of them).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Ok.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> One tricky thing will be the spec512 HBL palette switching emulation for
+</I>&gt;&gt;<i> Falcon ST/e screen modes, for that I think it's simpler just to use 
+</I>&gt;&gt;<i> the ST
+</I>&gt;&gt;<i> emulation stuff.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I don't think palette switching is that common on Falcon games&amp;  demos
+</I>&gt;&gt;<i> though, only program I'm sure to use it is Nibe2.  Pinball Dreams&amp;  
+</I>&gt;&gt;<i> Pingo98
+</I>&gt;&gt;<i> &amp;  Chosneck Supplement could be doing that too.  They're mentioned in
+</I>&gt;&gt;<i> the compatibility list.
+</I>&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> honestly I don't really know anything about videl ; but regarding 
+</I>&gt;<i> shifter&lt;-&gt;videl common points, I think only a very low percentage of 
+</I>&gt;<i> demos/programs will need a working shifter mode under falcon, so 
+</I>&gt;<i> better leave it aside for now (I'm not even sure the falcon can do 
+</I>&gt;<i> border removal in shifter mode as does the ST)
+</I>&gt;<i>
+</I>&gt;<i> 68030 has a cache, which means the same program will not always take 
+</I>&gt;<i> the same time, so doing plasma and effect synchronized with the video 
+</I>&gt;<i> beam will certainly be very unstable on a real falcon (it's possible 
+</I>&gt;<i> to disable the cache).
+</I>&gt;<i>
+</I>&gt;<i> I think that having the possibility to change the palette once per 
+</I>&gt;<i> line should be enough for now (same mode than the less precise palette 
+</I>&gt;<i> mode for STF when spec512 is off).
+</I>&gt;<i>
+</I>&gt;<i> In video.c, I tried to define a shifter structure that defines a whole 
+</I>&gt;<i> screen and all the possible raster line ; I think we should have some 
+</I>&gt;<i> kind of videl_screen structure as well to define the screen in a 
+</I>&gt;<i> flexible way (to easily add one palette to each line for example)
+</I>&gt;<i>
+</I>&gt;<i> But most of all, we should also collect as many representative demos 
+</I>&gt;<i> before starting to code, in order to get a good view of what the 
+</I>&gt;<i> falcon does and adapt Hatari's code to this (for example, focusing on 
+</I>&gt;<i> cycle precise palette change like in STF spec512 would be pointless).
+</I>&gt;<i> From what I understand, none of us ever coded on the falcon's videl, 
+</I>&gt;<i> so it's hard to get a vision of how things should be modeled.
+</I>&gt;<i>
+</I>&gt;<i> Same as for 68030 and the new winuae cpu : let's just focus on the 
+</I>&gt;<i> falcon and its specialties, let's forget (for now) all compatibility 
+</I>&gt;<i> modes that the falcon can have to run old 68000 STF/STE programs (8 
+</I>&gt;<i> Mhz mode and so on).
+</I>&gt;<i>
+</I>&gt;<i> If someone wants to run a STF/STE program, then the recommended way is 
+</I>&gt;<i> to use Hatari in STF/STE mode, not in falcon mode by telling the 
+</I>&gt;<i> falcon to behave like a STF/STE.
+</I>&gt;<i>
+</I>&gt;<i> We want to run Falcon's specific code for now, IMO thinking about 
+</I>&gt;<i> compatibilty mode will just give us an average falcon. Once falcon 
+</I>&gt;<i> works &quot;perfect&quot; for 68030+videl+dsp, we can think about merging old 
+</I>&gt;<i> and new cpu core, as well as merging shifter in the falcon.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002976.html">[hatari-devel] IoMem question :
+</A></li>
+	<LI>Next message: <A HREF="002981.html">[hatari-devel] Videl changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2979">[ date ]</a>
+              <a href="thread.html#2979">[ thread ]</a>
+              <a href="subject.html#2979">[ subject ]</a>
+              <a href="author.html#2979">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

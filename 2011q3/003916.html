@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] EmuTOS screen
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EmuTOS%20screen&In-Reply-To=%3C4E463EE4.6090200%40freesbee.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003914.html">
+   <LINK REL="Next"  HREF="003917.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] EmuTOS screen</H1>
+    <B>Vincent Rivi&#232;re</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20EmuTOS%20screen&In-Reply-To=%3C4E463EE4.6090200%40freesbee.fr%3E"
+       TITLE="[hatari-devel] EmuTOS screen">vincent.riviere at freesbee.fr
+       </A><BR>
+    <I>Sat Aug 13 11:07:48 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003914.html">[hatari-devel] EmuTOS screen
+</A></li>
+        <LI>Next message: <A HREF="003917.html">[hatari-devel] EmuTOS screen
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3916">[ date ]</a>
+              <a href="thread.html#3916">[ thread ]</a>
+              <a href="subject.html#3916">[ subject ]</a>
+              <a href="author.html#3916">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thomas Huth wrote:
+&gt;<i> I think for most users it would rather be the other way round: They
+</I>&gt;<i> would be confused to see only 4 MiB when they selected 14 MiB RAM and
+</I>&gt;<i> disabled fast-boot.
+</I>
+Not so much. The hardware can have memory extensions or additional 
+hardware which are unsupported by the OS. That's very common on PC. I'm 
+not shocked to see the old TOS supporting only up to 14 MB.
+
+Also, I plan to patch EmuTOS to check for additional ST-RAM up to 14 MB 
+on cold boot. How will I test that ?
+
+You should add a message box when you detect 14 MB + cold boot: &quot;Your OS 
+may detect only 4 MB of memory when fast boot is disabled&quot;. Ideally, 
+this warning should be disabled if you detect a new EmuTOS version with 
+support for 14 MB on cold boot.
+
+&gt;<i> For a warm reset, simply press the &quot;AltGr-r&quot; keyboard shortcut.
+</I>
+Thanks, it works fine. But not intuitive.
+
+-- 
+Vincent Rivi&#232;re
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003914.html">[hatari-devel] EmuTOS screen
+</A></li>
+	<LI>Next message: <A HREF="003917.html">[hatari-devel] EmuTOS screen
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3916">[ date ]</a>
+              <a href="thread.html#3916">[ thread ]</a>
+              <a href="subject.html#3916">[ subject ]</a>
+              <a href="author.html#3916">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

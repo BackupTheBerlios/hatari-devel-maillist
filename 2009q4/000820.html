@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Troubles compiling latest Hatari with new avi support
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%20support&In-Reply-To=%3C20091010210541.6c46bb1b%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000830.html">
+   <LINK REL="Next"  HREF="000821.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Troubles compiling latest Hatari with new avi support</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Troubles%20compiling%20latest%20Hatari%20with%20new%20avi%0A%20support&In-Reply-To=%3C20091010210541.6c46bb1b%40phineus%3E"
+       TITLE="[hatari-devel] Troubles compiling latest Hatari with new avi support">huth at users.berlios.de
+       </A><BR>
+    <I>Sat Oct 10 21:05:41 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000830.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+        <LI>Next message: <A HREF="000821.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#820">[ date ]</a>
+              <a href="thread.html#820">[ thread ]</a>
+              <a href="subject.html#820">[ subject ]</a>
+              <a href="author.html#820">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+ Hi all!
+
+I've now fixed the Xcode project, so that Hatari should be compilable
+on Mac OS X again!
+
+On Sat, 10 Oct 2009 12:31:00 +0200
+Jerome Vernet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">vernet.jerome at wanadoo.fr</A>&gt; wrote:
+
+&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; do you mean that if you use &quot;#if HAVE_LIBPNG&quot; it wouldn't compile ?
+</I>&gt;<i> &gt; In that case, you should not use &quot;-DHAVE_LIBPNG&quot; but
+</I>&gt;<i> &gt; &quot;-DHAVE_LIBPNG=1&quot; (although this is supposed to be the same
+</I>&gt;<i> &gt; according to gcc doc).
+</I>&gt;<i> &gt;
+</I>&gt;<i> Yes. If I add HAVE_LIBPNG=1 to the XCode Preprocessor options, it 
+</I>&gt;<i> doesn't take it in account. I rememebr having same trouble with the 
+</I>&gt;<i> ENABLE_DSP=1 define.
+</I>
+Xcode is sometimes really crappy. You always have to make sure that
+you're on the right build target, but still, I have the feeling that it
+sometimes simply ignores my changes.
+
+&gt;<i> &gt; Also, I see you modified &quot;include log.h&quot; to &quot;include debug/log.h&quot; ; 
+</I>&gt;<i> &gt; this is not required if you add &quot;debug&quot; to the include search path 
+</I>&gt;<i> &gt; &quot;-Idebug&quot;
+</I>&gt;<i> Yes: I modified later the includes search path.
+</I>
+Normally it should find the header file as soon as you've added it to
+the list of source files again.
+
+&gt;<i> &gt;&gt; More over, the &quot;Stop recording&quot; button in the pref panel doesn't
+</I>&gt;<i> &gt;&gt; work for me (hang hatri also).
+</I>
+That buttons does also not work on Linux here. I can start recording,
+but as soon as I try to disable recording and to leave the GUI, I get
+this segmentation fault here:
+
+Program received signal SIGSEGV, Segmentation fault.
+[Switching to Thread 0x48027cc0 (LWP 6023)]
+_IO_ftell (fp=0x0) at ioftell.c:40
+40	ioftell.c: No such file or directory.
+	in ioftell.c
+(gdb) bt
+#0  _IO_ftell (fp=0x0) at ioftell.c:40
+#1  0x1000524c in AviRecordVideoStream () at avi_record.c:515
+#2  0x10040c24 in Video_InterruptHandler_VBL () at video.c:2501
+#3  0x1004ba00 in m68k_go (may_quit=&lt;value optimized out&gt;) at newcpu.c:1741
+#4  0x10029368 in M68000_Start () at m68000.c:224
+#5  0x10029e98 in main (argc=1, argv=&lt;value optimized out&gt;) at main.c:716
+
+Any ideas?
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000830.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+	<LI>Next message: <A HREF="000821.html">[hatari-devel] Troubles compiling latest Hatari with new avi support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#820">[ date ]</a>
+              <a href="thread.html#820">[ thread ]</a>
+              <a href="subject.html#820">[ subject ]</a>
+              <a href="author.html#820">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

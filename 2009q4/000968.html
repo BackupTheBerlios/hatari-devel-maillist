@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fseek%20bug%20with%2064%20bit%20OS%20%2864%20bit%20longs%29&In-Reply-To=%3C20091122075655.GA9593%40quattro.seimet.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000964.html">
+   <LINK REL="Next"  HREF="000970.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)</H1>
+    <B>Uwe Seimet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Fseek%20bug%20with%2064%20bit%20OS%20%2864%20bit%20longs%29&In-Reply-To=%3C20091122075655.GA9593%40quattro.seimet.de%3E"
+       TITLE="[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)">Uwe.Seimet at seimet.de
+       </A><BR>
+    <I>Sun Nov 22 08:56:55 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000964.html">[hatari-devel] DSP sounds and new DSP issue
+</A></li>
+        <LI>Next message: <A HREF="000970.html">[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#968">[ date ]</a>
+              <a href="thread.html#968">[ thread ]</a>
+              <a href="subject.html#968">[ subject ]</a>
+              <a href="author.html#968">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+there is a bug in the implementation of the Fseek() GEMDOS call, at
+least on 64 bit platforms, which causes the Pure debugger to fail with
+reporting &quot;read error&quot; when loading a binary to debug.
+The seek offset must be interpreted as a signed 32 bit value. On a 64 bit
+OS a signed 64 bit value is used, which results in a wrong file position
+calculation for negative offsets.
+To fix it, at least for a 64 bit OS, I changed the Fseek() code in
+gemdos.c like this:
+
+        if(Offset &amp; 0x08000000)
+        {
+            Offset = Offset - 0x100000000;
+        }
+
+	switch (Mode)
+	{
+	 case 0: nDestPos = Offset; break;
+	 case 1: nDestPos = nOldPos + Offset; break;
+         case 2: nDestPos = nFileSize + Offset; break; // Always ADD the signed 32 bit offset
+	 default:
+		/* Restore old position and return error */
+		fseek(fhndl, nOldPos, SEEK_SET);
+		Regs[REG_D0] = GEMDOS_EINVFN;
+		return true;
+	}
+
+Most likely the final fix must be different in order to also work on 32
+bit machines, but I couldn't find any dedicated 32 bit data types in the
+Hatari sources for a generic solution.
+
+Best regards
+
+Uwe
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000964.html">[hatari-devel] DSP sounds and new DSP issue
+</A></li>
+	<LI>Next message: <A HREF="000970.html">[hatari-devel] Fseek bug with 64 bit OS (64 bit longs)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#968">[ date ]</a>
+              <a href="thread.html#968">[ thread ]</a>
+              <a href="subject.html#968">[ subject ]</a>
+              <a href="author.html#968">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

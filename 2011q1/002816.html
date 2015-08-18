@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issues after restoring a memory snapshot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20after%20restoring%20a%20memory%20snapshot&In-Reply-To=%3C201101161851.05613.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002815.html">
+   <LINK REL="Next"  HREF="002833.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issues after restoring a memory snapshot</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20after%20restoring%20a%20memory%20snapshot&In-Reply-To=%3C201101161851.05613.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Issues after restoring a memory snapshot">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Jan 16 17:51:05 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002815.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+        <LI>Next message: <A HREF="002833.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2816">[ date ]</a>
+              <a href="thread.html#2816">[ thread ]</a>
+              <a href="subject.html#2816">[ subject ]</a>
+              <a href="author.html#2816">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 16 tammikuu 2011, Eero Tamminen wrote:
+&gt;<i> But while testing this I noticed a much worse issue...
+</I>&gt;<i> 
+</I>&gt;<i> If one starts Hatari with memory snapshot (in my case for Mahabharata
+</I>&gt;<i> demo), Hatari doesn't anymore react to any keyboard input or other user
+</I>&gt;<i> input. You cannot open the Options dialog, close the window, move the
+</I>&gt;<i> Atari mouse, nothing.  Statusbar isn't always updated either (can be
+</I>&gt;<i> black).
+</I>
+Input events are handled in Main_EventHandler() which gets called only from
+IKBD_InterruptHandler_AutoSend() interrupt handler.  This is called only on
+INTERRUPT_IKBD_AUTOSEND interrupts which are generated only by this
+interrupt handler itself and IKBD_Reset(), nothing else.
+
+So I added debug output to these...
+
+
+If I use:
+	hatari mahabhar.prg
+I get:
+	GEMDOS HDD emulation, C: &lt;-&gt; ...
+	Virtual autostart file 'NEWDESK.INF' created for 'MAHABHAR.PRG'.
+	IKBD_Reset()
+	OS clock ticks / second: 100
+	Main_EventHandler()
+	Main_EventHandler()
+	&lt;lots of messages&gt;
+
+And everything works.
+
+
+If I use:
+	hatari --memstate maha.sav
+I get:
+	IKBD_Reset()
+	IKBD_Reset()
+	GEMDOS HDD emulation, C: &lt;-&gt; ...
+	No (more) breakpoints to remove.
+	No (more) breakpoints to remove.
+	MemorySnapShot_Restore()
+
+There are IKBD_Reset()s, but no Main_EventHandler() calls.
+Output comes in a much different order and no input is processed.
+
+
+As the IKBD code is this:
+---------------
+void IKBD_InterruptHandler_AutoSend(void)
+{
+        /* Remove this interrupt from list and re-order */
+        CycInt_AcknowledgeInterrupt();
+
+        /* Handle user events and other messages, (like quit message) */
+        Main_EventHandler();
+
+        /* Did user try to quit? */
+        if (bQuitProgram)
+        {
+                /* Pass NULL interrupt function to quit cleanly */
+                CycInt_AddAbsoluteInterrupt(4, INT_CPU_CYCLE, 
+INTERRUPT_NULL);
+                /* Assure that CPU core shuts down */
+                M68000_SetSpecial(SPCFLAG_BRK);
+                return;
+        }
+
+        /* Trigger this auto-update function again after a while */
+        CycInt_AddRelativeInterrupt(150000, INT_CPU_CYCLE, 
+INTERRUPT_IKBD_AUTOSEND);
+---------------
+
+-&gt; When user saves the memory snapshot from SDL UI or through shortcut,
+    there's no INTERRUPT_IKBD_AUTOSEND and that state is restore when
+    the memory snapshot is loaded.
+
+If restore was done from the UI, this interrupt will be added before exiting
+from this function, but if it's done from command line, that naturally
+doesn't happen.
+
+I see two possible ways to fix this:
+* Acknowledge the interrupt only after Main_EventHandler() call, or
+* Make sure in IKBD_MemorySnapShot_Capture() that after restore
+   there is (one) INTERRUPT_IKBD_AUTOSEND interrupt.
+
+Nicolas?
+
+
+
+	- Eero
+
+PS. Could the 150000 instruction delay in INTERRUPT_IKBD_AUTOSEND affect
+the issue that it takes a lot longer with some TOSes until Hatari gives
+the corresponding keyboard clicks?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002815.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+	<LI>Next message: <A HREF="002833.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2816">[ date ]</a>
+              <a href="thread.html#2816">[ thread ]</a>
+              <a href="subject.html#2816">[ subject ]</a>
+              <a href="author.html#2816">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Midi works fine (was: Midi support broken?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Midi%20works%20fine%20%28was%3A%20Midi%20support%20broken%3F%29&In-Reply-To=%3C200901182215.08630.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000031.html">
+   <LINK REL="Next"  HREF="000048.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Midi works fine (was: Midi support broken?)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Midi%20works%20fine%20%28was%3A%20Midi%20support%20broken%3F%29&In-Reply-To=%3C200901182215.08630.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Midi works fine (was: Midi support broken?)">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jan 18 21:15:08 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000031.html">[hatari-devel] Midi support broken?
+</A></li>
+        <LI>Next message: <A HREF="000048.html">[hatari-devel] Midi works fine (was: Midi support broken?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#47">[ date ]</a>
+              <a href="thread.html#47">[ thread ]</a>
+              <a href="subject.html#47">[ subject ]</a>
+              <a href="author.html#47">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 17 January 2009, Eero Tamminen wrote:
+&gt;<i> &gt; ACIA GPIP emulation was still missing... please update and try again.
+</I>&gt;<i> &gt; I've successfully tested MIDIMaze and Oxyd 2 so far...
+</I>&gt;<i>
+</I>&gt;<i> Will do next week...
+</I>
+I've now done tested this and Midimaze &amp; M.o.C. seem to work fine, thanks!
+I also tested it with quickly with Falcon &amp; TT emulation and both seemed
+also to work fine.
+
+As I haven't used them earlier so it's hard to say whether they work exactly
+like they should.  E.g. the Midimaze send/receive takes a really long time,
+but using fast-forward gives a Midi error (seems the connection is timing
+sensitive).    I guess forcing socat PTY speed (to what?) wouldn't help
+here...
+
+
+&gt;<i> &gt; But you can do the following - it works for me:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; socat PTY,raw,echo=0,link=/tmp/midi1 PTY,raw,echo=0,link=/tmp/midi2
+</I>&gt;<i> &gt; hatari --midi /tmp/midi1 &amp;
+</I>&gt;<i> &gt; hatari --midi /tmp/midi2 &amp;
+</I>&gt;<i>
+</I>&gt;<i> Great, thanks, I'll add this to the alsa-midi.txt networking section.
+</I>
+Done.
+
+More than 2 machine networking example needs the separate command line
+options MIDI input and output as otherwise one cannot do a MIDI ring with
+them (input and output go to different machine), so I haven't tested that
+yet.
+
+
+&gt;<i> &gt; &gt; And from command line one cannot give separate input and output
+</I>&gt;<i> &gt; &gt; files (needed for making a midi ring?).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; That could be useful, can you add such options?
+</I>&gt;<i> &gt; Shall the normal --midi option then be removed?
+</I>&gt;<i>
+</I>&gt;<i> Well, we could leave --midi work like now for convenience and add
+</I>&gt;<i> --midi-in for setting the input file name if it needs to be separate
+</I>&gt;<i> (i.e. it would need to be given after --midi is set).
+</I>&gt;<i>
+</I>&gt;<i> I guess same should them be done for RS232, --rs232 would set both
+</I>&gt;<i> input and output files and --rs232-in would overide just the input side.
+</I>&gt;<i>
+</I>&gt;<i> Would that make sense?
+</I>
+Any comment on that?
+
+--midi (in &amp; out MIDI file)
+--midi-in (override MIDI in file later in command line)
+--rs232
+--rs232-in
+
+or 
+
+--midi-in (MIDI in file)
+--midi-out (MIDI out file)
+--rs232-in
+--rs232-out
+
+?
+
+
+&gt;<i> &gt; &gt; Midi_Init() has also minor issue that it:
+</I>&gt;<i> &gt; &gt; - doesn't check whether filename is empty before trying to open
+</I>&gt;<i> &gt; &gt;   MIDI in/out
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Shouldn't that rather be handled by File_Open instead (which then
+</I>&gt;<i> &gt; should return a NULL pointer)?
+</I>&gt;<i>
+</I>&gt;<i> In the case midi file name is empty, it shouldn't be tried to be opened.
+</I>&gt;<i>
+</I>&gt;<i> If there's an error (NULL) returned by Midi I/O file open, user should
+</I>&gt;<i> be notified with a dialog. I can add that.
+</I>&gt;<i>
+</I>&gt;<i> (&quot;/dev/snd/midiC1D0&quot; being used for default midi file names isn't a
+</I>&gt;<i> problem because MIDI is disabled by default.  If user enables MIDI, he
+</I>&gt;<i> should correct the file names too.)
+</I>
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000031.html">[hatari-devel] Midi support broken?
+</A></li>
+	<LI>Next message: <A HREF="000048.html">[hatari-devel] Midi works fine (was: Midi support broken?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#47">[ date ]</a>
+              <a href="thread.html#47">[ thread ]</a>
+              <a href="subject.html#47">[ subject ]</a>
+              <a href="author.html#47">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling support to Hatari debugger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3Calpine.LMD.2.00.1005122245560.7194%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002037.html">
+   <LINK REL="Next"  HREF="001982.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling support to Hatari debugger</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20support%20to%20Hatari%20debugger&In-Reply-To=%3Calpine.LMD.2.00.1005122245560.7194%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Profiling support to Hatari debugger">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed May 12 22:49:59 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002037.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+        <LI>Next message: <A HREF="001982.html">[hatari-devel] Old sound patch I sent a few weeks ago
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2071">[ date ]</a>
+              <a href="thread.html#2071">[ thread ]</a>
+              <a href="subject.html#2071">[ subject ]</a>
+              <a href="author.html#2071">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 10 May 2010, Eero Tamminen wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Tuesday 04 May 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+</I>&gt;&gt;<i> On Tue, 4 May 2010, Eero Tamminen wrote:
+</I>&gt;&gt;&gt;<i> So as a conclusion...  To get the correct cycles spent by instruction
+</I>&gt;&gt;&gt;<i> execution, I should use:
+</I>&gt;&gt;&gt;<i> 	uae_u32 opcode = get_iword_prefetch (0);
+</I>&gt;&gt;&gt;<i> 	cycles = (*cpufunctbl[opcode])(opcode) + nWaitStateCycles;
+</I>&gt;&gt;&gt;<i> ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Yes, that's it.
+</I>&gt;<i>
+</I>&gt;<i> With DSP the PC points to next instruction while cycle count is for current
+</I>&gt;<i> instruction when debugger checks are called.
+</I>&gt;<i>
+</I>&gt;<i> Is there a same problem for the CPU side?  (the code I mailed assumes both
+</I>&gt;<i> are for the current instruction when debugger is called.)
+</I>&gt;<i>
+</I>
+Hi,
+
+forgot to reply to this, but yes, after you call :
+
+         cycles = (*cpufunctbl[opcode])(opcode);
+
+PC will point to next instruction.
+
+But as I once needed the PC of the current instruction to correctly 
+emulate Bus Error stack frame, you can in fact already get the PC of the 
+current instruction by using &quot;BusErrorPC&quot; (which is set just 1 line 
+above).
+
+So you should use BusErrorPC (even if the name has no relation to bus 
+error in your case) instead of m68k_getpc() when entering debugger.
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002037.html">[hatari-devel] Profiling support to Hatari debugger
+</A></li>
+	<LI>Next message: <A HREF="001982.html">[hatari-devel] Old sound patch I sent a few weeks ago
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2071">[ date ]</a>
+              <a href="thread.html#2071">[ thread ]</a>
+              <a href="subject.html#2071">[ subject ]</a>
+              <a href="author.html#2071">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

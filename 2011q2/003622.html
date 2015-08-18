@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Emulation reset, old-UAE vs. WinAUE core
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Emulation%20reset%2C%20old-UAE%20vs.%20WinAUE%20core&In-Reply-To=%3C201106192208.05572.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003620.html">
+   <LINK REL="Next"  HREF="003623.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Emulation reset, old-UAE vs. WinAUE core</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Emulation%20reset%2C%20old-UAE%20vs.%20WinAUE%20core&In-Reply-To=%3C201106192208.05572.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Emulation reset, old-UAE vs. WinAUE core">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jun 19 21:08:05 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003620.html">[hatari-devel] Emulation reset, old-UAE vs. WinAUE core
+</A></li>
+        <LI>Next message: <A HREF="003623.html">[hatari-devel] Emulation reset, old-UAE vs. WinAUE core
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3622">[ date ]</a>
+              <a href="thread.html#3622">[ thread ]</a>
+              <a href="subject.html#3622">[ subject ]</a>
+              <a href="author.html#3622">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 19 kes&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 18/06/2011 10:43, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; I started to wonder why breakpoints didn't work anymore after emulation
+</I>&gt;<i> &gt; reset and noticed that while old UAE core always preserves the
+</I>&gt;<i> &gt; debugging flag on reset:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; So, why WinAUE always resets the debugger flag?
+</I>&gt;<i> 
+</I>&gt;<i> Well, I guess WinUAE's core (not AUE please :) ) as being directly taken
+</I>&gt;<i> from the Amiga version doesn't include this notion of debuger.
+</I>
+I haven't used WinUAE, doesn't it include a debugger?
+At least its code in Hatari has many references to debugger...
+
+
+&gt;<i> It's fine for me if we don't backport everything from current UAE to
+</I>&gt;<i> WinUAE, because I think we should first make the cpu core works before
+</I>&gt;<i> backporting our own additions (else, we might add side effects and makes
+</I>&gt;<i> it harder to fix the winuae's core in Hatari).
+</I>&gt;<i> The less we modify WinUAE's core for now, the more we can be sure the
+</I>&gt;<i> remaining problems are in Hatari and we have a direction to look at.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Is there any reason why we wouldn't want it to be preserved always,
+</I>&gt;<i> &gt; either by explicitly preserving it in all of these places, or by
+</I>&gt;<i> &gt; always re-setting it after reset, like in the attached patch?
+</I>&gt;<i> 
+</I>&gt;<i> Your patch looks good to me, I also think debuging features should be
+</I>&gt;<i> preserved when reseting (cold or warm). You can apply it if you like.
+</I>
+Commited.
+
+
+&gt;&gt;<i> Then I noticed also a problem related to WinUAE's resets.  While all
+</I>&gt;&gt;<i> old AUE m68k_reset() calls come from Reset_*() -&gt;  M68000_Reset()
+</I>&gt;&gt;<i> which is called on specific configuration changes or on keyboard
+</I>&gt;&gt;<i> shortcut...
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Should uae_reset() calls also be converted to DlgAlert_Notice()
+</I>&gt;&gt;<i> calls so that in those cases user also knows what happened and
+</I>&gt;&gt;<i> can reboot the emulation at his/her convenience?
+</I>&gt;<i> 
+</I>&gt;<i> Why not ; I don't consider this a top priority over the cpu emulation +
+</I>&gt;<i> STF/STE integration, but if you have a patch for this, let's go for it.
+</I>
+I'll look into this after v1.5 release when adding Exception debugging
+to WinUAE &amp; possibility to break on interrupts to both cores.
+
+(Added note about it to todo.txt.)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003620.html">[hatari-devel] Emulation reset, old-UAE vs. WinAUE core
+</A></li>
+	<LI>Next message: <A HREF="003623.html">[hatari-devel] Emulation reset, old-UAE vs. WinAUE core
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3622">[ date ]</a>
+              <a href="thread.html#3622">[ thread ]</a>
+              <a href="subject.html#3622">[ subject ]</a>
+              <a href="author.html#3622">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

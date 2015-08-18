@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Wrong memory init
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wrong%20memory%20init&In-Reply-To=%3C20111127212005.5ee9df1f%40think43%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004215.html">
+   <LINK REL="Next"  HREF="004217.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Wrong memory init</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Wrong%20memory%20init&In-Reply-To=%3C20111127212005.5ee9df1f%40think43%3E"
+       TITLE="[hatari-devel] Wrong memory init">th.huth at gmx.de
+       </A><BR>
+    <I>Sun Nov 27 21:20:05 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004215.html">[hatari-devel] Wrong memory init
+</A></li>
+        <LI>Next message: <A HREF="004217.html">[hatari-devel] Wrong memory init
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4216">[ date ]</a>
+              <a href="thread.html#4216">[ thread ]</a>
+              <a href="subject.html#4216">[ subject ]</a>
+              <a href="author.html#4216">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+ Hi!
+
+Am Sun, 27 Nov 2011 14:23:33 +0100
+schrieb Nicolas Pomar&#232;de &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A>&gt;:
+
+&gt;<i> I spent some hard hours trying to fix the game Yolanda (on Pompey 
+</I>&gt;<i> Pirates 46).
+</I>
+Welcome to the club ;-) I also already spent countless hours with that
+game to figure out what goes wrong there. But unlike you I always
+failed in the past (maybe just because we did not have that fast-boot
+option in Hatari yet)...
+
+&gt;<i> The game freezes after a few second because of a bad random number 
+</I>&gt;<i> generator that always returns 0.
+</I>&gt;<i> This random number is inititalized with the value in $100. By
+</I>&gt;<i> default, this value is 0 under Hatari, because FastBoot is on, which
+</I>&gt;<i> bypasses the TOS memory init functions that write data between $8 and
+</I>&gt;<i> $200.
+</I>&gt;<i> 
+</I>&gt;<i> The &quot;culprit&quot; is in stMemory.c. I'm wondering what is this MMU
+</I>&gt;<i> reference ? I see this code is present since the initial import of
+</I>&gt;<i> tos.c in 2001, but this looks like a bug to me, especially since
+</I>&gt;<i> Hatari works fine when fastboot is turned off in System settings.
+</I>&gt;<i> 
+</I>&gt;<i>          /* Fill in magic numbers, so TOS does not try to reference
+</I>&gt;<i> MMU */ if (ConfigureParams.System.bFastBoot
+</I>&gt;<i>              || (ConfigureParams.Memory.nMemorySize &gt; 4
+</I>&gt;<i> &amp;&amp; !bIsEmuTOS)) {
+</I>&gt;<i>                  /* Write magic values to sysvars to signal valid
+</I>&gt;<i> config */ STMemory_WriteLong(0x420, 0x752019f3);    /* memvalid */
+</I>&gt;<i>                  STMemory_WriteLong(0x43a, 0x237698aa);    /* memval2
+</I>&gt;<i> */ STMemory_WriteLong(0x51a, 0x5555aaaa);    /* memval3 */
+</I>&gt;<i>          }
+</I>
+The three lines of code that fill in these memvalid system variables
+originally come from the WinSTon source code (in Tos.cpp there, it has
+been later moved to stMemory.c in Hatari). In that source code there is
+an additional comment that looks like this:
+
+// As TOS checks hardware for memory size + connected devices on boot-up
+// we set these values ourselves and fill in the magic numbers so TOS
+// skips these tests which would crash the emulator as the reference the MMU
+
+So I guess in the early days of WinSTon there was a problem when TOS
+tried to detect the memory size, so that test got bypassed by patching
+the memvalid variables.
+
+I agree that this is not necessary anymore for normal TOS when using
+less than 4 MiB of memory...
+
+&gt;<i> So, I would propose to remove this piece of code ; this has nearly no 
+</I>&gt;<i> impact on boot time.
+</I>
+... but it makes a difference when using EmuTOS! EmuTOS uses the
+memvalid variables to decide whether to display the splashscreen in the
+beginning or not.
+
+So I would suggest to change the if-statement like this:
+
+if ((ConfigureParams.System.bFastBoot &amp;&amp; bIsEmuTOS)
+     || (ConfigureParams.Memory.nMemorySize &gt; 4 &amp;&amp; !bIsEmuTOS))
+
+That means patch it when fast boot has been enabled for EmuTOS or patch
+it when using &gt; 4 MiB memory when using normal TOS.
+
+What do you think?
+
+&gt;<i> Additionnaly, I think bFastBoot should be false by default, to ensure 
+</I>&gt;<i> the system always starts in the maximum compatibility level.
+</I>
+You mean &quot;ConfigureParams.System.bFastBoot = false&quot; in configuration.c ?
+... that's fine with me.
+
+&gt;<i> The user can still change it later if he wants(this is used in tos.c, when
+</I>&gt;<i> patch has TP_HDIMAGE_OFF ; is it still useful ?)
+</I>
+It makes a big difference with TOS 2.05 and TOS 2.06. That TOS patch is
+used to skip the annoying memory test sequence there, so I'd say we
+should keep this.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004215.html">[hatari-devel] Wrong memory init
+</A></li>
+	<LI>Next message: <A HREF="004217.html">[hatari-devel] Wrong memory init
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4216">[ date ]</a>
+              <a href="thread.html#4216">[ thread ]</a>
+              <a href="subject.html#4216">[ subject ]</a>
+              <a href="author.html#4216">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

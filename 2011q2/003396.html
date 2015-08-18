@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon : demo 1600x600 doesn't work anymore
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20%3A%20demo%201600x600%20doesn%27t%20work%20anymore&In-Reply-To=%3C4DBDD3A6.4080508%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003374.html">
+   <LINK REL="Next"  HREF="003397.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon : demo 1600x600 doesn't work anymore</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20%3A%20demo%201600x600%20doesn%27t%20work%20anymore&In-Reply-To=%3C4DBDD3A6.4080508%40free.fr%3E"
+       TITLE="[hatari-devel] Falcon : demo 1600x600 doesn't work anymore">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sun May  1 23:41:58 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003374.html">[hatari-devel] Falcon : demo 1600x600 doesn't work anymore
+</A></li>
+        <LI>Next message: <A HREF="003397.html">[hatari-devel] Falcon : demo 1600x600 doesn't work anymore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3396">[ date ]</a>
+              <a href="thread.html#3396">[ thread ]</a>
+              <a href="subject.html#3396">[ subject ]</a>
+              <a href="author.html#3396">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm back from hollidays.
+
+Here is the link : <A HREF="http://www.pouet.net/prod.php?which=25543">http://www.pouet.net/prod.php?which=25543</A>
+
+Regards
+
+Laurent
+
+
+Le 30/04/2011 18:49, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On maanantai 04 huhtikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i> The demo 1600x600 does not work anymore for me (it worked before).
+</I>&gt;<i> What is &quot;demo 1600x600&quot;?  Can you give e.g. its Pouet link?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> It seems to loop forever in do_specialties().
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hatari becomes &quot;freezed&quot; (I mean I can't stop it, neither go into the
+</I>&gt;&gt;<i> debugger, ...)
+</I>&gt;&gt;<i> I must kill it.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> (gdb) bt
+</I>&gt;&gt;<i> #0  do_specialties (cycles=&lt;value optimized out&gt;)
+</I>&gt;&gt;<i>       at /home/laurent/Atari/hatari/src/cpu/newcpu.c:2908
+</I>&gt;&gt;<i> #1  0x00000000004ffbfe in m68k_run_2p ()
+</I>&gt;&gt;<i>       at /home/laurent/Atari/hatari/src/cpu/newcpu.c:3566
+</I>&gt;&gt;<i> #2  0x00000000004fd4d3 in m68k_go (may_quit=&lt;value optimized out&gt;)
+</I>&gt;&gt;<i>       at /home/laurent/Atari/hatari/src/cpu/newcpu.c:3750
+</I>&gt;&gt;<i> #3  0x00000000004b2116 in M68000_Start ()
+</I>&gt;&gt;<i>       at /home/laurent/Atari/hatari/src/m68000.c:241
+</I>&gt;&gt;<i> #4  0x00000000004b29d6 in main (argc=1, argv=0x7fffffffe308)
+</I>&gt;&gt;<i>       at /home/laurent/Atari/hatari/src/main.c:773
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is it the same for you with the old CPU ?
+</I>&gt;&gt;<i> And the new one ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> (I'm running with the new CPU, in windowed mode, my physical resolution
+</I>&gt;&gt;<i> is 1280x1024)
+</I>&gt;<i>
+</I>&gt;<i> 	- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003374.html">[hatari-devel] Falcon : demo 1600x600 doesn't work anymore
+</A></li>
+	<LI>Next message: <A HREF="003397.html">[hatari-devel] Falcon : demo 1600x600 doesn't work anymore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3396">[ date ]</a>
+              <a href="thread.html#3396">[ thread ]</a>
+              <a href="subject.html#3396">[ subject ]</a>
+              <a href="author.html#3396">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP emulation and sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20emulation%20and%20sound&In-Reply-To=%3C49C79201.90506%40arkea.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000209.html">
+   <LINK REL="Next"  HREF="000214.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP emulation and sound</H1>
+    <B>LAURENT SALLAFRANQUE</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20emulation%20and%20sound&In-Reply-To=%3C49C79201.90506%40arkea.com%3E"
+       TITLE="[hatari-devel] DSP emulation and sound">LAURENT.SALLAFRANQUE at ARKEA.COM
+       </A><BR>
+    <I>Mon Mar 23 14:43:29 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000209.html">[hatari-devel] DSP emulation and sound
+</A></li>
+        <LI>Next message: <A HREF="000214.html">[hatari-devel] DSP emulation and sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#210">[ date ]</a>
+              <a href="thread.html#210">[ thread ]</a>
+              <a href="subject.html#210">[ subject ]</a>
+              <a href="author.html#210">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Thomas Huth a &#233;crit :
+&gt;<i> Unfortunately, I never really worked with the interfaces in the Falcon
+</I>&gt;<i> to the DSP yet... can you recommend some good documentation which
+</I>&gt;<i> explains this?
+</I>&gt;<i>   
+</I>Actually, I work with the Atari compendium and the DSP motorola Doc. The 
+Motorola doc is really a bible, there's everything in it.
+Compendium is really poor. It only gives schemes and few explanations.
+
+&gt;&gt;<i> Would you be interrested in my patch anyway, just to see what I
+</I>&gt;&gt;<i> tested ? (no need to publish it).
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Sure, that might help to understand the basics.
+</I>&gt;<i>   
+</I>OK, I'll send this tonight.
+
+&gt;&gt;<i> - Add the SSI emulation into the DSP
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I can try to emulate the SSI part into the DSP, but there's the other 
+</I>&gt;&gt;<i> part (sound.c)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In this sound.c, we must:
+</I>&gt;&gt;<i> - connect the yamaha sound, the DMA, the STe sound, the DSP and the
+</I>&gt;&gt;<i> jack in and out.
+</I>&gt;&gt;<i> - ADC and DAC are not necessary ?
+</I>&gt;&gt;<i> - take care of some timers,
+</I>&gt;&gt;<i> - take care of the data size (8, 16 or 24 bits),
+</I>&gt;&gt;<i> - transfer datas from 1 or more sources to 1 or more dest
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I know some of you are good in sound emulation and timers, I think we 
+</I>&gt;&gt;<i> should have a look at this to do it well.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Basic DMA sound emulation is already done in dmaSnd.c ... I think it
+</I>&gt;<i> should be possible to extend this to work together with the crossbar
+</I>&gt;<i> code later.
+</I>&gt;<i>   
+</I>Yes, I've add a look at dmasnd.c code yesterday. It seems there are 
+already things for falcon emulation, but not everything.
+Perharps the sound matrix could be added here ?
+
+&gt;&gt;<i> Remark: the jack out could be played into SDL out sound. For the Jack 
+</I>&gt;&gt;<i> in, we can code this later.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> As far as I know, the SDL library does not support sound recording. So
+</I>&gt;<i> for sound input, we would require some other way to get it ... is there
+</I>&gt;<i> a portable library which provides this?
+</I>&gt;<i>   
+</I>With a very fast search, I've found some programs or projects, but I 
+don't know if one of them is useful for our goal, I'll try to have a look.
+
+
+
+<A HREF="http://www.allegro.cc/">http://www.allegro.cc/</A> and you can get the latest stable build from 
+<A HREF="http://alleg.sourceforge.net/">http://alleg.sourceforge.net/</A>
+Basically you'll get back a raw audio buffer in an easy to use format 
+and you can do anything to the audio that you could want, including play 
+it back.
+
+For recording and playback, cross platform, here's the one:
+<A HREF="http://www.portaudio.com/">http://www.portaudio.com/</A>
+
+And here's another one:
+<A HREF="http://www.music.mcgill.ca/~gary/rtaudio/">http://www.music.mcgill.ca/~gary/rtaudio/</A> 
+&lt;<A HREF="http://www.music.mcgill.ca/%7Egary/rtaudio/">http://www.music.mcgill.ca/%7Egary/rtaudio/</A>&gt;
+
+Audio processing stuff:
+<A HREF="http://clam.iua.upf.edu/">http://clam.iua.upf.edu/</A>
+<A HREF="http://ccrma.stanford.edu/software/stk/">http://ccrma.stanford.edu/software/stk/</A>
+
+Laurent
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20090323/474a1378/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20090323/474a1378/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000209.html">[hatari-devel] DSP emulation and sound
+</A></li>
+	<LI>Next message: <A HREF="000214.html">[hatari-devel] DSP emulation and sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#210">[ date ]</a>
+              <a href="thread.html#210">[ thread ]</a>
+              <a href="subject.html#210">[ subject ]</a>
+              <a href="author.html#210">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

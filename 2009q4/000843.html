@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new support for avi recording
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3C200910181226.26179.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000842.html">
+   <LINK REL="Next"  HREF="000844.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new support for avi recording</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3C200910181226.26179.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] new support for avi recording">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Oct 18 11:26:26 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000842.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000844.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#843">[ date ]</a>
+              <a href="thread.html#843">[ thread ]</a>
+              <a href="subject.html#843">[ subject ]</a>
+              <a href="author.html#843">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sunday 18 October 2009, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+&gt;<i> &gt; * Shouldn't these functions now move to avi_record.c:
+</I>&gt;<i> &gt;  - ScreenSnapShot_AreWeRecording()
+</I>&gt;<i> &gt;  - ScreenSnapShot_BeginRecording()
+</I>&gt;<i> &gt;  - ScreenSnapShot_EndRecording()
+</I>&gt;<i> &gt;  - ScreenSnapShot_RecordFrame()
+</I>&gt;<i> &gt;  ?
+</I>&gt;<i>
+</I>&gt;<i> I removed this code and all references to it, as it's now replaced by avi
+</I>&gt;<i> recording.
+</I>
+Great!
+
+
+&gt;<i> &gt;&gt; Video can be saved as uncompressed 24 bits BMP images or as PNG
+</I>&gt;<i> &gt;&gt; images. No frames are skipped, so you will get a full 50 or 60 Hz
+</I>&gt;<i> &gt;&gt; video in the end.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; What happens if user has (automatic) frame skip enabled?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (it's the default)
+</I>&gt;<i>
+</I>&gt;<i> This is not possible ; avi format requires a constant FPS over the time,
+</I>&gt;<i> so auto frame skipping could cause some audio frames to be saved
+</I>&gt;<i> without their corresponding video frames for this VBL, which after a
+</I>&gt;<i> while would create some synchronisation problem between audio and video.
+</I>&gt;<i>
+</I>&gt;<i> summary could be : &quot;if your pc is not fast enough to run hatari with
+</I>&gt;<i> frame skip off, don't even try to record avi&quot; :)
+</I>
+In that case the AVI code should disable frameskip when the recording
+starts and restore it when stopped.  Best would be if it would ask user
+confirmation for this if frameskip is enabled[1], or at least notify user
+that frameskip was disabled[2].
+
+[1]  if (nFrameSkips) DlgAlert_Query(..);
+[2] if (..) DlgAlert_Notice(..)
+
+
+&gt;<i> If frame skipping is constant (that is 25 fps for example), it is
+</I>&gt;<i> theorically possible to mix 25 fps video with 50 &quot;fps&quot; audio, but the
+</I>&gt;<i> use case is not worth the coding complexity.
+</I>
+In this case, how &quot;--avi-fps&quot; / &quot;AviRecordDefaultFps&quot; can work?
+
+Shouldn't the recording FPS rate be then taken directly from the Hatari
+internal screen update frequency  (nScreenRefreshRate: 50, 60, 71Hz)?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000842.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000844.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#843">[ date ]</a>
+              <a href="thread.html#843">[ thread ]</a>
+              <a href="subject.html#843">[ subject ]</a>
+              <a href="author.html#843">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Last checks before releasing 1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3C201107191420.21761.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003788.html">
+   <LINK REL="Next"  HREF="003754.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Last checks before releasing 1.5</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3C201107191420.21761.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Last checks before releasing 1.5">eerot at users.berlios.de
+       </A><BR>
+    <I>Tue Jul 19 13:20:21 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003788.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+        <LI>Next message: <A HREF="003754.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3792">[ date ]</a>
+              <a href="thread.html#3792">[ thread ]</a>
+              <a href="subject.html#3792">[ subject ]</a>
+              <a href="author.html#3792">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On tiistai 19 hein&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> After trying it, in fact I'm not really convinced by the usefulness of
+</I>&gt;<i> this option in STF/STE mode : in my case, Hatari has zoom x2 (approx
+</I>&gt;<i> 836x576 pixels) and my OS is 1280x1024.
+</I>&gt;<i> 
+</I>&gt;<i> When pressing F11, Hatari windows goes to top left, which leaves a lot
+</I>&gt;<i> of black area around, and with no offence intended, if no one told me
+</I>&gt;<i> before what to expect, I would have thought it was a bug. Calling an
+</I>&gt;<i> option &quot;fullscreen&quot; and filling the rest of the screen with black
+</I>&gt;<i> without actually zooming the Hatari's screen seems of little use to me.
+</I>&gt;<i>
+</I>&gt;<i> Put a black wallpaper on your PC desktop and you will basically get the
+</I>&gt;<i> same result.
+</I>
+I agree that it's ugly, but it's not completely without use,
+at least for some people.
+
+On OSX windowed mode is apparently very slow, so fullscreen helps.
+
+Fullscreen also takes a grab and F11 is easier to press than AltGr+M.
+
+However, the current fullscreen resolution switch causes pause &amp; music skip
++ messes up multimonitor setup.
+
+
+&gt;<i> I agree that with extended resolution in TT/Falcon or VDI mode it can be
+</I>&gt;<i> useful if it really fills the screen, but for STF/STE, I think it adds
+</I>&gt;<i> more confusion than it solves problem.
+</I>
+So, maybe have it just as command line &amp; config option that isn't
+on by default?
+
+
+&gt;<i> People could be interested in a general (more complex to code) solution
+</I>&gt;<i> that allows full resizing of the Hatari's window, but I'm not sure this
+</I>&gt;<i> option would be used in STF/STE mode.
+</I>
+Sure, having integer scaling for ST/STE would also be nice, but that
+needs rewriting quite a bit of screen handling code.  It's not really
+interesting to me, so somebody else needs to scratch his/her itch.
+
+(And I don't want to lose the &quot;update only changed parts of screen&quot; as
+that reduces Hatari CPU usage a lot, especially on low end (mobile)
+devices.)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003788.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+	<LI>Next message: <A HREF="003754.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3792">[ date ]</a>
+              <a href="thread.html#3792">[ thread ]</a>
+              <a href="subject.html#3792">[ subject ]</a>
+              <a href="author.html#3792">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

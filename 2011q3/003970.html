@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Extended VDI screen in Falcon mode
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Extended%20VDI%20screen%20in%20Falcon%20mode&In-Reply-To=%3C201108282248.36761.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003969.html">
+   <LINK REL="Next"  HREF="003965.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Extended VDI screen in Falcon mode</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Extended%20VDI%20screen%20in%20Falcon%20mode&In-Reply-To=%3C201108282248.36761.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Extended VDI screen in Falcon mode">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Aug 28 21:48:36 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003969.html">[hatari-devel] Extended VDI screen in Falcon mode
+</A></li>
+        <LI>Next message: <A HREF="003965.html">[hatari-devel] Bringing Modern Python to the Atari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3970">[ date ]</a>
+              <a href="thread.html#3970">[ thread ]</a>
+              <a href="subject.html#3970">[ subject ]</a>
+              <a href="author.html#3970">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 27 elokuu 2011, Vincent Rivi&#232;re wrote:
+&gt;<i> I made random tests, in 4 planes, IIRC. From 800x600 to 1280x960.
+</I>&gt;<i> TOS/EmuTOS always crashed in Falcon mode.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Hatari crashes or TOS crashes?
+</I>&gt;<i> 
+</I>&gt;<i> TOS/EmuTOS crashes. Hatari reports writing at 0xe00000 and displays a
+</I>&gt;<i> strange screen, so I suppose that vbase is not changed as expected and
+</I>&gt;<i> the video memory overflows out of the RAM. I wonder how it can work in
+</I>&gt;<i> ST mode.
+</I>
+This is what Hatari does, for ST &amp; Falcon:
+-------------------
+        /* Set memory size, adjust for extra VDI screens if needed.
+         * Note: TOS seems to set phys_top-0x8000 as the screen base
+         * address - so we have to move phys_top down in VDI resolution
+         * mode, although there is more &quot;physical&quot; ST RAM available. */
+        screensize = VDIWidth * VDIHeight / 8 * VDIPlanes;
+        /* Use 32 kiB in normal screen mode or when the screen size is 
+smaller than 32 kiB */
+        if (!bUseVDIRes || screensize &lt; 0x8000)
+                screensize = 0x8000;
+        /* mem top - upper end of user memory (right before the screen 
+memory).
+         * Note: memtop / phystop must be dividable by 512, or TOS crashes 
+*/
+        memtop = (STRamEnd - screensize) &amp; 0xfffffe00;
+        STMemory_WriteLong(0x436, memtop);
+        /* phys top - This must be memtop + 0x8000 to make TOS happy */
+        STMemory_WriteLong(0x42e, memtop+0x8000);
+-------------------
+
+
+When I checked what happens to these values with EmuTOS,
+using the attached debugger input file...
+
+* For ST/STE/TT, EmuTOS doesn't change the values set by Hatari.
+
+* With Falcon, EmuTOS first zeros both of these variables and then
+  sets phystop at real RAM end memtop to value set by Hatari
+  (RAM end - screen size):
+-------------------
+$ hatari -s 14 --vdi-planes 1 --vdi-width 1280 --vdi-height 960 --tos 
+etos512k.img --machine falcon -d . --parse memtop.ini
+[...]
+&gt;<i> m $42e-$436
+</I>00042E: 00 de 28 00 00 00 00 00 00 dd a8 00 23 76 98 aa   ..(.........#v..
+&gt;<i> m $436-$43e
+</I>000436: 00 dd a8 00 23 76 98 aa 00 00 00 00 00 00 00 00   ....#v..........
+1. CPU breakpoint condition(s) matched 1 times.
+$e00a20 : 49ec 0100                            lea       $100(a4),a4
+$e00a24 : 48e4 f0f0                            movem.l   d0-d3/a0-a3,-(a4)
+$e00a28 : 48e4 f0f0                            movem.l   d0-d3/a0-a3,-(a4)
+$e00a2c : 48e4 f0f0                            movem.l   d0-d3/a0-a3,-(a4)
+$e00a30 : 48e4 f0f0                            movem.l   d0-d3/a0-a3,-(a4)
+$e00a34 : 48e4 f0f0                            movem.l   d0-d3/a0-a3,-(a4)
+$e00a38 : 48e4 f0f0                            movem.l   d0-d3/a0-a3,-(a4)
+$e00a3c : 48e4 f0f0                            movem.l   d0-d3/a0-a3,-(a4)
+Debugger: *CPU breakpoint*
+        ( $42e ) ! ( $42e ) :lock
+  $42e = $0
+2. CPU breakpoint condition(s) matched 1 times.
+$e00a40 : 48e4 f0f0                            movem.l   d0-d3/a0-a3,-(a4)
+Debugger: *CPU breakpoint*
+        ( $436 ) ! ( $436 ) :lock
+  $436 = $0
+1. CPU breakpoint condition(s) matched 2 times.
+$e00a34 : 48e4 f0f0                            movem.l   d0-d3/a0-a3,-(a4)
+$e00a38 : 48e4 f0f0                            movem.l   d0-d3/a0-a3,-(a4)
+$e00a3c : 48e4 f0f0                            movem.l   d0-d3/a0-a3,-(a4)
+$e00a40 : 48e4 f0f0                            movem.l   d0-d3/a0-a3,-(a4)
+$e00a44 : d9cd                                 adda.l    a5,a4
+$e00a46 : 51cc ffdc                            dbra      d4,$e00a24
+$e00a4a : 4ed6                                 jmp       (a6)
+$e00970 : 23c5 0000 042e                       move.l    d5,$42e
+Debugger: *CPU breakpoint*
+        ( $42e ) ! ( $42e ) :lock
+  $42e = $e00000
+2. CPU breakpoint condition(s) matched 2 times.
+$e05594 : 0c80 00e0 0000                       cmpi.l    #$e00000,d0
+$e0559a : 6708                                 beq.s     $e055a4
+$e055a4 : 4279 0001 1da0                       clr.w     $11da0
+$e055aa : 6012                                 bra.s     $e055be
+$e055be : 2039 00e0 000c                       move.l    $e0000c,d0
+$e055c4 : 23c0 0000 04fa                       move.l    d0,$4fa
+$e055ca : 23c0 0000 0432                       move.l    d0,$432
+$e055d0 : 23f9 0000 044e 0000 0436             move.l    $44e,$436
+Debugger: *CPU breakpoint*
+        ( $436 ) ! ( $436 ) :lock
+  $436 = $dda800
+-------------------
+
+While these values are logically correct, maybe they confuse some other
+code in EmuTOS that relies on the 32kB offset between memtop &amp; phystop?
+
+
+Note: 
+
+* TOS4 seems to overwrite both memtop &amp; phystop with RAM end value.
+
+* TOS3 seems to recalculate memtop based on the phystop value:
+-------------------
+&gt;<i> m $42e-$436
+</I>00042E: 00 3e 28 00 00 00 00 00 00 3d a8 00 23 76 98 aa   .&gt;(......=..#v..
+&gt;<i> m $436-$43e
+</I>000436: 00 3d a8 00 23 76 98 aa 00 00 00 00 00 00 00 00   .=..#v..........
+2. CPU breakpoint condition(s) matched 1 times.
+$e002fe : 21fc 00e0 5854 047e                  move.l    #$e05854,$047e.w
+$e00306 : 21fc 00e0 5d2e 047a                  move.l    #$e05d2e,$047a.w
+$e0030e : 21fc 00e0 2394 0506                  move.l    #$e02394,$0506.w
+$e00316 : 21fc 00e0 22ee 050a                  move.l    #$e022ee,$050a.w
+$e0031e : 21fc 00e0 2406 050e                  move.l    #$e02406,$050e.w
+$e00326 : 21fc 00e0 241e 0512                  move.l    #$e0241e,$0512.w
+$e0032e : 21fc 00e0 1462 0502                  move.l    #$e01462,$0502.w
+$e00336 : 21f8 044e 0436                       move.l    $044e.w,$0436.w
+Debugger: *CPU breakpoint*
+        ( $436 ) ! ( $436 ) :lock
+  $436 = $3bcf00
+-------------------
+
+($3E2800 - 640*480/8*4 - 256 = $3BCF00.)
+
+
+&gt;<i> &gt; It's not really tested that much with something else than ST.
+</I>&gt;<i> 
+</I>&gt;<i> No problem for me, as long as EmuTOS is not charged.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Falcon/TT Videl code can handle larger resolutions and has
+</I>&gt;<i> &gt; arbitrary integer zooming support so the VDI mode is not
+</I>&gt;<i> &gt; really needed there.
+</I>&gt;<i> 
+</I>&gt;<i> It would be nice to run TOS/EmuTOS in today's monitors native
+</I>&gt;<i> resolutions, which are far higher than what a VIDEL can do.
+</I>
+
+	- Eero
+
+PS. To get the breakpoint history output as seen above, update
+to latest Hatari version from the repository.  I fixed some
+issues in the history integration to breakpoints.
+-------------- next part --------------
+history on
+lock history 8
+b ($42e) ! ($42e) :lock
+b ($436) ! ($436) :lock
+m $42e-&quot;$42e+8&quot;
+m $436-&quot;$436+8&quot;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003969.html">[hatari-devel] Extended VDI screen in Falcon mode
+</A></li>
+	<LI>Next message: <A HREF="003965.html">[hatari-devel] Bringing Modern Python to the Atari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3970">[ date ]</a>
+              <a href="thread.html#3970">[ thread ]</a>
+              <a href="subject.html#3970">[ subject ]</a>
+              <a href="author.html#3970">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

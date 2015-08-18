@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Videl : Some questions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Videl%20%3A%20Some%20questions&In-Reply-To=%3Calpine.DEB.2.00.1103302004280.15416%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003271.html">
+   <LINK REL="Next"  HREF="003283.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Videl : Some questions</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Videl%20%3A%20Some%20questions&In-Reply-To=%3Calpine.DEB.2.00.1103302004280.15416%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Videl : Some questions">ae at dhs.nu
+       </A><BR>
+    <I>Wed Mar 30 20:15:34 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003271.html">[hatari-devel] Videl : Some questions
+</A></li>
+        <LI>Next message: <A HREF="003283.html">[hatari-devel] CMake questions for adding optional files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3272">[ date ]</a>
+              <a href="thread.html#3272">[ thread ]</a>
+              <a href="subject.html#3272">[ subject ]</a>
+              <a href="author.html#3272">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 30 Mar 2011, Laurent Sallafranque wrote:
+
+&gt;<i> 1) Are VBL, HBL and TimerB related to Videl or to the monitor attached to the 
+</I>&gt;<i> computer ?
+</I>&gt;<i>
+</I>&gt;<i> if the answear is &quot;to the monitor&quot;, does it mean that there are the following 
+</I>&gt;<i> static tables to implement ?
+</I>&gt;<i>  TimerB, HBL, VBL cycles for 50 hz , 60 Hz, 70 Hz  on a TV/monitor and 50 Hz 
+</I>&gt;<i> and 100 Hz for VGA monitor ?
+</I>&gt;<i>  (what about monochrome on a VGA monitor ?)
+</I>&gt;<i>  How can one select a 100 Hz VGA monotor (is it the monitor that drives the 
+</I>&gt;<i> VBL or can I parameter it into the Videl ?
+</I>
+Hi,
+
+the Videl is driving the monitor, not the other way around. However there 
+are pins in the monitor port that enables the Falcon to detect what kind 
+of monitor is attached and then adjust the Videl parameters to that.
+
+If you connect a VGA screen, TOS will setup the Videl to 60Hz/31kHz in 
+all resolutions (including ST-High).
+
+If you connect a SM124/144, TOS will setup the classic ST-High mode 
+(71Hz/35kHz or something, I don't remember exactly).
+
+If neither of these are detected, TOS will setup a 50Hz/15.6kHz screen in 
+PAL mode and 60Hz/15.6kHz in NTSC (approx values). PAL/NTSC can be 
+selected as a parameter in the NVRAM. These are the classic 
+SC124/144/RF-modulator setups.
+
+
+However, this is just what TOS supports. Writing your own video code or 
+using a third party resolution configuration tool you can more or less get 
+any frequency that is doable within the bandwidth limit of the Videl.
+
+So if you want to make VBL/HBL/Timer B emulation, I think it needs to be 
+very flexible in terms of video frequency.
+
+
+Oh and about HBL vs Timer B, I don't know the inner technicals, but Timer 
+B's interupt occours much earlier than the HBL. HBL begins at the first 
+visible pixels of the scanline, while HBL begins long before that, thus 
+much more suitable for rasters.
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003271.html">[hatari-devel] Videl : Some questions
+</A></li>
+	<LI>Next message: <A HREF="003283.html">[hatari-devel] CMake questions for adding optional files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3272">[ date ]</a>
+              <a href="thread.html#3272">[ thread ]</a>
+              <a href="subject.html#3272">[ subject ]</a>
+              <a href="author.html#3272">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

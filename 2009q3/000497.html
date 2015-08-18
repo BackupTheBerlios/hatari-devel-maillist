@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari patches for bitplane conversion
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C752526d20907210722h754baebfo380b67a82b31593e%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000496.html">
+   <LINK REL="Next"  HREF="000498.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari patches for bitplane conversion</H1>
+    <B>K&#229;re Andersen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20patches%20for%20bitplane%20conversion&In-Reply-To=%3C752526d20907210722h754baebfo380b67a82b31593e%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Hatari patches for bitplane conversion">kareandersen at gmail.com
+       </A><BR>
+    <I>Tue Jul 21 16:22:27 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000496.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+        <LI>Next message: <A HREF="000498.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#497">[ date ]</a>
+              <a href="thread.html#497">[ thread ]</a>
+              <a href="subject.html#497">[ subject ]</a>
+              <a href="author.html#497">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>2009/7/20 Thomas Huth &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">huth at users.berlios.de</A>&gt;:
+&gt;<i> On Mon, 20 Jul 2009 22:25:42 +0300
+</I>&gt;<i> Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">oak at helsinkinet.fi</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> CC'ing hatari-devel as this is of generic interest and discussed
+</I>&gt;&gt;<i> earlier on the list.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Monday 20 July 2009, K&#229;re Andersen wrote:
+</I>&gt;&gt;<i> &gt; On Sun, Jul 19, 2009 at 4:57 PM, Eero Tamminen&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">oak at helsinkinet.fi</A>&gt;
+</I>&gt;&gt;<i> &gt; wrote:
+</I>&gt;&gt;<i> &gt; &gt; On Saturday 18 July 2009, Thomas Huth wrote:
+</I>&gt;&gt;<i> &gt; &gt;&gt; since you've asked for them in another mail, here are the
+</I>&gt;&gt;<i> &gt; &gt;&gt; convertion function from Kaare.
+</I>&gt;&gt;<i> &gt; &gt;&gt; For me, they are slower than the old functions, so I didn't
+</I>&gt;&gt;<i> &gt; &gt;&gt; include them yet (and I am still waiting for some feedback from
+</I>&gt;&gt;<i> &gt; &gt;&gt; Kaare, so I also don't include them as an alternative yet).
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Just remember, they are not hand optimized - if you want speed out
+</I>&gt;&gt;<i> &gt; of them you will want to fine tune GCC optimization flags. There is
+</I>&gt;&gt;<i> &gt; no reason they should be slower in the actual conversion, because
+</I>&gt;&gt;<i> &gt; they fit CPU caches a lot better than the old code...
+</I>&gt;<i>
+</I>&gt;<i> Sorry, but if you're talking about recent CPUs with 2 MB cache or even
+</I>&gt;<i> more, this is not as valid as it might be for older CPUs (where the
+</I>&gt;<i> old code seems to be faster anyway): The screen buffers which are used
+</I>&gt;<i> by the old code take about 800 kB and should fit into a 2 MB cache as
+</I>&gt;<i> well!
+</I>
+Ok, I am no expert on Intel architecture, but I can tell you this
+much: 2MB cache does not mean 2MB that you can freely fill up with
+whatever code and data you wish. The level one caches are usually
+64Kb, of which half and half are data and instruction. That means, we
+have 32Kb to fill with lookup tables before a miss occurs. Also,
+please remember we are running under pre-emptive multitasking
+operating systems, which means a context switch can happen at _any_
+time, discarding our cached data.
+
+&gt;<i> I also don't think that this problem is related to CPU caches - since
+</I>&gt;<i> it does not occur on Linux or Windows with modern CPUs! The problem
+</I>&gt;<i> must have something to do with Mac OS X exclusively.
+</I>
+That is not what I have been saying at all. What I am saying is, this
+new code fits better - that is all.
+
+&gt;&gt;<i> I haven't found these extra GCC options to help much, at least if you
+</I>&gt;&gt;<i> apply them to whole Hatari (for example although --funroll-loops
+</I>&gt;&gt;<i> helps sometimes, generally it just slows down things as it makes code
+</I>&gt;&gt;<i> larger so that it doesn't fit as well to cache).
+</I>&gt;<i>
+</I>&gt;<i> That's also too system specific. We shouldn't include such specifc
+</I>&gt;<i> optimization flags into the default Makefile.
+</I>
+Indeed. Which brings up another point: Why are the converters
+#include'd into one source file rather than being compiled as separate
+units as would make so much more sense? It really messes up the whole
+structure of the code, as they are neither inline functions nor simple
+headers...
+
+&gt;&gt;<i> &gt; (Point being,
+</I>&gt;&gt;<i> &gt; most demos and games, like i have already stressed, most of the time
+</I>&gt;&gt;<i> &gt; don't leave the frame buffer alone from frame to frame).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Note that many games and demos don't write to the whole (overscan)
+</I>&gt;&gt;<i> screen. Or they can update screen only every other frame. &#160;Game menus
+</I>&gt;&gt;<i> can also be static or only partly animated.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So the comparison might still be faster with many/most demos &amp; games.
+</I>&gt;&gt;<i> And it preloads the line contents to CPU cache for conversion. :)
+</I>&gt;<i>
+</I>&gt;<i> Right. And I still can't think of a really good reason why code should
+</I>&gt;<i> suddenly execute slower on newer CPUs. I _really_ don't think this
+</I>&gt;<i> problem has something to do with CPU caches. It must be a problem with
+</I>&gt;<i> SDL on Mac OS X or something similar.
+</I>
+Again, this is the case, like I have tried to explain before: SDL on
+OS X is crap due to compositing. But helping it suck a bit less when
+it does not hurt the other platforms cant be a bad thing, can it? Of
+course for this statement to be true we need to do the memcmp() thing
+so as not to write unnecessary amounts of data.
+
+&gt;&gt;<i> &gt; &gt; * On platforms where SDL updates don't incur Vsync, the screen
+</I>&gt;&gt;<i> &gt; &gt; updates could be done so that screen-blitting is skipped for
+</I>&gt;&gt;<i> &gt; &gt; lines that haven't changed.
+</I>&gt;<i>
+</I>&gt;<i> How do you want to detect that SDL feature? Hard-coding it with #ifdefs
+</I>&gt;<i> is a bad idea, IMHO.
+</I>
+I guess there are several ways to do this, including the check for
+hardware surfaces. The safest way should nevertheless be to do a bit
+of profiling on buffer creation (that is, program start _and_ screen
+mode changes). You can do a wait for vsync, and see how much time will
+pass in between. If its shorter than a given threshold, say 50Hz, then
+you dont have any vsync... A similar test is already done to get fine
+granularity cycle timing (and the comments about OS X in that part of
+the code are wrong mind you - we have HPET just as much as linux do).
+
+&gt;<i>
+</I>&gt;<i> Another question, K&#229;re, did you already had some spare time to do the
+</I>&gt;<i> tests that I asked you to do? (Testing Spec512 screens etc.)
+</I>
+Nope, sorry, not been in OS X much lately tbh - been using real
+Ataris, going to Atari/Demoscene parties and been busy fathering my 4
+months old son :)
+
+But the holidays are coming to and end, so here I am again :)
+
+-K&#229;re
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000496.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+	<LI>Next message: <A HREF="000498.html">[hatari-devel] Hatari patches for bitplane conversion
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#497">[ date ]</a>
+              <a href="thread.html#497">[ thread ]</a>
+              <a href="subject.html#497">[ subject ]</a>
+              <a href="author.html#497">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

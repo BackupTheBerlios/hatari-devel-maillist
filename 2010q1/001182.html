@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] spec512 using blitter on STE
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20spec512%20using%20blitter%20on%20STE&In-Reply-To=%3Calpine.LMD.2.00.1001082305580.11712%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001360.html">
+   <LINK REL="Next"  HREF="001184.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] spec512 using blitter on STE</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20spec512%20using%20blitter%20on%20STE&In-Reply-To=%3Calpine.LMD.2.00.1001082305580.11712%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] spec512 using blitter on STE">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Jan  8 23:27:07 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001360.html">[hatari-devel] Hatari debugger improvements
+</A></li>
+        <LI>Next message: <A HREF="001184.html">[hatari-devel] spec512 using blitter on STE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1182">[ date ]</a>
+              <a href="thread.html#1182">[ thread ]</a>
+              <a href="subject.html#1182">[ subject ]</a>
+              <a href="author.html#1182">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hello,
+
+while looking at the wrong colors displayed in the intro of the STE 20th 
+year demo, I was able to get a correct result by simulating color changes 
+16 cycles earlier for all blitter writes.
+
+These are the current (wrong) timings :
+
+cpu video_cyc= 32828  60@ 64 : 0001caae: 2689 1885 43e9 0050 51cb MOVE.L A1,(A3)
+IO write.l $ff8a24 = $00043e28
+cpu video_cyc= 32840  72@ 64 : 0001cab0: 1885 43e9 0050 51cb ffd0 MOVE.B D5,(A4)
+IO write.b $ff8a3c = $c0
+blitter write ctrl=c0 video_cyc=32840 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">72 at 64</A> pc=1cab2 instr_cyc=8
+IO write.w $ff8250 = $0000
+write col addr=ff8250 col=0 video_cyc_w=32860 line_cyc_w=92 @ nHBL=64/video_hbl_w=64 pc=1cab2 instr_cyc=8
+IO write.w $ff8252 = $0888
+write col addr=ff8252 col=888 video_cyc_w=32868 line_cyc_w=100 @ nHBL=64/video_hbl_w=64 pc=1cab2 instr_cyc=8
+IO write.w $ff8254 = $0088
+write col addr=ff8254 col=88 video_cyc_w=32876 line_cyc_w=108 @ nHBL=64/video_hbl_w=64 pc=1cab2 instr_cyc=8
+IO write.w $ff8256 = $0111
+
+
+to get correct pictures, ff8250 should be changed at cycle 76, not 92, for 
+example.
+
+JB / Tobe are you still around ? Do you have any idea of what's wrong ?
+(this works fine under steem, which is odd because I had the feeling 
+latest hatari had better blitter's timings than steem for many demos)
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001360.html">[hatari-devel] Hatari debugger improvements
+</A></li>
+	<LI>Next message: <A HREF="001184.html">[hatari-devel] spec512 using blitter on STE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1182">[ date ]</a>
+              <a href="thread.html#1182">[ thread ]</a>
+              <a href="subject.html#1182">[ subject ]</a>
+              <a href="author.html#1182">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

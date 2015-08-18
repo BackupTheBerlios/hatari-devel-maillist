@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Code-review, unit tests and bug-tracker
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Code-review%2C%20unit%20tests%20and%20bug-tracker&In-Reply-To=%3CBANLkTi%3Duc1u8tF0uN-MMAnv7uGZhNUG00Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003418.html">
+   <LINK REL="Next"  HREF="003421.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Code-review, unit tests and bug-tracker</H1>
+    <B>Deniz Turkoglu</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Code-review%2C%20unit%20tests%20and%20bug-tracker&In-Reply-To=%3CBANLkTi%3Duc1u8tF0uN-MMAnv7uGZhNUG00Q%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Code-review, unit tests and bug-tracker">turkoglu.deniz at gmail.com
+       </A><BR>
+    <I>Wed May 11 22:57:25 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003418.html">[hatari-devel] Code-review, unit tests and bug-tracker
+</A></li>
+        <LI>Next message: <A HREF="003421.html">[hatari-devel] Code-review, unit tests and bug-tracker
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3419">[ date ]</a>
+              <a href="thread.html#3419">[ thread ]</a>
+              <a href="subject.html#3419">[ subject ]</a>
+              <a href="author.html#3419">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, May 11, 2011 at 10:19 PM, Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On keskiviikko 11 toukokuu 2011, Deniz Turkoglu wrote:
+</I>&gt;&gt;<i> &gt; The screenshots &amp; sound output are files saved by Hatari. &#160;The control
+</I>&gt;&gt;<i> &gt; socket is a local unix socket, not a tcp/ip one. &#160;I don't understand
+</I>&gt;&gt;<i> &gt; what you mean by &quot;hashes&quot;?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> We hash the images (md5) and we keep a list of possible passes and
+</I>&gt;&gt;<i> fails (regressions). In screenshots
+</I>&gt;<i>
+</I>&gt;<i> Why not just do cmp? &#160;The PNG screenshots are pretty small size wise,
+</I>&gt;<i> so it's not even a question of storage and you want the real image so that
+</I>&gt;<i> you can see where the difference is.
+</I>&gt;<i>
+</I>&gt;<i> (you could also use imagemagick to produce a &quot;diff&quot; of the image.)
+</I>
+We use hashes for a few reasons, we use tcp/ip and run these on a
+variety of OSes and devices. The file io is quite slow, esp. on
+devices, and when the number of tests grow, it becomes a bottleneck in
+integration, hashing the image within the buffer in mem is faster, and
+seems to work fine so far. The main problem with this approach was
+with the fonts and rendering (web pages change a lot when a font
+changes) which can be solved by ref tests [1] though I am not sure
+if/how this can be applied to hatari.
+
+[1] <A HREF="https://developer.mozilla.org/en/Creating_reftest-based_unit_tests">https://developer.mozilla.org/en/Creating_reftest-based_unit_tests</A>
+
+&gt;<i>
+</I>&gt;&gt;<i> and audio files this can help us
+</I>&gt;&gt;<i> to identify some things quickly (such as blank screenshot, empty audio
+</I>&gt;&gt;<i> file, etc...).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &#160; &#160; &#160; &#160;- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003418.html">[hatari-devel] Code-review, unit tests and bug-tracker
+</A></li>
+	<LI>Next message: <A HREF="003421.html">[hatari-devel] Code-review, unit tests and bug-tracker
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3419">[ date ]</a>
+              <a href="thread.html#3419">[ thread ]</a>
+              <a href="subject.html#3419">[ subject ]</a>
+              <a href="author.html#3419">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

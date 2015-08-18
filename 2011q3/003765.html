@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Last checks before releasing 1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3Calpine.DEB.2.00.1107181657200.15416%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003759.html">
+   <LINK REL="Next"  HREF="003766.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Last checks before releasing 1.5</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3Calpine.DEB.2.00.1107181657200.15416%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Last checks before releasing 1.5">ae at dhs.nu
+       </A><BR>
+    <I>Mon Jul 18 17:17:32 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003759.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+        <LI>Next message: <A HREF="003766.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3765">[ date ]</a>
+              <a href="thread.html#3765">[ thread ]</a>
+              <a href="subject.html#3765">[ subject ]</a>
+              <a href="author.html#3765">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 17 Jul 2011, Nicolas Pomar&#232;de wrote:
+
+&gt;<i> I don't know this part, there's certainly an option for this in gcc to force 
+</I>&gt;<i> static linking ; maybe Jerome Vernet will be able to provide such binaries ?
+</I>
+Hi.
+
+Maybe it's enough to just distribute the libraries inside the application 
+bundle? I'll give that a try. But on the other hand, when I build there's 
+only 64-bit Intel binaries made, no idea how to get Universal bins for 
+PowerPC, Intel, 32- and 64-bit. Ok, I'm not the right person to do the 
+official build :)
+
+
+&gt;<i> In what sense does it break the video recording ? Do you mean when you try to 
+</I>&gt;<i> reencode the video produced by Hatari to a lower bitrate your encoder doesn't 
+</I>&gt;<i> support an input frame rate of 50.053 ?
+</I>
+My toolchain looks like;
+
+1. Hatari (Framedump to AVI/PNG/PCM)
+2. ffmpeg (Container change to MOV/PNG/PCM)
+3. Final Cut Pro (Cut/fade etc, export to MOV/PNG/PCM)
+4. Mpeg Streamclip (Final encode/crop/scale, H.264/AAC)
+
+The problem comes already at stage 2, when ffmpeg tells me that the file 
+duration is too long for the timebase. I've not been able to work around
+that.
+
+Here's the full ffmpeg output:
+
+ae$ ffmpeg -i hatari.avi -acodec copy -vcodec copy demo.mov
+FFmpeg version UNKNOWN, Copyright (c) 2000-2011 the FFmpeg developers
+   built on Mar 15 2011 21:51:54 with gcc 4.2.1 (Apple Inc. build 5664)
+   configuration: --disable-yasm
+   libavutil    50. 39. 0 / 50. 39. 0
+   libavcodec   52.114. 0 / 52.114. 0
+   libavformat  52.103. 0 / 52.103. 0
+   libavdevice  52.  3. 0 / 52.  3. 0
+   libavfilter   1. 76. 0 /  1. 76. 0
+   libswscale    0. 12. 0 /  0. 12. 0
+Input #0, avi, from 'hatari.avi':
+   Metadata:
+     encoder         : Hatari devel (Jul 18 2011) - the Atari ST, STE, TT 
+and Falcon emulator
+   Duration: 00:00:16.08, start: 0.000000, bitrate: 4613 kb/s
+     Stream #0.0: Video: png, rgb24, 832x552, 50.05 tbr, 50.05 tbn, 50.05 
+tbc
+     Stream #0.1: Audio: pcm_s16le, 50066 Hz, 2 channels, s16, 1602 kb/s
+
+[mov @ 0x10101cc00] WARNING codec timebase is very high. If duration is 
+too long,
+file may not be playable by quicktime. Specify a shorter timebase
+or choose different container.
+
+Output #0, mov, to 'demo.mov':
+   Metadata:
+     encoder         : Lavf52.103.0
+     Stream #0.0: Video: png, rgb24, 832x552, q=2-31, 839745117.00 tbn, 
+50.05 tbc
+     Stream #0.1: Audio: pcm_s16le, 50066 Hz, 2 channels, 1602 kb/s
+Stream mapping:
+   Stream #0.0 -&gt; #0.0
+   Stream #0.1 -&gt; #0.1
+Press [q] to stop encoding
+
+FATAL error, file duration too long for timebase, this file will not be
+playable with quicktime. Choose a different timebase or a different
+container format
+frame=  805 fps=  0 q=-1.0 Lsize=    9036kB time=16.06 
+bitrate=4608.0kbits/s
+video:5879kB audio:3141kB global headers:0kB muxing overhead 0.172186%
+
+
+
+&gt;<i> From the command line, add &quot;--avi-fps=50&quot; to force the value written into the 
+</I>&gt;<i> avi header to 50 Hz.
+</I>&gt;<i> Or in the [video] section of hatari.cfg, change AviRecordFps=0 to
+</I>&gt;<i> AviRecordFps=50 for example.
+</I>
+Thanks, this made my day. Adding it to the configureation file worked a 
+treat. :)
+
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003759.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+	<LI>Next message: <A HREF="003766.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3765">[ date ]</a>
+              <a href="thread.html#3765">[ thread ]</a>
+              <a href="subject.html#3765">[ subject ]</a>
+              <a href="author.html#3765">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

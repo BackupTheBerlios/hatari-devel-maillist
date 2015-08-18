@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] FYI: new --desktop option
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C201103290011.25172.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003246.html">
+   <LINK REL="Next"  HREF="003258.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] FYI: new --desktop option</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20FYI%3A%20new%20--desktop%20option&In-Reply-To=%3C201103290011.25172.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] FYI: new --desktop option">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Mar 28 23:11:25 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003246.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+        <LI>Next message: <A HREF="003258.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3256">[ date ]</a>
+              <a href="thread.html#3256">[ thread ]</a>
+              <a href="subject.html#3256">[ subject ]</a>
+              <a href="author.html#3256">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On maanantai 28 maaliskuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Today, Hatari doubles Y so that in the end a high res screen takes the
+</I>&gt;<i> same surface on the emulator's screen as a med res screen.
+</I>&gt;<i> 
+</I>&gt;<i> But technically, the shifter only displays 200 lines, and you get the
+</I>&gt;<i> feeling of a Y-stretched image due to the interlacing on a TV.
+</I>&gt;<i> 
+</I>&gt;<i> Now, if you'd like to record a video of a med res screen, it would be
+</I>&gt;<i> more efficient to record it without doubling Y (and then double Y while
+</I>&gt;<i> playing the video if you like).
+</I>
+Right, I hadn't thought of that.
+
+
+&gt;<i> In a more general way, if we want to handle one day some kind of filters
+</I>&gt;<i> to zoom x2 or x3, we need to have a non-zoomed image as source, so
+</I>&gt;<i> having a parameter to double Y could be useful.
+</I>
+Well, the zooming should retain the aspect ratio and for low-rez that always
+means scaling both directions, so I don't think just Y-scaling to be very
+useful for low rez.  If your code does that internally, it's fine, but I
+think it to be just wasting space[1] in the UI.
+
+
+&gt;<i> &gt;&gt; The user might want it or not, so he can change the value as he likes,
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; but from the point of view of :
+</I>&gt;<i> &gt;&gt;    - maximum emulation accuracy
+</I>&gt;<i> &gt;&gt;    - developping demos under Hatari as close as possible as a real ST
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Why showing full borders on screen would prevent that, wouldn't on real
+</I>&gt;<i> &gt; machine/monitor one anyway see some extra pixels?
+</I>&gt;<i> 
+</I>&gt;<i> I don't really understand what you mean.
+</I>
+I mean showing full 460 pixels that you mention below and just blanking rest
+of the pixels instead of changing the window size.
+
+Changing window sizes are pretty annoying, just try with older versions of
+Hatari (that don't have my code that tries to keep the window size stable)
+some of the Falcon demos that change resolution often... :-/
+
+
+&gt;<i> &gt;&gt;    - recording videos that match the result of a real ST
+</I>
+Window size changes in middle of recording sound annoying too...?
+
+
+&gt;<i> &gt; What if user instead could specify for the video recording either how
+</I>&gt;<i> &gt; wide the borders are or how many pixels will be cut from borders....?
+</I>&gt;<i> 
+</I>&gt;<i> You can hide some parts of the borders (ie crop) the image while
+</I>&gt;<i> recording (in fact it's already implemented in my avirecord.c and it's
+</I>&gt;<i> used to remove tthe status bar for example), 
+</I>
+Yes, that's why I suggested adding that to recording settings.
+
+&gt;<i> but you can't increase the border to see missing pixels.
+</I>
+And show full borders instead of changing window size.
+
+In the recording part of the SDL &quot;Hatari window settings&quot; dialog there's
+also free space[1] for such settings unlike in the rest of the Hatari window
+settings dialog.
+
+[1] Your ASCII layout proposal was lacking indicator and frameskip parts, so
+it wasn't really useful yet.  With all the info there the *whole* dialog
+should fit within about 64x25 characters, otherwise it doesn't fit within
+Hatari window.  Even then it might already be too large to be opened with
+some of the smaller Videl resolutions. :-/
+
+
+&gt;<i> An overscan line is max 460 pixels, with 48 pixels in left border. This
+</I>&gt;<i> leaves approx 92 pixels for right border (minus hi/lo stabilizer).
+</I>&gt;<i> 
+</I>&gt;<i> Today, we only render 320+48+48 pixels in the internal video buffer ;
+</I>&gt;<i> what I'd like to do is to always render 460 pixels and then extract a
+</I>&gt;<i> part of those 460 pixels to copy it to the SDL buffer (using convert/*c
+</I>&gt;<i> functions), depending on the size of the border chosen by the user.
+</I>&gt;<i> 
+</I>&gt;<i> So the cropping would happen during the internal buffer -&gt; sdl
+</I>&gt;<i> conversion.
+</I>
+Cropped based on what the demos do?  Or based on what user has set in Border
+settings / Max window size?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003246.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+	<LI>Next message: <A HREF="003258.html">[hatari-devel] FYI: new --desktop option
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3256">[ date ]</a>
+              <a href="thread.html#3256">[ thread ]</a>
+              <a href="subject.html#3256">[ subject ]</a>
+              <a href="author.html#3256">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

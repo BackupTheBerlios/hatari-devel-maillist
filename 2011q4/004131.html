@@ -1,0 +1,268 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Long mail : new cpu cores + 2 questions.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Long%20mail%20%3A%20new%20cpu%20cores%20%2B%202%20questions.&In-Reply-To=%3C4EAEA288.6090307%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004130.html">
+   <LINK REL="Next"  HREF="004132.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Long mail : new cpu cores + 2 questions.</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Long%20mail%20%3A%20new%20cpu%20cores%20%2B%202%20questions.&In-Reply-To=%3C4EAEA288.6090307%40free.fr%3E"
+       TITLE="[hatari-devel] Long mail : new cpu cores + 2 questions.">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Oct 31 14:28:40 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004130.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+        <LI>Next message: <A HREF="004132.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4131">[ date ]</a>
+              <a href="thread.html#4131">[ thread ]</a>
+              <a href="subject.html#4131">[ subject ]</a>
+              <a href="author.html#4131">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>In complement : cpuemu_21 is really not completly 'cycle_exact'.
+
+Example (taken from Eko_system):
+
+cpu video_cyc=   132 132@  0 : 0005C6C6 6708                     BEQ.B 
+#$00000008 == $0005C6D0 (T)
+cpu video_cyc=   134 134@  0 : 0005C6D0 4ab8 04be                TST.L 
+$000004be
+cpu video_cyc=   150 150@  0 : 0005C6D4 6706                     BEQ.B 
+#$00000006 == $0005C6DC (F)
+cpu video_cyc=   150 150@  0 : 0005C6D6 4eb0 01e1 04be           JSR.L 
+(D0.W*1+1214)+0 == $0011a1bc
+cpu video_cyc=   168 168@  0 : 0011A1BC 48e7 fffe                MOVEM.L 
+D0-D7/A0-A6,-(A7)
+
+Here, BEQ is 0 cycles (when condition is false).
+There are many examples like this in winuae new core CPU.
+
+Should I correct them ? (and fork from the original winuae cores ?)
+
+Regards
+
+Laurent
+
+
+
+Le 31/10/2011 12:04, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I've played around with the new winuae cores for the last days.
+</I>&gt;<i>
+</I>&gt;<i> There are 6 cores available :
+</I>&gt;<i>
+</I>&gt;<i> cpuemu_0   : a generic 68x00 cpu (used when no prefetch nor cycle 
+</I>&gt;<i> exact config in the GUI), both for 68000 and 68030 emu
+</I>&gt;<i> cpuemu_11 : same as before, but for prefetch mode and 68000 only
+</I>&gt;<i> cpuemu_12 : this one is for the 68000 cycle exact mode only
+</I>&gt;<i> cpuemu_20 : this one is for the 68020 emulation prefetch + cycle exact
+</I>&gt;<i> cpuemu_21 : this one is for the 68030 emulation prefetch + cycle exact
+</I>&gt;<i> cpuemu_31 : this one is for 68040 and 68060 emulation
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Actually, I can let run quite correctly the following cores:
+</I>&gt;<i> cpuemu_0
+</I>&gt;<i> cpuemu_11
+</I>&gt;<i> cpuemu_20
+</I>&gt;<i> cpuemu_21 (I'll have to send a patch soon for this one)
+</I>&gt;<i> cpuemu_31
+</I>&gt;<i>
+</I>&gt;<i> 2 cores are still not running :
+</I>&gt;<i> cpuemu_12 (very strange code behing it)
+</I>&gt;<i> cpu_emu31+MMU activated (TRY/CATCH/RETRY) to recode first
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> First : Core updating.
+</I>&gt;<i> I've tried to upgrade the cores to latest winuae source, but I broke 
+</I>&gt;<i> things.
+</I>&gt;<i> There are few changes in the cores between the 2 versions, but 
+</I>&gt;<i> patching must be done carefully.
+</I>&gt;<i> I'll try it another time later.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ST emulation :
+</I>&gt;<i>
+</I>&gt;<i> For ST emulation, the closest core to our actual oldcpu core are 
+</I>&gt;<i> cpuemu_0 or cpuemu_11 (very close to each other, only prefetch differs).
+</I>&gt;<i>
+</I>&gt;<i> If we want to retrieve the actual old cpu compatibility, we have 2 
+</I>&gt;<i> possibilities :
+</I>&gt;<i>
+</I>&gt;<i> - using cpuemu_11 as the main 68000 core, and patch gencpu.c to 
+</I>&gt;<i> rollback the different patchs Nicolas added there.
+</I>&gt;<i>   For example, getDivs68kCycles and getDivu68kCycles are only called 
+</I>&gt;<i> with cpuemu_12, so, we'll have to reintroduce them into gencpu.c
+</I>&gt;<i>
+</I>&gt;<i> - let the cpuemu12 running (it may be harder, and I don't understand 
+</I>&gt;<i> everything here).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I think we should only concentrate on 1 cpu and forget the others, as 
+</I>&gt;<i> Nicolas has proved that the cpuemu11 can reach a good level in accuracy.
+</I>&gt;<i> I can do this job if you want to try to get as close as possible to 
+</I>&gt;<i> the actual CPU ( I don't think it'll be that long and difficult, as 
+</I>&gt;<i> we've got the old gencpu as example).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Falcon emulation :
+</I>&gt;<i>
+</I>&gt;<i> 2 cores are running :
+</I>&gt;<i>
+</I>&gt;<i> cpuemu_0 : the generic 68000 core is used for 68030 and 68030 + 
+</I>&gt;<i> prefetch emulation. It runs 68030 data and register caches and 68030 
+</I>&gt;<i> MMU code.
+</I>&gt;<i> the problem with this core is that is uses the 68000 cycles. I get the 
+</I>&gt;<i> best results with this one actually (I run it with prefetch).
+</I>&gt;<i>
+</I>&gt;<i> cpuemu_21 : the cycle exact core. I've got some results with it now, 
+</I>&gt;<i> but it seems to be less accurate than the cpuemu_0 core. Some demo 
+</I>&gt;<i> freeze with this one, but runs well with cpuemu_0.
+</I>&gt;<i> It's not completly &quot;cycle exact&quot;, as for example the divs, divu and 
+</I>&gt;<i> divl cycles are computed with the worst cycles value instead of the 
+</I>&gt;<i> accurate value.
+</I>&gt;<i> It let works 68030 caches and 68030 MMU too.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> My suggest: for Hatari emulation, we could keep only 3 cores :
+</I>&gt;<i>
+</I>&gt;<i> cpuemu_11 for ATARI 68000 core and repatch it to reach the actual 
+</I>&gt;<i> level of compatibility.
+</I>&gt;<i> cpuemu_0 for FALCON emulation with a lot of changes in it (cycles, 
+</I>&gt;<i> ...) to let it be closer to a 68030 or cpuemu_21 (but the code is much 
+</I>&gt;<i> more complex and accuracy is lower for now).
+</I>&gt;<i>
+</I>&gt;<i> We would only run hatari in accuracy mode for the ST, in best accuracy 
+</I>&gt;<i> for the 68030 Falcon and generic accuracy 68060 for later.
+</I>&gt;<i> No more GUI with a lot of options like prefetch, ... (I don't think 
+</I>&gt;<i> the speed difference is noteable with or without prefetch nowadays)
+</I>&gt;<i> No more 68000 running with a MMU or a DSP.
+</I>&gt;<i> We could only choose ST, ST, TT, FALCON (and later accelerated falcon) 
+</I>&gt;<i> and choose the with/without copro or DSP.
+</I>&gt;<i>
+</I>&gt;<i> Or we can continue to offer many parameters in the GUI and in the 
+</I>&gt;<i> emulator, but 6 cores are a great effort to maintain and cpuemu_0 is 
+</I>&gt;<i> used both for generic 68000 and Falcon, wich means a lot of &quot;IF&quot; to 
+</I>&gt;<i> add everywhere in gencpu.c to keep accuracy for all cpus.
+</I>&gt;<i>
+</I>&gt;<i> One day or the other, we'll have to make some choice with the new core 
+</I>&gt;<i> and make some improvements and changes into it.
+</I>&gt;<i> If I keep it &quot;compatible&quot; with winuae without changing anything, 
+</I>&gt;<i> falcon emu won't improve anymore.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> But in the same time, I think I reach the limits of my knowledges here 
+</I>&gt;<i> with Motorola CPU.
+</I>&gt;<i> Falcon gets quite well emulated, but there are still a lot of little 
+</I>&gt;<i> problems here and there (accuracy, sound noise, ...)
+</I>&gt;<i> I think DSP is running quite well, everything is emulated. Crossbar is 
+</I>&gt;<i> here too.
+</I>&gt;<i> I lack of documentation (as I had for the DSP for example).
+</I>&gt;<i> And I'm not such an expert of 68x00 processors.
+</I>&gt;<i>
+</I>&gt;<i> I can patch the 68030 cycles according to motorola's docs (or better, 
+</I>&gt;<i> Mikro's doc when he finished it) to help.
+</I>&gt;<i> Maybe you could give me ideas of things to do in hatari to improve it.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Other point : videl emulation:
+</I>&gt;<i>
+</I>&gt;<i> I've done some work with videl emu (I still have the code here on my 
+</I>&gt;<i> hardisk).
+</I>&gt;<i> But separating video.c and videl.c implies huge changes I don't want 
+</I>&gt;<i> to do lonely.
+</I>&gt;<i> video.c in integrated everywhere in hatari (psg.c, mfp.c, ...)
+</I>&gt;<i> It would be nice to have an interface to call in all parts of hatari 
+</I>&gt;<i> that would run either with video.c or videl.c.
+</I>&gt;<i> I would have to reintegrate timer A, B, C, D, HBL, VBL into videl.c 
+</I>&gt;<i> (I've already done some of them).
+</I>&gt;<i>
+</I>&gt;<i> I don't want to add &quot;if FALCON ...&quot; everywhere in the code (as I've 
+</I>&gt;<i> done into my actual code).
+</I>&gt;<i> It was easy to separate the sound (crossbar VS stedma sound), but 
+</I>&gt;<i> video is too glued everywhere in ST mode.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Last point : cpu speed.
+</I>&gt;<i>
+</I>&gt;<i> Is dividing the cycles by 2 (or 4) to let the 68000 run at 16 or 32 
+</I>&gt;<i> Mhz is the only way to do it ?
+</I>&gt;<i> My 68030 falcon should run natively at 16 Mhz (1 instruction cycles 
+</I>&gt;<i> shoudn't be divided).
+</I>&gt;<i> I should have more cycles for each VBL, crossbar should run with the 
+</I>&gt;<i> 68030 cycles (not divided by 2 nor 4), same for DSP.
+</I>&gt;<i>
+</I>&gt;<i> Isn't there a &quot;more beautiful&quot; way to do the frequency emulation 
+</I>&gt;<i> (keeping the cycles intact and having twice more cycles for each VBL 
+</I>&gt;<i> for example).
+</I>&gt;<i>
+</I>&gt;<i> Maybe this point is perfect and doesn't need any change, but it always 
+</I>&gt;<i> &quot;annoys&quot; me to have the 68030 cycles divided by 2.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I stop here.
+</I>&gt;<i> Thanks to read it to the end (and sorry for my approximate english)
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004130.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+	<LI>Next message: <A HREF="004132.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4131">[ date ]</a>
+              <a href="thread.html#4131">[ thread ]</a>
+              <a href="subject.html#4131">[ subject ]</a>
+              <a href="author.html#4131">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

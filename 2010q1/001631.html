@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [hatari-users] User selectable threshold for	window zooming
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Bhatari-users%5D%20User%20selectable%20threshold%20for%0A%09window%20zooming&In-Reply-To=%3C201003060021.54255.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001630.html">
+   <LINK REL="Next"  HREF="001632.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [hatari-users] User selectable threshold for	window zooming</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5Bhatari-users%5D%20User%20selectable%20threshold%20for%0A%09window%20zooming&In-Reply-To=%3C201003060021.54255.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] [hatari-users] User selectable threshold for	window zooming">eerot at users.berlios.de
+       </A><BR>
+    <I>Fri Mar  5 23:21:53 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001630.html">[hatari-devel] Videl code and registers
+</A></li>
+        <LI>Next message: <A HREF="001632.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1631">[ date ]</a>
+              <a href="thread.html#1631">[ thread ]</a>
+              <a href="subject.html#1631">[ subject ]</a>
+              <a href="author.html#1631">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+(summary: this was commited)
+
+On Thursday 04 February 2010, Thomas Huth wrote:
+&gt;&gt;<i> For screen to get more than doubled, the original width would need to
+</I>&gt;&gt;<i> be &lt; 267 pixels and height &lt; 184 pixels which at least I've never
+</I>&gt;&gt;<i> seen... And ST/STE resolutions are never zoomed more than double.
+</I>&gt;<i>
+</I>&gt;<i> You haven't seen a lot of Falcon demos yet, have you? ;-)
+</I>&gt;<i> Try &quot;Terrorize your soul&quot; for example, it switches to 320x100 or so a
+</I>&gt;<i> couple of times... that means nScreenZoomY has been set to 5 with the
+</I>&gt;<i> old code, that's a lot more than simply doubling the resolution...
+</I>
+There's now two level scaling.  First to correct the screen aspect ratio,
+and then additional integer scaling factor added on top of that (which is
+same in both directions) to get closer to user specified Max resolution.
+
+User can disable both of these separately. I just commited the Screen
+dialog split into Monitor &amp; Window dialogs and added this option to Monitor
+dialog.
+
+Btw. As the Videl register based scaling / doubling didn't work for things
+like Yepyha and was a bit complicated, I replaced it with simple scaling
+just in hostscreen which is based on the the ratio of requested width and
+height and achieves exactly the same thing, but more reliably :-).
+
+With that and the default Max width/height zooming I added, e.g. Alive demo
+window size changes seem to mostly go away, and the demo is fully watchable
+in fullscreen.
+
+Please test (I'm away during weekend). The change was a large and concerns
+both ST/STE and Falcon/TT screen handling so there can (will?) be bugs.
+
+
+On Friday 05 March 2010, Eero Tamminen wrote:
+&gt;<i> My plan is next to (as there were no comments against
+</I>&gt;<i> the dialog split when I earlier sent the patch):
+</I>&gt;<i>
+</I>&gt;<i> 1. Split Monitor and Window configuration to  separate dialogs in Hatari
+</I>&gt;<i>     options
+</I>&gt;<i>
+</I>&gt;<i> 2. Remove old &quot;Zoom low rez&quot; option
+</I>&gt;<i>
+</I>&gt;<i> 3. Add an option for &quot;Max doubled size&quot; Window dialog which will increase
+</I>&gt;<i>    the size of Falcon or TT resolutions by an integer scaling factor that
+</I>&gt;<i>    provides closest (but smaller) resolution than the specified max
+</I>&gt;<i>    resolution.
+</I>&gt;<i>
+</I>&gt;<i>    Although it may use scaling factor larger than 2, I'll call it
+</I>&gt;<i> &quot;doubling&quot; to make it clear that it uses an integer scaling factor.
+</I>&gt;<i> Zooming gives IMHO false expectation by implying something that would
+</I>&gt;<i> match the selected max resolution exactly (but if you have better name
+</I>&gt;<i> for this option, I'm all ears! :-))....
+</I>&gt;<i>
+</I>&gt;<i> 4. Add an option for &quot;Keep aspect ratio&quot; to the Monitor dialog.
+</I>&gt;<i>    Disabling this will disable both ST-medrez vertical doubling and
+</I>&gt;<i>    ST-lowerez doubling in addition to Falcon modes horizontal &amp;
+</I>&gt;<i>    vertical doubling.  Aspect ratio correction will be done only if
+</I>&gt;<i>    it also keeps below given &quot;Max doubled size&quot;.
+</I>&gt;<i>
+</I>&gt;<i> Most of 1-3 was in the patch I've sent earlier, it just needs an update
+</I>&gt;<i> + &quot;Keep aspect ratio&quot; functionality.
+</I>
+
+	- Eero
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001630.html">[hatari-devel] Videl code and registers
+</A></li>
+	<LI>Next message: <A HREF="001632.html">[hatari-devel] LMC1992 and Microwire emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1631">[ date ]</a>
+              <a href="thread.html#1631">[ thread ]</a>
+              <a href="subject.html#1631">[ subject ]</a>
+              <a href="author.html#1631">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

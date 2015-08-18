@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari dsp debug mode ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20dsp%20debug%20mode%20%3F&In-Reply-To=%3C20090426193352.751fd5a9%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000272.html">
+   <LINK REL="Next"  HREF="000274.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari dsp debug mode ?</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20dsp%20debug%20mode%20%3F&In-Reply-To=%3C20090426193352.751fd5a9%40phineus%3E"
+       TITLE="[hatari-devel] Hatari dsp debug mode ?">huth at users.berlios.de
+       </A><BR>
+    <I>Sun Apr 26 19:33:52 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000272.html">[hatari-devel] Hatari dsp debug mode ?
+</A></li>
+        <LI>Next message: <A HREF="000274.html">[hatari-devel] Hatari dsp debug mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#273">[ date ]</a>
+              <a href="thread.html#273">[ thread ]</a>
+              <a href="subject.html#273">[ subject ]</a>
+              <a href="author.html#273">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 26 Apr 2009 15:45:57 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> &gt; Thomas, for the #define DSP_DISASM 0 (or 1, or undefined), I think
+</I>&gt;<i> &gt; we should remove it from ds_cpu.c and keep only
+</I>&gt;<i> &gt; #define DSP_DISASM_INST 0    /* Instructions */
+</I>&gt;<i> &gt; #define DSP_DISASM_REG 0    /* Registers changes */
+</I>&gt;<i> &gt; #define DSP_DISASM_MEM 0    /* Memory changes */
+</I>&gt;<i> &gt; #define DSP_DISASM_INTER 0    /* Interrupts */
+</I>&gt;<i> &gt; #define DSP_DISASM_STATE 0    /* State change */
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Like this, if we need to active disasm_reg or disasm_memory, it
+</I>&gt;<i> &gt; would work. I don't think this would make us loose CPU_time
+</I>&gt;<i> &gt; (perhaps a few more bytes in memory).
+</I>&gt;<i> 
+</I>&gt;<i> dsp_postexecute_update_pc() has some stuff that is done when just
+</I>&gt;<i> DSP_DISASM is enabled.
+</I>
+Right. And since this function is called after each DSP instruction,
+this could have a performance impact!
+
+&gt;<i> &gt; Do you agree ?
+</I>&gt;<i> 
+</I>&gt;<i> Why the disassembly is done within the emulation (e.g. DSP_DISASM_MEM
+</I>&gt;<i> replaces memory access operations), couldn't it be done only within
+</I>&gt;<i> the debugger (at least once there's breakpoint support)?
+</I>
+I think it's done within the emulation to see how the DSP program runs
+instruction by instruction.
+
+&gt;<i> Btw. If it would be for tracing, then it should be protected by the
+</I>&gt;<i> Hatari tracing defines (see includes/log.h &amp; log.c).  For example
+</I>&gt;<i> this stuff in dsp_core.c is clearly about tracing:
+</I>&gt;<i> --------------
+</I>&gt;<i> /* More disasm infos, if wanted */
+</I>&gt;<i> #define DSP_DISASM_HOSTREAD 0   /* Dsp-&gt;Host transfer */
+</I>&gt;<i> #define DSP_DISASM_HOSTWRITE 0  /* Host-&gt;Dsp transfer */
+</I>&gt;<i> #define DSP_DISASM_STATE 0      /* State changes */
+</I>&gt;<i> --------------
+</I>&gt;<i> 
+</I>&gt;<i> (The point about tracing is that besides it being possible to disable
+</I>&gt;<i> it completely at build time with *configure*, you can enable&amp;disable
+</I>&gt;<i> parts of it at run-time.)
+</I>
+Sure, but don't forget that the DSP code is (theoretically) independent
+from Hatari (can be shared with Aranym) - so I think it is OK if the
+DSP code does not use the trace infrastructure of Hatari.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000272.html">[hatari-devel] Hatari dsp debug mode ?
+</A></li>
+	<LI>Next message: <A HREF="000274.html">[hatari-devel] Hatari dsp debug mode ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#273">[ date ]</a>
+              <a href="thread.html#273">[ thread ]</a>
+              <a href="subject.html#273">[ subject ]</a>
+              <a href="author.html#273">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] hatariui not working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20hatariui%20not%20working&In-Reply-To=%3CAANLkTinVe1-FqvmI9PZLixoNLvtVJFX0E82lykDbC78h%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002126.html">
+   <LINK REL="Next"  HREF="002154.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] hatariui not working</H1>
+    <B>Christer Solskogen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20hatariui%20not%20working&In-Reply-To=%3CAANLkTinVe1-FqvmI9PZLixoNLvtVJFX0E82lykDbC78h%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] hatariui not working">christer.solskogen at gmail.com
+       </A><BR>
+    <I>Tue May 18 19:57:12 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002126.html">[hatari-devel] Slow sound buffer
+</A></li>
+        <LI>Next message: <A HREF="002154.html">[hatari-devel] hatariui not working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2151">[ date ]</a>
+              <a href="thread.html#2151">[ thread ]</a>
+              <a href="subject.html#2151">[ subject ]</a>
+              <a href="author.html#2151">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I tried hatariui for the first time today, but without huge success.
+
+A dialogbox shows up telling me: &quot;Loading configuration failed!
+Retrying after saving Hatari configuration&quot; - the terminal tell me
+this: [<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">solskogen at funshine</A> hatari]$ hatariui
+Configuration file /etc/hatari.cfg not found.
+close failed in file object destructor:
+IOError: [Errno 10] No child processes
+Reading configuration file '/home/solskogen/.hatari/hatari.cfg'...
+Frameskip 1
+
+After I press the 'OK' button, this is shown on the console:
+Configuration file /etc/hatari.cfg not found.
+close failed in file object destructor:
+IOError: [Errno 10] No child processes
+Reading configuration file '/home/solskogen/.hatari/hatari.cfg'...
+Frameskip 1
+Traceback (most recent call last):
+  File &quot;/usr/local/bin/../share/hatari/hatariui/hatariui.py&quot;, line
+762, in &lt;module&gt;
+    main()
+  File &quot;/usr/local/bin/../share/hatari/hatariui/hatariui.py&quot;, line 713, in main
+    actions = UIActions()
+  File &quot;/usr/local/bin/../share/hatari/hatariui/hatariui.py&quot;, line
+397, in __init__
+    cb = self.callbacks = UICallbacks()
+  File &quot;/usr/local/bin/../share/hatari/hatariui/hatariui.py&quot;, line 66,
+in __init__
+    self.config.validate()
+  File &quot;/usr/local/share/hatari/hatariui/hatari.py&quot;, line 288, in validate
+    getattr(self, method)()
+  File &quot;/usr/local/share/hatari/hatariui/hatari.py&quot;, line 713, in
+get_window_size
+    width += self.get(&quot;[Screen]&quot;, &quot;nWindowBorderPixelsLeft&quot;)
+  File &quot;/usr/local/share/hatari/hatariui/config.py&quot;, line 185, in get
+    return self.sections[section][key]
+KeyError: 'nWindowBorderPixelsLeft'
+
+Same thing happens if I run hatariui without ~/.hatari
+[<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">solskogen at funshine</A> ~]$ pacman -Q | grep gtk
+gtk-theme-switch2 2.1.0-1
+gtk2 2.20.1-2
+pygtk 2.17.0-1
+wxgtk 2.8.11-1
+
+Linux funshine 2.6.34-ARCH #1 SMP PREEMPT Mon May 17 09:29:00 CEST
+2010 x86_64 Intel(R) Atom(TM) CPU 330 @ 1.60GHz GenuineIntel GNU/Linux
+(Archlinux) - hatari sources from today.
+
+-- 
+chs,
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002126.html">[hatari-devel] Slow sound buffer
+</A></li>
+	<LI>Next message: <A HREF="002154.html">[hatari-devel] hatariui not working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2151">[ date ]</a>
+              <a href="thread.html#2151">[ thread ]</a>
+              <a href="subject.html#2151">[ subject ]</a>
+              <a href="author.html#2151">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

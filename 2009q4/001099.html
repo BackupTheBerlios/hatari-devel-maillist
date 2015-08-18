@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Statusbar - additional info
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Statusbar%20-%20additional%20info&In-Reply-To=%3C200912120136.11218.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001098.html">
+   <LINK REL="Next"  HREF="001100.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Statusbar - additional info</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Statusbar%20-%20additional%20info&In-Reply-To=%3C200912120136.11218.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Statusbar - additional info">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Dec 12 00:36:11 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001098.html">[hatari-devel] Statusbar - additional info
+</A></li>
+        <LI>Next message: <A HREF="001100.html">[hatari-devel] Statusbar - additional info
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1099">[ date ]</a>
+              <a href="thread.html#1099">[ thread ]</a>
+              <a href="subject.html#1099">[ subject ]</a>
+              <a href="author.html#1099">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 12 December 2009, Konador, Cyprian wrote:
+&gt;&gt;<i> I cannot reproduce this issue.  Can you reproduce it with the
+</I>&gt;&gt;<i> integrated patch?  If yes, how exactly?
+</I>&gt;<i>
+</I>&gt;<i> Unfortunatelly, still see initial setup on statusbar.
+</I>&gt;<i> Let me explain, step by step :)
+</I>&gt;<i>  - start Hatari in STE mode, &quot;8MHz/2MB STE, TOS v2.06&quot;;
+</I>&gt;<i>  - go to Main Menu --&gt; System;
+</I>&gt;<i>  - change CPU clock to 32MHz and close Main menu;
+</I>&gt;<i>  - after that, still see &quot;8MHz/2MB STE, TOS v2.06&quot; on statusbar;
+</I>&gt;<i>
+</I>&gt;<i> What you think about moving Statusbar_UpdateInfo to Dialog_DoProperty In
+</I>&gt;<i> Dialog.c? It seems that this is better place for that.
+</I>
+No, it's this in change.c when the configuration changes are applied
+to statusbar:
+------------
+        /* Do we need to perform reset? */
+        if (NeedReset)
+        {
+                Reset_Cold();
+                /* reset needing changes may affect also info shown in 
+statusbar */
+                Statusbar_UpdateInfo();
+        }
+------------
+
+Is it possible in real Atari machines to switch the CPU frequency or CPU (or
+DSP) type without rebooting?  I mean, shouldn't Hatari reboot the emulation
+when those are changed?
+
+(And before applying changes that imply a reboot, ask user whether
+he wants them applied &amp; emulation to be rebooted.)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001098.html">[hatari-devel] Statusbar - additional info
+</A></li>
+	<LI>Next message: <A HREF="001100.html">[hatari-devel] Statusbar - additional info
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1099">[ date ]</a>
+              <a href="thread.html#1099">[ thread ]</a>
+              <a href="subject.html#1099">[ subject ]</a>
+              <a href="author.html#1099">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

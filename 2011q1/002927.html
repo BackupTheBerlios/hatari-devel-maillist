@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Higher precision when generating samples -&gt; use nanosleep
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Higher%20precision%20when%20generating%20samples%20-%3E%20use%0A%20nanosleep&In-Reply-To=%3C8618331.871767.1296239384681.JavaMail.nitido%40priv-edtnes92%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002926.html">
+   <LINK REL="Next"  HREF="002928.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Higher precision when generating samples -&gt; use nanosleep</H1>
+    <B>David Savinkoff</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Higher%20precision%20when%20generating%20samples%20-%3E%20use%0A%20nanosleep&In-Reply-To=%3C8618331.871767.1296239384681.JavaMail.nitido%40priv-edtnes92%3E"
+       TITLE="[hatari-devel] Higher precision when generating samples -&gt; use nanosleep">dsavnkff at telus.net
+       </A><BR>
+    <I>Fri Jan 28 19:29:44 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002926.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+        <LI>Next message: <A HREF="002928.html">[hatari-devel] MP2 player and demos are running well now in Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2927">[ date ]</a>
+              <a href="thread.html#2927">[ thread ]</a>
+              <a href="subject.html#2927">[ subject ]</a>
+              <a href="author.html#2927">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+&gt;<i> On Jan 28, 2011, Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">oak at helsinkinet.fi</A>&gt; wrote: 
+</I>&gt;<i>
+</I>&gt;<i> With this patch you don't need the Skew variable at all, just do:
+</I>&gt;<i>	nDestFrameTicks += 20;
+</I>
+Thanks, here is a new patch.
+
+&gt;<i> (I'm not sure I like sound stuff being spread to main.c though,
+</I>&gt;<i> isolating sound related calculation to sound related files seemed
+</I>&gt;<i> cleaner.)
+</I>
+I guess it is about pros and cons. On the pro side; this patch doesn't
+touch any files outside of main.c. The con side is not too ugly.
+The sound calculations are contained in Main_WaitOnVbl() and
+use existing external variables (nSamplesPerFrame nAudioFrequency
+nScreenRefreshRate nGeneratedSamples SoundBufferSize).
+The sound calculations are minimal, and have more to do with
+synchronization than sound.
+
+David
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: sound-sync-tip3.diff
+Type: application/octet-stream
+Size: 5112 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110128/4e24b8b5/attachment.obj">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110128/4e24b8b5/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002926.html">[hatari-devel] Issues after restoring a memory snapshot
+</A></li>
+	<LI>Next message: <A HREF="002928.html">[hatari-devel] MP2 player and demos are running well now in Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2927">[ date ]</a>
+              <a href="thread.html#2927">[ thread ]</a>
+              <a href="subject.html#2927">[ subject ]</a>
+              <a href="author.html#2927">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

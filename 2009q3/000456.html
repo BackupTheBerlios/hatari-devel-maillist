@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Latest Hatari HG version gets stuck sometimes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Latest%20Hatari%20HG%20version%20gets%20stuck%20sometimes&In-Reply-To=%3C200907090058.35755.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000455.html">
+   <LINK REL="Next"  HREF="000457.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Latest Hatari HG version gets stuck sometimes</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Latest%20Hatari%20HG%20version%20gets%20stuck%20sometimes&In-Reply-To=%3C200907090058.35755.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Latest Hatari HG version gets stuck sometimes">eerot at users.berlios.de
+       </A><BR>
+    <I>Wed Jul  8 23:58:35 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000455.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+        <LI>Next message: <A HREF="000457.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#456">[ date ]</a>
+              <a href="thread.html#456">[ thread ]</a>
+              <a href="subject.html#456">[ subject ]</a>
+              <a href="author.html#456">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Thursday 09 July 2009, Thomas Huth wrote:
+&gt;<i> &gt; Saving memory state from a freshly booted &amp; idle GEM and then
+</I>&gt;<i> &gt; restoring it with the --memstate option is 100% sure way to trigger
+</I>&gt;<i> &gt; the issue for me.
+</I>&gt;<i>
+</I>&gt;<i> OK, I can reproduce the problem this way. However, I currently don't
+</I>&gt;<i> have a clue how to fix it...
+</I>&gt;<i> The only trace I've found so far: When I enable --trace all, I see some
+</I>&gt;<i> lines like this:
+</I>
+What if you put assert to restoring the interrupt values?  Maybe it somehow
+gets corrupted already when restore happens in Hatari startup?
+
+
+Can what the MemorySnapShot_Restore() and Reset_ST() somehow conflict
+if it's done while Hatari's still starting?
+
+Does e.g. calling m68k_run_1() change some state that is not saved
+(when using --memstate, that's called only after restore)?
+
+
+&gt;<i> cpu video_cyc=     0 <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">-160256 at 312</A> : 00fcaa62: 3e15 426d 0004 426d 0008
+</I>&gt;<i> MOVE.W (A5),D7
+</I>&gt;<i>
+</I>&gt;<i> Seems like the &quot;LineCycles&quot; have been calculated wrong...
+</I>
+Btw. I noticed that int.c does (Sint64) casts for the values it gives to
+INT_CONVERT_TO_INTERNAL macro (why its not an inline?).
+
+mfp.c calls to that macro don't do casts to 64-bit.  &quot;gcc -E&quot; gives
+following expanded output on them:
+------------
+...
+    int AddCurCycles = ( 1 == 1 ? (CurrentInstrCycles + nWaitStateCycles - 
+4)*9600 : (CurrentInstrCycles + nWaitStateCycles - 4)*31333 );
+
+
+    if (bFirstTimer)
+     Int_AddRelativeInterruptWithOffset(TimerClockCycles, 2, Handler, 
+AddCurCycles);
+    else
+    {
+     int TimerClockCyclesInternal = ( 2 == 1 ? (TimerClockCycles)*9600 : 
+(TimerClockCycles)*31333 );
+
+
+     if ( PendingCyclesOver &gt; TimerClockCyclesInternal )
+      PendingCyclesOver = PendingCyclesOver % TimerClockCyclesInternal;
+
+     Int_AddRelativeInterruptWithOffset(TimerClockCycles, 2, 
+Handler, -PendingCyclesOver);
+    }
+...
+------------
+
+Can above things overflow?
+
+
+And on random observation on the code, MFP_ActiveEdge_WriteByte()  does
+something with INTERRUPT_VIDEO_ENDLINE, not just video.c.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000455.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+	<LI>Next message: <A HREF="000457.html">[hatari-devel] Latest Hatari HG version gets stuck sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#456">[ date ]</a>
+              <a href="thread.html#456">[ thread ]</a>
+              <a href="subject.html#456">[ subject ]</a>
+              <a href="author.html#456">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

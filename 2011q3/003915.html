@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Keep Desktop Resolution option for ST/E mode?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Keep%20Desktop%20Resolution%20option%20for%20ST/E%20mode%3F&In-Reply-To=%3C201108131022.51777.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003890.html">
+   <LINK REL="Next"  HREF="003880.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Keep Desktop Resolution option for ST/E mode?</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Keep%20Desktop%20Resolution%20option%20for%20ST/E%20mode%3F&In-Reply-To=%3C201108131022.51777.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Keep Desktop Resolution option for ST/E mode?">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Aug 13 09:22:51 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003890.html">[hatari-devel] Keep Desktop Resolution option for ST/E mode?
+</A></li>
+        <LI>Next message: <A HREF="003880.html">[hatari-devel] TOS crash when using gemdos pterm and HD	emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3915">[ date ]</a>
+              <a href="thread.html#3915">[ thread ]</a>
+              <a href="subject.html#3915">[ subject ]</a>
+              <a href="author.html#3915">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 06 elokuu 2011, Eero Tamminen wrote:
+&gt;<i> On lauantai 30 hein&#228;kuu 2011, Eero Tamminen wrote:
+</I>&gt;<i> &gt; Attached is an updated patch.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; It centers the ST/E screen to the desktop resolution, I tested that it
+</I>&gt;<i> &gt; works with the VDI mode and unlike previous patch, it shows statusbar
+</I>&gt;<i> &gt; also in fullscreen and doesn't cause statusbar assert if one does a ST
+</I>&gt;<i> &gt; reset in fullscreen...
+</I>&gt;<i> 
+</I>&gt;<i> Monochrome mode needs the attached fix too, unlike all the other
+</I>&gt;<i> converters, it wasn't taking SDL pitch (full SDL buffer width) correctly
+</I>&gt;<i> into account.
+</I>&gt;<i> 
+</I>&gt;<i> &gt;&gt; So, maybe have it just as command line &amp; config option that isn't
+</I>&gt;<i> &gt;&gt; on by default?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Any comments on adding these?
+</I>&gt;<i> 
+</I>&gt;<i> Unless somebody objects, I'll put these into repository in few days.
+</I>
+Commited.
+
+The option is --desktop-st.  If you want to use it permanently,
+start Hatari with &quot;--desktop-st yes&quot; and save configuration from
+options.
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003890.html">[hatari-devel] Keep Desktop Resolution option for ST/E mode?
+</A></li>
+	<LI>Next message: <A HREF="003880.html">[hatari-devel] TOS crash when using gemdos pterm and HD	emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3915">[ date ]</a>
+              <a href="thread.html#3915">[ thread ]</a>
+              <a href="subject.html#3915">[ subject ]</a>
+              <a href="author.html#3915">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

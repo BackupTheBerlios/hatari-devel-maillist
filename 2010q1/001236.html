@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Big problems with bus error on Falcon
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Big%20problems%20with%20bus%20error%20on%20Falcon&In-Reply-To=%3C20100116110005.83570%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001276.html">
+   <LINK REL="Next"  HREF="001221.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Big problems with bus error on Falcon</H1>
+    <B>Thomas H.</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Big%20problems%20with%20bus%20error%20on%20Falcon&In-Reply-To=%3C20100116110005.83570%40gmx.net%3E"
+       TITLE="[hatari-devel] Big problems with bus error on Falcon">th.huth at gmx.de
+       </A><BR>
+    <I>Sat Jan 16 12:00:05 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001276.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+        <LI>Next message: <A HREF="001221.html">[hatari-devel] Berlios compromised
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1236">[ date ]</a>
+              <a href="thread.html#1236">[ thread ]</a>
+              <a href="subject.html#1236">[ subject ]</a>
+              <a href="author.html#1236">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Datum: Thu, 14 Jan 2010 23:45:25 +0200
+</I>&gt;<i> Von: Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt;
+</I>&gt;<i> 
+</I>&gt;<i> On Thursday 14 January 2010, Laurent Sallafranque wrote:
+</I>&gt;<i> &gt; &gt; M68000 Bus Error at address $f00000.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I've seen many programs that does Bus error on Hatari Falcon.
+</I>&gt;<i> &gt; I've corrected the Illusion demo yesterday (I added void read/write for
+</I>&gt;<i> &gt; a certain address in IoMemtabFalcon).
+</I>&gt;<i> 
+</I>&gt;<i> This is address 0xff800A.  According to docs it's unassigned.
+</I>
+By the way, I see two other possibilities why this demo works on Falcon although 0xff800A would normally generate a bus error:
+
+1) The bus mode of the Falcon can be switched to &quot;STE compatible&quot; mode, so that it generates less bus errors. The &quot;ST/STE emulators&quot; like &quot;Backwards&quot; for the Falcon used this mode. I think this can be done in the 0xFF8007 register that Hatari does not emulate yet. Could you please check whether this demo alters this registers?
+
+2) Do you remember the problem with &quot;Apex&quot;? (<A HREF="http://bbs.dhs.nu/coding/index.php?request=3055">http://bbs.dhs.nu/coding/index.php?request=3055</A>) It accesses an illegal memory address, that normally triggers an bus error, but in case of Apex it is not triggered - for unknown reason. There must be some magic in the Falcon bus error handling that has not been understood yet. Maybe this demo is similar? Somebody should try this register on a real Falcon...
+
+ Thomas
+
+
+-- 
+Jetzt kostenlos herunterladen: Internet Explorer 8 und Mozilla Firefox 3.5 -
+sicherer, schneller und einfacher! <A HREF="http://portal.gmx.net/de/go/atbrowser">http://portal.gmx.net/de/go/atbrowser</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001276.html">[hatari-devel] Big problems with bus error on Falcon
+</A></li>
+	<LI>Next message: <A HREF="001221.html">[hatari-devel] Berlios compromised
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1236">[ date ]</a>
+              <a href="thread.html#1236">[ thread ]</a>
+              <a href="subject.html#1236">[ subject ]</a>
+              <a href="author.html#1236">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

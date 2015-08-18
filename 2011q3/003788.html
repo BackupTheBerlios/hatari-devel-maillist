@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Last checks before releasing 1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3C4E255CA5.8070902%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003761.html">
+   <LINK REL="Next"  HREF="003792.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Last checks before releasing 1.5</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3C4E255CA5.8070902%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Last checks before releasing 1.5">npomarede at corp.free.fr
+       </A><BR>
+    <I>Tue Jul 19 12:29:57 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003761.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+        <LI>Next message: <A HREF="003792.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3788">[ date ]</a>
+              <a href="thread.html#3788">[ thread ]</a>
+              <a href="subject.html#3788">[ subject ]</a>
+              <a href="author.html#3788">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 18/07/2011 09:04, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On sunnuntai 17 hein&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+</I>&gt;&gt;<i> Le 17/07/2011 01:16, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;<i> I tried the patch, and I'm not really fond of the fact that Hatari's
+</I>&gt;&gt;<i> screen is in top left corner, not centered.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I think we can have this option, but we should stay compatible to what
+</I>&gt;&gt;<i> we had previously for STF/STE. Can you provide a patch that set default
+</I>&gt;&gt;<i> behaviour to &quot;no&quot; for STF/STE ? (and keep current behaviour for Falcon)
+</I>&gt;<i>
+</I>&gt;<i> That will need then separate config / command line option, a separate
+</I>&gt;<i> checkbox in the screen dialog and corresponding documentation options.
+</I>&gt;<i>
+</I>&gt;<i> Let's do it after the release.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> As to the new config&amp;  option names, the TT&amp;  Falcon ones are:
+</I>&gt;<i> 	bKeepResolution
+</I>&gt;<i> 	--desktop&lt;bool&gt;
+</I>&gt;<i>
+</I>&gt;<i> What the ST/STE ones should be, maybe:
+</I>&gt;<i> 	bKeepResolutionSt
+</I>&gt;<i> 	--desktop-st&lt;bool&gt;
+</I>&gt;<i> ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The screen dialog layout is also bothersome.  If I just add the ST/STE
+</I>&gt;<i> option to the dialog, it looks like this:
+</I>&gt;<i>
+</I>&gt;<i>    Hatari screen options        Keep desktop
+</I>&gt;<i>                                 resolution:
+</I>&gt;<i>    [] Fullscreen   Frame skip:    [] ST/STE
+</I>&gt;<i>                     o Off         [] TT/Falcon*
+</I>&gt;<i>    Indicators:      o 1
+</I>&gt;<i>     o Statusbar     o 2         *Max zoomed win:
+</I>&gt;<i>     o Drive led     o 4&lt;- xxx -&gt;
+</I>&gt;<i>     o None          o Auto      x&lt;- xxx -&gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>      Screen capture        [  Screenshot  ]
+</I>&gt;<i>
+</I>&gt;<i>       [] Crop statusbar    [  Record AVI  ]
+</I>&gt;<i>
+</I>&gt;<i> But it would be better to have the &quot;keep desktop resolution&quot; option
+</I>&gt;<i> beside the fullscreen option.  Any suggestions on that?
+</I>&gt;<i>
+</I>
+After trying it, in fact I'm not really convinced by the usefulness of 
+this option in STF/STE mode : in my case, Hatari has zoom x2 (approx 
+836x576 pixels) and my OS is 1280x1024.
+
+When pressing F11, Hatari windows goes to top left, which leaves a lot 
+of black area around, and with no offence intended, if no one told me 
+before what to expect, I would have thought it was a bug. Calling an 
+option &quot;fullscreen&quot; and filling the rest of the screen with black 
+without actually zooming the Hatari's screen seems of little use to me.
+
+Put a black wallpaper on your PC desktop and you will basically get the 
+same result.
+
+I agree that with extended resolution in TT/Falcon or VDI mode it can be 
+useful if it really fills the screen, but for STF/STE, I think it adds 
+more confusion than it solves problem.
+
+People could be interested in a general (more complex to code) solution 
+that allows full resizing of the Hatari's window, but I'm not sure this 
+option would be used in STF/STE mode.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003761.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+	<LI>Next message: <A HREF="003792.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3788">[ date ]</a>
+              <a href="thread.html#3788">[ thread ]</a>
+              <a href="subject.html#3788">[ subject ]</a>
+              <a href="author.html#3788">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

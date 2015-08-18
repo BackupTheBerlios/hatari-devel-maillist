@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issue with switching - fullscreen/windowed mode
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issue%20with%20switching%20-%20fullscreen/windowed%20mode&In-Reply-To=%3C201002082305.47863.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001427.html">
+   <LINK REL="Next"  HREF="001629.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issue with switching - fullscreen/windowed mode</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issue%20with%20switching%20-%20fullscreen/windowed%20mode&In-Reply-To=%3C201002082305.47863.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Issue with switching - fullscreen/windowed mode">eerot at users.berlios.de
+       </A><BR>
+    <I>Mon Feb  8 22:05:47 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001427.html">[hatari-devel] Issue with switching - fullscreen/windowed mode
+</A></li>
+        <LI>Next message: <A HREF="001629.html">[hatari-devel] Issue with switching - fullscreen/windowed mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1428">[ date ]</a>
+              <a href="thread.html#1428">[ thread ]</a>
+              <a href="subject.html#1428">[ subject ]</a>
+              <a href="author.html#1428">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Monday 08 February 2010, Jerome Vernet wrote:
+&gt;<i> I tried your patch on my OSX Build. I do not have (with or without the
+</I>&gt;<i> patch) any garbage.
+</I>
+Ok.  I see, Dprintf() when undefined collapses to &quot;;&quot; so the logic will
+still work.  But I think the errors in that function still need to be always
+output, Dprintf is intended for debugging info, not for errors. (I.e. I will
+commit it when doing fixing this bug).
+
+
+&gt;<i> The only thing I get is, in full screen, a bad centered screen and,
+</I>
+Hm.  On my machine Hatari is always centered on fullscreen, but that's
+not done by the Hatari code, it's done by SDL.  I think this is bug in
+the OSX SDL backend.
+
+
+&gt;<i> when switch back to windowed mode, a large black 
+</I>&gt;<i> vertical stripe on the right in hires Falcon mode. Two black stripe
+</I>&gt;<i> (right and left) in low res. This only happen with Falcon Modes, not ST
+</I>&gt;<i> Modes.
+</I>
+Thanks, that explains the issue!
+
+These are doing things differently.  ST mode always recalculates the window
+size on fullscreen switch and changes the video mode, Falcon code first
+tries just toggling the fullscreen mode and if that fails, getting a new
+resolution based on the previous _host_ resolution, not currently selected
+Atari resolution.
+
+I guess this was to support TT mode also as Hatari's TT emulation uses
+Falcon screen code, but doesn't use Videl, so the screen code cannot just
+check the Atari resolution size from Videl...
+
+I think that code needs to keep track of the sizes requested by other
+emulation code (i.e. Videl and TT res switch) and the sizes it uses for
+the SDL surface which are adapted according to whatever resolutions
+the display supports.
+
+This should be easy to fix, but I want to do some debugger improvements
+first, so it probably goes to end of this week.
+
+
+&gt;<i> When switching to full screen, SDL change the screen resolution to what,
+</I>&gt;<i> I suppose, best match the Atari resolution. But this will not cause any
+</I>&gt;<i> problem on my MacBook, even with Photoshop.
+</I>
+Good to know.
+
+But I guess you're using the latest Hatari (version control) version, not
+some ancient version like Anders?  Maybe your Photoshop version is also
+a newer one?
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001427.html">[hatari-devel] Issue with switching - fullscreen/windowed mode
+</A></li>
+	<LI>Next message: <A HREF="001629.html">[hatari-devel] Issue with switching - fullscreen/windowed mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1428">[ date ]</a>
+              <a href="thread.html#1428">[ thread ]</a>
+              <a href="subject.html#1428">[ subject ]</a>
+              <a href="author.html#1428">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

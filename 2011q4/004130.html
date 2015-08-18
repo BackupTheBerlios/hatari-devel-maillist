@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Long mail : new cpu cores + 2 questions.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Long%20mail%20%3A%20new%20cpu%20cores%20%2B%202%20questions.&In-Reply-To=%3C4EAE80A4.304%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004128.html">
+   <LINK REL="Next"  HREF="004131.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Long mail : new cpu cores + 2 questions.</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Long%20mail%20%3A%20new%20cpu%20cores%20%2B%202%20questions.&In-Reply-To=%3C4EAE80A4.304%40free.fr%3E"
+       TITLE="[hatari-devel] Long mail : new cpu cores + 2 questions.">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Oct 31 12:04:04 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004128.html">[hatari-devel] ssh problem with new repository
+</A></li>
+        <LI>Next message: <A HREF="004131.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4130">[ date ]</a>
+              <a href="thread.html#4130">[ thread ]</a>
+              <a href="subject.html#4130">[ subject ]</a>
+              <a href="author.html#4130">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've played around with the new winuae cores for the last days.
+
+There are 6 cores available :
+
+cpuemu_0   : a generic 68x00 cpu (used when no prefetch nor cycle exact 
+config in the GUI), both for 68000 and 68030 emu
+cpuemu_11 : same as before, but for prefetch mode and 68000 only
+cpuemu_12 : this one is for the 68000 cycle exact mode only
+cpuemu_20 : this one is for the 68020 emulation prefetch + cycle exact
+cpuemu_21 : this one is for the 68030 emulation prefetch + cycle exact
+cpuemu_31 : this one is for 68040 and 68060 emulation
+
+
+Actually, I can let run quite correctly the following cores:
+cpuemu_0
+cpuemu_11
+cpuemu_20
+cpuemu_21 (I'll have to send a patch soon for this one)
+cpuemu_31
+
+2 cores are still not running :
+cpuemu_12 (very strange code behing it)
+cpu_emu31+MMU activated (TRY/CATCH/RETRY) to recode first
+
+
+First : Core updating.
+I've tried to upgrade the cores to latest winuae source, but I broke things.
+There are few changes in the cores between the 2 versions, but patching 
+must be done carefully.
+I'll try it another time later.
+
+
+
+ST emulation :
+
+For ST emulation, the closest core to our actual oldcpu core are 
+cpuemu_0 or cpuemu_11 (very close to each other, only prefetch differs).
+
+If we want to retrieve the actual old cpu compatibility, we have 2 
+possibilities :
+
+- using cpuemu_11 as the main 68000 core, and patch gencpu.c to rollback 
+the different patchs Nicolas added there.
+   For example, getDivs68kCycles and getDivu68kCycles are only called 
+with cpuemu_12, so, we'll have to reintroduce them into gencpu.c
+
+- let the cpuemu12 running (it may be harder, and I don't understand 
+everything here).
+
+
+I think we should only concentrate on 1 cpu and forget the others, as 
+Nicolas has proved that the cpuemu11 can reach a good level in accuracy.
+I can do this job if you want to try to get as close as possible to the 
+actual CPU ( I don't think it'll be that long and difficult, as we've 
+got the old gencpu as example).
+
+
+Falcon emulation :
+
+2 cores are running :
+
+cpuemu_0 : the generic 68000 core is used for 68030 and 68030 + prefetch 
+emulation. It runs 68030 data and register caches and 68030 MMU code.
+the problem with this core is that is uses the 68000 cycles. I get the 
+best results with this one actually (I run it with prefetch).
+
+cpuemu_21 : the cycle exact core. I've got some results with it now, but 
+it seems to be less accurate than the cpuemu_0 core. Some demo freeze 
+with this one, but runs well with cpuemu_0.
+It's not completly &quot;cycle exact&quot;, as for example the divs, divu and divl 
+cycles are computed with the worst cycles value instead of the accurate 
+value.
+It let works 68030 caches and 68030 MMU too.
+
+
+
+My suggest: for Hatari emulation, we could keep only 3 cores :
+
+cpuemu_11 for ATARI 68000 core and repatch it to reach the actual level 
+of compatibility.
+cpuemu_0 for FALCON emulation with a lot of changes in it (cycles, ...) 
+to let it be closer to a 68030 or cpuemu_21 (but the code is much more 
+complex and accuracy is lower for now).
+
+We would only run hatari in accuracy mode for the ST, in best accuracy 
+for the 68030 Falcon and generic accuracy 68060 for later.
+No more GUI with a lot of options like prefetch, ... (I don't think the 
+speed difference is noteable with or without prefetch nowadays)
+No more 68000 running with a MMU or a DSP.
+We could only choose ST, ST, TT, FALCON (and later accelerated falcon) 
+and choose the with/without copro or DSP.
+
+Or we can continue to offer many parameters in the GUI and in the 
+emulator, but 6 cores are a great effort to maintain and cpuemu_0 is 
+used both for generic 68000 and Falcon, wich means a lot of &quot;IF&quot; to add 
+everywhere in gencpu.c to keep accuracy for all cpus.
+
+One day or the other, we'll have to make some choice with the new core 
+and make some improvements and changes into it.
+If I keep it &quot;compatible&quot; with winuae without changing anything, falcon 
+emu won't improve anymore.
+
+
+But in the same time, I think I reach the limits of my knowledges here 
+with Motorola CPU.
+Falcon gets quite well emulated, but there are still a lot of little 
+problems here and there (accuracy, sound noise, ...)
+I think DSP is running quite well, everything is emulated. Crossbar is 
+here too.
+I lack of documentation (as I had for the DSP for example).
+And I'm not such an expert of 68x00 processors.
+
+I can patch the 68030 cycles according to motorola's docs (or better, 
+Mikro's doc when he finished it) to help.
+Maybe you could give me ideas of things to do in hatari to improve it.
+
+
+
+Other point : videl emulation:
+
+I've done some work with videl emu (I still have the code here on my 
+hardisk).
+But separating video.c and videl.c implies huge changes I don't want to 
+do lonely.
+video.c in integrated everywhere in hatari (psg.c, mfp.c, ...)
+It would be nice to have an interface to call in all parts of hatari 
+that would run either with video.c or videl.c.
+I would have to reintegrate timer A, B, C, D, HBL, VBL into videl.c 
+(I've already done some of them).
+
+I don't want to add &quot;if FALCON ...&quot; everywhere in the code (as I've done 
+into my actual code).
+It was easy to separate the sound (crossbar VS stedma sound), but video 
+is too glued everywhere in ST mode.
+
+
+
+Last point : cpu speed.
+
+Is dividing the cycles by 2 (or 4) to let the 68000 run at 16 or 32 Mhz 
+is the only way to do it ?
+My 68030 falcon should run natively at 16 Mhz (1 instruction cycles 
+shoudn't be divided).
+I should have more cycles for each VBL, crossbar should run with the 
+68030 cycles (not divided by 2 nor 4), same for DSP.
+
+Isn't there a &quot;more beautiful&quot; way to do the frequency emulation 
+(keeping the cycles intact and having twice more cycles for each VBL for 
+example).
+
+Maybe this point is perfect and doesn't need any change, but it always 
+&quot;annoys&quot; me to have the 68030 cycles divided by 2.
+
+
+I stop here.
+Thanks to read it to the end (and sorry for my approximate english)
+
+Regards
+
+Laurent
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004128.html">[hatari-devel] ssh problem with new repository
+</A></li>
+	<LI>Next message: <A HREF="004131.html">[hatari-devel] Long mail : new cpu cores + 2 questions.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4130">[ date ]</a>
+              <a href="thread.html#4130">[ thread ]</a>
+              <a href="subject.html#4130">[ subject ]</a>
+              <a href="author.html#4130">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

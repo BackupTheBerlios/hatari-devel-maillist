@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DSP debugging and breakpoints
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3C20090606100754.329954f9%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000361.html">
+   <LINK REL="Next"  HREF="000330.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DSP debugging and breakpoints</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DSP%20debugging%20and%20breakpoints&In-Reply-To=%3C20090606100754.329954f9%40phineus%3E"
+       TITLE="[hatari-devel] DSP debugging and breakpoints">huth at users.berlios.de
+       </A><BR>
+    <I>Sat Jun  6 10:07:54 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000361.html">[hatari-devel] DSP breakpoints and single-stepping
+</A></li>
+        <LI>Next message: <A HREF="000330.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#326">[ date ]</a>
+              <a href="thread.html#326">[ thread ]</a>
+              <a href="subject.html#326">[ subject ]</a>
+              <a href="author.html#326">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 5 Jun 2009 22:45:58 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+&gt;<i> 
+</I>&gt;<i> Attached patch implements DSP breakpoint and single stepping support.
+</I>&gt;<i> Does it look OK?
+</I>
+Looks OK at a first glance. However, I think it would be better to
+allow multiple breakpoints, too.
+Anyway, please let me do a clean-up of debugui.c and proper 68k
+breakpoints first, if we work both on the same code, we will run into
+conflicts, I guess.
+
+&gt;<i> I decided to use some gcc extensions to make sure that the effect of
+</I>&gt;<i> the breakpoint &amp; single step checks will be minimal as they have to
+</I>&gt;<i> be done to the time critical DSP_Run()[1].  For supporting those,
+</I>&gt;<i> please add the attached gcc_ext.h to the includes/-directory.
+</I>
+Well, I don't think that we will need all those defines... for example
+the &quot;#define inline inline __attribute__ ((always_inline))&quot; really
+bothers me since it changes the behavior of the normal inline.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000361.html">[hatari-devel] DSP breakpoints and single-stepping
+</A></li>
+	<LI>Next message: <A HREF="000330.html">[hatari-devel] DSP debugging and breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#326">[ date ]</a>
+              <a href="thread.html#326">[ thread ]</a>
+              <a href="subject.html#326">[ subject ]</a>
+              <a href="author.html#326">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

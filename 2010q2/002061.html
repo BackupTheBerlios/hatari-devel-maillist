@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Suggestion about small additions for v1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3Calpine.DEB.1.10.1005120938570.3410%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002060.html">
+   <LINK REL="Next"  HREF="002066.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Suggestion about small additions for v1.4</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3Calpine.DEB.1.10.1005120938570.3410%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Suggestion about small additions for v1.4">ae at dhs.nu
+       </A><BR>
+    <I>Wed May 12 10:17:58 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002060.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002066.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2061">[ date ]</a>
+              <a href="thread.html#2061">[ thread ]</a>
+              <a href="subject.html#2061">[ subject ]</a>
+              <a href="author.html#2061">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 11 May 2010, Eero Tamminen wrote:
+
+&gt;<i> Things that it does are just:
+</I>&gt;<i> 1. save (just) the area below the square
+</I>&gt;<i> &lt;screen update&gt;
+</I>&gt;<i> 2. blit the square, but only when needed
+</I>&gt;<i>
+</I>&gt;<i> This doesn't have noticeable impact on Hatari speed on Linux, but maybe
+</I>&gt;<i> OSX/SDL want e.g. to do VSync() both on reading a minuscule piece of
+</I>&gt;<i> the window contents and writing a similar minuscule piece back to it...
+</I>
+Hi,
+
+this only happens in windowed mode. In Fullscreen it seems to work better. 
+Just like Hatari in general, the windowed mode on OS X is really, really, 
+really slow. But we've been over this a thousand times already.
+
+Here's a little video showing the HUD in action:
+
+<A HREF="http://ae.dhs.nu/tmp/hatari_hud.mp4">http://ae.dhs.nu/tmp/hatari_hud.mp4</A>
+
+
+&gt;<i> If this slowdown happens only on fullscreen, could you try removing
+</I>&gt;<i> the HWSURFACE option from screen.c sdlVideoFlags and see whether
+</I>&gt;<i> it changes anything?
+</I>
+No difference (in windowed mode where it happens), it doesn't allow me to 
+go to fullscreen mode with this set.
+
+
+
+&gt;<i> Because Falcon &amp; TT screen updates work differently (everything is
+</I>&gt;<i> updated everytime), step 1) is skipped there.  Do you see less slowdown
+</I>&gt;<i> there?
+</I>
+I don't know how to test this, do you have an idea of a Falcon program 
+using the floppy while for example playing music?
+
+
+&gt;<i>
+</I>&gt;<i> Use &quot;--statusbar off&quot;[1], or set bShowDriveLed in configuration file to
+</I>&gt;<i> FALSE.
+</I>&gt;<i>
+</I>&gt;<i> I had it for a while in the Hatari SDL GUI too, but had to remove it to make
+</I>&gt;<i> space for other options.  Attached is a patch to have it back, but it makes
+</I>&gt;<i> the screen dialog look a bit off-balance and it would need the HTML manual
+</I>&gt;<i> update too.
+</I>&gt;<i>
+</I>&gt;<i> The Python/Gtk Hatari GUI of course has an option for this in its UI.
+</I>
+But nobody seems to use this GTK thing and on Windows there's only the SDL 
+one and the OS X GUI seems to lag behind all the time, and as Jerome said, 
+his OS X updates does not seem to get submitted.
+
+Anyway thanks for the patch, any chance this could come to the repo as 
+well? When I do patches myself I always end up in conflicts with the repo 
+:<i>)
+</I>
+
+
+&gt;<i> If you have specific configuration between which you'd like to use, IMHO
+</I>&gt;<i> easiest way is to add shortcuts to your desktop which tell Hatari which
+</I>&gt;<i> config file to use (with &quot;--configfile &lt;file&gt;&quot; option).
+</I>
+That would open a terminal window as it involves doing a script, which is 
+why I use the custom made application instead.
+
+To have this in the drop down menu bar would be ideal.
+
+
+
+&gt;<i> Attached is mostly untested patch for adding question on whether the (last)
+</I>&gt;<i> succesfully created disk image should be inserted to drive A:. I think
+</I>&gt;<i> drive B: is too rare case to worry about (and it would need creating a new
+</I>&gt;<i> dialog).
+</I>
+Thanks for this patch, I hope it goes into the repo as well :) However 
+having an alert with three options should be doable?
+
+Mount A:  | Mount B:  |&#160;Don't mount
+
+
+&gt;&gt;<i> 4. Then we have the usual long-term request of using the current
+</I>&gt;&gt;<i> resolution and refreshrate instead of changing it when going to
+</I>&gt;&gt;<i> fullscreen.
+</I>&gt;<i> Resolution thing should already work for Falcon &amp; TT screens?
+</I>&gt;<i> They use completely different code from ST/STE.
+</I>
+I don't see how TT/Falcon mode would not alter refresh rate in fullscreen? 
+The resolution definitly changes to something else than my native res.
+
+
+&gt;<i> Hatari doesn't have any control over refresh rate or how fullscreening
+</I>&gt;<i> is implemented, only what what window/screen size it would like to have.
+</I>&gt;<i> Rest is (intentionally) hidden by SDL.
+</I>
+Yes, that's why the technicque of changing resolution is flawed to begin 
+with. Fullscreen should use the _current_ resolution without any change 
+and scale the graphics accordingly. All comptuers made the last decade or 
+so have hardware scaling support, and older machines than that are too 
+slow for Hatari anyways. Apart from the hwardware scaling, a modern 
+compter can do software scaling without a blink as well.
+
+See the Vice emulator as a great example how things can be implemented.
+
+
+
+&gt;<i> You could try whether removing HWSURFACE option from screen.c has
+</I>&gt;<i> any effect on this.  If it has, we could consider making it optional.
+</I>
+This wouldn't even let me go to fullscreen at all.
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002060.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002066.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2061">[ date ]</a>
+              <a href="thread.html#2061">[ thread ]</a>
+              <a href="subject.html#2061">[ subject ]</a>
+              <a href="author.html#2061">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

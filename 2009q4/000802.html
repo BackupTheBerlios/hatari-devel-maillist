@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] new support for avi recording
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3C20091009223510.2d1011f6%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000799.html">
+   <LINK REL="Next"  HREF="000803.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] new support for avi recording</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20new%20support%20for%20avi%20recording&In-Reply-To=%3C20091009223510.2d1011f6%40phineus%3E"
+       TITLE="[hatari-devel] new support for avi recording">th.huth at gmx.de
+       </A><BR>
+    <I>Fri Oct  9 22:35:10 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000799.html">[hatari-devel] new support for avi recording
+</A></li>
+        <LI>Next message: <A HREF="000803.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#802">[ date ]</a>
+              <a href="thread.html#802">[ thread ]</a>
+              <a href="subject.html#802">[ subject ]</a>
+              <a href="author.html#802">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 8 Oct 2009 23:45:30 +0200 (CEST)
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> wrote:
+
+&gt;<i> On Thu, 8 Oct 2009, Thomas Huth wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; I just gave it a quick try, and it seems to work nice when
+</I>&gt;<i> &gt; recording as BMP for me. But when I use PNG recording, the colors
+</I>&gt;<i> &gt; of the video look wrong in mplayer later... well, maybe there's a
+</I>&gt;<i> &gt; big-endian bug remaining (just tested it on my PowerPC machine...),
+</I>&gt;<i> &gt; or my mplayer does not like PNG-AVIs... maybe I've got some time at
+</I>&gt;<i> &gt; the weekend to have a closer look at this problem.
+</I>&gt;<i> 
+</I>&gt;<i> I use the same code as screenSnapshot, but maybe I added some
+</I>&gt;<i> endianness problem somewhere for png.
+</I>&gt;<i> 
+</I>&gt;<i> I use mplayer too, so you should be able to play motion png movies.
+</I>&gt;<i> How do the colors look wrong ?
+</I>
+The colors look completely wrong, e.g. just like RGBA has been swapped
+to ABGR or so. But I discovered that it is a bug in mplayer, not in
+your code! When I move an hatari.avi file from my PowerMac to my Intel
+laptop and play it there, it looks fine. So it's a problem of mplayer
+on big endian machines.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000799.html">[hatari-devel] new support for avi recording
+</A></li>
+	<LI>Next message: <A HREF="000803.html">[hatari-devel] new support for avi recording
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#802">[ date ]</a>
+              <a href="thread.html#802">[ thread ]</a>
+              <a href="subject.html#802">[ subject ]</a>
+              <a href="author.html#802">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] b help question (HBL $0)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20b%20help%20question%20%28HBL%20%240%29&In-Reply-To=%3C4DE56632.7030803%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003498.html">
+   <LINK REL="Next"  HREF="003508.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] b help question (HBL $0)</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20b%20help%20question%20%28HBL%20%240%29&In-Reply-To=%3C4DE56632.7030803%40corp.free.fr%3E"
+       TITLE="[hatari-devel] b help question (HBL $0)">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed Jun  1 00:05:38 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003498.html">[hatari-devel] b help question (HBL $0)
+</A></li>
+        <LI>Next message: <A HREF="003508.html">[hatari-devel] New patch for crossbar : ultimate arena wanted
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3503">[ date ]</a>
+              <a href="thread.html#3503">[ thread ]</a>
+              <a href="subject.html#3503">[ subject ]</a>
+              <a href="author.html#3503">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 31/05/2011 23:26, Eero Tamminen a &#233;crit :
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On keskiviikko 01 kes&#228;kuu 2011, Laurent Sallafranque wrote:
+</I>&gt;&gt;<i> When I enter b help in the debug console, I get all the help for
+</I>&gt;&gt;<i> breakpoint.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I can read the following :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ...
+</I>&gt;&gt;<i>    Valid Hatari variable names (and their current values) are:
+</I>&gt;&gt;<i>     - AesOpcode ($ffff), by default FFFF
+</I>&gt;&gt;<i>     - BiosOpcode ($ffff), by default FFFF
+</I>&gt;&gt;<i>     - FrameCycles ($44)
+</I>&gt;&gt;<i>     - GemdosOpcode ($ffff), by default FFFF
+</I>&gt;&gt;<i>     - HBL ($0)
+</I>&gt;&gt;<i>     - LineAOpcode ($ffff), by default FFFF
+</I>&gt;&gt;<i>     - LineCycles ($44), is always divisable by 4
+</I>&gt;&gt;<i> ...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is it really $0 for HBL ?
+</I>&gt;&gt;<i> I think not.
+</I>&gt;<i>
+</I>&gt;<i> It's the value of the Hatari internal &quot;nHBL&quot; variable.
+</I>&gt;<i>
+</I>&gt;<i> If you've entered the debugger by pressing Altgr+Pause shortcut key,
+</I>&gt;<i> that's processed only in Video_InterruptHandler_VBL():
+</I>&gt;<i> ---
+</I>&gt;<i>          /* Start VBL, HBL and Timer B interrupts (this must be done after
+</I>&gt;<i> resetting
+</I>&gt;<i>           * video cycle counter setting default freq values in
+</I>&gt;<i> Video_ClearOnVBL) */
+</I>&gt;<i>          Video_StartInterrupts(PendingCyclesOver);
+</I>&gt;<i>
+</I>&gt;<i>          /* Act on shortcut keys */
+</I>&gt;<i>          ShortCut_ActKey();
+</I>&gt;<i> ---
+</I>&gt;<i>
+</I>&gt;<i> If you check HBL at some other point, e.g. after entering debugger due
+</I>&gt;<i> to some breakpoint, HBL has different values.
+</I>
+That's true ; framecycle is $44, so yes, this means the shifter is on hbl 0.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003498.html">[hatari-devel] b help question (HBL $0)
+</A></li>
+	<LI>Next message: <A HREF="003508.html">[hatari-devel] New patch for crossbar : ultimate arena wanted
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3503">[ date ]</a>
+              <a href="thread.html#3503">[ thread ]</a>
+              <a href="subject.html#3503">[ subject ]</a>
+              <a href="author.html#3503">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

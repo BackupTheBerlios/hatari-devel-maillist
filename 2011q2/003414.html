@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] change to ikbd when writing to $fffc02
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20change%20to%20ikbd%20when%20writing%20to%20%24fffc02&In-Reply-To=%3C4DCABF5B.4060802%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003412.html">
+   <LINK REL="Next"  HREF="003416.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] change to ikbd when writing to $fffc02</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20change%20to%20ikbd%20when%20writing%20to%20%24fffc02&In-Reply-To=%3C4DCABF5B.4060802%40corp.free.fr%3E"
+       TITLE="[hatari-devel] change to ikbd when writing to $fffc02">npomarede at corp.free.fr
+       </A><BR>
+    <I>Wed May 11 18:54:51 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003412.html">[hatari-devel] HDC/ACSI command sector count &amp; error handling?
+</A></li>
+        <LI>Next message: <A HREF="003416.html">[hatari-devel] change to ikbd when writing to $fffc02
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3414">[ date ]</a>
+              <a href="thread.html#3414">[ thread ]</a>
+              <a href="subject.html#3414">[ subject ]</a>
+              <a href="author.html#3414">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+after a fix was made to handle the game &quot;uss john young&quot; (on FOF54 for 
+example), the &quot;Pandemonium Demos&quot; was not working anymore, as some 
+commands could not be sent to the ikbd (the demo was stuck in an endless 
+loop).
+
+Looking at the code for uss john young, we have :
+
+000041f4: 207c 0000 4146 303c 0003 MOVEA.L #$00004146,A0
+000041fa: 303c 0003 0839 0001 ffff MOVE.W #$0003,D0
+000041fe: 0839 0001 ffff fc00 6700 BTST.B #$0001,$fffffc00
+00004206: 6700 fff6 13d8 ffff fc02 BEQ.W #$fff6 == 000041fe (FALSE)
+0000420a: 13d8 ffff fc02 0839 0001 MOVE.B (A0)+,$fffffc02
+00004210: 0839 0001 ffff fc00 6600 BTST.B #$0001,$fffffc00
+00004218: 6600 fff6 51c8 ffe0 2039 BNE.W #$fff6 == 00004210 (TRUE)
+0000421c: 51c8 ffe0 2039 0000 21ea DBF .W D0,#$ffe0 == 000041fe (FALSE)
+
+00004146: 08 0c 0a 0a (IKBD_Cmd_RelMouseMode + Cmd_SetMouseScale)
+
+-&gt; the games sends 2 commands to the ikbd ; it correctly checks that bit 
+1 of $fffc00 is set to 0 (tx buffer full) to indicate the transfer is 
+happening, and then it checks bit 1 goes back to 1 to send the next byte.
+
+
+Pandemonium Demos :
+
+0008223a: 1018 11c0 fc02 0838 0001 MOVE.B (A0)+,D0
+0008223c: 11c0 fc02 0838 0001 fc00 MOVE.B D0,$fffffc02
+00082240: 0838 0001 fc00 67f4 1018 BTST.B #$0001,$fffffc00
+00082246: 67f4 1018 b03c 00fb 66ec BEQ.B #$fffffff4 == 0008223c (TRUE)
+00082248: 1018 b03c 00fb 66ec 4e75 MOVE.B (A0)+,D0
+0008224a: b03c 00fb 66ec 4e75 48e7 CMP.B #$fb,D0
+0008224e: 66ec 4e75 48e7 0202 46fc BNE.B #$ffffffec == 0008223c (FALSE)
+00082250: 4e75 48e7 0202 46fc 2700 RTS.L
+
+082234: 08 12 1a fb   IKBD_Cmd_RelMouseMode  IKBD_Cmd_TurnMouseOff 
+IKBD_Cmd_DisableJoysticks
+
+-&gt; the demo write to $fffc02 and if bit 1 is 0, it writes the same byte, 
+until it is transfered.
+
+1st, this code is wrong, writing the same byte again is pointless, you 
+just need to check bit 1 of SR, not sending the same byte again. 
+Fortunately, the ACIA uses some kind of double buffer, so once a 
+transfer is started, new writes to $fffc02 are ignored (else the 
+transfer would start from the beginning and it would be endless).
+
+But this means that once a byte is written to $fffc02, we must return 
+bit 1=0 until the whole byte is transfered, and we should then return 
+bit 1=1.
+
+
+Current code in the ikbd was doing a kind of mix of both values : 1st 
+time, it returned bit 1=0 (buffer full) and next times it returned bit 
+1=1. But in the case of Pandemonium this didn't work, because the demo 
+writes again to $fffc02, so we restart from the beginning and bit 1 is 
+always 0.
+
+So, I added a timer similar to the one already presents when the ikbd 
+sends bytes to the 68000 : when writing to $fffc02, bit 1 is set to 0 
+(buffer full) and after ACIA_CYCLES, an internal timer will really 
+process the byte that was written in $fffc02 and set bit 1 to 1 (TX 
+buffer empty). During that time, other writes to $fffc02 will be ignored.
+A small random number needed to be added, as it seems the number of 
+cycles is not always constant (else Pandemonium can sometimes enter an 
+endless loop)
+
+
+This fixes Pandemonium Demos, as well as staying compatible with Uss 
+John Young. Don't hesitate to test some of your favorites games (fire 
+button, ...) to check this didn't break anything.
+
+PS : some new variables are not saved in memory snapshot for now, 
+because I don't want to break the structure. I will change this if no 
+regression occur.
+
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003412.html">[hatari-devel] HDC/ACSI command sector count &amp; error handling?
+</A></li>
+	<LI>Next message: <A HREF="003416.html">[hatari-devel] change to ikbd when writing to $fffc02
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3414">[ date ]</a>
+              <a href="thread.html#3414">[ thread ]</a>
+              <a href="subject.html#3414">[ subject ]</a>
+              <a href="author.html#3414">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

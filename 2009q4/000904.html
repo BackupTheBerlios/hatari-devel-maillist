@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Issues with IDE/ACSI emulation and HD Driver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20IDE/ACSI%20emulation%20and%20HD%20Driver&In-Reply-To=%3C20091115142016.GA18339%40quattro.seimet.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000902.html">
+   <LINK REL="Next"  HREF="000906.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Issues with IDE/ACSI emulation and HD Driver</H1>
+    <B>Uwe Seimet</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Issues%20with%20IDE/ACSI%20emulation%20and%20HD%20Driver&In-Reply-To=%3C20091115142016.GA18339%40quattro.seimet.de%3E"
+       TITLE="[hatari-devel] Issues with IDE/ACSI emulation and HD Driver">Uwe.Seimet at seimet.de
+       </A><BR>
+    <I>Sun Nov 15 15:20:16 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000902.html">[hatari-devel] Issues with IDE/ACSI emulation and HD Driver
+</A></li>
+        <LI>Next message: <A HREF="000906.html">[hatari-devel] Issues with IDE/ACSI emulation and HD Driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#904">[ date ]</a>
+              <a href="thread.html#904">[ thread ]</a>
+              <a href="subject.html#904">[ subject ]</a>
+              <a href="author.html#904">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+&gt;<i> &gt; Hmm. I have never heard of this issue, but I use a third-party library
+</I>&gt;<i> &gt; for the dialogs in windows anyway, i.e. there is not much I can do about
+</I>&gt;<i> &gt; it.
+</I>&gt;<i> 
+</I>&gt;<i> Hard to believe it would be a Hatari specific issue.  Which UI library
+</I>&gt;<i> you're using?
+</I>
+I don't think this is a Hatari specific issue. What I meant is that even
+if it is a general issue (which I expect it to be) I cannot easily
+address this because the UI library code is not mine. It's the latest
+version of CF-Lib by Christian Felsch.
+
+&gt;<i> I added a note about this to todo.txt.  First step would probably be adding
+</I>&gt;<i> tracing also to the IDE layer.
+</I>
+Also not my email with the code fragment for WIN_FORMAT. This fragment
+is most likely everything that's needed. It works basically the same as
+writing sectors with a particular pattern, but from an applications
+(i.e. drivers's) perspective that's what formatting actually does.
+
+&gt;<i> However, based on your above comments there could still be quite a lot of
+</I>&gt;<i> work and the advantage of having SCSI support too is not so large as the
+</I>&gt;<i> disk image contents can be accessed also through IDE interface...
+</I>
+I agree. Implementing SCSI might be interesting, but it does not provide
+any real benefit. Except for learning a lot about SCSI, of course.
+I hope something can be done about ACSI not working with TOS 3.06 and
+HDDRIVER. Using an IDE image as a boot device is only possible with TOS
+4.04 but not with TOS 2.0x or 3.0x, and without ACSI working one cannot
+boot from a hard disk drive image at all with HDDRIVER and TOS 2.0x/3.0x.
+
+&gt;<i> &gt; For me booting from an IDE drive image in Falcon-compatible mode with an
+</I>&gt;<i> &gt; original TOS 4.04 works fine.
+</I>&gt;<i> 
+</I>&gt;<i> I think that works because TOS 4 supports IDE (but HD Driver doesn't work in
+</I>&gt;<i> Hatari with TOS 4).  So I'm mainly interested about why it doesn't work with
+</I>&gt;<i> the ACSI mode...
+</I>
+Yes, exactly, see my comment above.
+
+But nevertheless I can boot from an IDE image with TOS 4.04 and HDDRIVER, i.e.
+I could not observe anything wrong with HDDRIVER/Hatari/TOS 4. What
+exactly is your problem? Note that when using HDRIVER with TOS 4.04 you
+must ensure that the CPU is at least an 68030, i.e. you must enable the
+68040 setting.
+
+Best regards
+
+Uwe
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000902.html">[hatari-devel] Issues with IDE/ACSI emulation and HD Driver
+</A></li>
+	<LI>Next message: <A HREF="000906.html">[hatari-devel] Issues with IDE/ACSI emulation and HD Driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#904">[ date ]</a>
+              <a href="thread.html#904">[ thread ]</a>
+              <a href="subject.html#904">[ subject ]</a>
+              <a href="author.html#904">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

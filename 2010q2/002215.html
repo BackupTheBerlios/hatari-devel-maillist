@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Hatari on OS X
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20on%20OS%20X&In-Reply-To=%3C20100529234121.2c8a4770%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002214.html">
+   <LINK REL="Next"  HREF="002216.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Hatari on OS X</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Hatari%20on%20OS%20X&In-Reply-To=%3C20100529234121.2c8a4770%40phineus%3E"
+       TITLE="[hatari-devel] Hatari on OS X">huth at users.berlios.de
+       </A><BR>
+    <I>Sat May 29 23:41:21 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002214.html">[hatari-devel] Hatari on OS X
+</A></li>
+        <LI>Next message: <A HREF="002216.html">[hatari-devel] Hatari on OS X
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2215">[ date ]</a>
+              <a href="thread.html#2215">[ thread ]</a>
+              <a href="subject.html#2215">[ subject ]</a>
+              <a href="author.html#2215">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 29 May 2010 21:56:53 +0200
+Jerome Vernet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">vernet.jerome at wanadoo.fr</A>&gt; wrote:
+
+&gt;<i> Le 29/05/10 13:26, Thomas Huth a &#233;crit :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I think it would be better to fix the &quot;poseAsClass&quot; problem in
+</I>&gt;<i> &gt; SDLMain.m instead of forcing a 32-bit build... The SDLMain.m from
+</I>&gt;<i> &gt; the latest SDL 1.2 has this problem fixed, so someone who is still
+</I>&gt;<i> &gt; able to build the OS X code should port this fix to our SDLMain.m,
+</I>&gt;<i> &gt; too.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;    
+</I>&gt;<i> It's done, see the included diff. Now, can be built in 64 Bits. I can 
+</I>&gt;<i> even build a Universal Binary 32/64 bits for ppc and x86.
+</I>
+Cool! Great work!
+
+&gt;<i> I also made some change to localizations, Alert Windows now speak
+</I>&gt;<i> French (not all messages yet) (and English, and everything someone
+</I>&gt;<i> want to translate in) .
+</I>
+Hmm, nice, but your patch seems to be incomplete - I see a lot of lines
+like this there:
+
+diff -r 2d45f531ae53 src/gui-osx/English.lproj/SDLMain.nib/keyedobjects.nib
+Binary file src/gui-osx/English.lproj/SDLMain.nib/keyedobjects.nib has changed
+diff -r 2d45f531ae53 src/gui-osx/French.lproj/InfoPlist.strings
+Binary file src/gui-osx/French.lproj/InfoPlist.strings has changed
+diff -r 2d45f531ae53 src/gui-osx/French.lproj/SDLMain.nib/designable.nib
+
+Please send the binary files additionally!
+
+&gt;<i> Can you tell me what did you change about the nForceBpp to 16 in
+</I>&gt;<i> MacOsX Gui ?
+</I>
+Just use the friendly revision control system:
+<A HREF="http://hg.berlios.de/repos/hatari/rev/174f5a1212bb">http://hg.berlios.de/repos/hatari/rev/174f5a1212bb</A>
+
+Also, why did you revert my patch
+<A HREF="http://hg.berlios.de/repos/hatari/rev/5915bab9acb7">http://hg.berlios.de/repos/hatari/rev/5915bab9acb7</A> in your new patch?
+NSInteger does not exist in my Xcode, I think using int there is a better
+idea.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002214.html">[hatari-devel] Hatari on OS X
+</A></li>
+	<LI>Next message: <A HREF="002216.html">[hatari-devel] Hatari on OS X
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2215">[ date ]</a>
+              <a href="thread.html#2215">[ thread ]</a>
+              <a href="subject.html#2215">[ subject ]</a>
+              <a href="author.html#2215">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

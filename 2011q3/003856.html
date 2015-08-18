@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Startup/Setup problem with 24 bits addressing	mode
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Startup/Setup%20problem%20with%2024%20bits%20addressing%0A%09mode&In-Reply-To=%3C201107302153.41128.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003855.html">
+   <LINK REL="Next"  HREF="003939.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Startup/Setup problem with 24 bits addressing	mode</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Startup/Setup%20problem%20with%2024%20bits%20addressing%0A%09mode&In-Reply-To=%3C201107302153.41128.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Startup/Setup problem with 24 bits addressing	mode">eerot at users.berlios.de
+       </A><BR>
+    <I>Sat Jul 30 20:53:41 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003855.html">[hatari-devel] Startup/Setup problem with 24 bits addressing mode
+</A></li>
+        <LI>Next message: <A HREF="003939.html">[hatari-devel] Startup/Setup problem with 24 bits addressing mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3856">[ date ]</a>
+              <a href="thread.html#3856">[ thread ]</a>
+              <a href="subject.html#3856">[ subject ]</a>
+              <a href="author.html#3856">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 30 hein&#228;kuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> Le 30/07/2011 20:03, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; On sunnuntai 17 hein&#228;kuu 2011, Uwe Seimet wrote:
+</I>&gt;<i> &gt;&gt; I have a startup problem with the latest Hatari sources, TOS 3.06 and
+</I>&gt;<i> &gt;&gt; the WinUAE core. When 24 bits addressing mode is switched off Hatari
+</I>&gt;<i> &gt;&gt; starts fine. When I now (F12) switch 24 bits addressing mode on and
+</I>&gt;<i> &gt;&gt; reset the machine everything is still fine.
+</I>&gt;<i> &gt;&gt; But after saving my configuration, terminating and re-starting Hatari
+</I>&gt;<i> &gt;&gt; I only get a black screen. If I switch off 24 bits addressing now and
+</I>&gt;<i> &gt;&gt; reset Hatari I still get a completely black screen. Only after saving
+</I>&gt;<i> &gt;&gt; my settings again, terminating and re-starting Hatari it works again.
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; All in all it looks as if toggling the 24 bits addressing mode and
+</I>&gt;<i> &gt;&gt; then resetting Hatari does not work properly.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Wierd.  This should take care of things working OK:
+</I>&gt;<i> &gt;    Change_CopyChangedParamsToConfiguration()
+</I>&gt;<i> &gt;    -&gt;  Configuration_Apply()
+</I>&gt;<i> &gt;    
+</I>&gt;<i> &gt;       -&gt;  M68000_CheckCpuSettings()
+</I>&gt;<i> &gt;       
+</I>&gt;<i> &gt;         changed_prefs.address_space_24 =
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; ConfigureParams.System.bAddressSpace24;
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Shouldn't toggling that should actually reset the machine
+</I>&gt;<i> &gt; automatically?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Nicolas, Laurent?
+</I>&gt;<i> 
+</I>&gt;<i> I can't say, I didn't really touch the winuae part, so it would be
+</I>&gt;<i> better to wait for Laurent.
+</I>
+Ok.
+
+
+&gt;<i> But on the principle, I agree that changing addressing mode should reset
+</I>&gt;<i> and update the configuration on next save.
+</I>
+Attached patch should fix that particular thing, Laurent can apply
+it when he starts looking into this.
+
+ 
+&gt;<i> &gt; Double clicks work fine for me on Hatari v1.5 / Linux with TOS 3.06
+</I>&gt;<i> &gt; (US), at least with the old AUE core.   Both clicking twice with left
+</I>&gt;<i> &gt; button or
+</I>&gt;<i> 
+</I>&gt;<i> It's UAE please :)
+</I>
+Doh, I seem to be hopeless case in spelling that. :-)
+
+
+Anyway, I can't reproduce the TT double click issue, neither with
+Hatari v1.4 or v1.5.
+
+
+	- Eero
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: address-reset.diff
+Type: text/x-patch
+Size: 443 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20110730/30e26108/attachment.bin">https://lists.berlios.de/pipermail/hatari-devel/attachments/20110730/30e26108/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003855.html">[hatari-devel] Startup/Setup problem with 24 bits addressing mode
+</A></li>
+	<LI>Next message: <A HREF="003939.html">[hatari-devel] Startup/Setup problem with 24 bits addressing mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3856">[ date ]</a>
+              <a href="thread.html#3856">[ thread ]</a>
+              <a href="subject.html#3856">[ subject ]</a>
+              <a href="author.html#3856">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

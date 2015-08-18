@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New home for Hatari (BerliOS will be closed on	31.12.2011)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20home%20for%20Hatari%20%28BerliOS%20will%20be%20closed%20on%0A%0931.12.2011%29&In-Reply-To=%3CCAEK_Ugi0oit-kV9pWj7z7qDC3JNwbqCXmojMKzFZO5-cka8ccw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="004028.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New home for Hatari (BerliOS will be closed on	31.12.2011)</H1>
+    <B>Deniz Turkoglu</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20home%20for%20Hatari%20%28BerliOS%20will%20be%20closed%20on%0A%0931.12.2011%29&In-Reply-To=%3CCAEK_Ugi0oit-kV9pWj7z7qDC3JNwbqCXmojMKzFZO5-cka8ccw%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] New home for Hatari (BerliOS will be closed on	31.12.2011)">turkoglu.deniz at gmail.com
+       </A><BR>
+    <I>Sat Oct  1 00:05:06 CEST 2011</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="004028.html">[hatari-devel] C++
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4027">[ date ]</a>
+              <a href="thread.html#4027">[ thread ]</a>
+              <a href="subject.html#4027">[ subject ]</a>
+              <a href="author.html#4027">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, Sep 30, 2011 at 11:07 PM, Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">oak at helsinkinet.fi</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On perjantai 30 syyskuu 2011, Thomas Huth wrote:
+</I>&gt;&gt;<i> &gt; &gt; As we are using mercurial, bitbucket seems like a viable option.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> BitBucket seems a little bit too commercial for me - e.g. they only
+</I>&gt;&gt;<i> allow 5 users for the free repositories. That's not much.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt; &gt; We can also use this as opportunity to move to git (which proved to
+</I>&gt;&gt;<i> &gt; &gt; be more popular than hg).
+</I>&gt;&gt;<i> &gt; &gt;
+</I>&gt;&gt;<i> &gt; &gt; Anyhow, there is also google code, github, etc... Depends on the
+</I>&gt;&gt;<i> &gt; &gt; criteria for choosing.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'd say, the top requirements are:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - Source code repository with a proper VCS (IMHO I would not use
+</I>&gt;&gt;<i> &#160; anything else beside Mercurial or git anymore).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - Webspace for our Hatari website
+</I>&gt;&gt;<i> - Enough space for storing our release-tarballs
+</I>&gt;&gt;<i> - Mailing list
+</I>&gt;&gt;<i> - Bugtracker (could be handled via webspace also)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Apart from these top requirements, there are some other nice-to-have
+</I>&gt;&gt;<i> features like forums, but since we hardly use them (and there are
+</I>&gt;&gt;<i> alternatives like the Hatari forum on atari-forum.com instead), it's
+</I>&gt;&gt;<i> not so important to have them.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So I think we can drop Google Code - since they do not provide webspace
+</I>&gt;&gt;<i> for project, do they?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt; if we were to use the most popular revision tool, I guess we would
+</I>&gt;&gt;<i> &gt; use cvs or svn (if we only take into account the number of users /
+</I>&gt;&gt;<i> &gt; projects using it).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Well, agreed, for the development style we use with Hatari, we could
+</I>&gt;&gt;<i> also use a centralized VCS like SVN again, but IMHO the distributed
+</I>&gt;&gt;<i> VCSes are really really better, e.g. because they also allow offline
+</I>&gt;&gt;<i> development etc.
+</I>&gt;&gt;<i> CVS is really a pain, and in SVN I don't like the branch and tag
+</I>&gt;&gt;<i> handling, so I'd really say we stick with a distributed VCS instead ;-)
+</I>&gt;<i>
+</I>&gt;<i> Couldn't agree more with all of above!
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> &gt; I personnaly prefer to stay with mercurial, I don't see any point in
+</I>&gt;&gt;<i> &gt; using git over mercurial for our own development (which honnestly
+</I>&gt;&gt;<i> &gt; doesn't really make use of mercurial features that much in fact, we
+</I>&gt;&gt;<i> &gt; never really created branches or things like that to support several
+</I>&gt;&gt;<i> &gt; Hatari versions at a time).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I am using git a lot at work nowadays, and I have to say, it's really a
+</I>&gt;&gt;<i> very powerful and good tool. When we moved away from CVS a couple of
+</I>&gt;&gt;<i> years ago, there were some reasons to use mercurial instead:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - git is harder to learn, that still applies today, but now there are
+</I>&gt;&gt;<i> &#160; more people around who already know it
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - there was hardly any git support for Windows users ... I think that
+</I>&gt;&gt;<i> &#160; has also changed a lot during the last years.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So IMHO we could also switch to git nowadays, but we don't really need
+</I>&gt;&gt;<i> it for our development style, so we can also stick with Mercurial
+</I>&gt;&gt;<i> instead.
+</I>&gt;<i>
+</I>&gt;<i> If somebody prefers Git, this plugin can be used as git / hg bridge:
+</I>&gt;<i> &#160; &#160; &#160; &#160;<A HREF="http://mercurial.selenic.com/wiki/HgGit">http://mercurial.selenic.com/wiki/HgGit</A>
+</I>&gt;<i> &#160; &#160; &#160; &#160;<A HREF="https://github.com/blog/439-hg-git-mercurial-plugin">https://github.com/blog/439-hg-git-mercurial-plugin</A>
+</I>&gt;<i>
+</I>&gt;<i> There are also scripts for Git:
+</I>&gt;<i> &#160; &#160; &#160; &#160;<A HREF="https://github.com/offbytwo/git-hg">https://github.com/offbytwo/git-hg</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> &gt; Let's see what hosting solutions we can find for mercurial, but I'm
+</I>&gt;&gt;<i> &gt; not sure sourceforge is the way to go (unless they really changed
+</I>&gt;&gt;<i> &gt; their policy lately)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> IIRC these were the main problems with SourceForge in the past:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - They disabled access to the raw CVS repository, you could only used
+</I>&gt;&gt;<i> &#160; checked-out versions of the files ==&gt; this does not apply anymore for
+</I>&gt;&gt;<i> &#160; distributed VCSes since you always get the full repository now.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - They did not offer modern VCS at that point in time, SVN support just
+</I>&gt;&gt;<i> &#160; started, but neither Mercurial or Git were available ==&gt; This has
+</I>&gt;&gt;<i> &#160; changed completely
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - The servers became terribly slow, releasing a tarball was a pain
+</I>&gt;&gt;<i> &#160; ==&gt; As far as I know, they use faster servers now
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - The website became very hard to use while they tried to renew the
+</I>&gt;&gt;<i> &#160; design and handling of the pages ==&gt; It's much better nowadays.
+</I>&gt;<i>
+</I>&gt;<i> It still has lots of adverts. &#160;I think PCs and Browser have just gotten
+</I>&gt;<i> much faster at loading &amp; showing them...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Most of the old pain points are vanished, so if we want to have an
+</I>&gt;&gt;<i> &quot;easy&quot; solution (I mean, the old Hatari project is still registered
+</I>&gt;&gt;<i> there), we should consider going back to SourceForge.
+</I>&gt;<i>
+</I>&gt;<i> ...but SF could be OK.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Apart from SourceForge, I think these are good alternatives:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> * www.nongnu.org : Uses pretty much the same web interface as berlios
+</I>&gt;&gt;<i> &#160; since both are derived from earlier versions of SourceForge, so we
+</I>&gt;&gt;<i> &#160; might feel at home there quite fast. Major drawback: They are very,
+</I>&gt;&gt;<i> &#160; very picky about the GNU philosophie, e.g. we would first need to
+</I>&gt;&gt;<i> &#160; replace Linux by GNU/Linux everywhere in our code and documentation,
+</I>&gt;&gt;<i> &#160; and IIRC they prohibit that a program links against a non-free
+</I>&gt;&gt;<i> &#160; library (which is not a problem for us yet, but we might need this
+</I>&gt;&gt;<i> &#160; one day for Pasti or one of the other disk image libraries).
+</I>&gt;<i>
+</I>&gt;<i> Maybe also:
+</I>&gt;<i> &#160; &#160; &#160; &#160;<A HREF="http://alioth.debian.org/">http://alioth.debian.org/</A>
+</I>&gt;<i> ?
+</I>&gt;<i>
+</I>&gt;&gt;<i> * github.com or gitorious.org ... we should also consider those if we
+</I>&gt;&gt;<i> &#160; decide to move to git ... I think they are quite popular amongst git
+</I>&gt;&gt;<i> &#160; developers.
+</I>&gt;<i>
+</I>&gt;<i> I have some stuff at gitorious.org. &#160;It doesn't have a bug tracker
+</I>&gt;<i> nor web page hosting (but you can have wiki pages) which rules it
+</I>&gt;<i> out.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> * tuxfamily.org : This is currently my favourite... A very friendly
+</I>&gt;&gt;<i> &#160; hoster, I already have another project there (baller.tuxfamily.org)
+</I>&gt;&gt;<i> &#160; and made good experiences there so far.
+</I>&gt;<i>
+</I>&gt;<i> Did you base your project on original baller sources?
+</I>&gt;<i>
+</I>&gt;<i> I have cleaned up Baller sources here:
+</I>&gt;<i> &#160;<A HREF="http://koti.mbnet.fi/tammat/hatari/sources/baller-src.tar.gz">http://koti.mbnet.fi/tammat/hatari/sources/baller-src.tar.gz</A>
+</I>&gt;<i>
+</I>&gt;<i> (I've ANSIfied the sources and fixed signedness &amp; int size etc issues)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> &#160; Servers are located in Europe
+</I>&gt;&gt;<i> &#160; (==&gt; fast for most Hatari developers), they offer Mercurial
+</I>&gt;&gt;<i> &#160; repositories, mailing lists and webspace. Only drawback: We would
+</I>&gt;&gt;<i> &#160; need to install our own bugtracker at the website, there are no
+</I>&gt;&gt;<i> &#160; pre-installed bugtracking services.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What do you think?
+</I>&gt;<i>
+</I>&gt;<i> Tuxfamily looks very good, but it seems to live on donations:
+</I>&gt;<i> &#160; &#160; &#160; &#160;<A HREF="http://www.tuxfamily.org/en/support">http://www.tuxfamily.org/en/support</A>
+</I>&gt;<i>
+</I>&gt;<i> I.e. it could get the same issue as BerliOS?
+</I>
+The discussion has branched off :) One quick thing to mention is that
+we can use more than one service. I agree it is not easy to maintain
+but just to keep in mind, there are projects that use google code for
+bug tracking, github/bitbucket for repo, etc...
+
+A neat feature of git would be gerrit[1] but I don't think anyone
+provides it for free at all.
+
+[1] <A HREF="http://en.wikipedia.org/wiki/Gerrit_(software">http://en.wikipedia.org/wiki/Gerrit_(software</A>)
+&gt;<i>
+</I>&gt;<i> &#160; &#160; &#160; &#160;- Eero
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="004028.html">[hatari-devel] C++
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4027">[ date ]</a>
+              <a href="thread.html#4027">[ thread ]</a>
+              <a href="subject.html#4027">[ subject ]</a>
+              <a href="author.html#4027">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

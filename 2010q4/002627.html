@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] WinUae CPU for hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CD86D19.2090400%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002670.html">
+   <LINK REL="Next"  HREF="002628.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] WinUae CPU for hatari</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20WinUae%20CPU%20for%20hatari&In-Reply-To=%3C4CD86D19.2090400%40free.fr%3E"
+       TITLE="[hatari-devel] WinUae CPU for hatari">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Nov  8 22:35:21 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002670.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+        <LI>Next message: <A HREF="002628.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2627">[ date ]</a>
+              <a href="thread.html#2627">[ thread ]</a>
+              <a href="subject.html#2627">[ subject ]</a>
+              <a href="author.html#2627">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+The first results in WinUae core including seems good.
+No segmentation fault, no major error.
+
+I've reintroduced cpu disassembling (trace mode).
+
+I'm now stuck with a memory problem.
+It seems none of the addresses are recognized.
+
+I've stopped the next trace after a few errors.
+You can see the very beginning of atari's boot.
+
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent at OrdiLolo</A>:~/Atari/hatari/build/src$ ./hatari --trace all
+Configuration file /etc/hatari.cfg not found.
+Configuration file /home/laurent/.hatari/hatari.cfg not found.
+Hatari devel (Nov  8 2010), compiled on:  Nov  8 2010, 22:09:48
+Building CPU table for configuration: 0
+1879 CPU functions
+Building CPU, 44316 opcodes (0 0 0)
+CPU=68000, FPU=0, MMU=0, JIT=0.
+Can not load TOS file:
+'/home/laurent/Atari/hatari/build/share/hatari/tos.img'
+ikbd custom exe off
+int set new in video_cyc=0 active_int=0 pending_count=0
+int set new out video_cyc=0 active_int=11 pending_count=1440000000
+int add rel offset video_cyc=0 handler=11 handler_cyc=1440000000 
+offset_cyc=0 pending_count=1440000000
+int upd video_cyc=0 cycle_over=1440000000 cycle_sub=0
+int set new in video_cyc=0 active_int=11 pending_count=1440000000
+int set new out video_cyc=0 active_int=3 pending_count=3840000
+int add rel offset video_cyc=0 handler=3 handler_cyc=3840000 
+offset_cyc=0 pending_count=3840000
+int upd video_cyc=0 cycle_over=3840000 cycle_sub=0
+int set new in video_cyc=0 active_int=3 pending_count=3840000
+int set new out video_cyc=0 active_int=3 pending_count=3840000
+int add rel offset video_cyc=0 handler=2 handler_cyc=4876800 
+offset_cyc=0 pending_count=3840000
+int upd video_cyc=0 cycle_over=3840000 cycle_sub=0
+int set new in video_cyc=0 active_int=3 pending_count=3840000
+int set new out video_cyc=0 active_int=3 pending_count=3840000
+int add rel offset video_cyc=0 handler=1 handler_cyc=1282598400 
+offset_cyc=0 pending_count=3840000
+cpu video_cyc=     0   0@  0 : 00FC0030 46fc 2700                MV2SR.W 
+#$2700
+cpu video_cyc=     0   0@  0 : 00FC0034 4e70                     RESET.L
+ikbd custom exe off
+cpu video_cyc=     0   0@  0 : 00FC0036 0cb9 fa52 235f 00fa 0000 CMP.L 
+#$fa52235f,$00fa0000
+cpu video_cyc=     0   0@  0 : 00FC0040 660a                     BNE.B 
+#$0000000a == $00FC004C (T)
+cpu video_cyc=     0   0@  0 : 00FC004C 4dfa 0006                LEA.L 
+(PC,$0006) == $00fc0054,A6
+cpu video_cyc=     0   0@  0 : 00FC0050 6000 0636                BT .W 
+#$0636 == $00FC0688 (T)
+cpu video_cyc=     0   0@  0 : 00FC0688 9bcd                     SUBA.L 
+A5,A5
+cpu video_cyc=     0   0@  0 : 00FC068A 0cad 7520 19f3 0420      CMP.L 
+#$752019f3,(A5, $0420) == $00000420
+cpu video_cyc=     0   0@  0 : 00FC0692 6612                     BNE.B 
+#$00000012 == $00FC06A6 (F)
+cpu video_cyc=     0   0@  0 : 00FC0694 0cad 2376 98aa 043a      CMP.L 
+#$237698aa,(A5, $043a) == $0000043a
+cpu video_cyc=     0   0@  0 : 00FC069C 6608                     BNE.B 
+#$00000008 == $00FC06A6 (F)
+cpu video_cyc=     0   0@  0 : 00FC069E 0cad 5555 aaaa 051a      CMP.L 
+#$5555aaaa,(A5, $051a) == $0000051a
+cpu video_cyc=     0   0@  0 : 00FC06A6 4ed6                     JMP.L (A6)
+cpu video_cyc=     0   0@  0 : 00FC0054 660a                     BNE.B 
+#$0000000a == $00FC0060 (F)
+cpu video_cyc=     0   0@  0 : 00FC0056 13f9 0000 0424 ffff 8001 MOVE.B 
+$00000424,$ffff8001
+Illegal bput at ffff8001
+cpu video_cyc=     0   0@  0 : 00FC0060 9bcd                     SUBA.L 
+A5,A5
+cpu video_cyc=     0   0@  0 : 00FC0062 0cad 3141 5926 0426      CMP.L 
+#$31415926,(A5, $0426) == $00000426
+cpu video_cyc=     0   0@  0 : 00FC006A 6618                     BNE.B 
+#$00000018 == $00FC0084 (T)
+cpu video_cyc=     0   0@  0 : 00FC0084 41f9 ffff 8800           LEA.L 
+$ffff8800,A0
+cpu video_cyc=     0   0@  0 : 00FC008A 10bc 0007                MOVE.B 
+#$07,(A0)
+Illegal bput at ffff8800
+cpu video_cyc=     0   0@  0 : 00FC008E 117c 00c0 0002           MOVE.B 
+#$c0,(A0, $0002) == $ffff8802
+Illegal bput at ffff8802
+cpu video_cyc=     0   0@  0 : 00FC0094 10bc 000e                MOVE.B 
+#$0e,(A0)
+Illegal bput at ffff8800
+cpu video_cyc=     0   0@  0 : 00FC0098 117c 0007 0002           MOVE.B 
+#$07,(A0, $0002) == $ffff8802
+Illegal bput at ffff8802
+cpu video_cyc=     0   0@  0 : 00FC009E 083a 0000 ff7b           BTST.B 
+#$0000,(PC,$ff7b) == $00fc001d
+cpu video_cyc=     0   0@  0 : 00FC00A4 6710                     BEQ.B 
+#$00000010 == $00FC00B6 (F)
+cpu video_cyc=     0   0@  0 : 00FC00A6 4dfa 0006                LEA.L 
+(PC,$0006) == $00fc00ae,A6
+cpu video_cyc=     0   0@  0 : 00FC00AA 6000 0d6e                BT .W 
+#$0d6e == $00FC0E1A (T)
+cpu video_cyc=     0   0@  0 : 00FC0E1A 41f9 ffff fa21           LEA.L 
+$fffffa21,A0
+cpu video_cyc=     0   0@  0 : 00FC0E20 43f9 ffff fa1b           LEA.L 
+$fffffa1b,A1
+cpu video_cyc=     0   0@  0 : 00FC0E26 12bc 0010                MOVE.B 
+#$10,(A1)
+Illegal bput at fffffa1b
+cpu video_cyc=     0   0@  0 : 00FC0E2A 7801                     MOVE.L 
+#$00000001,D4
+cpu video_cyc=     0   0@  0 : 00FC0E2C 12bc 0000                MOVE.B 
+#$00,(A1)
+Illegal bput at fffffa1b
+cpu video_cyc=     0   0@  0 : 00FC0E30 10bc 00f0                MOVE.B 
+#$f0,(A0)
+Illegal bput at fffffa21
+cpu video_cyc=     0   0@  0 : 00FC0E34 13fc 0008 ffff fa1b      MOVE.B 
+#$08,$fffffa1b
+Illegal bput at fffffa1b
+cpu video_cyc=     0   0@  0 : 00FC0E3C 1010                     MOVE.B 
+(A0),D0
+Illegal bget at fffffa21
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent at OrdiLolo</A>:~/Atari/hatari/build/src$
+
+
+Regards
+
+Laurent
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002670.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+	<LI>Next message: <A HREF="002628.html">[hatari-devel] WinUae CPU for hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2627">[ date ]</a>
+              <a href="thread.html#2627">[ thread ]</a>
+              <a href="subject.html#2627">[ subject ]</a>
+              <a href="author.html#2627">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

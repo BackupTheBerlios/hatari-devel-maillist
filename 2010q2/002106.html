@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Suggestion about small additions for v1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3Calpine.LMD.2.00.1005131956090.25669%40pulsar.staff.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002105.html">
+   <LINK REL="Next"  HREF="002109.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Suggestion about small additions for v1.4</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3Calpine.LMD.2.00.1005131956090.25669%40pulsar.staff.proxad.net%3E"
+       TITLE="[hatari-devel] Suggestion about small additions for v1.4">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu May 13 20:00:40 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002105.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002109.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2106">[ date ]</a>
+              <a href="thread.html#2106">[ thread ]</a>
+              <a href="subject.html#2106">[ subject ]</a>
+              <a href="author.html#2106">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 13 May 2010, Jerome Vernet wrote:
+
+&gt;<i> Le 13/05/10 19:27, <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">npomarede at corp.free.fr</A> a &#233;crit :
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> what should be the layout of the repository ? Should I remove current 
+</I>&gt;&gt;<i> SDLMain.nib/ dir and just add English.lproj/ and French.lproj/ ?
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Could you post a ls -lR of your gui-osx/ dir so I use the same.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Thanks
+</I>&gt;&gt;<i> 
+</I>&gt;<i> MacBook:src jeromevernet$ cd gui-osx/
+</I>&gt;<i> MacBook:gui-osx jeromevernet$ ls -lR
+</I>
+Thanks, I updated accordingly.
+
+But I see you have config.h and Hatari_1.xcclassmodel/ that are not in 
+mercurial. Are those files needed or are they generated when compiling ?
+
+Nicolas
+
+
+&gt;<i> total 280
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet    651 19 jan  2009 AlertHooks.h
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet    956 19 jan  2009 AlertHooks.m
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet    491 19 jan  2009 
+</I>&gt;<i> CreateFloppyController.h
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet   2134 13 mai 18:38 
+</I>&gt;<i> CreateFloppyController.m
+</I>&gt;<i> drwxr-xr-x  4 jeromevernet  jeromevernet    136 13 mai 14:43 English.lproj
+</I>&gt;<i> drwxr-xr-x  4 jeromevernet  jeromevernet    136 13 mai 14:42 French.lproj
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet  47887 19 jan  2009 Hatari.icns
+</I>&gt;<i> drwxr-xr-x@ 4 jeromevernet  jeromevernet    136 17 avr 10:24 
+</I>&gt;<i> Hatari_1.xcclassmodel
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet   1964 13 mai 18:38 
+</I>&gt;<i> Info-Hatari.plist
+</I>&gt;<i> -rwxr-xr-x  1 jeromevernet  jeromevernet   4283 13 mai 18:38 
+</I>&gt;<i> PrefsController.h
+</I>&gt;<i> -rwxr-xr-x  1 jeromevernet  jeromevernet  29061 13 mai 18:38 
+</I>&gt;<i> PrefsController.m
+</I>&gt;<i> -rwxr-xr-x  1 jeromevernet  jeromevernet   1243 13 mai 18:38 SDLMain.h
+</I>&gt;<i> -rwxr-xr-x  1 jeromevernet  jeromevernet  12720 13 mai 18:38 SDLMain.m
+</I>&gt;<i> drwxr-xr-x  5 jeromevernet  jeromevernet    170 10 avr  2009 SDLMain.nib
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet    738 23 jan 11:49 Shared.h
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet   2009 23 jan 11:49 Shared.m
+</I>&gt;<i> -rw-r--r--@ 1 jeromevernet  jeromevernet   1787 11 mai 22:02 config.h
+</I>&gt;<i>
+</I>&gt;<i> ./English.lproj:
+</I>&gt;<i> total 8
+</I>&gt;<i> -rwxr-xr-x@ 1 jeromevernet  jeromevernet  524 17 avr 23:11 InfoPlist.strings
+</I>&gt;<i> drwxr-xr-x  4 jeromevernet  jeromevernet  136 13 mai 14:43 SDLMain.nib
+</I>&gt;<i>
+</I>&gt;<i> ./English.lproj/SDLMain.nib:
+</I>&gt;<i> total 1448
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet  570421 13 mai 14:43 designable.nib
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet  164412 13 mai 14:43 
+</I>&gt;<i> keyedobjects.nib
+</I>&gt;<i>
+</I>&gt;<i> ./French.lproj:
+</I>&gt;<i> total 8
+</I>&gt;<i> -rwxr-xr-x@ 1 jeromevernet  jeromevernet  512 13 mai 14:32 InfoPlist.strings
+</I>&gt;<i> drwxr-xr-x  4 jeromevernet  jeromevernet  136 13 mai 14:42 SDLMain.nib
+</I>&gt;<i>
+</I>&gt;<i> ./French.lproj/SDLMain.nib:
+</I>&gt;<i> total 1400
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet  552985 13 mai 14:42 designable.nib
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet  159005 13 mai 14:42 
+</I>&gt;<i> keyedobjects.nib
+</I>&gt;<i>
+</I>&gt;<i> ./Hatari_1.xcclassmodel:
+</I>&gt;<i> total 248
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet  104752 17 avr 10:24 elements
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet   20195 17 avr 10:24 layout
+</I>&gt;<i>
+</I>&gt;<i> ./SDLMain.nib:
+</I>&gt;<i> total 208
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet   7373 10 avr  2009 classes.nib
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet    525 10 avr  2009 info.nib
+</I>&gt;<i> -rw-r--r--  1 jeromevernet  jeromevernet  92406 10 avr  2009 keyedobjects.nib
+</I>&gt;<i> MacBook:gui-osx jeromevernet$
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I></PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002105.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002109.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2106">[ date ]</a>
+              <a href="thread.html#2106">[ thread ]</a>
+              <a href="subject.html#2106">[ subject ]</a>
+              <a href="author.html#2106">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

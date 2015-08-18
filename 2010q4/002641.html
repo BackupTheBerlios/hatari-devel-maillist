@@ -1,0 +1,507 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] A new disassembler in Hatari
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20new%20disassembler%20in%20Hatari&In-Reply-To=%3CF69DBBC4-FA48-45D9-95BE-A540DACC1090%40sarnau.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002551.html">
+   <LINK REL="Next"  HREF="002647.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] A new disassembler in Hatari</H1>
+    <B>Markus Fritze</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20A%20new%20disassembler%20in%20Hatari&In-Reply-To=%3CF69DBBC4-FA48-45D9-95BE-A540DACC1090%40sarnau.com%3E"
+       TITLE="[hatari-devel] A new disassembler in Hatari">my at sarnau.com
+       </A><BR>
+    <I>Thu Nov 18 02:41:51 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002551.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd try)
+</A></li>
+        <LI>Next message: <A HREF="002647.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2641">[ date ]</a>
+              <a href="thread.html#2641">[ thread ]</a>
+              <a href="subject.html#2641">[ subject ]</a>
+              <a href="author.html#2641">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+With a bit delay (work...) here is the new 68k disassembler. I've written it from scratch and tested it against IDA Pro (BTW: which has a BUNCH of bugs in 68k). It is plain drop-in: add the ZIP'd source to the project and remove the old m68k_disasm() routine from newcpu.c (as well as the leftovers from the old one).
+
+If you want: add the symbol files from Symbols.zip to the .hatari folder to get symbols (and more detailed ones for the TOS 3.06 and 4.04)
+
+The disassembler can be fully configured via Diss68kOptions and optionCPUTypeMask as well the TAB settings. Check the beginning of the source. Somebody might want to add this to the preferences of Hatari.
+
+The disassembler is able to deal with any 68k CPU (68000...68060, CPU32, FPU and PMMU) and should detect illegal opcodes based on the CPU mask.
+
+
+Enjoy,
+Markus
+
+
+@@ -344,311 +344,6 @@
+ int lastint_no;
+ */
+ struct regstruct regs;
+-static long int m68kpc_offset;
+-
+-
+-#define get_ibyte_1(o) get_byte(regs.pc + (regs.pc_p - regs.pc_oldp) + (o) + 1)
+-#define get_iword_1(o) get_word(regs.pc + (regs.pc_p - regs.pc_oldp) + (o))
+-#define get_ilong_1(o) get_long(regs.pc + (regs.pc_p - regs.pc_oldp) + (o))
+-
+-uae_s32 ShowEA (FILE *f, int reg, amodes mode, wordsizes size, char *buf)
+-{
+-    uae_u16 dp;
+-    uae_s8 disp8;
+-    uae_s16 disp16;
+-    int r;
+-    uae_u32 dispreg;
+-    uaecptr addr;
+-    uae_s32 offset = 0;
+-    char buffer[80];
+-
+-    switch (mode){
+-     case Dreg:
+-	sprintf (buffer,&quot;D%d&quot;, reg);
+-	break;
+-     case Areg:
+-	sprintf (buffer,&quot;A%d&quot;, reg);
+-	break;
+-     case Aind:
+-	sprintf (buffer,&quot;(A%d)&quot;, reg);
+-	break;
+-     case Aipi:
+-	sprintf (buffer,&quot;(A%d)+&quot;, reg);
+-	break;
+-     case Apdi:
+-	sprintf (buffer,&quot;-(A%d)&quot;, reg);
+-	break;
+-     case Ad16:
+-	disp16 = get_iword_1 (m68kpc_offset); m68kpc_offset += 2;
+-	addr = m68k_areg(regs,reg) + (uae_s16)disp16;
+-	sprintf (buffer,&quot;(A%d,$%04x) == $%08lx&quot;, reg, disp16 &amp; 0xffff,
+-					(unsigned long)addr);
+-	break;
+-     case Ad8r:
+-	dp = get_iword_1 (m68kpc_offset); m68kpc_offset += 2;
+-	disp8 = dp &amp; 0xFF;
+-	r = (dp &amp; 0x7000) &gt;&gt; 12;
+-	dispreg = dp &amp; 0x8000 ? m68k_areg(regs,r) : m68k_dreg(regs,r);
+-	if (!(dp &amp; 0x800)) dispreg = (uae_s32)(uae_s16)(dispreg);
+-	dispreg &lt;&lt;= (dp &gt;&gt; 9) &amp; 3;
+-
+-	if (dp &amp; 0x100) {
+-	    uae_s32 outer = 0, disp = 0;
+-	    uae_s32 base = m68k_areg(regs,reg);
+-	    char name[10];
+-	    sprintf (name,&quot;A%d, &quot;,reg);
+-	    if (dp &amp; 0x80) { base = 0; name[0] = 0; }
+-	    if (dp &amp; 0x40) dispreg = 0;
+-	    if ((dp &amp; 0x30) == 0x20) { disp = (uae_s32)(uae_s16)get_iword_1 (m68kpc_offset); m68kpc_offset += 2; }
+-	    if ((dp &amp; 0x30) == 0x30) { disp = get_ilong_1 (m68kpc_offset); m68kpc_offset += 4; }
+-	    base += disp;
+-
+-	    if ((dp &amp; 0x3) == 0x2) { outer = (uae_s32)(uae_s16)get_iword_1 (m68kpc_offset); m68kpc_offset += 2; }
+-	    if ((dp &amp; 0x3) == 0x3) { outer = get_ilong_1 (m68kpc_offset); m68kpc_offset += 4; }
+-
+-	    if (!(dp &amp; 4)) base += dispreg;
+-	    if (dp &amp; 3) base = get_long (base);
+-	    if (dp &amp; 4) base += dispreg;
+-
+-	    addr = base + outer;
+-	    sprintf (buffer,&quot;(%s%c%d.%c*%d+%ld)+%ld == $%08lx&quot;, name,
+-		    dp &amp; 0x8000 ? 'A' : 'D', (int)r, dp &amp; 0x800 ? 'L' : 'W',
+-		    1 &lt;&lt; ((dp &gt;&gt; 9) &amp; 3),
+-		    (long)disp, (long)outer, (unsigned long)addr);
+-	} else {
+-	  addr = m68k_areg(regs,reg) + (uae_s32)((uae_s8)disp8) + dispreg;
+-	  sprintf (buffer,&quot;(A%d, %c%d.%c*%d, $%02x) == $%08lx&quot;, reg,
+-	       dp &amp; 0x8000 ? 'A' : 'D', (int)r, dp &amp; 0x800 ? 'L' : 'W',
+-	       1 &lt;&lt; ((dp &gt;&gt; 9) &amp; 3), disp8,
+-	       (unsigned long)addr);
+-	}
+-	break;
+-     case PC16:
+-	addr = m68k_getpc () + m68kpc_offset;
+-	disp16 = get_iword_1 (m68kpc_offset); m68kpc_offset += 2;
+-	addr += (uae_s16)disp16;
+-	sprintf (buffer,&quot;(PC,$%04x) == $%08lx&quot;, disp16 &amp; 0xffff,(unsigned long)addr);
+-	break;
+-     case PC8r:
+-	addr = m68k_getpc () + m68kpc_offset;
+-	dp = get_iword_1 (m68kpc_offset); m68kpc_offset += 2;
+-	disp8 = dp &amp; 0xFF;
+-	r = (dp &amp; 0x7000) &gt;&gt; 12;
+-	dispreg = dp &amp; 0x8000 ? m68k_areg(regs,r) : m68k_dreg(regs,r);
+-	if (!(dp &amp; 0x800)) dispreg = (uae_s32)(uae_s16)(dispreg);
+-	dispreg &lt;&lt;= (dp &gt;&gt; 9) &amp; 3;
+-
+-	if (dp &amp; 0x100) {
+-	    uae_s32 outer = 0,disp = 0;
+-	    uae_s32 base = addr;
+-	    char name[10];
+-	    sprintf (name,&quot;PC, &quot;);
+-	    if (dp &amp; 0x80) { base = 0; name[0] = 0; }
+-	    if (dp &amp; 0x40) dispreg = 0;
+-	    if ((dp &amp; 0x30) == 0x20) { disp = (uae_s32)(uae_s16)get_iword_1 (m68kpc_offset); m68kpc_offset += 2; }
+-	    if ((dp &amp; 0x30) == 0x30) { disp = get_ilong_1 (m68kpc_offset); m68kpc_offset += 4; }
+-	    base += disp;
+-
+-	    if ((dp &amp; 0x3) == 0x2) { outer = (uae_s32)(uae_s16)get_iword_1 (m68kpc_offset); m68kpc_offset += 2; }
+-	    if ((dp &amp; 0x3) == 0x3) { outer = get_ilong_1 (m68kpc_offset); m68kpc_offset += 4; }
+-
+-	    if (!(dp &amp; 4)) base += dispreg;
+-	    if (dp &amp; 3) base = get_long (base);
+-	    if (dp &amp; 4) base += dispreg;
+-
+-	    addr = base + outer;
+-	    sprintf (buffer,&quot;(%s%c%d.%c*%d+%ld)+%ld == $%08lx&quot;, name,
+-		    dp &amp; 0x8000 ? 'A' : 'D', (int)r, dp &amp; 0x800 ? 'L' : 'W',
+-		    1 &lt;&lt; ((dp &gt;&gt; 9) &amp; 3),
+-		    (long)disp, (long)outer, (unsigned long)addr);
+-	} else {
+-	  addr += (uae_s32)((uae_s8)disp8) + dispreg;
+-	  sprintf (buffer,&quot;(PC, %c%d.%c*%d, $%02x) == $%08lx&quot;, dp &amp; 0x8000 ? 'A' : 'D',
+-		(int)r, dp &amp; 0x800 ? 'L' : 'W',  1 &lt;&lt; ((dp &gt;&gt; 9) &amp; 3),
+-		disp8, (unsigned long)addr);
+-	}
+-	break;
+-     case absw:
+-	sprintf (buffer,&quot;$%08lx&quot;, (unsigned long)(uae_s32)(uae_s16)get_iword_1 (m68kpc_offset));
+-	m68kpc_offset += 2;
+-	break;
+-     case absl:
+-	sprintf (buffer,&quot;$%08lx&quot;, (unsigned long)get_ilong_1 (m68kpc_offset));
+-	m68kpc_offset += 4;
+-	break;
+-     case imm:
+-	switch (size){
+-	 case sz_byte:
+-	    sprintf (buffer,&quot;#$%02x&quot;, (unsigned int)(get_iword_1 (m68kpc_offset) &amp; 0xff));
+-	    m68kpc_offset += 2;
+-	    break;
+-	 case sz_word:
+-	    sprintf (buffer,&quot;#$%04x&quot;, (unsigned int)(get_iword_1 (m68kpc_offset) &amp; 0xffff));
+-	    m68kpc_offset += 2;
+-	    break;
+-	 case sz_long:
+-	    sprintf (buffer,&quot;#$%08lx&quot;, (unsigned long)(get_ilong_1 (m68kpc_offset)));
+-	    m68kpc_offset += 4;
+-	    break;
+-	 default:
+-	    break;
+-	}
+-	break;
+-     case imm0:
+-	offset = (uae_s32)(uae_s8)get_iword_1 (m68kpc_offset);
+-	m68kpc_offset += 2;
+-	sprintf (buffer,&quot;#$%02x&quot;, (unsigned int)(offset &amp; 0xff));
+-	break;
+-     case imm1:
+-	offset = (uae_s32)(uae_s16)get_iword_1 (m68kpc_offset);
+-	m68kpc_offset += 2;
+-	sprintf (buffer,&quot;#$%04x&quot;, (unsigned int)(offset &amp; 0xffff));
+-	break;
+-     case imm2:
+-	offset = (uae_s32)get_ilong_1 (m68kpc_offset);
+-	m68kpc_offset += 4;
+-	sprintf (buffer,&quot;#$%08lx&quot;, (unsigned long)offset);
+-	break;
+-     case immi:
+-	offset = (uae_s32)(uae_s8)(reg &amp; 0xff);
+-	sprintf (buffer,&quot;#$%08lx&quot;, (unsigned long)offset);
+-	break;
+-     default:
+-	break;
+-    }
+-    if (buf == 0)
+-	fprintf (f, &quot;%s&quot;, buffer);
+-    else
+-	strcat (buf, buffer);
+-    return offset;
+-}
+-
+-
+-/* The plan is that this will take over the job of exception 3 handling -
+- * the CPU emulation functions will just do a longjmp to m68k_go whenever
+- * they hit an odd address. */
+-#if 0
+-static int verify_ea (int reg, amodes mode, wordsizes size, uae_u32 *val)
+-{
+-    uae_u16 dp;
+-    uae_s8 disp8;
+-    uae_s16 disp16;
+-    int r;
+-    uae_u32 dispreg;
+-    uaecptr addr;
+-    /*uae_s32 offset = 0;*/
+-
+-    switch (mode){
+-     case Dreg:
+-	*val = m68k_dreg (regs, reg);
+-	return 1;
+-     case Areg:
+-	*val = m68k_areg (regs, reg);
+-	return 1;
+-
+-     case Aind:
+-     case Aipi:
+-	addr = m68k_areg (regs, reg);
+-	break;
+-     case Apdi:
+-	addr = m68k_areg (regs, reg);
+-	break;
+-     case Ad16:
+-	disp16 = get_iword_1 (m68kpc_offset); m68kpc_offset += 2;
+-	addr = m68k_areg(regs,reg) + (uae_s16)disp16;
+-	break;
+-     case Ad8r:
+-	addr = m68k_areg (regs, reg);
+-     d8r_common:
+-	dp = get_iword_1 (m68kpc_offset); m68kpc_offset += 2;
+-	disp8 = dp &amp; 0xFF;
+-	r = (dp &amp; 0x7000) &gt;&gt; 12;
+-	dispreg = dp &amp; 0x8000 ? m68k_areg(regs,r) : m68k_dreg(regs,r);
+-	if (!(dp &amp; 0x800)) dispreg = (uae_s32)(uae_s16)(dispreg);
+-	dispreg &lt;&lt;= (dp &gt;&gt; 9) &amp; 3;
+-
+-	if (dp &amp; 0x100) {
+-	    uae_s32 outer = 0, disp = 0;
+-	    uae_s32 base = addr;
+-	    if (dp &amp; 0x80) base = 0;
+-	    if (dp &amp; 0x40) dispreg = 0;
+-	    if ((dp &amp; 0x30) == 0x20) { disp = (uae_s32)(uae_s16)get_iword_1 (m68kpc_offset); m68kpc_offset += 2; }
+-	    if ((dp &amp; 0x30) == 0x30) { disp = get_ilong_1 (m68kpc_offset); m68kpc_offset += 4; }
+-	    base += disp;
+-
+-	    if ((dp &amp; 0x3) == 0x2) { outer = (uae_s32)(uae_s16)get_iword_1 (m68kpc_offset); m68kpc_offset += 2; }
+-	    if ((dp &amp; 0x3) == 0x3) { outer = get_ilong_1 (m68kpc_offset); m68kpc_offset += 4; }
+-
+-	    if (!(dp &amp; 4)) base += dispreg;
+-	    if (dp &amp; 3) base = get_long (base);
+-	    if (dp &amp; 4) base += dispreg;
+-
+-	    addr = base + outer;
+-	} else {
+-	  addr += (uae_s32)((uae_s8)disp8) + dispreg;
+-	}
+-	break;
+-     case PC16:
+-	addr = m68k_getpc () + m68kpc_offset;
+-	disp16 = get_iword_1 (m68kpc_offset); m68kpc_offset += 2;
+-	addr += (uae_s16)disp16;
+-	break;
+-     case PC8r:
+-	addr = m68k_getpc () + m68kpc_offset;
+-	goto d8r_common;
+-     case absw:
+-	addr = (uae_s32)(uae_s16)get_iword_1 (m68kpc_offset);
+-	m68kpc_offset += 2;
+-	break;
+-     case absl:
+-	addr = get_ilong_1 (m68kpc_offset);
+-	m68kpc_offset += 4;
+-	break;
+-     case imm:
+-	switch (size){
+-	 case sz_byte:
+-	    *val = get_iword_1 (m68kpc_offset) &amp; 0xff;
+-	    m68kpc_offset += 2;
+-	    break;
+-	 case sz_word:
+-	    *val = get_iword_1 (m68kpc_offset) &amp; 0xffff;
+-	    m68kpc_offset += 2;
+-	    break;
+-	 case sz_long:
+-	    *val = get_ilong_1 (m68kpc_offset);
+-	    m68kpc_offset += 4;
+-	    break;
+-	 default:
+-	    break;
+-	}
+-	return 1;
+-     case imm0:
+-	*val = (uae_s32)(uae_s8)get_iword_1 (m68kpc_offset);
+-	m68kpc_offset += 2;
+-	return 1;
+-     case imm1:
+-	*val = (uae_s32)(uae_s16)get_iword_1 (m68kpc_offset);
+-	m68kpc_offset += 2;
+-	return 1;
+-     case imm2:
+-	*val = get_ilong_1 (m68kpc_offset);
+-	m68kpc_offset += 4;
+-	return 1;
+-     case immi:
+-	*val = (uae_s32)(uae_s8)(reg &amp; 0xff);
+-	return 1;
+-     default:
+-	addr = 0;
+-	break;
+-    }
+-    if ((addr &amp; 1) == 0)
+-	return 1;
+-
+-    last_addr_for_exception_3 = m68k_getpc () + m68kpc_offset;
+-    last_fault_for_exception_3 = addr;
+-    return 0;
+-}
+-#endif
+ 
+ 
+ uae_u32 get_disp_ea_020 (uae_u32 base, uae_u32 dp)
+@@ -1855,100 +1550,6 @@
+ }
+ 
+ 
+-/*
+-static void m68k_verify (uaecptr addr, uaecptr *nextpc)
+-{
+-    uae_u32 opcode, val;
+-    struct instr *dp;
+-
+-    opcode = get_iword_1(0);
+-    last_op_for_exception_3 = opcode;
+-    m68kpc_offset = 2;
+-
+-    if (cpufunctbl[opcode] == op_illg_1) {
+-	opcode = 0x4AFC;
+-    }
+-    dp = table68k + opcode;
+-
+-    if (dp-&gt;suse) {
+-	if (!verify_ea (dp-&gt;sreg, dp-&gt;smode, dp-&gt;size, &amp;val)) {
+-	    Exception (3, 0,M68000_EXC_SRC_CPU);
+-	    return;
+-	}
+-    }
+-    if (dp-&gt;duse) {
+-	if (!verify_ea (dp-&gt;dreg, dp-&gt;dmode, dp-&gt;size, &amp;val)) {
+-	    Exception (3, 0,M68000_EXC_SRC_CPU);
+-	    return;
+-	}
+-    }
+-}
+-*/
+-
+-
+-void m68k_disasm (FILE *f, uaecptr addr, uaecptr *nextpc, int cnt)
+-{
+-    static const char * const ccnames[] =
+-        { &quot;T &quot;,&quot;F &quot;,&quot;HI&quot;,&quot;LS&quot;,&quot;CC&quot;,&quot;CS&quot;,&quot;NE&quot;,&quot;EQ&quot;,
+-          &quot;VC&quot;,&quot;VS&quot;,&quot;PL&quot;,&quot;MI&quot;,&quot;GE&quot;,&quot;LT&quot;,&quot;GT&quot;,&quot;LE&quot; };
+-
+-    uaecptr newpc = 0;
+-    m68kpc_offset = addr - m68k_getpc ();
+-    while (cnt-- &gt; 0) {
+-	char instrname[20],*ccpt;
+-	int opwords;
+-	uae_u32 opcode;
+-	const struct mnemolookup *lookup;
+-	struct instr *dp;
+-	fprintf (f, &quot;%08lx: &quot;, m68k_getpc () + m68kpc_offset);
+-	for (opwords = 0; opwords &lt; 5; opwords++){
+-	    fprintf (f, &quot;%04x &quot;, get_iword_1 (m68kpc_offset + opwords*2));
+-	}
+-	opcode = get_iword_1 (m68kpc_offset);
+-	m68kpc_offset += 2;
+-	if (cpufunctbl[opcode] == op_illg_1) {
+-	    opcode = 0x4AFC;
+-	}
+-	dp = table68k + opcode;
+-	for (lookup = lookuptab;lookup-&gt;mnemo != dp-&gt;mnemo; lookup++)
+-	    ;
+-
+-	strcpy (instrname, lookup-&gt;name);
+-	ccpt = strstr (instrname, &quot;cc&quot;);
+-	if (ccpt != 0) {
+-	    strncpy (ccpt, ccnames[dp-&gt;cc], 2);
+-	}
+-	fprintf (f, &quot;%s&quot;, instrname);
+-	switch (dp-&gt;size){
+-	 case sz_byte: fprintf (f, &quot;.B &quot;); break;
+-	 case sz_word: fprintf (f, &quot;.W &quot;); break;
+-	 case sz_long: fprintf (f, &quot;.L &quot;); break;
+-	 default: fprintf (f, &quot;   &quot;); break;
+-	}
+-
+-	if (dp-&gt;suse) {
+-	    newpc = m68k_getpc () + m68kpc_offset;
+-	    newpc += ShowEA (f, dp-&gt;sreg, dp-&gt;smode, dp-&gt;size, 0);
+-	}
+-	if (dp-&gt;suse &amp;&amp; dp-&gt;duse)
+-	    fprintf (f, &quot;,&quot;);
+-	if (dp-&gt;duse) {
+-	    newpc = m68k_getpc () + m68kpc_offset;
+-	    newpc += ShowEA (f, dp-&gt;dreg, dp-&gt;dmode, dp-&gt;size, 0);
+-	}
+-	if (ccpt != 0) {
+-	    if (cctrue(dp-&gt;cc))
+-		fprintf (f, &quot; == %08lx (TRUE)&quot;, (long)newpc);
+-	    else
+-		fprintf (f, &quot; == %08lx (FALSE)&quot;, (long)newpc);
+-	} else if ((opcode &amp; 0xff00) == 0x6100) /* BSR */
+-	    fprintf (f, &quot; == %08lx&quot;, (long)newpc);
+-	fprintf (f, &quot;\n&quot;);
+-    }
+-    if (nextpc)
+-	*nextpc = m68k_getpc () + m68kpc_offset;
+-}
+-
+ void m68k_dumpstate (FILE *f, uaecptr *nextpc)
+ {
+     int i;
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 68kDisass.c.zip
+Type: application/zip
+Size: 18824 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20101117/88ad28ec/attachment.zip">https://lists.berlios.de/pipermail/hatari-devel/attachments/20101117/88ad28ec/attachment.zip</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: Symbols.zip
+Type: application/zip
+Size: 14371 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20101117/88ad28ec/attachment-0001.zip">https://lists.berlios.de/pipermail/hatari-devel/attachments/20101117/88ad28ec/attachment-0001.zip</A>&gt;
+-------------- next part --------------
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002551.html">[hatari-devel] Proposal for a new disassembler in Hatari (2nd try)
+</A></li>
+	<LI>Next message: <A HREF="002647.html">[hatari-devel] A new disassembler in Hatari
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2641">[ date ]</a>
+              <a href="thread.html#2641">[ thread ]</a>
+              <a href="subject.html#2641">[ subject ]</a>
+              <a href="author.html#2641">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

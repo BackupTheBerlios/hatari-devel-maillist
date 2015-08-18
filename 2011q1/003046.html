@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Chaos AD demo question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Chaos%20AD%20demo%20question&In-Reply-To=%3C4D59A803.4010701%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003042.html">
+   <LINK REL="Next"  HREF="003047.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Chaos AD demo question</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Chaos%20AD%20demo%20question&In-Reply-To=%3C4D59A803.4010701%40free.fr%3E"
+       TITLE="[hatari-devel] Chaos AD demo question">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Feb 14 23:09:07 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003042.html">[hatari-devel] Chaos AD demo question
+</A></li>
+        <LI>Next message: <A HREF="003047.html">[hatari-devel] Chaos AD demo question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3046">[ date ]</a>
+              <a href="thread.html#3046">[ thread ]</a>
+              <a href="subject.html#3046">[ subject ]</a>
+              <a href="author.html#3046">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>In the trace, I can read this :
+
+cpu video_cyc= 10168 440@ 19 : 00E032EC 1029 0002                MOVE.B 
+(A1, $0002) == $fffffc02,D0 &lt;--here
+
+cpu video_cyc= 10178 450@ 19 : 00E032F0 b1fc 0000 0f96           CMPA.L 
+#$00000f96,A0
+cpu video_cyc= 10184 456@ 19 : 00E032F6 6600 0622                BNE.W 
+#$0622 == $00E0391A (F)
+cpu video_cyc= 10190 462@ 19 : 00E032FA 4a38 115a                TST.B 
+$0000115a
+cpu video_cyc= 10196 468@ 19 : 00E032FE 6664                     BNE.B 
+#$00000064 == $00E03364 (F)
+
+cpu video_cyc= 10200 472@ 19 : 00E03300 0c00 00f6                CMP.B 
+#$f6,D0&lt;-- and here
+cpu video_cyc= 10206 478@ 19 : 00E03304 6406                     BCC.B 
+#$00000006 == $00E0330C (F)
+
+It seems to test Status report ($F6).
+
+What is this exactly ?
+
+Laurent
+
+
+&gt;<i> Hello
+</I>&gt;<i>
+</I>&gt;<i> from the ikbd's doc :
+</I>&gt;<i>
+</I>&gt;<i> The special codes 0xF6 through 0xFF are reserved for use as follows:
+</I>&gt;<i>     0xF6            status report
+</I>&gt;<i>     0xF7            absolute mouse position record
+</I>&gt;<i>     0xF8-0xFB       relative mouse position records(lsbs determind by
+</I>&gt;<i>                      mouse button states)
+</I>&gt;<i>     0xFC            time-of-day
+</I>&gt;<i>     0xFD            joystick report (both sticks)
+</I>&gt;<i>     0xFE            joystick 0 event
+</I>&gt;<i>     0xFF            joystick 1 event
+</I>&gt;<i>
+</I>&gt;<i> So, this waits for an event on joystick 0
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003042.html">[hatari-devel] Chaos AD demo question
+</A></li>
+	<LI>Next message: <A HREF="003047.html">[hatari-devel] Chaos AD demo question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3046">[ date ]</a>
+              <a href="thread.html#3046">[ thread ]</a>
+              <a href="subject.html#3046">[ subject ]</a>
+              <a href="author.html#3046">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

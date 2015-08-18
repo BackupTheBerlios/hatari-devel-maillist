@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Execution history debugger command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C4DE7DEF2.1000702%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003524.html">
+   <LINK REL="Next"  HREF="003492.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Execution history debugger command</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Execution%20history%20debugger%20command&In-Reply-To=%3C4DE7DEF2.1000702%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Execution history debugger command">npomarede at corp.free.fr
+       </A><BR>
+    <I>Thu Jun  2 21:05:22 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003524.html">[hatari-devel] Execution history debugger command
+</A></li>
+        <LI>Next message: <A HREF="003492.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3525">[ date ]</a>
+              <a href="thread.html#3525">[ thread ]</a>
+              <a href="subject.html#3525">[ subject ]</a>
+              <a href="author.html#3525">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 02/06/2011 20:27, Eero Tamminen a &#233;crit :
+
+&gt;<i> Steem debugger's features which are missing from the current
+</I>&gt;<i> Hatari CLI debugger:
+</I>&gt;<i>
+</I>&gt;<i> * Things that would seem to be straightforward to add:
+</I>&gt;<i>    - History.  I would need to add tracking also instruction cycles
+</I>&gt;<i>      to the code I posted earlier
+</I>&gt;<i>      (= Steem History view&amp;  Trace info)
+</I>&gt;<i>    - Showing values both in different lengts and numeric bases.
+</I>&gt;<i>      In Hatari one gets latter with &quot;evaluate&quot; command, e.g. &quot;e a0&quot;,
+</I>&gt;<i>      but that doesn't show the value if it were long/word/byte
+</I>&gt;<i>    - All register values being shown with above info
+</I>&gt;<i>      (= Steem Register monitor)
+</I>&gt;<i>    - info commands for PSG, MFP, FDC and IKBD register values
+</I>&gt;<i>      (= Steem monitors for these)
+</I>&gt;<i>    - Info command for &quot;timings&quot; i.e. cycles since HBL/VBL, timer values,
+</I>&gt;<i>      video address&amp;  scanline
+</I>&gt;<i>      (= Steem Timings view)
+</I>&gt;<i>    - memory dump in text format
+</I>&gt;<i>      (= Steem Text monitor)
+</I>&gt;<i>    - Text string and binary values (hex) search
+</I>&gt;<i>      (= widgets in Steem monitor windows)
+</I>&gt;<i>    - Disasm format options being changable at run-time
+</I>&gt;<i>      (= Steem options)
+</I>&gt;<i>    - Run for N cycles
+</I>&gt;<i>      (Hatari continue command accepts only instructions, not cycles)
+</I>
+regarding the reg/timer/monitors/dump view, it's of course possible do 
+use the &quot;info&quot; command already available and add more output to it.
+
+
+&gt;<i> * These would be harder, either because I'm not sure where/how these
+</I>&gt;<i>    would be best integrated or because they're more work:
+</I>&gt;<i>    - Monitoring reads&amp;  writes to specific address.  Hatari supports only
+</I>&gt;<i>      monitoring changes to values, not having breakpoints of reading values
+</I>&gt;<i>      or writing the same value
+</I>
+Not supported in current Hatari and quite time consuming, because it 
+requires evaluating &quot;memory access&quot; breakpoints on each read/write to 
+memory.
+I have a modified version that does this for my own debugging need, it 
+could be possible to add some proper hooks in the corresponding memory 
+handling functions, but we would also need to add a #define to enable 
+this kind of memory breakpoint at compile time, because it can really 
+slow down performance and not everybody needs it.
+
+Still, this is the most useful we miss in my opinion, it's really 
+powerful to monitor some memory location and I sometime use Steem just 
+to see what part of a program accessed such memory region.
+
+&gt;<i>    - Break on exceptions 2-8 vs. bombs vs. don't break.
+</I>&gt;<i>      Hatari has only an option to break on address&amp;  bus errors
+</I>&gt;<i>      &amp;  uninitialized exception handler.
+</I>
+Not sure this is important. In games/demos, you most likely want &quot;don't 
+break&quot; because it often part of the protection to do such behaviour.
+
+&gt;<i>    - Showing breakpoints in instruction dumps.  Hatari breakpoints
+</I>&gt;<i>      are more advanced than the trivial address breakpoints...
+</I>
+We can show only PC breakpoint in that case, but it's sure Hatari syntax 
+is more advanced than Steem's ont.
+
+&gt;<i>    - Adding new symbol names for arbitrary addresses one at the time.
+</I>&gt;<i>      Hatari debugger currently requires new symbols to be added to
+</I>&gt;<i>      a file containing all the symbols + reloading that file
+</I>
+Can't say, I don't use that.
+
+&gt;<i>    - Memory dump that shows also disassembly and values in different bases
+</I>&gt;<i>      (= Steem Memory monitor)
+</I>&gt;<i>    - Stack content display
+</I>
+Should be in the &quot;easy&quot; section I think, it's just a dump of the memory 
+before the value pointed by A7.
+
+&gt;<i>    - Shift Atari screen contents by 0/2/4/6 bytes
+</I>
+Not very useful, only use is when trying to debug overscan's emulation 
+problems, but Hatari is now fairly robust.
+
+&gt;<i> (I think rest of the Steem features can be supported by the Hatari
+</I>&gt;<i> breakpoints.)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Do any of the above listed items (especially the easy ones) sound
+</I>&gt;<i> interesting to be had in the CLI debugger?
+</I>&gt;<i>
+</I>&gt;<i> (As I'm already listing missing Monst features as potential TODOs
+</I>&gt;<i>   for Hatari debugger, I'll add these also to the todo.txt file.)
+</I>
+The info command for the different components can be useful, but it's of 
+course more easy to use if you are in UI mode.
+
+&gt;<i>
+</I>&gt;<i> As to the Steem UI on top of these features, Steem's UI really has a *huge*
+</I>&gt;<i> amount of functionality integrated to it.  With Hatari it would also need
+</I>&gt;<i> to work for CPU&amp;  DSP as Hatari supports both.
+</I>&gt;<i>
+</I>&gt;<i> So... I think you need to specify quite in detail what you would like to
+</I>&gt;<i> have in the debugger GUI and in which priority order before it makes much
+</I>&gt;<i> sense to start coding it.
+</I>
+Well the ability to open as many dump/info windows as wanted 
+(hex/asm/mfp/video/sound/...) and have those content refreshed each time 
+a breakpoint is encountered would be nice.
+
+A stop/run button, as well as a &quot;execute only instruction&quot; buttons would 
+be cool.
+
+The possibility to click to define simple PC breakpoint (or monitor 
+memory on B/W/L accesses)
+
+And a way to search for hexa/text in Hatari's RAM.
+
+At least, that what I use the most ; other people might have different 
+needs.
+
+&gt;<i> Hm.  Switching Hatari itself from SDL-only to Qt+SDL would be quite large
+</I>&gt;<i> change.  Before considering that, I'd like to see for a bit longer how well
+</I>&gt;<i> Nokia manages Qt...
+</I>
+By doing a quick search for QT + SDL, it appears it's quite easy to 
+embed an SDL program in a QT ones (need to pass to SDL the window's id 
+provided by QT)
+
+Regarding what nokia will do with QT, even if development stopped 
+definitly today, QT 4.7 is powerful enough to fill all our needs.
+
+
+&gt;&gt;<i> Having external windows seems really much more useful to me : you keep
+</I>&gt;&gt;<i> the Atari's video screen untouched and you have a bunch of windows
+</I>&gt;&gt;<i> locked on registers/asm/hex dump. You're not limited to Hatari's
+</I>&gt;&gt;<i> resolution, but you can benefit of all the space your OS is giving you
+</I>&gt;&gt;<i> (if you have dual monitor for example).
+</I>&gt;<i>
+</I>&gt;<i> Ok, then it really needs a real, modern widget toolkit.
+</I>&gt;<i>
+</I>&gt;<i> In that case I think it's better to do the UI separately from Hatari
+</I>&gt;<i> and utilize the remote API.  Only if the remote UI turns out infeasible,
+</I>&gt;<i> I would go for integrating everything to Hatari binary itself.
+</I>
+I wonder if this could be an opportunity to &quot;clean&quot; Hatari and do a 
+proper abstraction between the hardware emulation (which in the end 
+mostly provides one video frame and one sound frame per vbl) and the 
+emulator (which is reponsible for displaying video result and sending 
+sound data to the audio system used by the OS).
+
+The remote API implies to develop a lot of protocol to exchange data 
+between the emulation and the emulator's UI ; I'm not really a big fan 
+of this client-server mode when both parts are running on the same computer.
+
+I think that what has beed made with SDL can be abstracted in a 
+&quot;modularized&quot; way to allow other toolkits to access the emulation's data 
+(registers, IO, ram, cpu, dsp, configuration, ...).
+
+This would require some work to refactor some code in Hatari, but then 
+it would benefit us for the emulation-emulator's UI integration in the 
+same program, which would save some time on working on a remote API.
+
+At least, openmsx and vice went this way, and they succeeded in doing 
+it. I think it's the best choice performance-wise.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003524.html">[hatari-devel] Execution history debugger command
+</A></li>
+	<LI>Next message: <A HREF="003492.html">[hatari-devel] Execution history debugger command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3525">[ date ]</a>
+              <a href="thread.html#3525">[ thread ]</a>
+              <a href="subject.html#3525">[ subject ]</a>
+              <a href="author.html#3525">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

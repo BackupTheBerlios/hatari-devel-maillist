@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] some videl emulation news
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20some%20videl%20emulation%20news&In-Reply-To=%3C4DED3F9C.6010501%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003546.html">
+   <LINK REL="Next"  HREF="003548.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] some videl emulation news</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20some%20videl%20emulation%20news&In-Reply-To=%3C4DED3F9C.6010501%40free.fr%3E"
+       TITLE="[hatari-devel] some videl emulation news">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Mon Jun  6 22:59:08 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003546.html">[hatari-devel] some videl emulation news
+</A></li>
+        <LI>Next message: <A HREF="003548.html">[hatari-devel] some videl emulation news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3547">[ date ]</a>
+              <a href="thread.html#3547">[ thread ]</a>
+              <a href="subject.html#3547">[ subject ]</a>
+              <a href="author.html#3547">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>OK for video.
+
+All these questions for DSP &lt; - &gt;  68030 synchro.
+
+As we use the 68030 as main clock, if we don't take into account all the 
+waitstates (DMA sound, videl, ...) we can miss a lot of clockedges for 
+the DSP speed, no ?
+
+The problem with falcon emu is (I think) that we need to be synchro 
+between 68030 (main clock), DSP and crossbar.
+If the 68030 eats some waitstates because of sound DMA or Videl, I think 
+we should take them into account for better synchro with the DSP and 
+crossbar.
+
+Maybe I think wrong and shouldn't worry about these cycles, but they 
+seem to be &quot;time consuming&quot; (from Mikro's doc about stRam timings and 68030)
+
+If I try to take them into account, hatari becomes horribly slow.
+
+Regards
+
+Laurent
+
+
+
+Le 06/06/2011 22:49, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 06/06/2011 22:44, Laurent Sallafranque a &#233;crit :
+</I>&gt;&gt;<i> OK, thanks for the explanations.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So, hatari takes into account the ram access time every 16 pixels ?
+</I>&gt;&gt;<i> (sorry, but video.c is quite complex to read)
+</I>&gt;<i>
+</I>&gt;<i> No, because it would be too difficult to handle with the current 
+</I>&gt;<i> infrastructure, as it would require to be able to plot pixel every 16 
+</I>&gt;<i> cycles, including in the middle of any cpu instruction.
+</I>&gt;<i>
+</I>&gt;<i> So, Hatari draw one line every 512 cycles in low res for example 
+</I>&gt;<i> (there're very few program/demos that require to update the video 
+</I>&gt;<i> every 16 cycles, &quot;Gen4 Demo&quot; by ULM is one of these but you need good 
+</I>&gt;<i> eyes to see where's the error :) )
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003546.html">[hatari-devel] some videl emulation news
+</A></li>
+	<LI>Next message: <A HREF="003548.html">[hatari-devel] some videl emulation news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3547">[ date ]</a>
+              <a href="thread.html#3547">[ thread ]</a>
+              <a href="subject.html#3547">[ subject ]</a>
+              <a href="author.html#3547">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

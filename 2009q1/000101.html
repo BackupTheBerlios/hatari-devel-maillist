@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] cycle precise blitter accesses
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cycle%20precise%20blitter%20accesses&In-Reply-To=%3CPine.LNX.4.64.0901302258560.3169%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000095.html">
+   <LINK REL="Next"  HREF="000104.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] cycle precise blitter accesses</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20cycle%20precise%20blitter%20accesses&In-Reply-To=%3CPine.LNX.4.64.0901302258560.3169%40localhost%3E"
+       TITLE="[hatari-devel] cycle precise blitter accesses">npomarede at corp.free.fr
+       </A><BR>
+    <I>Fri Jan 30 23:04:25 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000095.html">[hatari-devel] [hatari-tracking] /hgroot/repos/hatari: 2 new	changesets
+</A></li>
+        <LI>Next message: <A HREF="000104.html">[hatari-devel] cycle precise blitter accesses
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#101">[ date ]</a>
+              <a href="thread.html#101">[ thread ]</a>
+              <a href="subject.html#101">[ subject ]</a>
+              <a href="author.html#101">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hello,
+
+looking at the blitter source, I see that the cumulative cycles for the 
+current blitter operation are stored in BlitterVars.op_cycles, so this 
+should make it possible to know how many cpu cycles elapsed since the 
+start of a blitting operation, and know precisely the corresponding video 
+position at that time (for precise timing when blitter accesses ff820a for 
+example).
+
+But I would expect for this to work that Cycles_GetCounterOnWriteAccess 
+has a reference to BlitterVars.op_cycles when the bus is BUS_MODE_BLITTER, 
+which is not the case.
+
+Tob&#233;, is there a reason for this ? Do you have some code you need to 
+finish to handle this and that you didn't commit yet, or am I missing 
+something ?
+
+
+Nicolas
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000095.html">[hatari-devel] [hatari-tracking] /hgroot/repos/hatari: 2 new	changesets
+</A></li>
+	<LI>Next message: <A HREF="000104.html">[hatari-devel] cycle precise blitter accesses
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#101">[ date ]</a>
+              <a href="thread.html#101">[ thread ]</a>
+              <a href="subject.html#101">[ subject ]</a>
+              <a href="author.html#101">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

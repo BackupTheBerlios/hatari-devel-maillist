@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Choosing ym mixing method in the UI
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Choosing%20ym%20mixing%20method%20in%20the%20UI&In-Reply-To=%3Calpine.DEB.2.00.1104050901500.15416%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003303.html">
+   <LINK REL="Next"  HREF="003306.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Choosing ym mixing method in the UI</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Choosing%20ym%20mixing%20method%20in%20the%20UI&In-Reply-To=%3Calpine.DEB.2.00.1104050901500.15416%40gem.atari.org%3E"
+       TITLE="[hatari-devel] Choosing ym mixing method in the UI">ae at dhs.nu
+       </A><BR>
+    <I>Tue Apr  5 09:16:14 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003303.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+        <LI>Next message: <A HREF="003306.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3305">[ date ]</a>
+              <a href="thread.html#3305">[ thread ]</a>
+              <a href="subject.html#3305">[ subject ]</a>
+              <a href="author.html#3305">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 4 Apr 2011, Eero Tamminen wrote:
+
+&gt;&gt;<i> ------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> YM voice mixing  [] linear   [] ST table
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Isn't the table used for mixing STE/Falcon/TT YM sound?
+</I>
+Hello,
+
+no this is the mixing of the three YM channels.
+
+On the Atari computers they are mixed simply by joining the outputs, which 
+brings some problems. Say if channel A plays at volume 15, it will 
+feedback into channel B and C to produce further sound. So the mixing of 
+the YM channels can't be as simple as A+B+C if you want accurate results.
+
+To play samples on the YM, you combine volumes of all three channels (for 
+the better quality players) and with the cheap mixing of the ST, the table 
+of volume variations is nothing like linear. We did some simple analysis 
+of three volume tables to see how they really look, here's the result:
+
+<A HREF="http://files.dhs.nu/files_coding/volumes.pdf">http://files.dhs.nu/files_coding/volumes.pdf</A>
+
+The blue volume table is the one used in Protracker ST, the yellow one 
+from Quartet and the red one which is linear (works for other computers 
+with proper channel mixing, such as the MSX, CPC, Spectrum..).
+
+The Protracker table sounds by far the best on a real ST, and the curve is 
+really obscure :)  It's this behaviour that Hatari needs to simulate to 
+accurately replay YM-samples. The red linear table is HORROR on a real ST 
+and perfect in Hatari with linear mixing :-)
+
+If you want to hear the Protracker volume table on Hatari vs the real 
+thing, check out our latest intro:
+
+<A HREF="http://files.dhs.nu/demos/sh11inv.zip">http://files.dhs.nu/demos/sh11inv.zip</A> (executable)
+<A HREF="http://dhs.nu/video.php?ID=317">http://dhs.nu/video.php?ID=317</A> (video from a real STe)
+
+I think even you would agree the linear Hatari mixing needs fixing :-)
+
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003303.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+	<LI>Next message: <A HREF="003306.html">[hatari-devel] Choosing ym mixing method in the UI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3305">[ date ]</a>
+              <a href="thread.html#3305">[ thread ]</a>
+              <a href="subject.html#3305">[ subject ]</a>
+              <a href="author.html#3305">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

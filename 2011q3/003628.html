@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] New STE DMA audio emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C4E0EF043.4030007%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003627.html">
+   <LINK REL="Next"  HREF="003629.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] New STE DMA audio emulation</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20New%20STE%20DMA%20audio%20emulation&In-Reply-To=%3C4E0EF043.4030007%40corp.free.fr%3E"
+       TITLE="[hatari-devel] New STE DMA audio emulation">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sat Jul  2 12:17:39 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003627.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+        <LI>Next message: <A HREF="003629.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3628">[ date ]</a>
+              <a href="thread.html#3628">[ thread ]</a>
+              <a href="subject.html#3628">[ subject ]</a>
+              <a href="author.html#3628">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 02/07/2011 10:09, Laurent Sallafranque a &#233;crit :
+&gt;<i> Hi Nicolas,
+</I>&gt;<i>
+</I>&gt;<i> Great Job.
+</I>&gt;<i>
+</I>&gt;<i> I have no time at the moment to test things or code for hatari.
+</I>&gt;<i> But I guess some of the things you implemented for the STE DMA should
+</I>&gt;<i> also be applied to the falcon DMA.
+</I>&gt;<i>
+</I>&gt;<i> I mean the 64 bits precision and the 2*32 octets DMA buffer (one buffer
+</I>&gt;<i> for DMA play and one for DMA Record) .
+</I>&gt;<i>
+</I>&gt;<i> I guess (without clue) that the Falcon DMA bahaves like the STE one (I
+</I>&gt;<i> mean HBL refresh).
+</I>&gt;<i>
+</I>&gt;<i> Should I apply these changes ? (Falcon sound with DMA emulation is not
+</I>&gt;<i> nice sometimes).
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i> Laurent
+</I>
+
+Hello
+
+I really have no idea on how the Falcon DMA behaves ; the fact that it's 
+able to run in &quot;STE compatible&quot; mode doesn't necessarily mean that the 
+Falcon DMA works in a similar way with a FIFO.
+
+I'm not sure trying to fix dma emulation is the good order to do things 
+:<i> this could lead to some limitations that are not &quot;compatible&quot; with the 
+</I>real sound core of the Falcon. I think STE mode can be left aside for now.
+
+Before going to the HBL level to see what it does, I think it's 
+essential to fix demos that do double buffer audio in falcon mode and 
+where sound is still not good. This is clearly an indication that some 
+low level logic are missing for now (or it could be a small but very 
+well hidden bug)
+
+Using 64 bits for arithmetic is still a good idea though, but it 
+wouldn't explain really &quot;strange&quot; audio result.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003627.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+	<LI>Next message: <A HREF="003629.html">[hatari-devel] New STE DMA audio emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3628">[ date ]</a>
+              <a href="thread.html#3628">[ thread ]</a>
+              <a href="subject.html#3628">[ subject ]</a>
+              <a href="author.html#3628">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

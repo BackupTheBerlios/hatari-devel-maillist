@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] [Crossbar emulation] : new infos
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5BCrossbar%20emulation%5D%20%3A%20new%20infos&In-Reply-To=%3C20090928225536.74d40a17%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000756.html">
+   <LINK REL="Next"  HREF="000716.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] [Crossbar emulation] : new infos</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20%5BCrossbar%20emulation%5D%20%3A%20new%20infos&In-Reply-To=%3C20090928225536.74d40a17%40phineus%3E"
+       TITLE="[hatari-devel] [Crossbar emulation] : new infos">th.huth at gmx.de
+       </A><BR>
+    <I>Mon Sep 28 22:55:36 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000756.html">[hatari-devel] [Crossbar emulation] : new infos, + some help needed
+</A></li>
+        <LI>Next message: <A HREF="000716.html">[hatari-devel] [Crossbar emulation] : some infos
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#758">[ date ]</a>
+              <a href="thread.html#758">[ thread ]</a>
+              <a href="subject.html#758">[ subject ]</a>
+              <a href="author.html#758">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 21 Sep 2009 22:28:35 +0200
+Laurent Sallafranque &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">laurent.sallafranque at free.fr</A>&gt; wrote:
+
+&gt;<i> Hello,
+</I>&gt;<i> 
+</I>&gt;<i> Some news about my latest upload :
+</I>&gt;<i> 
+</I>&gt;<i> - Dma sound is still not working for now (harder to understand than
+</I>&gt;<i> what I thought first, and doc is really poor on the subject)
+</I>
+For DMA playing, you can also consider a lot of nice STE documentation,
+for example the STE FAQ by The Paranoid:
+
+ <A HREF="http://atari-ste.anvil-soft.com/html/devdocu4.htm">http://atari-ste.anvil-soft.com/html/devdocu4.htm</A>
+
+&gt;<i> - I've got a warning when I run hatari :
+</I>&gt;<i> Hatari v1.3.1, compiled on:  Sep 21 2009, 21:49:00
+</I>&gt;<i> Building CPU table for configuration: 68EC020/881 (compatible 
+</I>&gt;<i> mode)
+</I>&gt;<i> 
+</I>&gt;<i> Warning: Soundbuffer size is too big!
+</I>
+Yeah, that happens sometimes when you use a sound frequency bigger than
+44.1 kHz. The MIXBUFFER_SIZE = 8192 was chosen when 44.1 kHz was the
+highest frequency that the user could select. It's maybe a little bit
+too small for higher frequencies.
+
+&gt;<i> In sound.h, I've tryed the following change:
+</I>&gt;<i> - #define MIXBUFFER_SIZE    8192          /* Size of circular buffer
+</I>&gt;<i> to store sample to (44Khz) */
+</I>&gt;<i> + #define MIXBUFFER_SIZE    16384      /* Size of circular buffer to 
+</I>&gt;<i> store sample to (44Khz) */
+</I>&gt;<i> 
+</I>&gt;<i> And the warning doesn't appear anymore. I listen the sound at 50 Khz.
+</I>&gt;<i> I haven't uploaded this as the 8192 value is perhaps used for
+</I>&gt;<i> something else in Hatari.
+</I>
+16384 should be fine, too. I think it is save to change this value, but
+it also shouldn't be much higher because the sound might get more
+delayed otherwise.
+
+&gt;<i> - In the sound configuration screen, the playback sound quality 
+</I>&gt;<i> radbutton isn't checked at all.
+</I>&gt;<i> Also if I choose a value and save, when I return to the screen, 
+</I>&gt;<i> radButton isn't displayed.
+</I>
+You're right, the 50 kHz radio button did not work. Should be fixed now.
+
+ Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000756.html">[hatari-devel] [Crossbar emulation] : new infos, + some help needed
+</A></li>
+	<LI>Next message: <A HREF="000716.html">[hatari-devel] [Crossbar emulation] : some infos
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#758">[ date ]</a>
+              <a href="thread.html#758">[ thread ]</a>
+              <a href="subject.html#758">[ subject ]</a>
+              <a href="author.html#758">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon mode enabling DSP by default
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20mode%20enabling%20DSP%20by%20default&In-Reply-To=%3C201101151431.10615.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002788.html">
+   <LINK REL="Next"  HREF="002794.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon mode enabling DSP by default</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20mode%20enabling%20DSP%20by%20default&In-Reply-To=%3C201101151431.10615.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Falcon mode enabling DSP by default">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sat Jan 15 13:31:10 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002788.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+</A></li>
+        <LI>Next message: <A HREF="002794.html">[hatari-devel] Falcon mode enabling DSP by default
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2789">[ date ]</a>
+              <a href="thread.html#2789">[ thread ]</a>
+              <a href="subject.html#2789">[ subject ]</a>
+              <a href="author.html#2789">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On lauantai 15 tammikuu 2011, Nicolas Pomar&#232;de wrote:
+&gt;<i> BTW : when switching to tos 4, Hatari ask to reboot and go in Falcon
+</I>&gt;<i> mode. I think we should enable DSP now by default when doing so,
+</I>
+Good point, I commited that change.
+
+However I get different results with these:
+	hatari --machine falcon --dsp emu --tos tos404.img mahabhar/
+	hatari --tos tos404.img mahabhar/
+
+With latter the Mahabharata demo doesn't work.
+
+In the latter case these happen in main.c:
+        SDLGui_Init();
+        Printer_Init();
+        RS232_Init();
+        Midi_Init();
+        Screen_Init();
+        Main_SetTitle(NULL);
+        HostScreen_Init();
+        DSP_Init();
+        Floppy_Init();
+        M68000_Init();                /* Init CPU emulation */
+        Audio_Init();
+        DmaSnd_Init();
+        Keymap_Init();
+        /* Init HD emulation */
+        HDC_Init();
+        Ide_Init();
+        GemDOS_Init();
+
+before TOS4 setting forces these:
+                ConfigureParams.System.nDSPType = DSP_TYPE_EMU;
+                ConfigureParams.System.nMachineType = MACHINE_FALCON;
+                ConfigureParams.System.nCpuFreq = 16;
+                IoMem_Init();
+                ConfigureParams.System.nCpuLevel = 3;
+                M68000_CheckCpuLevel();
+
+Does the stuff done in main.c before this have anything that could depend
+from the above falcon setting?
+
+
+&gt;<i> it's not easily guessable for a normal user to know he must also choose to
+</I>&gt;<i> enable DSP in the UI.  DSP should be stable enough to be enabled by
+</I>&gt;<i> default ?
+</I>
+Yes, enabling it doesn't anymore break programs like it did around
+Hatari v1.0. There's no known program that would work worse with
+DSP than without...  Unless you count the breaking sound (some progs
+have sound only with DSP) and Hatari being slower as &quot;worse&quot;.
+
+
+Hm.  Actually that's not completely true.  If one uses EmuTOS in Falcon
+mode, some programs work without DSP, but not with DSP.  This is an issue
+because we ship EmuTOS with Hatari.
+
+So, enabling DSP for TOS4 is good, but doing it for e.g. &quot;--machine falcon&quot;
+isn't until EmuTOS is fixed and such version accompanies Hatari.
+
+
+&gt;<i> If user wants and know what it does, he can disable it later, but choosing
+</I>&gt;<i> a &quot;Falcon&quot; should enable all possible component I think.
+</I>
+Right, I don't think we should force it in the UI as the DSP option is
+in same dialog with machine selection.  Forcing it there would mean that
+user couldn't disable it.
+
+
+Btw. I noticed that DSP isn't reseted in Reset_ST() although e.g. Crossbar
+and Videl are reseted there.  Should it be?
+
+Currently it's reseted:
+- before memory snapshot is loaded
+- from psg.c
+- by TOS4 on startup I think (but not EmuTOS I guess)
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002788.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a lot
+</A></li>
+	<LI>Next message: <A HREF="002794.html">[hatari-devel] Falcon mode enabling DSP by default
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2789">[ date ]</a>
+              <a href="thread.html#2789">[ thread ]</a>
+              <a href="subject.html#2789">[ subject ]</a>
+              <a href="author.html#2789">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

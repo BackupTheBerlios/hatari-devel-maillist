@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Enabling Mudflap in CMake (was: Makefile removal?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Enabling%20Mudflap%20in%20CMake%20%28was%3A%20Makefile%0A%20removal%3F%29&In-Reply-To=%3C20100616000511.09aa053a%40phineus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002310.html">
+   <LINK REL="Next"  HREF="002320.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Enabling Mudflap in CMake (was: Makefile removal?)</H1>
+    <B>Thomas Huth</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Enabling%20Mudflap%20in%20CMake%20%28was%3A%20Makefile%0A%20removal%3F%29&In-Reply-To=%3C20100616000511.09aa053a%40phineus%3E"
+       TITLE="[hatari-devel] Enabling Mudflap in CMake (was: Makefile removal?)">huth at users.berlios.de
+       </A><BR>
+    <I>Wed Jun 16 00:05:11 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002310.html">[hatari-devel] Enabling Mudflap in CMake (was: Makefile	removal?)
+</A></li>
+        <LI>Next message: <A HREF="002320.html">[hatari-devel] Enabling Mudflap in CMake (was: Makefile	removal?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2317">[ date ]</a>
+              <a href="thread.html#2317">[ thread ]</a>
+              <a href="subject.html#2317">[ subject ]</a>
+              <a href="author.html#2317">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 14 Jun 2010 15:38:04 +0300
+Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> On Sunday 13 June 2010, Eero Tamminen wrote:
+</I>&gt;<i> &gt; On Sunday 13 June 2010, Thomas Huth wrote:
+</I>&gt;<i> &gt; My guess is that this needs a new &quot;Mudflap/Pointer debugging&quot; build
+</I>&gt;<i> &gt; type for the Hatari CMakefile, as switching to it requires a full
+</I>&gt;<i> &gt; re-compile like switching from the Release to Debug build type does.
+</I>&gt;<i> 
+</I>&gt;<i> Hm.  DSP and other things are just options.  changing them should also
+</I>&gt;<i> trigger at least some rebuilding...
+</I>
+Changing them should trigger some recompile ... because the
+corresponding define is now passed via the config.h file and not via
+the CFLAGS anymore. And when config.h is changed, the files that
+include this file should be rebuilt, too. Doesn't this work for you?
+
+
+&gt;<i> I googled a bit and found out that Autotools using programs just check
+</I>&gt;<i> whether the compiler accepts mudflap compiler option.  That seems
+</I>&gt;<i> like an OK check for whether to offer users Mudflap option. The
+</I>&gt;<i> attached patch tries to do something similar.
+</I>&gt;<i> 
+</I>&gt;<i> However, when I tried to debug[1] CMake problem of why it doesn't work
+</I>&gt;<i> correctly when invoked normally (doesn't find mudflap), but works fine
+</I>&gt;<i> (finds mudflap) when I ask it to produce debug output, it screwed up
+</I>&gt;<i> the permissions of all the files under my Hatari directory.
+</I>&gt;<i> 
+</I>&gt;<i> Attached is the result.  I'd rather keep my distance from tools that
+</I>&gt;<i> work this badly.
+</I>
+Such a thing never happened for me with CMake yet... also not with your
+patch that I've just tried... Sounds like the CMake version in Debian
+stable is really very old and buggy :-(
+
+Maybe you could install CMake 2.8 in /opt/cmake or so, just to have a
+reference CMake that might work better?
+
+&gt;<i> Thomas, could you try the attached CMakeLists.txt file patch and tell
+</I>&gt;<i> why it doesn't work properly?
+</I>
+According to the file CMakeFiles/CMakeError.log that my CMake (2.8)
+produced, it did not like your mudflap test because it did not link
+against libmudflap during the test. The following sequence fixed this
+problem for me:
+
+set(CMAKE_REQUIRED_LIBRARIES &quot;mudflap&quot;)
+CHECK_C_COMPILER_FLAG(&quot;-fmudflapth&quot; MUDFLAP_AVAILABLE)
+set(CMAKE_REQUIRED_LIBRARIES &quot;&quot;)
+
+After that, CMake correctly detected that mudflap is available:
+
+-- Performing Test MUDFLAP_AVAILABLE
+-- Performing Test MUDFLAP_AVAILABLE - Success
+
+
+&gt;<i> &gt; Also, I had the documentation on the Mudflap usage in
+</I>&gt;<i> &gt; Makefile-default.cnf (as it was developers only and I couldn't
+</I>&gt;<i> &gt; think of a better place), I guess something similar to this can now
+</I>&gt;<i> &gt; be put to the main CMakefile?
+</I>&gt;<i> 
+</I>&gt;<i> The attached patch does also this.
+</I>
+Ok, looks good, please commit if the CMAKE_REQUIRED_LIBRARIES fix is
+working for you, too!
+
+&gt;<i> [1] These are the commands from the shell history that I run in
+</I>&gt;<i> &quot;build&quot; subdirectory (I removed the results between every call as
+</I>&gt;<i> otherwise it uses the cached values) before the mess:
+</I>&gt;<i> cmake ..
+</I>&gt;<i> cmake -Wdev
+</I>&gt;<i> cmake -Wdev ..
+</I>&gt;<i> cmake .. -Wdev
+</I>&gt;<i> cmake --graphviz=dep.dot --system-information=sys.txt
+</I>&gt;<i> --debug-trycompile --debug-output .. cmake --system-information
+</I>&gt;<i> sys.txt --debug-trycompile --debug-output .. cmake --debug-trycompile
+</I>&gt;<i> --debug-output ..
+</I>&gt;<i> 
+</I>&gt;<i> If you're wondering what I was doing:
+</I>&gt;<i> * man page listed -Wdev option, but it wasn't accepted by CMake
+</I>
+Works with CMake 2.8, but I did not see any significant difference to a
+normal run.
+
+&gt;<i> Btw. the --graphviz output is quite useless, it lists only deps to
+</I>&gt;<i> libs, not to source files...
+</I>
+Yes, that seems to be quite useless - it's still the same in CMake 2.8.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002310.html">[hatari-devel] Enabling Mudflap in CMake (was: Makefile	removal?)
+</A></li>
+	<LI>Next message: <A HREF="002320.html">[hatari-devel] Enabling Mudflap in CMake (was: Makefile	removal?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2317">[ date ]</a>
+              <a href="thread.html#2317">[ thread ]</a>
+              <a href="subject.html#2317">[ subject ]</a>
+              <a href="author.html#2317">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

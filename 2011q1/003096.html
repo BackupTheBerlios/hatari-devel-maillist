@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] 68030 Debug mode and new CPU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068030%20Debug%20mode%20and%20new%20CPU&In-Reply-To=%3C201102210007.39164.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003094.html">
+   <LINK REL="Next"  HREF="003097.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] 68030 Debug mode and new CPU</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%2068030%20Debug%20mode%20and%20new%20CPU&In-Reply-To=%3C201102210007.39164.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] 68030 Debug mode and new CPU">oak at helsinkinet.fi
+       </A><BR>
+    <I>Sun Feb 20 23:07:39 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003094.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+        <LI>Next message: <A HREF="003097.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3096">[ date ]</a>
+              <a href="thread.html#3096">[ thread ]</a>
+              <a href="subject.html#3096">[ subject ]</a>
+              <a href="author.html#3096">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On sunnuntai 20 helmikuu 2011, Laurent Sallafranque wrote:
+&gt;<i> I don't understand everything here (sorry).
+</I>&gt;<i> If you think this patch is needed, please, fell free to upload it and
+</I>&gt;<i> I'll test it.
+</I>
+I commited it with largish explanation, but didn't test it more than
+to see that it compiles.  Now WinAUE disassembly should work also
+if you redirect it to file.
+
+To test it I guess you first need set that you want to use the WinAUE
+disassembly instead of Markus' code in in debug/68kDisass.h, currently it's
+pointing to Markus version:
+#define        DISASM_ENGINE_UAE       0               /* Use UAE's internal 
+disassembler */
+#define        DISASM_ENGINE_EXT       1               /* Use external 
+disassembler from 68kdisass.c */
+
+
+Btw. While testing the compilation, I noticed this in cpu/cpummu.h:
+	#define likely(x) x
+	#define unlikely(x) x
+
+Why the optimization macros from main.h (intended to mark code branches
+as cold/hot) are nullified?
+
+
+	- Eero
+
+&gt;<i> Best regards
+</I>&gt;<i> 
+</I>&gt;<i> Laurent
+</I>&gt;<i> 
+</I>&gt;<i> Le 17/02/2011 22:25, Eero Tamminen a &#233;crit :
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; On keskiviikko 16 helmikuu 2011, Laurent Sallafranque wrote:
+</I>&gt;<i> &gt;&gt;&gt; You could add:
+</I>&gt;<i> &gt;&gt;&gt; 	#define f_out fprintf
+</I>&gt;<i> &gt;&gt;&gt; 
+</I>&gt;<i> &gt;&gt;&gt; to one of the headers, remove the f_out stuff from cpu/custom.c and
+</I>&gt;<i> &gt;&gt;&gt; replace all &quot;void *&quot; args for functions calling f_out() with &quot;FILE
+</I>&gt;<i> &gt;&gt;&gt; *&quot;.
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; Done, it works well now.
+</I>&gt;<i> &gt;&gt; And it seems to have removed some compiling warnings.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Actually, as f_out() seems to be used only in newcpu.c, the define
+</I>&gt;<i> &gt; could be there too.  Unless you want all this kind of stuff to be in
+</I>&gt;<i> &gt; compat.h so that it's easier to find.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; While looking into newcpu.c more, I noticed that the &quot;buf&quot;&amp;  &quot;bufsize&quot;
+</I>&gt;<i> &gt; arguments to function:
+</I>&gt;<i> &gt; void m68k_disasm_2 (TCHAR *buf, int bufsize, uaecptr addr, uaecptr
+</I>&gt;<i> &gt; *nextpc, int cnt, uae_u32 *seaddr, uae_u32 *deaddr, int safemode)
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Are redundant with your changes (instead of using buf_out(), you're
+</I>&gt;<i> &gt; calling printf() directly and not buffering the string for later
+</I>&gt;<i> &gt; printing).
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Attached (untested) patch would clean that.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 	- Eero
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; hatari-devel mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003094.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+	<LI>Next message: <A HREF="003097.html">[hatari-devel] 68030 Debug mode and new CPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3096">[ date ]</a>
+              <a href="thread.html#3096">[ thread ]</a>
+              <a href="subject.html#3096">[ subject ]</a>
+              <a href="author.html#3096">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

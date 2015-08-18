@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] MP2 question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MP2%20question&In-Reply-To=%3C1136532042.628891.1295611770891.JavaMail.root%40mail-zstore-1-a.gicm.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002852.html">
+   <LINK REL="Next"  HREF="002862.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] MP2 question</H1>
+    <B>LAURENT SALLAFRANQUE</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20MP2%20question&In-Reply-To=%3C1136532042.628891.1295611770891.JavaMail.root%40mail-zstore-1-a.gicm.net%3E"
+       TITLE="[hatari-devel] MP2 question">laurent.sallafranque at arkea.com
+       </A><BR>
+    <I>Fri Jan 21 13:09:30 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002852.html">[hatari-devel] DSP - CPU synchro : EkoSystem, LostBlubb and Watership (and probably some other)
+</A></li>
+        <LI>Next message: <A HREF="002862.html">[hatari-devel] MP2 question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2861">[ date ]</a>
+              <a href="thread.html#2861">[ thread ]</a>
+              <a href="subject.html#2861">[ subject ]</a>
+              <a href="author.html#2861">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Tomas,
+
+I've spent some time on the DSP MPEG audio layer 2 player a few days ago to let it run under Hatari emulator.
+
+Actually, it doesn't work because transfers between DMA and DSP (crossbar) are using a non documented function.
+(A melt between handshake and non-handshake mode at the same time).
+
+&gt;<i>From what I understand, datas are shifted while sent from the DMA play to the DSP receive transfer.
+</I>
+In the DSP code, I can read :
+
+
+	; Read 16 bits from DMA and
+	; perform special bit-shifting
+	; to compensate for read skewness.
+	bset	#4,X:&lt;&lt;M_PCD        ; Start frame sync.
+_wait	jclr	#7,X:&lt;&lt;M_SR,_wait   ; RDF
+	bclr	#4,X:&lt;&lt;M_PCD        ; Stop frame sync.
+	movep	X:&lt;&lt;M_RX,A
+
+	lsr	A
+	lsr	A        Y:DMA_r_state,x0
+	or	x0,A     #&gt;$010000,x1
+	lsr	A
+	move	A1,x0
+	mpy	x0,x1,A  #&gt;$ffff,x0
+	and	x0,A     A0,Y:DMA_r_state
+	move	A1,x0
+
+
+First 4 instructions are waiting a sync data on the SSI port.
+Last 8 instructions &quot;compensate&quot; an undocumented function.
+
+
+I'd like to implement this undocumented transfer into Hatari's emulator to have the player running.
+
+Could anybody tell me (with an example if possible) what exactly happens on the real hardware for this transfer mode ?
+
+For example, if I want to transfer 3 words :
+
+$abcd
+$1234
+$9876
+
+how are they received via the SSI port before the special bit shifting ?
+
+I understand that &quot;A1&quot; register contains the original data which has just been decoded and DMA_r_state contains the &quot;A0&quot; part of the data which is used to decode the next transmitted data.
+
+Thanks in advance.
+
+PS : the one who wrote this is Tomas Berndtsson, &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">tomas at nocrew.org</A>&gt; from NoBrain/NoCrew
+I've emailed him, but if you know him or if you think you can help me here, this would be great.
+
+Thanks,
+Regards
+
+Laurent
+
+--
+Ce message et  toutes les pieces jointes (ci-apres  le &quot;message&quot;) sont
+confidentiels et etablis a l'intention exclusive de ses destinataires.
+Toute  utilisation ou  diffusion  non autorisee  est interdite.   Tout
+message  etant  susceptible  d'alteration,  l'emetteur  decline  toute
+responsabilite au titre de  ce message  s'il a  ete altere, deforme ou
+falsifie.
+                -----------------------------------
+This message and any  attachments (the &quot;message&quot;) are confidential and
+intended  solely   for  the   addressees.  Any  unauthorised   use  or
+dissemination is prohibited. As e-mails are susceptible to alteration,
+the issuer shall  not be  liable for  the  message if altered, changed
+or falsified.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002852.html">[hatari-devel] DSP - CPU synchro : EkoSystem, LostBlubb and Watership (and probably some other)
+</A></li>
+	<LI>Next message: <A HREF="002862.html">[hatari-devel] MP2 question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2861">[ date ]</a>
+              <a href="thread.html#2861">[ thread ]</a>
+              <a href="subject.html#2861">[ subject ]</a>
+              <a href="author.html#2861">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

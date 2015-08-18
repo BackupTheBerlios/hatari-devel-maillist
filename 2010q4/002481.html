@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Redirecting CON: to console
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Redirecting%20CON%3A%20to%20console&In-Reply-To=%3CAANLkTimMSpVNLdbv0i2oqAyW5VL0mddtYwQgVB0vkie7%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002474.html">
+   <LINK REL="Next"  HREF="002483.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Redirecting CON: to console</H1>
+    <B>Miro Kropacek</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Redirecting%20CON%3A%20to%20console&In-Reply-To=%3CAANLkTimMSpVNLdbv0i2oqAyW5VL0mddtYwQgVB0vkie7%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Redirecting CON: to console">miro.kropacek at gmail.com
+       </A><BR>
+    <I>Fri Oct  8 19:48:55 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002474.html">[hatari-devel] Redirecting CON: to console
+</A></li>
+        <LI>Next message: <A HREF="002483.html">[hatari-devel] Redirecting CON: to console
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2481">[ date ]</a>
+              <a href="thread.html#2481">[ thread ]</a>
+              <a href="subject.html#2481">[ subject ]</a>
+              <a href="author.html#2481">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i>
+</I>&gt;<i> Miro, please verify with tracing that this really is true for programs
+</I>&gt;&gt;<i> you're interested about.
+</I>&gt;&gt;<i>
+</I>&gt;<i> I gave it a try, but I lost in thousands (!) of BIOS outputs. I think it
+</I>&gt;<i> was Bconstat or so, I have no idea where it comes from. If you need fast
+</I>&gt;<i> answers, just take mintlib, compile hello world and run -- this is what I
+</I>&gt;<i> do, plain and simple printf. I think you'll find Bconout is enough but I
+</I>&gt;<i> double check today on my printf, too, for sure.
+</I>&gt;<i>
+</I>Ok, confirmed. Bconout(2, &lt;ascii char&gt;) is used. But if it's easily
+possible, please add also calls from GEMDOS family (
+<A HREF="http://toshyp.atari.org/en/005010.html">http://toshyp.atari.org/en/005010.html</A>) as a lot of asm coders uses these
+for string output, if not, I'm fine with the BIOS.
+
+
+-- 
+MiKRO / Mystic Bytes
+<A HREF="http://mikro.atari.org">http://mikro.atari.org</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/hatari-devel/attachments/20101008/ca9eab0d/attachment.html">https://lists.berlios.de/pipermail/hatari-devel/attachments/20101008/ca9eab0d/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002474.html">[hatari-devel] Redirecting CON: to console
+</A></li>
+	<LI>Next message: <A HREF="002483.html">[hatari-devel] Redirecting CON: to console
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2481">[ date ]</a>
+              <a href="thread.html#2481">[ thread ]</a>
+              <a href="subject.html#2481">[ subject ]</a>
+              <a href="author.html#2481">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

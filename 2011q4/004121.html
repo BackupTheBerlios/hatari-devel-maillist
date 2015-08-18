@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] DC and Subsonic IIR Filter for Digi Sound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q4/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DC%20and%20Subsonic%20IIR%20Filter%20for%20Digi%20Sound&In-Reply-To=%3Calpine.DEB.2.00.1110291314060.4340%40gem.atari.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004120.html">
+   <LINK REL="Next"  HREF="004122.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] DC and Subsonic IIR Filter for Digi Sound</H1>
+    <B>Anders Eriksson</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20DC%20and%20Subsonic%20IIR%20Filter%20for%20Digi%20Sound&In-Reply-To=%3Calpine.DEB.2.00.1110291314060.4340%40gem.atari.org%3E"
+       TITLE="[hatari-devel] DC and Subsonic IIR Filter for Digi Sound">ae at dhs.nu
+       </A><BR>
+    <I>Sat Oct 29 13:18:20 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004120.html">[hatari-devel] DC and Subsonic IIR Filter for Digi Sound
+</A></li>
+        <LI>Next message: <A HREF="004122.html">[hatari-devel] DC and Subsonic IIR Filter for Digi Sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4121">[ date ]</a>
+              <a href="thread.html#4121">[ thread ]</a>
+              <a href="subject.html#4121">[ subject ]</a>
+              <a href="author.html#4121">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 28 Oct 2011, David Savinkoff wrote:
+
+&gt;<i> Here is a real DC and Subsonic filter for the ultimate in sonic experience.
+</I>&gt;<i> Deep stirring bass tones are clearly defined with this digital infinite
+</I>&gt;<i> impulse response filter. Punchy walking bass lines with subtle nuances in
+</I>&gt;<i> attack are cleanly transmitted to round out the bottom end. :)
+</I>
+Hi!
+
+Interesting work, is there something special one have to do to activate 
+it after compile time? I applied the patch, it seemed to go ok:
+
+ae$ patch &lt;../../sound.c.2011oct28c.diff
+(Stripping trailing CRs from patch.)
+patching file sound.c
+QuadMBP:src ae$
+
+Both linear and table mixing sounds just like the original Hatari 1.5 
+here. Your previous patch from Aug 5 had much better audio on the Linear 
+mixing mode.
+
+Here are some comparisons of YM sample quality on Hatari 1.5, with your 
+Aug 5 patch and a real machine.
+
+<A HREF="http://ae.dhs.nu/tmp/sound/">http://ae.dhs.nu/tmp/sound/</A>
+
+All normalized to 0 dB to have equal volume. I'd say your Aug 5 patch is 
+by far the best we have yet :) Looking forward to see if your new patch 
+from today is possible to activate.
+
+--
+Anders Eriksson
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>     <A HREF="http://www.dhs.nu/">http://www.dhs.nu/</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at atari.org</A>  <A HREF="http://www.atari.org/">http://www.atari.org/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004120.html">[hatari-devel] DC and Subsonic IIR Filter for Digi Sound
+</A></li>
+	<LI>Next message: <A HREF="004122.html">[hatari-devel] DC and Subsonic IIR Filter for Digi Sound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4121">[ date ]</a>
+              <a href="thread.html#4121">[ thread ]</a>
+              <a href="subject.html#4121">[ subject ]</a>
+              <a href="author.html#4121">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

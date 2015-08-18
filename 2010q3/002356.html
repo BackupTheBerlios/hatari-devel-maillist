@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Bugs%20and%20GUI%20%28Was%3A%20Little%20AceTracker%20question%29&In-Reply-To=%3C201007181003.08785.eerot%40users.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002355.html">
+   <LINK REL="Next"  HREF="002357.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Bugs and GUI (Was: Little AceTracker question)</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Bugs%20and%20GUI%20%28Was%3A%20Little%20AceTracker%20question%29&In-Reply-To=%3C201007181003.08785.eerot%40users.berlios.de%3E"
+       TITLE="[hatari-devel] Bugs and GUI (Was: Little AceTracker question)">eerot at users.berlios.de
+       </A><BR>
+    <I>Sun Jul 18 09:03:08 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002355.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+        <LI>Next message: <A HREF="002357.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2356">[ date ]</a>
+              <a href="thread.html#2356">[ thread ]</a>
+              <a href="subject.html#2356">[ subject ]</a>
+              <a href="author.html#2356">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Saturday 17 July 2010, Anders Eriksson wrote:
+&gt;<i> &gt;&gt; Hatari crashes when recording starts while using --avi-vcodec bmp
+</I>&gt;<i> &gt;&gt; What happens is that the Hatari window dissapears and there's a ~400
+</I>&gt;<i> &gt;&gt; byte avi file created. I need to control-c or forcequit Hatari after
+</I>&gt;<i> &gt;&gt; that.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Were you able to get any backtraces of that with e.g. Valgrind or
+</I>&gt;<i> &gt; native OSX tools?
+</I>&gt;<i>
+</I>&gt;<i> I'm not the right guy for this; I don't know what Valgrind is or even
+</I>&gt;<i> less how to use it or what a native OS X tool would be. Somebody else
+</I>&gt;<i> with better understanding of these things have to do the debugging.
+</I>
+Is there anobody else both using Hatari on OSX and who can replicate
+this crash?  Jerome?
+
+
+&gt;<i> &gt;&gt; I never said it was no work, only that I disagreed to hiding options
+</I>&gt;<i> &gt;&gt; from the GUI. People (your normal users, not the few devs) do not
+</I>&gt;<i> &gt;&gt; launch stuff from the terminal, simple as that.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; At least you/somebody would need to come up with a design of what the
+</I>&gt;<i> &gt; UI should look like with all of these options you're interested about.
+</I>&gt;<i>
+</I>&gt;<i> The OS X GUI is very fine as it is, some more hotkeys would be nice and
+</I>&gt;<i> there is no screen-estate problem to add more and more features to it.
+</I>&gt;<i>
+</I>&gt;<i> Just because the SDL GUI can't do X and Y, why should that also cripple a
+</I>&gt;<i> decent GUI as the one on OS X?
+</I>
+The non-standard Hatari GUIs (like the OSX specific one and my Python/Gtk
+specific one) of course aren't dependent on the SDL UI.
+
+It's also _much_ easier to do things in them as they aren't constrained to
+the Hatari window size, they have many more widgets, the widgets and 
+containers resize themselves automatically (SDL GUI widgets are even
+more primitive than GEM ones) etc.
+
+
+&gt;<i> Anyway just for the heck of it I threw together a 64x25 ASCII page with a
+</I>&gt;<i> way it could handle any number of setting screens and avoid the &quot;go back
+</I>&gt;<i> to main&quot; annoyance.
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://ae.dhs.nu/tmp/hatarisdlgui.txt">http://ae.dhs.nu/tmp/hatarisdlgui.txt</A>
+</I>
+Thanks!  That looks pretty good. :-)
+
+It's basically a tabbed interface with tab scrolling done a bit
+unconventionally (usually arrows for scrolling tabs are at the tab
+row/column ends, but in your design they would take more space and with this
+many items, having tabs at top would've been less useful so your design is
+better).
+
+Usability:
++ Needing one click less to back out from settings is an improvement.
+- The UI is a bit more crowded so it might be a bit harder to hit
+  the buttons (e.g. on 3.5&quot;/266 DPI touchscreen one of Hatari devices has).
+
+Looks:
+- With the settings always filling the whole sreen, some of the views will
+  be very full, some less so (e.g. ROM settings).  This may look a bit
+  unbalanced.  Would need design for all the views to comment more
+  on this.
+
+Implementation issues:
+- Need to do large changes to implementations of *all* view to take into
+  account the new looks.  There's currently no support for subviews in
+  neither the code for showing of the UI or interpreting the user actions on
+  one.
+- The top level menu handling needs to be rewritten so that it's done in all
+  the subviews (e.g. through helper function and returning what was
+  clicked).
+- SDL UI doesn't currently provide a scrolled list widget, so implementing
+  the tabs list is also a bit more work than one might assume.
+
+
+I've thought that I could change the Python/Gtk UI to use a tabbed interface
+for settings too, but I'm a bit undecided on whether I should split HW
+options that require reboot from the non-reboot HW options (like floppy)
+and from emulator options (like scaling).
+
+Could somebody post screenshots of what the all OSX UI tabs look like?
+
+Hatari screenshots page has only few of them and I think they're out of
+date:
+	<A HREF="http://hatari.berlios.de/scrshots3.html">http://hatari.berlios.de/scrshots3.html</A>
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002355.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+	<LI>Next message: <A HREF="002357.html">[hatari-devel] Bugs and GUI (Was: Little AceTracker question)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2356">[ date ]</a>
+              <a href="thread.html#2356">[ thread ]</a>
+              <a href="subject.html#2356">[ subject ]</a>
+              <a href="author.html#2356">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

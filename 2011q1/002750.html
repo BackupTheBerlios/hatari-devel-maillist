@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Profiling Hatari code with Valgrind
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind&In-Reply-To=%3C201101052319.12820.oak%40helsinkinet.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002749.html">
+   <LINK REL="Next"  HREF="002754.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Profiling Hatari code with Valgrind</H1>
+    <B>Eero Tamminen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Profiling%20Hatari%20code%20with%20Valgrind&In-Reply-To=%3C201101052319.12820.oak%40helsinkinet.fi%3E"
+       TITLE="[hatari-devel] Profiling Hatari code with Valgrind">oak at helsinkinet.fi
+       </A><BR>
+    <I>Wed Jan  5 22:19:12 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002749.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+        <LI>Next message: <A HREF="002754.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2750">[ date ]</a>
+              <a href="thread.html#2750">[ thread ]</a>
+              <a href="subject.html#2750">[ subject ]</a>
+              <a href="author.html#2750">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On keskiviikko 05 tammikuu 2011, Eero Tamminen wrote:
+&gt;<i> Best would be if you use a memory snapshot and the Hatari timing
+</I>&gt;<i> functionality (--run-vbls option + very large frameskip with
+</I>&gt;<i> fast-forward) for checking speedup.
+</I>
+You could start just by adding some main() loop around the function
+which calls it a million times in a row while changing DSP register values
+and &quot;time&quot; how long that takes. If the function takes longer, it's not
+faster. :-)
+
+Note that the main loop should be in a separate c/object file with
+other require stuff from dsp_core.c so that GCC doesn't optimize some
+of the things away like it could if you put them to same file.
+
+Sometimes it also helps to look at what kind of asm code GCC optimizations
+generate for your C-code (I don't understand x86 asm much, but at least
+I can see if the code is significantly shorter/longer :)).
+
+
+	- Eero
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002749.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+	<LI>Next message: <A HREF="002754.html">[hatari-devel] Profiling Hatari code with Valgrind
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2750">[ date ]</a>
+              <a href="thread.html#2750">[ thread ]</a>
+              <a href="subject.html#2750">[ subject ]</a>
+              <a href="author.html#2750">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

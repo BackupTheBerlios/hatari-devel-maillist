@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Suggestion about small additions for v1.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3CAANLkTiljTim6VDHJTvzRayJAeWZjOIa1gZIuxFQuMMdZ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002139.html">
+   <LINK REL="Next"  HREF="002147.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Suggestion about small additions for v1.4</H1>
+    <B>K&#229;re Andersen</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Suggestion%20about%20small%20additions%20for%20v1.4&In-Reply-To=%3CAANLkTiljTim6VDHJTvzRayJAeWZjOIa1gZIuxFQuMMdZ%40mail.gmail.com%3E"
+       TITLE="[hatari-devel] Suggestion about small additions for v1.4">kareandersen at gmail.com
+       </A><BR>
+    <I>Sun May 16 21:39:30 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002139.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+        <LI>Next message: <A HREF="002147.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2140">[ date ]</a>
+              <a href="thread.html#2140">[ thread ]</a>
+              <a href="subject.html#2140">[ subject ]</a>
+              <a href="author.html#2140">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, May 16, 2010 at 8:44 PM, Eero Tamminen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">eerot at users.berlios.de</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Thursday 13 May 2010, Jerome Vernet wrote:
+</I>&gt;&gt;<i> Le 12/05/10 23:14, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;<i> &gt; On Wednesday 12 May 2010, Anders Eriksson wrote:
+</I>&gt;&gt;<i> &gt;&gt; Oh no don't try this on me :) &#160;I've reported many times that in OS X
+</I>&gt;&gt;<i> &gt;&gt; window mode, Hatari is slow as snails, while in fullscreen it works
+</I>&gt;&gt;<i> &gt;&gt; fast.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; I assumed it was slower than you would like it to be, not slower than
+</I>&gt;&gt;<i> &gt; it should be (as it works fine for me). &#160;If you expect to be
+</I>&gt;&gt;<i> &gt; understood, you need to quantify your issues properly / be exact (give
+</I>&gt;&gt;<i> &gt; FPS numbers etc).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I found a SDL version of Vice. As for E-UAE (Amiga Emulator), they use
+</I>&gt;&gt;<i> SDL-Opengl to make display flying on MacOsX. With E-UAE, using
+</I>&gt;&gt;<i> SDL-OpenGl increase display speed by a 10 factor.
+</I>&gt;&gt;<i> More over, problems like resising seem to be be very easy with
+</I>&gt;&gt;<i> SDL-Opengl.
+</I>&gt;<i>
+</I>&gt;<i> For scaling I can easily see OpenGL being faster (the 3D HW is accessing
+</I>&gt;<i> pixels already in dedicated/faster 3D HW memory), but if there's
+</I>&gt;<i> a &#160;significant performance difference when just blitting data from &quot;CPU
+</I>&gt;<i> owned&quot; RAM like happens in normal Hatari case, there just must be something
+</I>&gt;<i> really screwed in OSX SDL graphics pipeline.
+</I>
+Something is indeed very much screwed in the OSX SDL 1.2 pipeline...
+But unfortunately, performance is still lackluster (~40% cpu on 2.4Ghz
+Core2Quad) with OpenGL blits. Atleast its possible to scale to any
+arbitrary size with no cpu cost...
+
+&gt;<i> It's possible that in the OpenGL case it's just a question that then the
+</I>&gt;<i> program can tell when the display updates should be synched to Vsync().
+</I>
+Well, for the first time I am seeing the same tearing on OS X as i get
+in linux... OS X forces double buffering (in window mode), but gives
+the user no way to synchronize to the VBL... OpenGL context windows
+bypass this buffering.
+
+&gt;<i> Btw. When doing anything with OpenGL, please use (ES subset of) the OpenGL
+</I>&gt;<i> v2 API. &#160;Skip OpenGL v1, stuff it's not really portable to devices that are
+</I>&gt;<i> soon to be going to be majority of the devices people have.
+</I>
+OpenGL ES is not for desktop systems, and iirc version 2 looses the
+state machine completely (OpenGL ES 2 != OpenGL 2.x). Sure, its nicer
+to program, but not really useful for us OS X users. However, I dont
+see any reason not to support ES in addition - it would just be an
+entirely different codepath. The one does not exclude the other...
+
+-Kaare
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002139.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+	<LI>Next message: <A HREF="002147.html">[hatari-devel] Suggestion about small additions for v1.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2140">[ date ]</a>
+              <a href="thread.html#2140">[ thread ]</a>
+              <a href="subject.html#2140">[ subject ]</a>
+              <a href="author.html#2140">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

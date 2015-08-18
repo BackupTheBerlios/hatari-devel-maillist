@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] CMake build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2010q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100116203331.83570%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001252.html">
+   <LINK REL="Next"  HREF="001242.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] CMake build system</H1>
+    <B>Thomas H.</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20CMake%20build%20system&In-Reply-To=%3C20100116203331.83570%40gmx.net%3E"
+       TITLE="[hatari-devel] CMake build system">th.huth at gmx.de
+       </A><BR>
+    <I>Sat Jan 16 21:33:31 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001252.html">[hatari-devel] CMake build system
+</A></li>
+        <LI>Next message: <A HREF="001242.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1244">[ date ]</a>
+              <a href="thread.html#1244">[ thread ]</a>
+              <a href="subject.html#1244">[ subject ]</a>
+              <a href="author.html#1244">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Datum: Sat, 16 Jan 2010 13:35:20 +0100
+</I>&gt;<i> Von: Matthias Arndt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">marndt at asmsoftware.de</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> One thing: the Makefile generation stopped for me until I had readline
+</I>&gt;<i> and portaudio headers. Is it possible to make CMake detecting portaudio
+</I>&gt;<i> being optional? It does compile for me so it would be great if it could
+</I>&gt;<i> be simply disabled at compile time.
+</I>&gt;<i> 
+</I>&gt;<i> I simply edited the generated config.h to set HAVE_PORTAUDIO to 0 but
+</I>&gt;<i> IMHO that's just a workaround.
+</I>
+Thanks for the report, Matthias! You're right. Seems like I did something wrong with the checks for ReadLine and Portaudio. I've now also tried it on a system where these libraries were not installed, and I've run there into the same problem. I'll try to fix it...
+
+ Thomas
+
+-- 
+Jetzt kostenlos herunterladen: Internet Explorer 8 und Mozilla Firefox 3.5 -
+sicherer, schneller und einfacher! <A HREF="http://portal.gmx.net/de/go/chbrowser">http://portal.gmx.net/de/go/chbrowser</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001252.html">[hatari-devel] CMake build system
+</A></li>
+	<LI>Next message: <A HREF="001242.html">[hatari-devel] CMake build system
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1244">[ date ]</a>
+              <a href="thread.html#1244">[ thread ]</a>
+              <a href="subject.html#1244">[ subject ]</a>
+              <a href="author.html#1244">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

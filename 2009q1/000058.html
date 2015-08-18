@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Need help for Mercurial
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2009q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Need%20help%20for%20Mercurial&In-Reply-To=%3CPine.LNX.4.64.0901192046150.10713%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000057.html">
+   <LINK REL="Next"  HREF="000059.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Need help for Mercurial</H1>
+    <B>npomarede at corp.free.fr</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Need%20help%20for%20Mercurial&In-Reply-To=%3CPine.LNX.4.64.0901192046150.10713%40localhost%3E"
+       TITLE="[hatari-devel] Need help for Mercurial">npomarede at corp.free.fr
+       </A><BR>
+    <I>Mon Jan 19 20:48:51 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000057.html">[hatari-devel] Need help for Mercurial
+</A></li>
+        <LI>Next message: <A HREF="000059.html">[hatari-devel] Need help for Mercurial
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#58">[ date ]</a>
+              <a href="thread.html#58">[ thread ]</a>
+              <a href="subject.html#58">[ subject ]</a>
+              <a href="author.html#58">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 19 Jan 2009, Jerome Vernet wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I need help for mercurial repos. I made a hg clone
+</I>&gt;<i> <A HREF="http://hg.berlios.de/repos/hatari">http://hg.berlios.de/repos/hatari</A>  on December, 26. Since, I try to
+</I>&gt;<i> update the repository with hg status, hg update, or anything, but I only
+</I>&gt;<i> get this:
+</I>&gt;<i>
+</I>&gt;<i> MacBook:hatari jeromevernet$ hg status
+</I>&gt;<i> M .hgignore
+</I>&gt;<i> M Hatari.xcodeproj/project.pbxproj
+</I>&gt;<i> M src/change.c
+</I>&gt;<i> M src/floppy.c
+</I>&gt;<i> M src/shortcut.c
+</I>&gt;<i> ? .DS_Store
+</I>&gt;<i> ? Hatari.xcodeproj/jeromevernet.mode1v3
+</I>&gt;<i> ? Hatari.xcodeproj/jeromevernet.pbxuser
+</I>&gt;<i> ? src/uae-cpu/build68k.dSYM/Contents/Info.plist
+</I>&gt;<i> ? src/uae-cpu/build68k.dSYM/Contents/Resources/DWARF/build68k
+</I>&gt;<i> MacBook:hatari jeromevernet$
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> That is, only a M before file I modified. But none of your recent change
+</I>&gt;<i> come...
+</I>&gt;<i>
+</I>&gt;<i> I tried with MacMercurial, without any success.
+</I>&gt;<i>
+</I>&gt;<i> I can see that you made change to the Mercurial repos, but cannot get
+</I>&gt;<i> them...
+</I>&gt;<i> Thanks for help
+</I>&gt;<i>
+</I>&gt;<i> Jerome
+</I>&gt;<i>
+</I>
+Hello
+
+in order to update your Hg copy, you need to run :
+
+hg pull <A HREF="https://npomarede@hg.berlios.de/repos/hatari">https://npomarede@hg.berlios.de/repos/hatari</A>
+
+(from your hatari/ directory you cloned earlier)
+
+Then you will need to run 'hg update' and perhaps 'hg merge' if you made 
+some changes on your side and you want to merge everything.
+
+Finally, 'hg push <A HREF="https://npomarede@hg.berlios.de/repos/hatari">https://npomarede@hg.berlios.de/repos/hatari</A>' will 
+commit your changes/merges to berlios main repository.
+
+Nicolas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000057.html">[hatari-devel] Need help for Mercurial
+</A></li>
+	<LI>Next message: <A HREF="000059.html">[hatari-devel] Need help for Mercurial
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#58">[ date ]</a>
+              <a href="thread.html#58">[ thread ]</a>
+              <a href="subject.html#58">[ subject ]</a>
+              <a href="author.html#58">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

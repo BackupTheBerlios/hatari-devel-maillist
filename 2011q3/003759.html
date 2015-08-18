@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Last checks before releasing 1.5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q3/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3C4E234FD2.2000003%40corp.free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003758.html">
+   <LINK REL="Next"  HREF="003765.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Last checks before releasing 1.5</H1>
+    <B>Nicolas Pomar&#232;de</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Last%20checks%20before%20releasing%201.5&In-Reply-To=%3C4E234FD2.2000003%40corp.free.fr%3E"
+       TITLE="[hatari-devel] Last checks before releasing 1.5">npomarede at corp.free.fr
+       </A><BR>
+    <I>Sun Jul 17 23:10:42 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003758.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+        <LI>Next message: <A HREF="003765.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3759">[ date ]</a>
+              <a href="thread.html#3759">[ thread ]</a>
+              <a href="subject.html#3759">[ subject ]</a>
+              <a href="author.html#3759">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Le 17/07/2011 17:24, Deniz Turkoglu a &#233;crit :
+&gt;<i> On Sun, Jul 17, 2011 at 4:39 PM, Anders Eriksson&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">ae at dhs.nu</A>&gt;  wrote:
+</I>
+&gt;&gt;<i>
+</I>&gt;&gt;<i> I've compiled it on OS X and it ran thru as usual, no issues there.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> However as for providing binaries; I don't know how to compile it so that
+</I>&gt;&gt;<i> libsdl and libpng is staticly linked with Hatari. The binaries I get relies
+</I>&gt;&gt;<i> on those libs to be installed before running Hatari.
+</I>&gt;&gt;<i>
+</I>
+I don't know this part, there's certainly an option for this in gcc to 
+force static linking ; maybe Jerome Vernet will be able to provide such 
+binaries ?
+
+&gt;&gt;<i>
+</I>&gt;&gt;<i> On a personal note though, is there a way to revert the video recording
+</I>&gt;&gt;<i> framerate to the old one? The new one severly breaks my toolchain for
+</I>&gt;&gt;<i> recording and encoding videos, and I'm out of ideas how to solve it (been
+</I>&gt;&gt;<i> struggling for the better part of today).
+</I>
+In what sense does it break the video recording ? Do you mean when you 
+try to reencode the video produced by Hatari to a lower bitrate your 
+encoder doesn't support an input frame rate of 50.053 ?
+
+&gt;<i> You mean <A HREF="http://hg.berlios.de/repos/hatari/rev/ef43fd8cd5b1">http://hg.berlios.de/repos/hatari/rev/ef43fd8cd5b1</A> ?
+</I>&gt;<i>
+</I>&gt;<i> You can revert the patch without any harm or fix the params so the
+</I>&gt;<i> calculation is no longer precise for your instance :) We can also add
+</I>&gt;<i> a ui-flag to disable it on OSX it but I am not sure if this is a
+</I>&gt;<i> general use-case?
+</I>
+ From the command line, add &quot;--avi-fps=50&quot; to force the value written 
+into the avi header to 50 Hz.
+Or in the [video] section of hatari.cfg, change AviRecordFps=0 to
+AviRecordFps=50 for example.
+
+But I would be interested if you can tell us more about what it breaks 
+in your case, maybe there's a way to handle it.
+
+Nicolas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003758.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+	<LI>Next message: <A HREF="003765.html">[hatari-devel] Last checks before releasing 1.5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3759">[ date ]</a>
+              <a href="thread.html#3759">[ thread ]</a>
+              <a href="subject.html#3759">[ subject ]</a>
+              <a href="author.html#3759">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

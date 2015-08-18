@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Falcon (bad)Patch but sound quality increased a	lot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q1/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20%28bad%29Patch%20but%20sound%20quality%20increased%20a%0A%09lot&In-Reply-To=%3C192811434.1831225.1295268296669.JavaMail.root%40mail-zstore-1-a.gicm.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002814.html">
+   <LINK REL="Next"  HREF="002820.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Falcon (bad)Patch but sound quality increased a	lot</H1>
+    <B>LAURENT SALLAFRANQUE</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Falcon%20%28bad%29Patch%20but%20sound%20quality%20increased%20a%0A%09lot&In-Reply-To=%3C192811434.1831225.1295268296669.JavaMail.root%40mail-zstore-1-a.gicm.net%3E"
+       TITLE="[hatari-devel] Falcon (bad)Patch but sound quality increased a	lot">laurent.sallafranque at arkea.com
+       </A><BR>
+    <I>Mon Jan 17 13:44:56 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002814.html">[hatari-devel] DSP optimization?
+</A></li>
+        <LI>Next message: <A HREF="002820.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a	lot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2819">[ date ]</a>
+              <a href="thread.html#2819">[ thread ]</a>
+              <a href="subject.html#2819">[ subject ]</a>
+              <a href="author.html#2819">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+First, I thank you for the time passed on this analysis.
+It explains many things I can detect while debugging the Falcon.
+
+I agree with both points, but I think the most important one is the second (CPU freq).
+As long as everything in the emulated falcon is driven by the CPU clock, it doesn't worth a try to change anything with the older core (except, as you said, correcting DSP related problems).
+This may explain the bad sound quality at high frequencies (because cyc_int is wrong), demos running only at 32 Mhz, some DSP stack overflow if Host Interface interrupts are called too often, ...
+
+For info, the only &quot;specific&quot; code I added was the +1 cycle in DSP_Run. 
+All other parts of the falcon code I wrote are done with &quot;real&quot; values (cycles counting, crossbar, DSP host interface, ...)
+This mean that the only way to improve the falcon emulation is to change the CPU core.
+
+
+I think that our main priority for the next months should be running hatari with WinUae Core :
+   a) actually, it compiles, and runs some programs and demos (ST and Falcon mode)
+   b) let's emulate completely the STF and STE (at least at the same level than our old core does)
+   c) next, we can add the 68030 with DSP
+   d) let's then add the cycle exact to the 68000 (STF, STE)
+   e) next, the Falcon in cycle_exact emulation
+   f) next, 68040, fast memory, 68060, 64 Mo of RAM, ... ;)
+   
+   
+Except if there are still some things to add to the current version you're working on, I think we should concentrate on the following list:
+
+
+For point a) :
+
+I've quickly tested shadow of the beast on ST and somes demos in 68030. It runs.
+I've also got a temporary hacked version with the DSP running (Eko demo : Papa was a Blade Runner for example runs well).
+I've probably removed too quickly some code that I should have kept from WinUae source to let hatari compile :
+  - mainly in custom.c which is used for cycle_exact emulation
+  - memory.c (for prefetch, I haven't understood yet what the new parameters are for)
+  - mmu.c (the c++ &quot;try/catch&quot; is probably not well implemented).
+I've kept on my disk the original source if someone need it.
+
+I've always tried to keep in mind the following point : changing as little as possible the original Amiga code.
+I don't know if WinUae's team has planed to make major changes in the main core part of their emulator in the next months, but maybe we can clean their code and adapt it to our needs.
+If we need to upgrade later, we can patch our code after applying &quot;diffs&quot; into their code and adapt the diffs into hatari.
+Anyway, the level of quality they reached may be suffisant for our own needs.
+
+
+For point b) :
+
+I think we should first fix winUae'core to run at correct Atari's frequencies.
+Then, add again the pairing patch and the few Atari's specific code in newcpu.c 
+For the pairing patch, does it apply also to the Falcon, or is it 68000 specific (as it impacts the cycles counting) ?
+
+Then, test for any regression in the emulator (saving/restoring a snapshot, GUI param interface, command line options, ...).
+
+
+For point c) :
+
+It's quite easy here to add the DSP code again and the specific Falcon code (videl, crossbar, ...)
+
+At this point, we should run at least as well as we run with our old core.
+I think, we may be running better for the 68030 part, as cycles would be closer to reality.
+We could start from here to start again to improve the Falcon emulation.
+
+
+For point d) and e) :
+
+At this point, we can play with the cycle_exact option (removing the cyc_int code and adding a &quot;cycle counter&quot; in each &quot;hardware&quot; component).
+There are some part of the code to adapt for this (adapt DMA sound code, blitter, shifter, ... for the ST, adapt the videl, the crossbar, DSP_RUN, ... for the falcon).
+
+I know this point could improve many parts of Hatari (blitter in parallel of 680x0, or LMC 8 cycles shifting for example or DMA sound in &quot;real time&quot; instead of buffered time to take into account the changes in the LMC component in &quot;real time&quot;)
+
+After these changes, we'll run all the &quot;Atari computers&quot; in cycle exact, so, compatibility would be maximum.
+
+ACIA realtime emulation (for keyboard emulation) would benefit of it too when I'll take it again into account.
+
+ 
+Point f) :
+
+Actually, I speak about it for fun. When we've reached this point, Hatari'll be the most impressive Atari emulator never made ;)
+
+
+
+Points that are still on the my TODO list, but can be differed after the winuae moving :
+  - finish to implement all the transfers between crossbar and DSP in SSI mode (eg: 8 bits transfer in crossbar, but 16 bits in DSP)
+  - Videl emulation.
+  - 2 known bugs in the DSP (one is relative to stack overflow (&quot;built in obsolescence&quot; demo for example), the other is visible in some demos (like &quot;explot.prg&quot; in Motion demo)
+
+
+Regards,
+
+Laurent
+
+--
+Ce message et  toutes les pieces jointes (ci-apres  le &quot;message&quot;) sont
+confidentiels et etablis a l'intention exclusive de ses destinataires.
+Toute  utilisation ou  diffusion  non autorisee  est interdite.   Tout
+message  etant  susceptible  d'alteration,  l'emetteur  decline  toute
+responsabilite au titre de  ce message  s'il a  ete altere, deforme ou
+falsifie.
+                -----------------------------------
+This message and any  attachments (the &quot;message&quot;) are confidential and
+intended  solely   for  the   addressees.  Any  unauthorised   use  or
+dissemination is prohibited. As e-mails are susceptible to alteration,
+the issuer shall  not be  liable for  the  message if altered, changed
+or falsified.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002814.html">[hatari-devel] DSP optimization?
+</A></li>
+	<LI>Next message: <A HREF="002820.html">[hatari-devel] Falcon (bad)Patch but sound quality increased a	lot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2819">[ date ]</a>
+              <a href="thread.html#2819">[ thread ]</a>
+              <a href="subject.html#2819">[ subject ]</a>
+              <a href="author.html#2819">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>

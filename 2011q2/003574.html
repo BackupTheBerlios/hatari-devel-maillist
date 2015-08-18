@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [hatari-devel] Exception debugging &amp; breakpoints
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/hatari-devel/2011q2/index.html" >
+   <LINK REL="made" HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Exception%20debugging%20%26%20breakpoints&In-Reply-To=%3C4DF3372A.6020508%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003598.html">
+   <LINK REL="Next"  HREF="003573.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[hatari-devel] Exception debugging &amp; breakpoints</H1>
+    <B>Laurent Sallafranque</B> 
+    <A HREF="mailto:hatari-devel%40lists.berlios.de?Subject=Re%3A%20%5Bhatari-devel%5D%20Exception%20debugging%20%26%20breakpoints&In-Reply-To=%3C4DF3372A.6020508%40free.fr%3E"
+       TITLE="[hatari-devel] Exception debugging &amp; breakpoints">laurent.sallafranque at free.fr
+       </A><BR>
+    <I>Sat Jun 11 11:36:42 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003598.html">[hatari-devel] v1.5 release preparation
+</A></li>
+        <LI>Next message: <A HREF="003573.html">[hatari-devel] Exception debugging &amp; breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3574">[ date ]</a>
+              <a href="thread.html#3574">[ thread ]</a>
+              <a href="subject.html#3574">[ subject ]</a>
+              <a href="author.html#3574">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE> &gt; It would be sthg like &quot;use uae's core for ST + full debugger and use 
+Winuae's core for falcon only and no debugger&quot;
+
+I don't understand : I use very often the debugger with the new uae core 
+and it works for me... ???
+
+Laurent
+
+
+
+Le 10/06/2011 22:23, Nicolas Pomar&#232;de a &#233;crit :
+&gt;<i> Le 10/06/2011 22:09, Eero Tamminen a &#233;crit :
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On perjantai 10 kes&#228;kuu 2011, Eero Tamminen wrote:
+</I>&gt;&gt;&gt;<i> Hm.  Maybe best is to call debugger in Exception() just to pass
+</I>&gt;&gt;&gt;<i> the above exception information to the debugger, but let the actual
+</I>&gt;&gt;&gt;<i> debugger invokation happen at the normal place.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I looked into WinUAE code too, and it seems still to be missing all
+</I>&gt;&gt;<i> Exception debugging support (like discussed in earlier &quot;68030 Debug
+</I>&gt;&gt;<i> mode and new CPU&quot; thread).  On double bus error, it e.g. uae_reset()
+</I>&gt;&gt;<i> instead of notifying user first and rebooting after &quot;OK&quot; like old
+</I>&gt;&gt;<i> UAE core does.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -&gt;  I think doc/todo.txt should have a section on features
+</I>&gt;&gt;<i>     missing from WinAUE core.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is WinUAE core missing anything specific besides:
+</I>&gt;&gt;<i> * Exception debugging support
+</I>&gt;&gt;<i> * Fixing&amp;  documenting cmdline options for selecting prefetch etc
+</I>&gt;&gt;<i>    (and adding them to GUI)
+</I>&gt;&gt;<i> * Enabling/fixing MMU support
+</I>&gt;&gt;<i> That should be added to todo.txt?
+</I>&gt;&gt;<i> ?
+</I>&gt;<i>
+</I>&gt;<i> Don't know, really didn't have time to look at winuae recently ; we 
+</I>&gt;<i> might add a note about this, but I don't think explaining it in larger 
+</I>&gt;<i> detail in the doc is necessary for now.
+</I>&gt;<i> It would be sthg like &quot;use uae's core for ST + full debugger and use 
+</I>&gt;<i> Winuae's core for falcon only and no debugger&quot;
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Btw. Nicolas, what's your current schedule for Hatari v1.5 release?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I.e. would it be OK if I add history&amp;  old-UAE Exception support to
+</I>&gt;&gt;<i> debugger before it (will need also doc update before release)?
+</I>&gt;<i>
+</I>&gt;<i> Very soon I hope, maybe around june 17th. So I think we should not add 
+</I>&gt;<i> new features now but fixes any current issue we can find.
+</I>&gt;<i> Especially touching to cpu's core is always risky, so I would prefer 
+</I>&gt;<i> we postpone those features after 1.5 is released.
+</I>&gt;<i>
+</I>&gt;<i> Nicolas
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> hatari-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">hatari-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/hatari-devel">https://lists.berlios.de/mailman/listinfo/hatari-devel</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003598.html">[hatari-devel] v1.5 release preparation
+</A></li>
+	<LI>Next message: <A HREF="003573.html">[hatari-devel] Exception debugging &amp; breakpoints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3574">[ date ]</a>
+              <a href="thread.html#3574">[ thread ]</a>
+              <a href="subject.html#3574">[ subject ]</a>
+              <a href="author.html#3574">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/hatari-devel">More information about the hatari-devel
+mailing list</a><br>
+</body></html>
